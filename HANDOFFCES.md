@@ -488,8 +488,15 @@ checklist §0.1 releída (sin leaderboards, sin aleatoriedad, sin culpa, fallo
 nunca castiga, revelado solo en cierres, IA opcional intacta).
 
 **Pendiente (en orden recomendado):**
-- **Fase C** (§3.3-§3.5): hosting **DECIDIDO** por el usuario (2026-06-11):
-  **Supabase + cron keep-alive**. Aún sin código — playbook completo en §5.2.
+- **Fase C** (§3.3-§3.5): **CÓDIGO TERMINADO (2026-06-11, tarde)** — ver
+  estado exacto al final de §5.2. Proyecto Supabase creado
+  (rcaljqmibtkorcmdyqvg, GoTrue verificado, signup con sesión directa),
+  repo GitHub privado `ImGoingSavage/cogitoergosum` creado con secrets
+  cargados. Solo falta: (1) ejecutar `supabase/schema.sql` en el SQL
+  Editor (acción del usuario), (2) push del workflow (el token de gh
+  necesita scope `workflow`: `gh auth refresh -h github.com -s workflow`),
+  (3) verificación E2E del checklist C.6 y borrar el usuario de prueba
+  `prueba-borrar-luego@cogitoergosum.test`.
 - **Fase D** (§2.4): el claustro (amistades por código, perfil-vitrina,
   reconocimiento ❧, "Pensar juntos") — depende de la Fase C.
 - **Chat socrático** (§4.4): panel lateral durante el forcejeo con la key
@@ -679,6 +686,23 @@ storage.js. `device_id`: uuid generado una vez, en `cps_deviceId`.
 
 Fase D (claustro) se construye DESPUÉS, sobre estas mismas tablas + nuevas
 `friendships`/`reconocimientos` con sus políticas RLS (diseño en §2.4).
+
+### C.7 Estado de ejecución (2026-06-11, tarde)
+
+| Pieza | Estado |
+|---|---|
+| Proyecto Supabase (rcaljqmibtkorcmdyqvg) | ✅ Creado por el usuario; GoTrue v2 responde; signup devuelve sesión directa (Confirm email desactivado) |
+| `supabase/schema.sql` | ✅ Escrito y versionado · ❌ AÚN NO ejecutado en el SQL Editor (acción del usuario; la anon key no puede correr DDL) |
+| `js/api.js` (C.3) | ✅ Implementado con URL/anon key del proyecto como constantes |
+| `js/sync.js` (C.4) | ✅ Outbox + snapshot + adoptarOUnir + recomputo de rachas + migración |
+| `storage.js` | ✅ outbox/deviceId/sesionSupabase/ultimaSync + CLAVES_SYNC + encolarEvento (evento DOM `cps:evento-encolado`, sin ciclos) |
+| Eventos en cierres | ✅ sesion (con uid), piso, unidad, examen, insignia |
+| UI "Mi cuenta" (C.5) | ✅ Tarjeta en Dashboard: login/registro, sincronizar, importar progreso, exportar JSON, borrar cuenta (2 clics); verificada en headless |
+| `sw.js` | ✅ v2 con api.js y sync.js en el precache |
+| Workflow keep-alive (C.2) | ✅ Escrito y commiteado · ❌ push rechazado: el token de gh necesita scope `workflow` (`gh auth refresh -h github.com -s workflow`) |
+| Repo GitHub | ✅ Privado `ImGoingSavage/cogitoergosum` creado; secrets SUPABASE_URL y SUPABASE_ANON_KEY cargados; ❌ push pendiente del refresh de scope |
+| Verificación C.6 (E2E, 2 dispositivos, migración) | ❌ Bloqueada hasta ejecutar el esquema. Al correrla: borrar también el usuario de prueba `prueba-borrar-luego@cogitoergosum.test` (login con `PruebaTemporal#2026` → RPC borrar_mi_cuenta) y disparar el workflow (`gh workflow run keepalive.yml` + revisar `gh run list`) |
+| Web Push diaria opcional (C.5) | ❌ Pospuesta a propósito (no bloqueante; requiere emisor push) |
 
 ---
 

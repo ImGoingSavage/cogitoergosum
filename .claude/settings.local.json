@@ -51,7 +51,12 @@
       "Bash(sips -z 1400 300 /tmp/cogito-c.png --out /tmp/cogito-c-mini.png)",
       "Bash(sips -z 1533 300 /tmp/cogito-c-dash.png --out /tmp/cogito-c-dash-mini.png)",
       "Bash(git commit -q -m 'Fase C: sincronización opcional con Supabase \\(HANDOFFCES §5.2\\) *)",
-      "Bash(gh repo *)"
+      "Bash(gh repo *)",
+      "Bash(git push *)",
+      "Bash(gh secret *)",
+      "Bash(GH_PROMPT_DISABLED=1 gh auth refresh -h github.com -s workflow)",
+      "Bash(pkill -f \"gh auth refresh\")",
+      "Bash(git commit -q -m 'Bitácora: estado de ejecución Fase C \\(C.7\\) en HANDOFFCES *)"
     ]
   }
 }
