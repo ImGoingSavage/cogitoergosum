@@ -824,18 +824,46 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
 2. ~~"Pensar juntos"~~ ✅ HECHO Y VERIFICADO (E2E 9/9 con struggle first
    probado por RLS; SQL aplicado; ver tabla §5.3). Las 4 fases del plan
    §5 están COMPLETAS.
-3. ~~Chat socrático (§4.4)~~ ✅ HECHO (2026-06-11, noche): tarjeta "Mentor
-   socrático" en la vista Sesión, visible SOLO con cuenta de Claude activa
-   y mientras dura el forcejeo (desaparece al revelar/completar — no se
-   muestra "bloqueado": no existe). `aiMentor.js → chatSocratico()`:
-   multi-turno, system = SYSTEM_MENTOR + reglas de chat (1-4 frases,
-   termina en pregunta, jamás confirma/niega soluciones) + contexto del
-   problema y la desconstrucción. El historial vive en `asignacion.chat`
-   → se archiva con la sesión en `cps_sesionesArchivadas` (sin historial
-   infinito). Verificado: node --check, IDs cruzados, sw.js v6.
-   PENDIENTE menor: prueba humana con key real (el flujo estático está
-   verificado; la llamada usa el mismo `llamarClaude`-patrón ya probado
-   de hints).
+3. ~~Chat socrático (§4.4)~~ ✅ HECHO Y AMPLIADO (2026-06-11, noche; pedido
+   del usuario): **mentor flotante en TODAS las vistas + visión (fotos)**.
+   Sustituye a la tarjeta de chat embebida de la vista Sesión (eliminada
+   de index.html). Detalle:
+   - **Mentor flotante** (`#mentor-flotante`, burbuja 🪶 + panel de vidrio):
+     existe SOLO con cuenta de Claude activa; cambia de modo según el
+     contexto (`aiMentor.js → chatMentor(modo, contexto, mensajes)`):
+     `forcejeo` (socrático puro, jamás revela/confirma — gating intacto),
+     `revision` (tras revelar: puede comparar con la solución oficial),
+     `estudio` (explica lo leído con ejemplos nuevos; en quiz/examen solo
+     guía) y `general` (coach sobre `Analytics.resumen()`, siempre contra
+     el propio pasado, §0.3). Chat de forcejeo/revisión persiste en
+     `asignacion.chat` (se archiva con la sesión); estudio/general son
+     efímeros en memoria (sin historial infinito). Se puede adjuntar 📷
+     foto a cualquier mensaje (las fotos JAMÁS se persisten: viajan solo
+     en la llamada; el historial guarda un marcador de texto).
+   - **Foto de la desconstrucción en papel** (tarjeta Mi Desconstrucción,
+     solo durante forcejeo): `analizarFotoDesconstruccion()` transcribe
+     fielmente la hoja (incluidas expresiones matemáticas, vía structured
+     outputs/json_schema) y devuelve una observación socrática SOLO sobre
+     redacción/completitud — el prompt prohíbe juzgar corrección o
+     insinuar la solución. Botón "Añadir a mi desconstrucción" inyecta la
+     transcripción al textarea y dispara el autosave normal (cuenta para
+     el mínimo de 200 caracteres y viaja con la sesión = "cargar a la BD").
+   - **Revisión del intento** (sección Reflexión, SOLO tras revelar — guard
+     en JS): `revisarIntento()` compara desconstrucción + texto de
+     comparación + foto opcional contra la solución oficial y señala el
+     punto EXACTO de divergencia (lenguaje §2.2: valida proceso, jamás
+     veredicto seco). El resultado se guarda en `asignacion.revisionIA`
+     (se archiva con la sesión).
+   - `prepararImagen()` comprime en el cliente (canvas, lado ≤1568 px,
+     JPEG) antes de enviar. Modelo sigue siendo `claude-opus-4-8`.
+   - **Login con Claude vía Gmail: NO existe para terceros** (re-verificado
+     contra la referencia oficial de la API, 2026-06-11). La tarjeta
+     "Potenciar con Claude" ahora trae la guía honesta de 3 pasos con
+     enlace a platform.claude.com → API Keys (ahí sí se entra con Gmail).
+   - Verificado: node --check (15 módulos+sw), JSON, cruce de IDs, headless
+     con cuenta sembrada (burbuja+panel en forcejeo, botón de foto en
+     Desconstrucción), sw.js **v8**. PENDIENTE humano: una pasada real con
+     key (chat con foto, transcripción de hoja y revisión post-revelado).
 4. **Ingestión Fase 4+ del Modo Estudio**: protocolo completo y anclas de
    página en HANDOFF §3.11.6 paso 3-4 (siguiente tanda: Zeitz cap. 5
    álgebra + Engel cap. 7 + AMC/AIME de probabilidad). Solo datos, cero

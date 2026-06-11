@@ -29,7 +29,10 @@ import {
   agregarCuenta,
   activarCuenta,
   eliminarCuenta,
-  chatSocratico,
+  chatMentor,
+  prepararImagen,
+  analizarFotoDesconstruccion,
+  revisarIntento,
 } from './aiMentor.js';
 import * as Factory from './problemFactory.js';
 import * as Study from './study.js';
@@ -95,7 +98,9 @@ async function init() {
   configurarPisoMinimo();
   configurarFreshStart();
   configurarCuentaUI();
-  configurarChatUI();
+  configurarMentorFlotante();
+  configurarFotoDesconstruccion();
+  configurarRevisionIA();
   Claustro.init();
   Claustro.configurarUI();
   Sync.iniciar(); // sincronización opcional: no-op sin sesión o sin red
@@ -498,23 +503,127 @@ function renderizarSesion() {
 
   if (a.revelado) revelarSolucion(true);
   actualizarEstadoBloqueo();
-  actualizarChatUI();
+  actualizarSuperficiesIA();
 }
 
-/* ================= Chat socrático (§4.4, opcional) ==================== */
-/* Sin cuenta de Claude el panel NO existe (ni "bloqueado": no aparece).   */
+/* ============== Mentor en todas las vistas (§4.4 ampliado) ============= */
+/* Sin cuenta de Claude NADA de esto existe (ni "bloqueado": no aparece).
+   El modo del mentor depende del contexto:
+   - forcejeo: socrático puro — jamás revela ni confirma (gating intacto).
+   - revision: la solución ya está revelada — puede comparar y señalar.
+   - estudio: explica lo leído con ejemplos nuevos; en quiz/examen solo guía.
+   - general: coach sobre las métricas propias (siempre contra tu pasado).
+   El chat de forcejeo/revisión vive en la asignación y se archiva con la
+   sesión; los de estudio/general son efímeros (sin historial infinito). */
 
-function actualizarChatUI() {
+const MENTOR_MODOS_UI = {
+  forcejeo: {
+    etiqueta: '· socrático, en pleno forcejeo',
+    nota: 'El mentor pregunta y reenfoca; nunca revela ni confirma soluciones. La conversación se archiva con la sesión.',
+  },
+  revision: {
+    etiqueta: '· revisión, mirando hacia atrás',
+    nota: 'La solución ya está revelada: el mentor puede señalar dónde divergió tu camino.',
+  },
+  estudio: {
+    etiqueta: '· modo estudio',
+    nota: 'Explica lo ya leído con ejemplos nuevos; en quizzes y exámenes solo guía con preguntas.',
+  },
+  general: {
+    etiqueta: '· tu entrenamiento',
+    nota: 'Conversa sobre tus métricas — siempre contra tu propio pasado, nunca contra nadie.',
+  },
+};
+
+const chatsEfimeros = { estudio: [], general: [] };
+let fotoMentorPendiente = null;   // bloque imagen para el próximo mensaje del chat
+let vistaActual = 'sesion';
+
+function modoMentor() {
+  if (vistaActual === 'sesion') {
+    const a = Storage.load('asignacion');
+    if (a && !a.completado) return a.revelado ? 'revision' : 'forcejeo';
+    return 'general';
+  }
+  return vistaActual === 'estudio' ? 'estudio' : 'general';
+}
+
+function chatDeModo(modo) {
+  if (modo === 'forcejeo' || modo === 'revision') return Storage.load('asignacion')?.chat ?? [];
+  return chatsEfimeros[modo];
+}
+
+function guardarMensajeMentor(modo, msg) {
+  if (modo === 'forcejeo' || modo === 'revision') {
+    Storage.update('asignacion', (a) => {
+      if (a) {
+        a.chat = a.chat ?? [];
+        a.chat.push(msg);
+      }
+      return a;
+    });
+  } else {
+    const arr = chatsEfimeros[modo];
+    arr.push(msg);
+    if (arr.length > 40) arr.splice(0, arr.length - 40);
+  }
+}
+
+function contextoMentor(modo) {
+  if (modo === 'forcejeo' || modo === 'revision') {
+    const a = Storage.load('asignacion');
+    const p = problemaActual();
+    if (!p) return '';
+    const base =
+      `Problema: ${p.enunciado}\n\n` +
+      `Desconstrucción escrita por el usuario:\n${a?.desconstruccion || '(aún vacía)'}`;
+    return modo === 'forcejeo'
+      ? `${base}\n\nSolución de referencia (solo para tu contexto, JAMÁS la reveles ni la confirmes): ${p.solucion}`
+      : `${base}\n\nSolución oficial (ya revelada al usuario): ${p.solucion}\n\nExplicación oficial: ${p.explicacion}`;
+  }
+  if (modo === 'estudio') {
+    const r = Study.progresoResumen();
+    return r
+      ? `Situación en el Modo Estudio — bloque actual: «${r.bloque}» (${r.unidadesHechas}/${r.unidadesTotal} unidades; examen ${r.examenAprobado ? 'aprobado' : 'pendiente'}; racha de estudio: ${r.racha} días).`
+      : 'El usuario está en el Modo Estudio (lectura dirigida).';
+  }
+  const s = Analytics.resumen();
+  return (
+    `Resumen del entrenamiento del usuario (datos locales): ${s.total} sesiones, ` +
+    `${s.tasaExito}% de éxito, ${s.tiempoProm} min promedio de forcejeo, ${s.hintsTotales} pistas usadas, ` +
+    `${s.fichas} fichas completas en su cuaderno, racha actual de ${s.racha} días, nivel ${s.dificultadActual}` +
+    (s.disparadores !== null ? `, ${s.disparadores}% de disparadores reconocidos en frío.` : '.')
+  );
+}
+
+/** Visibilidad de TODAS las superficies de IA según cuenta y contexto. */
+function actualizarSuperficiesIA() {
+  const ia = mentorDisponible();
   const a = Storage.load('asignacion');
-  const visible = mentorDisponible() && a && !a.completado && !a.revelado;
-  $('seccion-chat').hidden = !visible;
-  if (visible) renderizarChatMensajes();
+  const forcejeo = Boolean(ia && a && !a.completado && !a.revelado);
+  $('descon-foto-fila').hidden = !forcejeo;
+  if (!forcejeo) $('descon-foto-resultado').hidden = true;
+  $('revision-ia').hidden = !(ia && a && a.revelado && !a.completado);
+  actualizarMentorUI();
 }
 
-function renderizarChatMensajes() {
-  const cont = $('chat-mensajes');
+function actualizarMentorUI() {
+  const ia = mentorDisponible();
+  $('mentor-flotante').hidden = !ia;
+  if (!ia) {
+    $('mentor-panel').hidden = true;
+    return;
+  }
+  const modo = modoMentor();
+  $('mentor-modo').textContent = MENTOR_MODOS_UI[modo].etiqueta;
+  $('mentor-nota').textContent = MENTOR_MODOS_UI[modo].nota;
+  renderizarMentorMensajes(modo);
+}
+
+function renderizarMentorMensajes(modo) {
+  const cont = $('mentor-mensajes');
   cont.innerHTML = '';
-  (Storage.load('asignacion')?.chat ?? []).forEach((m) => {
+  chatDeModo(modo).forEach((m) => {
     const div = document.createElement('div');
     div.className = `chat-msg ${m.role === 'user' ? 'mio' : 'mentor'}`;
     div.textContent = m.content;
@@ -523,43 +632,172 @@ function renderizarChatMensajes() {
   cont.scrollTop = cont.scrollHeight;
 }
 
-async function enviarMensajeChat() {
-  const texto = $('chat-entrada').value.trim();
-  const p = problemaActual();
-  if (!texto || !p) return;
-  $('chat-entrada').value = '';
-  const a = Storage.update('asignacion', (x) => {
-    if (x) {
-      x.chat = x.chat ?? [];
-      x.chat.push({ role: 'user', content: texto });
-    }
-    return x;
-  });
-  renderizarChatMensajes();
-  $('btn-chat-enviar').disabled = true;
-  $('chat-estado').textContent = 'El mentor está pensando…';
+async function enviarMensajeMentor() {
+  const texto = $('mentor-entrada').value.trim();
+  const modo = modoMentor();
+  if (!texto && !fotoMentorPendiente) return;
+  const foto = fotoMentorPendiente;
+  fotoMentorPendiente = null;
+  $('mentor-foto-chip').hidden = true;
+  $('mentor-entrada').value = '';
+
+  // El historial guarda SOLO texto: las fotos jamás se persisten (pesan
+  // demasiado para LocalStorage); la imagen viaja únicamente en esta llamada.
+  guardarMensajeMentor(modo, { role: 'user', content: (foto ? '📷 ' : '') + (texto || '(foto adjunta)') });
+  renderizarMentorMensajes(modo);
+  $('btn-mentor-enviar').disabled = true;
+  $('mentor-chat-estado').textContent = 'El mentor está pensando…';
   try {
-    const respuesta = await chatSocratico(p, a?.desconstruccion ?? '', a?.chat ?? []);
+    const mensajes = chatDeModo(modo)
+      .slice(-20)
+      .map((m) => ({ role: m.role, content: m.content }));
+    // La API exige que el primer mensaje sea del usuario
+    while (mensajes.length && mensajes[0].role !== 'user') mensajes.shift();
+    if (foto) {
+      mensajes[mensajes.length - 1].content = [
+        foto,
+        { type: 'text', text: texto || 'Te adjunto una foto de mi trabajo.' },
+      ];
+    }
+    const respuesta = await chatMentor(modo, contextoMentor(modo), mensajes);
     if (respuesta) {
-      Storage.update('asignacion', (x) => {
-        if (x) x.chat.push({ role: 'assistant', content: respuesta });
-        return x;
-      });
-      $('chat-estado').textContent = '';
+      guardarMensajeMentor(modo, { role: 'assistant', content: respuesta });
+      $('mentor-chat-estado').textContent = '';
     } else {
-      $('chat-estado').textContent = 'El mentor no respondió esta vez; sigue con tu forcejeo.';
+      $('mentor-chat-estado').textContent = 'El mentor no respondió esta vez; tu trabajo sigue intacto.';
     }
   } catch {
-    $('chat-estado').textContent = 'No se pudo contactar al mentor (¿red o cuenta?). Tu sesión sigue intacta.';
+    $('mentor-chat-estado').textContent = 'No se pudo contactar al mentor (¿red o cuenta?).';
   }
-  $('btn-chat-enviar').disabled = false;
-  renderizarChatMensajes();
+  $('btn-mentor-enviar').disabled = false;
+  renderizarMentorMensajes(modoMentor());
 }
 
-function configurarChatUI() {
-  $('btn-chat-enviar').addEventListener('click', enviarMensajeChat);
-  $('chat-entrada').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') enviarMensajeChat();
+function configurarMentorFlotante() {
+  $('mentor-burbuja').addEventListener('click', () => {
+    const panel = $('mentor-panel');
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden) {
+      actualizarMentorUI();
+      $('mentor-entrada').focus();
+    }
+  });
+  $('btn-mentor-cerrar').addEventListener('click', () => {
+    $('mentor-panel').hidden = true;
+  });
+  $('btn-mentor-enviar').addEventListener('click', enviarMensajeMentor);
+  $('mentor-entrada').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') enviarMensajeMentor();
+  });
+  $('btn-mentor-foto').addEventListener('click', () => $('input-mentor-foto').click());
+  $('input-mentor-foto').addEventListener('change', async () => {
+    const file = $('input-mentor-foto').files[0];
+    $('input-mentor-foto').value = '';
+    if (!file) return;
+    try {
+      fotoMentorPendiente = await prepararImagen(file);
+      $('mentor-foto-chip').textContent = '📷 Foto lista — se enviará con tu próximo mensaje.';
+      $('mentor-foto-chip').hidden = false;
+    } catch {
+      $('mentor-chat-estado').textContent = 'No se pudo leer esa imagen.';
+    }
+  });
+}
+
+/* ------ Foto de la desconstrucción en papel (forcejeo, IA opcional) ---- */
+
+let transcripcionPendiente = null;
+
+function configurarFotoDesconstruccion() {
+  $('btn-descon-foto').addEventListener('click', () => $('input-descon-foto').click());
+  $('input-descon-foto').addEventListener('change', async () => {
+    const file = $('input-descon-foto').files[0];
+    $('input-descon-foto').value = '';
+    const p = problemaActual();
+    if (!file || !p) return;
+    $('descon-foto-estado').textContent = 'El mentor está leyendo tu hoja…';
+    try {
+      const imagen = await prepararImagen(file);
+      const r = await analizarFotoDesconstruccion(p, imagen);
+      if (r?.transcripcion) {
+        transcripcionPendiente = r.transcripcion;
+        $('descon-foto-transcripcion').textContent = r.transcripcion;
+        $('descon-foto-observacion').textContent = r.observacion ?? '';
+        $('descon-foto-resultado').hidden = false;
+        $('descon-foto-estado').textContent = '';
+      } else {
+        $('descon-foto-estado').textContent = 'El mentor no pudo leer la hoja esta vez; intenta con más luz o de frente.';
+      }
+    } catch {
+      $('descon-foto-estado').textContent = 'No se pudo analizar la foto (¿red o cuenta?). Tu forcejeo sigue intacto.';
+    }
+  });
+
+  $('btn-descon-foto-anadir').addEventListener('click', () => {
+    if (!transcripcionPendiente) return;
+    const ta = $('desconstruccion');
+    ta.value =
+      (ta.value ? `${ta.value.trimEnd()}\n\n` : '') +
+      `— De mi hoja (transcrita por el mentor):\n${transcripcionPendiente}`;
+    // Persiste en la asignación por la misma puerta que el tecleo normal
+    ta.dispatchEvent(new Event('input'));
+    transcripcionPendiente = null;
+    $('descon-foto-resultado').hidden = true;
+  });
+
+  $('btn-descon-foto-descartar').addEventListener('click', () => {
+    transcripcionPendiente = null;
+    $('descon-foto-resultado').hidden = true;
+  });
+}
+
+/* -------- Revisión del intento (SOLO tras el revelado, IA opcional) ---- */
+
+let fotoRevisionPendiente = null;
+
+function configurarRevisionIA() {
+  $('btn-revision-foto').addEventListener('click', () => $('input-revision-foto').click());
+  $('input-revision-foto').addEventListener('change', async () => {
+    const file = $('input-revision-foto').files[0];
+    $('input-revision-foto').value = '';
+    if (!file) return;
+    try {
+      fotoRevisionPendiente = await prepararImagen(file);
+      $('revision-estado').textContent = '📷 Foto de tu intento lista.';
+    } catch {
+      $('revision-estado').textContent = 'No se pudo leer esa imagen.';
+    }
+  });
+
+  $('btn-revision-pedir').addEventListener('click', async () => {
+    const a = Storage.load('asignacion');
+    const p = problemaActual();
+    if (!p || !a?.revelado) return; // gating pedagógico: jamás antes del revelado
+    $('btn-revision-pedir').disabled = true;
+    $('revision-estado').textContent = 'El mentor está comparando tu camino con la solución…';
+    try {
+      const resultado = await revisarIntento(p, {
+        desconstruccion: a.desconstruccion ?? '',
+        intentoTexto: $('reflexion-comparacion').value.trim(),
+        imagen: fotoRevisionPendiente,
+      });
+      if (resultado) {
+        $('revision-resultado').textContent = resultado;
+        $('revision-resultado').hidden = false;
+        $('revision-estado').textContent = '';
+        // La revisión se archiva con la sesión (cps_sesionesArchivadas)
+        Storage.update('asignacion', (x) => {
+          if (x) x.revisionIA = resultado;
+          return x;
+        });
+      } else {
+        $('revision-estado').textContent = 'El mentor no respondió esta vez.';
+      }
+    } catch {
+      $('revision-estado').textContent = 'No se pudo pedir la revisión (¿red o cuenta?).';
+    }
+    fotoRevisionPendiente = null;
+    $('btn-revision-pedir').disabled = false;
   });
 }
 
@@ -753,7 +991,7 @@ function revelarSolucion(soloRender = false) {
     });
   }
   actualizarTimerControles();
-  actualizarChatUI(); // el chat se archiva con la sesión y deja de mostrarse
+  actualizarSuperficiesIA(); // el mentor pasa a modo revisión; el chat se archiva con la sesión
 
   $('solucion-texto').textContent = p.solucion;
   $('explicacion-texto').textContent = p.explicacion;
@@ -956,6 +1194,7 @@ function mostrarResultado(score, ajuste, insigniasNuevas = []) {
 
   Study.actualizarHeaderRachas();
   actualizarPisoUI();
+  actualizarSuperficiesIA(); // sesión cerrada: el mentor pasa a modo general
 }
 
 function mostrarEstadoCompletado(p) {
@@ -965,7 +1204,7 @@ function mostrarEstadoCompletado(p) {
   $('timer-etiqueta').textContent = ETIQUETA_TIMER_DEFAULT;
   $('checkpoint-metacognitivo').hidden = true;
   actualizarTimerControles();
-  $('seccion-chat').hidden = true;
+  actualizarSuperficiesIA();
   $('btn-revelar').hidden = true;
   $('fieldset-prediccion').hidden = true;
   $('btn-hint').disabled = true;
@@ -1000,9 +1239,14 @@ function resetearVistaSesion() {
   $('timer-etiqueta').textContent = ETIQUETA_TIMER_DEFAULT;
   $('resultado-proceso').hidden = true;
   $('resultado-insignias').innerHTML = '';
-  $('seccion-chat').hidden = true;
-  $('chat-mensajes').innerHTML = '';
-  $('chat-estado').textContent = '';
+  $('descon-foto-resultado').hidden = true;
+  $('descon-foto-estado').textContent = '';
+  $('revision-ia').hidden = true;
+  $('revision-resultado').hidden = true;
+  $('revision-resultado').textContent = '';
+  $('revision-estado').textContent = '';
+  transcripcionPendiente = null;
+  fotoRevisionPendiente = null;
   document.querySelectorAll('input[name="autoeval"]').forEach((r) => (r.checked = false));
   document.querySelectorAll('input[name="prediccion"]').forEach((r) => (r.checked = false));
   $('ficha-moraleja').value = '';
@@ -1301,10 +1545,12 @@ function configurarNavegacion() {
 }
 
 function cambiarVista(vista) {
+  vistaActual = vista;
   ['sesion', 'estudio', 'claustro', 'dashboard'].forEach((v) => {
     $(`vista-${v}`).hidden = vista !== v;
     $(`nav-${v}`).classList.toggle('activo', vista === v);
   });
+  actualizarMentorUI(); // el mentor flotante cambia de modo según la vista
 }
 
 function renderizarCuentas() {
@@ -1335,6 +1581,9 @@ function renderizarCuentas() {
   $('mentor-estado').textContent = mentorDisponible()
     ? `Mentor IA activo — cuenta en uso: ${cuentaActiva().nombre}`
     : 'Mentor IA inactivo (hints curados). Agrega una cuenta para activarlo.';
+
+  // Agregar/quitar la cuenta enciende o apaga TODAS las superficies de IA
+  actualizarSuperficiesIA();
 }
 
 function configurarMentorUI() {

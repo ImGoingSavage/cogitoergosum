@@ -1109,6 +1109,114 @@ button.secundario.peligro:hover:not(:disabled) {
   color: var(--peligro);
 }
 
+/* ----------- Mentor flotante (§4.4 ampliado: todas las vistas) ----- */
+
+#mentor-flotante {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+#mentor-burbuja {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--texto);
+  background: var(--vidrio);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  border: 1px solid var(--vidrio-borde);
+  transition: border-color var(--transicion), color var(--transicion);
+}
+
+#mentor-burbuja:hover { border-color: var(--acento); color: var(--acento); }
+
+#mentor-panel {
+  width: min(380px, calc(100vw - 36px));
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: var(--radio);
+  /* Más opaco que las tarjetas: el chat exige máxima legibilidad */
+  background: rgba(27, 24, 21, 0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+  border: 1px solid var(--vidrio-borde);
+}
+
+#mentor-panel[hidden] { display: none; }
+
+.mentor-panel-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mentor-titulo { font-family: var(--serif); font-size: 17px; }
+
+.mentor-modo { font-size: 12px; color: var(--texto-tenue); }
+
+#mentor-panel .chat-mensajes { flex: 1; min-height: 60px; }
+
+#mentor-panel .nota-privacidad { margin-top: 10px; }
+
+#btn-mentor-cerrar {
+  background: none;
+  border: none;
+  color: var(--texto-tenue);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+#btn-mentor-cerrar:hover { color: var(--texto); }
+
+#mentor-panel .mentor-config { flex-wrap: nowrap; }
+
+#mentor-panel .mentor-config input[type='text'] { flex: 1; min-width: 0; }
+
+@media (max-width: 540px) {
+  #mentor-flotante { right: 12px; bottom: 12px; }
+  #mentor-panel { width: calc(100vw - 24px); max-height: 62vh; }
+}
+
+/* Foto de la desconstrucción / revisión del intento (IA opcional) */
+
+.foto-resultado {
+  margin-top: 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--bg-sutil);
+}
+
+.foto-transcripcion {
+  white-space: pre-line;
+  font-size: 14px;
+  color: var(--texto);
+  margin: 8px 0;
+}
+
+.foto-observacion {
+  font-size: 13px;
+  color: var(--texto-suave);
+  border-left: 3px solid var(--acento);
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+#revision-resultado { white-space: pre-line; }
+
 /* ------------------- Pie de biblioteca (citas) --------------------- */
 
 .pie-biblioteca {

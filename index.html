@@ -111,6 +111,23 @@
           <span id="contador-caracteres">0 / 200 caracteres</span>
           <span id="autosave-indicador"></span>
         </div>
+        <!-- Desconstrucción en papel (IA, opcional): el mentor transcribe la
+             foto (texto y expresiones matemáticas) y valida la redacción —
+             jamás juzga si el camino es correcto durante el forcejeo. -->
+        <div id="descon-foto-fila" class="acciones-cuenta" hidden>
+          <button id="btn-descon-foto" class="secundario">📷 Trabajé en papel — subir foto</button>
+          <input id="input-descon-foto" type="file" accept="image/*" hidden />
+          <span id="descon-foto-estado" class="sync-mensaje"></span>
+        </div>
+        <div id="descon-foto-resultado" class="foto-resultado" hidden>
+          <p class="nota-privacidad">Transcripción del mentor — revísala antes de añadirla:</p>
+          <p id="descon-foto-transcripcion" class="foto-transcripcion"></p>
+          <p id="descon-foto-observacion" class="foto-observacion"></p>
+          <div class="acciones-cuenta">
+            <button id="btn-descon-foto-anadir" class="primario">Añadir a mi desconstrucción</button>
+            <button id="btn-descon-foto-descartar" class="secundario">Descartar</button>
+          </div>
+        </div>
       </article>
 
       <!-- Hints socráticos -->
@@ -118,22 +135,6 @@
         <h2>Pistas</h2>
         <ul id="hints-lista"></ul>
         <button id="btn-hint" class="secundario">Pedir pista 1 de 5</button>
-      </article>
-
-      <!-- Chat socrático (§4.4): solo existe con cuenta de Claude activa.
-           Pregunta y reenfoca; jamás revela. Se archiva con la sesión. -->
-      <article class="tarjeta" id="seccion-chat" hidden>
-        <h2>Mentor socrático</h2>
-        <div id="chat-mensajes" class="chat-mensajes"></div>
-        <div class="mentor-config">
-          <input id="chat-entrada" type="text" placeholder="Cuéntale dónde estás atascado…" autocomplete="off" />
-          <button id="btn-chat-enviar" class="secundario">Enviar</button>
-        </div>
-        <p id="chat-estado" class="sync-mensaje"></p>
-        <p class="nota-privacidad">
-          El mentor pregunta y reenfoca; nunca revela ni confirma soluciones.
-          La conversación se archiva con la sesión.
-        </p>
       </article>
 
       <!-- Revelar solución (bloqueado por timer + desconstrucción + predicción) -->
@@ -187,6 +188,20 @@
         <div class="campo-reflexion">
           <label for="reflexion-comparacion">Comparación — mi enfoque vs. la solución propuesta</label>
           <textarea id="reflexion-comparacion" placeholder="¿Qué intentaste (sobre todo los caminos muertos)? ¿Dónde te atascaste exactamente? ¿Dónde divergió tu camino?"></textarea>
+        </div>
+
+        <!-- Revisión del mentor (IA, opcional; SOLO tras el revelado): compara
+             tu intento (texto o foto del papel) con la solución oficial y
+             señala el punto exacto de divergencia. -->
+        <div id="revision-ia" class="campo-reflexion" hidden>
+          <label>Revisión del mentor (opcional) — sube tu intento y te dirá dónde exactamente divergió tu camino</label>
+          <div class="acciones-cuenta">
+            <button id="btn-revision-foto" class="secundario">📷 Foto de mi intento</button>
+            <input id="input-revision-foto" type="file" accept="image/*" hidden />
+            <button id="btn-revision-pedir" class="secundario">Pedir revisión</button>
+          </div>
+          <p id="revision-estado" class="sync-mensaje"></p>
+          <div id="revision-resultado" class="piso-ficha" hidden></div>
         </div>
 
         <div class="campo-reflexion">
@@ -513,6 +528,14 @@
 
       <article class="tarjeta">
         <h2>Potenciar con Claude (opcional) — Cuentas</h2>
+        <p class="piso-instruccion">
+          Conectar tu cuenta toma 2 minutos: <strong>1)</strong> abre la consola de Claude
+          e inicia sesión ahí con tu correo (Gmail incluido) —
+          <a href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener">platform.claude.com → API Keys</a> —,
+          <strong>2)</strong> crea una API key y cópiala, <strong>3)</strong> pégala aquí abajo.
+          Anthropic no permite a apps de terceros un botón «iniciar sesión con Claude»;
+          la key es la vía oficial y vive solo en este dispositivo.
+        </p>
         <ul id="mentor-cuentas" class="lista-cuentas"></ul>
         <div class="mentor-config">
           <input id="cuenta-nombre" type="text" placeholder="Nombre (ej. Cuenta personal)" autocomplete="off" />
@@ -532,6 +555,31 @@
     </section>
 
   </main>
+
+  <!-- Mentor flotante (§4.4 ampliado): disponible en TODAS las vistas, SOLO
+       con cuenta de Claude activa (sin key no existe — no se muestra
+       "bloqueado"). El modo cambia según el contexto: socrático durante el
+       forcejeo (jamás revela), revisión tras el revelado, acompañante en
+       Estudio y coach sobre tus propias métricas en el resto. -->
+  <div id="mentor-flotante" hidden>
+    <section id="mentor-panel" hidden aria-label="Mentor">
+      <header class="mentor-panel-cabecera">
+        <div><strong class="mentor-titulo">Mentor</strong> <span id="mentor-modo" class="mentor-modo"></span></div>
+        <button id="btn-mentor-cerrar" class="enlace" aria-label="Cerrar el mentor">✕</button>
+      </header>
+      <div id="mentor-mensajes" class="chat-mensajes"></div>
+      <p id="mentor-chat-estado" class="sync-mensaje"></p>
+      <p id="mentor-foto-chip" class="sync-mensaje" hidden></p>
+      <div class="mentor-config">
+        <button id="btn-mentor-foto" class="timer-boton" title="Adjuntar una foto (tu hoja, tu intento, una duda)" aria-label="Adjuntar foto">📷</button>
+        <input id="input-mentor-foto" type="file" accept="image/*" hidden />
+        <input id="mentor-entrada" type="text" placeholder="Escríbele al mentor…" autocomplete="off" />
+        <button id="btn-mentor-enviar" class="secundario">Enviar</button>
+      </div>
+      <p class="nota-privacidad" id="mentor-nota"></p>
+    </section>
+    <button id="mentor-burbuja" title="Mentor" aria-label="Abrir el mentor">🪶</button>
+  </div>
 
   <!-- Citas de la biblioteca: rotación curada, determinista por día -->
   <footer class="pie-biblioteca" id="pie-biblioteca" hidden>

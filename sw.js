@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v7';
+const VERSION = 'cogitoergosum-v8';
 
 // El video de fondo (1.5 MB) NO entra al precache del shell: se cachea bajo
 // demanda en su propia caché, que sobrevive a los cambios de VERSION.

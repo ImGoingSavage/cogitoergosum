@@ -80,7 +80,10 @@
       "Bash(sips -s format jpeg -s formatOptions 60 /tmp/fondo.mp4.png --out assets/video/fondo-poster.jpg)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --window-size=1280,900 --virtual-time-budget=6000 --screenshot=/tmp/ces-desktop.png http://localhost:8765)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --force-prefers-reduced-motion --window-size=1280,900 --virtual-time-budget=6000 --screenshot=/tmp/ces-reduced.png http://localhost:8765)",
-      "Bash(git commit -m 'Fondo de video de la biblioteca + liquid glass \\(§5.4 punto 0\\) *)"
+      "Bash(git commit -m 'Fondo de video de la biblioteca + liquid glass \\(§5.4 punto 0\\) *)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --window-size=1280,900 --virtual-time-budget=9000 --screenshot=/tmp/ces-mentor.png http://localhost:8765/test-seed.html)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --window-size=1280,2600 --virtual-time-budget=9000 --screenshot=/tmp/ces-mentor-full.png http://localhost:8765/test-seed.html)",
+      "Bash(git commit -m 'Mentor en todas las vistas + visión: fotos de hoja, transcripción y revisión post-revelado \\(§4.4 ampliado\\) *)"
     ]
   }
 }
