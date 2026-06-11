@@ -68,7 +68,8 @@
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-first-run --user-data-dir=/tmp/chrome-cogito8 --enable-logging=stderr --v=0 --virtual-time-budget=9000 --window-size=900,1200 --screenshot=/tmp/cogito-pj.png http://localhost:8123/)",
       "Bash(git commit -q -m 'Pensar juntos \\(§2.4 p.15\\): sorteo del pool común, struggle first por RLS *)",
       "Bash(git commit -q -m 'Pensar juntos verificado: E2E 9/9, struggle first probado por RLS — Fase D completa *)",
-      "Bash(git commit -q -m 'Chat socrático \\(§4.4\\): multi-turno durante el forcejeo, archivado con la sesión *)"
+      "Bash(git commit -q -m 'Chat socrático \\(§4.4\\): multi-turno durante el forcejeo, archivado con la sesión *)",
+      "Bash(git commit -q -m 'Cierre de jornada: nota de estado final, §3.9.4 superado por el chat socrático *)"
     ]
   }
 }

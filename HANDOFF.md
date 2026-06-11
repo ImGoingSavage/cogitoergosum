@@ -323,9 +323,10 @@ Ver §2 "Mecánicas clave". Funciones `abrirPisoMinimo()` /
    estrategia + score + prediccion por sesión.
 3. **Modo "reintenta tus fallos"** (Lichess): lista de problemas fallados
    reintentables en frío, separada del ciclo espaciado.
-4. **Profundizar `evaluarDesconstruccion()`** (Exercism): hoy existe en
-   aiMentor.js pero la UI no la expone; un botón "pide al mentor una pregunta
-   orientadora" durante el forcejeo sería el siguiente uso natural de la IA.
+4. ~~Profundizar `evaluarDesconstruccion()`~~ — SUPERADO (2026-06-11): el
+   chat socrático (§4.4 de HANDOFFCES, ya implementado) cubre este caso y
+   más: el mentor lee la desconstrucción como contexto en cada turno.
+   `evaluarDesconstruccion()` queda en aiMentor.js como utilidad disponible.
 
 ### ⚠️ 3.10 Requisito transversal: cambio de cuenta de Claude (YA IMPLEMENTADO)
 

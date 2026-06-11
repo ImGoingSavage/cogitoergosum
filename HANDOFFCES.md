@@ -819,6 +819,23 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9);
    exponer `evaluarDesconstruccion()` en la UI durante el forcejeo.
 
+### Cierre de jornada 2026-06-11 (estado al apagar)
+
+- **App v6** (sw.js), 10 commits en `main`, todo pusheado. Los 3 SQL de
+  `supabase/` aplicados y verificados por E2E (Fase C 8/8, claustro 10/10,
+  pensar-juntos 9/9 con struggle-first probado).
+- **Hecho hoy**: Fases A-D completas + chat socrático. **Primer pendiente
+  sugerido**: ingestión Fase 4+ (solo datos; protocolo y anclas en HANDOFF
+  §3.11.6 — siguiente tanda: Zeitz cap. 5 álgebra, Engel cap. 7, AMC de
+  probabilidad).
+- **Nota para publicar el frontend**: GitHub Pages gratuito exige repo
+  PÚBLICO (el actual es privado) — decidir con el usuario entre hacerlo
+  público (el código no contiene secretos: la anon key es pública por
+  diseño) o usar Cloudflare Pages (gratis con repo privado). La PWA
+  necesita HTTPS; ambas opciones lo dan.
+- **Pruebas humanas pendientes**: cuenta real + importar progreso +
+  segundo dispositivo (C.6); un mensaje al chat socrático con key real.
+
 ### Convenciones que NO se negocian (resumen operativo)
 
 - Español en todo; vanilla JS, ES6 modules, CERO librerías/CDNs/build.
