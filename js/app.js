@@ -1623,8 +1623,13 @@ function configurarPantallaLogin() {
       video.pause();
       return;
     }
+    // A 0.5×, como el fondo: el mármol fluye lento, sin robar atención
+    video.defaultPlaybackRate = 0.5;
+    video.playbackRate = 0.5;
     video.play().catch(() => {}); // si el navegador lo impide, queda el póster
   };
+  // Algunos navegadores reinician el rate al cargar metadatos: reafirmarlo
+  video.addEventListener('loadedmetadata', () => { video.playbackRate = 0.5; });
   document.addEventListener('visibilitychange', ajustarVideo);
   reducido.addEventListener?.('change', ajustarVideo);
 
