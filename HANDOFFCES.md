@@ -786,6 +786,34 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
 
 ### QUÉ FALTA, en orden de valor
 
+0. **NUEVA DIRECTIVA UI/UX del usuario (2026-06-11, noche) — fondo de video:**
+   - El fondo de TODA la app será el video **`fondo.mp4`** (⚠️ el archivo aún
+     NO está en el proyecto: pedírselo al usuario o confirmar su ruta antes
+     de empezar), reproduciéndose TODO el tiempo detrás del contenido.
+   - **Velocidad 0.5×** (`video.playbackRate = 0.5`) para que no intervenga
+     con la atención (coherente con §0.5 anti-distracción).
+   - **Dimensiones**: ajustar el encuadre según dispositivo — escritorio y
+     celular ven bien el video pese a sus proporciones distintas. Base:
+     `<video autoplay muted loop playsinline>` posicionado fixed a pantalla
+     completa con `object-fit: cover` + `object-position` ajustado por media
+     query; si hace falta, recortes/exports distintos por breakpoint vía
+     `<source media>` o swap por JS.
+   - **Marcos "liquid glass" estilo Apple**: las tarjetas (`.tarjeta`, header,
+     etc.) pasan a fondos translúcidos con `backdrop-filter: blur(...)` +
+     `background: rgba(...)` y borde sutil claro, de modo que el video se
+     vea a través. Cuidar contraste AA del texto sobre vidrio (capa de
+     oscurecimiento si hace falta) y conservar la paleta §1.
+   - **Rendimiento (hacer lo necesario, pedido explícito)**: comprimir el
+     video (H.264/HEVC, sin audio, resolución ≤1080p escritorio / versión
+     ligera móvil), `preload="metadata"` + poster estático para primer
+     render, pausar con `document.visibilityState === 'hidden'`, respetar
+     `prefers-reduced-motion` (mostrar poster estático en vez de video),
+     limitar capas con backdrop-filter si el FPS sufre (medir en móvil),
+     y decidir si entra al precache del SW (probablemente NO por peso:
+     cache-first bajo demanda con su propia entrada). Subir VERSION del SW.
+   - Verificar al cerrar: timer fluido con video corriendo, scroll sin
+     jank en móvil, batería razonable, y checklist anti-§0.1.
+
 1. ~~Prueba social E2E de la Fase D~~ ✅ HECHA (10/10, ver tabla §5.3).
 2. ~~"Pensar juntos"~~ ✅ HECHO Y VERIFICADO (E2E 9/9 con struggle first
    probado por RLS; SQL aplicado; ver tabla §5.3). Las 4 fases del plan
