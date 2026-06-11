@@ -16,6 +16,18 @@
   -->
 </head>
 <body>
+  <!-- Fondo de la biblioteca (§5.4 punto 0): video en bucle a 0.5× detrás de
+       todo el contenido. Sin autoplay deliberado: app.js lo reproduce solo si
+       prefers-reduced-motion lo permite (sin JS o con movimiento reducido
+       queda el póster estático, que ya viene precacheado). El filtro CSS lo
+       vuelve nocturno (paleta §1) y el velo garantiza contraste AA. -->
+  <div class="fondo-app" aria-hidden="true">
+    <video id="fondo-video" muted loop playsinline preload="none"
+      poster="assets/video/fondo-poster.jpg">
+      <source src="assets/video/fondo.mp4" type="video/mp4" />
+    </video>
+  </div>
+
   <header class="app-header">
     <div class="header-inner">
       <div class="marca-bloque">

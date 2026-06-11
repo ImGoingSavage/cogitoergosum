@@ -13,7 +13,12 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v6';
+const VERSION = 'cogitoergosum-v7';
+
+// El video de fondo (1.5 MB) NO entra al precache del shell: se cachea bajo
+// demanda en su propia caché, que sobrevive a los cambios de VERSION.
+const CACHE_MEDIA = 'cogitoergosum-media-v1';
+const RUTA_VIDEO_FONDO = '/assets/video/fondo.mp4';
 
 const SHELL = [
   './',
@@ -46,6 +51,7 @@ const SHELL = [
   'assets/icons/icon.svg',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
+  'assets/video/fondo-poster.jpg',
 ];
 
 self.addEventListener('install', (event) => {
@@ -58,7 +64,11 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((claves) => Promise.all(claves.filter((k) => k !== VERSION).map((k) => caches.delete(k))))
+      .then((claves) =>
+        Promise.all(
+          claves.filter((k) => k !== VERSION && k !== CACHE_MEDIA).map((k) => caches.delete(k))
+        )
+      )
       .then(() => self.clients.claim())
   );
 });
@@ -68,6 +78,12 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return; // la API de Claude va directo
+
+  // Video de fondo: cache-first en CACHE_MEDIA con manejo de Range
+  if (url.pathname.endsWith(RUTA_VIDEO_FONDO)) {
+    event.respondWith(servirVideoFondo(request));
+    return;
+  }
 
   event.respondWith(
     caches.open(VERSION).then(async (cache) => {
@@ -82,3 +98,40 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+/**
+ * Sirve el video de fondo offline-first. Se guarda SIEMPRE la respuesta
+ * completa (la descarga se hace sin header Range, porque cache.put rechaza
+ * respuestas 206) y las peticiones Range del reproductor se responden
+ * recortando esa copia completa (1.5 MB: recortar en memoria es barato).
+ */
+async function servirVideoFondo(request) {
+  const cache = await caches.open(CACHE_MEDIA);
+  let completo = await cache.match(request.url);
+  if (!completo) {
+    try {
+      const res = await fetch(request.url); // sin Range: copia completa
+      if (!res || res.status !== 200) return res ?? Response.error();
+      await cache.put(request.url, res.clone());
+      completo = res;
+    } catch {
+      return Response.error(); // sin red ni caché: la app sigue con el póster
+    }
+  }
+  const rango = request.headers.get('range');
+  if (!rango) return completo;
+  const buf = await completo.arrayBuffer();
+  const m = /bytes=(\d+)-(\d+)?/i.exec(rango);
+  const inicio = m ? Number(m[1]) : 0;
+  const fin = m && m[2] ? Math.min(Number(m[2]), buf.byteLength - 1) : buf.byteLength - 1;
+  return new Response(buf.slice(inicio, fin + 1), {
+    status: 206,
+    statusText: 'Partial Content',
+    headers: {
+      'Content-Type': 'video/mp4',
+      'Accept-Ranges': 'bytes',
+      'Content-Range': `bytes ${inicio}-${fin}/${buf.byteLength}`,
+      'Content-Length': String(fin - inicio + 1),
+    },
+  });
+}

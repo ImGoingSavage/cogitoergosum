@@ -71,7 +71,16 @@
       "Bash(git commit -q -m 'Chat socrático \\(§4.4\\): multi-turno durante el forcejeo, archivado con la sesión *)",
       "Bash(git commit -q -m 'Cierre de jornada: nota de estado final, §3.9.4 superado por el chat socrático *)",
       "Bash(git commit -q -m 'claude.md: puntero de orientación para agentes nuevos → HANDOFFCES §0 y §5.4 *)",
-      "Bash(git commit -q -m 'Directiva UI/UX: fondo de video fondo.mp4 a 0.5x, liquid glass y optimización \\(HANDOFFCES §5.4 punto 0\\) *)"
+      "Bash(git commit -q -m 'Directiva UI/UX: fondo de video fondo.mp4 a 0.5x, liquid glass y optimización \\(HANDOFFCES §5.4 punto 0\\) *)",
+      "Bash(mdls -name kMDItemPixelWidth -name kMDItemPixelHeight -name kMDItemDurationSeconds -name kMDItemCodecs -name kMDItemTotalBitRate -name kMDItemAudioChannelCount \"/Users/EdgarDevice/Desktop/ProyectoX/fondo .mp4\")",
+      "Bash(avconvert --help)",
+      "Bash(mkdir -p assets/video)",
+      "Bash(git mv *)",
+      "Bash(qlmanage -t -s 1280 -o /tmp assets/video/fondo.mp4)",
+      "Bash(sips -s format jpeg -s formatOptions 60 /tmp/fondo.mp4.png --out assets/video/fondo-poster.jpg)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --window-size=1280,900 --virtual-time-budget=6000 --screenshot=/tmp/ces-desktop.png http://localhost:8765)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --force-prefers-reduced-motion --window-size=1280,900 --virtual-time-budget=6000 --screenshot=/tmp/ces-reduced.png http://localhost:8765)",
+      "Bash(git commit -m 'Fondo de video de la biblioteca + liquid glass \\(§5.4 punto 0\\) *)"
     ]
   }
 }

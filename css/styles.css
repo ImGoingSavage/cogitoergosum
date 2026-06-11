@@ -43,6 +43,17 @@
   --fuente: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
   --serif: "EB Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
   --mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  /* Fondo de video (§5.4 p.0). El video original es claro (astrolabio sobre
+     blanco): el filtro lo invierte a nocturno —tinta luminosa sobre piedra—
+     para conservar la paleta y el contraste AA. Si se prefiere el video tal
+     cual (claro), poner --fondo-filtro: none y subir el velo a ~0.82. */
+  --fondo-filtro: invert(1) brightness(0.85) sepia(0.3);
+  --fondo-velo: rgba(19, 17, 16, 0.45);
+
+  /* Vidrio líquido: tarjetas translúcidas sobre el video */
+  --vidrio: rgba(27, 24, 21, 0.6);
+  --vidrio-borde: rgba(236, 231, 221, 0.07);
 }
 
 /* ------------------- Tipografía con alma de imprenta --------------- */
@@ -102,6 +113,34 @@ body {
   }
 }
 
+/* ------------- Fondo de video de la biblioteca (§5.4 p.0) ---------- */
+
+.fondo-app {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--bg); /* fallback mientras llega el póster/video */
+}
+
+.fondo-app video {
+  width: 100%;
+  height: 100%;
+  /* El video es vertical (720×1280): cover lo encuadra bien tanto en
+     celular (proporción nativa) como en escritorio (recorte simétrico) */
+  object-fit: cover;
+  object-position: center;
+  filter: var(--fondo-filtro);
+}
+
+/* Velo de contraste: el contenido siempre se lee, el video respira detrás */
+.fondo-app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--fondo-velo);
+}
+
 /* ----------------------------- Layout ----------------------------- */
 
 .contenedor {
@@ -114,9 +153,10 @@ header.app-header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(19, 17, 16, 0.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--borde);
+  background: rgba(19, 17, 16, 0.55);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+  border-bottom: 1px solid var(--vidrio-borde);
 }
 
 .header-inner {
@@ -182,12 +222,23 @@ nav button.activo { color: var(--acento); background: var(--acento-suave); }
 
 /* --------------------------- Tarjetas ----------------------------- */
 
+/* Vidrio líquido (§5.4 p.0): el video se ve a través de cada tarjeta.
+   Solo tarjetas y header llevan backdrop-filter (rendimiento: las
+   superficies interiores --bg-sutil siguen opacas, sin capas anidadas). */
 .tarjeta {
-  background: var(--bg-elevado);
-  border: 1px solid var(--borde);
+  background: var(--vidrio);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+  border: 1px solid var(--vidrio-borde);
   border-radius: var(--radio);
   padding: 28px;
   margin-top: 24px;
+}
+
+/* Sin soporte de backdrop-filter: superficies opacas como antes */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .tarjeta { background: var(--bg-elevado); border-color: var(--borde); }
+  header.app-header { background: rgba(19, 17, 16, 0.92); border-bottom-color: var(--borde); }
 }
 
 .tarjeta h2 {
@@ -1096,7 +1147,8 @@ button.secundario.peligro:hover:not(:disabled) {
 
 @media (max-width: 540px) {
   .contenedor { padding: 0 14px 40px; }
-  .tarjeta { padding: 20px 16px; }
+  /* Blur más ligero en móvil: mismas tarjetas, menos costo de GPU */
+  .tarjeta { padding: 20px 16px; -webkit-backdrop-filter: blur(10px) saturate(1.15); backdrop-filter: blur(10px) saturate(1.15); }
   #problema-titulo { font-size: 24px; }
   #timer-display { font-size: 26px; }
   .header-inner { padding: 10px 14px; flex-wrap: wrap; }

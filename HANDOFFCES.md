@@ -786,33 +786,39 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
 
 ### QUÉ FALTA, en orden de valor
 
-0. **NUEVA DIRECTIVA UI/UX del usuario (2026-06-11, noche) — fondo de video:**
-   - El fondo de TODA la app será el video **`fondo.mp4`** (⚠️ el archivo aún
-     NO está en el proyecto: pedírselo al usuario o confirmar su ruta antes
-     de empezar), reproduciéndose TODO el tiempo detrás del contenido.
-   - **Velocidad 0.5×** (`video.playbackRate = 0.5`) para que no intervenga
-     con la atención (coherente con §0.5 anti-distracción).
-   - **Dimensiones**: ajustar el encuadre según dispositivo — escritorio y
-     celular ven bien el video pese a sus proporciones distintas. Base:
-     `<video autoplay muted loop playsinline>` posicionado fixed a pantalla
-     completa con `object-fit: cover` + `object-position` ajustado por media
-     query; si hace falta, recortes/exports distintos por breakpoint vía
-     `<source media>` o swap por JS.
-   - **Marcos "liquid glass" estilo Apple**: las tarjetas (`.tarjeta`, header,
-     etc.) pasan a fondos translúcidos con `backdrop-filter: blur(...)` +
-     `background: rgba(...)` y borde sutil claro, de modo que el video se
-     vea a través. Cuidar contraste AA del texto sobre vidrio (capa de
-     oscurecimiento si hace falta) y conservar la paleta §1.
-   - **Rendimiento (hacer lo necesario, pedido explícito)**: comprimir el
-     video (H.264/HEVC, sin audio, resolución ≤1080p escritorio / versión
-     ligera móvil), `preload="metadata"` + poster estático para primer
-     render, pausar con `document.visibilityState === 'hidden'`, respetar
-     `prefers-reduced-motion` (mostrar poster estático en vez de video),
-     limitar capas con backdrop-filter si el FPS sufre (medir en móvil),
-     y decidir si entra al precache del SW (probablemente NO por peso:
-     cache-first bajo demanda con su propia entrada). Subir VERSION del SW.
-   - Verificar al cerrar: timer fluido con video corriendo, scroll sin
-     jank en móvil, batería razonable, y checklist anti-§0.1.
+0. ~~Fondo de video + liquid glass~~ ✅ HECHO (2026-06-11, noche). Detalle:
+   - El video llegó como `fondo .mp4` en la raíz → movido a
+     `assets/video/fondo.mp4`. Ya venía óptimo (H.264, 720×1280 vertical,
+     19.8 s, sin audio, 1.5 MB ≈ 638 kbps): NO se recomprimió.
+   - **Decisión de diseño documentada**: el video original es CLARO
+     (astrolabio sobre blanco), incompatible tal cual con la paleta §1 y el
+     contraste AA. Se invierte por filtro CSS a nocturno (tinta luminosa
+     sobre piedra, entonada a cálido): token `--fondo-filtro` en
+     `styles.css`. Para usarlo sin invertir: `--fondo-filtro: none` y subir
+     `--fondo-velo` a ~0.82 (está comentado en el propio CSS). Validar con
+     el usuario cuál de las dos lecturas prefiere.
+   - Implementación: capa `.fondo-app` fixed con `<video muted loop
+     playsinline preload="none" poster=assets/video/fondo-poster.jpg>`
+     (póster JPEG 67 KB generado del primer fotograma, precacheado);
+     `object-fit: cover` encuadra bien el video vertical en móvil y
+     escritorio. SIN atributo autoplay: `configurarFondoVideo()` (app.js)
+     reproduce a 0.5× solo si `prefers-reduced-motion` lo permite, pausa
+     con pestaña oculta. Con motion reducido el video NI SE DESCARGA
+     (verificado por log del servidor: solo pide el póster).
+   - Liquid glass: `.tarjeta` y header con `backdrop-filter: blur+saturate`
+     (+ prefijo -webkit-), tokens `--vidrio`/`--vidrio-borde`, velo
+     `--fondo-velo` para AA; fallback `@supports` a superficies opacas;
+     blur reducido (10px) en móvil por GPU; las superficies interiores
+     (--bg-sutil) siguen opacas — solo 2 niveles con backdrop-filter.
+   - `sw.js` v7: póster en el precache; el video NO (cache-first bajo
+     demanda en `cogitoergosum-media-v1`, que sobrevive cambios de VERSION,
+     con manejo de Range: se guarda la copia completa y se recorta al
+     responder 206, porque cache.put rechaza parciales).
+   - Verificado: node --check (15 módulos+sw), JSON, capturas headless
+     escritorio/móvil/reduced-motion (contraste y vidrio correctos).
+   - PENDIENTE humano: sensación de fluidez/batería en el celular real
+     (si el FPS sufre, bajar blur o quitar `saturate`) y validar la
+     decisión de inversión del video.
 
 1. ~~Prueba social E2E de la Fase D~~ ✅ HECHA (10/10, ver tabla §5.3).
 2. ~~"Pensar juntos"~~ ✅ HECHO Y VERIFICADO (E2E 9/9 con struggle first

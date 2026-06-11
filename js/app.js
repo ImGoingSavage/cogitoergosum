@@ -75,6 +75,7 @@ const $ = (id) => document.getElementById(id);
 /* ============================== Arranque ============================== */
 
 async function init() {
+  configurarFondoVideo(); // el fondo vive aunque falle la carga de datos
   try {
     const res = await fetch('data/problems.json');
     // Pool de selección: problemas curados + variantes generadas por IA
@@ -119,6 +120,32 @@ async function init() {
 }
 
 /* ===================== PWA y citas de la biblioteca ==================== */
+
+/**
+ * Fondo de video (§5.4 p.0). A 0.5× para que acompañe sin intervenir con la
+ * atención; se pausa con la pestaña oculta (batería) y, con
+ * prefers-reduced-motion, jamás se reproduce ni se descarga (preload="none"
+ * y sin atributo autoplay): queda el póster estático precacheado.
+ */
+function configurarFondoVideo() {
+  const video = $('fondo-video');
+  if (!video) return;
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ajustar = () => {
+    if (reducido.matches || document.visibilityState === 'hidden') {
+      video.pause();
+      return;
+    }
+    video.defaultPlaybackRate = 0.5;
+    video.playbackRate = 0.5;
+    video.play().catch(() => {}); // si el navegador lo impide, queda el póster
+  };
+  // Algunos navegadores reinician el rate al cargar metadatos: reafirmarlo
+  video.addEventListener('loadedmetadata', () => { video.playbackRate = 0.5; });
+  document.addEventListener('visibilitychange', ajustar);
+  reducido.addEventListener?.('change', ajustar);
+  ajustar();
+}
 
 function registrarServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
