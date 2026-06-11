@@ -14,7 +14,7 @@
  *  - En la vitrina ("Mi estante"), las no ganadas son siluetas sin nombre.
  */
 
-import { load, update, hoy } from './storage.js';
+import { load, update, hoy, encolarEvento } from './storage.js';
 
 const ESTRATEGIAS = ['inversion', 'optimizacion', 'invariantes', 'patrones'];
 
@@ -263,6 +263,9 @@ export function evaluarYRegistrar(ctx = {}) {
     });
     return st;
   });
+
+  // Sincronización opcional: cada sello nuevo viaja como evento (§5.2 C.4)
+  novedades.forEach(({ def, registro }) => encolarEvento('insignia', { id: def.id, registro }));
 
   return novedades;
 }

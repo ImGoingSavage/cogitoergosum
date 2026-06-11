@@ -323,6 +323,42 @@
         <div id="chart-curva"></div>
       </article>
 
+      <!-- Mi cuenta: sincronización opcional (Fase C). LocalStorage sigue
+           siendo la verdad; sin cuenta, la app es 100% funcional. -->
+      <article class="tarjeta">
+        <h2>Mi cuenta — sincronización entre dispositivos (opcional)</h2>
+        <div id="cuenta-anonima">
+          <div class="mentor-config">
+            <input id="sync-email" type="email" placeholder="Correo" autocomplete="email" />
+            <input id="sync-password" type="password" placeholder="Contraseña (mínimo 8)" autocomplete="new-password" />
+          </div>
+          <div class="acciones-cuenta">
+            <button id="btn-sync-entrar" class="primario">Iniciar sesión</button>
+            <button id="btn-sync-registrar" class="secundario">Crear cuenta</button>
+          </div>
+        </div>
+        <div id="cuenta-activa" hidden>
+          <p class="fila"><strong>Sesión:</strong> <span id="sync-usuario"></span></p>
+          <p class="fila" id="sync-estado-linea"></p>
+          <div class="acciones-cuenta">
+            <button id="btn-sync-ahora" class="secundario">Sincronizar ahora</button>
+            <button id="btn-sync-importar" class="secundario">Importar mi progreso local</button>
+            <button id="btn-sync-salir" class="secundario">Cerrar sesión</button>
+            <button id="btn-sync-borrar" class="secundario peligro">Borrar cuenta</button>
+          </div>
+        </div>
+        <div class="acciones-cuenta">
+          <button id="btn-exportar-datos" class="secundario">Exportar mis datos (JSON)</button>
+        </div>
+        <p id="sync-mensaje" class="sync-mensaje"></p>
+        <p class="nota-privacidad">
+          Tu progreso vive primero en este dispositivo y la app jamás se bloquea por falta de
+          red. Con cuenta, cada cierre de sesión se respalda y puedes continuar en otro
+          dispositivo. Las API keys de Claude nunca se suben. Borrar la cuenta elimina todo
+          del servidor en dos clics, sin preguntas de más.
+        </p>
+      </article>
+
       <article class="tarjeta">
         <h2>Generador de variantes (IA, opcional)</h2>
         <p class="fila"><strong>Variantes en tu biblioteca:</strong> <span id="factory-contador">0</span></p>

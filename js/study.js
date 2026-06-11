@@ -17,7 +17,7 @@
  * El módulo funciona completo sin IA.
  */
 
-import { load, update, hoy } from './storage.js';
+import { load, update, hoy, encolarEvento } from './storage.js';
 import * as Badges from './badges.js';
 
 const $ = (id) => document.getElementById(id);
@@ -414,6 +414,7 @@ function finalizarQuiz() {
     return st;
   });
   marcarDiaEstudio();
+  encolarEvento('unidad', { unidadId: u.id, registro });
   // Sellos: el cierre de unidad es pantalla de cierre válida para revelar.
   // Quedan en un buffer que mostrarCierreUnidad consume una sola vez.
   sellosPendientes = Badges.evaluarYRegistrar();
@@ -700,9 +701,10 @@ function finalizarExamen() {
   const aprobado =
     coincidencias >= minCoincidencias && fallados.every((r) => r.disparadorOk);
 
+  let registroExamen = null;
   update('estudio', (st) => {
     const previo = st.examenes[ex.bloqueId];
-    st.examenes[ex.bloqueId] = {
+    registroExamen = {
       aprobado: aprobado || Boolean(previo?.aprobado),
       fecha: hoy(),
       coincidencias,
@@ -710,10 +712,12 @@ function finalizarExamen() {
       registros: ex.registros,
       intentos: (previo?.intentos ?? 0) + 1,
     };
+    st.examenes[ex.bloqueId] = registroExamen;
     st.examenEnCurso = null;
     return st;
   });
   marcarDiaEstudio();
+  encolarEvento('examen', { bloqueId: ex.bloqueId, registro: registroExamen });
   const insigniasNuevas = Badges.evaluarYRegistrar();
 
   const cont = $('examen-contenido');

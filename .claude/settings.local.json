@@ -45,7 +45,13 @@
       "Bash(gh auth *)",
       "Bash(brew install *)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(curl -s https://rcaljqmibtkorcmdyqvg.supabase.co/auth/v1/health -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjYWxqcW1pYnRrb3JjbWR5cXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNjE0MTksImV4cCI6MjA5NjczNzQxOX0.wN8mxz_skkQepj64Wd_YlPN9koIH8UU2ZrJplkJwGJ8')",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-first-run --user-data-dir=/tmp/chrome-cogito5 --virtual-time-budget=9000 --window-size=900,4200 --screenshot=/tmp/cogito-c.png http://localhost:8123/)",
+      "Bash(sips -z 1400 300 /tmp/cogito-c.png --out /tmp/cogito-c-mini.png)",
+      "Bash(sips -z 1533 300 /tmp/cogito-c-dash.png --out /tmp/cogito-c-dash-mini.png)",
+      "Bash(git commit -q -m 'Fase C: sincronización opcional con Supabase \\(HANDOFFCES §5.2\\) *)",
+      "Bash(gh repo *)"
     ]
   }
 }

@@ -70,7 +70,31 @@ const DEFAULTS = {
   problemasGenerados: [],
   // Configuración del mentor IA (opcional)
   mentorIA: { habilitado: false, apiKey: '' },
+  // ---- Sincronización opcional (Fase C, HANDOFFCES §5.2) ----
+  // Cola de eventos pendientes de subir; LocalStorage sigue siendo la verdad
+  outbox: [],            // [{uid, tipo, payload, ts}]
+  deviceId: null,        // identificador del dispositivo (se genera una vez)
+  sesionSupabase: null,  // {accessToken, refreshToken, expiraEn, userId, email}
+  ultimaSync: null,      // ISO de la última sincronización exitosa
 };
+
+/**
+ * Claves que viajan al servidor (snapshot y migración). EXCLUIDAS a
+ * propósito: mentorIA (API keys de Claude JAMÁS salen del dispositivo, §4.2),
+ * asignacion (estado efímero del día), outbox/deviceId/sesionSupabase
+ * (plomería local de la propia sincronización).
+ */
+export const CLAVES_SYNC = [
+  'perfil',
+  'historial',
+  'pisosMinimos',
+  'estudio',
+  'insignias',
+  'revisiones',
+  'sesionesArchivadas',
+  'problemasGenerados',
+  'preferencias',
+];
 
 function key(name) {
   return PREFIX + name;
@@ -111,4 +135,37 @@ export function hoy() {
 
 export function resetTotal() {
   Object.keys(DEFAULTS).forEach((n) => remove(n));
+}
+
+/* ---------------- Sincronización (Fase C, §5.2 C.4) ---------------- */
+
+/** Identificador único corto (eventos, dispositivos). */
+export function uidNuevo() {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export function deviceId() {
+  let id = load('deviceId');
+  if (!id) {
+    id = uidNuevo();
+    save('deviceId', id);
+  }
+  return id;
+}
+
+/**
+ * Encola un evento para subir al servidor cuando haya red y sesión.
+ * Emite 'cps:evento-encolado' para que sync.js programe el drenado
+ * (evento del DOM y no import directo: evita ciclos de módulos).
+ */
+export function encolarEvento(tipo, payload) {
+  update('outbox', (cola) => {
+    cola.push({ uid: uidNuevo(), tipo, payload, ts: new Date().toISOString() });
+    return cola;
+  });
+  try {
+    window.dispatchEvent(new CustomEvent('cps:evento-encolado'));
+  } catch {
+    // Entornos sin window (tests): la cola queda lista igualmente.
+  }
 }

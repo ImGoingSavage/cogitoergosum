@@ -34,6 +34,8 @@ import * as Factory from './problemFactory.js';
 import * as Study from './study.js';
 import * as Badges from './badges.js';
 import * as Avatar from './avatar.js';
+import * as Api from './api.js';
+import * as Sync from './sync.js';
 
 const MIN_DESCONSTRUCCION = 200;
 const MIN_FICHA = 15;        // moraleja y disparador: al menos una frase corta
@@ -89,6 +91,8 @@ async function init() {
   configurarFactoryUI();
   configurarPisoMinimo();
   configurarFreshStart();
+  configurarCuentaUI();
+  Sync.iniciar(); // sincronización opcional: no-op sin sesión o sin red
   // Carga en paralelo: study.json, sellos y mapa del avatar
   await Promise.all([Study.init(), Badges.init(), Avatar.init()]);
   Study.configurarUI();
@@ -642,35 +646,38 @@ function completarSesion() {
   };
   const score = Engine.calcularScore(sesion);
 
-  // Historial
+  // Historial (el uid permite unir historiales entre dispositivos, §5.2 C.4)
+  const entrada = {
+    uid: Storage.uidNuevo(),
+    problemId: p.id,
+    fecha: Storage.hoy(),
+    score,
+    hintsUsados: a.hintsUsados.length,
+    tiempoMin,
+    autoevaluacion,
+    estrategia: p.estrategia,
+    dificultad: p.dificultad,
+    esRevision: Boolean(a.esRevision),
+    revisionDe: a.revisionDe ?? null,
+    prediccion: a.prediccion ?? null,
+    moraleja,
+    disparador,
+    // Datos de proceso (alimentan sellos y Dashboard; jamás penalizan)
+    desconstruccionLen: a.desconstruccion.length,
+    duracionMin: a.duracionMin ?? Timer.DURACION_DEFECTO_MIN,
+    pausas: a.pausas ?? 0,
+    msPausado,
+    incubada: Boolean(a.timerCumplido) && a.fecha !== Storage.hoy(),
+    reflexion: {
+      comparacion: $('reflexion-comparacion').value.trim(),
+      transferencia: $('reflexion-transferencia').value.trim(),
+    },
+  };
   Storage.update('historial', (h) => {
-    h.push({
-      problemId: p.id,
-      fecha: Storage.hoy(),
-      score,
-      hintsUsados: a.hintsUsados.length,
-      tiempoMin,
-      autoevaluacion,
-      estrategia: p.estrategia,
-      dificultad: p.dificultad,
-      esRevision: Boolean(a.esRevision),
-      revisionDe: a.revisionDe ?? null,
-      prediccion: a.prediccion ?? null,
-      moraleja,
-      disparador,
-      // Datos de proceso (alimentan sellos y Dashboard; jamás penalizan)
-      desconstruccionLen: a.desconstruccion.length,
-      duracionMin: a.duracionMin ?? Timer.DURACION_DEFECTO_MIN,
-      pausas: a.pausas ?? 0,
-      msPausado,
-      incubada: Boolean(a.timerCumplido) && a.fecha !== Storage.hoy(),
-      reflexion: {
-        comparacion: $('reflexion-comparacion').value.trim(),
-        transferencia: $('reflexion-transferencia').value.trim(),
-      },
-    });
+    h.push(entrada);
     return h;
   });
+  Storage.encolarEvento('sesion', entrada);
 
   // Motor adaptativo
   const ajuste = Engine.ajustarDificultad({
@@ -902,10 +909,17 @@ function completarPisoMinimo() {
   const recuerdo = $('piso-recuerdo').value.trim();
   if (recuerdo.length < MIN_PISO) return;
 
+  const piso = {
+    uid: Storage.uidNuevo(),
+    fecha: Storage.hoy(),
+    problemId: pisoRecuerdo.problemId,
+    recuerdo,
+  };
   Storage.update('pisosMinimos', (arr) => {
-    arr.push({ fecha: Storage.hoy(), problemId: pisoRecuerdo.problemId, recuerdo });
+    arr.push(piso);
     return arr;
   });
+  Storage.encolarEvento('piso', piso);
   registrarDiaEntrenamiento();
 
   // Feedback inmediato: la ficha original como autocomparación del recall
@@ -1161,6 +1175,143 @@ function configurarMentorUI() {
       $('cuenta-apikey').value = '';
       renderizarCuentas();
     }
+  });
+}
+
+/* ================= Mi cuenta (sincronización opcional) ================ */
+
+function renderizarCuentaUI() {
+  const { sesion, pendientes, ultimaSync } = Sync.estado();
+  $('cuenta-anonima').hidden = Boolean(sesion);
+  $('cuenta-activa').hidden = !sesion;
+  if (sesion) {
+    $('sync-usuario').textContent = sesion.email ?? '(cuenta activa)';
+    const hora = ultimaSync ? new Date(ultimaSync).toLocaleString() : 'aún no';
+    $('sync-estado-linea').textContent =
+      `${pendientes} evento(s) pendiente(s) de subir · última sincronización: ${hora}.`;
+  }
+}
+
+function mensajeCuenta(texto) {
+  $('sync-mensaje').textContent = texto;
+}
+
+/** Tras login/registro: baja o une el estado del servidor y refresca todo. */
+async function despuesDeEntrar() {
+  mensajeCuenta('Sesión iniciada. Revisando tu progreso en el servidor…');
+  try {
+    const resultado = await Sync.adoptarOUnir();
+    if (resultado === 'adoptado') {
+      mensajeCuenta('Progreso descargado del servidor: este dispositivo quedó al día.');
+    } else if (resultado === 'unido') {
+      mensajeCuenta('Progreso local y del servidor unidos; las rachas se recalcularon.');
+    } else {
+      mensajeCuenta(
+        'Tu cuenta aún no tiene datos en el servidor. Usa «Importar mi progreso local» para subir lo de este dispositivo.'
+      );
+    }
+  } catch {
+    mensajeCuenta('Sesión iniciada (no se pudo consultar el servidor; se reintentará solo).');
+  }
+  Sync.sincronizar();
+  // El estado pudo cambiar (rachas, historial): repintar lo visible
+  Study.actualizarHeaderRachas();
+  renderizarSesion();
+  actualizarFreshStartUI();
+  renderizarCuentaUI();
+}
+
+function configurarCuentaUI() {
+  renderizarCuentaUI();
+  Sync.alCambiarEstado(renderizarCuentaUI);
+
+  const credenciales = () => ({
+    email: $('sync-email').value.trim(),
+    password: $('sync-password').value,
+  });
+
+  $('btn-sync-registrar').addEventListener('click', async () => {
+    const { email, password } = credenciales();
+    if (!email || password.length < 8) {
+      mensajeCuenta('Escribe tu correo y una contraseña de al menos 8 caracteres.');
+      return;
+    }
+    mensajeCuenta('Creando cuenta…');
+    try {
+      const sesion = await Api.registrar(email, password);
+      if (sesion) await despuesDeEntrar();
+      else mensajeCuenta('Cuenta creada. Revisa tu correo para confirmarla y luego inicia sesión.');
+    } catch (e) {
+      mensajeCuenta(`No se pudo crear la cuenta: ${e.message}`);
+    }
+  });
+
+  $('btn-sync-entrar').addEventListener('click', async () => {
+    const { email, password } = credenciales();
+    if (!email || !password) {
+      mensajeCuenta('Escribe tu correo y contraseña.');
+      return;
+    }
+    mensajeCuenta('Iniciando sesión…');
+    try {
+      await Api.iniciarSesion(email, password);
+      await despuesDeEntrar();
+    } catch (e) {
+      mensajeCuenta(`No se pudo iniciar sesión: ${e.message}`);
+    }
+  });
+
+  $('btn-sync-ahora').addEventListener('click', async () => {
+    mensajeCuenta('Sincronizando…');
+    await Sync.sincronizar();
+    const { pendientes } = Sync.estado();
+    mensajeCuenta(pendientes === 0 ? 'Todo sincronizado.' : `Quedaron ${pendientes} evento(s) en cola; se reintentará solo.`);
+  });
+
+  $('btn-sync-importar').addEventListener('click', async () => {
+    mensajeCuenta('Subiendo tu progreso local…');
+    const { pendientes } = await Sync.migrarProgresoLocal();
+    mensajeCuenta(
+      pendientes === 0
+        ? 'Progreso importado a tu cuenta: rachas, historial, fichas e insignias ya están respaldados.'
+        : 'El progreso quedó en cola (sin conexión ahora); se subirá solo al volver la red.'
+    );
+  });
+
+  $('btn-sync-salir').addEventListener('click', async () => {
+    await Api.cerrarSesion();
+    mensajeCuenta('Sesión cerrada. Tus datos locales siguen intactos en este dispositivo.');
+    renderizarCuentaUI();
+  });
+
+  // Borrar cuenta: exactamente 2 clics (botón + confirmación), sin súplicas (§0.1)
+  $('btn-sync-borrar').addEventListener('click', async () => {
+    const seguro = window.confirm(
+      'Esto borra tu cuenta y TODOS tus datos del servidor (no los de este dispositivo). ¿Continuar?'
+    );
+    if (!seguro) return;
+    try {
+      await Api.borrarCuenta();
+      mensajeCuenta('Cuenta borrada del servidor. Tus datos locales siguen en este dispositivo.');
+    } catch (e) {
+      mensajeCuenta(`No se pudo borrar: ${e.message}`);
+    }
+    renderizarCuentaUI();
+  });
+
+  // Exportar funciona con o sin cuenta: es 100% local (§0.1, 2 clics)
+  $('btn-exportar-datos').addEventListener('click', () => {
+    const datos = {};
+    Storage.CLAVES_SYNC.forEach((k) => {
+      datos[k] = Storage.load(k);
+    });
+    const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `cogitoergosum-datos-${Storage.hoy()}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    mensajeCuenta('Datos exportados (las API keys de Claude no se incluyen: viven solo en este dispositivo).');
   });
 }
 
