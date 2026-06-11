@@ -458,6 +458,114 @@
           }
         ]
       }
+    },
+    {
+      "id": "fase-5",
+      "titulo": "Fase 5 · El cruce: complejos, geometría y las heurísticas de Engel",
+      "meta": "Subir al nivel AMC 12: los números complejos como puente álgebra↔geometría, la geometría de supervivencia completa de Zeitz (ángulos, semejanza, potencia del punto), el cálculo de competencia con su permiso euleriano, y las cuatro heurísticas-columna de Engel — invariancia, coloración, principio extremal y juegos. El examen mezcla AMC 12 reales (2017-2019) con clásicos de Engel; el muestreo sigue acumulando desde la fase 0.",
+      "unidades": [
+        "zeitz-42",
+        "zeitz-82",
+        "zeitz-83",
+        "zeitz-84",
+        "zeitz-9",
+        "engel-inv",
+        "engel-color",
+        "engel-extremo",
+        "engel-juegos"
+      ],
+      "examen": {
+        "items": [
+          {
+            "id": "f5-ex-1",
+            "heuristica": "simetria",
+            "enunciado": "Hay 24 números complejos distintos z tales que z²⁴ = 1. ¿Para cuántos de ellos z⁶ es un número real?",
+            "pista": "Escribe las raíces en forma polar: z = Cis(2πk/24). ¿Qué ángulo tiene z⁶, y qué ángulos corresponden a números reales?",
+            "solucion": "12. Las raíces son z = Cis(2πk/24) para k = 0..23; entonces z⁶ = Cis(2πk/4) = Cis(πk/2). Es real cuando el ángulo es múltiplo de π, es decir cuando k/2 es entero: k par. Hay 12 valores pares de k.",
+            "disparador": "Raíces de la unidad + condición sobre una potencia → polar de inmediato: la condición se vuelve una congruencia sobre el índice k. La simetría rotacional del 24-ágono hace el conteo trivial.",
+            "source": "AMC 12A 2017 P17",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2017_AMC_12A_Problems/Problem_17",
+            "year": "2017"
+          },
+          {
+            "id": "f5-ex-2",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "¿Cuántos números complejos z ≠ 0 tienen la propiedad de que 0, z y z³, representados como puntos del plano complejo, son los tres vértices DISTINTOS de un triángulo equilátero?",
+            "pista": "Equilátero = los tres lados iguales: |z| = |z³| = |z³ − z|. La primera igualdad te dice cuánto vale |z|; con eso, parametriza z = e^{iθ} y traduce la tercera.",
+            "solucion": "4. De |z| = |z³| = |z|³ sale |z| = 1. Con z = e^{iθ}: |z³ − z| = |z||z² − 1| = |z² − 1| = 2|sen θ| (pues |e^{2iθ} − 1| = 2|sen θ|). Igualando a 1: sen θ = ±1/2, es decir θ ∈ {π/6, 5π/6, 7π/6, 11π/6} — cuatro valores, y en todos z³ ≠ z (vértices distintos). Verificado numéricamente: los tres lados miden 1.",
+            "disparador": "Condición geométrica sobre puntos complejos → tradúcela a ecuaciones de MÓDULOS y parametriza en polar: |z² − 1| con |z| = 1 es pura trigonometría de cuerdas (la cuerda subtendida mide 2|sen θ|).",
+            "source": "AMC 12B 2019 P17",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_12B_Problems/Problem_17",
+            "year": "2019"
+          },
+          {
+            "id": "f5-ex-3",
+            "heuristica": "casework",
+            "enunciado": "Para cierto número complejo c, el polinomio P(x) = (x² − 2x + 2)(x² − cx + 4)(x² − 4x + 8) tiene exactamente 4 raíces distintas. ¿Cuánto vale |c|?",
+            "pista": "Los factores primero y tercero tienen coeficientes reales: sus raíces son 1 ± i y 2 ± 2i. Para que en total haya solo 4 raíces distintas, ¿de dónde deben salir las dos raíces del factor de en medio, y qué dice Vieta sobre su producto?",
+            "solucion": "√10. Las raíces de los factores externos son 1±i y 2±2i (4 distintas). Para que P tenga exactamente 4, las dos raíces de x² − cx + 4 deben estar entre esas cuatro, y por Vieta su producto es 4. Probando pares: (1+i)(2−2i) = 4 ✓ (y su conjugado (1−i)(2+2i) = 4). Entonces c = (1+i)+(2−2i) = 3 − i (o 3+i), y |c| = √(9+1) = √10.",
+            "disparador": "Polinomio con factores de coeficientes reales → raíces en pares conjugados; 'exactamente n raíces distintas' → el factor extra debe REUTILIZAR raíces ajenas. Vieta (producto/suma) filtra los pares candidatos en segundos.",
+            "source": "AMC 12A 2019 P14",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_12A_Problems/Problem_14",
+            "year": "2019"
+          },
+          {
+            "id": "f5-ex-4",
+            "heuristica": "penultimo-paso",
+            "enunciado": "Un cuadrado de lado x se inscribe en un triángulo rectángulo de lados 3, 4 y 5 con un vértice del cuadrado en el ángulo recto. Otro cuadrado de lado y se inscribe en otro triángulo 3-4-5 con un lado del cuadrado sobre la hipotenusa. ¿Cuánto vale x/y?",
+            "pista": "No calcules con números todavía: en cada figura, escribe la SEMEJANZA que produce la ecuación del lado del cuadrado (en la primera, el triángulo que sobra arriba; en la segunda, los dos triángulos de las puntas). Resuelve x e y por separado.",
+            "solucion": "37/35. Cuadrado en el ángulo recto: el triángulo sobrante sobre el cuadrado es semejante al original; con catetos 3 y 4, x cumple x = ab/(a+b) = 12/7. Cuadrado sobre la hipotenusa: la altura del triángulo a la hipotenusa es h = ab/c = 12/5, y por la semejanza entre el triángulo completo (base 5, altura 12/5) y el de arriba del cuadrado: y = ch/(c+h) = (5·12/5)/(5+12/5) = 12/(37/5) = 60/37. Entonces x/y = (12/7)/(60/37) = 37/35.",
+            "disparador": "Cuadrado inscrito → sus lados paralelos fabrican triángulos semejantes; el penúltimo paso es SIEMPRE la proporción 'lado pequeño / lado grande', una por figura. La fórmula s = (base·altura)/(base+altura) sale sola de esa proporción.",
+            "source": "AMC 12A 2017 P19",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2017_AMC_12A_Problems/Problem_19",
+            "year": "2017"
+          },
+          {
+            "id": "f5-ex-5",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "El campo del granjero Pitágoras es un triángulo rectángulo de catetos 3 y 4. En la esquina del ángulo recto deja sin plantar un cuadrado S (visto desde el aire parece el símbolo de ángulo recto). La distancia más corta de S a la hipotenusa es 2. ¿Qué fracción del campo está plantada?",
+            "pista": "Pon coordenadas: catetos sobre los ejes, hipotenusa 4x + 3y = 12. Si el cuadrado tiene lado s, su esquina más cercana a la hipotenusa es (s, s). ¿Qué dice la fórmula de distancia punto-recta?",
+            "solucion": "145/147. Con la hipotenusa como recta 4x + 3y − 12 = 0 (norma 5), la distancia desde (s,s) es (12 − 7s)/5 = 2, de donde s = 2/7. El área del campo es 6 y la del cuadrado s² = 4/49; la fracción plantada es 1 − (4/49)/6 = 1 − 2/147 = 145/147.",
+            "disparador": "'Distancia más corta a una recta' en una figura con ángulo recto → coordenadas + fórmula de distancia punto-recta: |ax+by+c|/√(a²+b²). Parametrizar el lado desconocido (s) convierte la geometría en una ecuación lineal.",
+            "source": "AMC 12A 2018 P17",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2018_AMC_12A_Problems/Problem_17",
+            "year": "2018"
+          },
+          {
+            "id": "f5-ex-6",
+            "heuristica": "invariante",
+            "enunciado": "Los puntos A(6, 13) y B(12, 11) están sobre la circunferencia ω. Las rectas tangentes a ω en A y en B se cortan en un punto del eje x. ¿Cuál es el área de ω?",
+            "pista": "Las dos tangentes desde un punto exterior miden lo MISMO (la potencia del punto). Eso te da el punto P del eje x sin conocer el círculo. Después: el radio OA es perpendicular a la tangente PA.",
+            "solucion": "85π/8. Tangentes iguales: P = (p, 0) cumple PA = PB → (p−6)² + 169 = (p−12)² + 121 → p = 5, P = (5,0). El centro O está en la mediatriz de AB (y = 3x − 15) y en la recta por A perpendicular a PA (PA tiene dirección (1,13), así que y − 13 = −(x−6)/13). Resolviendo: O = (37/4, 51/4), y r² = OA² = (13/4)² + (1/4)² = 170/16 = 85/8. Área = πr² = 85π/8. (Verificado: PA = PB, OA = OB y OA ⊥ PA exactamente.)",
+            "disparador": "Tangentes desde un punto exterior → longitudes IGUALES (el invariante de la potencia del punto): esa igualdad localiza el punto antes de saber nada del círculo. Luego radio ⊥ tangente cierra con coordenadas.",
+            "source": "AMC 12B 2019 P20",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_12B_Problems/Problem_20",
+            "year": "2019"
+          },
+          {
+            "id": "f5-ex-7",
+            "heuristica": "hacia-atras",
+            "enunciado": "Sobre la mesa hay 100 fichas. Dos jugadores alternan turnos; en cada turno se toman entre 1 y 5 fichas. Gana quien tome la última. ¿Quién gana con juego perfecto, y cuál es la estrategia completa?",
+            "pista": "Trabaja hacia atrás desde el final: 0 fichas (te tocaría mover y no puedes ganar ya) es perdedora. ¿Qué posiciones obligan al rival a dejarte siempre alcanzar la siguiente 'perdedora'?",
+            "solucion": "Gana el primero. Hacia atrás: las posiciones perdedoras son los múltiplos de 6 — desde un múltiplo de 6 no puedes alcanzar el siguiente (restas a lo sumo 5), y desde cualquier otro número puedes bajar al múltiplo de 6 inferior. Como 100 = 6·16 + 4, el primero toma 4 fichas (deja 96) y después responde con el complemento a 6 de cada jugada rival (rival toma t → él toma 6 − t): pasa por 90, 84, …, 6, 0 y toma la última. (Verificado por cómputo de posiciones W/L hasta 100.)",
+            "disparador": "Juego por turnos con 'gana quien tome la última' → etiqueta posiciones perdedoras HACIA ATRÁS desde 0 y busca la periodicidad (aquí mod k+1 = 6). El 'complemento a 6' es la estrategia de pareo aritmético.",
+            "source": "Engel, Problem-Solving Strategies, cap. 13 (juego de Bachet, warmup 1)",
+            "source_url": "",
+            "year": ""
+          },
+          {
+            "id": "f5-ex-8",
+            "heuristica": "invariante",
+            "enunciado": "¿Puede cubrirse por completo un tablero de 10 × 10 con 25 tetrominós rectos (piezas de 1 × 4), sin huecos ni traslapes?",
+            "pista": "El ajedrez de dos colores no obstruye aquí (cada pieza cubriría 2 y 2). Diseña una coloración a la medida de la pieza: ¿qué coloración hace que toda pieza 1×4, horizontal o vertical, cubra siempre la misma combinación de colores?",
+            "solucion": "No. Colorea la casilla (i, j) con el color (i + j) mod 4. Toda pieza 1×4 cubre 4 casillas con índices consecutivos, es decir, los CUATRO colores exactamente una vez (verificado para ambas orientaciones). Pero el censo de colores del 10×10 es 25, 26, 25 y 24 (los residuos de 0..9 mod 4 se reparten 3,3,2,2 y se combinan): 25 piezas exigirían 25 de cada color. Imposible.",
+            "disparador": "'¿Se puede teselar?' → coloración diseñada mirando la pieza: para una pieza 1×n, colorea en diagonal mod n y CUENTA. Si el censo de colores no es uniforme, la respuesta es no — un invariante con pesos hace todo el trabajo.",
+            "source": "Engel, Problem-Solving Strategies, cap. 2, problema 5",
+            "source_url": "",
+            "year": ""
+          }
+        ]
+      }
     }
   ],
   "unidades": [
@@ -2024,6 +2132,528 @@
           "enunciado": "Te enfrentas a una desigualdad SIMÉTRICA y HOMOGÉNEA en a, b, c. ¿Qué dos jugadas estructurales debían dispararse antes de hacer cualquier álgebra?",
           "solucion": "Por la simetría: ordenar sin pérdida de generalidad (wlog a ≥ b ≥ c) — o al menos suponer que a es extremal. Por la homogeneidad (f(ta,tb,tc) = t^d·f(a,b,c)): normalizar una escala gratis, p. ej. a+b+c = 1 o abc = 1. Ambas REDUCEN el espacio de búsqueda antes de calcular: menos variables libres, menos casos.",
           "explicacion": "Señal → jugada: simetría → ordena wlog; homogeneidad → normaliza. Son los dos descuentos estructurales que Engel cobra siempre antes de pelear."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-42",
+      "bloque": "fase-5",
+      "orden": 30,
+      "titulo": "Zeitz · Números complejos: el artista del cruce",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 4.2, Complex Numbers (pp. 116-126): plano de Argand y triple identidad punto/vector/transformación (pp. 116-118), multiplicación como rotación+estiramiento (p. 118), división, De Moivre y forma exponencial e^{iθ} (p. 119), ejercicios 4.2.8+.",
+      "dosis": "1 sección (~10 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Volverse bilingüe álgebra↔geometría: cada número complejo es a la vez punto, vector y transformación (rotar y estirar). Traducir un problema al idioma donde sea trivial.",
+      "heuristicas": [
+        "parametrizar-dibujar",
+        "simetria"
+      ],
+      "ideas_clave": [
+        "Triple identidad: z = a+bi es un PUNTO (a,b) del plano de Argand, un VECTOR desde el origen, y una TRANSFORMACIÓN (multiplicar por z = rotar por arg z y estirar por |z|). La fluidez consiste en saltar entre las tres lecturas según convenga.",
+        "Forma polar: z = r·Cis θ = r·e^{iθ} con r = |z| y θ = arg z. Multiplicar multiplica longitudes y SUMA ángulos; dividir resta ángulos. La derivación honesta de por qué: (3+4i)z = 3z + 4iz — un estiramiento más una copia rotada 90° (multiplicar por i = rotar π/2).",
+        "El conjugado z̄ = a−bi es la reflexión en el eje real; |z|² = z·z̄ convierte módulos en álgebra sin raíces. Suma de complejos = regla del paralelogramo; si z₁+⋯+zₙ = 0, los vectores puestos cabeza con cola cierran un polígono.",
+        "De Moivre: (cos θ + i sin θ)ⁿ = cos nθ + i sin nθ, para todo entero n. Es la máquina de las raíces n-ésimas de la unidad: los z con zⁿ = 1 son n puntos igualmente espaciados en el círculo unitario — simetría rotacional gratis para contar y para factorizar.",
+        "Señal → jugada: rotaciones, polígonos regulares, ángulos que se suman, trigonometría con potencias → tradúcelo a complejos en forma polar. Lo que en cartesianas es un mar de senos y cosenos, en e^{iθ} es una ley de exponentes."
+      ],
+      "banco": [
+        {
+          "id": "z42-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia la triple identidad de un número complejo y explica, SIN trigonometría, por qué multiplicar por 3+4i rota y estira (el argumento de Zeitz con 3z + 4iz).",
+          "solucion": "z es punto (a,b), vector desde el origen y transformación. Multiplicar por i rota 90° antihorario (i(a+bi) = −b+ai); multiplicar por un real estira. Entonces (3+4i)z = 3z + 4iz es la suma de z estirado por 3 más z rotado 90° y estirado por 4: el resultado (dibújalo) tiene longitud 5|z| y ángulo arg z + arctan(4/3) — rotación más estiramiento.",
+          "explicacion": "La derivación geométrica importa más que la fórmula: explica POR QUÉ los ángulos se suman, no solo que se suman."
+        },
+        {
+          "id": "z42-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Qué son las raíces n-ésimas de la unidad vistas en el plano de Argand, y qué simetría regalan al resolver problemas?",
+          "solucion": "Los n complejos z = Cis(2πk/n), k = 0..n−1: n puntos igualmente espaciados sobre el círculo unitario, los vértices de un n-ágono regular con un vértice en 1. Regalan simetría rotacional: multiplicar por Cis(2π/n) permuta las raíces cíclicamente, su suma es 0 (polígono cerrado), y cualquier conteo sobre ellas se hace por clases de ángulo.",
+          "explicacion": "De Moivre + el dibujo del polígono convierten ecuaciones zⁿ = w en pura geometría de ángulos."
+        },
+        {
+          "id": "z42-q3",
+          "tipo": "acertijo",
+          "enunciado": "Sin calcular coordenadas: si z₁, z₂, …, z₆ son complejos que suman 0, ¿qué figura forman como vectores puestos cabeza con cola, y por qué eso resuelve de golpe problemas de fuerzas o desplazamientos que se cancelan?",
+          "solucion": "Un polígono cerrado (hexágono, quizá degenerado): la suma 0 significa que el último vector termina donde empezó el primero. Por eso 'las fuerzas se equilibran' o 'los desplazamientos vuelven al origen' se traducen a 'los vectores cierran un polígono' — y la geometría del polígono (ángulos, longitudes) codifica las ecuaciones.",
+          "explicacion": "Vector y punto son el mismo objeto: la lectura correcta del enunciado elige cuál usar."
+        },
+        {
+          "id": "z42-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema pide potencias altas de expresiones trigonométricas, o pregunta cuántas raíces de zⁿ = 1 cumplen cierta condición. ¿Qué jugada debía dispararse?",
+          "solucion": "Pasar a forma polar/exponencial: z = e^{iθ} convierte potencias en multiplicación de ángulos (De Moivre). Para raíces de la unidad: parametriza θ = 2πk/n y la condición se vuelve una congruencia sobre k — contar se reduce a aritmética modular.",
+          "explicacion": "Señal → jugada: potencias + ángulos + círculo → polar. El AMC abusa de esta señal (z²⁴ = 1, ¿cuántos z⁶ son reales?)."
+        },
+        {
+          "id": "z42-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante escribe: \"|z₁ + z₂| = |z₁| + |z₂| porque el módulo es multiplicativo y aditivo.\" ¿Qué está bien y qué está mal?",
+          "solucion": "Bien: el módulo es multiplicativo, |z₁z₂| = |z₁||z₂| (las longitudes se multiplican al rotar-estirar). Mal: NO es aditivo; por la desigualdad del triángulo |z₁+z₂| ≤ |z₁|+|z₂|, con igualdad solo si z₁ y z₂ apuntan en la misma dirección (mismo argumento). La suma es un paralelogramo, no una recta.",
+          "explicacion": "El dibujo del paralelogramo desarma el error en un segundo: la diagonal solo iguala la suma de lados cuando el paralelogramo colapsa."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-82",
+      "bloque": "fase-5",
+      "orden": 31,
+      "titulo": "Zeitz · Geometría de supervivencia I: ángulos y fantasmas",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 8.2, Survival Geometry I (pp. 259-271): congruencias SAS/ASA/SSS/AAS y por qué ASS no (pp. 260-261), paralelas y transversal (p. 262), el método del punto fantasma (Ejemplo 8.2.12, p. 264), círculos y ángulos: el teorema del ángulo inscrito por angle chasing (pp. 265-267).",
+      "dosis": "1 sección (~12 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Recuperar la geometría como terreno de juego: cazar ángulos sistemáticamente, dibujar UN objeto auxiliar guiado por el penúltimo paso, y dominar el método del punto fantasma.",
+      "heuristicas": [
+        "penultimo-paso",
+        "parametrizar-dibujar"
+      ],
+      "ideas_clave": [
+        "Condiciones de congruencia: SAS, ASA, SSS, AAS. ASS no garantiza congruencia (dos triángulos distintos comparten ángulo-lado-lado) salvo ángulo ≥ 90°; AAA solo da semejanza. El hecho motor de las paralelas: ángulos alternos internos iguales — y de ahí salen 'suma de ángulos = 180°' y 'ángulo exterior = suma de los otros dos'.",
+        "La técnica más productiva: dibujar un objeto AUXILIAR — pero con tacto. Demasiados objetos ensucian la figura. Guía: deja que el penúltimo paso te diga qué entidad 'natural' falta (¿un triángulo? ¿una paralela? ¿un círculo? ¿simetría?).",
+        "Método del punto fantasma: si quieres probar que la recta por F paralela a BC pasa por el punto medio E, NO lo asumas — define E′ como la intersección y demuestra que E′ = E. Los fantasmas son como la suposición contraria en una reducción al absurdo: algo concreto con qué trabajar, que se retira al terminar.",
+        "Vocabulario de círculos: ángulo central = medida del arco; ángulo INSCRITO = la mitad del arco que subtiende (teorema del ángulo inscrito). Su demostración es el prototipo de angle chasing: UNA línea auxiliar (el radio al vértice), triángulos isósceles por radios iguales, y a recolectar información angular hasta que cae.",
+        "Corolarios de oro del ángulo inscrito: todos los ángulos que subtienden el mismo arco son iguales; un ángulo inscrito en una semicircunferencia es recto (Tales). 'Ángulo recto' y 'diámetro' se delatan mutuamente."
+      ],
+      "banco": [
+        {
+          "id": "z82-q1",
+          "tipo": "quiz",
+          "enunciado": "Lista las cuatro condiciones de congruencia válidas, explica por qué ASS falla en general, y di cuándo sí vale.",
+          "solucion": "Valen SAS, ASA, SSS y AAS. ASS falla porque con un ángulo y dos lados (el segundo no adyacente al ángulo) suele haber DOS triángulos posibles — el caso ambiguo del seno: el lado puede 'caer' a dos lugares. Vale si el ángulo es ≥ 90°, o si el segundo lado es más largo que el primero (entonces solo cabe una posición).",
+          "explicacion": "Dibuja el caso ambiguo una vez en tu vida y no volverás a citar ASS por accidente. AAA es semejanza, no congruencia."
+        },
+        {
+          "id": "z82-q2",
+          "tipo": "quiz",
+          "enunciado": "¿En qué consiste el método del punto fantasma (Ejemplo 8.2.12) y a qué otra técnica de demostración se parece según Zeitz?",
+          "solucion": "En vez de asumir que un objeto tiene la propiedad deseada, se CONSTRUYE un objeto auxiliar que la tiene por definición (E′ = donde la paralela corta al lado) y se demuestra que coincide con el objeto original (E′ = E, el punto medio). Se parece a la suposición contraria de una demostración por contradicción: da algo concreto con qué trabajar y 'se retira' cuando cumplió su función.",
+          "explicacion": "El fantasma evita el razonamiento circular: nunca uses la propiedad que estás tratando de demostrar."
+        },
+        {
+          "id": "z82-q3",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el teorema del ángulo inscrito y reproduce el esquema de su demostración por angle chasing (¿qué única línea auxiliar se dibuja y qué triángulos aparecen?).",
+          "solucion": "La medida de un arco (= su ángulo central) es el DOBLE del ángulo inscrito que lo subtiende. Demostración: dibuja el radio/diámetro desde el vértice del ángulo inscrito; los radios iguales crean triángulos ISÓSCELES; el ángulo exterior de cada uno (en el centro) es suma de los dos interiores iguales — recolectando esas igualdades, el central resulta el doble del inscrito (casos: el centro dentro, fuera o sobre el ángulo).",
+          "explicacion": "Una auxiliar obvia + toda la información angular posible = angle chasing. Es la primera herramienta, no la única (Zeitz: no confíes en ella para todo)."
+        },
+        {
+          "id": "z82-q4",
+          "tipo": "disparador",
+          "enunciado": "En una figura aparece un ángulo recto inscrito en un círculo, o un diámetro con un punto cualquiera del círculo. ¿Qué debía dispararse?",
+          "solucion": "Tales y su recíproco: un ángulo inscrito que subtiende un diámetro es recto; y al revés, un ángulo recto inscrito delata que el lado opuesto es diámetro (el vértice del ángulo recto vive en el círculo cuyo diámetro es la hipotenusa). Ángulo recto ⟺ diámetro: cada uno te regala el otro.",
+          "explicacion": "Señal → jugada: 'recto' y 'diámetro' son sinónimos en un círculo. En problemas con alturas (pies de altura = ángulos rectos), esto siembra puntos concíclicos por todas partes."
+        },
+        {
+          "id": "z82-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Para probar que la recta que une dos puntos medios es paralela al tercer lado, un estudiante dibuja la recta DE entre los puntos medios y dice: \"como DE es paralela a BC por el teorema del punto medio, los triángulos son semejantes y listo\". ¿Cuál es el problema?",
+          "solucion": "Razonamiento circular: usó el resultado que quería demostrar ('DE es paralela a BC' ES el teorema del punto medio). La salida honesta es el punto fantasma: traza por D la paralela a BC, llámala su intersección E′ con el otro lado, demuestra con congruencias que E′ es el punto medio, y concluye E′ = E.",
+          "explicacion": "El fantasma existe exactamente para romper esta circularidad: construye la propiedad, no la asumas."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-83",
+      "bloque": "fase-5",
+      "orden": 32,
+      "titulo": "Zeitz · Geometría de supervivencia II: área y semejanza",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 8.3, Survival Geometry II (pp. 271-283): área y comparación de áreas (pp. 271-275), semejanza AA / SSS proporcional / SAS proporcional (Fact 8.3.8, p. 275), la paralela que fabrica semejantes (8.3.9, p. 276), la altura a la hipotenusa h = √(xy) (8.3.10, p. 276) y las soluciones de los tres problemas 'fáciles' (p. 277).",
+      "dosis": "1 sección (~12 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Sumar las dos lentes multiplicativas de la geometría: comparar ÁREAS (insight multiplicativo) y explotar SEMEJANZAS (la división). Si el problema habla de razones, hay semejantes escondidos.",
+      "heuristicas": [
+        "penultimo-paso",
+        "simetria"
+      ],
+      "ideas_clave": [
+        "El área da una mirada multiplicativa: triángulos con la misma altura tienen áreas en razón de sus bases (y viceversa). Comparar áreas de piezas — en vez de calcular cada una — resuelve problemas de cevianas y particiones sin una sola coordenada.",
+        "Semejanza (∼): ángulos respectivamente iguales Y lados proporcionales. Atajos (Fact 8.3.8): AA basta; SSS proporcional basta; SAS proporcional basta. La fábrica estándar de semejantes (8.3.9): una paralela a un lado corta un triángulo semejante al original — y el recíproco fabrica paralelas.",
+        "Configuración estrella (8.3.10): en un triángulo rectángulo, la altura h a la hipotenusa crea DOS triángulos semejantes entre sí y al original. Consecuencias: h = √(xy) (media geométrica de los segmentos) y cx = a², cy = b² — de donde cae Pitágoras gratis sumando.",
+        "Mantra de Zeitz: si un problema de geometría involucra RAZONES o proporciones, es casi seguro que necesitas triángulos semejantes. Búscalos; si no están a la vista, fabrícalos con líneas auxiliares paralelas o perpendiculares.",
+        "Cuadrados inscritos, alturas y proporciones se resuelven con UNA semejanza bien escrita: plantea la proporción entre el lado pequeño y el grande ANTES de calcular nada (el penúltimo paso es la ecuación, no el número)."
+      ],
+      "banco": [
+        {
+          "id": "z83-q1",
+          "tipo": "quiz",
+          "enunciado": "Da los tres atajos que garantizan semejanza (Fact 8.3.8) y la 'fábrica estándar' de triángulos semejantes de 8.3.9 con su recíproco.",
+          "solucion": "AA (dos pares de ángulos iguales), SSS proporcional (tres lados en proporción) y SAS proporcional (dos lados en proporción y el ángulo comprendido igual). Fábrica: una recta paralela a BC que corta AB y AC en D y E produce ADE ∼ ABC; recíproco: si D y E dividen AB y AC proporcionalmente, entonces DE ∥ BC.",
+          "explicacion": "La paralela es a la semejanza lo que el radio al ángulo inscrito: la auxiliar que casi siempre falta."
+        },
+        {
+          "id": "z83-q2",
+          "tipo": "acertijo",
+          "enunciado": "En un triángulo rectángulo de catetos a, b e hipotenusa c, la altura desde el ángulo recto divide la hipotenusa en segmentos x e y. Demuestra que h = √(xy) y deduce Pitágoras de la misma configuración.",
+          "solucion": "Los dos triángulos pequeños son semejantes entre sí y al original (AA: comparten ángulos con el grande). De la semejanza entre los dos pequeños: x/h = h/y, o sea h² = xy. De pequeño∼grande: x/a = a/c y y/b = b/c, es decir cx = a², cy = b². Sumando: c(x+y) = a²+b², y como x+y = c, queda c² = a²+b².",
+          "explicacion": "Una sola figura, tres teoremas (media geométrica, relaciones catetos-proyecciones, Pitágoras): la configuración estrella de la semejanza."
+        },
+        {
+          "id": "z83-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Cómo se comparan las áreas de dos triángulos que comparten la misma altura, y por qué esa observación tan simple resuelve problemas de cevianas sin coordenadas?",
+          "solucion": "Con altura común, las áreas están en la razón de las bases: [ABX]/[ACX] = BX/XC si X está en BC. Una ceviana divide al triángulo en dos piezas cuyas áreas reportan la razón en que la ceviana corta al lado — y encadenando esas razones por varias cevianas se obtienen las proporciones de intersección sin calcular ninguna área absoluta.",
+          "explicacion": "Comparar > calcular: las razones de áreas son el 'sistema de ecuaciones' natural de la geometría de cevianas."
+        },
+        {
+          "id": "z83-q4",
+          "tipo": "disparador",
+          "enunciado": "El enunciado de un problema de geometría pide una RAZÓN (x/y, AB/CD) o dice que un punto divide un segmento 'en proporción'. ¿Qué debía dispararse y cuál es el primer movimiento?",
+          "solucion": "Triángulos semejantes — casi seguro. Primer movimiento: identificar (o fabricar con una paralela/perpendicular auxiliar) los dos triángulos cuya semejanza produce esa razón, y escribir la proporción como ecuación ANTES de calcular. Si hay un cuadrado o rectángulo inscrito, sus lados paralelos ya traen las paralelas que fabrican los semejantes.",
+          "explicacion": "Señal → jugada: 'razón' → semejanza. El penúltimo paso es siempre la proporción escrita, no el valor numérico."
+        },
+        {
+          "id": "z83-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante dice: \"estos dos triángulos tienen dos lados proporcionales y un ángulo igual, así que son semejantes por SAS proporcional\". ¿Qué falta verificar?",
+          "solucion": "Que el ángulo igual sea el COMPRENDIDO entre los dos lados proporcionales. SAS proporcional exige el ángulo entre los lados; con el ángulo en otra posición se cae en el análogo del caso ambiguo ASS y puede no haber semejanza.",
+          "explicacion": "El mismo defecto de ASS en congruencia reaparece en semejanza: la posición del ángulo importa tanto como su medida."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-84",
+      "bloque": "fase-5",
+      "orden": 33,
+      "titulo": "Zeitz · El poder de la geometría elemental",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 8.4, The Power of Elementary Geometry (pp. 283-297): la checklist de 8 puntos del solucionista geométrico (p. 283), puntos concíclicos con el USAMO 1990 y sus 5 penúltimos pasos candidatos (pp. 284-286), área y cevianas (p. 287), potencia del punto (POP) como invariante.",
+      "dosis": "1 sección (~14 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Pasar de las herramientas sueltas a la ESTRATEGIA geométrica: la checklist, los 'mejores amigos' (triángulos rectángulos, paralelas, concíclicos), y elegir el penúltimo paso ANTES de dibujar más.",
+      "heuristicas": [
+        "penultimo-paso",
+        "invariante"
+      ],
+      "ideas_clave": [
+        "La checklist de Zeitz: (1) diagrama cuidadoso; (2) auxiliares, con moderación; (3) empieza cazando ángulos, sin depender solo de eso; (4) busca a tus mejores amigos: triángulos rectángulos, paralelas y puntos concíclicos; (5) compara áreas; (6) explota semejantes sin piedad; (7) simetría y puntos distinguidos; (8) puntos fantasma.",
+        "Para demostrar que 4 puntos son concíclicos hay un MENÚ de penúltimos pasos (USAMO 1990): encontrar el centro y probar equidistancia; ángulos opuestos suplementarios (cuadrilátero cíclico); dos ángulos iguales subtendiendo el mismo segmento; el recíproco de POP; el recíproco de Ptolomeo. Listarlos y ELEGIR el barato es la estrategia — en el USAMO 1990 el centro candidato (A) salta del dibujo.",
+        "Un diagrama dibujado con cuidado ES una herramienta de descubrimiento: en el USAMO 1990, el dibujo revela que los pies de las alturas caen en los círculos (Tales: ángulo recto subtendiendo diámetro). Un mal dibujo esconde los regalos.",
+        "Potencia del punto (POP): por un punto P, toda recta que corta al círculo en X e Y da el mismo producto PX·PY (invariante de P respecto al círculo; con tangente, PT²). El RECÍPROCO certifica concíclicos: si QX·XP = MX·XN con los segmentos sobre dos rectas por X, los 4 extremos comparten círculo. Las tangentes desde un punto exterior son iguales — caso límite del invariante.",
+        "Cevianas y áreas: para razones sobre cevianas que se cortan, compara áreas de triángulos con base común (la lente de 8.3) — así se demuestran las razones 'mágicas' de los puntos de intersección sin coordenadas ni trigonometría."
+      ],
+      "banco": [
+        {
+          "id": "z84-q1",
+          "tipo": "quiz",
+          "enunciado": "Reproduce la checklist de 8 puntos del solucionista geométrico y di quiénes son los tres 'mejores amigos' según Zeitz.",
+          "solucion": "1) Diagrama cuidadoso; 2) objetos auxiliares con moderación; 3) angle chasing primero (sin depender solo de él); 4) buscar a los mejores amigos: TRIÁNGULOS RECTÁNGULOS, PARALELAS y PUNTOS CONCÍCLICOS; 5) comparar áreas; 6) explotar semejantes sin piedad; 7) simetría y puntos/rectas distinguidos; 8) puntos fantasma que luego coinciden con los reales.",
+          "explicacion": "Es una lista de ARRANQUE ordenada por costo: lo barato (dibujo, ángulos) antes que lo caro (Ptolomeo, trigonometría)."
+        },
+        {
+          "id": "z84-q2",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el teorema de la potencia del punto, su caso límite con tangente, y formula su RECÍPROCO (el que certifica puntos concíclicos).",
+          "solucion": "Para un punto P y un círculo fijos, toda recta por P que corta al círculo en X, Y da el mismo producto PX·PY — la 'potencia' de P, invariante de la recta elegida. Si la recta es tangente en T: PT² = PX·PY. Recíproco: si dos rectas por un punto X llevan puntos Q,P y M,N con QX·XP = MX·XN, entonces Q, P, M, N son concíclicos.",
+          "explicacion": "POP es un invariante (no depende de la recta): por eso sirve en ambas direcciones — usar el círculo para calcular productos, o usar productos para descubrir el círculo."
+        },
+        {
+          "id": "z84-q3",
+          "tipo": "quiz",
+          "enunciado": "Del USAMO 1990 (los 4 puntos M, N, P, Q sobre las alturas): lista al menos cuatro penúltimos pasos candidatos para 'son concíclicos' y explica por qué Zeitz eligió el del centro.",
+          "solucion": "Candidatos: (1) hallar el centro y probar las cuatro distancias iguales; (2) ángulos opuestos suplementarios; (3) dos ángulos iguales sobre el mismo segmento; (4) recíproco de POP con la intersección de las cuerdas; (5) recíproco de Ptolomeo. Eligió (1) porque el dibujo lo regalaba: AB es mediatriz de MN y AC de PQ (cuerdas perpendiculares a los diámetros), así que el único centro posible es A — quedaba solo probar AM = AP, dos catetos en círculos con diámetros conocidos.",
+          "explicacion": "Estrategia geométrica = enumerar penúltimos pasos y elegir el más barato según lo que el diagrama ya regala."
+        },
+        {
+          "id": "z84-q4",
+          "tipo": "disparador",
+          "enunciado": "En una figura hay tangentes trazadas desde un punto exterior a un círculo, o productos de segmentos sobre cuerdas que se cortan. ¿Qué debía dispararse?",
+          "solucion": "Potencia del punto. Tangentes desde un punto exterior: son IGUALES (PT₁ = PT₂) y su cuadrado es la potencia. Cuerdas que se cortan en X: los productos de los trozos son iguales. Y si lo que se quiere es probar concíclicos, el recíproco de POP convierte una igualdad de productos en un círculo.",
+          "explicacion": "Señal → jugada: tangentes/productos de segmentos → POP. Es el invariante central de los círculos, como la paridad lo es de los enteros."
+        },
+        {
+          "id": "z84-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante quiere probar que MNPQ es cíclico y escribe: \"∠QMP + ∠QNP = 180° porque MNPQ es cíclico, por lo tanto MNPQ es cíclico\". Aparte de la circularidad evidente, ¿qué confusión de fondo delata sobre el lema del cuadrilátero cíclico?",
+          "solucion": "Confunde el lema con su recíproco y los usa a la vez. El lema: SI el cuadrilátero es cíclico, los ángulos opuestos suman 180°. El recíproco (que es lo que necesita): si los ángulos opuestos suman 180°, ENTONCES es cíclico. Para usar el recíproco debe calcular esos ángulos por otra vía (angle chasing, semejanzas) sin asumir el círculo.",
+          "explicacion": "En geometría casi todos los lemas vienen en pareja teorema/recíproco; anotar CUÁL dirección usas evita demostraciones circulares."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-9",
+      "bloque": "fase-5",
+      "orden": 34,
+      "titulo": "Zeitz · Cálculo de competencia: convergencia y matemática euleriana",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 9.2, Convergence and Continuity (pp. 318-329): las seis vías para probar convergencia (pp. 319-320) y el ejemplo 9.2.1 de cotas. Sección 9.4, matemática euleriana (pp. 347-350): los ejemplos 9.4.5 (Δ como derivada) y 9.4.6 (producto máximo con suma fija ≈ partes de tamaño e).",
+      "dosis": "2 lecturas cortas (~10 pp en total) + 1-2 problemas con bucle completo.",
+      "objetivo": "Dos regalos del cálculo al solucionista: el repertorio riguroso de CONVERGENCIA (Cauchy, monótona acotada, squeeze, big-O) y el permiso euleriano de razonar sin rigor PRIMERO para conjeturar, y formalizar después.",
+      "heuristicas": [
+        "pensamiento-ilusorio",
+        "caso-extremo"
+      ],
+      "ideas_clave": [
+        "Convergencia aₙ → L: para todo ε > 0 existe N tal que desde N en adelante |aₙ − L| < ε. Todo el cálculo (límites, continuidad, derivada, integral) se apoya en esta sola definición: dominarla es dominar el piso.",
+        "Las seis vías de Zeitz para probar que una sucesión converge: (1) dibuja; (2) adivina L y acerca los términos; (3) propiedad de Cauchy (los términos se acercan ENTRE SÍ — útil cuando no conoces L); (4) monótona y acotada → converge (¡pero el límite no tiene por qué ser la cota!); (5) principio del sándwich/squeeze; (6) análisis big-O/little-o para comparar tasas de crecimiento.",
+        "big-O como lupa: f = O(g) si |f| ≤ C|g| eventualmente; f = o(g) si f/g → 0. Permite quedarse con 'la parte que importa' de una expresión y hacer álgebra de errores (O(x²)·x = O(x³)). Es el idioma de las estimaciones — el mismo de los algoritmos.",
+        "Matemática euleriana: razonamiento no riguroso (incluso 'incorrecto') que conduce a una verdad — en honor a Euler. Ejemplo 9.4.5: Δ(ΔA) = (1,1,1,…) 'parece' d²A/dn² = 1 → conjetura: aₙ es cuadrática en n — y la conjetura SÍ se verifica rigurosamente después. Doblar las reglas para conjeturar, nunca para concluir.",
+        "Ejemplo 9.4.6 (producto máximo con suma fija, AM-GM en acción): maximizar (S/x)^x sugiere partes de tamaño e ≈ 2.718 — sin sentido para enteros, pero enfoca la atención en partes de 2 y 3, y de ahí sale la solución entera rigurosa. La heurística continua ilumina el problema discreto."
+      ],
+      "banco": [
+        {
+          "id": "z9-q1",
+          "tipo": "quiz",
+          "enunciado": "Lista las seis vías de Zeitz para demostrar convergencia y di cuál usarías cuando NO tienes idea del valor del límite (y por qué).",
+          "solucion": "(1) Dibujar; (2) adivinar L y probar |aₙ−L| < ε; (3) propiedad de Cauchy; (4) monótona + acotada; (5) squeeze entre dos sucesiones con el mismo límite; (6) big-O. Sin candidato a límite: Cauchy (los términos se acercan entre sí, sin mencionar L) o monótona+acotada (garantiza que existe el límite sin decir cuál es).",
+          "explicacion": "Cauchy y monótona+acotada son los certificados de EXISTENCIA; las otras vías exigen conocer o intuir L."
+        },
+        {
+          "id": "z9-q2",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante argumenta: \"la sucesión es creciente y está acotada por 4, así que converge a 4\". ¿Qué está bien y qué está mal?",
+          "solucion": "Bien: creciente y acotada implica que converge (vía 4). Mal: el límite NO tiene por qué ser la cota — converge a su supremo, que puede ser menor que 4 (aₙ = 3 − 1/n es creciente, acotada por 4, y converge a 3). Zeitz lo advierte explícitamente: construye un ejemplo para no olvidarlo.",
+          "explicacion": "El teorema da existencia, no valor. Para el valor hacen falta más armas (la ecuación de punto fijo, squeeze…)."
+        },
+        {
+          "id": "z9-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Qué es la 'matemática euleriana' según Zeitz, en qué dos momentos conviene aflojar el rigor, y cuál es la regla de oro que la separa de la charlatanería?",
+          "solucion": "Razonamiento no riguroso (incluso técnicamente sin sentido) que conduce a verdades matemáticas — como tratar Δ(ΔA) = 1 como una ecuación diferencial para conjeturar que aₙ es cuadrática. Conviene aflojar el rigor al INICIO de una investigación y al inicio de la formación de una persona. Regla de oro: lo euleriano CONJETURA; la demostración rigurosa viene después y es la que concluye.",
+          "explicacion": "'Falta de rigor no es sinsentido': una idea borrosa pero inspirada puede producir después una prueba rigurosa — y una prueba rigurosa puede oscurecer la idea esencial."
+        },
+        {
+          "id": "z9-q4",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuál es el mayor producto de enteros positivos cuya suma es 20? Usa primero la heurística euleriana (¿de qué tamaño deben ser las partes?) y luego ciérralo con enteros.",
+          "solucion": "1458 = 3⁶·2. Heurística: maximizar (S/x)^x da partes de tamaño e ≈ 2.72 → usa partes de 3 y de 2 (nunca 1; nunca ≥5 porque 5 < 2·3; y 2+2+2 < 3+3 ya que 8 < 9, así que a lo sumo dos 2). Con S = 20: seis 3 y un 2 → 3⁶·2 = 1458.",
+          "explicacion": "El continuo (partes ≈ e) ilumina; el cierre es un argumento de intercambio discreto: cada regla ('nunca 1', 'máximo dos 2') es una mejora local que AM-GM avala."
+        },
+        {
+          "id": "z9-q5",
+          "tipo": "disparador",
+          "enunciado": "Te piden estimar una suma o producto enorme (Σ 1/√n, un producto infinito) o solo demostrar que 'converge'. ¿Qué jugadas del capítulo debían dispararse?",
+          "solucion": "Para estimar: squeeze + telescopio (encajar cada término entre dos diferencias que colapsen, como en §5.5) y big-O para descartar lo que no pesa. Para convergencia sin valor: monótona+acotada o Cauchy. Y SIEMPRE la vía euleriana primero: trata lo discreto como continuo (suma ≈ integral) para conjeturar el orden de magnitud, y formaliza después.",
+          "explicacion": "Las cotas valen más que las fórmulas exactas en competencia: ⌊A⌋ solo necesita dos desigualdades bien elegidas."
+        }
+      ]
+    },
+    {
+      "id": "engel-inv",
+      "bloque": "fase-5",
+      "orden": 35,
+      "titulo": "Engel · El principio de invariancia",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 1, The Invariance Principle (pp. 1-12): el lema 'si hay repetición, busca lo que no cambia' (p. 1), E1 (producto invariante xy), E2 (paridad de la suma con |a−b|), E3 (suma alternada en el círculo), E4 (el monovariante H que siempre decrece) y E5 (la distancia al origen como función clave).",
+      "dosis": "Lectura corta (~8 pp) + elegir 2-3 problemas del capítulo como sesiones del camino 1.",
+      "objetivo": "Profundizar el invariante (ya visto en Zeitz §3.4) con el arsenal de Engel: las cuatro preguntas sobre algoritmos, y el MONOVARIANTE — la función que no es constante pero solo se mueve en una dirección.",
+      "heuristicas": [
+        "invariante",
+        "caso-extremo"
+      ],
+      "ideas_clave": [
+        "El lema de Engel: SI HAY REPETICIÓN, BUSCA LO QUE NO CAMBIA. Ante un algoritmo (juego, transformación repetida) pregúntate: ¿puede alcanzarse tal estado final? ¿cuáles son todos los estados finales? ¿hay convergencia? ¿hay periodos?",
+        "Catálogo de invariantes para probar IMPOSIBILIDAD: paridad de una suma (E2: borrar a,b y escribir |a−b| cambia la suma en 2·min(a,b), par — la paridad inicial decide el final); sumas alternadas (E3: a₁−a₂+a₃−⋯ no cambia al incrementar dos vecinos); productos (E1: xₙyₙ = ab para siempre); residuos mod m en general.",
+        "El MONOVARIANTE (E4, parlamento de Sikinia): una función entera positiva que DECRECE con cada paso útil no puede decrecer para siempre → el algoritmo termina, y el estado final tiene la propiedad buscada. No es un invariante estricto: es una flecha. Es el puente entre invariancia y principio extremal (el mínimo de H es el objeto bueno).",
+        "E5: para sucesiones de puntos, la función estrella es la DISTANCIA AL ORIGEN (o su cuadrado). Si puedes probar que crece geométricamente (vía una identidad algebraica + el invariante a+b+c+d = 0), alguna coordenada explota — comportamiento a largo plazo sin calcular órbitas.",
+        "Método de trabajo: ante un proceso, prueba en este orden — paridad, suma, suma alternada, producto, residuos, y si nada es constante busca algo MONÓTONO. El invariante correcto suele ser la combinación lineal que el paso del proceso aniquila."
+      ],
+      "banco": [
+        {
+          "id": "einv-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el lema central del capítulo y las cuatro preguntas de Engel sobre algoritmos. ¿Para cuál de las cuatro es el invariante la herramienta directa?",
+          "solucion": "'Si hay repetición, busca lo que no cambia.' Preguntas: (1) ¿puede alcanzarse un estado final dado?; (2) ¿cuáles son TODOS los estados finales alcanzables?; (3) ¿hay convergencia a un estado final?; (4) ¿hay periodos, con o sin cola? El invariante ataca directamente (1) y (2): si el invariante del estado inicial difiere del objetivo, ese objetivo es inalcanzable.",
+          "explicacion": "Para (3) la herramienta es el monovariante (decrece → termina); para (4), los residuos y el tamaño finito del espacio de estados."
+        },
+        {
+          "id": "einv-q2",
+          "tipo": "acertijo",
+          "enunciado": "En el pizarrón están los números 1, 2, …, 2n con n impar. Repetidamente borras dos números a, b y escribes |a − b|. Demuestra que el último número que queda es IMPAR.",
+          "solucion": "La suma S de los números del pizarrón solo cambia en a + b − |a−b| = 2·min(a,b), un número PAR: la paridad de S es invariante. Al inicio S = 1+2+⋯+2n = n(2n+1), impar (n impar × impar). Al final queda un solo número, de la misma paridad que S: impar.",
+          "explicacion": "El patrón maestro: identifica cuánto cambia la cantidad global en un paso, y quédate con lo que ese cambio no toca (aquí, la paridad)."
+        },
+        {
+          "id": "einv-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Qué es un monovariante y cómo lo usa Engel en el parlamento de Sikinia (cada miembro tiene a lo sumo 3 enemigos; hay que partir el parlamento en dos cámaras con a lo sumo 1 enemigo interno cada uno)?",
+          "solucion": "Una función del estado que no es constante pero se mueve en UNA sola dirección. Sikinia: parte el parlamento de cualquier manera y define H = suma total de enemistades internas. Si alguien tiene ≥2 enemigos en su cámara, tiene ≤1 en la otra: al cambiarlo de cámara, H DECRECE. Una función entera positiva no puede decrecer infinitamente → el proceso termina, y al terminar nadie tiene ≥2 enemigos internos.",
+          "explicacion": "El monovariante demuestra EXISTENCIA por algoritmo: el mínimo alcanzado es el objeto buscado. Es el principio extremal en movimiento."
+        },
+        {
+          "id": "einv-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema describe una operación que se repite ('en cada paso puedes…') y pregunta si cierto estado final es alcanzable. ¿Qué batería de candidatos a invariante pruebas, y en qué orden?",
+          "solucion": "En orden de costo: paridad de una suma o de un conteo; la suma total; la suma ALTERNADA (o con pesos ±1 según posición); el producto; residuos mod 3, 4, 9; y para tableros, una coloración (que es un invariante con pesos). Si nada es constante, busca un monovariante (algo que solo crece o solo decrece). El invariante correcto es la combinación que el paso del proceso deja quieta.",
+          "explicacion": "Señal → jugada: 'operación repetida + ¿es posible?' → invariante. La respuesta 'no' de un invariante es total: ninguna secuencia de pasos lo logra."
+        },
+        {
+          "id": "einv-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Sobre el problema del círculo (sectores con 1,0,1,0,0,0; puedes incrementar dos VECINOS): un estudiante dice \"la suma total crece de 2 en 2, y 2 divide a la suma objetivo 6k, así que sí se puede igualar todo\". ¿Dónde falla?",
+          "solucion": "Que la suma lo permita es condición NECESARIA, no suficiente: hay otro invariante más fino que obstruye. La suma alternada I = a₁−a₂+a₃−a₄+a₅−a₆ no cambia al incrementar dos vecinos (uno entra con + y el otro con −). Al inicio I = 2; en cualquier estado igualado I = 0. Imposible, por más que la suma cuadre.",
+          "explicacion": "Un invariante que NO obstruye no demuestra posibilidad: hay que buscar más invariantes o construir la solución explícita. Error clásico de dirección única."
+        }
+      ]
+    },
+    {
+      "id": "engel-color",
+      "bloque": "fase-5",
+      "orden": 36,
+      "titulo": "Engel · Coloraciones: imposibilidad con crayones",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 2, Coloring Proofs (pp. 25-38): el tablero mutilado como prototipo (p. 25), la idea general de partir en clases de color, y el muestrario de problemas 1-15 (teselados con tetrominós, ladrillos 1×1×4, caminos por 14 ciudades, puntos del plano bicoloreados).",
+      "dosis": "Lectura corta (~6 pp) + elegir 2-3 problemas del capítulo como sesiones del camino 1.",
+      "objetivo": "Dominar la coloración como invariante con pesos: elegir los colores de modo que cada pieza/movimiento consuma una combinación FIJA de colores, y derrotar al problema contando celdas de cada color.",
+      "heuristicas": [
+        "invariante",
+        "contradiccion"
+      ],
+      "ideas_clave": [
+        "Prototipo (tablero mutilado de Gomory): un dominó 2×1 cubre SIEMPRE una casilla blanca y una negra; al quitar dos esquinas opuestas (mismo color) quedan 30 de un color y 32 del otro → imposible cubrirlo con 31 dominós. Colorear = particionar en clases; la pieza consume una combinación fija de clases.",
+        "Receta general: (1) elige una coloración tal que CADA pieza o movimiento, en cualquier posición y orientación, cubra la misma multiconjunto de colores; (2) cuenta cuántas celdas hay de cada color; (3) si las cuentas no son compatibles con el consumo por pieza, la tarea es imposible. La demostración es una contradicción aritmética.",
+        "Más de dos colores: para tetrominós rectos 1×4 se colorea en diagonal con 4 colores ((i+j) mod 4): cada pieza, horizontal o vertical, cubre los 4 colores exactamente una vez; en el 10×10 los colores aparecen 25/26/25/24 veces → 25 piezas no pueden cubrirlo. La coloración se DISEÑA mirando la pieza.",
+        "La coloración también ataca grafos y caminos: para '¿hay camino que pase por cada ciudad exactamente una vez?', bicolorea las ciudades como tablero; cada paso alterna color, así que un camino hamiltoniano de 14 vértices visita 7 y 7 — si el grafo tiene 8 de un color y 6 del otro, no existe.",
+        "Coloraciones del plano continuo (problemas 13, 17, 18): 'todo punto es rojo o azul' + distancia fija = palomar geométrico. Un triángulo equilátero de lado 1 con 3 colores, o una retícula 3×7 bicoloreada para forzar un rectángulo monocromático: colorear es también una forma de CASILLERO."
+      ],
+      "banco": [
+        {
+          "id": "ecol-q1",
+          "tipo": "quiz",
+          "enunciado": "Reproduce el argumento del tablero mutilado (8×8 sin dos esquinas opuestas, dominós 2×1) y destila la receta general de toda demostración por coloración.",
+          "solucion": "Cada dominó cubre exactamente 1 blanca y 1 negra (celdas vecinas alternan color). Las esquinas opuestas comparten color: quitarlas deja 30 de un color y 32 del otro. 31 dominós cubrirían 31 y 31 — contradicción. Receta: (1) coloración donde cada pieza consume una combinación FIJA de colores; (2) contar celdas por color; (3) incompatibilidad aritmética → imposible.",
+          "explicacion": "El problema de contar cubrimientos (Fisher, 12 988 816 para el tablero completo) es dificilísimo; el de la imposibilidad es trivial CON la coloración correcta. Elegir la pregunta y el invariante lo es todo."
+        },
+        {
+          "id": "ecol-q2",
+          "tipo": "acertijo",
+          "enunciado": "Demuestra que un tablero 10×10 NO puede cubrirse con 25 tetrominós rectos 1×4.",
+          "solucion": "Colorea la casilla (i,j) con el color (i+j) mod 4. Un tetrominó recto, horizontal o vertical, cubre 4 casillas con índices consecutivos en i o en j: sus colores son 4 residuos consecutivos mod 4, es decir, los CUATRO colores una vez cada uno. Pero en el 10×10 los colores aparecen 25, 26, 25 y 24 veces (cuéntalo: los residuos de 0..9 se reparten 3,3,2,2). 25 piezas necesitarían 25 de cada color — contradicción con el 26 y el 24.",
+          "explicacion": "La coloración se diseña al revés: primero se mira qué consume la pieza (4 consecutivos → diagonal mod 4) y luego se cuentan los colores."
+        },
+        {
+          "id": "ecol-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Cómo derrota una bicoloración a la pregunta '¿existe un camino que pase por cada una de las 14 ciudades exactamente una vez?' (problema 11 de Engel)?",
+          "solucion": "Colorea los vértices como tablero (vecinos de distinto color, si el grafo lo permite — aquí sí, es bipartito). Todo camino alterna colores: con 14 vértices visita 7 de cada color. Si el mapa tiene, digamos, 8 de un color y 6 del otro, ningún camino hamiltoniano existe. La obstrucción es el desbalance de la bipartición.",
+          "explicacion": "El mismo invariante del dominó (alternancia) leído en un grafo: caminos = dominós encadenados. Conecta con Königsberg (fase 2): allí grados, aquí colores."
+        },
+        {
+          "id": "ecol-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema pregunta si cierta región puede TESELARSE con cierta pieza (o si un cubo puede llenarse con ladrillos). ¿Qué jugada debía dispararse y cuál es la decisión de diseño clave?",
+          "solucion": "Buscar una coloración (quizá con más de 2 colores, quizá 3D) tal que la pieza cubra siempre la misma combinación de colores, y comparar con el censo de colores de la región. Decisión clave: la coloración se elige MIRANDO la pieza — dominó → ajedrez; 1×4 → diagonal mod 4; ladrillo 1×1×4 en el cubo 10×10×10 → colorear por (i+j+k) mod 4 y contar.",
+          "explicacion": "Señal → jugada: '¿se puede cubrir/llenar?' → coloración a la medida de la pieza. Si todas las coloraciones razonables cuadran, sospecha que SÍ se puede y busca la construcción."
+        },
+        {
+          "id": "ecol-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante colorea el tablero de ajedrez y muestra que las cuentas SÍ cuadran para cubrir cierta región con dominós. Concluye: \"las cuentas cuadran, por lo tanto el cubrimiento existe\". ¿Qué está mal?",
+          "solucion": "La coloración solo da condiciones NECESARIAS: si las cuentas no cuadran es imposible, pero que cuadren no construye el cubrimiento (hay regiones balanceadas en color e imposibles de cubrir — por ejemplo, dos zonas desconectadas con número impar de casillas cada una). Para el 'sí' hace falta una CONSTRUCCIÓN explícita o un argumento estructural.",
+          "explicacion": "Invariantes y coloraciones demuestran imposibilidad; la posibilidad se demuestra construyendo. Las dos direcciones piden armas distintas."
+        }
+      ]
+    },
+    {
+      "id": "engel-extremo",
+      "bloque": "fase-5",
+      "orden": 37,
+      "titulo": "Engel · El principio extremal",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 3, The Extremal Principle (pp. 39-58): la receta 'elige el objeto extremo y perturba' (p. 39), los tres hechos sobre mínimos/máximos y el buen orden (p. 40), E1 (partes del plano contadas por su 'punto más profundo') y E2 (tetraedros vía el vértice más cercano al plano).",
+      "dosis": "Lectura corta (~8 pp) + elegir 2-3 problemas del capítulo como sesiones del camino 1.",
+      "objetivo": "Hacer del extremo un reflejo: para probar que existe un objeto con cierta propiedad, toma el que maximiza o minimiza algo y demuestra que una perturbación pequeña contradiría la extremalidad.",
+      "heuristicas": [
+        "caso-extremo",
+        "contradiccion"
+      ],
+      "ideas_clave": [
+        "La receta: para probar EXISTENCIA, elige el objeto que maximiza/minimiza una función bien elegida; la propiedad deseada se demuestra viendo que, si fallara, una pequeña variación mejoraría el extremo — contradicción. Por eso Engel lo llama también 'método variacional'. Suele dar pruebas cortísimas y hasta algoritmos (es constructivo).",
+        "Los cimientos: todo conjunto finito no vacío de reales tiene mínimo y máximo (quizá no únicos); todo subconjunto no vacío de enteros positivos tiene MÍNIMO (buen orden — equivalente a la inducción); un conjunto infinito de reales puede no tener ni mínimo ni máximo (solo inf/sup).",
+        "E1 (¿en cuántas partes cortan el plano n rectas?): cuenta con una biyección extremal — cada parte ACOTADA por abajo tiene exactamente UN 'punto más profundo' (un vértice, el mínimo); las no acotadas se cuentan cortando con una recta horizontal auxiliar. Resultado: C(n,0)+C(n,1)+C(n,2). El extremo convierte un conteo amorfo en una biyección.",
+        "E2 (entre las partes de espacio hay ≥ (2n−3)/4 tetraedros): sobre cada plano, el vértice MÁS CERCANO en cada semiespacio define un tetraedro que ningún otro plano corta. El extremo (distancia mínima) garantiza la 'limpieza' del objeto construido.",
+        "Cuándo dispararlo: enunciados con 'demuestra que existe…', 'siempre hay…', configuraciones finitas de puntos/rectas, grafos, procesos que deben terminar. Funciones extremales favoritas: distancia mínima, ángulo máximo, suma mínima, el primer contraejemplo (¡el contraejemplo MÍNIMO es la inducción disfrazada!)."
+      ],
+      "banco": [
+        {
+          "id": "eext-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia la receta del principio extremal, por qué se llama también 'método variacional', y los tres hechos de base sobre mínimos/máximos que Engel recuerda antes de empezar.",
+          "solucion": "Receta: elige el objeto que maximiza/minimiza una función; demuestra que si no tuviera la propiedad deseada, una perturbación (variación) mejoraría aún más la función — contradicción con la extremalidad. De ahí 'variacional'. Hechos: (a) conjuntos finitos no vacíos tienen min y max (no necesariamente únicos); (b) los enteros positivos están bien ordenados: todo subconjunto no vacío tiene mínimo; (c) conjuntos infinitos de reales pueden carecer de min/max y solo tener inf/sup.",
+          "explicacion": "La fuerza del método es que el objeto extremo viene con una propiedad GRATIS (nada lo mejora); el arte está en elegir QUÉ función extremar."
+        },
+        {
+          "id": "eext-q2",
+          "tipo": "quiz",
+          "enunciado": "En E1 (n rectas cortan el plano), ¿cómo usa Engel el principio extremal para CONTAR las partes, y de dónde sale la fórmula C(n,0)+C(n,1)+C(n,2)?",
+          "solucion": "Biyección extremal: cada parte acotada por abajo tiene exactamente UN punto más profundo, que es uno de los C(n,2) puntos de intersección — así que hay C(n,2) partes con punto profundo. Las partes sin punto profundo (no acotadas por abajo) cortan una recta horizontal auxiliar en n+1 = C(n,0)+C(n,1) pedazos, uno por parte. Total: C(n,0)+C(n,1)+C(n,2).",
+          "explicacion": "El extremo como herramienta de CONTEO: 'cada objeto tiene exactamente un elemento extremo' es una biyección lista para usar."
+        },
+        {
+          "id": "eext-q3",
+          "tipo": "acertijo",
+          "enunciado": "Demuestra con el principio extremal: en cualquier conjunto finito de puntos del plano, no todos colineales, existe una recta que pasa por EXACTAMENTE dos de ellos (Sylvester-Gallai).",
+          "solucion": "Considera todos los pares (recta L por ≥2 puntos, punto P fuera de L) y elige el par con DISTANCIA de P a L mínima. Si L tuviera ≥3 puntos, dos de ellos quedarían del mismo lado del pie de la perpendicular desde P; con el más cercano al pie (llámalo Q) y la recta PR (R el otro), la distancia de Q a PR resulta ESTRICTAMENTE menor que la de P a L — contradice la minimalidad. Luego L tiene exactamente 2 puntos.",
+          "explicacion": "El ejemplo más célebre del principio: décadas abierto, y la prueba extremal (Kelly) cabe en un párrafo. La función correcta era 'distancia punto-recta mínima'."
+        },
+        {
+          "id": "eext-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema dice 'demuestra que SIEMPRE existe…' o 'demuestra que el proceso termina'. ¿Qué debía dispararse, y cuáles son las funciones extremales favoritas?",
+          "solucion": "Principio extremal: toma el objeto que extrema una función y demuestra que cumple lo pedido (o que el proceso en el extremo ya no puede moverse — terminación vía monovariante). Favoritas: distancia mínima, ángulo máximo o mínimo, suma/producto mínimo, el elemento más profundo/más alto, y el CONTRAEJEMPLO MÍNIMO (si existe un contraejemplo, hay uno mínimo; derívale uno menor — eso es inducción fuerte disfrazada).",
+          "explicacion": "Señal → jugada: 'existe/siempre/termina' → extremal. Combina naturalmente con contradicción: el extremo + 'podría mejorarse' es el golpe estándar."
+        },
+        {
+          "id": "eext-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante escribe: \"sea S el conjunto de los reales positivos con cierta propiedad; tomo su elemento mínimo y lo perturbo…\". ¿Qué supuesto no verificó y cómo lo salva el buen orden (o no)?",
+          "solucion": "Que el mínimo EXISTA: un conjunto de reales positivos puede no tener mínimo (p. ej. (0,1) solo tiene ínfimo, no mínimo). El buen orden garantiza mínimo para subconjuntos no vacíos de ENTEROS positivos, no de reales. Salidas: discretizar el problema (trabajar con enteros), usar finitud (conjuntos finitos sí tienen min), o argumentar con el ínfimo y un límite — más delicado.",
+          "explicacion": "El principio extremal pide tres verificaciones silenciosas: no vacío, existencia del extremo, y que la perturbación sea legal. La segunda es la que más se olvida."
+        }
+      ]
+    },
+    {
+      "id": "engel-juegos",
+      "bloque": "fase-5",
+      "orden": 38,
+      "titulo": "Engel · Juegos: posiciones perdedoras y pareo",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 13, Games (pp. 361-365): la partición de posiciones en W y L y sus dos reglas (p. 361), la estrategia de pareo (p. 361-362), Bachet y sus variantes con M = {1..k}, potencias de 2, primos (warmups 1-4, p. 362).",
+      "dosis": "Lectura corta (~5 pp) + elegir 2-3 problemas del capítulo como sesiones del camino 1.",
+      "objetivo": "Analizar juegos imparciales de dos jugadores con la maquinaria W/L: trabajar hacia atrás desde las posiciones finales, detectar la periodicidad de L, y ganar 'sin pensar' con estrategias de pareo/espejo.",
+      "heuristicas": [
+        "hacia-atras",
+        "simetria"
+      ],
+      "ideas_clave": [
+        "Marco de Engel: dos jugadores alternan con las mismas reglas, no hay empates, pierde quien no puede mover. Las posiciones se parten en W (ganadoras: existe movimiento hacia L) y L (perdedoras: TODO movimiento cae en W). Para ganar: muévete SIEMPRE a una posición de L y deja al rival sin escapatoria.",
+        "El cálculo de L se hace HACIA ATRÁS: las posiciones finales (sin movimiento) están en L; de ahí se etiqueta retrocediendo hasta detectar periodicidad. Bachet (n fichas, tomas 1..k, gana quien toma la última): L = múltiplos de k+1 — desde un no-múltiplo puedes bajar al múltiplo; desde un múltiplo, no puedes alcanzar el siguiente.",
+        "Variantes que entrenan el reflejo modular: M = {1, 2, 4, 8, …} (potencias de 2) → L = múltiplos de 3 (ninguna potencia de 2 es múltiplo de 3, y siempre puedes restar 1 o 2 mod 3). M = {1 y primos} → L = múltiplos de 4 (con 1, 2, 3 cubres todo residuo mod 4 y ningún primo... es múltiplo de 4). M = {1,3,8} → L periódica mod 11: {0,2,4,6}.",
+        "Estrategia de PAREO: divide las posiciones (o los movimientos) en parejas tales que de un elemento se pasa al otro; cuando el rival toma uno, tú tomas su pareja — nunca te quedas sin movimiento. Caso espejo: ocupa el centro de simetría y copia cada jugada reflejada (las monedas en la mesa redonda de la fase 1 eran exactamente esto).",
+        "Si el juego no encaja en ningún molde: tabula posiciones pequeñas a mano (caso pequeño + hacia atrás), busca el patrón de L, CONJETURA la fórmula y demuéstrala con la doble verificación 'de L solo se va a W; de W se puede ir a L'."
+      ],
+      "banco": [
+        {
+          "id": "ejue-q1",
+          "tipo": "quiz",
+          "enunciado": "Define posiciones W y L, enuncia las dos propiedades que las caracterizan, y la regla única para jugar perfecto.",
+          "solucion": "L = perdedoras (quien está ahí pierde con juego perfecto del rival), W = ganadoras. Propiedades: desde toda posición de L, TODOS los movimientos van a W; desde toda W EXISTE al menos un movimiento a L; las posiciones finales (sin movimiento) son L. Regla: muévete siempre a L — el rival regresará forzosamente a W y tú repites, hasta dejarlo en una L final.",
+          "explicacion": "Todo el capítulo es esta doble verificación. Identificar L resuelve el juego completo, incluida la pregunta '¿quién gana?': la posición inicial está en W ⟺ gana el primero."
+        },
+        {
+          "id": "ejue-q2",
+          "tipo": "acertijo",
+          "enunciado": "Bachet: hay 100 fichas; en tu turno tomas entre 1 y 5; gana quien toma la última. ¿Quién gana con juego perfecto y con qué estrategia exacta?",
+          "solucion": "El primero. L = múltiplos de 6 (de un múltiplo de 6 no puedes alcanzar el siguiente restando ≤5; de un no-múltiplo siempre puedes bajar al múltiplo). 100 = 6·16 + 4: el primero toma 4 (deja 96) y de ahí responde SIEMPRE el complemento a 6 de lo que tome el rival (si toma t, tomas 6−t), pasando por 90, 84, …, 6, 0: él toma la última.",
+          "explicacion": "El 'complemento a k+1' es la versión aritmética del pareo: cada ronda completa consume exactamente 6 fichas, y tú controlas los múltiplos."
+        },
+        {
+          "id": "ejue-q3",
+          "tipo": "quiz",
+          "enunciado": "En la variante de Bachet con M = {1, 2, 4, 8, 16, …} (cualquier potencia de 2), ¿cuál es el conjunto L y cuál es la doble verificación que lo certifica?",
+          "solucion": "L = múltiplos de 3. Verificación: (a) desde un múltiplo de 3 no se puede ir a otro múltiplo de 3, porque ninguna potencia de 2 es divisible entre 3 (2ᵏ ≡ 1 o 2 mod 3); (b) desde un no-múltiplo de 3 siempre se puede restar 1 o 2 (ambos están en M) para caer en el múltiplo de 3 inferior. Ambas condiciones se cumplen → L correcta.",
+          "explicacion": "El reflejo es mirar M módulo m para varios m pequeños: el m que funciona es aquel donde M cubre todos los residuos no nulos pero ningún múltiplo."
+        },
+        {
+          "id": "ejue-q4",
+          "tipo": "disparador",
+          "enunciado": "Te plantean un juego por turnos donde 'pierde quien no pueda mover' y el tablero tiene una simetría evidente (mesa redonda, polígono regular, dos pilas iguales). ¿Qué debía dispararse?",
+          "solucion": "Estrategia de pareo/espejo: busca una involución del tablero (reflexión por el centro, intercambio de pilas) que aparee las posiciones o movimientos. Quien pueda 'romper la simetría primero y luego copiarla' (ocupando el punto fijo si existe, como el centro de la mesa) gana: a cada jugada del rival responde con su pareja simétrica y nunca se queda sin movimiento.",
+          "explicacion": "Señal → jugada: simetría con punto fijo → el primero gana ocupándolo y copiando; simetría sin punto fijo (dos pilas iguales) → suele ganar el SEGUNDO copiando desde el inicio."
+        },
+        {
+          "id": "ejue-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante analiza un juego y declara: \"encontré posiciones desde las que puedo forzar que el rival siempre tenga movimientos malos, así que son ganadoras; no necesito revisar las posiciones perdedoras\". ¿Qué verificación se saltó?",
+          "solucion": "La mitad del certificado. Para que su conjunto L sea correcto debe verificar DOS cosas: que de cada L todos los movimientos caen en W (el rival no puede quedarse en L), Y que de cada W existe movimiento a L. Si solo verificó la segunda, su 'L' podría tener escapatorias: una posición etiquetada L con algún movimiento hacia otra 'L' rompe toda la estrategia.",
+          "explicacion": "W/L es una partición con dos condiciones acopladas; la conjetura del patrón de L exige siempre la doble verificación, igual que una inducción exige base Y paso."
         }
       ]
     }

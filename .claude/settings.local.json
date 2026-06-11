@@ -117,7 +117,13 @@
       "Bash(pdftotext -layout Definitivo.pdf /tmp/definitivo.txt)",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,900 --user-data-dir=/tmp/cesp-f4c --virtual-time-budget=6000 --timeout=15000 --screenshot=/tmp/fase4.png \"http://localhost:8000/test-fase4.html\")",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-f4d --timeout=14000 --dump-dom \"http://localhost:8000/test-fase4.html\")",
-      "Bash(pkill -f \"http.server 8000\")"
+      "Bash(pkill -f \"http.server 8000\")",
+      "Bash(grep -n 'Similar Triangles$\\\\|Fact 8.3.8\\\\|8\\\\.3\\\\.8\\\\|Concyclic Points\\\\|Cevians\\\\|cevian' 'Biblioteca/Art and Craft of Problem Solving 3E \\(The\\).txt')",
+      "Bash(sed -n 140,165p 'Biblioteca/Engel - Problem-Solving Strategies.txt')",
+      "Bash(grep -n '^The Invariance Principle$\\\\|^Coloring Proofs$\\\\|^The Extremal Principle$\\\\|^Games$\\\\|^Induction' 'Biblioteca/Engel - Problem-Solving Strategies.txt')",
+      "Bash(grep -o -i \"tablero[^\\\\\"]\\\\{0,60\\\\}\\\\|dominó[^\\\\\"]\\\\{0,40\\\\}\\\\|mutilad[^\\\\\"]\\\\{0,40\\\\}\\\\|borra dos[^\\\\\"]\\\\{0,40\\\\}\\\\|24 = 1\" data/study.json data/problems.json)",
+      "Bash(grep -n '9\\\\.4 Power Series\\\\|Eulerian Mathematics$' 'Biblioteca/Art and Craft of Problem Solving 3E \\(The\\).txt')",
+      "Bash(grep -n \"9\\\\.4 Power Series\\\\|Eulerian Mathematics$\" \"Biblioteca/Art and Craft of Problem Solving 3E \\(The\\).txt\")"
     ]
   }
 }

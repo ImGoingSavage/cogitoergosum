@@ -462,8 +462,9 @@ módulos, JSON validado, cruce de IDs HTML↔JS en ambas direcciones):
 | Contenido Fase 2 (2026-06-10, madrugada) | ✅ 7 unidades (Zeitz §4.1 grafos, §6.1-§6.3 conteo, §7.1-§7.2 números + Engel cap. 5 como cantera), 30 preguntas, examen de 7 ítems (5 AMC 10A 2019 adaptados con source/url/year + Engel E6 + Königsberg) |
 | Contenido Fase 3 (2026-06-10, madrugada) | ✅ 6 unidades (Zeitz §6.4 recurrencias, §4.3 generatrices, §7.3 funciones aritméticas, §7.4 diofánticas, §7.5 ejemplos instructivos + Engel cap. 6 como cantera), 28 preguntas, examen de 6 ítems (AMC 10A 2018 P4/P19, AMC 10B 2019 P6/P14/P25 + Sophie Germain; todas las respuestas verificadas por fuerza bruta en Python). Pool acumulado de examen: 25 ítems |
 | Contenido Fase 4 (2026-06-11, tarde) | ✅ 5 unidades (Zeitz §5.2 factor tactic, §5.3 telescopio, §5.4 polinomios/Vieta, §5.5 desigualdades AM-GM/massage/Cauchy + Engel cap. 7 como cantera), 25 preguntas, examen de 7 ítems TODOS de probabilidad AMC (10B 2017 P9; 10A 2017 P15, P18; 10B 2018 P6, P9; 10B 2019 P17; 10A 2019 P20 — espejos ZIML 2017/2018/2019 10A+10B descargados y convertidos; respuestas verificadas por fuerza bruta/derivación en Python). Pool acumulado de examen: 32 ítems |
+| Contenido Fase 5 (2026-06-11, noche) | ✅ 9 unidades — "métele todo" pedido por el usuario: Zeitz §4.2 complejos, §8.2-§8.4 geometría de supervivencia completa, cap. 9 (convergencia + matemática euleriana) y Engel por heurística (cap. 1 invariancia, cap. 2 coloraciones, cap. 3 extremal, cap. 13 juegos) — 45 preguntas, examen de 8 ítems nivel AMC 12 (12A 2017 P17/P19, 12A 2018 P17, 12A 2019 P14, 12B 2019 P17/P20 + Bachet y tetrominós 1×4 de Engel; espejos ZIML AMC12 2017-2019 A/B descargados; TODAS las respuestas verificadas por cómputo en Python, incl. coloración (i+j) mod 4 con censo 25/26/25/24 y W/L de Bachet hasta 100). Pool acumulado: 40 ítems |
 | Tarjeta "Modo Estudio" en Dashboard | ✅ Bloque actual, unidades x/y, examen, racha |
-| Ingestión Fase 5+ | ❌ SIGUIENTE PASO — ver protocolo abajo |
+| Ingestión Fase 6+ | ❌ SIGUIENTE PASO — ver protocolo abajo |
 | Refinamientos del Modo Estudio | ❌ Ver lista al final |
 
 **Cómo funciona lo construido** (`js/study.js`, contenido en `data/study.json`,
@@ -506,20 +507,29 @@ progreso en `cps_estudio` — esquema documentado en `storage.js`):
 3. Orden del syllabus (PDF §7) y estado: ✅ Fase 0 (Pólya + Zeitz 1-2.2),
    ✅ Fase 1 (Zeitz §2.3-§3.4), ✅ Fase 2 (Zeitz §4.1 + §6.1-§6.3 +
    §7.1-§7.2, Engel cap. 5, 5 AMC), ✅ Fase 3 (Zeitz §6.4 + §4.3 +
-   §7.3-§7.5, Engel cap. 6, 5 AMC) y ✅ Fase 4 (2026-06-11: Zeitz
+   §7.3-§7.5, Engel cap. 6, 5 AMC), ✅ Fase 4 (2026-06-11: Zeitz
    §5.2-§5.5 álgebra completa + Engel cap. 7 desigualdades, examen 100%
-   probabilidad AMC — 7 ítems verificados). **Siguiente tanda (fase-5), a
-   DECIDIR con el usuario**: de Zeitz quedan §4.2 (números complejos),
-   cap. 8 (geometría) y cap. 9 (cálculo); el PDF (líneas ~533 y ~648 del
-   texto extraído) marca como siguiente escalón subir el nivel a AMC 12 /
-   AIME con Engel por heurística (juegos, coloraciones, principio extremal
-   profundo). Anclas Zeitz verificadas en el .txt: §5.2 línea 9076 (factor
-   tactic 9147), §5.3 línea 9650 (telescopio 9731), §5.4 línea 10142
-   (ceros 10213, Vieta 10364), §5.5 línea 10708 (AM-GM 10878, massage/
-   Cauchy 11138); §4.3 línea 7980, §6.4 línea 13221, §7.1 línea 13733,
-   §7.2 línea 14170, §7.3 línea 14445, §7.4 línea 14807; TOC completo en
-   líneas 430-590. Anclas Engel: cap. 5 línea 4117, cap. 6 línea 5833,
-   cap. 7 línea 7935 (cadena de medias 7965, Nesbitt 8058).
+   probabilidad AMC — 7 ítems verificados) y ✅ Fase 5 (2026-06-11, noche:
+   Zeitz §4.2 + cap. 8 completo + cap. 9, Engel caps. 1/2/3/13, examen
+   AMC 12 + Engel — 8 ítems verificados). **Con esto, de Zeitz solo queda
+   §8.5 (transformaciones) como sección sustantiva; la fase 6 natural es
+   subir a AIME y/o Engel caps. restantes (8 inducción, 9 sucesiones,
+   10 polinomios, 11 funcionales, 12 geometría, 14 estrategias) — decidir
+   con el usuario.** Anclas Zeitz verificadas en el .txt: §4.2 línea 7190
+   (De Moivre 7373), §8.2 línea 15797 (fantasma 16043, inscrito 16157),
+   §8.3 línea 16487 (semejantes 16675, altura-hipotenusa 16736), §8.4
+   línea 17171 (checklist 17179, concíclicos 17215, cevianas 17386), §9.2
+   línea 19154 (seis vías 19190), §9.4 línea 20690 (euleriana 20958);
+   §5.2 línea 9076 (factor tactic 9147), §5.3 línea 9650 (telescopio
+   9731), §5.4 línea 10142 (ceros 10213, Vieta 10364), §5.5 línea 10708
+   (AM-GM 10878, massage/Cauchy 11138); §4.3 línea 7980, §6.4 línea
+   13221, §7.1 línea 13733, §7.2 línea 14170, §7.3 línea 14445, §7.4
+   línea 14807; TOC completo en líneas 430-620. Anclas Engel: cap. 1
+   línea 237 (E2 paridad 290, monovariante E4 304), cap. 2 línea 1374
+   (mutilado 1382, problemas 1400+), cap. 3 línea 1956 (receta 1971,
+   E1 1996), cap. 13 línea 18838 (W/L 18854, Bachet 18876), cap. 5 línea
+   4117, cap. 6 línea 5833, cap. 7 línea 7935 (cadena de medias 7965,
+   Nesbitt 8058).
 4. **Exámenes AMC/AIME: obtenerlos de la web** (decisión del usuario,
    2026-06-10). ⚠️ El wiki de AoPS y isinj.com BLOQUEAN el fetch directo
    (Cloudflare 403); web.archive.org tampoco está disponible. Lo que SÍ
@@ -538,9 +548,12 @@ progreso en `cps_estudio` — esquema documentado en `storage.js`):
    de su bloque, respuestas derivadas y verificadas): fase-2 → AMC 10A 2019
    P2, P4, P18, P19, P20; fase-3 → AMC 10A 2018 P4, P19 y AMC 10B 2019 P6,
    P14, P25; fase-4 (probabilidad) → AMC 10B 2017 P9, 10A 2017 P15 y P18,
-   10B 2018 P6 y P9, 10B 2019 P17, 10A 2019 P20. Espejos ZIML ya
-   descargados en /tmp (se pierden al reiniciar; re-descargar con el mismo
-   patrón de URL): 2017/2018/2019, 10A y 10B.
+   10B 2018 P6 y P9, 10B 2019 P17, 10A 2019 P20; fase-5 (AMC 12) →
+   12A 2017 P17 y P19, 12A 2018 P17, 12A 2019 P14, 12B 2019 P17 y P20.
+   Espejos ZIML ya descargados en /tmp (se pierden al reiniciar;
+   re-descargar con el mismo patrón de URL, también existe
+   `/zimlresources/AMC12/ZIML_Download_<año>_AMC_12<A|B>.pdf`):
+   2017/2018/2019, 10A/10B y 12A/12B.
    Nota: los PDF de ZIML traen solo ~la mitad de los problemas de cada
    examen; verificar SIEMPRE la respuesta derivándola o por fuerza bruta
    en Python antes de publicarla en study.json.

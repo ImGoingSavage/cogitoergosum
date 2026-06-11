@@ -871,9 +871,15 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    25 preguntas de retrieval, examen de 7 ítems TODOS de probabilidad AMC
    (respuestas verificadas por fuerza bruta/derivación en Python; fuentes
    y anclas actualizadas en HANDOFF §3.11.6). Cero código; sw.js v10.
-   **Siguiente tanda (fase-5) a decidir con el usuario**: quedan Zeitz
-   §4.2 complejos, cap. 8 geometría, cap. 9 cálculo — o subir a AMC 12/
-   AIME con Engel por heurística, como sugiere el PDF.
+4bis. ~~Ingestión Fase 5~~ ✅ HECHA (2026-06-11, noche; "métele todo"
+   pedido por el usuario): bloque `fase-5` "El cruce" — 9 unidades (Zeitz
+   §4.2 complejos, §8.2-§8.4 geometría completa, cap. 9 convergencia +
+   euleriana; Engel caps. 1 invariancia, 2 coloraciones, 3 extremal,
+   13 juegos), 45 preguntas, examen de 8 ítems nivel AMC 12 (6 AMC 12
+   2017-2019 + Bachet + tetrominós de Engel; todas las respuestas
+   verificadas por cómputo). Pool de examen acumulado: 40. sw.js v11.
+   **Fase 6**: solo queda Zeitz §8.5 (transformaciones); lo natural es
+   AIME y/o Engel caps. 8-12/14 — decidir con el usuario.
 5. **Publicar el frontend** (cuando el usuario quiera usarlo del celular
    sin servidor local): GitHub Pages (repo ya existe; servir la raíz) o
    Cloudflare Pages. La PWA exige HTTPS — Pages lo da. Recordar: el SW
