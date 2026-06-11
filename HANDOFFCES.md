@@ -790,10 +790,18 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
 2. ~~"Pensar juntos"~~ ✅ HECHO Y VERIFICADO (E2E 9/9 con struggle first
    probado por RLS; SQL aplicado; ver tabla §5.3). Las 4 fases del plan
    §5 están COMPLETAS.
-3. **Chat socrático** (§4.4): panel lateral opcional durante el forcejeo
-   (system prompt heredado de `aiMentor.js`, conoce problema y
-   desconstrucción; jamás revela; se archiva con la sesión; no aparece
-   en absoluto sin cuenta de Claude). Independiente del backend.
+3. ~~Chat socrático (§4.4)~~ ✅ HECHO (2026-06-11, noche): tarjeta "Mentor
+   socrático" en la vista Sesión, visible SOLO con cuenta de Claude activa
+   y mientras dura el forcejeo (desaparece al revelar/completar — no se
+   muestra "bloqueado": no existe). `aiMentor.js → chatSocratico()`:
+   multi-turno, system = SYSTEM_MENTOR + reglas de chat (1-4 frases,
+   termina en pregunta, jamás confirma/niega soluciones) + contexto del
+   problema y la desconstrucción. El historial vive en `asignacion.chat`
+   → se archiva con la sesión en `cps_sesionesArchivadas` (sin historial
+   infinito). Verificado: node --check, IDs cruzados, sw.js v6.
+   PENDIENTE menor: prueba humana con key real (el flujo estático está
+   verificado; la llamada usa el mismo `llamarClaude`-patrón ya probado
+   de hints).
 4. **Ingestión Fase 4+ del Modo Estudio**: protocolo completo y anclas de
    página en HANDOFF §3.11.6 paso 3-4 (siguiente tanda: Zeitz cap. 5
    álgebra + Engel cap. 7 + AMC/AIME de probabilidad). Solo datos, cero

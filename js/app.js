@@ -29,6 +29,7 @@ import {
   agregarCuenta,
   activarCuenta,
   eliminarCuenta,
+  chatSocratico,
 } from './aiMentor.js';
 import * as Factory from './problemFactory.js';
 import * as Study from './study.js';
@@ -93,6 +94,7 @@ async function init() {
   configurarPisoMinimo();
   configurarFreshStart();
   configurarCuentaUI();
+  configurarChatUI();
   Claustro.init();
   Claustro.configurarUI();
   Sync.iniciar(); // sincronización opcional: no-op sin sesión o sin red
@@ -469,6 +471,69 @@ function renderizarSesion() {
 
   if (a.revelado) revelarSolucion(true);
   actualizarEstadoBloqueo();
+  actualizarChatUI();
+}
+
+/* ================= Chat socrático (§4.4, opcional) ==================== */
+/* Sin cuenta de Claude el panel NO existe (ni "bloqueado": no aparece).   */
+
+function actualizarChatUI() {
+  const a = Storage.load('asignacion');
+  const visible = mentorDisponible() && a && !a.completado && !a.revelado;
+  $('seccion-chat').hidden = !visible;
+  if (visible) renderizarChatMensajes();
+}
+
+function renderizarChatMensajes() {
+  const cont = $('chat-mensajes');
+  cont.innerHTML = '';
+  (Storage.load('asignacion')?.chat ?? []).forEach((m) => {
+    const div = document.createElement('div');
+    div.className = `chat-msg ${m.role === 'user' ? 'mio' : 'mentor'}`;
+    div.textContent = m.content;
+    cont.appendChild(div);
+  });
+  cont.scrollTop = cont.scrollHeight;
+}
+
+async function enviarMensajeChat() {
+  const texto = $('chat-entrada').value.trim();
+  const p = problemaActual();
+  if (!texto || !p) return;
+  $('chat-entrada').value = '';
+  const a = Storage.update('asignacion', (x) => {
+    if (x) {
+      x.chat = x.chat ?? [];
+      x.chat.push({ role: 'user', content: texto });
+    }
+    return x;
+  });
+  renderizarChatMensajes();
+  $('btn-chat-enviar').disabled = true;
+  $('chat-estado').textContent = 'El mentor está pensando…';
+  try {
+    const respuesta = await chatSocratico(p, a?.desconstruccion ?? '', a?.chat ?? []);
+    if (respuesta) {
+      Storage.update('asignacion', (x) => {
+        if (x) x.chat.push({ role: 'assistant', content: respuesta });
+        return x;
+      });
+      $('chat-estado').textContent = '';
+    } else {
+      $('chat-estado').textContent = 'El mentor no respondió esta vez; sigue con tu forcejeo.';
+    }
+  } catch {
+    $('chat-estado').textContent = 'No se pudo contactar al mentor (¿red o cuenta?). Tu sesión sigue intacta.';
+  }
+  $('btn-chat-enviar').disabled = false;
+  renderizarChatMensajes();
+}
+
+function configurarChatUI() {
+  $('btn-chat-enviar').addEventListener('click', enviarMensajeChat);
+  $('chat-entrada').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') enviarMensajeChat();
+  });
 }
 
 /* ================= Controles del temporizador (§2.6) ================== */
@@ -661,6 +726,7 @@ function revelarSolucion(soloRender = false) {
     });
   }
   actualizarTimerControles();
+  actualizarChatUI(); // el chat se archiva con la sesión y deja de mostrarse
 
   $('solucion-texto').textContent = p.solucion;
   $('explicacion-texto').textContent = p.explicacion;
@@ -872,6 +938,7 @@ function mostrarEstadoCompletado(p) {
   $('timer-etiqueta').textContent = ETIQUETA_TIMER_DEFAULT;
   $('checkpoint-metacognitivo').hidden = true;
   actualizarTimerControles();
+  $('seccion-chat').hidden = true;
   $('btn-revelar').hidden = true;
   $('fieldset-prediccion').hidden = true;
   $('btn-hint').disabled = true;
@@ -906,6 +973,9 @@ function resetearVistaSesion() {
   $('timer-etiqueta').textContent = ETIQUETA_TIMER_DEFAULT;
   $('resultado-proceso').hidden = true;
   $('resultado-insignias').innerHTML = '';
+  $('seccion-chat').hidden = true;
+  $('chat-mensajes').innerHTML = '';
+  $('chat-estado').textContent = '';
   document.querySelectorAll('input[name="autoeval"]').forEach((r) => (r.checked = false));
   document.querySelectorAll('input[name="prediccion"]').forEach((r) => (r.checked = false));
   $('ficha-moraleja').value = '';

@@ -151,6 +151,51 @@ export async function generarHintIA(problema, nivel, desconstruccion) {
 }
 
 /**
+ * Chat socrático durante el forcejeo (§4.4 HANDOFFCES): conversación breve
+ * y multi-turno. Jamás revela ni confirma soluciones; pregunta y reenfoca.
+ * El historial vive en la asignación (se archiva con la sesión).
+ */
+const SYSTEM_CHAT =
+  SYSTEM_MENTOR +
+  `
+
+Además, estás en un CHAT breve durante el forcejeo del usuario:
+- Cada intervención tuya: 1 a 4 frases, casi siempre terminando en una pregunta.
+- Nunca confirmes ni niegues si una respuesta propuesta es correcta: devuelve la pregunta que le permita comprobarlo por sí mismo.
+- Si pide la solución directamente, recuérdale con calidez que el forcejeo es el entrenamiento y ofrécele reenfocar.`;
+
+export async function chatSocratico(problema, desconstruccion, mensajes) {
+  const cuenta = cuentaActiva();
+  if (!cuenta?.apiKey || !mensajes?.length) return null;
+
+  const contexto =
+    `Problema: ${problema.enunciado}\n\n` +
+    `Solución de referencia (solo para tu contexto, JAMÁS la reveles ni la confirmes): ${problema.solucion}\n\n` +
+    `Desconstrucción escrita por el usuario hasta ahora:\n${desconstruccion || '(aún vacía)'}`;
+
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': cuenta.apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 1024,
+      thinking: { type: 'adaptive' },
+      system: `${SYSTEM_CHAT}\n\n${contexto}`,
+      messages: mensajes,
+    }),
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  const data = await res.json();
+  if (data.stop_reason === 'refusal') return null;
+  return (data.content ?? []).find((b) => b.type === 'text')?.text?.trim() ?? null;
+}
+
+/**
  * Evalúa la desconstrucción del usuario: detecta bloqueos y formula
  * UNA pregunta orientadora (sin pistas sobre la solución).
  * Pensado para la fase "Comprender el problema" de Pólya.

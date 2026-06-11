@@ -108,6 +108,22 @@
         <button id="btn-hint" class="secundario">Pedir pista 1 de 5</button>
       </article>
 
+      <!-- Chat socrático (§4.4): solo existe con cuenta de Claude activa.
+           Pregunta y reenfoca; jamás revela. Se archiva con la sesión. -->
+      <article class="tarjeta" id="seccion-chat" hidden>
+        <h2>Mentor socrático</h2>
+        <div id="chat-mensajes" class="chat-mensajes"></div>
+        <div class="mentor-config">
+          <input id="chat-entrada" type="text" placeholder="Cuéntale dónde estás atascado…" autocomplete="off" />
+          <button id="btn-chat-enviar" class="secundario">Enviar</button>
+        </div>
+        <p id="chat-estado" class="sync-mensaje"></p>
+        <p class="nota-privacidad">
+          El mentor pregunta y reenfoca; nunca revela ni confirma soluciones.
+          La conversación se archiva con la sesión.
+        </p>
+      </article>
+
       <!-- Revelar solución (bloqueado por timer + desconstrucción + predicción) -->
       <article class="tarjeta">
         <h2>Solución</h2>
