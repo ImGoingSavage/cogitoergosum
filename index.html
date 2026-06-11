@@ -318,8 +318,30 @@
         <div id="vitrina-moraleja" class="piso-ficha" hidden></div>
         <div id="vitrina-insignias" class="estante"></div>
         <div class="acciones-cuenta">
+          <button id="btn-vitrina-pj" class="primario">Pensar juntos</button>
           <button id="btn-vitrina-cerrar" class="secundario">Volver</button>
           <button id="btn-vitrina-eliminar" class="secundario peligro">Deshacer el vínculo</button>
+        </div>
+      </article>
+
+      <!-- Pensar juntos (§2.4 p.15): mismo problema, cada quien por su lado.
+           El problema se sortea del pool común; sin score, sin ganador. -->
+      <article class="tarjeta" id="claustro-pj" hidden>
+        <h2>Pensar juntos</h2>
+        <p class="nota-privacidad">
+          Dos amigos atacan el MISMO problema, cada quien por su lado y con el
+          bucle completo de entrenamiento. Al cerrar ambos, sus desconstrucciones
+          y moralejas se leen lado a lado. No hay ganador: el premio es ver otra
+          mente trabajar.
+        </p>
+        <div id="pj-lista"></div>
+      </article>
+
+      <article class="tarjeta" id="claustro-pj-vista" hidden>
+        <h2>Dos mentes, un problema</h2>
+        <div id="pj-vista-contenido"></div>
+        <div class="acciones-cuenta">
+          <button id="btn-pj-vista-cerrar" class="secundario">Volver</button>
         </div>
       </article>
 

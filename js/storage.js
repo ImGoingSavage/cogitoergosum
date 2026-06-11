@@ -71,8 +71,9 @@ const DEFAULTS = {
   // Configuración del mentor IA (opcional)
   mentorIA: { habilitado: false, apiKey: '' },
   // El claustro (Fase D, §2.4): preferencias sociales del usuario.
-  // username elegido y la ficha que decidió compartir (opt-in).
-  claustro: { username: null, fichaCompartidaUid: null },
+  // username, ficha compartida (opt-in) y entregas de "pensar juntos"
+  // que esperan red (jamás bloquean el cierre de una sesión).
+  claustro: { username: null, fichaCompartidaUid: null, pjEntregasPendientes: [] },
   // ---- Sincronización opcional (Fase C, HANDOFFCES §5.2) ----
   // Cola de eventos pendientes de subir; LocalStorage sigue siendo la verdad
   outbox: [],            // [{uid, tipo, payload, ts}]

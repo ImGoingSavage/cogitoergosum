@@ -252,3 +252,45 @@ export async function marcarReconocimientosVistos(ids) {
   if (!ids.length) return;
   await rest('PATCH', `reconocimientos?id=in.(${ids.join(',')})`, { visto: true });
 }
+
+/* ============== Pensar juntos (§2.4 punto 15, aprobado) =============== */
+
+export async function proponerPensarJuntos(amigoId, candidatos) {
+  const sesion = await tokenVigente();
+  if (!sesion) throw new Error('Sin sesión');
+  await rest('POST', 'pensar_juntos', [
+    { user_a: sesion.userId, user_b: amigoId, candidatos },
+  ]);
+}
+
+export async function listarPensarJuntos() {
+  return (
+    (await rest('GET', 'pensar_juntos?select=id,user_a,user_b,candidatos,problem_id,estado,creado&order=creado.desc')) ?? []
+  );
+}
+
+/** El invitado acepta: fija el problema sorteado y activa la sesión conjunta. */
+export async function aceptarPensarJuntos(id, problemId) {
+  await rest('PATCH', `pensar_juntos?id=eq.${id}`, {
+    problem_id: problemId,
+    estado: 'activa',
+  });
+}
+
+export async function retirarPensarJuntos(id) {
+  await rest('DELETE', `pensar_juntos?id=eq.${id}`);
+}
+
+export async function entregarPensarJuntos(pjId, payload) {
+  const sesion = await tokenVigente();
+  if (!sesion) throw new Error('Sin sesión');
+  await rest('POST', 'pj_entregas', [{ pj_id: pjId, user_id: sesion.userId, payload }]);
+}
+
+/**
+ * Entregas de un pensar-juntos. Por RLS, la del otro SOLO llega cuando la
+ * tuya ya existe (struggle first garantizado por el servidor).
+ */
+export async function entregasPensarJuntos(pjId) {
+  return (await rest('GET', `pj_entregas?pj_id=eq.${pjId}&select=user_id,payload,creado`)) ?? [];
+}

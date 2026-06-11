@@ -25,6 +25,17 @@ const $ = (id) => document.getElementById(id);
 
 let amigosCache = []; // [{amistadId, userId, username, vitrina}]
 
+/**
+ * Pool de problemas (inyectado por app.js, sin ciclos de import).
+ * "Pensar juntos" sortea SOLO de problemas curados — jamás variantes
+ * generadas, que son personales de cada biblioteca.
+ */
+let obtenerProblemas = () => [];
+
+export function setProblemas(fn) {
+  obtenerProblemas = fn;
+}
+
 /* ========================= Vitrina propia ============================= */
 
 function fichaCompartida() {
@@ -97,6 +108,9 @@ export function configurarUI() {
   $('btn-vitrina-cerrar').addEventListener('click', () => {
     $('claustro-vitrina').hidden = true;
   });
+  $('btn-pj-vista-cerrar').addEventListener('click', () => {
+    $('claustro-pj-vista').hidden = true;
+  });
 }
 
 /* ====================== Render de la vista =========================== */
@@ -111,14 +125,18 @@ export async function renderizar() {
   $('claustro-compartir').hidden = !sesion || !username;
   $('claustro-notifs').hidden = true;
   $('claustro-vitrina').hidden = true;
+  $('claustro-pj').hidden = true;
+  $('claustro-pj-vista').hidden = true;
   if (!sesion || !username) return;
 
   $('claustro-mi-nombre').textContent = username;
   renderizarSelectorFicha();
   publicarVitrina();
+  reintentarEntregasPendientes();
 
   try {
-    await Promise.all([renderizarAmigos(), renderizarReconocimientos()]);
+    await renderizarAmigos();
+    await Promise.all([renderizarReconocimientos(), renderizarPensarJuntos()]);
   } catch {
     $('claustro-msg').textContent =
       'No se pudo consultar el claustro (¿sin conexión?). Tu entrenamiento no depende de esto.';
@@ -316,6 +334,26 @@ async function abrirVitrina(amigo) {
     estante.appendChild(card);
   });
 
+  // Pensar juntos: proponer atacar el mismo problema, cada quien por su lado
+  const btnPJ = $('btn-vitrina-pj');
+  btnPJ.disabled = false;
+  btnPJ.onclick = async () => {
+    btnPJ.disabled = true;
+    try {
+      const candidatos = candidatosPropios();
+      if (!candidatos.length) {
+        $('claustro-msg').textContent = 'No quedan problemas curados sin trabajar en tu biblioteca.';
+        return;
+      }
+      await Api.proponerPensarJuntos(amigo.userId, candidatos);
+      $('claustro-msg').textContent =
+        `Propuesta enviada a ${amigo.username}: cuando la acepte, el problema se sorteará del pool de ambos.`;
+      await renderizarPensarJuntos();
+    } catch (e) {
+      $('claustro-msg').textContent = `No se pudo proponer: ${e.message.slice(0, 140)}`;
+    }
+  };
+
   // Deshacer el vínculo: 2 clics, sin súplicas (§0.1)
   const btnEliminar = $('btn-vitrina-eliminar');
   btnEliminar.onclick = async () => {
@@ -407,4 +445,227 @@ async function descompartirFicha() {
   });
   await publicarVitrina();
   renderizarSelectorFicha();
+}
+
+/* ==================== Pensar juntos (§2.4 punto 15) =================== */
+/* Aprobado 2026-06-11: el problema se SORTEA del pool común. Sin ganador:
+   el premio es ver otra mente trabajar. La entrega del otro solo es legible
+   cuando la tuya existe (RLS "struggle first"). */
+
+/** Ids curados que YO no he trabajado, barajados (lo que se publica al proponer). */
+function candidatosPropios() {
+  const completados = new Set(Storage.load('historial').map((h) => h.problemId));
+  return obtenerProblemas()
+    .filter((p) => p.origen !== 'generado' && !completados.has(p.id))
+    .map((p) => p.id)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 30);
+}
+
+/** Sorteo del aceptante: intersección de pools; si queda vacía, el pool del otro. */
+function sortearDelPoolComun(candidatos) {
+  const mios = new Set(candidatosPropios());
+  const comunes = candidatos.filter((id) => mios.has(id));
+  const pool = comunes.length ? comunes : candidatos;
+  return pool[Math.floor(Math.random() * pool.length)] ?? null;
+}
+
+function tituloProblema(problemId) {
+  return obtenerProblemas().find((p) => p.id === problemId)?.titulo ?? `Problema #${problemId}`;
+}
+
+function nombreAmigo(userId) {
+  return amigosCache.find((a) => a.userId === userId)?.username ?? 'Un colega';
+}
+
+async function renderizarPensarJuntos() {
+  const sesion = Api.sesionActual();
+  const filas = await Api.listarPensarJuntos();
+  const lista = $('pj-lista');
+  lista.innerHTML = '';
+  $('claustro-pj').hidden = filas.length === 0 && amigosCache.length === 0;
+  if (!filas.length) {
+    const vacio = document.createElement('p');
+    vacio.className = 'nota-privacidad';
+    vacio.textContent =
+      'Nada en curso. Desde la vitrina de un amigo puedes proponer atacar el mismo problema, cada quien por su lado.';
+    lista.appendChild(vacio);
+    return;
+  }
+
+  for (const fila of filas) {
+    const soyProponente = fila.user_a === sesion.userId;
+    const otro = nombreAmigo(soyProponente ? fila.user_b : fila.user_a);
+    const item = document.createElement('div');
+    item.className = 'pj-item';
+
+    const linea = document.createElement('p');
+    linea.className = 'fila';
+    const acciones = document.createElement('div');
+    acciones.className = 'acciones-cuenta';
+
+    if (fila.estado === 'propuesta') {
+      if (soyProponente) {
+        linea.textContent = `Propuesta enviada a ${otro} — el problema se sorteará cuando acepte.`;
+        const btn = document.createElement('button');
+        btn.className = 'secundario';
+        btn.textContent = 'Retirar propuesta';
+        btn.addEventListener('click', async () => {
+          await Api.retirarPensarJuntos(fila.id).catch(() => {});
+          renderizarPensarJuntos();
+        });
+        acciones.appendChild(btn);
+      } else {
+        linea.textContent = `${otro} te propone pensar juntos: el mismo problema, cada quien por su lado.`;
+        const btnSi = document.createElement('button');
+        btnSi.className = 'primario';
+        btnSi.textContent = 'Aceptar y sortear problema';
+        btnSi.addEventListener('click', async () => {
+          const problemId = sortearDelPoolComun(fila.candidatos ?? []);
+          if (!problemId) {
+            $('claustro-msg').textContent = 'No hay problemas disponibles para sortear.';
+            return;
+          }
+          await Api.aceptarPensarJuntos(fila.id, problemId).catch(() => {});
+          renderizarPensarJuntos();
+        });
+        const btnNo = document.createElement('button');
+        btnNo.className = 'secundario';
+        btnNo.textContent = 'Declinar';
+        btnNo.addEventListener('click', async () => {
+          await Api.retirarPensarJuntos(fila.id).catch(() => {});
+          renderizarPensarJuntos();
+        });
+        acciones.append(btnSi, btnNo);
+      }
+    } else {
+      // Activa: cada quien ataca con el bucle completo del camino 1
+      linea.textContent = `Con ${otro}: «${tituloProblema(fila.problem_id)}»`;
+      const entregas = await Api.entregasPensarJuntos(fila.id).catch(() => []);
+      const miEntrega = entregas.find((e) => e.user_id === sesion.userId);
+
+      if (!miEntrega) {
+        const btn = document.createElement('button');
+        btn.className = 'primario';
+        btn.textContent = 'Atacar este problema';
+        btn.title = 'Se abre como sesión normal de entrenamiento: timer, desconstrucción y ficha';
+        btn.addEventListener('click', () => {
+          window.dispatchEvent(
+            new CustomEvent('cps:pj-atacar', {
+              detail: { problemId: fila.problem_id, pjId: fila.id },
+            })
+          );
+        });
+        acciones.appendChild(btn);
+      } else if (entregas.length === 2) {
+        const btn = document.createElement('button');
+        btn.className = 'primario';
+        btn.textContent = 'Ver las dos mentes lado a lado';
+        btn.addEventListener('click', () => verLadoALado(fila, entregas, otro));
+        acciones.appendChild(btn);
+      } else {
+        const nota = document.createElement('span');
+        nota.className = 'nota-privacidad';
+        nota.textContent =
+          'Tu entrega está hecha. Cuando tu amigo cierre la suya, podrán leerse lado a lado.';
+        acciones.appendChild(nota);
+      }
+
+      const btnCerrar = document.createElement('button');
+      btnCerrar.className = 'enlace';
+      btnCerrar.textContent = 'cerrar sesión conjunta';
+      btnCerrar.addEventListener('click', async () => {
+        if (!window.confirm('¿Cerrar esta sesión conjunta para ambos?')) return;
+        await Api.retirarPensarJuntos(fila.id).catch(() => {});
+        renderizarPensarJuntos();
+      });
+      acciones.appendChild(btnCerrar);
+    }
+
+    item.append(linea, acciones);
+    lista.appendChild(item);
+  }
+}
+
+/** El premio: ver otra mente trabajar. Sin score, sin tiempos, sin ganador. */
+function verLadoALado(fila, entregas, nombreOtro) {
+  const sesion = Api.sesionActual();
+  const cont = $('pj-vista-contenido');
+  cont.innerHTML = '';
+  $('claustro-pj-vista').hidden = false;
+
+  const titulo = document.createElement('h3');
+  titulo.className = 'piso-titulo';
+  titulo.textContent = `«${tituloProblema(fila.problem_id)}» — dos mentes, un problema`;
+  cont.appendChild(titulo);
+
+  const grid = document.createElement('div');
+  grid.className = 'pj-lado-a-lado';
+  const orden = [
+    { etiqueta: 'Tú', entrega: entregas.find((e) => e.user_id === sesion.userId) },
+    { etiqueta: nombreOtro, entrega: entregas.find((e) => e.user_id !== sesion.userId) },
+  ];
+  orden.forEach(({ etiqueta, entrega }) => {
+    const col = document.createElement('div');
+    col.className = 'pj-columna';
+    const h = document.createElement('p');
+    h.className = 'cierre-titulo';
+    h.textContent = etiqueta;
+    col.appendChild(h);
+
+    const p = entrega?.payload ?? {};
+    const descon = document.createElement('p');
+    descon.className = 'pj-desconstruccion';
+    descon.textContent = p.desconstruccion ?? '';
+    col.appendChild(descon);
+
+    [['★ Moraleja: ', p.moraleja], ['★ Disparador: ', p.disparador]].forEach(([rotulo, texto]) => {
+      if (!texto) return;
+      const linea = document.createElement('p');
+      linea.className = 'ficha-linea';
+      const b = document.createElement('strong');
+      b.textContent = rotulo;
+      linea.append(b, texto);
+      col.appendChild(linea);
+    });
+    grid.appendChild(col);
+  });
+  cont.appendChild(grid);
+  $('claustro-pj-vista').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ------------------- Entrega (llamada desde app.js) ------------------- */
+
+/**
+ * Sube la entrega de una sesión conjunta. Si no hay red, queda pendiente
+ * en cps_claustro y se reintenta al volver al claustro (jamás bloquea el
+ * cierre de la sesión de entrenamiento).
+ */
+export async function entregar(pjId, payload) {
+  try {
+    await Api.entregarPensarJuntos(pjId, payload);
+  } catch {
+    Storage.update('claustro', (c) => {
+      c.pjEntregasPendientes = [...(c.pjEntregasPendientes ?? []), { pjId, payload }];
+      return c;
+    });
+  }
+}
+
+async function reintentarEntregasPendientes() {
+  const pendientes = Storage.load('claustro').pjEntregasPendientes ?? [];
+  if (!pendientes.length) return;
+  const restantes = [];
+  for (const e of pendientes) {
+    try {
+      await Api.entregarPensarJuntos(e.pjId, e.payload);
+    } catch (err) {
+      // 409 = ya estaba entregada (duplicado): se descarta sin reintento
+      if (!/409/.test(err.message)) restantes.push(e);
+    }
+  }
+  Storage.update('claustro', (c) => {
+    c.pjEntregasPendientes = restantes;
+    return c;
+  });
 }

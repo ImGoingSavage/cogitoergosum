@@ -104,6 +104,12 @@ async function init() {
     problemas: () => problemas,
     bloquesEstudio: () => Study.bloques(),
   });
+  Claustro.setProblemas(() => problemas);
+  // "Pensar juntos": el claustro pide abrir el problema compartido como
+  // sesión normal del camino 1 (bucle completo, sin atajos)
+  window.addEventListener('cps:pj-atacar', (e) => {
+    abrirProblemaCompartido(e.detail.problemId, e.detail.pjId);
+  });
   renderizarSesion();
   actualizarFreshStartUI();
   cargarCita();
@@ -262,7 +268,49 @@ function crearAsignacion() {
     prediccion: null,
     revelado: false,
     completado: false,
+    pensarJuntosId: null,
   });
+}
+
+/**
+ * "Pensar juntos" (§2.4): abre el problema compartido como asignación normal
+ * del camino 1 — timer, desconstrucción, predicción y ficha intactos. Nunca
+ * pisa un forcejeo vivo: si hay una sesión sin completar, primero se cierra.
+ */
+function abrirProblemaCompartido(problemId, pjId) {
+  const a = Storage.load('asignacion');
+  if (a && !a.completado) {
+    $('claustro-msg').textContent =
+      'Tienes una sesión de entrenamiento abierta: ciérrala primero y vuelve a intentarlo.';
+    return;
+  }
+  const p = problemas.find((x) => x.id === problemId);
+  if (!p) {
+    $('claustro-msg').textContent = 'Ese problema no está en tu biblioteca local.';
+    return;
+  }
+  Storage.save('asignacion', {
+    problemId,
+    fecha: Storage.hoy(),
+    esRevision: false,
+    revisionDe: null,
+    timerInicio: Date.now(),
+    timerCumplido: false,
+    duracionMin: Timer.normalizarDuracion(Storage.load('preferencias')?.duracionTimer),
+    pausadoEn: null,
+    msPausadoTotal: 0,
+    pausas: 0,
+    desconstruccion: '',
+    hintsUsados: [],
+    prediccion: null,
+    revelado: false,
+    completado: false,
+    pensarJuntosId: pjId,
+  });
+  resetearVistaSesion();
+  renderizarSesion();
+  cambiarVista('sesion');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function asegurarAsignacionDelDia() {
@@ -691,6 +739,17 @@ function completarSesion() {
     return h;
   });
   Storage.encolarEvento('sesion', entrada);
+
+  // Pensar juntos: al cerrar, la entrega viaja al claustro (struggle first:
+  // la del amigo solo será legible ahora que la tuya existe)
+  if (a.pensarJuntosId) {
+    Claustro.entregar(a.pensarJuntosId, {
+      desconstruccion: a.desconstruccion,
+      moraleja,
+      disparador,
+      fecha: Storage.hoy(),
+    });
+  }
 
   // Motor adaptativo
   const ajuste = Engine.ajustarDificultad({

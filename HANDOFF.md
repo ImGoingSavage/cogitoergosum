@@ -7,16 +7,18 @@ Fecha de corte: 2026-06-10. **Actualizado 2026-06-11.**
 > 1. El proyecto pasa a llamarse **CogitoErgoSum**. La extensión del plan vive
 >    en `HANDOFFCES.md` (identidad §1, motivación §2, escalabilidad §3, Claude
 >    por usuario §4) y su **Constitución §0 es LEY** para toda decisión nueva.
-> 2. Las **Fases A y B de HANDOFFCES ya están ejecutadas y verificadas**
->    (bitácora completa en HANDOFFCES §5.1): rediseño "la biblioteca", timer
->    pausable y configurable 20-120 min, PWA instalable/offline, motor de
->    insignias, fresh start de rachas, rating por heurística y avatar por
->    capas. Este archivo queda actualizado abajo donde esos cambios tocan
->    al código descrito.
-> 3. **Decisión de backend tomada por el usuario (2026-06-11): Supabase con
->    cron keep-alive** (Opción B de HANDOFFCES §3.3). La Fase C aún NO tiene
->    código: el playbook paso a paso para ejecutarla está en
->    **HANDOFFCES §5.2** — empieza por ahí si vienes a construir el backend.
+> 2. Estado de fases (bitácoras en HANDOFFCES §5.1-§5.3): **✅ Fase A**
+>    (identidad "la biblioteca", lenguaje, timer pausable 20-120 min, PWA),
+>    **✅ Fase B** (insignias, fresh start, rating por heurística, avatar),
+>    **✅ Fase C** (cuentas + sincronización offline-first con Supabase
+>    `rcaljqmibtkorcmdyqvg` + cron keep-alive en GitHub Actions; E2E 8/8),
+>    **✅ Fase D** (el claustro: amistades por código, vitrina,
+>    reconocimiento ❧; 4.ª pestaña).
+> 3. **Si vienes a continuar el proyecto: empieza por HANDOFFCES §5.4**
+>    ("Mapa para el siguiente agente"): infraestructura viva, ritual de
+>    verificación y la lista de QUÉ FALTA en orden de valor (E2E social,
+>    "Pensar juntos" aprobado con sorteo del pool común, chat socrático,
+>    ingestión Fase 4+, publicación del frontend).
 
 ---
 
@@ -114,6 +116,16 @@ js/problemFactory.js    Variantes isomórficas con IA (structured outputs, opcio
 js/study.js             Camino 2: Modo Estudio (roadmap, quiz, examen del motor, racha 📘)
 js/badges.js            Sellos de la biblioteca (§2.1): evaluadores + vitrina + revelado
 js/avatar.js            "El pensador" (§2.3): avatar SVG por capas ganadas
+js/api.js               Puerta única al backend Supabase (auth+REST sin SDK;
+                        URL y anon key como constantes; cambiar de backend =
+                        reemplazar solo este archivo)
+js/sync.js              Sincronización offline-first: outbox, snapshot,
+                        adoptar/unir multi-dispositivo, recomputo de rachas
+js/claustro.js          Fase D: amistades, vitrina, reconocimiento ❧
+supabase/schema.sql     DDL Fase C (events/snapshots/keepalive + RLS) — APLICADO
+supabase/schema-fase-d.sql  DDL claustro (perfiles/amistades/invitaciones/
+                        reconocimientos + RLS por amistad) — APLICADO
+.github/workflows/keepalive.yml  Cron keep-alive de Supabase (cada 2 días)
 data/problems.json      100 problemas curados (25 por estrategia)
 data/study.json         Syllabus + bancos del Modo Estudio (Fases 0-3 sembradas)
 data/quotes.json        Citas curadas (16, con autor) para el pie de la app

@@ -195,6 +195,17 @@ forcejeo.
   les muestra las desconstrucciones y moralejas del otro lado a lado. No hay
   ganador: el premio es ver otra mente trabajar. (Esto materializa "compartir
   la pasión".)
+  > **✅ APROBADO por el usuario (2026-06-11) con regla de sorteo**: el
+  > problema se SORTEA del pool común — problemas curados (jamás variantes
+  > generadas, que son personales) que NINGUNO de los dos haya trabajado.
+  > El sorteo ocurre en el cliente de quien ACEPTA: el proponente publica
+  > sus candidatos (ids curados no trabajados, barajados), el aceptante
+  > intersecta con los suyos y sortea; si la intersección queda vacía,
+  > sortea de los candidatos del proponente. Cada quien lo resuelve con el
+  > bucle COMPLETO del camino 1 (timer, desconstrucción, ficha — sin
+  > atajos); las entregas del otro solo se pueden leer cuando TÚ ya
+  > entregaste (struggle first, garantizado por RLS). Se comparte:
+  > desconstrucción, moraleja y disparador. Sin score, sin ganador.
 - Todo lo social es opt-in y la app es 100% funcional sin un solo amigo.
 
 ### §2.5 Rating por heurística (ya previsto en §3.9.2 del HANDOFF)
@@ -728,8 +739,92 @@ juntos") queda SIN construir hasta validarlo con el usuario.
 | `storage.js` | ✅ `cps_claustro` {username, fichaCompartidaUid} añadido a CLAVES_SYNC |
 | `sw.js` | ✅ v4 con claustro.js |
 | Verificación local | ✅ node --check (14 módulos), IDs HTML↔JS sin huecos, vista Claustro sin sesión verificada en headless |
-| Prueba social E2E | ❌ Tras aplicar el SQL: crear 2 cuentas de prueba por REST → perfil → invitación → canje → leer vitrina mutua → RLS (un 3.º NO ve perfiles ajenos) → reconocer (✓ y duplicado → 409) → marcar visto → deshacer vínculo → borrar ambas cuentas |
-| "Pensar juntos" (§2.4, punto 15) | ❌ A propósito: validar diseño con el usuario antes de construir |
+| Prueba social E2E | ✅ 10/10 (2026-06-11, tarde): RLS pre-vínculo, invitación+canje, código quemado, vitrina mutua, ❧ 201 + duplicado 409, marcar visto, extraños ven 0 perfiles, vínculo deshecho, ambas cuentas de prueba borradas |
+| "Pensar juntos" (§2.4, punto 15) | ✅ CONSTRUIDO (2026-06-11, tarde): `supabase/schema-pensar-juntos.sql` (pensar_juntos + pj_entregas con RLS "struggle first": la entrega del otro solo es legible cuando la tuya existe), 7 operaciones en api.js, UI completa en claustro.js (proponer desde vitrina, aceptar con sorteo del pool común en el cliente del aceptante, lista de sesiones conjuntas, lado a lado), integración camino 1 en app.js (`abrirProblemaCompartido` — jamás pisa un forcejeo vivo; entrega al cerrar con reintento offline). sw.js v5. ❌ PENDIENTE: ejecutar el SQL en el Editor (usuario) + E2E con 2 cuentas |
+
+---
+
+## §5.4 MAPA PARA EL SIGUIENTE AGENTE (actualizado 2026-06-11, tarde)
+
+Todo lo que hace falta saber para continuar el proyecto desde este punto,
+sin releer la conversación. Léelo junto con: `claude.md` (pedagogía),
+`HANDOFF.md` (camino 1 y 2, protocolo de ingestión) y este archivo
+(§0 Constitución — ES LEY —, §5.1-§5.3 bitácoras).
+
+### Infraestructura viva (no es plan: ya existe)
+
+- **Supabase**: proyecto `rcaljqmibtkorcmdyqvg` (cuenta del usuario).
+  - URL y anon key viven como CONSTANTES en `js/api.js` (la anon es pública
+    por diseño; la seguridad la dan las políticas RLS). La `service_role`
+    no existe en ningún archivo y así debe seguir.
+  - SQL aplicado por el usuario en el SQL Editor: `supabase/schema.sql`
+    (Fase C) y `supabase/schema-fase-d.sql` (claustro). Cualquier DDL nuevo
+    = archivo nuevo en `supabase/` + pedirle al usuario que lo pegue
+    (la anon key no puede correr DDL, por diseño).
+  - "Confirm email" está DESACTIVADO (signup devuelve sesión directa).
+- **GitHub**: repo privado `ImGoingSavage/cogitoergosum`. `gh` autenticado
+  (token con scope `workflow`) y configurado como credential helper de git
+  (`gh auth setup-git`). Secrets del repo: `SUPABASE_URL`,
+  `SUPABASE_ANON_KEY`. Workflow `keepalive.yml` en verde, cron cada 2 días
+  (si el repo pasa ~60 días sin commits, GitHub pausa el schedule: un
+  commit lo reactiva).
+- **`.gitignore`**: `Biblioteca/` y `Definitivo.pdf` NUNCA se suben
+  (material personal/copyright); la app no los necesita.
+
+### Cómo verificar cualquier cambio (ritual mínimo)
+
+```sh
+cd /Users/EdgarDevice/Desktop/ProyectoX
+for f in js/*.js sw.js; do node --check "$f"; done
+python3 -c "import json,glob; [json.load(open(p)) for p in glob.glob('data/*.json')]"
+python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
+# Si cambiaste CUALQUIER archivo del shell: subir VERSION en sw.js
+# (la app del usuario se recarga sola una vez al detectar la versión nueva).
+# Cruce de IDs HTML↔JS: grep de $('...') vs id="..." en ambas direcciones.
+# Probar con red desconectada y prefers-reduced-motion. Releer §0.1.
+```
+
+### QUÉ FALTA, en orden de valor
+
+1. ~~Prueba social E2E de la Fase D~~ ✅ HECHA (10/10, ver tabla §5.3).
+2. **"Pensar juntos"** — ✅ CONSTRUIDO según el diseño de §2.4 (detalle en
+   la tabla §5.3). Falta SOLO: el usuario ejecuta
+   `supabase/schema-pensar-juntos.sql` en el SQL Editor y se corre la
+   E2E con 2 cuentas de prueba (proponer → aceptar/sortear → struggle
+   first: sin mi entrega NO leo la del otro → ambas entregas → lado a
+   lado → retirar → borrar cuentas).
+3. **Chat socrático** (§4.4): panel lateral opcional durante el forcejeo
+   (system prompt heredado de `aiMentor.js`, conoce problema y
+   desconstrucción; jamás revela; se archiva con la sesión; no aparece
+   en absoluto sin cuenta de Claude). Independiente del backend.
+4. **Ingestión Fase 4+ del Modo Estudio**: protocolo completo y anclas de
+   página en HANDOFF §3.11.6 paso 3-4 (siguiente tanda: Zeitz cap. 5
+   álgebra + Engel cap. 7 + AMC/AIME de probabilidad). Solo datos, cero
+   código.
+5. **Publicar el frontend** (cuando el usuario quiera usarlo del celular
+   sin servidor local): GitHub Pages (repo ya existe; servir la raíz) o
+   Cloudflare Pages. La PWA exige HTTPS — Pages lo da. Recordar: el SW
+   precachea; tras cada deploy el usuario recibe la versión nueva en la
+   recarga siguiente (mecanismo `controllerchange` ya implementado).
+6. **Prueba humana de 2 dispositivos** (Fase C): Edgar crea su cuenta real,
+   "Importar mi progreso local", abrir en otro navegador y verificar
+   adopción + rachas intactas.
+7. **Menores acumulados**: Web Push diaria opcional (1/día, hora elegida);
+   refinamientos del Modo Estudio (HANDOFF §3.11.6 lista final);
+   FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9);
+   exponer `evaluarDesconstruccion()` en la UI durante el forcejeo.
+
+### Convenciones que NO se negocian (resumen operativo)
+
+- Español en todo; vanilla JS, ES6 modules, CERO librerías/CDNs/build.
+- `storage.js` es la única puerta a LocalStorage. `cuentaActiva()` de
+  aiMentor.js es la única fuente de la key de Claude. `cps_mentorIA` y
+  `cps_asignacion` JAMÁS viajan al servidor (exclusión en CLAVES_SYNC).
+- La IA y la cuenta son SIEMPRE opcionales: cada feature debe funcionar
+  (o desaparecer limpiamente) sin ellas. La app jamás bloquea por red.
+- Clasificaciones/estrategias nunca visibles antes de resolver.
+- Modelo IA: `claude-opus-4-8`. Validar todo contra la Constitución §0;
+  ante la duda, preguntar al usuario ANTES de implementar.
 
 ---
 
