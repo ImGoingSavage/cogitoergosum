@@ -895,13 +895,43 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    usuario recibe la versión nueva en la recarga siguiente
    (`controllerchange`). Nota: el deploy es el build "legacy" de Pages
    (branch main, raíz) — no hay workflow de deploy que mantener.
-6. **Prueba humana de 2 dispositivos** (Fase C): Edgar crea su cuenta real,
-   "Importar mi progreso local", abrir en otro navegador y verificar
-   adopción + rachas intactas.
-7. **Menores acumulados**: Web Push diaria opcional (1/día, hora elegida);
-   refinamientos del Modo Estudio (HANDOFF §3.11.6 lista final);
-   FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9);
-   exponer `evaluarDesconstruccion()` en la UI durante el forcejeo.
+6. **Pruebas humanas** (solo Edgar puede hacerlas; nada de esto bloquea
+   al agente):
+   - Instalar la PWA desde https://imgoingsavage.github.io/cogitoergosum/
+     en el celular ("Añadir a pantalla de inicio") y sentir fluidez y
+     batería con los dos videos (portada a 0.5× y fondo a 0.5×). Si el
+     FPS sufre: bajar el blur del vidrio o quitar `saturate` (tokens en
+     styles.css). Validar también la decisión de INVERSIÓN del video de
+     fondo (alternativa documentada en el propio CSS).
+   - **Fase C de punta a punta** (único pendiente real de C.6): crear su
+     cuenta real en la app → "Importar mi progreso local" → abrir en un
+     segundo navegador/dispositivo → verificar adopción del progreso y
+     rachas intactas. La maquinaria está probada por REST (8/8); falta el
+     recorrido de UI con humano.
+   - Una pasada real del mentor con API key: mensaje al chat socrático,
+     foto de una hoja (transcripción) y revisión post-revelado.
+7. **Fase 6 del Modo Estudio** (decidir la dirección CON el usuario antes
+   de ingerir): de Zeitz solo queda §8.5 (transformaciones: simetría,
+   movimientos rígidos, homotecia) como sección sustantiva. Lo natural
+   según el PDF: subir el nivel a **AIME** (los espejos ZIML también
+   existen para AIME) y/o seguir con Engel por heurística — caps. 8
+   (inducción), 9 (sucesiones), 10 (polinomios), 11 (funcionales),
+   12 (geometría), 14 (estrategias adicionales). Protocolo de ingestión y
+   anclas de TODO lo ya usado en HANDOFF §3.11.6 (pasos 2-5).
+8. **Menores acumulados** (en orden de valor):
+   - Web Push diaria opcional (1/día máx, hora elegida, contenido neutro
+     — §0.1): requiere un emisor push; con el sitio ya en HTTPS público
+     dejó de estar bloqueada por infraestructura.
+   - Refinamientos del Modo Estudio (lista al final de HANDOFF §3.11.6):
+     preguntas falladas ("no lo tenía") hacia repetición espaciada; timer
+     visible en el examen; persistir el textarea de forcejeo del examen;
+     piso mínimo de estudio para la racha 📘 (decidir con el usuario);
+     materializar los problemas sugeridos en `dosis` como sesiones del
+     camino 1.
+   - FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9 y tabla de
+     benchmarks: Anki/Lichess).
+   - Exponer `evaluarDesconstruccion()` en la UI durante el forcejeo
+     (cuidando el gating: feedback de redacción, jamás de corrección).
 
 ### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
 
@@ -930,22 +960,26 @@ móvil, camino "sin cuenta" y sesión sembrada):
   cubre cualquier `assets/video/*.mp4` (cache-first con Range, misma
   `cogitoergosum-media-v1`).
 
-### Cierre de jornada 2026-06-11 (estado al apagar)
+### Cierre de jornada 2026-06-11, noche (estado al apagar — VIGENTE)
 
-- **App v6** (sw.js), 10 commits en `main`, todo pusheado. Los 3 SQL de
+- **App v12** (sw.js), todo commiteado y pusheado en `main`. Los 3 SQL de
   `supabase/` aplicados y verificados por E2E (Fase C 8/8, claustro 10/10,
   pensar-juntos 9/9 con struggle-first probado).
-- **Hecho hoy**: Fases A-D completas + chat socrático. **Primer pendiente
-  sugerido**: ingestión Fase 4+ (solo datos; protocolo y anclas en HANDOFF
-  §3.11.6 — siguiente tanda: Zeitz cap. 5 álgebra, Engel cap. 7, AMC de
-  probabilidad).
-- **Nota para publicar el frontend**: GitHub Pages gratuito exige repo
-  PÚBLICO (el actual es privado) — decidir con el usuario entre hacerlo
-  público (el código no contiene secretos: la anon key es pública por
-  diseño) o usar Cloudflare Pages (gratis con repo privado). La PWA
-  necesita HTTPS; ambas opciones lo dan.
-- **Pruebas humanas pendientes**: cuenta real + importar progreso +
-  segundo dispositivo (C.6); un mensaje al chat socrático con key real.
+- **El sitio está PÚBLICO y en vivo**:
+  https://imgoingsavage.github.io/cogitoergosum/ (GitHub Pages, branch
+  main/raíz, `.nojekyll`, HTTPS). El repo es público desde hoy (auditado:
+  sin secretos). Cada `git push` a main redespliega solo; la app
+  instalada recibe la versión nueva en la recarga siguiente. Recordar:
+  si el repo pasa ~60 días sin commits, GitHub pausa el cron keep-alive
+  de Supabase — un commit lo reactiva.
+- **Hecho en la jornada**: Fases A-D + chat socrático/mentor flotante +
+  portada de login con video a 0.5× y vidrio líquido + botón ⏻ de cerrar
+  sesión + ingestión de estudio Fases 4 y 5 (pool de examen: 40 ítems;
+  38 unidades) + publicación del frontend.
+- **Lo que queda, en una línea**: pruebas humanas (punto 6 de la lista de
+  arriba) → fase 6 de estudio a decidir con el usuario (punto 7) →
+  menores (punto 8). No hay código roto ni verificación pendiente del
+  lado del agente.
 
 ### Convenciones que NO se negocian (resumen operativo)
 
