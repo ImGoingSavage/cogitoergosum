@@ -63,7 +63,8 @@
       "Bash(gh run *)",
       "Bash(git commit -q -m 'Fase C cerrada: E2E 8/8, keep-alive en verde, bitácora C.7 final *)",
       "Bash(git commit -q -m 'SW: recarga única al activarse una versión nueva \\(fix de shell viejo en caché\\) *)",
-      "Bash(git commit -q -m 'Fase D: el claustro — amistades por código, vitrina, reconocimiento ❧ *)"
+      "Bash(git commit -q -m 'Fase D: el claustro — amistades por código, vitrina, reconocimiento ❧ *)",
+      "Bash(git commit -q -m 'Bitácora §5.3: estado Fase D *)"
     ]
   }
 }

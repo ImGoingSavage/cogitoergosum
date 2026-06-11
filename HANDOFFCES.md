@@ -705,10 +705,31 @@ Fase D (claustro) se construye DESPUÉS, sobre estas mismas tablas + nuevas
 | Pendiente de la C.6 con USUARIO real | ❌ Prueba humana de 2 dispositivos: Edgar crea su cuenta en la app, "Importar mi progreso local", abrir en segundo navegador/celular y verificar adopción + rachas. (La maquinaria está probada por REST; falta el recorrido de UI real.) |
 | Web Push diaria opcional (C.5) | ❌ Pospuesta a propósito (no bloqueante; requiere emisor push) |
 
-**Siguiente trabajo disponible**: Fase D (claustro, §2.4) · chat socrático (§4.4)
-· ingestión Fase 4+ del Modo Estudio (HANDOFF §3.11.6) · publicar el frontend
-(GitHub Pages/Cloudflare Pages apuntando al mismo Supabase) cuando Edgar
-quiera usarlo desde el celular sin servidor local.
+**Siguiente trabajo disponible**: chat socrático (§4.4) · ingestión Fase 4+
+del Modo Estudio (HANDOFF §3.11.6) · publicar el frontend (GitHub Pages/
+Cloudflare Pages apuntando al mismo Supabase) cuando Edgar quiera usarlo
+desde el celular sin servidor local.
+
+---
+
+## §5.3 FASE D — EL CLAUSTRO: ESTADO (2026-06-11, tarde)
+
+**Código completo y verificado en local; falta aplicar el SQL y la prueba
+social E2E.** Implementa §2.4 puntos 13-14 del plan; el punto 15 ("Pensar
+juntos") queda SIN construir hasta validarlo con el usuario.
+
+| Pieza | Estado |
+|---|---|
+| `supabase/schema-fase-d.sql` | ✅ Escrito y versionado: perfiles (vitrina jsonb), amistades, invitaciones, reconocimientos; RLS "leer perfil solo dueño o amigo" vía `son_amigos()` (security definer); vínculo SOLO nace por RPC `canjear_invitacion` (sin insert directo); reconocimiento UNIQUE (de,para,sello) — jamás contador. ❌ PENDIENTE de ejecutar en el SQL Editor |
+| `js/api.js` | ✅ 11 operaciones sociales nuevas (perfil, invitaciones, amistades, reconocimientos) |
+| `js/claustro.js` | ✅ Vitrina propia (`construirVitrina()`: SOLO avatar/sellos/rachas/moraleja opt-in — sin puntajes ni actividad), republicación tras cada sync (`cps:sync-completada`), amigos, canje, vitrina ajena con ❧ único, notificaciones in-app de reconocimientos (se marcan vistas al verlas), deshacer vínculo en 2 clics |
+| UI | ✅ 4.ª pestaña "Claustro" (estados: sin cuenta / sin nombre / activo), tarjeta "Mi moraleja de la semana" (compartir/dejar de compartir una ficha del cuaderno) |
+| `avatar.js` | ✅ Refactor: `capasGanadas()` (lo que viaja a la vitrina) + `renderDesdeCapas()` (pintar el pensador de un amigo) |
+| `storage.js` | ✅ `cps_claustro` {username, fichaCompartidaUid} añadido a CLAVES_SYNC |
+| `sw.js` | ✅ v4 con claustro.js |
+| Verificación local | ✅ node --check (14 módulos), IDs HTML↔JS sin huecos, vista Claustro sin sesión verificada en headless |
+| Prueba social E2E | ❌ Tras aplicar el SQL: crear 2 cuentas de prueba por REST → perfil → invitación → canje → leer vitrina mutua → RLS (un 3.º NO ve perfiles ajenos) → reconocer (✓ y duplicado → 409) → marcar visto → deshacer vínculo → borrar ambas cuentas |
+| "Pensar juntos" (§2.4, punto 15) | ❌ A propósito: validar diseño con el usuario antes de construir |
 
 ---
 
