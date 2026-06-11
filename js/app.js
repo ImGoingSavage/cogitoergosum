@@ -79,6 +79,7 @@ const $ = (id) => document.getElementById(id);
 
 async function init() {
   configurarFondoVideo(); // el fondo vive aunque falle la carga de datos
+  configurarPantallaLogin(); // la portada también: no depende de los datos
   try {
     const res = await fetch('data/problems.json');
     // Pool de selección: problemas curados + variantes generadas por IA
@@ -1598,12 +1599,105 @@ function configurarMentorUI() {
   });
 }
 
+/* ================ Portada de inicio de sesión (login) ================= */
+
+// Reabre la portada desde fuera (botón ⏻ del header tras cerrar sesión);
+// se asigna en configurarPantallaLogin().
+let abrirPortadaLogin = () => {};
+
+/**
+ * Portada con video (login.mp4) y vidrio líquido. Aparece al abrir la app
+ * solo si no hay sesión y el usuario no eligió "continuar sin cuenta".
+ * Jamás bloquea: la cuenta es opcional (§0.7) y LocalStorage sigue siendo
+ * la verdad (§3.4). El video solo se reproduce con la portada visible y si
+ * prefers-reduced-motion lo permite (oculta o con motion reducido, ni se
+ * descarga: preload="none" y sin autoplay — mismo patrón que el fondo).
+ */
+function configurarPantallaLogin() {
+  const pantalla = $('pantalla-login');
+  const video = $('login-video');
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const ajustarVideo = () => {
+    if (pantalla.hidden || reducido.matches || document.visibilityState === 'hidden') {
+      video.pause();
+      return;
+    }
+    video.play().catch(() => {}); // si el navegador lo impide, queda el póster
+  };
+  document.addEventListener('visibilitychange', ajustarVideo);
+  reducido.addEventListener?.('change', ajustarVideo);
+
+  const mensaje = (texto) => { $('login-mensaje').textContent = texto; };
+
+  abrirPortadaLogin = () => {
+    mensaje('');
+    pantalla.hidden = false;
+    ajustarVideo();
+  };
+
+  const cerrarPortada = () => {
+    pantalla.hidden = true;
+    video.pause();
+  };
+
+  const credenciales = () => ({
+    email: $('login-email').value.trim(),
+    password: $('login-password').value,
+  });
+
+  $('btn-login-omitir').addEventListener('click', () => {
+    Storage.save('loginOmitido', true); // decisión por dispositivo, recordada
+    cerrarPortada();
+  });
+
+  $('btn-login-entrar').addEventListener('click', async () => {
+    const { email, password } = credenciales();
+    if (!email || !password) {
+      mensaje('Escribe tu correo y contraseña.');
+      return;
+    }
+    mensaje('Iniciando sesión…');
+    try {
+      await Api.iniciarSesion(email, password);
+      cerrarPortada();
+      await despuesDeEntrar();
+    } catch (e) {
+      mensaje(`No se pudo iniciar sesión: ${e.message}`);
+    }
+  });
+
+  $('btn-login-registrar').addEventListener('click', async () => {
+    const { email, password } = credenciales();
+    if (!email || password.length < 8) {
+      mensaje('Escribe tu correo y una contraseña de al menos 8 caracteres.');
+      return;
+    }
+    mensaje('Creando cuenta…');
+    try {
+      const sesion = await Api.registrar(email, password);
+      if (sesion) {
+        cerrarPortada();
+        await despuesDeEntrar();
+      } else {
+        mensaje('Cuenta creada. Revisa tu correo para confirmarla y vuelve a entrar.');
+      }
+    } catch (e) {
+      mensaje(`No se pudo crear la cuenta: ${e.message}`);
+    }
+  });
+
+  // Al abrir la app: portada solo sin sesión y sin "continuar sin cuenta"
+  if (!Api.sesionActual() && !Storage.load('loginOmitido')) abrirPortadaLogin();
+}
+
 /* ================= Mi cuenta (sincronización opcional) ================ */
 
 function renderizarCuentaUI() {
   const { sesion, pendientes, ultimaSync } = Sync.estado();
   $('cuenta-anonima').hidden = Boolean(sesion);
   $('cuenta-activa').hidden = !sesion;
+  $('btn-header-salir').hidden = !sesion; // ⏻ existe solo con sesión activa
   if (sesion) {
     $('sync-usuario').textContent = sesion.email ?? '(cuenta activa)';
     const hora = ultimaSync ? new Date(ultimaSync).toLocaleString() : 'aún no';
@@ -1702,6 +1796,15 @@ function configurarCuentaUI() {
     await Api.cerrarSesion();
     mensajeCuenta('Sesión cerrada. Tus datos locales siguen intactos en este dispositivo.');
     renderizarCuentaUI();
+  });
+
+  // ⏻ del header: cierra sesión y vuelve a la portada (entrar de nuevo o
+  // seguir sin cuenta — los datos locales quedan intactos, §3.4)
+  $('btn-header-salir').addEventListener('click', async () => {
+    await Api.cerrarSesion();
+    mensajeCuenta('Sesión cerrada. Tus datos locales siguen intactos en este dispositivo.');
+    renderizarCuentaUI();
+    abrirPortadaLogin();
   });
 
   // Borrar cuenta: exactamente 2 clics (botón + confirmación), sin súplicas (§0.1)

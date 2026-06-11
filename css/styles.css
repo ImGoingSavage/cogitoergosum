@@ -141,6 +141,147 @@ body {
   background: var(--fondo-velo);
 }
 
+/* -------------- Portada de inicio de sesión (login) ---------------- */
+/* El video login.mp4 ya es nocturno (mármol sobre negro): no se invierte;
+   un viñeteado sutil garantiza la lectura de la tarjeta. El vidrio aquí es
+   el más profundo de la app (blur 30 + saturate alto + brillo interior):
+   es el único momento "de teatro" del umbral, sobrio igualmente. */
+
+#pantalla-login {
+  position: fixed;
+  inset: 0;
+  z-index: 40;                 /* por encima del header (10) y el mentor (30) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+#pantalla-login[hidden] { display: none; }
+
+.login-fondo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;            /* el negro del propio video, sin costuras */
+}
+
+.login-fondo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.login-fondo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(19, 17, 16, 0.08) 0%,
+    rgba(19, 17, 16, 0.62) 100%
+  );
+}
+
+.login-tarjeta {
+  position: relative;
+  width: min(400px, 100%);
+  text-align: center;
+  padding: 44px 36px 30px;
+  border-radius: 28px;
+  /* Vidrio líquido: lámina translúcida con luz entrando por arriba */
+  background: linear-gradient(168deg, rgba(236, 231, 221, 0.09), rgba(19, 17, 16, 0.42));
+  -webkit-backdrop-filter: blur(30px) saturate(1.7);
+  backdrop-filter: blur(30px) saturate(1.7);
+  border: 1px solid rgba(236, 231, 221, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 231, 221, 0.18),
+    0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .login-tarjeta { background: rgba(27, 24, 21, 0.94); }
+}
+
+.login-floron { color: var(--lampara); font-size: 18px; margin-bottom: 8px; }
+
+.login-marca {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--texto);
+}
+
+.login-sub {
+  font-size: 12px;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.18em;
+  color: var(--texto-suave);
+  margin: 2px 0 28px;
+}
+
+.login-campos { display: flex; flex-direction: column; gap: 10px; }
+
+.login-campos input {
+  width: 100%;
+  background: rgba(19, 17, 16, 0.45);
+  border: 1px solid rgba(236, 231, 221, 0.14);
+  border-radius: 14px;
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 16px;             /* ≥16px evita zoom forzado en iOS */
+  padding: 13px 16px;
+  min-height: 48px;
+  transition: border-color var(--transicion), background var(--transicion);
+}
+
+.login-campos input::placeholder { color: var(--texto-tenue); }
+
+.login-campos input:focus {
+  outline: none;
+  border-color: var(--acento);
+  background: rgba(19, 17, 16, 0.6);
+}
+
+.login-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.login-acciones button { width: 100%; border-radius: 14px; }
+
+/* Secundario sobre vidrio: borde de luz, no de piedra */
+button.login-vidrio { border-color: rgba(236, 231, 221, 0.18); }
+
+.login-mensaje { font-size: 13px; color: var(--texto-suave); margin-top: 12px; min-height: 1.4em; }
+
+.login-omitir { margin-top: 10px; color: var(--texto-suave); font-size: 14px; }
+
+.login-omitir:hover { color: var(--texto); }
+
+.login-nota { font-size: 12px; color: var(--texto-tenue); margin-top: 14px; line-height: 1.5; }
+
+/* Botón de cerrar sesión del header (solo con sesión activa) */
+.header-salir {
+  background: transparent;
+  border: 1px solid var(--vidrio-borde);
+  color: var(--texto-suave);
+  font-size: 16px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+
+.header-salir:hover { border-color: var(--peligro); color: var(--peligro); }
+
 /* ----------------------------- Layout ----------------------------- */
 
 .contenedor {
@@ -1257,6 +1398,13 @@ button.secundario.peligro:hover:not(:disabled) {
   .contenedor { padding: 0 14px 40px; }
   /* Blur más ligero en móvil: mismas tarjetas, menos costo de GPU */
   .tarjeta { padding: 20px 16px; -webkit-backdrop-filter: blur(10px) saturate(1.15); backdrop-filter: blur(10px) saturate(1.15); }
+  #pantalla-login { padding: 16px; }
+  .login-tarjeta {
+    padding: 36px 22px 26px;
+    -webkit-backdrop-filter: blur(18px) saturate(1.7);
+    backdrop-filter: blur(18px) saturate(1.7);
+  }
+  .login-marca { font-size: 28px; }
   #problema-titulo { font-size: 24px; }
   #timer-display { font-size: 26px; }
   .header-inner { padding: 10px 14px; flex-wrap: wrap; }

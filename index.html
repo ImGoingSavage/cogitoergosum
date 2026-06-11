@@ -16,6 +16,41 @@
   -->
 </head>
 <body>
+  <!-- Portada de inicio de sesión: aparece al abrir si no hay sesión y el
+       usuario no ha elegido "continuar sin cuenta". La cuenta es SIEMPRE
+       opcional (Constitución §0.7): este umbral invita, jamás bloquea.
+       El video (login.mp4) solo se reproduce con la portada visible y si
+       prefers-reduced-motion lo permite; oculta, ni se descarga. -->
+  <section id="pantalla-login" hidden>
+    <div class="login-fondo" aria-hidden="true">
+      <video id="login-video" muted loop playsinline preload="none"
+        poster="assets/video/login-poster.jpg">
+        <source src="assets/video/login.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="login-tarjeta">
+      <p class="login-floron" aria-hidden="true">❧</p>
+      <h1 class="login-marca">CogitoErgoSum</h1>
+      <p class="login-sub">Entrenamiento del pensamiento</p>
+      <div class="login-campos">
+        <input id="login-email" type="email" placeholder="Correo"
+          autocomplete="email" aria-label="Correo" />
+        <input id="login-password" type="password" placeholder="Contraseña"
+          autocomplete="current-password" aria-label="Contraseña" />
+      </div>
+      <div class="login-acciones">
+        <button id="btn-login-entrar" class="primario">Entrar</button>
+        <button id="btn-login-registrar" class="secundario login-vidrio">Crear cuenta</button>
+      </div>
+      <p id="login-mensaje" class="login-mensaje"></p>
+      <button id="btn-login-omitir" class="enlace login-omitir">Continuar sin cuenta</button>
+      <p class="login-nota">
+        Tu progreso vive primero en este dispositivo. La cuenta solo lo
+        respalda y te deja continuar en otros — puedes crearla cuando quieras.
+      </p>
+    </div>
+  </section>
+
   <!-- Fondo de la biblioteca (§5.4 punto 0): video en bucle a 0.5× detrás de
        todo el contenido. Sin autoplay deliberado: app.js lo reproduce solo si
        prefers-reduced-motion lo permite (sin JS o con movimiento reducido
@@ -42,6 +77,10 @@
         <button id="nav-claustro">Claustro</button>
         <button id="nav-dashboard">Dashboard</button>
       </nav>
+      <!-- Cerrar sesión: existe solo con sesión activa; los datos locales
+           siguen intactos (LocalStorage es la verdad, §3.4) -->
+      <button id="btn-header-salir" class="header-salir" hidden
+        title="Cerrar sesión" aria-label="Cerrar sesión">⏻</button>
     </div>
   </header>
 

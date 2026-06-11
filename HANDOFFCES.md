@@ -881,6 +881,33 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9);
    exponer `evaluarDesconstruccion()` en la UI durante el forcejeo.
 
+### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
+
+Pedido del usuario. Implementado y verificado en headless (escritorio,
+móvil, camino "sin cuenta" y sesión sembrada):
+
+- **Portada de inicio de sesión** (`#pantalla-login`, overlay z-40): video
+  `assets/video/login.mp4` (llegó como `login.mp4` en la raíz; H.264,
+  544×680, 42 s, sin audio, 5 MB — mármol clásico sobre negro, NO se
+  invierte: ya es nocturno; viñeteado radial para legibilidad) + tarjeta
+  de **vidrio líquido profundo** (blur 30 + saturate 1.7, brillo interior
+  `inset 0 1px 0`, radios 28/14, fallback `@supports` opaco). Póster
+  `login-poster.jpg` generado con qlmanage (precacheado).
+- **Comportamiento**: aparece al abrir SOLO si no hay sesión Supabase y el
+  usuario no eligió "Continuar sin cuenta" (clave local `cps_loginOmitido`,
+  por dispositivo, EXCLUIDA de CLAVES_SYNC). Entrar/Crear cuenta reutilizan
+  `Api` + `despuesDeEntrar()` (adopta/une progreso igual que la tarjeta del
+  Dashboard). La cuenta sigue siendo opcional (§0.7): la portada invita,
+  jamás bloquea. El video solo se reproduce con la portada visible, pestaña
+  activa y sin `prefers-reduced-motion` (oculta: ni se descarga).
+- **Botón cerrar sesión** (`#btn-header-salir`, ⏻ en el header): existe
+  solo con sesión activa (toggle en `renderizarCuentaUI`); al pulsarlo
+  cierra sesión, conserva intactos los datos locales (§3.4) y reabre la
+  portada. El logout de la tarjeta "Mi cuenta" del Dashboard sigue igual.
+- `sw.js` **v9**: `login-poster.jpg` al precache; el handler de media ahora
+  cubre cualquier `assets/video/*.mp4` (cache-first con Range, misma
+  `cogitoergosum-media-v1`).
+
 ### Cierre de jornada 2026-06-11 (estado al apagar)
 
 - **App v6** (sw.js), 10 commits en `main`, todo pusheado. Los 3 SQL de

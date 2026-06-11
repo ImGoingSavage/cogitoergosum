@@ -13,12 +13,12 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v8';
+const VERSION = 'cogitoergosum-v9';
 
-// El video de fondo (1.5 MB) NO entra al precache del shell: se cachea bajo
-// demanda en su propia caché, que sobrevive a los cambios de VERSION.
+// Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
+// cachean bajo demanda en su propia caché, que sobrevive a los cambios de
+// VERSION.
 const CACHE_MEDIA = 'cogitoergosum-media-v1';
-const RUTA_VIDEO_FONDO = '/assets/video/fondo.mp4';
 
 const SHELL = [
   './',
@@ -52,6 +52,7 @@ const SHELL = [
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
   'assets/video/fondo-poster.jpg',
+  'assets/video/login-poster.jpg',
 ];
 
 self.addEventListener('install', (event) => {
@@ -79,9 +80,9 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return; // la API de Claude va directo
 
-  // Video de fondo: cache-first en CACHE_MEDIA con manejo de Range
-  if (url.pathname.endsWith(RUTA_VIDEO_FONDO)) {
-    event.respondWith(servirVideoFondo(request));
+  // Videos (fondo y login): cache-first en CACHE_MEDIA con manejo de Range
+  if (url.pathname.includes('/assets/video/') && url.pathname.endsWith('.mp4')) {
+    event.respondWith(servirVideo(request));
     return;
   }
 
@@ -100,12 +101,12 @@ self.addEventListener('fetch', (event) => {
 });
 
 /**
- * Sirve el video de fondo offline-first. Se guarda SIEMPRE la respuesta
- * completa (la descarga se hace sin header Range, porque cache.put rechaza
+ * Sirve los videos offline-first. Se guarda SIEMPRE la respuesta completa
+ * (la descarga se hace sin header Range, porque cache.put rechaza
  * respuestas 206) y las peticiones Range del reproductor se responden
- * recortando esa copia completa (1.5 MB: recortar en memoria es barato).
+ * recortando esa copia completa (≤5 MB: recortar en memoria es barato).
  */
-async function servirVideoFondo(request) {
+async function servirVideo(request) {
   const cache = await caches.open(CACHE_MEDIA);
   let completo = await cache.match(request.url);
   if (!completo) {

@@ -74,6 +74,10 @@ const DEFAULTS = {
   // username, ficha compartida (opt-in) y entregas de "pensar juntos"
   // que esperan red (jamás bloquean el cierre de una sesión).
   claustro: { username: null, fichaCompartidaUid: null, pjEntregasPendientes: [] },
+  // Portada de inicio de sesión: true si el usuario eligió "continuar sin
+  // cuenta" (decisión por dispositivo; NO viaja al servidor). La cuenta es
+  // siempre opcional (§0.7): la portada invita, jamás bloquea.
+  loginOmitido: false,
   // ---- Sincronización opcional (Fase C, HANDOFFCES §5.2) ----
   // Cola de eventos pendientes de subir; LocalStorage sigue siendo la verdad
   outbox: [],            // [{uid, tipo, payload, ts}]
