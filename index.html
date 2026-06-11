@@ -27,6 +27,7 @@
       <nav>
         <button id="nav-sesion" class="activo">Entrenamiento</button>
         <button id="nav-estudio">Estudio</button>
+        <button id="nav-claustro">Claustro</button>
         <button id="nav-dashboard">Dashboard</button>
       </nav>
     </div>
@@ -246,6 +247,94 @@
           Se aprueba reconociendo jugadas, no resolviéndolo todo.
         </p>
         <div id="examen-contenido"></div>
+      </article>
+
+    </section>
+
+    <!-- =========================== CLAUSTRO =========================== -->
+    <!-- Fase D (§2.4): compartir la pasión, no establecer dominancia.
+         Solo vitrinas (avatar, sellos, rachas, moraleja opt-in) y el
+         reconocimiento ❧. Sin rankings, sin presencia, sin actividad. -->
+    <section id="vista-claustro" hidden>
+
+      <article class="tarjeta" id="claustro-sin-cuenta" hidden>
+        <h2>El claustro</h2>
+        <p class="piso-instruccion">
+          Un lugar pequeño para compartir con tus amigos la pasión de razonar:
+          cada quien ve la vitrina del otro (su pensador, sus sellos, sus rachas)
+          como fuente de inspiración — nunca como competencia.
+        </p>
+        <p class="nota-privacidad">
+          Para entrar necesitas tu cuenta de sincronización: ve a
+          Dashboard → «Mi cuenta» y crea una o inicia sesión. El claustro es
+          completamente opcional: la app entera funciona sin él.
+        </p>
+      </article>
+
+      <article class="tarjeta" id="claustro-sin-nombre" hidden>
+        <h2>Entra al claustro</h2>
+        <p class="piso-instruccion">
+          Elige el nombre con el que te verán tus amigos. Tu perfil es invisible
+          para cualquiera que no sea tu amigo aceptado.
+        </p>
+        <div class="mentor-config">
+          <input id="claustro-username" type="text" maxlength="24"
+            placeholder="Tu nombre en el claustro (3-24 caracteres)" autocomplete="off" />
+          <button id="btn-claustro-crear" class="primario">Entrar al claustro</button>
+        </div>
+        <p id="claustro-crear-msg" class="sync-mensaje"></p>
+      </article>
+
+      <article class="tarjeta" id="claustro-notifs" hidden>
+        <h2>Reconocimientos recibidos</h2>
+        <div id="claustro-notifs-lista"></div>
+      </article>
+
+      <article class="tarjeta" id="claustro-amigos" hidden>
+        <h2>Tus amigos</h2>
+        <p class="fila"><strong>Tu nombre:</strong> <span id="claustro-mi-nombre"></span></p>
+        <ul id="claustro-amigos-lista" class="estudio-unidades"></ul>
+        <p id="claustro-amigos-vacio" class="nota-privacidad" hidden>
+          Aún sin amigos por aquí — y no hace falta ninguno para entrenar.
+          Cuando quieras compartir el camino: genera un código y dáselo a UNA persona.
+        </p>
+        <div class="acciones-cuenta">
+          <button id="btn-claustro-invitar" class="secundario">Generar código de invitación</button>
+        </div>
+        <p id="claustro-codigo" class="sync-mensaje"></p>
+        <div class="mentor-config">
+          <input id="claustro-canje" type="text" placeholder="Código de un amigo (CES-…)" autocomplete="off" />
+          <button id="btn-claustro-canjear" class="secundario">Canjear</button>
+        </div>
+        <p id="claustro-msg" class="sync-mensaje"></p>
+      </article>
+
+      <!-- Vitrina de un amigo: avatar, sellos ganados, rachas, moraleja -->
+      <article class="tarjeta" id="claustro-vitrina" hidden>
+        <h2>Vitrina</h2>
+        <h3 id="vitrina-nombre" class="piso-titulo"></h3>
+        <div id="vitrina-rachas" class="vitrina-rachas"></div>
+        <div id="vitrina-avatar" class="avatar-figura"></div>
+        <div id="vitrina-moraleja" class="piso-ficha" hidden></div>
+        <div id="vitrina-insignias" class="estante"></div>
+        <div class="acciones-cuenta">
+          <button id="btn-vitrina-cerrar" class="secundario">Volver</button>
+          <button id="btn-vitrina-eliminar" class="secundario peligro">Deshacer el vínculo</button>
+        </div>
+      </article>
+
+      <article class="tarjeta" id="claustro-compartir" hidden>
+        <h2>Mi moraleja de la semana</h2>
+        <p class="nota-privacidad">
+          Lo único de tu trabajo que un amigo puede leer — y solo si tú lo decides.
+          Elige una ficha de tu cuaderno para dejarla en tu vitrina.
+        </p>
+        <select id="claustro-ficha-select" class="selector" aria-label="Ficha a compartir"></select>
+        <div class="acciones-cuenta">
+          <button id="btn-claustro-compartir" class="secundario">Compartir esta ficha</button>
+          <button id="btn-claustro-descompartir" class="secundario">Dejar de compartir</button>
+        </div>
+        <p id="claustro-compartir-msg" class="sync-mensaje"></p>
       </article>
 
     </section>

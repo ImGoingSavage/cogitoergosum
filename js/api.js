@@ -164,3 +164,91 @@ export async function borrarCuenta() {
   await rest('POST', 'rpc/borrar_mi_cuenta', {});
   remove('sesionSupabase');
 }
+
+/* ================= El claustro (Fase D, §2.4) ========================= */
+/* Tablas y RLS en supabase/schema-fase-d.sql. Inspiración, no dominancia. */
+
+export async function obtenerMiPerfil() {
+  const sesion = await tokenVigente();
+  if (!sesion) return null;
+  const filas = await rest('GET', `perfiles?user_id=eq.${sesion.userId}&select=username,vitrina,actualizado`);
+  return filas?.[0] ?? null;
+}
+
+/** Crea o actualiza el perfil-vitrina propio (upsert por user_id). */
+export async function publicarPerfil(username, vitrina) {
+  const sesion = await tokenVigente();
+  if (!sesion) throw new Error('Sin sesión');
+  await rest(
+    'POST',
+    'perfiles',
+    [{ user_id: sesion.userId, username, vitrina, actualizado: new Date().toISOString() }],
+    'resolution=merge-duplicates'
+  );
+}
+
+export async function perfilesDe(userIds) {
+  if (!userIds.length) return [];
+  const lista = userIds.join(',');
+  return (await rest('GET', `perfiles?user_id=in.(${lista})&select=user_id,username,vitrina`)) ?? [];
+}
+
+export async function crearInvitacion(codigo) {
+  const sesion = await tokenVigente();
+  if (!sesion) throw new Error('Sin sesión');
+  await rest('POST', 'invitaciones', [{ codigo, de_user: sesion.userId }]);
+  return codigo;
+}
+
+export async function invitacionesPendientes() {
+  return (await rest('GET', 'invitaciones?usado_por=is.null&select=codigo,creado&order=creado.desc')) ?? [];
+}
+
+/** Canjea el código de un amigo; devuelve su nombre en el claustro. */
+export async function canjearInvitacion(codigo) {
+  return rest('POST', 'rpc/canjear_invitacion', { codigo_entrada: codigo });
+}
+
+export async function listarAmistades() {
+  return (await rest('GET', 'amistades?select=id,user_a,user_b,creado')) ?? [];
+}
+
+export async function eliminarAmistad(id) {
+  await rest('DELETE', `amistades?id=eq.${id}`);
+}
+
+/** ❧ — la única interacción. El UNIQUE del esquema impide acumular. */
+export async function reconocer(paraUser, insigniaId) {
+  const sesion = await tokenVigente();
+  if (!sesion) throw new Error('Sin sesión');
+  await rest('POST', 'reconocimientos', [
+    { de_user: sesion.userId, para_user: paraUser, insignia_id: insigniaId },
+  ]);
+}
+
+export async function reconocimientosRecibidos(limite = 10) {
+  const sesion = await tokenVigente();
+  if (!sesion) return [];
+  return (
+    (await rest(
+      'GET',
+      `reconocimientos?para_user=eq.${sesion.userId}&select=id,de_user,insignia_id,creado,visto&order=creado.desc&limit=${limite}`
+    )) ?? []
+  );
+}
+
+export async function reconocimientosHechosA(paraUser) {
+  const sesion = await tokenVigente();
+  if (!sesion) return [];
+  return (
+    (await rest(
+      'GET',
+      `reconocimientos?de_user=eq.${sesion.userId}&para_user=eq.${paraUser}&select=insignia_id`
+    )) ?? []
+  );
+}
+
+export async function marcarReconocimientosVistos(ids) {
+  if (!ids.length) return;
+  await rest('PATCH', `reconocimientos?id=in.(${ids.join(',')})`, { visto: true });
+}

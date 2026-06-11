@@ -36,6 +36,7 @@ import * as Badges from './badges.js';
 import * as Avatar from './avatar.js';
 import * as Api from './api.js';
 import * as Sync from './sync.js';
+import * as Claustro from './claustro.js';
 
 const MIN_DESCONSTRUCCION = 200;
 const MIN_FICHA = 15;        // moraleja y disparador: al menos una frase corta
@@ -92,6 +93,8 @@ async function init() {
   configurarPisoMinimo();
   configurarFreshStart();
   configurarCuentaUI();
+  Claustro.init();
+  Claustro.configurarUI();
   Sync.iniciar(); // sincronización opcional: no-op sin sesión o sin red
   // Carga en paralelo: study.json, sellos y mapa del avatar
   await Promise.all([Study.init(), Badges.init(), Avatar.init()]);
@@ -1121,6 +1124,10 @@ function configurarNavegacion() {
     Study.renderizar();
     cambiarVista('estudio');
   });
+  $('nav-claustro').addEventListener('click', () => {
+    Claustro.renderizar();
+    cambiarVista('claustro');
+  });
   $('nav-dashboard').addEventListener('click', () => {
     renderizarDashboard();
     cambiarVista('dashboard');
@@ -1138,12 +1145,10 @@ function configurarNavegacion() {
 }
 
 function cambiarVista(vista) {
-  $('vista-sesion').hidden = vista !== 'sesion';
-  $('vista-estudio').hidden = vista !== 'estudio';
-  $('vista-dashboard').hidden = vista !== 'dashboard';
-  $('nav-sesion').classList.toggle('activo', vista === 'sesion');
-  $('nav-estudio').classList.toggle('activo', vista === 'estudio');
-  $('nav-dashboard').classList.toggle('activo', vista === 'dashboard');
+  ['sesion', 'estudio', 'claustro', 'dashboard'].forEach((v) => {
+    $(`vista-${v}`).hidden = vista !== v;
+    $(`nav-${v}`).classList.toggle('activo', vista === v);
+  });
 }
 
 function renderizarCuentas() {

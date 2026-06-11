@@ -85,6 +85,8 @@ export async function sincronizar() {
     }
     await Api.subirSnapshot(snapshotLocal());
     Storage.save('ultimaSync', new Date().toISOString());
+    // El claustro refresca la vitrina pública al terminar (sin ciclos)
+    window.dispatchEvent(new CustomEvent('cps:sync-completada'));
   } catch {
     // Cola intacta; se reintentará en el próximo disparo.
   } finally {

@@ -147,30 +147,44 @@ function estadoCapa(capa) {
 
 /* ------------------------------ Render --------------------------------- */
 
-export function render(contenedor) {
+/**
+ * Capas ganadas por el usuario LOCAL, en el formato que viaja a la vitrina
+ * del claustro: [{id, fecha, n}]. Es la representación pública del avatar.
+ */
+export function capasGanadas() {
+  return (mapa?.capas ?? [])
+    .map((capa) => ({ capa, estado: estadoCapa(capa) }))
+    .filter((x) => x.estado.ganada)
+    .map((x) => ({ id: x.capa.id, fecha: x.estado.fecha ?? null, n: x.estado.n ?? null }));
+}
+
+function renderCapas(contenedor, capas, etiqueta) {
   if (!contenedor) return;
   contenedor.innerHTML = '';
 
-  const svg = el('svg', {
-    viewBox: '0 0 240 260',
-    role: 'img',
-    'aria-label': 'El pensador: tu avatar, construido con tu propio trabajo',
-  });
-
+  const svg = el('svg', { viewBox: '0 0 240 260', role: 'img', 'aria-label': etiqueta });
   dibujarBase(svg);
 
-  (mapa?.capas ?? []).forEach((capa) => {
-    const estado = estadoCapa(capa);
-    if (!estado.ganada || !DIBUJOS[capa.id]) return;
-    const g = grupo(POSICIONES[capa.id] ?? '');
-    DIBUJOS[capa.id](g);
+  (capas ?? []).forEach(({ id, fecha, n }) => {
+    const capa = (mapa?.capas ?? []).find((c) => c.id === id);
+    if (!capa || !DIBUJOS[id]) return;
+    const g = grupo(POSICIONES[id] ?? '');
+    DIBUJOS[id](g);
     const title = el('title');
-    title.textContent = capa.tooltip
-      .replace('{fecha}', estado.fecha ?? '')
-      .replace('{n}', estado.n ?? '');
+    title.textContent = capa.tooltip.replace('{fecha}', fecha ?? '').replace('{n}', n ?? '');
     g.appendChild(title);
     svg.appendChild(g);
   });
 
   contenedor.appendChild(svg);
+}
+
+/** Avatar del usuario local (capas calculadas de su propio estado). */
+export function render(contenedor) {
+  renderCapas(contenedor, capasGanadas(), 'El pensador: tu avatar, construido con tu propio trabajo');
+}
+
+/** Avatar de un amigo, a partir de las capas publicadas en su vitrina. */
+export function renderDesdeCapas(contenedor, capas, nombre) {
+  renderCapas(contenedor, capas, `El pensador de ${nombre ?? 'un colega'}`);
 }

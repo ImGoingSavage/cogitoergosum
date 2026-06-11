@@ -53,6 +53,11 @@ export function ganadas() {
   return load('insignias').ganadas ?? {};
 }
 
+/** Metadatos de un sello por id (para pintar vitrinas de amigos). */
+export function definicion(id) {
+  return catalogo?.insignias.find((i) => i.id === id) ?? null;
+}
+
 /* ====================== Datos que miran los sellos ===================== */
 
 function recolectar(ctx) {
