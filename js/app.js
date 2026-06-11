@@ -110,9 +110,19 @@ async function init() {
 /* ===================== PWA y citas de la biblioteca ==================== */
 
 function registrarServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {
-      // Sin SW (p. ej. file:// o navegador antiguo) la app funciona igual.
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.register('sw.js').catch(() => {
+    // Sin SW (p. ej. file:// o navegador antiguo) la app funciona igual.
+  });
+  // Cuando una versión nueva del SW toma el control (VERSION cambió en
+  // sw.js), recargar UNA vez para servir el shell fresco. Solo aplica si ya
+  // había un SW controlando: la primera instalación no recarga nada.
+  if (navigator.serviceWorker.controller) {
+    let recargado = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (recargado) return;
+      recargado = true;
+      window.location.reload();
     });
   }
 }

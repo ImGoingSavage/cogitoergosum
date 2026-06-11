@@ -61,7 +61,8 @@
       "Bash(git config *)",
       "Bash(gh workflow *)",
       "Bash(gh run *)",
-      "Bash(git commit -q -m 'Fase C cerrada: E2E 8/8, keep-alive en verde, bitácora C.7 final *)"
+      "Bash(git commit -q -m 'Fase C cerrada: E2E 8/8, keep-alive en verde, bitácora C.7 final *)",
+      "Bash(git commit -q -m 'SW: recarga única al activarse una versión nueva \\(fix de shell viejo en caché\\) *)"
     ]
   }
 }

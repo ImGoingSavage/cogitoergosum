@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v2';
+const VERSION = 'cogitoergosum-v3';
 
 const SHELL = [
   './',
