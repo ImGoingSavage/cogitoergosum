@@ -687,22 +687,28 @@ storage.js. `device_id`: uuid generado una vez, en `cps_deviceId`.
 Fase D (claustro) se construye DESPUÉS, sobre estas mismas tablas + nuevas
 `friendships`/`reconocimientos` con sus políticas RLS (diseño en §2.4).
 
-### C.7 Estado de ejecución (2026-06-11, tarde)
+### C.7 Estado de ejecución — **FASE C CERRADA (2026-06-11)**
 
 | Pieza | Estado |
 |---|---|
-| Proyecto Supabase (rcaljqmibtkorcmdyqvg) | ✅ Creado por el usuario; GoTrue v2 responde; signup devuelve sesión directa (Confirm email desactivado) |
-| `supabase/schema.sql` | ✅ Escrito y versionado · ❌ AÚN NO ejecutado en el SQL Editor (acción del usuario; la anon key no puede correr DDL) |
+| Proyecto Supabase (rcaljqmibtkorcmdyqvg) | ✅ Creado; GoTrue v2 responde; signup con sesión directa (Confirm email desactivado) |
+| `supabase/schema.sql` | ✅ Ejecutado por el usuario en el SQL Editor (verificado: keepalive responde `[{"id":1}]`) |
 | `js/api.js` (C.3) | ✅ Implementado con URL/anon key del proyecto como constantes |
 | `js/sync.js` (C.4) | ✅ Outbox + snapshot + adoptarOUnir + recomputo de rachas + migración |
 | `storage.js` | ✅ outbox/deviceId/sesionSupabase/ultimaSync + CLAVES_SYNC + encolarEvento (evento DOM `cps:evento-encolado`, sin ciclos) |
 | Eventos en cierres | ✅ sesion (con uid), piso, unidad, examen, insignia |
 | UI "Mi cuenta" (C.5) | ✅ Tarjeta en Dashboard: login/registro, sincronizar, importar progreso, exportar JSON, borrar cuenta (2 clics); verificada en headless |
 | `sw.js` | ✅ v2 con api.js y sync.js en el precache |
-| Workflow keep-alive (C.2) | ✅ Escrito y commiteado · ❌ push rechazado: el token de gh necesita scope `workflow` (`gh auth refresh -h github.com -s workflow`) |
-| Repo GitHub | ✅ Privado `ImGoingSavage/cogitoergosum` creado; secrets SUPABASE_URL y SUPABASE_ANON_KEY cargados; ❌ push pendiente del refresh de scope |
-| Verificación C.6 (E2E, 2 dispositivos, migración) | ❌ Bloqueada hasta ejecutar el esquema. Al correrla: borrar también el usuario de prueba `prueba-borrar-luego@cogitoergosum.test` (login con `PruebaTemporal#2026` → RPC borrar_mi_cuenta) y disparar el workflow (`gh workflow run keepalive.yml` + revisar `gh run list`) |
+| Repo GitHub | ✅ Privado `ImGoingSavage/cogitoergosum`, main pusheado (gh como credential helper vía `gh auth setup-git`; el scope `workflow` se añadió con `gh auth refresh`); secrets cargados |
+| Workflow keep-alive (C.2) | ✅ En el repo; corrida manual `workflow_dispatch` → **success** (run 27352416985); cron activo cada 2 días |
+| Verificación E2E por REST | ✅ 8/8: login → insert evento (201) → leer eventos propios → upsert snapshot (201) → leer snapshot → **RLS: anónimo ve 0 filas** → RPC borrar_mi_cuenta (204) → usuario de prueba eliminado |
+| Pendiente de la C.6 con USUARIO real | ❌ Prueba humana de 2 dispositivos: Edgar crea su cuenta en la app, "Importar mi progreso local", abrir en segundo navegador/celular y verificar adopción + rachas. (La maquinaria está probada por REST; falta el recorrido de UI real.) |
 | Web Push diaria opcional (C.5) | ❌ Pospuesta a propósito (no bloqueante; requiere emisor push) |
+
+**Siguiente trabajo disponible**: Fase D (claustro, §2.4) · chat socrático (§4.4)
+· ingestión Fase 4+ del Modo Estudio (HANDOFF §3.11.6) · publicar el frontend
+(GitHub Pages/Cloudflare Pages apuntando al mismo Supabase) cuando Edgar
+quiera usarlo desde el celular sin servidor local.
 
 ---
 

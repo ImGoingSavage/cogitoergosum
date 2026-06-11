@@ -56,7 +56,12 @@
       "Bash(gh secret *)",
       "Bash(GH_PROMPT_DISABLED=1 gh auth refresh -h github.com -s workflow)",
       "Bash(pkill -f \"gh auth refresh\")",
-      "Bash(git commit -q -m 'Bitácora: estado de ejecución Fase C \\(C.7\\) en HANDOFFCES *)"
+      "Bash(git commit -q -m 'Bitácora: estado de ejecución Fase C \\(C.7\\) en HANDOFFCES *)",
+      "Bash(curl -s 'https://rcaljqmibtkorcmdyqvg.supabase.co/rest/v1/keepalive?select=id&limit=1' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjYWxqcW1pYnRrb3JjbWR5cXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNjE0MTksImV4cCI6MjA5NjczNzQxOX0.wN8mxz_skkQepj64Wd_YlPN9koIH8UU2ZrJplkJwGJ8' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjYWxqcW1pYnRrb3JjbWR5cXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNjE0MTksImV4cCI6MjA5NjczNzQxOX0.wN8mxz_skkQepj64Wd_YlPN9koIH8UU2ZrJplkJwGJ8')",
+      "Bash(git config *)",
+      "Bash(gh workflow *)",
+      "Bash(gh run *)",
+      "Bash(git commit -q -m 'Fase C cerrada: E2E 8/8, keep-alive en verde, bitácora C.7 final *)"
     ]
   }
 }
