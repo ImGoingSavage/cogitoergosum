@@ -1,3 +1,12 @@
+> **⚠️ AGENTE NUEVO, LEE ESTO PRIMERO (2026-06-11):** este archivo es la
+> especificación ORIGINAL del proyecto (sigue vigente como pedagogía), pero
+> el estado real y el plan activo viven en **`HANDOFFCES.md`**: lee su §0
+> (Constitución — es LEY) y su **§5.4 "Mapa para el siguiente agente"**
+> (infraestructura viva, qué falta en orden, convenciones). Complemento:
+> `HANDOFF.md` (mecánicas del código y protocolo de ingestión del Modo
+> Estudio). La app ya se llama CogitoErgoSum y las Fases A-D + chat
+> socrático están completas y verificadas.
+
 # ROL
 
 Actúa como un equipo multidisciplinario compuesto por:

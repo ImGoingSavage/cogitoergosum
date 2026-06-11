@@ -69,7 +69,8 @@
       "Bash(git commit -q -m 'Pensar juntos \\(§2.4 p.15\\): sorteo del pool común, struggle first por RLS *)",
       "Bash(git commit -q -m 'Pensar juntos verificado: E2E 9/9, struggle first probado por RLS — Fase D completa *)",
       "Bash(git commit -q -m 'Chat socrático \\(§4.4\\): multi-turno durante el forcejeo, archivado con la sesión *)",
-      "Bash(git commit -q -m 'Cierre de jornada: nota de estado final, §3.9.4 superado por el chat socrático *)"
+      "Bash(git commit -q -m 'Cierre de jornada: nota de estado final, §3.9.4 superado por el chat socrático *)",
+      "Bash(git commit -q -m 'claude.md: puntero de orientación para agentes nuevos → HANDOFFCES §0 y §5.4 *)"
     ]
   }
 }
