@@ -880,11 +880,21 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    verificadas por cómputo). Pool de examen acumulado: 40. sw.js v11.
    **Fase 6**: solo queda Zeitz §8.5 (transformaciones); lo natural es
    AIME y/o Engel caps. 8-12/14 — decidir con el usuario.
-5. **Publicar el frontend** (cuando el usuario quiera usarlo del celular
-   sin servidor local): GitHub Pages (repo ya existe; servir la raíz) o
-   Cloudflare Pages. La PWA exige HTTPS — Pages lo da. Recordar: el SW
-   precachea; tras cada deploy el usuario recibe la versión nueva en la
-   recarga siguiente (mecanismo `controllerchange` ya implementado).
+5. ~~Publicar el frontend~~ ✅ HECHO (2026-06-11, noche; decisión del
+   usuario: GitHub Pages): el repo `ImGoingSavage/cogitoergosum` se hizo
+   **PÚBLICO** (auditado antes: cero secretos — la anon key es pública por
+   diseño, `Biblioteca/` y `Definitivo.pdf` siguen fuera por .gitignore;
+   se retiró `test-dash.html`) y Pages sirve `main`/raíz con `.nojekyll`.
+   **URL: https://imgoingsavage.github.io/cogitoergosum/** (HTTPS
+   forzado → la PWA instala). Verificado en vivo: 10 recursos críticos en
+   200 (shell, JSONs, video y póster del login, fuentes) y captura del
+   sitio con la portada funcionando. Todo es rutas RELATIVAS y el manifest
+   ya tenía `start_url:"./"`, así que el subpath `/cogitoergosum/` no
+   rompió nada; el handler de video del SW usa `includes('/assets/video/')`
+   (compatible con subpath). Cada `git push` a main redespliega solo; el
+   usuario recibe la versión nueva en la recarga siguiente
+   (`controllerchange`). Nota: el deploy es el build "legacy" de Pages
+   (branch main, raíz) — no hay workflow de deploy que mantener.
 6. **Prueba humana de 2 dispositivos** (Fase C): Edgar crea su cuenta real,
    "Importar mi progreso local", abrir en otro navegador y verificar
    adopción + rachas intactas.
