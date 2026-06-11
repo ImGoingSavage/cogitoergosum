@@ -66,7 +66,8 @@
       "Bash(git commit -q -m 'Fase D: el claustro — amistades por código, vitrina, reconocimiento ❧ *)",
       "Bash(git commit -q -m 'Bitácora §5.3: estado Fase D *)",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-first-run --user-data-dir=/tmp/chrome-cogito8 --enable-logging=stderr --v=0 --virtual-time-budget=9000 --window-size=900,1200 --screenshot=/tmp/cogito-pj.png http://localhost:8123/)",
-      "Bash(git commit -q -m 'Pensar juntos \\(§2.4 p.15\\): sorteo del pool común, struggle first por RLS *)"
+      "Bash(git commit -q -m 'Pensar juntos \\(§2.4 p.15\\): sorteo del pool común, struggle first por RLS *)",
+      "Bash(git commit -q -m 'Pensar juntos verificado: E2E 9/9, struggle first probado por RLS — Fase D completa *)"
     ]
   }
 }

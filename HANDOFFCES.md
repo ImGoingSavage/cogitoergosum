@@ -740,7 +740,7 @@ juntos") queda SIN construir hasta validarlo con el usuario.
 | `sw.js` | ✅ v4 con claustro.js |
 | Verificación local | ✅ node --check (14 módulos), IDs HTML↔JS sin huecos, vista Claustro sin sesión verificada en headless |
 | Prueba social E2E | ✅ 10/10 (2026-06-11, tarde): RLS pre-vínculo, invitación+canje, código quemado, vitrina mutua, ❧ 201 + duplicado 409, marcar visto, extraños ven 0 perfiles, vínculo deshecho, ambas cuentas de prueba borradas |
-| "Pensar juntos" (§2.4, punto 15) | ✅ CONSTRUIDO (2026-06-11, tarde): `supabase/schema-pensar-juntos.sql` (pensar_juntos + pj_entregas con RLS "struggle first": la entrega del otro solo es legible cuando la tuya existe), 7 operaciones en api.js, UI completa en claustro.js (proponer desde vitrina, aceptar con sorteo del pool común en el cliente del aceptante, lista de sesiones conjuntas, lado a lado), integración camino 1 en app.js (`abrirProblemaCompartido` — jamás pisa un forcejeo vivo; entrega al cerrar con reintento offline). sw.js v5. ❌ PENDIENTE: ejecutar el SQL en el Editor (usuario) + E2E con 2 cuentas |
+| "Pensar juntos" (§2.4, punto 15) | ✅ CONSTRUIDO (2026-06-11, tarde): `supabase/schema-pensar-juntos.sql` (pensar_juntos + pj_entregas con RLS "struggle first": la entrega del otro solo es legible cuando la tuya existe), 7 operaciones en api.js, UI completa en claustro.js (proponer desde vitrina, aceptar con sorteo del pool común en el cliente del aceptante, lista de sesiones conjuntas, lado a lado), integración camino 1 en app.js (`abrirProblemaCompartido` — jamás pisa un forcejeo vivo; entrega al cerrar con reintento offline). sw.js v5. SQL aplicado por el usuario y **E2E 9/9** (2026-06-11, tarde): propuesta 201 → aceptar/fijar problema 204 → **struggle first probado** (sin entrega propia se ven 0 entregas aunque exista la del otro) → ambas entregas legibles lado a lado → duplicado 409 → retirada y cuentas de prueba borradas. **FASE D COMPLETA, incluido el punto 15.** |
 
 ---
 
@@ -787,12 +787,9 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
 ### QUÉ FALTA, en orden de valor
 
 1. ~~Prueba social E2E de la Fase D~~ ✅ HECHA (10/10, ver tabla §5.3).
-2. **"Pensar juntos"** — ✅ CONSTRUIDO según el diseño de §2.4 (detalle en
-   la tabla §5.3). Falta SOLO: el usuario ejecuta
-   `supabase/schema-pensar-juntos.sql` en el SQL Editor y se corre la
-   E2E con 2 cuentas de prueba (proponer → aceptar/sortear → struggle
-   first: sin mi entrega NO leo la del otro → ambas entregas → lado a
-   lado → retirar → borrar cuentas).
+2. ~~"Pensar juntos"~~ ✅ HECHO Y VERIFICADO (E2E 9/9 con struggle first
+   probado por RLS; SQL aplicado; ver tabla §5.3). Las 4 fases del plan
+   §5 están COMPLETAS.
 3. **Chat socrático** (§4.4): panel lateral opcional durante el forcejeo
    (system prompt heredado de `aiMentor.js`, conoce problema y
    desconstrucción; jamás revela; se archiva con la sesión; no aparece
