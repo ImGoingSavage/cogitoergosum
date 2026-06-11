@@ -1,0 +1,191 @@
+{
+  "nota": "Sellos de la biblioteca (§2.1 HANDOFFCES). Deterministas, gratuitos, ganados por esfuerzo: nada aleatorio, nada comprable. La evaluación vive en js/badges.js (un evaluador por id); aquí, los metadatos. Las insignias no ganadas se muestran como siluetas sin nombre.",
+  "familias": {
+    "forcejeo": "Forcejeo — proceso puro, la familia más importante",
+    "mejora": "Mejora contra ti mismo",
+    "constancia": "Constancia"
+  },
+  "insignias": [
+    {
+      "id": "forcejeo-limpio",
+      "familia": "forcejeo",
+      "nombre": "Forcejeo limpio",
+      "glifo": "⚒",
+      "descripcion": "Cerrar un problema de nivel 4 o 5 sin pistas, con una desconstrucción de al menos 400 caracteres. Resuelto o no: cuenta el proceso completo."
+    },
+    {
+      "id": "tinta-abundante",
+      "familia": "forcejeo",
+      "nombre": "Tinta abundante",
+      "glifo": "✒",
+      "descripcion": "Diez desconstrucciones de 400 caracteres o más. Pensar por escrito ya es tu hábito."
+    },
+    {
+      "id": "el-que-mira-atras",
+      "familia": "forcejeo",
+      "nombre": "El que mira atrás",
+      "glifo": "↺",
+      "descripcion": "Veinticinco fichas de moraleja completas (moraleja + disparador): el artefacto más valioso del entrenamiento."
+    },
+    {
+      "id": "incubadora",
+      "familia": "forcejeo",
+      "nombre": "Incubadora",
+      "glifo": "❋",
+      "descripcion": "Cinco sesiones que usaron la pausa de incubación y se cerraron en un día posterior: dejar reposar también es trabajar."
+    },
+    {
+      "id": "paciencia-de-piedra",
+      "familia": "forcejeo",
+      "nombre": "Paciencia de piedra",
+      "glifo": "⌛",
+      "descripcion": "Diez sesiones cuyo forcejeo agotó la duración completa del temporizador antes de revelar."
+    },
+    {
+      "id": "fenix",
+      "familia": "mejora",
+      "nombre": "Fénix",
+      "glifo": "✶",
+      "repetible": true,
+      "descripcion": "Resolver en revisión espaciada un problema que antes no salió. Repetible: lleva contador ×N."
+    },
+    {
+      "id": "ojo-halcon-i",
+      "familia": "mejora",
+      "nombre": "Ojo de halcón",
+      "glifo": "◉",
+      "umbral": 10,
+      "descripcion": "Diez predicciones de jugada correctas acumuladas: la métrica de oro — reconocer disparadores en frío."
+    },
+    {
+      "id": "ojo-halcon-ii",
+      "familia": "mejora",
+      "nombre": "Ojo de halcón II",
+      "glifo": "◉",
+      "umbral": 50,
+      "descripcion": "Cincuenta predicciones de jugada correctas acumuladas."
+    },
+    {
+      "id": "ojo-halcon-iii",
+      "familia": "mejora",
+      "nombre": "Ojo de halcón III",
+      "glifo": "◉",
+      "umbral": 100,
+      "descripcion": "Cien predicciones de jugada correctas acumuladas."
+    },
+    {
+      "id": "marea-que-sube",
+      "familia": "mejora",
+      "nombre": "Marea que sube",
+      "glifo": "≈",
+      "repetible": true,
+      "descripcion": "Superar tu propia tasa de disparadores reconocidos del mes anterior (con al menos 5 predicciones en cada mes)."
+    },
+    {
+      "id": "cartografo",
+      "familia": "mejora",
+      "nombre": "Cartógrafo",
+      "glifo": "✧",
+      "descripcion": "Primera ficha de moraleja completa en cada una de las cuatro estrategias mentales."
+    },
+    {
+      "id": "cartografo-mayor",
+      "familia": "mejora",
+      "nombre": "Cartógrafo mayor",
+      "glifo": "✦",
+      "descripcion": "Fichas de moraleja que cubren las doce heurísticas del catálogo del PDF."
+    },
+    {
+      "id": "racha-entrenamiento-7",
+      "familia": "constancia",
+      "nombre": "Racha de 7 días",
+      "glifo": "🔥",
+      "umbral": 7,
+      "descripcion": "Siete días consecutivos de entrenamiento."
+    },
+    {
+      "id": "racha-entrenamiento-30",
+      "familia": "constancia",
+      "nombre": "Racha de 30 días",
+      "glifo": "🔥",
+      "umbral": 30,
+      "descripcion": "Treinta días consecutivos de entrenamiento."
+    },
+    {
+      "id": "racha-entrenamiento-100",
+      "familia": "constancia",
+      "nombre": "Racha de 100 días",
+      "glifo": "🔥",
+      "umbral": 100,
+      "descripcion": "Cien días consecutivos de entrenamiento."
+    },
+    {
+      "id": "racha-entrenamiento-365",
+      "familia": "constancia",
+      "nombre": "Racha de 365 días",
+      "glifo": "🔥",
+      "umbral": 365,
+      "descripcion": "Un año entero de entrenamiento diario."
+    },
+    {
+      "id": "racha-estudio-7",
+      "familia": "constancia",
+      "nombre": "Estudio: racha de 7 días",
+      "glifo": "📘",
+      "umbral": 7,
+      "descripcion": "Siete días consecutivos de estudio."
+    },
+    {
+      "id": "racha-estudio-30",
+      "familia": "constancia",
+      "nombre": "Estudio: racha de 30 días",
+      "glifo": "📘",
+      "umbral": 30,
+      "descripcion": "Treinta días consecutivos de estudio."
+    },
+    {
+      "id": "racha-estudio-100",
+      "familia": "constancia",
+      "nombre": "Estudio: racha de 100 días",
+      "glifo": "📘",
+      "umbral": 100,
+      "descripcion": "Cien días consecutivos de estudio."
+    },
+    {
+      "id": "racha-estudio-365",
+      "familia": "constancia",
+      "nombre": "Estudio: racha de 365 días",
+      "glifo": "📘",
+      "umbral": 365,
+      "descripcion": "Un año entero de estudio diario."
+    },
+    {
+      "id": "piso-firme",
+      "familia": "constancia",
+      "nombre": "Piso firme",
+      "glifo": "⌂",
+      "descripcion": "Cinco pisos mínimos completados: salvar el hábito en los días malos es exactamente lo contrario a fallar."
+    },
+    {
+      "id": "lector-disciplinado",
+      "familia": "constancia",
+      "nombre": "Lector disciplinado",
+      "glifo": "¶",
+      "descripcion": "Aprobar el examen de cada bloque del Modo Estudio disponible."
+    }
+  ],
+  "mapaHeuristicas": {
+    "caso-pequeno": ["caso-pequeno"],
+    "simetria": ["simetria"],
+    "invariante": ["invariante", "monovariante", "paridad"],
+    "hacia-atras": ["hacia-atras"],
+    "caso-extremo": ["caso-extremo", "peor-caso", "frontera"],
+    "palomar": ["palomar"],
+    "induccion": ["induccion"],
+    "contradiccion": ["contradiccion", "imposibilidad"],
+    "casework": ["casework"],
+    "pensamiento-ilusorio": ["pensamiento-ilusorio", "trampa", "contraintuitivo"],
+    "parametrizar-dibujar": ["parametrizar", "dibujar", "representacion"],
+    "penultimo-paso": ["hacia-atras", "recursion", "recurrencia"]
+  }
+}

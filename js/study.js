@@ -1,0 +1,751 @@
+/**
+ * study.js — Modo Estudio: el roadmap de Definitivo.pdf dentro de la app.
+ *
+ * Camino 2 de la app (independiente del entrenamiento diario, HANDOFF §3.11):
+ *  - Lectura DIRIGIDA: la app dice qué leer y cuánto (puntero + dosis);
+ *    la lectura ocurre en el libro, nunca aquí (anti-Brilliant).
+ *  - Al volver, evaluación por retrieval de generación: el usuario escribe
+ *    su respuesta ANTES de ver la esperada y se autoevalúa.
+ *  - Las ideas clave (destilado) se muestran SOLO después del quiz.
+ *  - Examen de bloque = "examen del motor" del PDF §8b: predicción de
+ *    jugada → forcejeo → disparador correcto; acumulativo con interleaving
+ *    de todos los bloques avanzados.
+ *  - Racha de estudio SEPARADA de la de entrenamiento (no se cruzan) y
+ *    visible en el header en todo momento.
+ *
+ * Contenido en data/study.json; progreso en LocalStorage (cps_estudio).
+ * El módulo funciona completo sin IA.
+ */
+
+import { load, update, hoy } from './storage.js';
+import * as Badges from './badges.js';
+
+const $ = (id) => document.getElementById(id);
+
+const MIN_RESPUESTA_QUIZ = 40; // forcejeo mínimo antes de ver la respuesta
+
+const NOMBRES_TIPO = {
+  quiz: 'Pregunta de recuperación',
+  acertijo: 'Acertijo',
+  'encuentra-error': 'Encuentra el error',
+  disparador: 'Quiz de disparador',
+};
+
+let datos = null; // contenido de data/study.json (null si no cargó)
+
+/* ============================ Arranque ================================ */
+
+export async function init() {
+  try {
+    const res = await fetch('data/study.json');
+    datos = await res.json();
+  } catch {
+    datos = null;
+  }
+  actualizarRachaEstudio();
+  actualizarHeaderRachas();
+}
+
+export function disponible() {
+  return Boolean(datos?.bloques?.length);
+}
+
+/** Bloques del syllabus (para los sellos: lector disciplinado, etc.). */
+export function bloques() {
+  return datos?.bloques ?? [];
+}
+
+/* ======================= Racha de estudio ============================= */
+
+function ayerISO() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
+/**
+ * Rompe la racha de estudio si la última sesión no fue ni ayer ni hoy.
+ * Romperla nunca borra el logro (§2.2): la mejor racha queda guardada.
+ */
+export function actualizarRachaEstudio() {
+  update('estudio', (e) => {
+    if (
+      e.ultimaSesionEstudio &&
+      e.ultimaSesionEstudio !== hoy() &&
+      e.ultimaSesionEstudio !== ayerISO()
+    ) {
+      e.mejorRachaEstudio = Math.max(e.mejorRachaEstudio ?? 0, e.rachaEstudio);
+      e.rachaEstudio = 0;
+    }
+    return e;
+  });
+}
+
+/** Completar una unidad o un examen cuenta el día (una sola vez). */
+function marcarDiaEstudio() {
+  update('estudio', (e) => {
+    if (e.ultimaSesionEstudio !== hoy()) {
+      e.rachaEstudio += 1;
+      e.ultimaSesionEstudio = hoy();
+      e.mejorRachaEstudio = Math.max(e.mejorRachaEstudio ?? 0, e.rachaEstudio);
+    }
+    return e;
+  });
+  actualizarHeaderRachas();
+}
+
+/**
+ * Rachas siempre visibles (pedido explícito del usuario): el header las
+ * muestra en todo momento. La de práctica vive en perfil.racha; la de
+ * estudio aquí. app.js también llama esto al cerrar sesiones del camino 1.
+ */
+export function actualizarHeaderRachas() {
+  const el = $('header-rachas');
+  if (!el) return;
+  const practica = load('perfil').racha;
+  const estudio = load('estudio').rachaEstudio;
+  el.innerHTML = '';
+  const mk = (titulo, valor, simbolo) => {
+    const span = document.createElement('span');
+    span.className = 'racha-chip';
+    span.title = `${titulo}: ${valor} día(s) consecutivos`;
+    span.textContent = `${simbolo} ${valor}`;
+    return span;
+  };
+  el.append(mk('Racha de entrenamiento', practica, '🔥'), mk('Racha de estudio', estudio, '📘'));
+}
+
+/* ===================== Estado de bloques/unidades ===================== */
+
+function unidad(id) {
+  return datos.unidades.find((u) => u.id === id) ?? null;
+}
+
+function unidadesDe(bloque) {
+  return bloque.unidades.map(unidad).filter(Boolean);
+}
+
+function unidadCompletada(id) {
+  return Boolean(load('estudio').unidadesCompletadas[id]);
+}
+
+function bloqueAprobado(id) {
+  return Boolean(load('estudio').examenes[id]?.aprobado);
+}
+
+function indiceBloqueActual() {
+  const i = datos.bloques.findIndex((b) => !bloqueAprobado(b.id));
+  return i === -1 ? datos.bloques.length - 1 : i;
+}
+
+export function bloqueActual() {
+  return datos ? datos.bloques[indiceBloqueActual()] : null;
+}
+
+/** Las unidades se desbloquean en orden dentro del bloque. */
+function unidadDisponible(bloque, u) {
+  const us = unidadesDe(bloque);
+  const idx = us.findIndex((x) => x.id === u.id);
+  return us.slice(0, idx).every((x) => unidadCompletada(x.id));
+}
+
+function bloqueUnidadesCompletas(bloque) {
+  return unidadesDe(bloque).every((u) => unidadCompletada(u.id));
+}
+
+/** Resumen para el Dashboard (camino 2). */
+export function progresoResumen() {
+  if (!disponible()) return null;
+  const b = bloqueActual();
+  const us = unidadesDe(b);
+  const hechas = us.filter((u) => unidadCompletada(u.id)).length;
+  const examen = load('estudio').examenes[b.id];
+  return {
+    bloque: b.titulo,
+    unidadesHechas: hechas,
+    unidadesTotal: us.length,
+    examenAprobado: Boolean(examen?.aprobado),
+    examenIntentos: examen?.intentos ?? 0,
+    racha: load('estudio').rachaEstudio,
+  };
+}
+
+/* ========================= Render: el camino ========================== */
+
+export function renderizar() {
+  if (!disponible()) {
+    $('estudio-bloque-titulo').textContent = 'No se pudo cargar data/study.json.';
+    $('estudio-unidades').innerHTML = '';
+    return;
+  }
+
+  const e = load('estudio');
+  const b = bloqueActual();
+  $('estudio-bloque-titulo').textContent = b.titulo;
+  $('estudio-bloque-meta').textContent = b.meta ?? '';
+
+  // Lista de unidades del bloque con su estado
+  const ul = $('estudio-unidades');
+  ul.innerHTML = '';
+  unidadesDe(b).forEach((u) => {
+    const li = document.createElement('li');
+    li.className = 'unidad-item';
+    const hecha = unidadCompletada(u.id);
+    const abierta = unidadDisponible(b, u);
+    const estado = hecha ? '✓' : abierta ? '▸' : '🔒';
+    li.classList.add(hecha ? 'hecha' : abierta ? 'abierta' : 'bloqueada');
+
+    const btn = document.createElement('button');
+    btn.className = 'unidad-boton';
+    btn.disabled = !hecha && !abierta;
+    btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span><span class="unidad-libro"></span>`;
+    btn.querySelector('.unidad-nombre').textContent = u.titulo;
+    btn.querySelector('.unidad-libro').textContent = u.libro;
+    btn.addEventListener('click', () => abrirUnidad(u.id));
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+
+  // Estado del examen del bloque
+  const listo = bloqueUnidadesCompletas(b);
+  const aprobado = bloqueAprobado(b.id);
+  $('estudio-examen-estado').textContent = aprobado
+    ? 'Examen aprobado — el siguiente bloque está abierto.'
+    : listo
+      ? 'Todas las unidades completas: puedes presentar el examen del bloque.'
+      : 'El examen se abre al completar todas las unidades del bloque.';
+  $('btn-examen-iniciar').hidden = aprobado || !listo;
+  $('btn-examen-iniciar').textContent = e.examenes[b.id]?.intentos
+    ? 'Reintentar examen del bloque'
+    : 'Presentar examen del bloque';
+
+  // Paneles: retomar lo que estaba en curso
+  $('estudio-unidad').hidden = true;
+  $('estudio-examen').hidden = true;
+  if (e.examenEnCurso?.bloqueId === b.id) renderExamen();
+  else if (e.quizEnCurso) abrirUnidad(e.quizEnCurso.unidadId);
+
+  actualizarHeaderRachas();
+}
+
+/* ===================== Render: unidad y su quiz ======================= */
+
+function abrirUnidad(unidadId) {
+  const u = unidad(unidadId);
+  if (!u) return;
+  const panel = $('estudio-unidad');
+  panel.hidden = false;
+  panel.dataset.unidad = u.id;
+
+  $('unidad-titulo').textContent = u.titulo;
+  $('unidad-lectura').innerHTML = '';
+  const filas = [
+    ['Libro', u.libro],
+    ['Lectura', u.lectura],
+    ['Dosis', u.dosis],
+    ['Al leer, busca', u.objetivo],
+  ];
+  filas.forEach(([k, v]) => {
+    if (!v) return;
+    const p = document.createElement('p');
+    p.className = 'fila';
+    const b = document.createElement('strong');
+    b.textContent = `${k}: `;
+    p.append(b, v);
+    $('unidad-lectura').appendChild(p);
+  });
+
+  const e = load('estudio');
+  const enCurso = e.quizEnCurso?.unidadId === u.id;
+
+  if (unidadCompletada(u.id)) {
+    $('unidad-quiz').hidden = true;
+    $('btn-quiz-iniciar').hidden = true;
+    mostrarCierreUnidad(u, e.unidadesCompletadas[u.id]);
+  } else if (enCurso) {
+    $('unidad-cierre').hidden = true;
+    $('btn-quiz-iniciar').hidden = true;
+    renderPreguntaQuiz();
+  } else {
+    $('unidad-cierre').hidden = true;
+    $('unidad-quiz').hidden = true;
+    $('btn-quiz-iniciar').hidden = false;
+    $('btn-quiz-iniciar').onclick = () => {
+      update('estudio', (st) => {
+        st.quizEnCurso = { unidadId: u.id, indice: 0, resultados: [] };
+        return st;
+      });
+      $('btn-quiz-iniciar').hidden = true;
+      renderPreguntaQuiz();
+    };
+  }
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+/** Pinta la pregunta actual del quiz (retrieval: responder antes de ver). */
+function renderPreguntaQuiz() {
+  const e = load('estudio');
+  const qc = e.quizEnCurso;
+  const u = unidad(qc?.unidadId);
+  if (!u) return;
+  const q = u.banco[qc.indice];
+  if (!q) return finalizarQuiz();
+
+  const cont = $('unidad-quiz');
+  cont.hidden = false;
+  cont.innerHTML = '';
+
+  const head = document.createElement('p');
+  head.className = 'quiz-progreso';
+  head.textContent = `${NOMBRES_TIPO[q.tipo] ?? 'Pregunta'} · ${qc.indice + 1} de ${u.banco.length}`;
+  cont.appendChild(head);
+
+  const enunciado = document.createElement('p');
+  enunciado.className = 'quiz-enunciado';
+  enunciado.textContent = q.enunciado;
+  cont.appendChild(enunciado);
+
+  const ta = document.createElement('textarea');
+  ta.className = 'textarea-corta';
+  ta.placeholder = 'Responde desde la memoria, por escrito. El forcejeo es el aprendizaje.';
+  ta.value = qc.respuestaParcial ?? ''; // recupera lo escrito si se recargó
+  cont.appendChild(ta);
+
+  const pie = document.createElement('div');
+  pie.className = 'textarea-pie';
+  const contador = document.createElement('span');
+  pie.appendChild(contador);
+  cont.appendChild(pie);
+
+  const btnRevelar = document.createElement('button');
+  btnRevelar.className = 'primario';
+  btnRevelar.textContent = 'Mostrar respuesta esperada';
+  cont.appendChild(btnRevelar);
+
+  const refrescarEstado = () => {
+    const len = ta.value.trim().length;
+    contador.textContent = `${len} / ${MIN_RESPUESTA_QUIZ} caracteres`;
+    btnRevelar.disabled = len < MIN_RESPUESTA_QUIZ;
+  };
+  refrescarEstado();
+
+  let autosave = null;
+  ta.addEventListener('input', () => {
+    refrescarEstado();
+    clearTimeout(autosave);
+    autosave = setTimeout(() => {
+      update('estudio', (st) => {
+        if (st.quizEnCurso?.unidadId === u.id) st.quizEnCurso.respuestaParcial = ta.value;
+        return st;
+      });
+    }, 400);
+  });
+
+  btnRevelar.addEventListener('click', () => {
+    btnRevelar.hidden = true;
+    ta.readOnly = true;
+
+    const sol = document.createElement('div');
+    sol.className = 'quiz-solucion';
+    const st = document.createElement('p');
+    st.textContent = q.solucion;
+    sol.appendChild(st);
+    if (q.explicacion) {
+      const ex = document.createElement('p');
+      ex.className = 'quiz-explicacion';
+      ex.textContent = q.explicacion;
+      sol.appendChild(ex);
+    }
+    cont.appendChild(sol);
+
+    // Autoevaluación honesta del recall
+    const fs = document.createElement('fieldset');
+    fs.className = 'autoeval';
+    fs.innerHTML =
+      '<legend>Comparado con la respuesta esperada, ¿cómo estuvo la tuya?</legend>' +
+      '<label><input type="radio" name="quiz-eval" value="bien" /> Lo tenía</label>' +
+      '<label><input type="radio" name="quiz-eval" value="parcial" /> A medias</label>' +
+      '<label><input type="radio" name="quiz-eval" value="mal" /> No lo tenía</label>';
+    cont.appendChild(fs);
+
+    const btnSig = document.createElement('button');
+    btnSig.className = 'primario';
+    btnSig.textContent = qc.indice + 1 < u.banco.length ? 'Siguiente pregunta' : 'Cerrar evaluación';
+    cont.appendChild(btnSig);
+
+    btnSig.addEventListener('click', () => {
+      const evalSel = cont.querySelector('input[name="quiz-eval"]:checked')?.value;
+      if (!evalSel) return;
+      update('estudio', (st2) => {
+        st2.quizEnCurso.resultados.push({
+          preguntaId: q.id,
+          tipo: q.tipo,
+          respuesta: ta.value.trim(),
+          evaluacion: evalSel,
+        });
+        st2.quizEnCurso.indice += 1;
+        st2.quizEnCurso.respuestaParcial = '';
+        return st2;
+      });
+      renderPreguntaQuiz();
+    });
+  });
+}
+
+/** Cierra la unidad: guarda resultados, cuenta el día y muestra el destilado. */
+function finalizarQuiz() {
+  const e = load('estudio');
+  const qc = e.quizEnCurso;
+  const u = unidad(qc?.unidadId);
+  if (!u) return;
+
+  const aciertos = qc.resultados.filter((r) => r.evaluacion === 'bien').length;
+  const registro = {
+    fecha: hoy(),
+    aciertos,
+    total: u.banco.length,
+    resultados: qc.resultados,
+  };
+  update('estudio', (st) => {
+    st.unidadesCompletadas[u.id] = registro;
+    st.quizEnCurso = null;
+    return st;
+  });
+  marcarDiaEstudio();
+  // Sellos: el cierre de unidad es pantalla de cierre válida para revelar.
+  // Quedan en un buffer que mostrarCierreUnidad consume una sola vez.
+  sellosPendientes = Badges.evaluarYRegistrar();
+
+  $('unidad-quiz').hidden = true;
+  renderizar();
+  abrirUnidad(u.id);
+}
+
+/** Sellos recién ganados, pendientes de revelar en el próximo cierre pintado. */
+let sellosPendientes = [];
+
+/** Las ideas clave se muestran SOLO aquí: después del retrieval, nunca antes. */
+function mostrarCierreUnidad(u, registro) {
+  const cierre = $('unidad-cierre');
+  cierre.hidden = false;
+  cierre.innerHTML = '';
+
+  const resumen = document.createElement('p');
+  resumen.className = 'fila';
+  resumen.textContent = `Unidad completada el ${registro.fecha} — recall: ${registro.aciertos}/${registro.total}.`;
+  cierre.appendChild(resumen);
+
+  if (u.ideas_clave?.length) {
+    const h = document.createElement('p');
+    h.className = 'cierre-titulo';
+    h.textContent = 'Ideas clave del capítulo (ya te las ganaste):';
+    cierre.appendChild(h);
+    const ul = document.createElement('ul');
+    ul.className = 'ideas-clave';
+    u.ideas_clave.forEach((idea) => {
+      const li = document.createElement('li');
+      li.textContent = idea;
+      ul.appendChild(li);
+    });
+    cierre.appendChild(ul);
+  }
+
+  const nota = document.createElement('p');
+  nota.className = 'nota-privacidad';
+  nota.textContent =
+    'Si alguna pregunta salió "no lo tenía", vuelve al pasaje del libro hoy mismo: releer con un hueco detectado vale el doble.';
+  cierre.appendChild(nota);
+
+  if (sellosPendientes.length) {
+    const cajaSellos = document.createElement('div');
+    cajaSellos.className = 'insignias-reveladas';
+    Badges.renderReveladas(sellosPendientes, cajaSellos);
+    cierre.appendChild(cajaSellos);
+    sellosPendientes = [];
+  }
+}
+
+/* ================== Examen del bloque (motor, PDF §8b) ================ */
+
+/**
+ * Pool acumulativo con interleaving: ítems de examen de TODOS los bloques
+ * hasta el actual, barajados evitando dos heurísticas iguales consecutivas.
+ */
+function muestrearExamen(bloque, n = 5) {
+  const idx = datos.bloques.findIndex((b) => b.id === bloque.id);
+  const pool = datos.bloques
+    .slice(0, idx + 1)
+    .flatMap((b) => b.examen?.items ?? []);
+  const baraja = [...pool].sort(() => Math.random() - 0.5);
+  const sel = [];
+  while (sel.length < Math.min(n, baraja.length)) {
+    let i = baraja.findIndex((it) => it.heuristica !== sel.at(-1)?.heuristica);
+    if (i === -1) i = 0;
+    sel.push(baraja.splice(i, 1)[0]);
+  }
+  return sel.map((it) => it.id);
+}
+
+function itemExamen(id) {
+  return datos.bloques
+    .flatMap((b) => b.examen?.items ?? [])
+    .find((it) => it.id === id);
+}
+
+function iniciarExamen() {
+  const b = bloqueActual();
+  update('estudio', (st) => {
+    st.examenEnCurso = {
+      bloqueId: b.id,
+      itemIds: muestrearExamen(b),
+      indice: 0,
+      paso: 'prediccion',
+      registros: [],
+    };
+    return st;
+  });
+  renderExamen();
+}
+
+/** Pinta el paso actual del examen (predicción → forcejeo → revelado). */
+function renderExamen() {
+  const ex = load('estudio').examenEnCurso;
+  if (!ex) return;
+  const item = itemExamen(ex.itemIds[ex.indice]);
+  if (!item) return finalizarExamen();
+
+  const panel = $('estudio-examen');
+  panel.hidden = false;
+  const cont = $('examen-contenido');
+  cont.innerHTML = '';
+  $('estudio-unidad').hidden = true;
+
+  const head = document.createElement('p');
+  head.className = 'quiz-progreso';
+  head.textContent = `Problema ${ex.indice + 1} de ${ex.itemIds.length}`;
+  cont.appendChild(head);
+
+  const enunciado = document.createElement('p');
+  enunciado.className = 'quiz-enunciado';
+  enunciado.textContent = item.enunciado;
+  cont.appendChild(enunciado);
+
+  if (ex.paso === 'prediccion') renderPasoPrediccion(cont, item, ex);
+  else renderPasoForcejeo(cont, item, ex);
+
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+/** Paso 1 (PDF §8b): predicción de jugada ANTES de atacar. */
+function renderPasoPrediccion(cont, item, ex) {
+  const fs = document.createElement('fieldset');
+  fs.className = 'autoeval vertical';
+  const legend = document.createElement('legend');
+  legend.textContent =
+    'Antes de atacar: ¿qué jugada del catálogo crees que pide este problema?';
+  fs.appendChild(legend);
+
+  (datos.catalogoHeuristicas ?? []).forEach((h) => {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'examen-prediccion';
+    input.value = h.id;
+    label.append(input, ` ${h.nombre}`);
+    fs.appendChild(label);
+  });
+  const labelNo = document.createElement('label');
+  labelNo.innerHTML = '<input type="radio" name="examen-prediccion" value="nose" /> Aún no lo veo';
+  fs.appendChild(labelNo);
+  cont.appendChild(fs);
+
+  const btn = document.createElement('button');
+  btn.className = 'primario';
+  btn.textContent = 'Registrar predicción y forcejear';
+  cont.appendChild(btn);
+
+  btn.addEventListener('click', () => {
+    const pred = cont.querySelector('input[name="examen-prediccion"]:checked')?.value;
+    if (!pred) return;
+    update('estudio', (st) => {
+      st.examenEnCurso.registros.push({
+        itemId: item.id,
+        heuristica: item.heuristica,
+        prediccion: pred,
+        pistaUsada: false,
+        resultado: null,
+        disparadorOk: null,
+      });
+      st.examenEnCurso.paso = 'forcejeo';
+      return st;
+    });
+    renderExamen();
+  });
+}
+
+/** Pasos 2-3 (PDF §8b): forcejeo con autoreporte y disparador correcto. */
+function renderPasoForcejeo(cont, item, ex) {
+  const ta = document.createElement('textarea');
+  ta.placeholder = 'Forcejea aquí por escrito: intentos, casos pequeños, caminos muertos…';
+  cont.appendChild(ta);
+
+  // Una sola pista permitida, como en el protocolo del PDF
+  if (item.pista) {
+    const btnPista = document.createElement('button');
+    btnPista.className = 'secundario';
+    btnPista.textContent = 'Pedir LA pista (solo hay una)';
+    cont.appendChild(btnPista);
+    btnPista.addEventListener('click', () => {
+      btnPista.hidden = true;
+      const div = document.createElement('div');
+      div.className = 'hint-item';
+      div.textContent = item.pista;
+      cont.insertBefore(div, btnPista);
+      update('estudio', (st) => {
+        st.examenEnCurso.registros.at(-1).pistaUsada = true;
+        return st;
+      });
+    });
+  }
+
+  const fs = document.createElement('fieldset');
+  fs.className = 'autoeval';
+  fs.innerHTML =
+    '<legend>Resultado honesto:</legend>' +
+    '<label><input type="radio" name="examen-resultado" value="resuelto-solo" /> Resuelto sin ayuda</label>' +
+    '<label><input type="radio" name="examen-resultado" value="resuelto-pista" /> Resuelto con la pista</label>' +
+    '<label><input type="radio" name="examen-resultado" value="no-resuelto" /> No resuelto</label>';
+  cont.appendChild(fs);
+
+  const btnRevelar = document.createElement('button');
+  btnRevelar.className = 'primario';
+  btnRevelar.textContent = 'Revelar solución y disparador';
+  cont.appendChild(btnRevelar);
+
+  btnRevelar.addEventListener('click', () => {
+    const resultado = cont.querySelector('input[name="examen-resultado"]:checked')?.value;
+    if (!resultado) return;
+    btnRevelar.hidden = true;
+    fs.querySelectorAll('input').forEach((i) => (i.disabled = true));
+    ta.readOnly = true;
+
+    const reg = load('estudio').examenEnCurso.registros.at(-1);
+    const sol = document.createElement('div');
+    sol.className = 'quiz-solucion';
+
+    const h = datos.catalogoHeuristicas.find((x) => x.id === item.heuristica);
+    const p1 = document.createElement('p');
+    const b1 = document.createElement('strong');
+    b1.textContent = `Jugada: ${h?.nombre ?? item.heuristica}. `;
+    p1.append(b1, reg.prediccion === item.heuristica
+      ? '✓ Tu predicción coincidió: reconociste la jugada en frío.'
+      : 'Tu predicción apuntó a otra jugada — compara: ¿qué señal del enunciado te faltó leer?');
+    sol.appendChild(p1);
+
+    const p2 = document.createElement('p');
+    p2.textContent = item.solucion;
+    sol.appendChild(p2);
+
+    const p3 = document.createElement('p');
+    p3.className = 'quiz-explicacion';
+    const b3 = document.createElement('strong');
+    b3.textContent = '★ Disparador: ';
+    p3.append(b3, item.disparador);
+    sol.appendChild(p3);
+    cont.appendChild(sol);
+
+    // Cierre del ítem: en fallados, el disparador identificado es lo que puntúa
+    const fs2 = document.createElement('fieldset');
+    fs2.className = 'autoeval';
+    fs2.innerHTML =
+      '<legend>¿Quedó claro (y anotado) qué señal del enunciado apuntaba a esa jugada?</legend>' +
+      '<label><input type="radio" name="examen-disparador" value="si" /> Sí, lo identifico</label>' +
+      '<label><input type="radio" name="examen-disparador" value="no" /> Todavía no</label>';
+    cont.appendChild(fs2);
+
+    const btnSig = document.createElement('button');
+    btnSig.className = 'primario';
+    btnSig.textContent = 'Siguiente';
+    cont.appendChild(btnSig);
+
+    btnSig.addEventListener('click', () => {
+      const disp = cont.querySelector('input[name="examen-disparador"]:checked')?.value;
+      if (!disp) return;
+      update('estudio', (st) => {
+        const r = st.examenEnCurso.registros.at(-1);
+        r.resultado = resultado;
+        r.disparadorOk = disp === 'si';
+        st.examenEnCurso.indice += 1;
+        st.examenEnCurso.paso = 'prediccion';
+        return st;
+      });
+      renderExamen();
+    });
+  });
+}
+
+/**
+ * Criterio de aprobado del PDF §8b: predicción coincide en ≥3 de 5 Y por
+ * cada problema fallado el disparador quedó correctamente identificado.
+ */
+function finalizarExamen() {
+  const ex = load('estudio').examenEnCurso;
+  if (!ex) return;
+
+  const coincidencias = ex.registros.filter((r) => r.prediccion === r.heuristica).length;
+  const fallados = ex.registros.filter((r) => r.resultado === 'no-resuelto');
+  const minCoincidencias = Math.min(3, ex.registros.length);
+  const aprobado =
+    coincidencias >= minCoincidencias && fallados.every((r) => r.disparadorOk);
+
+  update('estudio', (st) => {
+    const previo = st.examenes[ex.bloqueId];
+    st.examenes[ex.bloqueId] = {
+      aprobado: aprobado || Boolean(previo?.aprobado),
+      fecha: hoy(),
+      coincidencias,
+      total: ex.registros.length,
+      registros: ex.registros,
+      intentos: (previo?.intentos ?? 0) + 1,
+    };
+    st.examenEnCurso = null;
+    return st;
+  });
+  marcarDiaEstudio();
+  const insigniasNuevas = Badges.evaluarYRegistrar();
+
+  const cont = $('examen-contenido');
+  cont.innerHTML = '';
+  const res = document.createElement('p');
+  res.className = 'quiz-enunciado';
+  // Lenguaje de fallo (§2.2): validar el proceso + dato + reencuadre
+  res.textContent = aprobado
+    ? `Examen aprobado: ${coincidencias}/${ex.registros.length} disparadores reconocidos en frío. El siguiente bloque está abierto.`
+    : `Todavía no — y este intento ya fue entrenamiento real: reconociste ${coincidencias}/${ex.registros.length} jugadas en frío` +
+      (fallados.some((r) => !r.disparadorOk)
+        ? ' y detectaste qué disparadores te faltan por anotar.'
+        : '.') +
+      ' Relee tus fichas de esas heurísticas y reintenta cuando quieras: se aprueba reconociendo jugadas, no resolviéndolo todo.';
+  cont.appendChild(res);
+
+  if (insigniasNuevas.length) {
+    const cajaSellos = document.createElement('div');
+    cajaSellos.className = 'insignias-reveladas';
+    Badges.renderReveladas(insigniasNuevas, cajaSellos);
+    cont.appendChild(cajaSellos);
+  }
+
+  const btn = document.createElement('button');
+  btn.className = 'secundario';
+  btn.textContent = 'Volver al camino';
+  btn.addEventListener('click', () => renderizar());
+  cont.appendChild(btn);
+}
+
+/* ============================ Wiring inicial =========================== */
+
+export function configurarUI() {
+  $('btn-examen-iniciar').addEventListener('click', iniciarExamen);
+}

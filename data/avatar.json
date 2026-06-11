@@ -1,0 +1,47 @@
+{
+  "nota": "El pensador (§2.3 HANDOFFCES): avatar SVG por capas, estilo grabado/línea. Mapa completo requisito→capa: los aditamentos se GANAN (dominio de estrategia, insignias, exámenes), jamás se compran ni se sortean. El dibujo de cada capa vive en js/avatar.js (primitivas SVG); aquí, el mapa y las historias.",
+  "capas": [
+    {
+      "id": "balanza",
+      "nombre": "Balanza",
+      "requisito": { "tipo": "dominio", "estrategia": "invariantes" },
+      "tooltip": "Balanza — dominó Invariantes el {fecha}: lo que se conserva pesa más que lo que cambia."
+    },
+    {
+      "id": "espejo",
+      "nombre": "Espejo",
+      "requisito": { "tipo": "dominio", "estrategia": "inversion" },
+      "tooltip": "Espejo — dominó Inversión el {fecha}: aprendió a mirar los problemas desde el final."
+    },
+    {
+      "id": "constelacion",
+      "nombre": "Constelación",
+      "requisito": { "tipo": "dominio", "estrategia": "patrones" },
+      "tooltip": "Constelación — dominó Patrones el {fecha}: ve regularidades donde otros ven puntos sueltos."
+    },
+    {
+      "id": "compas",
+      "nombre": "Compás",
+      "requisito": { "tipo": "dominio", "estrategia": "optimizacion" },
+      "tooltip": "Compás — dominó Optimización el {fecha}: traza el máximo con precisión de instrumento."
+    },
+    {
+      "id": "llave",
+      "nombre": "Llave",
+      "requisito": { "tipo": "insignia", "insignia": "fenix" },
+      "tooltip": "Llave — Fénix ({fecha}): reabrió un problema que se le había cerrado."
+    },
+    {
+      "id": "pluma",
+      "nombre": "Pluma",
+      "requisito": { "tipo": "insignia", "insignia": "el-que-mira-atras" },
+      "tooltip": "Pluma — 25 fichas de moraleja ({fecha}): el cuaderno ya es una biblioteca propia."
+    },
+    {
+      "id": "laurel",
+      "nombre": "Laurel",
+      "requisito": { "tipo": "examenes", "minimo": 1 },
+      "tooltip": "Laurel — {n} examen(es) de bloque aprobados en el Modo Estudio."
+    }
+  ]
+}

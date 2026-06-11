@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CogitoErgoSum — Entrenamiento del pensamiento</title>
+  <meta name="theme-color" content="#16130f" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-180.png" />
+  <!--
+    CogitoErgoSum — aplicación sin dependencias externas (PWA instalable).
+    Los módulos ES6 requieren servirla por HTTP. Desde esta carpeta ejecuta:
+    python3 -m http.server 8000   y abre   http://localhost:8000
+  -->
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="marca-bloque">
+        <span class="marca">CogitoErgoSum</span>
+        <span class="marca-sub">Entrenamiento del pensamiento</span>
+      </div>
+      <!-- Rachas siempre visibles: 🔥 entrenamiento · 📘 estudio (independientes) -->
+      <div id="header-rachas" class="header-rachas" title="Tus rachas"></div>
+      <nav>
+        <button id="nav-sesion" class="activo">Entrenamiento</button>
+        <button id="nav-estudio">Estudio</button>
+        <button id="nav-dashboard">Dashboard</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+
+    <!-- ============================ SESIÓN ============================ -->
+    <section id="vista-sesion">
+
+      <!-- Fresh start (§2.2): romper la racha nunca borra el logro -->
+      <article class="tarjeta freshstart" id="seccion-freshstart" hidden>
+        <h2>Las rachas se rompen; los hábitos se reconstruyen</h2>
+        <p id="freshstart-texto" class="freshstart-texto"></p>
+        <div class="freshstart-acciones">
+          <button id="btn-freshstart-meta" class="primario">Empezar meta corta: 3 días</button>
+          <button id="btn-freshstart-cerrar" class="secundario">Hoy solo entreno</button>
+        </div>
+      </article>
+
+      <!-- Problema del día: solo enunciado y dificultad visual mínima -->
+      <article class="tarjeta">
+        <div class="problema-meta">
+          <span id="problema-dificultad" class="dificultad" title="Dificultad"></span>
+          <span id="badge-revision" class="badge" hidden>Revisión</span>
+        </div>
+        <h1 id="problema-titulo">Cargando…</h1>
+        <p id="problema-enunciado"></p>
+      </article>
+
+      <!-- Temporizador de reflexión (§2.6: pausa + duración configurable) -->
+      <article class="tarjeta">
+        <h2>Tiempo de reflexión</h2>
+        <div class="timer-fila">
+          <span id="timer-display">20:00</span>
+          <div class="timer-controles">
+            <button id="btn-timer-pausa" class="timer-boton" title="Pausar o reanudar el cronómetro" aria-label="Pausar o reanudar el cronómetro">⏸</button>
+            <button id="btn-timer-extender" class="timer-boton" title="Seguir forcejeando 10 minutos más">+10 min</button>
+          </div>
+        </div>
+        <span id="timer-etiqueta" class="timer-etiqueta">La solución se desbloquea al agotarse</span>
+        <div class="barra-progreso"><div id="timer-progreso"></div></div>
+        <div class="timer-config">
+          <label for="select-duracion">Duración de tus próximos forcejeos:</label>
+          <select id="select-duracion" aria-label="Duración del temporizador para próximos problemas"></select>
+          <span id="timer-sugerencia" class="timer-sugerencia"></span>
+        </div>
+        <!-- Checkpoint metacognitivo (Schoenfeld): ~40% y ~80% del forcejeo -->
+        <div id="checkpoint-metacognitivo" class="checkpoint" hidden>
+          <span class="checkpoint-titulo">Checkpoint metacognitivo</span>
+          <p></p>
+        </div>
+      </article>
+
+      <!-- Mi Desconstrucción -->
+      <article class="tarjeta">
+        <h2>Mi Desconstrucción</h2>
+        <ul class="guia-desconstruccion">
+          <li>¿Qué se pide exactamente y qué información tengo?</li>
+          <li>¿Qué falta, qué sobra y qué restricciones existen?</li>
+          <li>¿Qué hipótesis y estrategias podría probar?</li>
+          <li>¿A qué otros problemas se parece?</li>
+          <li>Registra intentos, errores y caminos descartados.</li>
+          <li id="guia-revision" hidden>Es una revisión: ¿qué señal del enunciado reconoces y qué moraleja de tu cuaderno aplica aquí?</li>
+        </ul>
+        <textarea id="desconstruccion"
+          placeholder="Piensa por escrito. Nadie te observa: anota hipótesis, dibuja con palabras, equivócate…"></textarea>
+        <div class="textarea-pie">
+          <span id="contador-caracteres">0 / 200 caracteres</span>
+          <span id="autosave-indicador"></span>
+        </div>
+      </article>
+
+      <!-- Hints socráticos -->
+      <article class="tarjeta">
+        <h2>Pistas</h2>
+        <ul id="hints-lista"></ul>
+        <button id="btn-hint" class="secundario">Pedir pista 1 de 5</button>
+      </article>
+
+      <!-- Revelar solución (bloqueado por timer + desconstrucción + predicción) -->
+      <article class="tarjeta">
+        <h2>Solución</h2>
+
+        <!-- Predicción de jugada: el usuario genera su hipótesis de estrategia
+             ANTES de ver la solución; la real se revela solo al cerrar la sesión -->
+        <fieldset class="autoeval" id="fieldset-prediccion">
+          <legend>Predicción de jugada — antes de revelar: ¿qué crees que pedía este problema?</legend>
+          <label><input type="radio" name="prediccion" value="inversion" /> Pensar hacia atrás</label>
+          <label><input type="radio" name="prediccion" value="optimizacion" /> Maximizar o minimizar</label>
+          <label><input type="radio" name="prediccion" value="invariantes" /> Algo que se conserva</label>
+          <label><input type="radio" name="prediccion" value="patrones" /> Una regularidad oculta</label>
+          <label><input type="radio" name="prediccion" value="nose" /> Aún no lo veo</label>
+        </fieldset>
+
+        <button id="btn-revelar" class="primario" disabled>Revelar solución</button>
+        <p id="bloqueo-mensaje"></p>
+        <div id="seccion-solucion" hidden>
+          <p id="solucion-texto"></p>
+          <p id="explicacion-texto"></p>
+        </div>
+      </article>
+
+      <!-- Reflexión posterior (Pólya: mirar hacia atrás) -->
+      <article class="tarjeta" id="seccion-reflexion" hidden>
+        <h2>Reflexión</h2>
+
+        <fieldset class="autoeval">
+          <legend>¿Cómo te fue antes de ver la solución?</legend>
+          <label><input type="radio" name="autoeval" value="resuelto" /> Lo resolví</label>
+          <label><input type="radio" name="autoeval" value="parcial" /> Avancé parcialmente</label>
+          <label><input type="radio" name="autoeval" value="fallado" /> Aún no salió</label>
+        </fieldset>
+
+        <!-- Ficha para el cuaderno de moralejas: el artefacto más importante.
+             Moraleja y disparador son obligatorios para cerrar la sesión. -->
+        <div class="campo-reflexion campo-ficha">
+          <label for="ficha-moraleja">★ Moraleja — ¿qué aprendiste? En una frase: qué desbloqueó el problema</label>
+          <textarea id="ficha-moraleja" class="textarea-corta"
+            placeholder="Ej.: «Sumar las ecuaciones hace desaparecer la variable cruzada.»"></textarea>
+        </div>
+
+        <div class="campo-reflexion campo-ficha">
+          <label for="ficha-disparador">★ Disparador — ¿qué señal del enunciado debía hacerte pensar en esa idea?</label>
+          <textarea id="ficha-disparador" class="textarea-corta"
+            placeholder="Ej.: «Había simetría → debí buscar una sustitución simétrica.»"></textarea>
+        </div>
+
+        <div class="campo-reflexion">
+          <label for="reflexion-comparacion">Comparación — mi enfoque vs. la solución propuesta</label>
+          <textarea id="reflexion-comparacion" placeholder="¿Qué intentaste (sobre todo los caminos muertos)? ¿Dónde te atascaste exactamente? ¿Dónde divergió tu camino?"></textarea>
+        </div>
+
+        <div class="campo-reflexion">
+          <label for="reflexion-transferencia">Transferencia — ¿dónde más aplica esta idea?</label>
+          <textarea id="reflexion-transferencia" placeholder="Contextos distintos donde reutilizarías este esquema mental."></textarea>
+        </div>
+
+        <button id="btn-completar" class="primario">Cerrar sesión de hoy</button>
+        <p id="reflexion-error" class="error"></p>
+      </article>
+
+      <!-- Resultado -->
+      <article class="tarjeta" id="seccion-resultado" hidden>
+        <h2>Sesión completada</h2>
+        <div id="resultado-score">—</div>
+        <!-- Momento de aprendizaje explícito: la estrategia se revela SOLO aquí -->
+        <p id="resultado-estrategia" class="resultado-estrategia"></p>
+        <p id="resultado-prediccion" class="resultado-detalle"></p>
+        <!-- Validación del proceso (§2.2): tras un fallo, dato + reencuadre -->
+        <p id="resultado-proceso" class="resultado-proceso" hidden></p>
+        <p id="resultado-dificultad" class="resultado-detalle"></p>
+        <p id="resultado-racha" class="resultado-detalle"></p>
+        <!-- Revelado de insignias: solo aquí, jamás interrumpe el forcejeo -->
+        <div id="resultado-insignias" class="insignias-reveladas"></div>
+        <p class="separador-floron" aria-hidden="true">❧</p>
+        <button id="btn-otro-problema" class="secundario">Entrenar otro problema</button>
+      </article>
+
+      <!-- Piso mínimo: en días sin energía, un recall corto conserva la cadena -->
+      <p id="piso-invitacion" class="piso-invitacion" hidden>
+        ¿Día sin energía? <button id="btn-piso-abrir" class="enlace">Cumple el piso mínimo (~5 min)</button> y conserva la cadena.
+      </p>
+
+      <article class="tarjeta" id="seccion-piso" hidden>
+        <h2>Piso mínimo — recuerda una ficha</h2>
+        <p class="piso-instruccion">
+          Sin resolverlo de nuevo: ¿qué señal del enunciado debía disparar la idea clave,
+          y cuál fue la moraleja que destilaste?
+        </p>
+        <h3 id="piso-titulo" class="piso-titulo"></h3>
+        <p id="piso-enunciado" class="piso-enunciado"></p>
+        <div id="piso-quiz">
+          <textarea id="piso-recuerdo" class="textarea-corta"
+            placeholder="Escribe de memoria la señal y la moraleja. Después podrás comparar con tu ficha original."></textarea>
+          <div class="textarea-pie">
+            <span id="piso-contador">0 / 80 caracteres</span>
+          </div>
+          <button id="btn-piso-completar" class="primario" disabled>Cerrar piso mínimo</button>
+        </div>
+        <div id="piso-ficha" class="piso-ficha" hidden></div>
+        <p id="piso-resultado" class="resultado-detalle"></p>
+        <div id="piso-insignias" class="insignias-reveladas"></div>
+      </article>
+
+    </section>
+
+    <!-- ============================ ESTUDIO =========================== -->
+    <!-- Camino 2: roadmap de Definitivo.pdf. Lectura dirigida (la app señala
+         qué leer; se lee en el libro), retrieval al volver y examen del motor
+         por bloque. El contenido vive en data/study.json. -->
+    <section id="vista-estudio" hidden>
+
+      <article class="tarjeta">
+        <h2>Tu camino</h2>
+        <p id="estudio-bloque-titulo" class="estudio-bloque-titulo">Cargando…</p>
+        <p id="estudio-bloque-meta" class="estudio-bloque-meta"></p>
+        <ul id="estudio-unidades" class="estudio-unidades"></ul>
+        <p id="estudio-examen-estado" class="nota-privacidad"></p>
+        <button id="btn-examen-iniciar" class="primario" hidden>Presentar examen del bloque</button>
+      </article>
+
+      <article class="tarjeta" id="estudio-unidad" hidden>
+        <h2>Unidad</h2>
+        <h3 id="unidad-titulo" class="piso-titulo"></h3>
+        <div id="unidad-lectura" class="lista-estrategias"></div>
+        <button id="btn-quiz-iniciar" class="primario" hidden>Ya leí — evalúame</button>
+        <div id="unidad-quiz" hidden></div>
+        <div id="unidad-cierre" hidden></div>
+      </article>
+
+      <article class="tarjeta" id="estudio-examen" hidden>
+        <h2>Examen del bloque</h2>
+        <p class="piso-instruccion">
+          Cinco problemas no vistos, mezclados de todo lo avanzado. Por cada uno:
+          predice la jugada, forcejea, y al revelar registra el disparador.
+          Se aprueba reconociendo jugadas, no resolviéndolo todo.
+        </p>
+        <div id="examen-contenido"></div>
+      </article>
+
+    </section>
+
+    <!-- =========================== DASHBOARD ========================== -->
+    <section id="vista-dashboard" hidden>
+
+      <article class="tarjeta">
+        <h2>Dashboard cognitivo</h2>
+        <div class="grid-stats">
+          <div class="stat"><div id="stat-resueltos" class="valor">0</div><div class="etiqueta">Problemas</div></div>
+          <div class="stat"><div id="stat-exito" class="valor">0%</div><div class="etiqueta">Tasa de éxito</div></div>
+          <div class="stat"><div id="stat-tiempo" class="valor">0 min</div><div class="etiqueta">Tiempo promedio</div></div>
+          <div class="stat"><div id="stat-hints" class="valor">0</div><div class="etiqueta">Pistas usadas</div></div>
+          <div class="stat"><div id="stat-racha" class="valor">0</div><div class="etiqueta">Racha diaria</div></div>
+          <div class="stat"><div id="stat-mejor-racha" class="valor">0</div><div class="etiqueta">Mejor racha</div></div>
+          <div class="stat"><div id="stat-dificultad" class="valor">—</div><div class="etiqueta">Nivel actual</div></div>
+          <div class="stat"><div id="stat-disparadores" class="valor">—</div><div class="etiqueta">Disparadores reconocidos</div></div>
+          <div class="stat"><div id="stat-fichas" class="valor">0</div><div class="etiqueta">Fichas con disparador</div></div>
+        </div>
+      </article>
+
+      <!-- El pensador: avatar por capas — cuenta la historia de TU trabajo -->
+      <article class="tarjeta">
+        <h2>El pensador</h2>
+        <div id="avatar-figura" class="avatar-figura"></div>
+        <p class="avatar-nota">
+          Cada elemento se gana con trabajo: pasa el cursor para leer su historia.
+          Nada aquí se compra ni se sortea.
+        </p>
+        <div id="rating-heuristicas" class="rating-heuristicas"></div>
+        <p class="nota-privacidad">
+          Tu nivel por estrategia es privado: mide tu camino contra tu propio pasado,
+          no contra nadie. Dominada = 5 o más sesiones con puntuación ≥ 70 en esa estrategia.
+        </p>
+      </article>
+
+      <!-- Mi estante: vitrina de sellos. Las no ganadas son siluetas sin nombre -->
+      <article class="tarjeta">
+        <h2>Mi estante</h2>
+        <p class="nota-privacidad">
+          Sellos de la biblioteca: se ganan con esfuerzo sostenido, nunca con suerte.
+          Los que faltan permanecen en silueta — aún por descubrir.
+        </p>
+        <div id="estante-insignias" class="estante"></div>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Modo Estudio</h2>
+        <div class="lista-estrategias" id="dash-estudio">
+          <p class="fila">Aún sin actividad de estudio.</p>
+        </div>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Cuaderno de moralejas</h2>
+        <p class="nota-privacidad">
+          Tu biblioteca de patrones: una ficha por problema con la moraleja que destilaste
+          y la señal que debía dispararla. Releerlas y contarlas es tu evidencia de avance.
+        </p>
+        <div id="cuaderno-lista" class="cuaderno-lista"></div>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Estrategias mentales</h2>
+        <div class="lista-estrategias">
+          <p class="fila"><strong>Dominadas:</strong> <span id="estrategias-dominadas">—</span></p>
+          <p class="fila"><strong>En desarrollo:</strong> <span id="estrategias-debiles">—</span></p>
+        </div>
+        <div id="chart-estrategias"></div>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Curva de dificultad</h2>
+        <div id="chart-curva"></div>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Generador de variantes (IA, opcional)</h2>
+        <p class="fila"><strong>Variantes en tu biblioteca:</strong> <span id="factory-contador">0</span></p>
+        <button id="btn-generar-variante" class="secundario">Generar variante nueva</button>
+        <p id="factory-estado"></p>
+        <p class="nota-privacidad">
+          La IA analiza la estructura profunda de un problema que ya trabajaste y crea uno nuevo
+          con contexto totalmente distinto pero el mismo esquema mental. La variante entra a tu
+          biblioteca y aparecerá como problema de entrenamiento en sesiones futuras.
+          Requiere una cuenta de Claude activa (configúrala abajo).
+        </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Potenciar con Claude (opcional) — Cuentas</h2>
+        <ul id="mentor-cuentas" class="lista-cuentas"></ul>
+        <div class="mentor-config">
+          <input id="cuenta-nombre" type="text" placeholder="Nombre (ej. Cuenta personal)" autocomplete="off" />
+          <input id="cuenta-apikey" type="password" placeholder="API key de Anthropic (sk-ant-…)" autocomplete="off" />
+          <button id="btn-cuenta-agregar" class="secundario">Agregar cuenta</button>
+        </div>
+        <p id="mentor-estado"></p>
+        <p class="nota-privacidad">
+          Conectar Claude significa pegar tu propia API key (se genera en la consola de tu cuenta:
+          platform.claude.com → API Keys); no existe un «iniciar sesión con Claude» para apps de
+          terceros. La key vive SOLO en este dispositivo (LocalStorage) y jamás se envía a ningún
+          servidor nuestro. Habilita pistas dinámicas y variantes frescas; sin key, la app funciona
+          completa con las pistas curadas incluidas.
+        </p>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- Citas de la biblioteca: rotación curada, determinista por día -->
+  <footer class="pie-biblioteca" id="pie-biblioteca" hidden>
+    <span class="floron" aria-hidden="true">❧</span>
+    <blockquote id="cita-texto"></blockquote>
+    <cite id="cita-autor"></cite>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

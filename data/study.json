@@ -1,0 +1,1505 @@
+{
+  "catalogoHeuristicas": [
+    { "id": "caso-pequeno", "nombre": "Caso pequeño → patrón", "descripcion": "Prueba un caso pequeño o particular primero; busca el patrón y luego pruébalo." },
+    { "id": "simetria", "nombre": "Simetría / WLOG", "descripcion": "Explota la simetría: sustituciones simétricas, sumar/restar ecuaciones, suponer orden." },
+    { "id": "invariante", "nombre": "Invariante / monovariante", "descripcion": "Busca una cantidad que no cambia (o que solo crece/decrece) con cada movida." },
+    { "id": "hacia-atras", "nombre": "Trabajar hacia atrás", "descripcion": "Cuando el final es claro y el inicio no, retrocede desde lo que quieres lograr." },
+    { "id": "caso-extremo", "nombre": "Caso extremo", "descripcion": "Considera el máximo, el mínimo, el primero: el borde suele forzar la estructura." },
+    { "id": "palomar", "nombre": "Palomar (pigeonhole)", "descripcion": "Más objetos que cajas: alguna caja tiene dos. Útil para demostrar existencia." },
+    { "id": "induccion", "nombre": "Inducción", "descripcion": "Afirmación sobre todo n: caso base + dónde se usa la hipótesis inductiva." },
+    { "id": "contradiccion", "nombre": "Contradicción", "descripcion": "Negar la tesis da algo manejable: contradicción o contrapositiva." },
+    { "id": "casework", "nombre": "Casework organizado", "descripcion": "Divide en casos exhaustivos y excluyentes; no improvises la partición." },
+    { "id": "pensamiento-ilusorio", "nombre": "Pensamiento ilusorio", "descripcion": "Supón que ya tienes la respuesta y mira qué propiedades debería cumplir." },
+    { "id": "parametrizar-dibujar", "nombre": "Parametrizar / dibujar", "descripcion": "Introduce una variable o dibuja una figura: hacer lo abstracto concreto." },
+    { "id": "penultimo-paso", "nombre": "Penúltimo paso", "descripcion": "Pregunta qué necesitarías tener justo antes de terminar, y persíguelo." }
+  ],
+
+  "bloques": [
+    {
+      "id": "fase-0",
+      "titulo": "Fase 0 · Montar el sistema",
+      "meta": "Aprender el método antes que el volumen: el bucle de Pólya, la mentalidad de Zeitz y tus primeras jugadas del catálogo. No se avanza temario; se aprende a forcejear bien.",
+      "unidades": ["polya-cuatro-pasos", "polya-diccionario", "zeitz-1", "zeitz-2a", "zeitz-2b"],
+      "examen": {
+        "items": [
+          {
+            "id": "f0-ex-1",
+            "heuristica": "caso-pequeno",
+            "enunciado": "¿Cuál es la cifra de las unidades (el último dígito) de 3^100?",
+            "pista": "Calcula la última cifra de 3¹, 3², 3³, 3⁴, 3⁵… ¿qué observas?",
+            "solucion": "Es 1. Las últimas cifras de las potencias de 3 ciclan con periodo 4: 3, 9, 7, 1, 3, 9… Como 100 es múltiplo de 4 (100 mod 4 = 0), 3^100 cae en la cuarta posición del ciclo, que es 1.",
+            "disparador": "Potencia gigante + solo piden la última cifra → casi siempre hay un ciclo en las últimas cifras; búscalo con casos pequeños y reduce el exponente módulo el periodo."
+          },
+          {
+            "id": "f0-ex-2",
+            "heuristica": "invariante",
+            "enunciado": "A un tablero de 6×6 le quitas dos casillas del MISMO color (coloreado como ajedrez). Quedan 34 casillas. ¿Puedes cubrirlas exactamente con 17 fichas de dominó, si cada ficha cubre dos casillas adyacentes? Justifica.",
+            "pista": "¿Qué cubre cada dominó en términos de colores del tablero?",
+            "solucion": "No se puede. Cada dominó cubre exactamente una casilla blanca y una negra, así que 17 dominós cubren 17 blancas y 17 negras. Pero al quitar dos casillas del mismo color quedan 16 de un color y 18 del otro. El balance que todo dominó respeta está roto: imposible.",
+            "disparador": "\"¿Se puede cubrir/emparejar?\" + piezas que cubren una porción fija → colorea y busca un invariante de paridad que cada pieza respete."
+          },
+          {
+            "id": "f0-ex-3",
+            "heuristica": "caso-pequeno",
+            "enunciado": "Hay 1000 puertas cerradas, numeradas del 1 al 1000, y 1000 personas. La persona k cambia el estado de todas las puertas múltiplo de k. Pasan las 1000 personas en orden. ¿Cuántas puertas quedan abiertas?",
+            "pista": "Simula con 10 puertas a mano. ¿Cuáles quedan abiertas? ¿Qué tienen en común esos números?",
+            "solucion": "Quedan abiertas 31 (las puertas con número cuadrado perfecto: 1, 4, 9, …, 961 = 31²). La puerta n la tocan exactamente las personas cuyo número divide a n; queda abierta si la tocan un número impar de veces, es decir, si n tiene un número impar de divisores. Los divisores se emparejan d ↔ n/d, salvo cuando d = n/d (n cuadrado perfecto). Por eso solo los cuadrados quedan abiertos, y hay 31 cuadrados ≤ 1000.",
+            "disparador": "\"Cada objeto se toca una vez por cada divisor/factor\" + \"¿cuáles quedan en cierto estado?\" → cuenta la paridad del número de divisores; caso pequeño → estructura."
+          },
+          {
+            "id": "f0-ex-4",
+            "heuristica": "hacia-atras",
+            "enunciado": "Sobre la mesa hay 21 cerillos. Dos jugadores alternan turnos; en cada turno se toman 1, 2 o 3 cerillos. Quien toma el último cerillo GANA. ¿Quién gana con juego perfecto, el primero o el segundo? ¿Con qué estrategia?",
+            "pista": "¿Qué cantidad de cerillos te gustaría dejarle a tu rival justo antes del final?",
+            "solucion": "Gana el primero: toma 1 cerillo y deja 20. Trabajando hacia atrás: quien recibe 4 cerillos pierde (tome 1, 2 o 3, el rival remata). Luego recibir cualquier múltiplo de 4 es perder, porque el rival siempre puede devolverte al siguiente múltiplo de 4. Como 21 no es múltiplo de 4, el primero deja 20 y a partir de ahí responde completando a 4 en cada ronda (si el rival toma t, él toma 4 − t).",
+            "disparador": "Juego por turnos con final claro → trabaja hacia atrás desde las posiciones finales y clasifica posiciones en ganadoras/perdedoras."
+          },
+          {
+            "id": "f0-ex-5",
+            "heuristica": "penultimo-paso",
+            "enunciado": "Demuestra que el producto de cinco enteros positivos consecutivos siempre termina en 0.",
+            "pista": "¿Qué significa exactamente \"terminar en 0\" en términos de divisibilidad?",
+            "solucion": "Terminar en 0 equivale a ser divisible entre 10, es decir, entre 2 y entre 5 (penúltimo paso). Entre cinco enteros consecutivos siempre hay al menos un múltiplo de 5 (cada 5 números aparece uno) y al menos un par. Por lo tanto el producto es divisible entre 2 × 5 = 10 y termina en 0.",
+            "disparador": "\"Demuestra que siempre pasa X con el resultado\" → pregunta qué necesitarías justo antes (aquí: divisibilidad entre 2 y 5) y persigue eso en lugar de la meta completa."
+          },
+          {
+            "id": "f0-ex-6",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "Un monje sube el lunes por un sendero a la cima, saliendo a las 7:00 y llegando a las 19:00 (con pausas y ritmo variable). El martes baja por el MISMO sendero, saliendo a las 7:00 y llegando a las 19:00. Demuestra que existe un punto del sendero por el que pasó exactamente a la misma hora ambos días.",
+            "pista": "Imagina que el lunes y el martes ocurren el mismo día: dos personas en el mismo sendero.",
+            "solucion": "Superpón los dos días: imagina que el lunes un monje sube y, ese mismo día, otro baja con el horario del martes. Ambos recorren el mismo sendero entre las 7:00 y las 19:00 en sentidos opuestos, así que en algún momento se cruzan: en ese instante están en el mismo punto a la misma hora. Ese punto y esa hora son los buscados. (Gráficamente: la curva posición-tiempo de subida y la de bajada deben intersecarse.)",
+            "disparador": "Dos procesos sobre el mismo recorrido/intervalo → dibújalos en la misma gráfica o superponlos: la intersección es la existencia que te piden."
+          }
+        ]
+      }
+    },
+    {
+      "id": "fase-1",
+      "titulo": "Fase 1 · Cimientos + hábito",
+      "meta": "Subir el escalón: los métodos de argumento y las primeras tácticas (simetría, extremo, palomar, invariantes). En paralelo, AMC 10 y Alcumus como banco de práctica diaria (camino 1). La clave es la mezcla, no el volumen.",
+      "unidades": ["zeitz-23", "zeitz-24", "zeitz-31", "zeitz-32", "zeitz-33", "zeitz-34"],
+      "examen": {
+        "items": [
+          {
+            "id": "f1-ex-1",
+            "heuristica": "simetria",
+            "enunciado": "Calcula 1 + 2 + 3 + … + 100 SIN usar una fórmula memorizada, y justifica por qué tu método funciona.",
+            "pista": "¿Qué obtienes si emparejas el primer término con el último?",
+            "solucion": "5050. Empareja simétricamente: 1+100 = 101, 2+99 = 101, …, 50+51 = 101. Hay 50 parejas y cada una suma 101, así que el total es 50 × 101 = 5050. Funciona porque la suma es invariante al reflejar el orden: sumarla consigo misma invertida da 100 términos iguales a 101 (el truco de Gauss).",
+            "disparador": "Suma larga con estructura regular → explota la simetría: emparéjala con su reflejo (primero+último) y cuenta parejas iguales."
+          },
+          {
+            "id": "f1-ex-2",
+            "heuristica": "caso-extremo",
+            "enunciado": "Varios niños están de pie en un patio de modo que TODAS las distancias entre pares son distintas. Cada niño lanza una pelota al niño más cercano a él. Demuestra que hay dos niños que se lanzan la pelota mutuamente.",
+            "pista": "Entre todas las parejas de niños, mira la que está a distancia mínima.",
+            "solucion": "Considera la pareja (A, B) a distancia mínima de todo el patio (existe y es única porque las distancias son distintas). El más cercano a A es B: cualquier otro niño está más lejos de A que B, por minimalidad. Por la misma razón, el más cercano a B es A. Así que A le lanza a B y B le lanza a A: pareja mutua.",
+            "disparador": "\"Demuestra que existen dos que se relacionan mutuamente\" en una configuración con cantidades comparables → examina el elemento o pareja EXTREMA (mínimo/máximo): sus propiedades vienen forzadas."
+          },
+          {
+            "id": "f1-ex-3",
+            "heuristica": "palomar",
+            "enunciado": "En una reunión hay n ≥ 2 personas. Demuestra que siempre existen dos personas con exactamente el mismo número de conocidos en la reunión (el conocerse es mutuo).",
+            "pista": "¿Cuántos valores distintos puede tomar \"número de conocidos\"? ¿Pueden aparecer el valor 0 y el valor n−1 a la vez?",
+            "solucion": "Cada persona conoce entre 0 y n−1 personas: n valores posibles para n personas. Pero 0 y n−1 no pueden coexistir: si alguien conoce a todos (n−1), nadie puede conocer a ninguno (0). Así que solo hay n−1 valores realmente disponibles para n personas, y por el palomar dos personas comparten valor.",
+            "disparador": "\"Garantiza que existen dos con la misma propiedad\" → cuenta cuántos valores puede tomar la propiedad (cajas) contra cuántos objetos hay; si sobran objetos, palomar. El refinamiento típico: dos valores se excluyen entre sí."
+          },
+          {
+            "id": "f1-ex-4",
+            "heuristica": "contradiccion",
+            "enunciado": "Demuestra que √2 es irracional.",
+            "pista": "Supón lo contrario: √2 = p/q como fracción irreducible. ¿Qué paridad tienen p y q?",
+            "solucion": "Supón que √2 = p/q con p, q enteros sin factores comunes. Entonces p² = 2q², así que p² es par y por tanto p es par: p = 2k. Sustituyendo, 4k² = 2q², o sea q² = 2k², así que q también es par. Pero entonces p y q comparten el factor 2, contradiciendo que la fracción era irreducible. La suposición es insostenible: √2 es irracional.",
+            "disparador": "Tesis negativa (\"no es\", \"no existe\", \"es imposible\") → niégala: la negación te REGALA un objeto concreto (aquí la fracción p/q) con el cual trabajar hasta romperlo."
+          },
+          {
+            "id": "f1-ex-5",
+            "heuristica": "induccion",
+            "enunciado": "Demuestra que para todo n ≥ 1, la suma de los primeros n impares es n²: 1 + 3 + 5 + … + (2n−1) = n².",
+            "pista": "Si ya vale para n, ¿qué le pasa a la suma al añadir el siguiente impar, 2n+1?",
+            "solucion": "Base: n = 1, la suma es 1 = 1². Paso inductivo: supón que 1 + 3 + … + (2n−1) = n². El siguiente impar es 2n+1, y la nueva suma es n² + 2n + 1 = (n+1)². Por inducción, vale para todo n. (Imagen: cada impar nuevo es la \"escuadra\" que convierte un cuadrado de lado n en uno de lado n+1.)",
+            "disparador": "Afirmación sobre TODO n con estructura acumulativa (sumas, construcciones paso a paso) → inducción; pregúntate exactamente dónde se usa la hipótesis al pasar de n a n+1."
+          },
+          {
+            "id": "f1-ex-6",
+            "heuristica": "invariante",
+            "enunciado": "En una pizarra están escritos los números 1, 2, 3, …, 10. En cada paso borras dos números a y b, y escribes a + b + ab. Tras nueve pasos queda un solo número. ¿Cuál es? ¿Depende del orden de las operaciones?",
+            "pista": "Observa que a + b + ab = (1+a)(1+b) − 1. ¿Qué cantidad no cambia en cada paso?",
+            "solucion": "Siempre queda 11! − 1 = 39 916 799, sin importar el orden. Como a + b + ab = (1+a)(1+b) − 1, la operación reemplaza dos factores por su producto en la cantidad P = (1+x₁)(1+x₂)…(1+xₖ): P es invariante. Al inicio P = 2·3·4·…·11 = 11!. Al final P = 1 + (número final), así que el número final es 11! − 1.",
+            "disparador": "Proceso repetido que combina elementos y pregunta por el resultado final → busca una cantidad invariante; si la operación tiene forma a+b+ab, ca+cb, etc., intenta reescribirla como producto o suma que se conserve."
+          }
+        ]
+      }
+    },
+    {
+      "id": "fase-2",
+      "titulo": "Fase 2 · Conteo y números",
+      "meta": "Profundización temática al servicio de tu carrera: combinatoria y teoría de números, con grafos como puente. Zeitz pone el lenguaje (contar bien, congruencias), Engel pone la pelea olímpica y el examen mezcla AMC real con clásicos. El muestreo sigue siendo acumulativo: todo lo de las fases 0-1 puede reaparecer.",
+      "unidades": ["zeitz-41", "zeitz-61", "zeitz-62", "zeitz-63", "engel-comb", "zeitz-71", "zeitz-72"],
+      "examen": {
+        "items": [
+          {
+            "id": "f2-ex-1",
+            "heuristica": "palomar",
+            "enunciado": "Una caja contiene 28 pelotas rojas, 20 verdes, 19 amarillas, 13 azules, 11 blancas y 9 negras. ¿Cuál es el mínimo número de pelotas que debes sacar, sin reposición y sin mirar, para GARANTIZAR que entre las extraídas haya 15 de un mismo color?",
+            "pista": "No busques suerte: construye el peor caso. ¿Cuántas pelotas puedes llegar a sacar sin que NINGÚN color alcance 15?",
+            "solucion": "76. El peor caso acumula el máximo de cada color sin llegar a 15: 14 rojas + 14 verdes + 14 amarillas + 13 azules (todas) + 11 blancas (todas) + 9 negras (todas) = 75 pelotas sin cumplir la meta. La pelota 76 cae por fuerza en rojo, verde o amarillo —los únicos colores con margen— y completa las 15.",
+            "disparador": "\"Garantizar\" + extracción a ciegas → palomar en versión peor caso: calcula lo MÁXIMO que puedes sacar sin cumplir la meta y súmale 1. Ojo con los colores que se agotan antes del umbral.",
+            "source": "AMC 10A 2019 P4",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_4",
+            "year": "2019"
+          },
+          {
+            "id": "f2-ex-2",
+            "heuristica": "penultimo-paso",
+            "enunciado": "Sin calcular ningún factorial completo: ¿cuál es el dígito de las centenas de 20! − 15!?",
+            "pista": "¿Qué necesitas saber de un número para conocer su dígito de centenas? ¿Módulo cuánto basta trabajar?",
+            "solucion": "0. El dígito de las centenas solo depende del número módulo 1000 = 2³·5³. 15! contiene los factores 5, 10 y 15 (tres cincos) y doses de sobra, así que 1000 divide a 15!, y con mayor razón a 20!. Entonces 20! − 15! ≡ 0 (mod 1000): sus tres últimas cifras son 000 y el dígito de las centenas es 0.",
+            "disparador": "Te piden UN dígito de un número monstruoso → penúltimo paso: no necesitas el número, solo su residuo módulo la potencia de 10 adecuada. Con factoriales, cuenta factores 2 y 5.",
+            "source": "AMC 10A 2019 P2",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_2",
+            "year": "2019"
+          },
+          {
+            "id": "f2-ex-3",
+            "heuristica": "simetria",
+            "enunciado": "¿Cuál es el valor mínimo de (x+1)(x+2)(x+3)(x+4) + 2019, donde x es un número real?",
+            "pista": "Empareja los factores de afuera hacia adentro: (x+1)(x+4) y (x+2)(x+3). Desarrolla ambos productos y compáralos.",
+            "solucion": "2018. (x+1)(x+4) = x²+5x+4 y (x+2)(x+3) = x²+5x+6: difieren en 2 y comparten el centro x²+5x+5. Con y = x²+5x+5, el producto es (y−1)(y+1) = y²−1 ≥ −1, con igualdad cuando y = 0 (x²+5x+5 = 0 tiene raíces reales: discriminante 25−20 = 5 > 0). Mínimo: 2019 − 1 = 2018.",
+            "disparador": "Producto de factores en progresión (consecutivos o equiespaciados) → emparéjalos simétricamente (primero·último, segundo·penúltimo) y sustituye el centro común: la simetría colapsa el grado.",
+            "source": "AMC 10A 2019 P19",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_19",
+            "year": "2019"
+          },
+          {
+            "id": "f2-ex-4",
+            "heuristica": "casework",
+            "enunciado": "Los números 1, 2, …, 9 se colocan al azar en las 9 casillas de una cuadrícula de 3×3, cada número exactamente una vez. ¿Cuál es la probabilidad de que la suma de cada fila y la de cada columna sean todas impares?",
+            "pista": "Los valores exactos son ruido: solo importa DÓNDE quedan los cinco impares. ¿Cuántos impares puede tener una fila para que su suma sea impar?",
+            "solucion": "1/14. Una fila suma impar si contiene 1 o 3 impares. Hay 5 impares y 5 = 3+1+1 es la única descomposición posible por filas (y por columnas). Eso fuerza el patrón: una fila completa de impares y los otros dos impares en una MISMA columna (para que cada columna también quede impar): 3 filas × 3 columnas = 9 patrones válidos. Las posiciones de los 5 impares son C(9,5) = 126 equiprobables: 9/126 = 1/14.",
+            "disparador": "Probabilidad sobre sumas pares/impares → reduce a paridad (qué casillas llevan impares), organiza los casos que las restricciones permiten y cuenta patrones contra el total.",
+            "source": "AMC 10A 2019 P20",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_20",
+            "year": "2019"
+          },
+          {
+            "id": "f2-ex-5",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "Para cierto entero positivo k, la fracción 7/51 se escribe en base k como el \"decimal\" periódico 0.232323…(en base k). ¿Cuánto vale k?",
+            "pista": "Convierte el periódico en fracción: ¿cuánto vale 0.232323… en base k, como expresión algebraica de k?",
+            "solucion": "16. En base k: 0.232323… = (2/k + 3/k²)·(1 + 1/k² + 1/k⁴ + …) = (2k+3)/(k²−1), por serie geométrica de razón 1/k². Igualando con 7/51: 7(k²−1) = 51(2k+3) → 7k² − 102k − 160 = 0 → k = (102 + √(10404+4480))/14 = (102+122)/14 = 16. Verificación: (2·16+3)/(16²−1) = 35/255 = 7/51. ✓",
+            "disparador": "Representación exótica (otra base, decimal periódico, notación rara) → parametrízala: tradúcela a una ecuación en la incógnita y deja que el álgebra trabaje.",
+            "source": "AMC 10A 2019 P18",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_18",
+            "year": "2019"
+          },
+          {
+            "id": "f2-ex-6",
+            "heuristica": "invariante",
+            "enunciado": "En una sucesión finita de enteros positivos, la suma de cualesquiera 17 términos consecutivos es par y la suma de cualesquiera 18 consecutivos es impar. ¿Cuántos términos puede tener la sucesión como máximo?",
+            "pista": "Trabaja módulo 2 y resta ventanas solapadas: una 18-suma menos la 17-suma que contiene aísla un solo término.",
+            "solucion": "33. Módulo 2: si i+17 ≤ n, la 18-suma desde i menos la 17-suma desde i da a(i+17) ≡ 1−0: todo término desde la posición 18 es impar. La misma resta con la 17-suma desde i+1 da a(i) ≡ 1 para todo i ≤ n−17. Si n ≥ 34 ambas zonas cubren todos los índices: todos impares, pero entonces toda 17-suma sería impar (17 impares), contradicción. Y 33 se logra: todos 1 salvo a(17) = 2 — cada 17-ventana contiene la posición 17 (suma 16+2 = 18, par) y cada 18-ventana suma 17+2 = 19, impar.",
+            "disparador": "Condiciones sobre TODOS los tramos consecutivos de longitud fija → resta ventanas solapadas para aislar términos, y vigila la paridad como invariante. La cota exige además una construcción que la alcance.",
+            "source": "Engel, Problem-Solving Strategies, cap. 5 E6 (variante de IMO 1977)",
+            "year": "1977"
+          },
+          {
+            "id": "f2-ex-7",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "Los siete puentes de Königsberg conectaban dos islas y las dos orillas del río Pregel: 5 puentes tocaban la isla central, 3 cada orilla y 3 la isla oriental. ¿Puede un paseante cruzar los SIETE puentes sin repetir ninguno? Justifica con un criterio general, no probando rutas.",
+            "pista": "Dibuja el multigrafo: 4 vértices (islas y orillas) y 7 aristas (puentes). ¿Qué les pasa a los grados de los vértices intermedios de un recorrido?",
+            "solucion": "No. Recodifica: vértices = masas de tierra, aristas = puentes; los grados son 5, 3, 3, 3. En cualquier recorrido que use cada arista una vez, los vértices intermedios consumen las aristas DE DOS EN DOS (entrar y salir): solo el inicio y el final toleran grado impar. Un camino euleriano exige 0 o 2 vértices de grado impar, y aquí hay 4. Imposible — es el argumento con el que Euler fundó la teoría de grafos en 1736.",
+            "disparador": "\"Recorrer todo sin repetir\" sobre conexiones (puentes, calles, trazos de un dibujo) → grafo + paridad de los grados: cuenta los vértices impares antes de buscar rutas.",
+            "source": "Clásico (Euler, 1736)",
+            "year": "1736"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fase-3",
+      "titulo": "Fase 3 · Recurrencias, generatrices y aritmética fina",
+      "meta": "El piso alto del conteo y los números: recurrencias (Fibonacci, Catalan), funciones generatrices como puente directo con ciencia de datos, funciones aritméticas (d, σ, φ), ecuaciones diofánticas y los ejemplos instructivos de Zeitz, con Engel cap. 6 como cantera. El examen mezcla AMC real con clásicos, y el muestreo sigue siendo acumulativo desde la fase 0.",
+      "unidades": ["zeitz-64", "zeitz-43", "zeitz-73", "zeitz-74", "zeitz-75", "engel-nt"],
+      "examen": {
+        "items": [
+          {
+            "id": "f3-ex-1",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "Un estudiante debe acomodar 3 cursos de matemáticas —álgebra, geometría y teoría de números— en un día de 6 periodos, de modo que ningún par de cursos de matemáticas quede en periodos consecutivos. ¿De cuántas maneras puede hacerlo? (Los otros 3 periodos no importan.)",
+            "pista": "Separa el problema en dos decisiones: QUÉ periodos usar y en qué ORDEN poner los cursos. Para los periodos: ¿cómo codificas \"tres posiciones de seis, sin dos seguidas\"?",
+            "solucion": "24. Primero los periodos: elegir 3 de 6 sin dos consecutivos equivale, restando 0, 1 y 2 a las posiciones ordenadas, a elegir 3 de 4 sin restricción: C(4,3) = 4 maneras (la biyección de los huecos). Después el orden: los 3 cursos son distintos, 3! = 6 asignaciones. Total: 4 × 6 = 24.",
+            "disparador": "\"Elegir posiciones sin dos consecutivas\" → biyección que comprime los huecos obligatorios: resta 0, 1, 2, … a las posiciones y cae en una elección libre. Luego multiplica por los órdenes si los objetos son distinguibles.",
+            "source": "AMC 10A 2018 P4",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2018_AMC_10A_Problems/Problem_4",
+            "year": "2018"
+          },
+          {
+            "id": "f3-ex-2",
+            "heuristica": "penultimo-paso",
+            "enunciado": "Un entero positivo n satisface (n+1)! + (n+2)! = 440 · n!. ¿Cuál es la suma de los dígitos de n?",
+            "pista": "Los tres factoriales comparten un factor enorme. ¿Qué queda si lo extraes?",
+            "solucion": "10. Saca n! de factor común: (n+1)! + (n+2)! = n!(n+1) + n!(n+1)(n+2) = n!(n+1)(n+3). La ecuación se reduce a (n+1)(n+3) = 440 = 20 · 22, así que n = 19. Suma de dígitos: 1 + 9 = 10.",
+            "disparador": "Ecuación con factoriales → el penúltimo paso es siempre el mismo: extrae el factorial más chico como factor común y la ecuación colapsa a un producto de enteros consecutivos o casi consecutivos.",
+            "source": "AMC 10B 2019 P6",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10B_Problems/Problem_6",
+            "year": "2019"
+          },
+          {
+            "id": "f3-ex-3",
+            "heuristica": "caso-pequeno",
+            "enunciado": "Se elige al azar un número m del conjunto {11, 13, 15, 17, 19} y un número n del conjunto {1999, 2000, 2001, …, 2018}. ¿Cuál es la probabilidad de que m^n tenga dígito de unidades igual a 1?",
+            "pista": "El dígito de unidades de m^n solo depende del dígito de unidades de m. Tabula las primeras potencias de 1, 3, 5, 7 y 9: ¿cada cuánto se repiten?",
+            "solucion": "2/5. Por dígito final: 11^n siempre termina en 1 (20 de 20 casos). 13^n cicla 3, 9, 7, 1 con periodo 4: termina en 1 cuando 4|n — 5 de los 20 valores. 15^n siempre termina en 5: nunca. 17^n cicla 7, 9, 3, 1: también 5 de 20. 19^n cicla 9, 1 con periodo 2: con n par, 10 de 20. Favorables: 20+5+0+5+10 = 40 de 100: probabilidad 2/5.",
+            "disparador": "\"Dígito de unidades de una potencia grande\" → caso pequeño: tabula las primeras potencias módulo 10, detecta el ciclo y reduce el exponente módulo el periodo. La probabilidad es solo contar posiciones del ciclo.",
+            "source": "AMC 10A 2018 P19",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2018_AMC_10A_Problems/Problem_19",
+            "year": "2018"
+          },
+          {
+            "id": "f3-ex-4",
+            "heuristica": "invariante",
+            "enunciado": "La representación decimal de 19! es 121,6T5,100,40M,832,H00, donde T, M y H son dígitos no dados. ¿Cuánto vale T + M + H? Resuélvelo SIN calcular 19! completo.",
+            "pista": "Tres filtros que no cuestan nada: ¿en cuántos ceros termina exactamente 19!? ¿Qué dice el módulo 9 de la suma de dígitos? ¿Y el módulo 11 de la suma alternada?",
+            "solucion": "12. Ceros finales: 19! tiene ⌊19/5⌋ = 3 factores 5 (y doses de sobra), así que termina en EXACTAMENTE tres ceros → H = 0. Módulo 9: la suma de dígitos conocidos es 33 + T + M ≡ 0 (mod 9) → T + M ∈ {3, 12}. Módulo 11: la suma alternada desde las unidades da 7 + M − T ≡ 0 (mod 11) → M − T = 4. Resolviendo: T + M = 12 con M − T = 4 → T = 4, M = 8 (la otra opción da no-enteros). Total: 4 + 8 + 0 = 12.",
+            "disparador": "\"Dígitos desconocidos de un número gigante\" → invariantes modulares: ceros finales (factores 2 y 5), regla del 9 (suma de dígitos) y regla del 11 (suma alternada). Tres congruencias, tres incógnitas.",
+            "source": "AMC 10B 2019 P14",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10B_Problems/Problem_14",
+            "year": "2019"
+          },
+          {
+            "id": "f3-ex-5",
+            "heuristica": "casework",
+            "enunciado": "¿Cuántas sucesiones de 0s y 1s de longitud 19 empiezan con 0, terminan con 0, no contienen dos 0s consecutivos y no contienen tres 1s consecutivos?",
+            "pista": "Una sucesión válida es: 0, luego un bloque de unos, luego 0, luego otro bloque… ¿De qué tamaños pueden ser los bloques de unos, y cuántos hay si la sucesión tiene k ceros?",
+            "solucion": "65. Estructura forzada: los k ceros separan k−1 bloques de unos, cada bloque de tamaño 1 o 2 (sin \"00\" exige ≥1; sin \"111\" exige ≤2). Si j bloques tienen tamaño 2: longitud = k + (k−1) + j = 19, o sea j = 20 − 2k, con 0 ≤ j ≤ k−1 → k va de 7 a 10. Las sucesiones son C(k−1, j): k=7: C(6,6)=1; k=8: C(7,4)=35; k=9: C(8,2)=28; k=10: C(9,0)=1. Total: 1+35+28+1 = 65.",
+            "disparador": "Cadenas con restricciones locales (\"sin 00\", \"sin 111\") → la estructura de bloques está forzada: parametriza por el número de separadores, organiza los casos posibles y cuenta cada uno con combinaciones. Alternativa equivalente: recurrencia condicionando en el final.",
+            "source": "AMC 10B 2019 P25",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10B_Problems/Problem_25",
+            "year": "2019"
+          },
+          {
+            "id": "f3-ex-6",
+            "heuristica": "simetria",
+            "enunciado": "Demuestra que n⁴ + 4 no es primo para ningún entero n > 1.",
+            "pista": "Es una suma, no una diferencia… pero ¿qué pasa si sumas y restas el término cruzado 4n² para completar un cuadrado?",
+            "solucion": "n⁴ + 4 = n⁴ + 4n² + 4 − 4n² = (n² + 2)² − (2n)² = (n² − 2n + 2)(n² + 2n + 2). Para n > 1, el factor menor n² − 2n + 2 = (n−1)² + 1 ≥ 2 y el mayor también supera 1: producto de dos enteros mayores que 1, luego compuesto. (Es la identidad de Sophie Germain con b = 1.)",
+            "disparador": "\"Demuestra que esta expresión con potencias nunca es prima\" → busca factorización algebraica: diferencia de potencias, suma con exponente impar o, para x⁴+4y⁴, suma y resta el término cruzado (Sophie Germain). La simetría del cuadrado perfecto es la llave.",
+            "source": "Clásico (identidad de Sophie Germain); Engel cap. 6",
+            "year": ""
+          }
+        ]
+      }
+    }
+  ],
+
+  "unidades": [
+    {
+      "id": "polya-cuatro-pasos",
+      "bloque": "fase-0",
+      "orden": 1,
+      "titulo": "Pólya · Las cuatro fases",
+      "libro": "Pólya — Cómo plantear y resolver problemas",
+      "lectura": "Parte I, \"En el aula\": las cuatro fases (pp. 25-46 aprox.; el corazón está en pp. 28-36: Comprensión del problema, Concepción de un plan, Ejecución del plan y Visión retrospectiva).",
+      "dosis": "~20 pp en una sesión de 30-45 min. Lee despacio, con lápiz; no avances temario hoy.",
+      "objetivo": "Las preguntas concretas de cada fase y por qué la visión retrospectiva es la fase que construye la biblioteca (casi todos la saltan).",
+      "heuristicas": ["hacia-atras", "caso-pequeno"],
+      "ideas_clave": [
+        "Las cuatro fases: comprender el problema, concebir un plan, ejecutar el plan y mirar atrás. No son lineales: se vuelve atrás cuando hace falta.",
+        "No avances sin poder reformular el problema con tus palabras: ¿qué se pide?, ¿qué datos tengo?, ¿cuál es la condición?",
+        "Si no puedes resolver el problema propuesto, busca uno relacionado o más simple que sí puedas: variar el problema es el motor del plan.",
+        "La visión retrospectiva consolida y hace transferible lo aprendido: ¿puedo verificar el resultado?, ¿puedo usar este método en otro problema?",
+        "Las preguntas de Pólya son genéricas a propósito: son las que un buen resolvedor acaba haciéndose solo."
+      ],
+      "banco": [
+        {
+          "id": "p1-q1",
+          "tipo": "quiz",
+          "enunciado": "Enumera las cuatro fases de Pólya y resume, en una frase cada una, qué pregunta central responde.",
+          "solucion": "1) Comprender el problema: ¿qué se pide, qué datos y qué condición tengo? 2) Concebir un plan: ¿conozco un problema relacionado, puedo reformularlo, qué estrategia conecta datos con incógnita? 3) Ejecutar el plan: llevar a cabo cada paso verificándolo. 4) Visión retrospectiva: ¿puedo comprobar el resultado y reutilizar el método en otra parte?",
+          "explicacion": "Si solo recordaste tres, la olvidada suele ser la cuarta — y es justo la que construye tu cuaderno de moralejas."
+        },
+        {
+          "id": "p1-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué insiste Pólya en que no debes avanzar hasta poder reformular el enunciado con tus propias palabras? ¿Qué error típico previene eso?",
+          "solucion": "Porque la mayoría de los fracasos nacen de atacar un problema que no se ha entendido: resolver otra cosa, ignorar una condición o usar un dato de más. Reformular obliga a identificar incógnita, datos y condición antes de gastar esfuerzo en un plan.",
+          "explicacion": "En la app, la desconstrucción obligatoria del camino 1 es exactamente esta fase hecha hábito."
+        },
+        {
+          "id": "p1-q3",
+          "tipo": "quiz",
+          "enunciado": "Según Pólya, ¿qué debes hacer cuando NO puedes resolver el problema propuesto?",
+          "solucion": "Buscar un problema relacionado que sí puedas resolver: un caso particular o más simple, un problema análogo, una variante con menos condiciones — y usar su resultado o su método como puente de regreso al original.",
+          "explicacion": "\"Si no puedes resolver el problema propuesto, hay uno más accesible esperando: encuéntralo.\" Es el origen de caso pequeño, analogía y relajar condiciones."
+        },
+        {
+          "id": "p1-q4",
+          "tipo": "disparador",
+          "enunciado": "Te dan un problema y, al terminar, notas que NUNCA usaste uno de los datos del enunciado. ¿Qué pregunta del repertorio de Pólya debió saltar antes, y en qué fase?",
+          "solucion": "\"¿Has empleado todos los datos? ¿Has usado toda la condición?\" — pertenece a la fase de comprensión (y se vuelve a usar al revisar el plan). Un dato sin usar casi siempre señala una solución incorrecta o un camino más directo que no viste.",
+          "explicacion": "Señal → jugada: dato aparentemente sobrante → o es ruido deliberado o es la llave; decídelo explícitamente, nunca por omisión."
+        },
+        {
+          "id": "p1-q5",
+          "tipo": "quiz",
+          "enunciado": "La visión retrospectiva es la fase que casi todo el mundo salta. Da dos razones de Pólya para no saltarla nunca.",
+          "solucion": "1) Verificación: comprobar el resultado y el razonamiento consolida el conocimiento y caza errores. 2) Transferencia: preguntarse \"¿dónde más puedo usar este resultado o este método?\" convierte el problema resuelto en una herramienta reutilizable — sin esa pregunta, el esfuerzo se evapora.",
+          "explicacion": "Tu ficha de moralejas (moraleja + disparador) es la visión retrospectiva convertida en artefacto."
+        }
+      ]
+    },
+    {
+      "id": "polya-diccionario",
+      "bloque": "fase-0",
+      "orden": 2,
+      "titulo": "Pólya · El diccionario de heurística (hojeado)",
+      "libro": "Pólya — Cómo plantear y resolver problemas",
+      "lectura": "Breve diccionario de heurística (pp. 58 en adelante): SOLO las entradas Analogía, Descomponer y recomponer el problema, Generalización, Particularización, Trabajar hacia atrás (regresión) e Inducción.",
+      "dosis": "~30 min hojeando esas 6 entradas. El diccionario no se lee de corrido: es material de consulta.",
+      "objetivo": "Qué hace cada herramienta y, sobre todo, QUÉ SEÑAL del problema te debería hacer pensar en ella.",
+      "heuristicas": ["hacia-atras", "caso-pequeno", "induccion"],
+      "ideas_clave": [
+        "Analogía: resolver un problema más simple con la misma estructura y trasplantar el método (el triángulo enseña sobre el tetraedro).",
+        "Descomponer y recomponer: trocea el problema, pero no demasiado pronto ni demasiado fino — primero intenta verlo como un todo.",
+        "Generalizar a veces simplifica: la afirmación más general puede ser más fácil de probar (la \"paradoja del inventor\").",
+        "Particularizar: los casos extremos y degenerados son tests rápidos de cualquier conjetura.",
+        "Trabajar hacia atrás: parte de lo que buscas y pregúntate de qué se obtendría; útil cuando la meta es clara y el inicio difuso."
+      ],
+      "banco": [
+        {
+          "id": "p2-q1",
+          "tipo": "quiz",
+          "enunciado": "Explica \"trabajar hacia atrás\" en una frase y da UNA señal de un enunciado que te haría elegirla.",
+          "solucion": "Partir del resultado deseado y preguntarse repetidamente \"¿de qué podría obtenerse esto?\" hasta llegar a los datos. Señal: el estado final está perfectamente definido y el inicial es difuso o tiene demasiadas opciones (juegos con meta, construcciones, \"llega a X\").",
+          "explicacion": "Pólya la ilustra con el problema de las jarras: pocos lo resuelven hacia adelante; hacia atrás es casi mecánico."
+        },
+        {
+          "id": "p2-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Qué diferencia hay entre generalización y particularización como herramientas? ¿Cuándo ayuda cada una?",
+          "solucion": "Generalizar: pasar de un caso a una familia (de este número a todo n); a veces la versión general es MÁS fácil de atacar (paradoja del inventor). Particularizar: bajar a un caso concreto, pequeño o extremo, para entender la mecánica, generar conjeturas o refutar ideas falsas rápido.",
+          "explicacion": "El movimiento experto es alternar: particulariza para ver el patrón, generaliza para probarlo."
+        },
+        {
+          "id": "p2-q3",
+          "tipo": "quiz",
+          "enunciado": "Al descomponer un problema en partes, ¿qué riesgo advierte Pólya y cómo lo evitas?",
+          "solucion": "Descomponer demasiado pronto o en piezas demasiado finas: te pierdes en detalles y dejas de ver el todo. Primero hay que comprender el problema completo y solo descomponer cuando el conjunto ya no dé más de sí — y recomponer después.",
+          "explicacion": "Es el mismo freno que el checkpoint metacognitivo: ¿sigo en el plan o estoy cavando un hoyo de detalles?"
+        },
+        {
+          "id": "p2-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema sobre un tetraedro (3D) te tiene atascado. ¿Qué jugada del diccionario pruebas primero y por qué?",
+          "solucion": "Analogía: resuelve primero el problema análogo en el triángulo (2D). La estructura suele ser la misma con un grado menos de dificultad, y el método del caso plano frecuentemente se trasplanta al espacial.",
+          "explicacion": "Señal → jugada: \"objeto de dimensión alta o estructura complicada\" → busca el análogo más simple con la misma forma."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-1",
+      "bloque": "fase-0",
+      "orden": 3,
+      "titulo": "Zeitz · Ejercicios vs. problemas",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Capítulo 1 completo (pp. 1-11): 1.1 Exercises vs. Problems, 1.2 The Three Levels of Problem Solving, 1.3 A Problem Sampler, 1.4 How to Read This Book.",
+      "dosis": "~10 pp + 1 problema del sampler con el bucle completo (hazlo como sesión del camino 1 si quieres).",
+      "objetivo": "La distinción ejercicio/problema, los tres niveles (estrategias, tácticas, herramientas) y el contrato de lectura: forcejear antes de leer soluciones.",
+      "heuristicas": ["caso-pequeno", "pensamiento-ilusorio"],
+      "ideas_clave": [
+        "Ejercicio: sabes de inmediato qué hacer y solo ejecutas. Problema: no sabes ni por dónde empezar — y eso es lo que entrena.",
+        "Tres niveles: estrategias (psicología y orientación, válidas para casi todo), tácticas (métodos matemáticos de amplio uso: simetría, extremo, palomar) y herramientas (trucos y técnicas específicas).",
+        "El libro se lee con lápiz y papel: forcejea cada problema antes de mirar cualquier solución, o el libro no sirve.",
+        "La meta no es acumular respuestas sino investigar problemas: el proceso importa más que el resultado."
+      ],
+      "banco": [
+        {
+          "id": "z1-q1",
+          "tipo": "quiz",
+          "enunciado": "Define ejercicio y problema según Zeitz, y explica por qué la distinción es relativa a la persona.",
+          "solucion": "Un ejercicio es una pregunta que sabes resolver en cuanto la ves: solo hay que ejecutar con cuidado. Un problema exige investigación: no es obvio cómo empezar. Es relativo: lo que es problema para ti hoy será ejercicio cuando tu biblioteca de patrones crezca — y lo que es ejercicio para un olímpico puede ser problema para un principiante.",
+          "explicacion": "Por eso el motor adaptativo busca mantenerte donde fallas ~40-60%: ahí las preguntas siguen siendo problemas."
+        },
+        {
+          "id": "z1-q2",
+          "tipo": "quiz",
+          "enunciado": "Describe los tres niveles del problem solving de Zeitz y da un ejemplo de cada uno.",
+          "solucion": "Estrategias: principios psicológicos y de orientación aplicables a casi cualquier problema (confianza, ensuciarse las manos, pensamiento ilusorio). Tácticas: métodos matemáticos de amplio espectro que resuelven familias enteras (simetría, principio del extremo, palomar, invariantes). Herramientas: técnicas y trucos de campo estrecho (una factorización específica, una sustitución estándar).",
+          "explicacion": "El cuaderno de moralejas vive sobre todo en el nivel de tácticas: ahí está la transferencia."
+        },
+        {
+          "id": "z1-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Cuál es el \"contrato de lectura\" que Zeitz exige para que su libro funcione, y qué pasa si lo rompes?",
+          "solucion": "Leer con lápiz y papel, forcejeando cada problema en serio ANTES de leer la solución o seguir adelante. Si lo rompes, solo reconoces soluciones ajenas y sientes que aprendes sin aprender: la biblioteca se construye forcejeando, no leyendo.",
+          "explicacion": "Es el \"error universal\" del plan maestro. El gating de la solución en el camino 1 existe por esto."
+        },
+        {
+          "id": "z1-q4",
+          "tipo": "disparador",
+          "enunciado": "Llevas 10 minutos mirando un problema sin escribir nada porque \"no se te ocurre la idea\". Según el capítulo 1, ¿qué está fallando y qué harías?",
+          "solucion": "Estás tratando el problema como ejercicio: esperando reconocer la respuesta en lugar de investigar. La salida es ponerse a trabajar sin la idea completa: probar casos, dibujar, reformular, particularizar — la investigación genera la idea, no al revés.",
+          "explicacion": "Señal → jugada: \"mente en blanco\" → manos a la obra con cualquier caso concreto; la orientación es acción, no espera."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-2a",
+      "bloque": "fase-0",
+      "orden": 4,
+      "titulo": "Zeitz · Psicología del resolvedor",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 2.1, Psychological Strategies (pp. 12-23): Mental Toughness (el ratón de Pólya), confianza, concentración y creatividad.",
+      "dosis": "~10 pp en una sesión corta. Lee buscando actitudes, no técnicas.",
+      "objetivo": "Qué significa dureza mental en la práctica y cómo la confianza y la creatividad se entrenan deliberadamente.",
+      "heuristicas": ["pensamiento-ilusorio"],
+      "ideas_clave": [
+        "El ratón de Pólya: la moraleja de la perseverancia inteligente — vuelve a intentar, pero variando el punto de ataque, no repitiendo el mismo golpe.",
+        "Dureza mental: confianza + concentración. Ambas se entrenan; nadie nace con ellas.",
+        "La confianza se construye con un historial de problemas forcejeados y resueltos (tu cuaderno es evidencia, no decoración).",
+        "Creatividad práctica: tolerar ideas raras, hacer preguntas tontas a propósito, no autocensurar caminos antes de probarlos.",
+        "El peor enemigo es el miedo al problema: las estrategias psicológicas existen para quitarle el aura de imposible."
+      ],
+      "banco": [
+        {
+          "id": "z2a-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Qué enseña la anécdota del ratón (que Zeitz toma de Pólya) sobre cómo perseverar bien?",
+          "solucion": "El ratón no escapa al primer intento, pero tampoco repite el mismo intento: prueba, falla, y vuelve a probar EN OTRO PUNTO. Perseverancia inteligente = persistencia + variación del ataque. Rendirse pronto está mal; insistir idéntico también.",
+          "explicacion": "Es el checkpoint metacognitivo hecho fábula: si llevas 8 minutos cavando el mismo hoyo, cava en otro lado."
+        },
+        {
+          "id": "z2a-q2",
+          "tipo": "quiz",
+          "enunciado": "Zeitz sostiene que la confianza del resolvedor no es un rasgo de personalidad. ¿De dónde sale y cómo se entrena?",
+          "solucion": "Sale de la experiencia acumulada de haber forcejeado y resuelto problemas: cada problema investigado de verdad deposita evidencia de que puedes. Se entrena exponiéndose regularmente a problemas al borde de tu capacidad y registrando lo aprendido.",
+          "explicacion": "Tu termómetro honesto: el conteo de fichas del cuaderno, no la sensación del día."
+        },
+        {
+          "id": "z2a-q3",
+          "tipo": "quiz",
+          "enunciado": "Da dos prácticas concretas de \"creatividad deliberada\" que recomienda la sección 2.1.",
+          "solucion": "1) Hacer preguntas en apariencia tontas o ingenuas sin miedo (¿y si fuera negativo?, ¿y si lo invierto?). 2) Tolerar y anotar ideas extrañas en lugar de autocensurarlas: la mayoría muere, pero las sobrevivientes son las que resuelven. También: cambiar de punto de vista a propósito y jugar con el problema sin meta inmediata.",
+          "explicacion": "La desconstrucción escrita es tu espacio seguro para esto: nadie te observa."
+        },
+        {
+          "id": "z2a-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema te intimida tanto que no empiezas (\"esto es de otro nivel\"). ¿Qué estrategia psicológica de 2.1 aplicas y cómo?",
+          "solucion": "Quitarle el aura: tratarlo como juego, no como juicio. Empiezas por cualquier acción concreta — un caso pequeño, un dibujo, reformularlo — y pospones el veredicto sobre ti. El miedo se disuelve con la primera acción real sobre el problema.",
+          "explicacion": "Señal → jugada: parálisis por respeto al problema → acción mínima inmediata (la orientación de 2.2 empieza aquí)."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-2b",
+      "bloque": "fase-0",
+      "orden": 5,
+      "titulo": "Zeitz · Cómo arrancar: manos sucias, penúltimo paso, pensamiento ilusorio",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 2.2, Strategies for Getting Started (pp. 23-37): The First Step — Orientation; I'm Oriented, Now What? (get your hands dirty, penultimate step, wishful thinking / make it easier).",
+      "dosis": "~6-8 pp + 2 problemas de la sección con el bucle completo.",
+      "objetivo": "Las tres jugadas de arranque y la señal de cada una: ensuciarse las manos, penúltimo paso y pensamiento ilusorio.",
+      "heuristicas": ["caso-pequeno", "penultimo-paso", "pensamiento-ilusorio"],
+      "ideas_clave": [
+        "Orientación primero: leer varias veces, identificar qué se pide, clasificar el problema, anticipar qué forma tendría una respuesta.",
+        "Ensúciate las manos: experimenta con casos concretos y pequeños; los datos generados a mano son la materia prima de las conjeturas.",
+        "Penúltimo paso: pregunta qué necesitarías tener justo ANTES del final y conviértelo en tu nueva meta.",
+        "Pensamiento ilusorio: supón que ya tienes la solución (o quita la restricción que estorba) y estudia qué propiedades tendría; eso te dice dónde buscar.",
+        "Estas tres jugadas convierten \"no sé por dónde empezar\" en un plan de acción inmediato."
+      ],
+      "banco": [
+        {
+          "id": "z2b-q1",
+          "tipo": "quiz",
+          "enunciado": "¿En qué consiste la orientación (el primer paso de Zeitz) y qué tres cosas buscas durante ella?",
+          "solucion": "Es el reconocimiento inicial antes de atacar: 1) entender exactamente qué se pide (incógnita y condición), 2) clasificar el problema (¿a qué se parece?, ¿qué área, qué forma tiene?), 3) anticipar cómo se vería una respuesta plausible (¿un número?, ¿una demostración de imposibilidad?, ¿una construcción?).",
+          "explicacion": "Es la fase 1 de Pólya con énfasis en clasificación: tu cerebro busca en la biblioteca antes de tener biblioteca."
+        },
+        {
+          "id": "z2b-q2",
+          "tipo": "quiz",
+          "enunciado": "\"Get your hands dirty\": ¿qué significa exactamente y por qué le gana a quedarse pensando?",
+          "solucion": "Ponerse a calcular y experimentar con casos concretos pequeños: tabular valores, probar n = 1, 2, 3, dibujar configuraciones. Genera datos donde el ojo encuentra patrones y conjeturas; pensar en abstracto sin datos rara vez los produce. El movimiento físico de escribir también desbloquea.",
+          "explicacion": "Señal → jugada: \"se ve complicado/general\" → caso pequeño primero. Es la entrada #1 del catálogo."
+        },
+        {
+          "id": "z2b-q3",
+          "tipo": "quiz",
+          "enunciado": "Define la estrategia del penúltimo paso y formula la pregunta exacta con la que se activa.",
+          "solucion": "En lugar de buscar el camino completo hacia la meta, identificas qué afirmación, objeto o condición necesitarías tener JUSTO antes de terminar, y conviertes eso en la nueva meta. La pregunta: \"¿qué me bastaría tener para que el último paso fuera inmediato?\"",
+          "explicacion": "Ejemplo: para \"termina en 0\", el penúltimo paso es \"divisible entre 2 y entre 5\". La meta se acerca un escalón."
+        },
+        {
+          "id": "z2b-q4",
+          "tipo": "quiz",
+          "enunciado": "¿Qué es el pensamiento ilusorio (wishful thinking) como estrategia, y cuáles son sus dos formas típicas?",
+          "solucion": "Fantasear productivamente: 1) suponer que YA tienes la solución y deducir qué propiedades debería cumplir (eso restringe dónde buscar), y 2) hacer el problema más fácil quitando o relajando la restricción que estorba, resolver esa versión, y estudiar qué te falta para volver a la original.",
+          "explicacion": "Señal → jugada: \"no sé ni por dónde\" → resuelve la versión soñada y mira qué le falta a la realidad."
+        },
+        {
+          "id": "z2b-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante dice: \"Probé n = 1, 2, 3 y el patrón se cumple, así que queda demostrado para todo n.\" ¿Qué está bien y qué está mal en su proceso, según esta sección?",
+          "solucion": "Bien: ensuciarse las manos con casos pequeños y conjeturar un patrón — ese es exactamente el arranque correcto. Mal: confundir conjetura con demostración. Los casos generan la hipótesis; falta el paso de probarla en general (inducción, argumento directo, invariante…). Casos pequeños abren el problema, no lo cierran.",
+          "explicacion": "El bucle completo es: caso pequeño → patrón → conjetura → DEMOSTRACIÓN. Cortarlo en la conjetura es el error clásico."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-23",
+      "bloque": "fase-1",
+      "orden": 6,
+      "titulo": "Zeitz · Métodos de argumento: contradicción e inducción",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 2.3, Methods of Argument (pp. 37-49): deducción y lógica simbólica, argumento por contradicción (p. 39) e inducción matemática (p. 42).",
+      "dosis": "1 sección (~12 pp) + 2-3 problemas de la sección con bucle completo. Regla del PDF: concepto O problemas a tope, no ambos.",
+      "objetivo": "Cuándo conviene negar la tesis (contradicción) y cómo se arma una inducción sin agujeros (base + paso + dónde se usa la hipótesis).",
+      "heuristicas": ["contradiccion", "induccion"],
+      "ideas_clave": [
+        "La contradicción brilla con tesis negativas (\"no existe\", \"es imposible\", \"es irracional\"): negar te regala un objeto concreto que atacar.",
+        "Contrapositiva: probar \"si no B entonces no A\" suele ser más manejable que \"si A entonces B\" — son lógicamente idénticas.",
+        "Inducción = caso base + paso inductivo. El paso debe USAR la hipótesis: si no la usaste, o el argumento es directo o está mal.",
+        "Inducción fuerte: a veces necesitas asumir TODOS los casos anteriores, no solo n, para llegar a n+1.",
+        "Escribir argumentos con limpieza no es estética: los huecos se esconden en la prosa borrosa."
+      ],
+      "banco": [
+        {
+          "id": "z23-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué el argumento por contradicción es especialmente útil cuando la tesis es \"no existe\" o \"es imposible\"? ¿Qué ganas exactamente al negar?",
+          "solucion": "Porque la tesis negativa no te da nada que manipular, pero su negación sí: \"supón que SÍ existe\" te entrega un objeto concreto (una fracción, una configuración, un contraejemplo) con propiedades definidas. Trabajas con ese objeto hasta derivar algo absurdo, y la existencia queda refutada.",
+          "explicacion": "Negar la tesis convierte un problema de ausencia en un problema de presencia — y la presencia se puede atacar."
+        },
+        {
+          "id": "z23-q2",
+          "tipo": "quiz",
+          "enunciado": "Estructura completa de una demostración por inducción: ¿cuáles son sus dos piezas y cuál es el error más común al ejecutarla?",
+          "solucion": "1) Caso base: verificar la afirmación para el primer valor (n = 1 o el que aplique). 2) Paso inductivo: suponer que vale para n (hipótesis) y demostrar que entonces vale para n+1. El error más común: un paso inductivo que en realidad nunca usa la hipótesis, o un argumento de paso que falla para algún n pequeño concreto.",
+          "explicacion": "Pregunta de control de Zeitz: ¿DÓNDE exactamente usé la hipótesis inductiva? Si no hay respuesta, no hay inducción."
+        },
+        {
+          "id": "z23-q3",
+          "tipo": "encuentra-error",
+          "enunciado": "El argumento clásico \"todos los caballos son del mismo color\": vale para n=1; si todo grupo de n caballos es monocolor, en un grupo de n+1 quita uno (los n restantes son monocolor), reincorpóralo y quita otro (también monocolor), luego los n+1 comparten color. ¿Dónde falla exactamente?",
+          "solucion": "En el paso de n=1 a n=2. El argumento necesita que los dos subgrupos de n caballos SE SOLAPEN (el solapamiento transmite el color de un grupo al otro). Con n+1 = 2, los subgrupos son los dos caballos individuales y su intersección es vacía: nada conecta sus colores. El paso inductivo es válido solo para n ≥ 2, pero la base real (n=2) nunca se demostró.",
+          "explicacion": "Moraleja: verifica el paso inductivo en los valores PEQUEÑOS de n — ahí es donde los argumentos \"obvios\" se rompen."
+        },
+        {
+          "id": "z23-q4",
+          "tipo": "disparador",
+          "enunciado": "Lees: \"Demuestra que para todo n ≥ 1 se cumple…\". ¿Qué dos jugadas consideras primero, y qué pregunta rápida decide entre ellas?",
+          "solucion": "Inducción y argumento directo (fórmula cerrada, doble conteo, invariante). La pregunta que decide: ¿el caso n+1 se construye naturalmente a partir del caso n (estructura acumulativa)? Si sí, inducción; si la afirmación se puede reorganizar globalmente (emparejar, contar de dos maneras), el argumento directo suele ser más corto y más iluminador.",
+          "explicacion": "Señal → jugada: \"para todo n\" + estructura que crece paso a paso → inducción; \"para todo n\" + estructura simétrica/contable → argumento directo."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-24",
+      "bloque": "fase-1",
+      "orden": 7,
+      "titulo": "Zeitz · Reformula: dibuja, traduce, cambia el punto de vista",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 2.4, Other Important Strategies (pp. 49-58): Draw a Picture! (p. 49), Recast the Problem in Other Ways (p. 51), Change Your Point of View (p. 55).",
+      "dosis": "~9 pp + 2 problemas de la sección con bucle completo.",
+      "objetivo": "Las tres formas de reformular: representación gráfica, traducción entre lenguajes (álgebra↔geometría↔conteo) y atacar el problema desde el complemento o desde otro observador.",
+      "heuristicas": ["parametrizar-dibujar"],
+      "ideas_clave": [
+        "Un dibujo no es decoración: es una representación que hace visibles relaciones que la prosa esconde. Dibuja aunque el problema \"no sea de geometría\".",
+        "Reformular = traducir el problema a otro lenguaje donde tus herramientas sean más fuertes: un conteo como grafo, un álgebra como geometría, un proceso como gráfica posición-tiempo.",
+        "Cambiar el punto de vista: cuenta el complemento (\"lo que NO pasa\"), mira el proceso desde el final, o desde otro participante.",
+        "Si llevas rato sin avanzar, el problema puede estar bien y tu REPRESENTACIÓN mal: cambiarla es a menudo todo el trabajo.",
+        "El monje que sube y baja la montaña se vuelve trivial al superponer los dos días: misma información, otra representación."
+      ],
+      "banco": [
+        {
+          "id": "z24-q1",
+          "tipo": "quiz",
+          "enunciado": "Zeitz insiste en dibujar incluso en problemas \"no geométricos\". ¿Qué aporta exactamente un dibujo como herramienta de razonamiento, y qué debe tener para servir?",
+          "solucion": "Externaliza la estructura: convierte relaciones abstractas (tiempos, cantidades, conexiones) en posiciones y formas donde el ojo detecta patrones, intersecciones y simetrías gratis. Para servir debe representar las RELACIONES relevantes (no los objetos literales): ejes bien elegidos, casos concretos, datos marcados.",
+          "explicacion": "El dibujo es un cambio de representación, no una ilustración: si no te deja leer algo nuevo, todavía no es el dibujo correcto."
+        },
+        {
+          "id": "z24-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Qué significa \"recast the problem\" (traducirlo a otro lenguaje)? Da dos traducciones típicas y la señal para usarlas.",
+          "solucion": "Reformular el problema en un dominio distinto conservando su estructura: relaciones entre personas/objetos → grafo (señal: \"conocidos\", \"conexiones\", \"caminos\"); identidades algebraicas → áreas o longitudes (señal: productos y cuadrados); procesos en el tiempo → gráficas posición-tiempo (señal: encuentros, persecuciones). En el nuevo lenguaje hay teoremas y ojos entrenados que en el original no tienes.",
+          "explicacion": "La transferencia entre dominios — el objetivo final del cuaderno — es exactamente esta jugada hecha hábito."
+        },
+        {
+          "id": "z24-q3",
+          "tipo": "quiz",
+          "enunciado": "\"Cuenta el complemento\": ¿en qué consiste y cuál es la señal clásica de que conviene?",
+          "solucion": "En lugar de contar lo pedido, cuentas el total menos lo que NO cumple la condición. Señal: la condición pedida contiene \"al menos uno\", \"alguna vez\", o una disyunción enredada, mientras que su negación (\"ninguno\", \"nunca\") es limpia y fácil de contar.",
+          "explicacion": "Cambiar de punto de vista no cambia el problema: cambia cuál de sus caras es lisa."
+        },
+        {
+          "id": "z24-q4",
+          "tipo": "disparador",
+          "enunciado": "Problema: \"dos trenes salen a la misma hora desde ciudades opuestas por la misma vía; una mosca vuela entre ellos a velocidad constante hasta que chocan; ¿qué distancia recorre la mosca?\". ¿Qué jugada de la sección 2.4 lo desarma y por qué?",
+          "solucion": "Cambiar el punto de vista: en lugar de seguir los infinitos rebotes de la mosca (serie geométrica), pregúntate cuánto TIEMPO vuela: vuela exactamente hasta el choque, que se calcula con las velocidades de los trenes. Distancia = velocidad de la mosca × ese tiempo. La perspectiva del tiempo disuelve la complejidad de la trayectoria.",
+          "explicacion": "Señal → jugada: proceso con infinitos pasos pero duración total finita → cambia del espacio (trayectoria) al tiempo (duración)."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-31",
+      "bloque": "fase-1",
+      "orden": 8,
+      "titulo": "Zeitz · Simetría",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 3.1, Symmetry (pp. 59-70): simetría geométrica (p. 60) y simetría algebraica (p. 64).",
+      "dosis": "1 sección (~11 pp) + 2-3 problemas de la sección con bucle completo.",
+      "objetivo": "Reconocer simetrías (geométricas, algebraicas, estratégicas) y explotarlas: reflejar, emparejar, sustituir simétricamente, suponer orden sin pérdida de generalidad.",
+      "heuristicas": ["simetria"],
+      "ideas_clave": [
+        "Simetría = una transformación que deja el problema igual. Cada simetría que encuentres es trabajo que ya no harás dos veces.",
+        "WLOG (\"sin pérdida de generalidad\"): si el problema no distingue entre x e y, puedes suponer x ≤ y — la simetría te autoriza.",
+        "Simetría algebraica: expresiones simétricas en x, y se reescriben con s = x+y, p = xy; lo simétrico se calcula sin conocer las variables.",
+        "Imponer simetría también vale: reflejar un punto, completar una figura, duplicar la suma de Gauss — crear la simetría que falta.",
+        "En juegos, la estrategia de espejo (copiar simétricamente al rival) convierte la simetría en victoria."
+      ],
+      "banco": [
+        {
+          "id": "z31-q1",
+          "tipo": "quiz",
+          "enunciado": "Define simetría como herramienta de problem solving (no como concepto geométrico) y explica por qué ahorra trabajo.",
+          "solucion": "Una simetría es cualquier transformación (reflejar, rotar, intercambiar variables, invertir el orden) que deja el problema esencialmente igual. Ahorra trabajo porque todo lo que demuestres para una parte se transfiere gratis a sus imágenes simétricas, y porque restringe dónde puede estar la respuesta (la solución de un problema simétrico tiende a ser simétrica).",
+          "explicacion": "Zeitz: busca la simetría, y si no existe, considera CREARLA — esa es la versión avanzada de la jugada."
+        },
+        {
+          "id": "z31-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Qué te autoriza exactamente a decir \"sin pérdida de generalidad, supongamos a ≤ b\"? ¿Cuándo es ilegítimo?",
+          "solucion": "Te autoriza la simetría del enunciado: si intercambiar a y b deja hipótesis y conclusión idénticas, todo caso con a > b es el espejo de uno con a ≤ b, así que basta tratar uno. Es ilegítimo cuando el enunciado SÍ distingue los papeles (a aparece en una condición distinta que b): ahí suponer orden descarta casos reales.",
+          "explicacion": "WLOG es un contrato: declara la simetría que invocas. Si no puedes señalarla, no firmes."
+        },
+        {
+          "id": "z31-q3",
+          "tipo": "acertijo",
+          "enunciado": "Dos jugadores colocan por turnos monedas idénticas sobre una mesa redonda, sin encimar; pierde quien ya no pueda colocar. ¿Quién tiene estrategia ganadora y cuál es?",
+          "solucion": "El primero. Coloca su primera moneda exactamente en el centro y, a partir de ahí, responde a cada moneda del rival con una moneda en la posición diametralmente opuesta (reflejada por el centro). Por simetría, si el rival encontró lugar, el simétrico está libre — el primero siempre tiene respuesta y el rival se queda sin sitio antes.",
+          "explicacion": "Estrategia de espejo: ocupa el único punto fijo de la simetría (el centro) y luego copia. Señal: juego sobre un tablero con simetría central."
+        },
+        {
+          "id": "z31-q4",
+          "tipo": "disparador",
+          "enunciado": "Ves un sistema con x + y = 7 y x·y = 5, y te piden x² + y². ¿Qué jugada aplica y cómo, sin resolver para x e y?",
+          "solucion": "Simetría algebraica: x² + y² es simétrico, así que se expresa con las funciones simétricas elementales s = x+y y p = xy: x² + y² = (x+y)² − 2xy = 49 − 10 = 39. Nunca necesitas las variables individuales.",
+          "explicacion": "Señal → jugada: la expresión pedida no cambia al intercambiar las variables → reescríbela en términos de s y p."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-32",
+      "bloque": "fase-1",
+      "orden": 9,
+      "titulo": "Zeitz · El principio del extremo",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 3.2, The Extreme Principle (pp. 70-80).",
+      "dosis": "1 sección (~10 pp) + 2-3 problemas de la sección con bucle completo.",
+      "objetivo": "El hábito de mirar primero el elemento extremo (máximo, mínimo, primero, mayor distancia) y por qué sus propiedades vienen forzadas.",
+      "heuristicas": ["caso-extremo"],
+      "ideas_clave": [
+        "Principio del extremo: todo conjunto finito no vacío de números tiene máximo y mínimo — y ese elemento extremo tiene propiedades especiales gratis.",
+        "El extremo restringe: el vecino del máximo no puede superarlo, nada está más cerca que el par a distancia mínima — esas restricciones son palancas.",
+        "Combinación clásica con contradicción: supón el contraejemplo MÍNIMO y construye uno menor — absurdo (descenso infinito).",
+        "Señales: \"demuestra que existe…\", configuraciones geométricas finitas, procesos que deben terminar.",
+        "Si el problema parece no tener asidero, ordena algo y agarra la punta."
+      ],
+      "banco": [
+        {
+          "id": "z32-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el principio del extremo y explica por qué un objeto extremo \"trae propiedades gratis\".",
+          "solucion": "Todo conjunto finito y no vacío tiene un elemento máximo y uno mínimo (y toda colección de enteros positivos tiene mínimo). El extremo trae propiedades forzadas: nadie lo supera (o nadie es menor), de modo que cualquier relación entre él y sus vecinos está automáticamente restringida — esas restricciones son el punto de apoyo del argumento.",
+          "explicacion": "La jugada práctica: ante una configuración, pregunta \"¿quién es el más grande/cercano/primero aquí?\" y estudia SOLO a ese."
+        },
+        {
+          "id": "z32-q2",
+          "tipo": "acertijo",
+          "enunciado": "Cien números están escritos en círculo y cada uno es exactamente el promedio de sus dos vecinos. Demuestra que todos los números son iguales.",
+          "solucion": "Considera M, el máximo de los cien (existe: conjunto finito). M es promedio de sus vecinos, que son ≤ M; si alguno fuera < M, el promedio sería < M. Así que ambos vecinos valen M. Repitiendo el argumento, la igualdad se propaga por todo el círculo: todos valen M.",
+          "explicacion": "Patrón clásico: \"cada elemento es promedio/combinación de vecinos\" + extremo → el extremo contagia a sus vecinos y se propaga."
+        },
+        {
+          "id": "z32-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Cómo se combina el principio del extremo con la contradicción en el llamado \"descenso infinito\"?",
+          "solucion": "Supón que existen contraejemplos y toma el MÍNIMO de ellos (existe por el principio del extremo sobre enteros positivos). Del contraejemplo mínimo se construye un contraejemplo aún menor — contradicción con la minimalidad. Conclusión: no hay contraejemplos.",
+          "explicacion": "Es la maquinaria detrás de muchas pruebas de irracionalidad y de ecuaciones sin soluciones: el contraejemplo mínimo es un objeto con una propiedad imposible."
+        },
+        {
+          "id": "z32-q4",
+          "tipo": "disparador",
+          "enunciado": "¿Qué señales de un enunciado te deberían hacer pensar \"principio del extremo\" antes que cualquier otra táctica?",
+          "solucion": "1) \"Demuestra que existe\" un objeto con cierta propiedad en una configuración finita. 2) Configuraciones geométricas con distancias/tamaños comparables (\"el más cercano\", \"el mayor\"). 3) Procesos que deben terminar o estabilizarse (mira la cantidad que decrece). 4) \"Cada elemento depende de sus vecinos\" — examina el máximo o el mínimo.",
+          "explicacion": "El extremo es la táctica más barata de probar: ordenar y mirar la punta cuesta un minuto y desbloquea una familia enorme de problemas."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-33",
+      "bloque": "fase-1",
+      "orden": 10,
+      "titulo": "Zeitz · El palomar",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 3.3, The Pigeonhole Principle (pp. 80-88): básico (p. 80), intermedio (p. 82) y avanzado (p. 83).",
+      "dosis": "1 sección (~8 pp) + 2-3 problemas de la sección con bucle completo.",
+      "objetivo": "Las tres versiones del palomar y, sobre todo, el arte de DISEÑAR las cajas: la partición correcta es el 90% del problema.",
+      "heuristicas": ["palomar"],
+      "ideas_clave": [
+        "Palomar básico: más palomas que casilleros → algún casillero con dos. Versión fuerte: n objetos en k cajas → alguna caja con al menos ⌈n/k⌉.",
+        "El principio es trivial; el problema NUNCA te da las cajas. Diseñarlas (la partición correcta del espacio) es el verdadero trabajo.",
+        "Buenas cajas: agotan todos los casos, son pocas, y dos objetos en la misma caja fuerzan exactamente la conclusión pedida.",
+        "Señal: \"garantiza que existen dos (o k) con la misma propiedad / suficientemente cercanos / cuya diferencia…\".",
+        "Refinamiento típico: algunos valores de caja se excluyen mutuamente, reduciendo las cajas disponibles."
+      ],
+      "banco": [
+        {
+          "id": "z33-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el palomar básico y su versión fuerte, y da la forma general de los problemas que resuelve.",
+          "solucion": "Básico: si n+1 objetos se reparten en n cajas, alguna caja recibe al menos dos. Fuerte: si n objetos van en k cajas, alguna caja recibe al menos ⌈n/k⌉. Resuelve problemas de EXISTENCIA forzada: \"garantiza que hay dos (o m) que comparten propiedad, clase o cercanía\", sin decir cuáles.",
+          "explicacion": "El palomar nunca encuentra el objeto: solo demuestra que esconderlo es imposible."
+        },
+        {
+          "id": "z33-q2",
+          "tipo": "quiz",
+          "enunciado": "\"El principio es trivial; el arte está en las cajas.\" ¿Qué propiedades debe tener una buena partición en cajas?",
+          "solucion": "1) Exhaustiva: todo objeto cae en alguna caja. 2) Suficientemente pocas: menos cajas que objetos (o la cuenta de ⌈n/k⌉ que necesitas). 3) Relevante: que dos objetos en la misma caja impliquen EXACTAMENTE la conclusión pedida (misma clase módulo k, distancia acotada por el diámetro de la caja…). Si la conclusión no sale de la colisión, las cajas están mal diseñadas.",
+          "explicacion": "Diseñar cajas = ingeniería inversa desde la conclusión: ¿qué tendrían que compartir dos objetos para que gane?"
+        },
+        {
+          "id": "z33-q3",
+          "tipo": "acertijo",
+          "enunciado": "Cinco puntos están dentro de un cuadrado de lado 2. Demuestra que hay dos puntos a distancia menor o igual que √2.",
+          "solucion": "Parte el cuadrado en cuatro cuadraditos de lado 1. Cinco puntos en cuatro cuadraditos: por el palomar, dos puntos caen en el mismo cuadradito. La distancia máxima dentro de un cuadradito de lado 1 es su diagonal, √2. Listo.",
+          "explicacion": "Las cajas se diseñaron desde la conclusión: necesitaba distancia ≤ √2, así que busqué regiones de diámetro √2 — cuadraditos de lado 1."
+        },
+        {
+          "id": "z33-q4",
+          "tipo": "disparador",
+          "enunciado": "¿Qué frases de un enunciado te gritan \"palomar\", y cuál es tu primer movimiento al sospecharlo?",
+          "solucion": "\"Demuestra que existen dos con la misma…\", \"al menos k comparten…\", \"hay dos cuya diferencia/distancia es menor que…\", siempre con MÁS objetos que clases aparentes. Primer movimiento: contar objetos, y preguntar qué deberían compartir dos de ellos para concluir — eso define las cajas; luego verificar que hay menos cajas que objetos.",
+          "explicacion": "Señal → jugada: existencia forzada de una coincidencia → cuenta clases posibles vs. objetos."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-34",
+      "bloque": "fase-1",
+      "orden": 11,
+      "titulo": "Zeitz · Invariantes y monovariantes",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 3.4, Invariants (pp. 88-105): paridad (p. 90), aritmética modular y coloración (p. 95), monovariantes (p. 97).",
+      "dosis": "1 sección (~17 pp; puedes partirla en dos sesiones) + 2-3 problemas con bucle completo.",
+      "objetivo": "Encontrar la cantidad que el proceso conserva (invariante) o que solo avanza en una dirección (monovariante), y usarla para demostrar imposibilidad o terminación.",
+      "heuristicas": ["invariante"],
+      "ideas_clave": [
+        "Invariante: cantidad que NINGUNA movida cambia. Si el estado inicial y el final difieren en el invariante, llegar es imposible.",
+        "Los invariantes más rentables: paridad, suma o producto, residuos módulo k, coloraciones del tablero.",
+        "Monovariante: cantidad que solo crece (o solo decrece). Si está acotada, el proceso TERMINA; a dónde llega te dice dónde termina.",
+        "Para encontrarlos: ensúciate las manos con movidas concretas y tabula qué cantidades cambian y cómo — el que no cambia salta a la vista.",
+        "Señal maestra: \"¿es posible llegar de A a B con estas operaciones?\" → casi siempre es un problema de invariante."
+      ],
+      "banco": [
+        {
+          "id": "z34-q1",
+          "tipo": "quiz",
+          "enunciado": "Define invariante y monovariante, y di qué tipo de conclusión permite demostrar cada uno.",
+          "solucion": "Invariante: cantidad que ninguna operación permitida altera; demuestra IMPOSIBILIDAD (si inicio y meta tienen valores distintos del invariante, no hay camino). Monovariante: cantidad que cada operación mueve en una sola dirección; si además está acotada, demuestra TERMINACIÓN (el proceso no puede continuar para siempre) y localiza el estado final.",
+          "explicacion": "Imposibilidad ↔ invariante; terminación ↔ monovariante. Elegir cuál buscar es la mitad de la orientación."
+        },
+        {
+          "id": "z34-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Cuáles son los cuatro invariantes \"de catálogo\" que pruebas primero, y con qué tipo de operación se lleva bien cada uno?",
+          "solucion": "1) Paridad: operaciones que cambian cantidades de dos en dos o intercambian signos. 2) Suma total (o suma módulo k): operaciones que redistribuyen. 3) Producto: operaciones multiplicativas o con forma factorizable. 4) Coloración: piezas que siempre cubren un patrón fijo de colores. Se prueban en ese orden porque son baratos de verificar a mano.",
+          "explicacion": "Tabula dos o tres movidas concretas y calcula estas cuatro cantidades: la que no se mueve es tu invariante."
+        },
+        {
+          "id": "z34-q3",
+          "tipo": "acertijo",
+          "enunciado": "En una pizarra están los números 1, 2, 3, …, 2026. Eliges dos cualesquiera, los borras y escribes su diferencia (el mayor menos el menor). Repites hasta que quede un solo número. ¿Puede ese número ser 0?",
+          "solucion": "No. La suma total cambia de a+b a a−b: baja 2b, así que su PARIDAD es invariante. La suma inicial es 2026·2027/2 = 1013·2027, impar (producto de dos impares). El número final debe tener la misma paridad: impar. Cero es par, así que es inalcanzable.",
+          "explicacion": "Señal: \"¿puede quedar X tras repetir esta operación?\" → calcula la paridad de la suma antes y después de UNA movida."
+        },
+        {
+          "id": "z34-q4",
+          "tipo": "disparador",
+          "enunciado": "Un proceso repite una operación local y te preguntan si puede continuar para siempre. ¿Qué buscas y cómo?",
+          "solucion": "Un monovariante: una cantidad entera, acotada (por abajo si decrece, por arriba si crece), que CADA operación mueva estrictamente en una dirección — energía, suma de cuadrados, número de inversiones, máximo del sistema. Si existe, el proceso termina en a lo más tantos pasos como el rango de la cantidad.",
+          "explicacion": "Señal → jugada: \"¿termina?\" / \"¿puede repetirse infinitamente?\" → busca la cantidad que solo baja (o sube) y está acotada."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-41",
+      "bloque": "fase-2",
+      "orden": 12,
+      "titulo": "Zeitz · Grafos: recodificar relaciones",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 4.1, Graph Theory (pp. 105-116): conectividad y ciclos (p. 107), caminos eulerianos y hamiltonianos (p. 108), los dos hombres del Tíbet (p. 111).",
+      "dosis": "1 sección (~11 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Reconocer cuándo un problema sobre \"objetos relacionados\" se vuelve transparente al recodificarlo como vértices y aristas, y manejar las tres herramientas básicas: lema del apretón de manos, árboles y caminos eulerianos.",
+      "heuristicas": ["parametrizar-dibujar", "caso-extremo"],
+      "ideas_clave": [
+        "Cualquier relación MUTUA entre objetos es un grafo en potencia: objetos = vértices, relación = aristas. Recodificar así convierte palabrería en estructura calculable.",
+        "Lema del apretón de manos: la suma de los grados es 2·(número de aristas). Corolario inmediato y letal: el número de vértices de grado impar siempre es PAR.",
+        "Árbol = conexo y sin ciclos: tiene exactamente v−1 aristas y al menos dos hojas. La prueba mira el camino MÁS LARGO — principio extremo aplicado a grafos.",
+        "Un grafo conexo tiene camino euleriano (cada ARISTA una vez) si y solo si tiene 0 o 2 vértices de grado impar. Para los hamiltonianos (cada VÉRTICE una vez) no existe teoría completa: sospecha del problema que los pida.",
+        "Señal: \"conocidos\", \"partidos jugados\", \"fronteras\", \"vuelos\" → antes de hacer casos, dibuja el grafo y calcula los grados."
+      ],
+      "banco": [
+        {
+          "id": "z41-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el lema del apretón de manos y demuestra su corolario: en cualquier grafo, el número de vértices de grado impar es par.",
+          "solucion": "Lema: la suma de los grados de todos los vértices es igual a 2·(número de aristas), porque cada arista aporta exactamente 1 al grado de cada uno de sus dos extremos. Corolario: la suma total es par y la parte aportada por los vértices de grado par también; entonces la suma de los grados impares debe ser par, lo que exige una CANTIDAD par de sumandos impares.",
+          "explicacion": "Las preguntas tipo \"¿cuántos tienen un número impar de conocidos/partidos/vecinos?\" casi siempre son este corolario disfrazado."
+        },
+        {
+          "id": "z41-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Qué condición exacta decide si puedes recorrer todas las aristas de un grafo conexo sin repetir ninguna, y por qué los vértices de grado impar son el obstáculo?",
+          "solucion": "Existe camino euleriano si y solo si hay 0 o 2 vértices de grado impar (con 0 el recorrido es cerrado; con 2, empieza en uno y termina en el otro). Razón: cada paso por un vértice intermedio consume DOS aristas (entrar y salir), así que sus aristas deben venir en parejas; un grado impar deja una arista suelta, tolerable solo en el inicio o el final.",
+          "explicacion": "Contrasta: para caminos hamiltonianos (cada vértice una vez) no se conoce condición necesaria y suficiente. Euler es teoría completa; Hamilton es artesanía."
+        },
+        {
+          "id": "z41-q3",
+          "tipo": "acertijo",
+          "enunciado": "En un torneo, cada uno de los 9 equipos jugó exactamente 3 partidos contra rivales del mismo torneo. ¿Es posible?",
+          "solucion": "No. Modela: equipos = vértices, partidos = aristas. La suma de grados sería 9·3 = 27, impar, pero el lema del apretón de manos exige que sea 2·(número de partidos), par. Contradicción.",
+          "explicacion": "El apretón de manos elimina configuraciones imposibles en una línea: suma de grados impar = imposible, sin necesidad de intentar construcciones."
+        },
+        {
+          "id": "z41-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema habla de personas que se conocen, ciudades con vuelos o casillas alcanzables por un movimiento. ¿Cuál es tu primer movimiento y qué calculas antes que nada?",
+          "solucion": "Recodificar como grafo (objetos = vértices, relación mutua = aristas) y calcular los GRADOS: su suma (= 2·aristas), su paridad y los extremos (vértice de grado máximo o mínimo). La mayoría de los problemas de \"conocidos\" caen con el apretón de manos, con palomar sobre los grados (fase 1) o buscando un ciclo o un árbol.",
+          "explicacion": "El grafo no es la respuesta: es la representación que vuelve visibles paridades, conteos dobles y extremos que el enunciado verbal esconde."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-61",
+      "bloque": "fase-2",
+      "orden": 13,
+      "titulo": "Zeitz · Contar: sumar, multiplicar, dividir",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 6.1, Introduction to Counting (pp. 189-197): permutaciones y combinaciones (p. 189), argumentos combinatorios (p. 192), triángulo de Pascal y binomio (p. 193).",
+      "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Saber EXACTAMENTE cuándo sumar (casos disjuntos), cuándo multiplicar (etapas independientes) y cuándo dividir (descontar simetrías), y empezar a leer identidades como conteos dobles.",
+      "heuristicas": ["casework", "caso-pequeno"],
+      "ideas_clave": [
+        "Suma cuando partes en casos DISJUNTOS (sopa O ensalada); multiplica cuando encadenas decisiones independientes (sopa Y ensalada). El buen conteo es saber cuál operación toca, no recordar fórmulas.",
+        "P(n,r) = n(n−1)⋯(n−r+1): elección CON orden. Cuidado con el off-by-one: el último factor es (n−r+1), no (n−r).",
+        "Fórmula Mississippi: con elementos repetidos, cuenta como si todos fueran distintos y DIVIDE por las permutaciones internas de cada grupo: MISSISSIPPI da 11!/(4!·4!·2!).",
+        "C(n,r) = P(n,r)/r!: dividir entre r! mata el orden. \"Elegir un comité\" contra \"elegir presidente, secretario y vocal\" es exactamente la diferencia entre C y P.",
+        "Argumento combinatorio: demuestra una identidad contando la MISMA cosa de dos maneras. Pascal: C(n,r) = C(n−1,r−1) + C(n−1,r) es solo \"¿incluyo o no al primer elemento?\"."
+      ],
+      "banco": [
+        {
+          "id": "z61-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Cuándo se suma, cuándo se multiplica y cuándo se divide al contar? Da un mini-ejemplo propio de cada operación.",
+          "solucion": "Sumar: alternativas mutuamente excluyentes que agotan los casos (3 rutas en coche o 2 en tren: 5 maneras de viajar). Multiplicar: etapas sucesivas independientes (4 camisas y 3 pantalones: 12 atuendos). Dividir: cuando tu método cuenta cada objeto el mismo número k de veces, divide entre k (collares, comités, letras repetidas).",
+          "explicacion": "Zeitz lo dice sin rodeos: el buen razonamiento combinatorio es, en gran parte, saber exactamente cuándo sumar, multiplicar, restar o dividir."
+        },
+        {
+          "id": "z61-q2",
+          "tipo": "quiz",
+          "enunciado": "Explica por qué los anagramas de GAUSS son 5!/2 y no 5!, y enuncia la fórmula general (Mississippi) para letras repetidas.",
+          "solucion": "Las dos eses son indistinguibles: cada anagrama aparece 2! veces si finges que son distintas, así que 5!/2! = 60. General: con a₁ objetos del tipo 1, …, aₙ del tipo n, los órdenes distintos son (a₁+⋯+aₙ)!/(a₁!·a₂!⋯aₙ!): numerador = todos distinguibles, denominador = reordenamientos internos invisibles de cada grupo.",
+          "explicacion": "La división corrige sobreconteo UNIFORME. Si el sobreconteo no es uniforme, dividir es un error — esa es la puerta a inclusión-exclusión (6.3)."
+        },
+        {
+          "id": "z61-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuántos anagramas (con o sin sentido) tiene la palabra ENSENADA?",
+          "solucion": "8 letras con E×2, N×2, A×2, S y D: 8!/(2!·2!·2!) = 40320/8 = 5040.",
+          "explicacion": "Aplicación directa de Mississippi. Antes de calcular, el reflejo es inventariar repeticiones: ¿qué grupos de letras son indistinguibles?"
+        },
+        {
+          "id": "z61-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para contar los comités de 3 personas elegidos entre 10, un estudiante razona: \"10 opciones para la primera persona, 9 para la segunda, 8 para la tercera: 720 comités\". ¿Qué contó en realidad y cómo se corrige?",
+          "solucion": "Contó selecciones ORDENADAS (como si nombrara presidente, secretario y vocal): eso es P(10,3) = 720. Cada comité de 3 personas aparece 3! = 6 veces (una por cada orden), así que hay 720/6 = 120 = C(10,3) comités.",
+          "explicacion": "El error número uno del conteo: confundir secuencias con conjuntos. Pregúntate siempre: ¿mi método distingue el orden? ¿El objeto final lo distingue?"
+        },
+        {
+          "id": "z61-q5",
+          "tipo": "disparador",
+          "enunciado": "Ves la identidad C(n,0) + C(n,1) + ⋯ + C(n,n) = 2ⁿ. ¿Cómo la demuestras sin álgebra, y qué nombre tiene esa técnica?",
+          "solucion": "Argumento combinatorio (conteo doble): ambos lados cuentan los subconjuntos de un conjunto de n elementos. La izquierda los parte por tamaño (k elementos: C(n,k) maneras); la derecha decide elemento por elemento \"¿entra o no?\": 2·2⋯2 = 2ⁿ.",
+          "explicacion": "Señal → jugada: identidad con sumas de combinaciones → busca QUÉ cuenta cada lado. Si ambos cuentan lo mismo, la identidad es gratis."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-62",
+      "bloque": "fase-2",
+      "orden": 14,
+      "titulo": "Zeitz · Particiones y biyecciones",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 6.2, Partitions and Bijections (pp. 197-207): contar subconjuntos (p. 197), manejo de información (p. 200), bolas en urnas y codificaciones clásicas (p. 203).",
+      "dosis": "1 sección (~10 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Contar lo difícil partiéndolo en piezas disjuntas fáciles, o de un solo golpe construyendo una biyección con un \"código\" que sí sabes contar.",
+      "heuristicas": ["casework", "parametrizar-dibujar"],
+      "ideas_clave": [
+        "Dos tácticas en tándem: PARTIR (divide en piezas disjuntas y suma) y CODIFICAR (biyección entre tus objetos y las palabras de un código simple; cuenta el código).",
+        "El ejemplo canónico: subconjuntos de n elementos ↔ cadenas de n símbolos sí/no (\"¿está el elemento i?\") → 2ⁿ, sin sumar ninguna C(n,k).",
+        "Bolas idénticas en urnas distinguibles = barras y estrellas: repartir k bolas en n urnas ↔ cadenas con k estrellas y n−1 barras → C(n+k−1, n−1).",
+        "Una codificación válida no pierde ni inventa información: cada objeto produce UNA palabra y cada palabra recupera UN objeto. Verifica las dos direcciones — ahí mueren los conteos falsos.",
+        "Señal: el conteo directo explota en casos → pregúntate qué secuencia de decisiones determina por completo cada objeto, y codifícala."
+      ],
+      "banco": [
+        {
+          "id": "z62-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Qué es una biyección y por qué \"codificar\" permite contar? ¿Qué hay que verificar para que el conteo sea legítimo?",
+          "solucion": "Biyección = correspondencia 1 a 1: cada objeto ↔ una palabra del código, sin huecos ni colisiones. Si existe, el número de objetos ES el número de palabras, y las palabras de un código uniforme se cuentan con multiplicación simple. Hay que verificar ambas direcciones: que cada objeto dé una única palabra y que cada palabra recupere un único objeto.",
+          "explicacion": "Codificar es \"cambiar de punto de vista\" institucionalizado: no cuentes lo difícil; cuenta otra cosa que esté en biyección con lo difícil."
+        },
+        {
+          "id": "z62-q2",
+          "tipo": "quiz",
+          "enunciado": "Deduce con barras y estrellas cuántas soluciones enteras tiene x₁ + x₂ + ⋯ + xₙ = k con todas las xᵢ ≥ 0, explicando qué codifica cada símbolo.",
+          "solucion": "Cada solución ↔ una fila de k estrellas (unidades) separadas por n−1 barras (fronteras entre variables): xᵢ = estrellas entre la barra i−1 y la barra i. Es biyección: la fila tiene n+k−1 posiciones y queda determinada por dónde van las barras: C(n+k−1, n−1) soluciones.",
+          "explicacion": "\"Bolas idénticas en urnas distinguibles\", \"monedas iguales entre personas\", \"exponentes que suman k\": todos son la misma fila de estrellas y barras."
+        },
+        {
+          "id": "z62-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿De cuántas maneras puede escribirse 8 como suma ORDENADA de enteros positivos (2+6 y 6+2 cuentan distinto)? Generaliza a n.",
+          "solucion": "2⁷ = 128. Escribe 8 unos en fila: entre ellos hay 7 huecos y en cada hueco decides cortar o no cortar; cada patrón de cortes produce una composición distinta y toda composición viene de un patrón. Para n: 2ⁿ⁻¹.",
+          "explicacion": "Biyección con cadenas binarias de longitud n−1. Si hubieras intentado casework por número de sumandos, habrías terminado sumando C(7,j) — la codificación se salta esa suma entera."
+        },
+        {
+          "id": "z62-q4",
+          "tipo": "disparador",
+          "enunciado": "Estás contando los resultados de un proceso con varias etapas equivalentes y el casework se multiplica sin control. ¿Qué buscas antes de rendirte a los casos?",
+          "solucion": "Una codificación: ¿qué secuencia mínima de decisiones (sí/no, cuántos, dónde corto) determina por completo cada objeto? Si cada objeto ↔ una palabra única de un alfabeto simple, cuenta palabras. Si no aparece código, busca una partición en piezas disjuntas que SÍ tengan código fácil.",
+          "explicacion": "Partir y codificar se combinan: primero parte por el rasgo que rompe la uniformidad, luego codifica dentro de cada pieza."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-63",
+      "bloque": "fase-2",
+      "orden": 15,
+      "titulo": "Zeitz · El complemento e inclusión-exclusión",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 6.3, The Principle of Inclusion-Exclusion (pp. 207-215): contar el complemento (p. 207), PIE con conjuntos (p. 208), PIE con funciones indicadoras (p. 212).",
+      "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Contar lo que se traslapa: pasar al complemento cuando \"al menos uno\" confunde, y corregir el sobreconteo con la suma alternada de PIE.",
+      "heuristicas": ["casework", "contradiccion"],
+      "ideas_clave": [
+        "\"Al menos uno…\" es la señal del COMPLEMENTO: cuenta el total y resta los que no tienen ninguno. Cadenas de n bits con algún 0: 2ⁿ − 1, sin tocar un solo caso.",
+        "PIE con dos conjuntos: |A∪B| = |A| + |B| − |A∩B|. Sumar sobreconta exactamente la intersección; restarla repara la cuenta.",
+        "PIE general: (suma de cardinalidades) − (intersecciones de a 2) + (intersecciones de a 3) − ⋯, con signos alternados. Cada capa corrige el exceso de la anterior.",
+        "PIE es rentable cuando las INTERSECCIONES son fáciles aunque la unión sea fea: divisibilidades simultáneas, propiedades que se imponen por separado, desarreglos.",
+        "Si ni el conjunto ni su complemento son manejables, recuerda 6.2: partir y codificar siguen disponibles. Las tácticas de conteo se apilan."
+      ],
+      "banco": [
+        {
+          "id": "z63-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Qué señal del enunciado te manda al complemento, y por qué funciona tan bien? Ilustra con: \"de 10 niños que eligen entre 31 sabores, ¿cuántas asignaciones tienen al menos dos niños con el mismo sabor?\".",
+          "solucion": "Las frases \"al menos uno/dos…\" sobre algo difícil de organizar por casos. El complemento de \"al menos un empate\" es \"todos distintos\", que suele contarse de un tirón: total 31¹⁰ menos asignaciones sin repetición P(31,10) = 31·30⋯22. Respuesta: 31¹⁰ − P(31,10).",
+          "explicacion": "\"Al menos\" directo = unión de muchos casos traslapados; su complemento = una sola condición uniforme. Cambiar de punto de vista cuesta una resta."
+        },
+        {
+          "id": "z63-q2",
+          "tipo": "quiz",
+          "enunciado": "Enuncia PIE para tres conjuntos y explica de dónde sale el patrón de signos alternados.",
+          "solucion": "|A∪B∪C| = |A|+|B|+|C| − (|A∩B|+|A∩C|+|B∩C|) + |A∩B∩C|. Sumar los tres cuenta doble a quien está en dos conjuntos y triple a quien está en los tres; restar las intersecciones de a dos repara a los primeros pero borra por completo a los segundos (3−3 = 0), así que hay que devolver |A∩B∩C|. Cada capa corrige el error neto de las anteriores, de ahí la alternancia.",
+          "explicacion": "No memorices la fórmula: reconstrúyela contando cuántas veces queda contado un elemento que pertenece a exactamente j conjuntos."
+        },
+        {
+          "id": "z63-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuántos enteros entre 1 y 1000 no son divisibles ni por 2 ni por 5?",
+          "solucion": "400. Complemento + PIE: múltiplos de 2: 500; de 5: 200; de 10 (contados dos veces): 100. Divisibles por 2 o 5: 500+200−100 = 600. No divisibles por ninguno: 1000 − 600 = 400.",
+          "explicacion": "Patrón completo en miniatura: el \"ni…ni…\" te manda al complemento, y el complemento es una unión que PIE desenreda. Las intersecciones de divisibilidades son mcm — siempre fáciles."
+        },
+        {
+          "id": "z63-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para contar los enteros de 1 a 100 divisibles por 2 o por 3, alguien calcula 50 + 33 = 83. ¿Qué falló y cuál es la cuenta correcta?",
+          "solucion": "Los múltiplos de 6 cumplen ambas condiciones y quedaron contados dos veces. Hay ⌊100/6⌋ = 16: la cuenta correcta es 50 + 33 − 16 = 67.",
+          "explicacion": "Cada vez que sumes tamaños de conjuntos, pregúntate: ¿quién quedó contado dos veces? Si la respuesta no es \"nadie\", no era una partición — es PIE."
+        }
+      ]
+    },
+    {
+      "id": "engel-comb",
+      "bloque": "fase-2",
+      "orden": 16,
+      "titulo": "Engel · Combinatoria de competencia (cantera)",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 5, Enumerative Combinatorics (pp. 85-117): la técnica de la tabla con sumas-q (E1-E7, pp. 85-87). Después hojea la lista de problemas del capítulo y elige 2-3 a tu nivel.",
+      "dosis": "Engel es cantera, no lectura corrida: ~3 pp de técnica + 2-3 problemas del capítulo con bucle completo.",
+      "objetivo": "Pelear con combinatoria de nivel olímpico: problemas que no piden teoría nueva, solo organización astuta del conteo más las tácticas que ya tienes (extremo, invariantes, contradicción).",
+      "heuristicas": ["contradiccion", "invariante"],
+      "ideas_clave": [
+        "El sello de Engel: problemas \"sin prerrequisitos\" donde la dificultad está en ORGANIZAR el argumento, no en saber fórmulas. Un olímpico de prepa no corre con desventaja frente a un profesional.",
+        "Técnica de la tabla (IMO 1977): escribe las p-sumas sucesivas como filas; en las columnas emergen solas las q-sumas. Sumar todo por filas y por columnas da el mismo total con signos en conflicto → contradicción.",
+        "Ese \"mismo total calculado de dos formas\" es conteo doble — la versión de combate del argumento combinatorio de Zeitz 6.1.",
+        "Todo problema de máximo tiene DOS mitades: la cota (ninguna configuración supera N) y la construcción (existe una con N). Sin una de las dos, no has terminado.",
+        "Con productos en vez de sumas, toma logaritmos: p-productos < 1 y q-productos > 1 se convierten en el mismo problema de sumas."
+      ],
+      "banco": [
+        {
+          "id": "eng5-q1",
+          "tipo": "quiz",
+          "enunciado": "Describe la técnica de la tabla para sucesiones con condiciones sobre p-sumas y q-sumas, y explica por qué produce una contradicción.",
+          "solucion": "Construye la matriz cuya fila i es (aᵢ, aᵢ₊₁, …, aᵢ₊ₚ₋₁): cada fila es una p-suma y, si tomas q filas consecutivas, cada columna es una q-suma. Sumando TODAS las entradas por filas el total hereda el signo de las p-sumas; sumándolas por columnas hereda el de las q-sumas. Mismo número, dos signos opuestos: contradicción, así que la sucesión no puede ser tan larga como la matriz exige.",
+          "explicacion": "La matriz necesita p+q−1 términos para existir; por eso la longitud máxima de la sucesión queda acotada por p+q−2 (con p, q coprimos)."
+        },
+        {
+          "id": "eng5-q2",
+          "tipo": "acertijo",
+          "enunciado": "En una sucesión finita de números reales, toda suma de 7 términos consecutivos es negativa y toda suma de 11 consecutivos es positiva. ¿Cuál es la longitud máxima de la sucesión? (IMO 1977)",
+          "solucion": "16. Si hubiera 17 términos, la matriz de 11 filas × 7 columnas con entrada aᵢ₊ⱼ₋₁ existe: sus filas son 7-sumas (total negativo) y sus columnas son 11-sumas (total positivo) — el mismo total no puede ser ambas cosas. Y 16 se alcanza: 5, 5, −13, 5, 5, 5, −13, 5, 5, −13, 5, 5, 5, −13, 5, 5.",
+          "explicacion": "Las dos mitades en acción: tabla → cota ≤ 16; sucesión explícita → ≥ 16. En la IMO de 1977 este problema se consideró \"fácil\"… para quien conocía la jugada."
+        },
+        {
+          "id": "eng5-q3",
+          "tipo": "quiz",
+          "enunciado": "En un problema de \"¿cuál es el máximo número de…?\", ¿por qué una cota sin construcción (o una construcción sin cota) es solo media solución?",
+          "solucion": "La cota demuestra que ninguna configuración supera N (imposibilidad hacia arriba); la construcción exhibe una configuración que alcanza N (existencia). Solo juntas fijan el máximo exacto: sin construcción, quizá el verdadero máximo es menor que tu cota; sin cota, quizá alguien supere tu ejemplo.",
+          "explicacion": "En competencia se pierden puntos exactamente así: la mitad olvidada. Al planear, escribe explícitamente \"cota:\" y \"construcción:\" como dos sub-metas."
+        },
+        {
+          "id": "eng5-q4",
+          "tipo": "disparador",
+          "enunciado": "Una sucesión con condiciones sobre TODOS los tramos de longitud fija (toda p-suma cumple X, todo q-producto cumple Y). ¿Primer reflejo?",
+          "solucion": "Tabular: tramos como filas de una matriz para que los otros tramos emerjan como columnas, y calcular el total de dos maneras (conteo doble). Si son productos, logaritmos primero. Si las condiciones son de paridad, resta ventanas solapadas para aislar términos individuales.",
+          "explicacion": "Condición sobre tramos solapados = información redundante a propósito; el solapamiento es la estructura que la tabla y las restas explotan."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-71",
+      "bloque": "fase-2",
+      "orden": 17,
+      "titulo": "Zeitz · Primos y divisibilidad",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 7.1, Primes and Divisibility (pp. 224-232): el Teorema Fundamental de la Aritmética (p. 224); MCD, mcm y el algoritmo de la división (p. 226). Formulario de apoyo: Engel cap. 6, prerrequisitos 1-19 (pp. 117-120).",
+      "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Dominar el lenguaje de la divisibilidad (b|a, factorización en potencias de primos, mcd/mcm) y entender por qué la factorización única ES un teorema con contenido, no una obviedad.",
+      "heuristicas": ["contradiccion", "induccion"],
+      "ideas_clave": [
+        "Euclides, infinitud de primos: supón la lista completa p₁,…,p_N y considera Q = p₁p₂⋯p_N + 1 (la movida crux). Ningún pᵢ divide a Q (residuo 1), así que algún primo nuevo existe. Apréndela hasta reproducirla sin mirar.",
+        "Todo n > 1 se factoriza en primos (inducción fuerte) y la factorización es ÚNICA: eso es el TFA. En el \"mundo de los pares\" 60 = 2·30 = 6·10 con todos los factores primos ahí dentro: sin unicidad, la divisibilidad colapsa.",
+        "La PPF (factorización en potencias de primos) es la radiografía del número: divisores, mcd, mcm, cuadrados perfectos — todo se LEE en los exponentes.",
+        "mcd(a,b)·mcm(a,b) = a·b, y el algoritmo de Euclides calcula el mcd sin factorizar: mcd(a,b) = mcd(b, a mod b).",
+        "Señal: \"demuestra que existe/no existe un entero con tal divisibilidad\" → escribe los números en PPF y compara exponentes primo por primo."
+      ],
+      "banco": [
+        {
+          "id": "z71-q1",
+          "tipo": "quiz",
+          "enunciado": "Reproduce la prueba de Euclides de que hay infinitos primos y señala cuál es la movida crux.",
+          "solucion": "Supón que la lista p₁, …, p_N es completa. Crux: construye Q = p₁p₂⋯p_N + 1. Q deja residuo 1 al dividirse entre cada pᵢ, así que ningún primo de la lista lo divide. Pero Q > 1 tiene ALGÚN factor primo (o es primo él mismo): ese primo no está en la lista — contradicción con que fuera completa.",
+          "explicacion": "La movida \"multiplica todo y suma 1\" reaparece en docenas de problemas: construir un objeto que esquiva a todos los divisores disponibles."
+        },
+        {
+          "id": "z71-q2",
+          "tipo": "encuentra-error",
+          "enunciado": "\"Q = p₁p₂⋯p_N + 1 siempre es primo; por eso funciona la prueba de Euclides.\" ¿Verdadero o falso? ¿Qué dice realmente la prueba?",
+          "solucion": "Falso: 2·3·5·7·11·13 + 1 = 30031 = 59·509, compuesto. La prueba solo necesita que Q tenga algún factor primo FUERA de la lista supuesta (sea Q primo o no). Confundir \"no divisible por estos primos\" con \"primo\" es el error clásico al recitarla.",
+          "explicacion": "Recitar una prueba de memoria sin la lógica exacta produce justo estos colapsos. El disparador del error: cuantificadores cambiados de lugar."
+        },
+        {
+          "id": "z71-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Qué contenido real tiene el Teorema Fundamental de la Aritmética? Usa el \"mundo de los pares\" E = {0, ±2, ±4, …} para mostrarlo.",
+          "solucion": "En E, los números 2, 6, 10, 30 son \"primos\" (no se factorizan dentro de E) y sin embargo 60 = 2·30 = 6·10: dos factorizaciones distintas. Ahí, de 2x = 10y NO se sigue que 10|x: las deducciones de divisibilidad que usamos a diario dependen de la UNICIDAD de la factorización, que en ℤ sí se cumple y hay que demostrar.",
+          "explicacion": "Lo \"obvio\" que falla en un mundo vecino es un teorema. Este hábito —probar la afirmación en una estructura alterada— detecta qué propiedades cargan el peso."
+        },
+        {
+          "id": "z71-q4",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuántos divisores positivos tiene 360 = 2³·3²·5? Explica por qué la respuesta se lee directamente de la PPF.",
+          "solucion": "(3+1)(2+1)(1+1) = 24. Cada divisor elige un exponente para el 2 (0-3), uno para el 3 (0-2) y uno para el 5 (0-1), y cada combinación da un divisor distinto (por la factorización única): regla del producto sobre los exponentes.",
+          "explicacion": "Conteo y teoría de números se cruzan: contar divisores ES un problema de multiplicación de opciones. La PPF convierte divisibilidad en combinatoria de exponentes."
+        },
+        {
+          "id": "z71-q5",
+          "tipo": "disparador",
+          "enunciado": "Necesitas el mcd de dos números de ocho cifras (o de dos expresiones con variable, como n y n+12). ¿Factorizas? ¿Qué haces?",
+          "solucion": "No factorices: algoritmo de Euclides. mcd(a,b) = mcd(b, a mod b) baja el tamaño en cada paso sin conocer ningún primo. Con variables: mcd(n, n+12) = mcd(n, 12), porque todo divisor común de n y n+12 divide a la diferencia. La diferencia es la jugada.",
+          "explicacion": "Señal: mcd/mcm con números grandes o con variables → Euclides y \"un divisor común divide a la diferencia\". La PPF es para estructura; Euclides es para cálculo."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-72",
+      "bloque": "fase-2",
+      "orden": 18,
+      "titulo": "Zeitz · Congruencias: el mundo finito de Zₘ",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 7.2, Congruence (pp. 232-236): qué tienen de bueno los primos (p. 233), pequeño teorema de Fermat (p. 234).",
+      "dosis": "1 sección (~5 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Elegir el módulo correcto para colapsar el universo infinito de los enteros en un mundo finito Zₘ donde el problema se calcula a mano.",
+      "heuristicas": ["invariante", "caso-pequeno"],
+      "ideas_clave": [
+        "a ≡ b (mod m) ⟺ a = b + mk. Las congruencias respetan suma y producto: puedes reducir ANTES de operar, no después.",
+        "Potencias gigantes: busca una potencia pequeña ≡ ±1. Como 2⁴ ≡ −1 (mod 17), 2¹⁰⁰⁰ = (2⁴)²⁵⁰ ≡ (−1)²⁵⁰ = 1: residuo 1, sin calcular nada grande.",
+        "Las reglas de divisibilidad SON congruencias: número ≡ suma de sus dígitos (mod 9 y mod 3) porque 10 ≡ 1; y ≡ suma alternada de dígitos (mod 11) porque 10 ≡ −1.",
+        "Los primos son el mejor módulo: en Zₚ todo no-cero tiene inverso único — puedes \"dividir\". De ahí vive el pequeño teorema de Fermat: a^(p−1) ≡ 1 (mod p) si p∤a.",
+        "La paridad de la fase 1 era el caso m = 2; la coloración, otros m. Elegir el módulo ES la jugada — y al investigar, supón primero los datos primos o coprimos: el caso general casi siempre se reduce a ese."
+      ],
+      "banco": [
+        {
+          "id": "z72-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué \"ver el problema módulo m\" es una simplificación tan poderosa, y qué operaciones sobreviven la reducción?",
+          "solucion": "Porque colapsa el universo infinito de los enteros en m residuos {0, 1, …, m−1}: un mundo finito que se tabula a mano. Sobreviven suma y producto (si a≡b y c≡d, entonces a+c≡b+d y ac≡bd), así que puedes reducir cada pieza antes de operar. La división NO sobrevive en general — solo cuando existe inverso (módulo primo, o base coprima con m).",
+          "explicacion": "Es la misma lógica del invariante: tirar información irrelevante a propósito hasta que la estructura quepa en una tabla."
+        },
+        {
+          "id": "z72-q2",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuál es el residuo de 2¹⁰⁰⁰ al dividirse entre 17?",
+          "solucion": "1. Busca el ciclo: 2⁴ = 16 ≡ −1 (mod 17). Entonces 2¹⁰⁰⁰ = (2⁴)²⁵⁰ ≡ (−1)²⁵⁰ = 1 (mod 17).",
+          "explicacion": "El reflejo con potencias enormes: localizar la potencia pequeña que da ±1 y escribir el exponente en términos de ella. El −1 es oro: eleva al cuadrado y desaparece."
+        },
+        {
+          "id": "z72-q3",
+          "tipo": "quiz",
+          "enunciado": "Demuestra la regla del 9 (un número es divisible entre 9 si la suma de sus dígitos lo es) y di de dónde sale la regla del 11.",
+          "solucion": "Como 10 ≡ 1 (mod 9), cada potencia 10ʲ ≡ 1, así que d_n…d₁d₀ = Σ dⱼ·10ʲ ≡ Σ dⱼ (mod 9): el número y la suma de sus dígitos tienen el MISMO residuo. Para el 11: 10 ≡ −1 (mod 11), así que 10ʲ ≡ (−1)ʲ y el número ≡ d₀ − d₁ + d₂ − ⋯ (suma alternada desde las unidades).",
+          "explicacion": "Las \"reglas mágicas\" de primaria son dos líneas de congruencias. Generaliza: en base b, la regla del (b−1) es la suma de dígitos y la del (b+1), la alternada."
+        },
+        {
+          "id": "z72-q4",
+          "tipo": "disparador",
+          "enunciado": "\"Encuentra el residuo de una potencia gigante\" o \"demuestra que ningún número de cierta forma puede ser un cuadrado perfecto\". ¿Cuál es la jugada en cada caso?",
+          "solucion": "Congruencias con el módulo correcto. Potencias: busca el ciclo (alguna potencia ≡ ±1) y descompón el exponente. Imposibilidad de cuadrados: tabula los residuos cuadráticos de un módulo pequeño (mod 4 solo hay 0 y 1; mod 8: 0, 1, 4) y muestra que la forma dada cae fuera. Es un invariante modular: ninguna elección del adversario escapa de la tabla.",
+          "explicacion": "Elegir el módulo es elegir qué información conservar. Cuadrados → mod 4 u 8; cubos → mod 9; dígitos → mod 9 u 11; paridad → mod 2."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-64",
+      "bloque": "fase-3",
+      "orden": 19,
+      "titulo": "Zeitz · Recurrencias: Fibonacci y Catalan",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 6.4, Recurrence (pp. 215-223): el dominó y la recurrencia de Fibonacci (p. 215), la recurrencia de Catalan (p. 217).",
+      "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Cuando la fórmula global no se ve, estudiar la transición LOCAL de n a n+1: montar la recurrencia condicionando en el extremo, y reconocer las dos recurrencias estrella (Fibonacci y Catalan).",
+      "heuristicas": ["caso-pequeno", "induccion"],
+      "ideas_clave": [
+        "Si lo global no se comprende, mira lo local: ¿cómo se construye un objeto de tamaño n+1 a partir de los de tamaño ≤ n? Recurrencia + valores frontera = problema resuelto (al menos como algoritmo).",
+        "La jugada estándar: PARTICIONA los objetos según cómo TERMINAN. Dominós en 2×n: el extremo derecho es un dominó vertical (deja t(n−1)) o dos horizontales (deja t(n−2)) → t(n) = t(n−1) + t(n−2): Fibonacci.",
+        "Misma recurrencia + mismos valores iniciales = misma sucesión. Para identificar tu conteo con Fibonacci basta cuadrar dos valores frontera.",
+        "Catalan: al condicionar no en un extremo lineal sino en un elemento estructural (el triángulo sobre una base fija), las dos partes restantes se eligen INDEPENDIENTEMENTE y la recurrencia se vuelve suma de productos: t(n) = Σ t(u)·t(v) con u+v = n+1. Aparece en triangulaciones, paréntesis balanceados, caminos que no cruzan la diagonal…",
+        "Verificar una fórmula cerrada (como Binet) es mecánico: comprueba que satisface la recurrencia y los valores frontera. Encontrarla es otra historia — para eso están las generatrices (§4.3)."
+      ],
+      "banco": [
+        {
+          "id": "z64-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Cuál es la estrategia \"local\" de Zeitz cuando un conteo es demasiado complicado para verlo globalmente, y qué dos piezas necesitas para declarar el problema resuelto?",
+          "solucion": "Estudiar la transición de n a n+1: cómo se construye cada objeto de tamaño n+1 a partir de objetos menores, normalmente particionando según cómo termina. Las dos piezas: la RECURRENCIA y los VALORES FRONTERA — juntas determinan toda la sucesión y dan un algoritmo de cálculo, aunque no haya fórmula cerrada.",
+          "explicacion": "\"Resuelto\" tiene grados: recurrencia + frontera (algoritmo) < reconocer la sucesión (Fibonacci, Catalan) < fórmula cerrada. A menudo el escalón intermedio basta."
+        },
+        {
+          "id": "z64-q2",
+          "tipo": "quiz",
+          "enunciado": "Reproduce el argumento del dominó: ¿por qué el número de maneras de cubrir un rectángulo 2×n con fichas 1×2 satisface t(n) = t(n−1) + t(n−2), y por qué la partición es legítima?",
+          "solucion": "Mira el extremo derecho de cada cubierta: o hay UN dominó vertical (quitarlo deja un 2×(n−1): t(n−1) maneras), o hay DOS dominós horizontales apilados (quitarlos deja un 2×(n−2): t(n−2) maneras). No hay tercera opción y ninguna cubierta está en ambas clases: es una partición, así que se SUMAN. Con t(1) = 1, t(2) = 2 la sucesión es 1, 2, 3, 5, 8, … = Fibonacci desplazado.",
+          "explicacion": "El molde de casi toda recurrencia de conteo: condicionar en el final + verificar que las clases son disjuntas y exhaustivas (partición → suma, como en 6.2)."
+        },
+        {
+          "id": "z64-q3",
+          "tipo": "acertijo",
+          "enunciado": "Subes una escalera de 10 escalones y en cada paso avanzas 1 o 2 escalones. ¿De cuántas maneras distintas puedes subirla?",
+          "solucion": "89. Condiciona en el último paso: w(n) = w(n−1) + w(n−2) (el último paso fue de 1 o de 2), con w(1) = 1, w(2) = 2. La tabla da 1, 2, 3, 5, 8, 13, 21, 34, 55, 89.",
+          "explicacion": "Mismo esqueleto que el dominó: el problema cambia de disfraz (pasos, fichas, monedas) pero la partición por el final es idéntica. Esa es la transferencia que el cuaderno de moralejas debe capturar."
+        },
+        {
+          "id": "z64-q4",
+          "tipo": "quiz",
+          "enunciado": "En la recurrencia de Catalan para triangulaciones, ¿por qué aparecen PRODUCTOS t(u)·t(v) en lugar de solo sumas como en Fibonacci?",
+          "solucion": "Porque al fijar el triángulo sobre una base, el polígono queda partido en DOS regiones que se triangulan de forma independiente: cada elección en una se combina con cada elección de la otra (regla del producto). La partición por la posición del vértice da la suma; la independencia dentro de cada caso da el producto: t(n) = Σ t(u)·t(v) sobre u+v = n+1.",
+          "explicacion": "Suma = casos disjuntos; producto = decisiones independientes (6.1). Catalan es la primera recurrencia donde ambas operaciones conviven — y por eso es más difícil de resolver en fórmula cerrada."
+        },
+        {
+          "id": "z64-q5",
+          "tipo": "disparador",
+          "enunciado": "Te piden contar objetos de tamaño n con una restricción local (sin dos seguidos, sin tres consecutivos, el extremo fijo…). ¿Cuál es el primer reflejo y qué verificas antes de confiar en él?",
+          "solucion": "Condicionar en cómo TERMINA el objeto: clasificar por el último elemento o bloque, expresar cada clase como un objeto menor y montar la recurrencia. Verificar: que las clases sean disjuntas y cubran todo (partición legítima), y que los valores frontera estén bien contados — ahí viven casi todos los errores.",
+          "explicacion": "Restricción LOCAL es la señal: si la validez de la cadena solo depende de vecindarios, el final determina cuánto \"pasado\" necesitas recordar, y eso es exactamente el orden de la recurrencia."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-43",
+      "bloque": "fase-3",
+      "orden": 20,
+      "titulo": "Zeitz · Funciones generatrices",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 4.3, Generating Functions (pp. 128-138): ejemplos introductorios (p. 129), relaciones de recurrencia (p. 130), particiones (p. 132).",
+      "dosis": "1 sección (~10 pp; densa — puedes partirla en dos sesiones) + 2 problemas con bucle completo.",
+      "objetivo": "Empaquetar una sucesión entera en una sola función y dejar que el álgebra cuente por ti: el puente entre combinatoria, recurrencias y las series que usarás en ciencia de datos.",
+      "heuristicas": ["parametrizar-dibujar", "caso-pequeno"],
+      "ideas_clave": [
+        "La generatriz de a₀, a₁, a₂, … es a₀ + a₁x + a₂x² + ⋯: TODA la sucesión en un solo objeto algebraico.",
+        "Dos hechos le dan el poder: xᵐ·xⁿ = xᵐ⁺ⁿ (multiplicar polinomios SUMA exponentes: convolución de elecciones) y el diccionario local↔global (coeficientes ↔ comportamiento de la función).",
+        "La herramienta geométrica es ubicua y funciona en AMBAS direcciones: 1/(1−x) = 1 + x + x² + ⋯. Apréndela como reflejo, incluyendo variantes como x/(2+x) desarrollada en serie.",
+        "(1+x)ⁿ es la generatriz de los C(n,k): evaluar en x = 1 da Σ C(n,k) = 2ⁿ; en x = −1, la suma alternada = 0. Evaluar la generatriz en puntos astutos ES una técnica de conteo.",
+        "No te angusties por la convergencia: en generatrices se trabaja formalmente; si la serie converge en algún entorno, el método es legítimo para extraer coeficientes."
+      ],
+      "banco": [
+        {
+          "id": "z43-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Qué es la función generatriz de una sucesión y cuáles son los dos hechos simples que, según Zeitz, le dan todo su poder?",
+          "solucion": "Es la serie a₀ + a₁x + a₂x² + ⋯ cuyos coeficientes son la sucesión. Poder: (1) xᵐ·xⁿ = xᵐ⁺ⁿ — el motor técnico: multiplicar series convierte sumas de índices en productos, o sea, cuenta combinaciones de elecciones; (2) el conocimiento \"local\" de los coeficientes y el \"global\" de la función se traducen mutuamente.",
+          "explicacion": "Es la táctica crossover por excelencia: un problema de conteo discreto se vuelve un problema de álgebra/análisis sobre una función."
+        },
+        {
+          "id": "z43-q2",
+          "tipo": "quiz",
+          "enunciado": "Enuncia la herramienta de la serie geométrica y demuestra que funciona \"en reversa\" desarrollando x/(2+x) como serie de potencias.",
+          "solucion": "1/(1−r) = 1 + r + r² + ⋯ para |r| < 1. En reversa: x/(2+x) = (x/2)·1/(1−(−x/2)) = (x/2)(1 − x/2 + x²/4 − x³/8 + ⋯) = x/2 − x²/4 + x³/8 − ⋯. La maniobra: forzar la forma 1/(1−r) sacando constantes y leyendo r con su signo.",
+          "explicacion": "Sumar geométricas lo sabe todo el mundo; el problem solver la usa al revés: convertir cocientes en series para LEER coeficientes."
+        },
+        {
+          "id": "z43-q3",
+          "tipo": "acertijo",
+          "enunciado": "Usando solo la generatriz (1+x)ⁿ, demuestra de un golpe que C(n,0)+C(n,1)+⋯+C(n,n) = 2ⁿ y que la suma alternada C(n,0)−C(n,1)+⋯±C(n,n) = 0 (n ≥ 1).",
+          "solucion": "(1+x)ⁿ = Σ C(n,k)xᵏ por el binomio. Evalúa en x = 1: 2ⁿ = Σ C(n,k). Evalúa en x = −1: 0 = Σ C(n,k)(−1)ᵏ, la suma alternada. Corolario gratis: los subconjuntos de tamaño par son tantos como los de tamaño impar (2ⁿ⁻¹ cada uno).",
+          "explicacion": "Ya probaste la primera identidad contando dos veces (fase 2): ahora sale evaluando una función. Tener DOS demostraciones de lo mismo es exactamente la flexibilidad que el examen del motor mide."
+        },
+        {
+          "id": "z43-q4",
+          "tipo": "disparador",
+          "enunciado": "¿Qué señales de un problema te deberían hacer pensar \"esto es una generatriz\", y cuál es la traducción mecánica?",
+          "solucion": "Señales: contar maneras de SUMAR cosas hasta n (monedas, dados, particiones), una recurrencia que no cede, o \"de cuántas formas se combina una elección de aquí con una de allá\". Traducción: cada fuente de elecciones se vuelve un polinomio/serie (sus exponentes = aportes posibles), las combinaciones se multiplican y la respuesta es el coeficiente de xⁿ en el producto.",
+          "explicacion": "Multiplicar generatrices = convolucionar elecciones. Es la misma operación que usarás en probabilidad (suma de variables independientes) — el puente directo con tu carrera."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-73",
+      "bloque": "fase-3",
+      "orden": 21,
+      "titulo": "Zeitz · Funciones aritméticas: d, σ y φ",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 7.3, Number Theoretic Functions (pp. 236-242): sumas de divisores (p. 237), phi y mu (p. 238).",
+      "dosis": "1 sección (~6 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Dominar las funciones multiplicativas: si f(ab) = f(a)f(b) para coprimos, basta conocer f en potencias de primos — la PPF vuelve a ser la radiografía.",
+      "heuristicas": ["casework", "caso-pequeno"],
+      "ideas_clave": [
+        "f es MULTIPLICATIVA si f(ab) = f(a)·f(b) cuando a ⊥ b (coprimos). Consecuencia: f queda determinada por sus valores en potencias de primos f(pʳ) — evalúa ahí y multiplica.",
+        "d(n) = número de divisores = (e₁+1)(e₂+1)⋯ desde la PPF; σ(n) = suma de divisores, con σ(pʳ) = (pʳ⁺¹−1)/(p−1). Ambas multiplicativas.",
+        "El principio de conteo clave (7.3.6): si n = ab con a ⊥ b, cada divisor de n se factoriza ÚNICAMENTE como (divisor de a)·(divisor de b) — una biyección, la misma maquinaria de 6.2.",
+        "φ(n) = cuántos de 1..n son coprimos con n. Se calcula con PIE sobre los primos de n y colapsa en φ(n) = n·Π(1 − 1/p). El conteo (6.3) y los números (7.x) son el mismo músculo.",
+        "Teorema general gratis: si f es multiplicativa, F(n) = Σ_{d|n} f(d) también lo es. Las \"sumas sobre divisores\" se domestican calculando en potencias de primos."
+      ],
+      "banco": [
+        {
+          "id": "z73-q1",
+          "tipo": "quiz",
+          "enunciado": "Define función multiplicativa y explica por qué, para conocerla en TODO n, basta conocerla en las potencias de primos.",
+          "solucion": "f es multiplicativa si f(ab) = f(a)f(b) siempre que a y b sean coprimos. Por la factorización única, n = p₁^e₁ ⋯ p_t^e_t con las potencias coprimas entre sí dos a dos, así que f(n) = f(p₁^e₁)⋯f(p_t^e_t): los valores en potencias de primos determinan todos los demás.",
+          "explicacion": "La PPF reduce preguntas sobre n a preguntas sobre cada primo por separado. Multiplicativa = compatible con esa reducción."
+        },
+        {
+          "id": "z73-q2",
+          "tipo": "quiz",
+          "enunciado": "Calcula φ(12) con el método del complemento + PIE, y enuncia la fórmula general φ(n) = n·Π(1−1/p).",
+          "solucion": "Los primos de 12 son 2 y 3. Cuenta el complemento: múltiplos de 2 o de 3 hasta 12: |M₂∪M₃| = 6 + 4 − 2 = 8 (los múltiplos de 6 estaban contados dos veces). φ(12) = 12 − 8 = 4: son 1, 5, 7, 11. En general el mismo PIE colapsa en φ(n) = n(1−1/p₁)⋯(1−1/p_t), un factor por primo distinto.",
+          "explicacion": "PIE de la fase 2 trabajando dentro de la teoría de números: las intersecciones de divisibilidades son fáciles (múltiplos del producto) — el caso ideal de PIE."
+        },
+        {
+          "id": "z73-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuántas fracciones propias k/60 (con 1 ≤ k < 60) son irreducibles? Es decir: calcula φ(60).",
+          "solucion": "16. 60 = 2²·3·5, así que φ(60) = 60·(1−1/2)(1−1/3)(1−1/5) = 60·(1/2)(2/3)(4/5) = 16. (k/60 es irreducible exactamente cuando k ⊥ 60.)",
+          "explicacion": "Disfraz típico de φ: \"fracciones irreducibles con denominador n\", \"residuos invertibles módulo n\". Reconocer el disfraz vale más que la fórmula."
+        },
+        {
+          "id": "z73-q4",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué d(n) y σ(n) se leen directo de la PPF, y qué biyección lo sustenta? Da las dos fórmulas.",
+          "solucion": "Cada divisor de n = p₁^e₁⋯p_t^e_t elige un exponente 0..eᵢ para cada primo, y elecciones distintas dan divisores distintos (factorización única): es una biyección con las tuplas de exponentes. Entonces d(n) = (e₁+1)⋯(e_t+1) (regla del producto) y σ(pʳ) = 1+p+⋯+pʳ = (pʳ⁺¹−1)/(p−1), que se multiplica sobre los primos por multiplicatividad.",
+          "explicacion": "El principio 7.3.6 es 6.2 (codificar) hablando el idioma de 7.x: los divisores de ab con a ⊥ b SON los pares (u,v) con u|a, v|b."
+        },
+        {
+          "id": "z73-q5",
+          "tipo": "disparador",
+          "enunciado": "Aparece una suma sobre los divisores de n: Σ_{d|n} f(d). ¿Qué pregunta haces primero y qué te compra una respuesta afirmativa?",
+          "solucion": "¿Es f multiplicativa? Si lo es, la suma F(n) = Σ_{d|n} f(d) también es multiplicativa: basta calcularla en potencias de primos (una suma corta y explícita) y multiplicar los resultados. La pregunta convierte una suma sobre divisores arbitrarios en t cálculos locales.",
+          "explicacion": "El teorema \"f multiplicativa ⇒ F multiplicativa\" es la palanca estándar del capítulo; con f = 1 da d(n), con f = id da σ(n)."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-74",
+      "bloque": "fase-3",
+      "orden": 22,
+      "titulo": "Zeitz · Diofánticas: factoriza y filtra",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 7.4, Diophantine Equations (pp. 242-249): estrategia general y tácticas (p. 242), con el ejemplo 7.4.1 (triángulos con área = perímetro) como modelo de la táctica de factorizar.",
+      "dosis": "1 sección (~7 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Atacar ecuaciones con soluciones enteras mediante las dos tácticas maestras: FACTORIZAR (producto de enteros = constante → finitas opciones) y FILTRAR módulo n (para demostrar que no hay soluciones).",
+      "heuristicas": ["penultimo-paso", "invariante"],
+      "ideas_clave": [
+        "Ante cualquier diofántica, cuatro preguntas: ¿está en forma simple (sin factores comunes)? ¿existe alguna solución? ¿se puede probar que NO hay? ¿puedo encontrarlas todas?",
+        "Lineales ax + by = c: teoría completa — hay solución si y solo si mcd(a,b) | c, y de una solución salen todas (familia con parámetro t).",
+        "Táctica de factorizar: maniobra el álgebra hasta lograr (algo)·(algo) = constante; como los factores son enteros, solo hay finitas opciones que se revisan una a una. El paso \"sumo la constante que completa el producto\" (como xy − 4x − 4y + 8 = 0 → (x−4)(y−4) = 8) es el truco a interiorizar.",
+        "Táctica de filtrar: mira la ecuación módulo un n astuto; si los dos lados no pueden coincidir en Zₙ, no hay soluciones enteras. Cuadrados → mod 4 u 8; cubos → mod 9.",
+        "Primero simplifica: divide factores comunes o supón las variables coprimas — el caso general se reconstruye después (como en Fermat, 7.2.3)."
+      ],
+      "banco": [
+        {
+          "id": "z74-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Cuáles son las cuatro preguntas que Zeitz manda hacer ante cualquier ecuación diofántica, y por qué \"¿no habrá ninguna solución?\" es a menudo la primera que conviene atacar?",
+          "solucion": "1) ¿Está en forma simple (factores comunes eliminados / variables coprimas)? 2) ¿Existe al menos una solución? 3) ¿Se puede demostrar que NO hay? 4) ¿Puedo describirlas todas? La tercera suele ser barata: un filtro módulo n bien elegido mata la ecuación en dos líneas, y si el filtro NO mata, lo aprendido orienta la búsqueda de soluciones.",
+          "explicacion": "Igual que con la contradicción: explorar la imposibilidad primero cuesta poco y rinde información aunque fracase."
+        },
+        {
+          "id": "z74-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Cuándo tiene solución la diofántica lineal ax + by = c? Ilustra con 3x + 21y = 19 y di cómo son TODAS las soluciones cuando existen.",
+          "solucion": "Tiene solución si y solo si mcd(a,b) divide a c. En 3x + 21y = 19: mcd(3,21) = 3 no divide a 19 → sin soluciones (el lado izquierdo siempre es múltiplo de 3). Cuando mcd(a,b) | c, de una solución particular (x₀,y₀) salen todas: x = x₀ + (b/g)t, y = y₀ − (a/g)t con g = mcd(a,b), t ∈ ℤ.",
+          "explicacion": "Es el teorema de la combinación lineal del mcd (Engel #4 / Zeitz 7.1) puesto a trabajar: lo alcanzable con ax + by es exactamente los múltiplos del mcd."
+        },
+        {
+          "id": "z74-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuántas parejas ordenadas de enteros positivos (x, y) cumplen 1/x + 1/y = 1/6?",
+          "solucion": "9. Multiplica por 6xy: 6y + 6x = xy, o sea xy − 6x − 6y = 0. Suma 36 para completar el producto: (x−6)(y−6) = 36. Si x ≤ 6 o y ≤ 6 el lado izquierdo no puede ser 36 positivo (ambos factores deben ser positivos: si ambos fueran negativos, x,y < 6 y 1/x + 1/y > 1/3). Así que x−6 recorre los divisores positivos de 36, y la pareja queda determinada: d(36) = d(2²·3²) = 9 soluciones.",
+          "explicacion": "Las dos unidades anteriores en una jugada: factorizar al estilo SFFT (suma la constante que falta) y contar las opciones con d(n) de 7.3."
+        },
+        {
+          "id": "z74-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "\"Busqué soluciones enteras de x² − y² = 10 probando valores pequeños y no encontré ninguna; por lo tanto no existen.\" La conclusión es correcta pero el argumento no. Da la demostración de verdad.",
+          "solucion": "Factoriza: (x−y)(x+y) = 10. Los factores x−y y x+y tienen la MISMA paridad (su suma 2x es par). Pero 10 solo se descompone como 1·10 o 2·5 (y signos), siempre un par y un impar: paridades mezcladas. Ningún caso es posible → no hay soluciones. Probar casos pequeños nunca demuestra inexistencia: el filtro estructural (aquí, paridad de los factores) sí.",
+          "explicacion": "\"No encontré\" no es \"no existe\". La factorización + un invariante de paridad convierte la sospecha en teorema en tres líneas."
+        },
+        {
+          "id": "z74-q5",
+          "tipo": "disparador",
+          "enunciado": "Tienes una diofántica no lineal (productos, cuadrados, xy con términos lineales). ¿Cuáles son tus dos primeras jugadas y en qué orden?",
+          "solucion": "1) Intentar FACTORIZAR: reacomoda y suma la constante que complete un producto (xy + ax + by → (x+b)(y+a) menos el ajuste); si logras (⋯)(⋯) = constante, enumeras divisores y terminas. 2) Si buscas demostrar imposibilidad o restringir, FILTRAR módulo n pequeño: cuadrados mod 4 u 8, cubos mod 9, potencias mod p. Factorizar para encontrar; filtrar para descartar.",
+          "explicacion": "Las dos tácticas son complementarias: una produce soluciones, la otra produce imposibilidades — y ambas empiezan por mirar la ESTRUCTURA, no por probar números."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-75",
+      "bloque": "fase-3",
+      "orden": 23,
+      "titulo": "Zeitz · Ejemplos instructivos: primos, polinomios y collares",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 7.5, Miscellaneous Instructive Examples (pp. 249-258): ¿puede un polinomio dar siempre primos? (p. 249), la prueba combinatoria del pequeño Fermat (p. 250), sumas de dos cuadrados (p. 251).",
+      "dosis": "1 sección (~9 pp; elige 2 de los 4 ejemplos por sesión) + 1-2 problemas con bucle completo.",
+      "objetivo": "Ver la investigación matemática completa en miniatura: experimentar, conjeturar el patrón, y rematar con el argumento estructural — el antídoto contra \"la evidencia numérica me convenció\".",
+      "heuristicas": ["caso-pequeno", "contradiccion"],
+      "ideas_clave": [
+        "x² + x + 41 de Euler da primos para n = 0..39 — y falla en n = 40 y 41 (f(41) es múltiplo obvio de 41). Cuarenta confirmaciones no son una prueba: busca el caso que se delata a sí mismo.",
+        "Ningún polinomio no constante con coeficientes enteros produce solo primos: si f(u) = p, el binomio da f(u + kp) ≡ f(u) ≡ 0 (mod p) — el polinomio repite el factor p en una progresión aritmética completa.",
+        "La jugada técnica de esa prueba: al expandir f(u+p), NO simplifiques a ciegas — agrupa para EXTRAER f(u) y verifica que el resto es múltiplo de p. Incorporar la hipótesis antes de calcular.",
+        "Pequeño Fermat, prueba del collar: de las aᵖ − a cadenas no monocromáticas de p perlas, las rotaciones forman órbitas de tamaño exactamente p (p primo) → p | aᵖ − a. Contar objetos en órbitas = dividir.",
+        "Experimentar → conjeturar → probar: la tabla de f(n) = n³ + n + 1 (compuestos en n = 4, 7, 10…) muestra cómo el patrón EXPERIMENTAL apunta directo al argumento modular."
+      ],
+      "banco": [
+        {
+          "id": "z75-q1",
+          "tipo": "quiz",
+          "enunciado": "El polinomio x² + x + 41 da primos para todo n de 0 a 39. ¿Por qué era previsible SIN calculadora que no podía darlos siempre, y qué moraleja general deja?",
+          "solucion": "En n = 41 cada término es múltiplo de 41: f(41) = 41² + 41 + 41. (También n = 40: 40² + 40 + 41 = 40·41 + 41.) El valor del polinomio \"traga\" su propio término constante. Moraleja: la evidencia numérica, por abundante que sea, no sustituye al argumento estructural; busca el caso cuya forma delata el factor.",
+          "explicacion": "El reflejo \"sustituye el término constante (o el primo sospechoso) en x\" reaparece en docenas de problemas de primalidad de fórmulas."
+        },
+        {
+          "id": "z75-q2",
+          "tipo": "quiz",
+          "enunciado": "Demuestra que ningún polinomio no constante f con coeficientes enteros puede dar un primo para TODO entero positivo n.",
+          "solucion": "Supón f(u) = p primo para algún u. Para cualquier k, el binomio da (u+kp)ʲ ≡ uʲ (mod p), así que f(u+kp) ≡ f(u) ≡ 0 (mod p): todos los valores sobre la progresión u, u+p, u+2p, … son múltiplos de p. Para seguir siendo primos tendrían que valer ±p siempre, pero un polinomio no constante toma cada valor a lo más grado-de-f veces. Contradicción: aparecen compuestos.",
+          "explicacion": "La estructura del argumento: una congruencia que se propaga por una progresión aritmética + \"un polinomio repite valores finitas veces\". Dos hechos baratos, bien combinados."
+        },
+        {
+          "id": "z75-q3",
+          "tipo": "quiz",
+          "enunciado": "Reproduce la prueba del collar del pequeño teorema de Fermat: ¿por qué p | aᵖ − a cuando p es primo?",
+          "solucion": "Cadenas de p perlas con a colores: aᵖ. Quita las a monocromáticas: quedan aᵖ − a. Al cerrar cada cadena en collar, dos cadenas dan el mismo collar si difieren en una rotación; como p es primo, cada órbita de rotaciones de una cadena no monocromática tiene EXACTAMENTE p elementos (una rotación no trivial que fije la cadena forzaría un periodo divisor de p, o sea monocromía). Los collares parten las cadenas en grupos de p: p | aᵖ − a.",
+          "explicacion": "La primalidad de p se usa en un solo punto — el tamaño de las órbitas — y ahí es exactamente donde el teorema falla para exponentes compuestos. Localizar dónde trabaja cada hipótesis es oro metacognitivo."
+        },
+        {
+          "id": "z75-q4",
+          "tipo": "disparador",
+          "enunciado": "\"¿Puede esta fórmula dar siempre primos?\" o \"demuestra que esta sucesión contiene infinitos compuestos\". ¿Qué jugadas pruebas, en orden?",
+          "solucion": "1) Autorreferencia: sustituye en la fórmula su propio término constante o un valor ya producido (como f(41) en Euler) buscando un factor obvio. 2) Propagación modular: si f(u) = p, examina f(u + kp) — las congruencias suelen arrastrar el factor p por toda una progresión. 3) Experimenta y tabula: los índices donde aparecen compuestos casi siempre forman un patrón aritmético que apunta al módulo correcto.",
+          "explicacion": "Los tres pasos son el ciclo experimentar → conjeturar → probar del capítulo, comprimido en señales accionables."
+        }
+      ]
+    },
+    {
+      "id": "engel-nt",
+      "bloque": "fase-3",
+      "orden": 24,
+      "titulo": "Engel · Teoría de números de competencia (cantera)",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 6, Number Theory (pp. 117 en adelante): los prerrequisitos 1-19 como formulario (pp. 117-120) y la sección de divisibilidad (a−b | aⁿ−bⁿ, Sophie Germain, p. 121). Después elige 2-3 problemas del capítulo a tu nivel.",
+      "dosis": "Engel es cantera, no lectura corrida: el formulario + ~2 pp de divisibilidad, y 2-3 problemas con bucle completo.",
+      "objetivo": "Consolidar el arsenal de divisibilidad listo-para-usar: factorizaciones de potencias, Legendre para factoriales, y los 19 prerrequisitos que en competencia se usan sin demostración.",
+      "heuristicas": ["invariante", "induccion"],
+      "ideas_clave": [
+        "La fórmula más útil en competencias (Engel dixit): a − b | aⁿ − bⁿ para todo n, y a + b | aⁿ + bⁿ para n IMPAR (es la primera con −b). De ahí sale gratis la diferencia de cuadrados.",
+        "Sophie Germain: a⁴ + 4b⁴ = (a² + 2b² − 2ab)(a² + 2b² + 2ab) — una SUMA que sí factoriza, sumando y restando el término cruzado 4a²b² para completar el cuadrado.",
+        "Legendre (#19d): el primo p divide a n! con multiplicidad ⌊n/p⌋ + ⌊n/p²⌋ + ⌊n/p³⌋ + ⋯. Responde \"¿en cuántos ceros termina n!?\" y toda pregunta de divisibilidad de factoriales.",
+        "El pequeño Fermat tiene tres pruebas en Engel (inducción con binomio, congruencias con {a, 2a, …, (p−1)a}, collares) — y un aviso: el recíproco FALLA (341 | 2³⁴¹ − 2 con 341 = 11·31 compuesto).",
+        "Fermat-Euler generaliza con φ: si a ⊥ m, entonces a^φ(m) ≡ 1 (mod m) — el puente entre 7.3 (φ) y las congruencias de 7.2."
+      ],
+      "banco": [
+        {
+          "id": "eng6-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia la \"fórmula más útil en competencias\" según Engel sobre divisibilidad de potencias, y deduce de ella la versión para sumas aⁿ + bⁿ.",
+          "solucion": "a − b | aⁿ − bⁿ para todo n ≥ 1 (el cociente es aⁿ⁻¹ + aⁿ⁻²b + ⋯ + bⁿ⁻¹). Para n IMPAR, sustituye b por −b: aⁿ − (−b)ⁿ = aⁿ + bⁿ y a − (−b) = a + b, luego a + b | aⁿ + bⁿ. Con n par la sustitución no produce suma y la regla falla en general.",
+          "explicacion": "Reflejo de uso: \"¿es divisible 3ⁿ − 1 entre 2? ¿7¹⁰⁰ − 4¹⁰⁰ entre 3?\" — casi toda divisibilidad de potencias cae con esta pareja y un módulo bien elegido."
+        },
+        {
+          "id": "eng6-q2",
+          "tipo": "quiz",
+          "enunciado": "Deriva la identidad de Sophie Germain para a⁴ + 4b⁴ explicando la maniobra que la produce. ¿Por qué es excepcional?",
+          "solucion": "Suma y resta el término cruzado: a⁴ + 4b⁴ = (a⁴ + 4a²b² + 4b⁴) − 4a²b² = (a² + 2b²)² − (2ab)² = (a² + 2b² − 2ab)(a² + 2b² + 2ab). Es excepcional porque las SUMAS de potencias pares normalmente no factorizan sobre los enteros; aquí el término cruzado 4a²b² resulta ser cuadrado perfecto y habilita la diferencia de cuadrados.",
+          "explicacion": "La maniobra \"completa el cuadrado y resta lo que sobró\" convierte sumas tercas en diferencias dóciles. Apunta como disparador: x⁴ + 4y⁴ (o n⁴ + 4) → Sophie Germain."
+        },
+        {
+          "id": "eng6-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿En cuántos ceros termina 100!? Justifica con la fórmula de Legendre.",
+          "solucion": "24. Cada cero final es un factor 10 = 2·5, y los cincos escasean frente a los doses. Legendre: la multiplicidad de 5 en 100! es ⌊100/5⌋ + ⌊100/25⌋ + ⌊100/125⌋ = 20 + 4 + 0 = 24 (los múltiplos de 25 aportan un cinco extra). Doses sobran, así que hay exactamente 24 ceros.",
+          "explicacion": "El sumando ⌊n/p²⌋ es el que todo el mundo olvida: 25, 50, 75 y 100 traen DOS cincos cada uno. La fórmula cuenta cada capa de potencias una vez."
+        },
+        {
+          "id": "eng6-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "\"Si n divide a 2ⁿ − 2, entonces n es primo — lo dice el pequeño teorema de Fermat.\" ¿Qué está mal y cuál es el contraejemplo mínimo?",
+          "solucion": "Fermat afirma la implicación en el OTRO sentido: p primo ⇒ p | 2ᵖ − 2. El recíproco es falso: 341 = 11·31 es compuesto y aun así 341 | 2³⁴¹ − 2 (se ve con 2¹⁰ = 1024 ≡ 1 mod 341, pues 1023 = 3·341). Los compuestos que engañan así son los pseudoprimos.",
+          "explicacion": "Confundir un teorema con su recíproco es el error lógico más caro en teoría de números — y la razón de que los tests de primalidad reales sean más sutiles que \"pasó Fermat\"."
+        },
+        {
+          "id": "eng6-q5",
+          "tipo": "disparador",
+          "enunciado": "Te preguntan por la divisibilidad de un factorial (¿cuántos ceros? ¿divide 2¹⁰⁰ a 150!?) o de una diferencia de potencias. ¿Qué herramienta saca cada señal?",
+          "solucion": "Factoriales → Legendre: multiplicidad de p en n! = Σ ⌊n/pᵏ⌋; compara exponentes primo por primo. Diferencias/sumas de potencias → a−b | aⁿ−bⁿ (y a+b con n impar), o reduce módulo el candidato a divisor buscando una potencia ≡ ±1. Ambas evitan calcular el número: solo cuentan estructura.",
+          "explicacion": "Las dos señales cubren la mayoría de la divisibilidad \"grande\" de competencia: factoriales por capas de primos, potencias por factorización algebraica o ciclos modulares."
+        }
+      ]
+    }
+  ]
+}

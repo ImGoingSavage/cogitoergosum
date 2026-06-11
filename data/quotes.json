@@ -1,0 +1,21 @@
+{
+  "nota": "Citas breves para pantallas vacías y de carga (§1 HANDOFFCES). Curadas: pensadores reales, en español, jamás motivacionales corporativas. Rotación determinista por día.",
+  "citas": [
+    { "texto": "Cogito, ergo sum.", "autor": "René Descartes" },
+    { "texto": "Divide cada dificultad en tantas partes como sea posible y necesario para resolverla.", "autor": "René Descartes" },
+    { "texto": "Si no puedes resolver un problema, existe un problema más sencillo que sí puedes resolver: encuéntralo.", "autor": "George Pólya" },
+    { "texto": "Es mejor resolver un problema de cinco maneras distintas que resolver cinco problemas de la misma manera.", "autor": "George Pólya" },
+    { "texto": "Resolver problemas es una destreza práctica que se adquiere, como nadar, por imitación y práctica.", "autor": "George Pólya" },
+    { "texto": "Un problema digno de ataque demuestra su valía contraatacando.", "autor": "Piet Hein" },
+    { "texto": "Las matemáticas son el arte de dar el mismo nombre a cosas distintas.", "autor": "Henri Poincaré" },
+    { "texto": "En matemáticas uno no entiende las cosas: se acostumbra a ellas.", "autor": "John von Neumann" },
+    { "texto": "Las matemáticas son la música de la razón.", "autor": "James Joseph Sylvester" },
+    { "texto": "Debemos saber; sabremos.", "autor": "David Hilbert" },
+    { "texto": "El primer principio es no engañarte a ti mismo — y tú eres la persona más fácil de engañar.", "autor": "Richard Feynman" },
+    { "texto": "El hombre es una caña, la más débil de la naturaleza; pero es una caña que piensa.", "autor": "Blaise Pascal" },
+    { "texto": "Lo que tenemos que aprender, lo aprendemos haciéndolo.", "autor": "Aristóteles" },
+    { "texto": "La paciencia es la compañera de la sabiduría.", "autor": "Agustín de Hipona" },
+    { "texto": "Sólo sé que no sé nada.", "autor": "Sócrates" },
+    { "texto": "No es que sea muy inteligente; es que me quedo con los problemas más tiempo.", "autor": "atribuida a Albert Einstein" }
+  ]
+}

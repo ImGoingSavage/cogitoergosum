@@ -1,0 +1,12 @@
+# Sistema
+.DS_Store
+
+# Material personal y con copyright: NO se sube a GitHub.
+# La Biblioteca (PDFs/.txt de libros) y Definitivo.pdf viven solo en esta
+# máquina; la app no los necesita para funcionar (HANDOFF §3.11.5: a la app
+# solo entran destilados propios de 3-5 líneas, jamás texto íntegro).
+Biblioteca/
+Definitivo.pdf
+
+# Artefactos de pruebas locales
+test-seed.html

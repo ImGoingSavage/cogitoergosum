@@ -1,0 +1,1006 @@
+/* ============================================================
+   CogitoErgoSum — "La biblioteca" (HANDOFFCES §1)
+   Metáfora rectora: sala de lectura nocturna. Piedra volcánica
+   (Vasconcelos) y madera oscura como fondo; UNA fuente de luz de
+   lámpara de escritorio (ámbar/dorado) reservada a logros, rachas
+   y momentos ceremoniales; índigo para lo interactivo.
+   Ritmo lento deliberado: transiciones 200-300 ms ease-out, sin
+   rebotes ni confeti. El único teatro permitido: el sello de una
+   insignia nueva (animación de tinta, sobria).
+   ============================================================ */
+
+/* ------------------- Tokens de color (documentados) ---------------- */
+
+:root {
+  /* Piedra y madera — fondos cálidos, nunca negro puro */
+  --bg: #131110;            /* piedra volcánica: fondo base */
+  --bg-elevado: #1b1815;    /* madera oscura: tarjetas */
+  --bg-sutil: #232019;      /* superficie interior (inputs, filas) */
+  --borde: #322d26;         /* junta entre piedras */
+
+  /* Tinta sobre papel a la luz de la lámpara */
+  --texto: #ece7dd;         /* tinta principal */
+  --texto-suave: #aaa295;   /* tinta secundaria */
+  --texto-tenue: #867d70;   /* rótulos pequeños (contraste AA sobre tarjeta) */
+
+  /* Luz de lámpara — SOLO logros, rachas y momentos ceremoniales */
+  --lampara: #d9a84e;
+  --lampara-suave: rgba(217, 168, 78, 0.12);
+  --lampara-borde: rgba(217, 168, 78, 0.35);
+
+  /* Índigo/violeta — lo interactivo (se conserva de la base previa) */
+  --acento: #8d96f7;
+  --acento-suave: rgba(141, 150, 247, 0.14);
+
+  /* Semánticos */
+  --exito: #7fc98f;
+  --alerta: #d9a84e;        /* la atención también es luz de lámpara */
+  --peligro: #e08f8f;
+
+  --radio: 10px;
+  --transicion: 0.25s ease-out;   /* ritmo lento deliberado */
+
+  --fuente: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  --serif: "EB Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
+  --mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ------------------- Tipografía con alma de imprenta --------------- */
+/* EB Garamond (OFL), servida localmente desde /assets/fonts — sin CDNs */
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../assets/fonts/EBGaramond-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../assets/fonts/EBGaramond-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../assets/fonts/EBGaramond-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { color-scheme: dark; }
+
+body {
+  background: var(--bg);
+  color: var(--texto);
+  font-family: var(--fuente);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco de teclado siempre visible (accesibilidad §1) */
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* prefers-reduced-motion respetado en todo */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----------------------------- Layout ----------------------------- */
+
+.contenedor {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}
+
+header.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(19, 17, 16, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+}
+
+.header-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Wordmark serif de CogitoErgoSum con subtítulo permanente */
+.marca-bloque { display: flex; flex-direction: column; line-height: 1.2; }
+
+.marca {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--texto);
+}
+
+.marca-sub {
+  font-size: 11px;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.14em;
+  color: var(--texto-tenue);
+}
+
+nav { display: flex; gap: 6px; }
+
+nav button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--texto-suave);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color var(--transicion), background var(--transicion);
+}
+
+nav button:hover { color: var(--texto); background: var(--bg-sutil); }
+nav button.activo { color: var(--acento); background: var(--acento-suave); }
+
+/* Rachas siempre visibles: el logro sostenido vive en luz de lámpara */
+.header-rachas { display: flex; gap: 8px; margin-left: auto; }
+
+.racha-chip {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--lampara);
+  background: var(--lampara-suave);
+  border: 1px solid var(--lampara-borde);
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+/* --------------------------- Tarjetas ----------------------------- */
+
+.tarjeta {
+  background: var(--bg-elevado);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 28px;
+  margin-top: 24px;
+}
+
+.tarjeta h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-tenue);
+  margin-bottom: 16px;
+}
+
+/* ------------------------- Problema diario ------------------------ */
+
+.problema-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dificultad {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--acento);
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--alerta);
+  border: 1px solid var(--lampara-borde);
+  background: var(--lampara-suave);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+/* Título del problema: serif de imprenta (momento ceremonial diario) */
+#problema-titulo {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin-bottom: 14px;
+}
+
+#problema-enunciado {
+  font-size: 17px;
+  color: var(--texto);
+  white-space: pre-line;
+}
+
+/* --------------------------- Temporizador ------------------------- */
+
+.timer-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+#timer-display {
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-controles { display: flex; gap: 8px; }
+
+/* Controles del cronómetro (§2.6): sobrios, sin culpa */
+.timer-boton {
+  background: transparent;
+  border: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-family: inherit;
+  font-size: 14px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+
+.timer-boton:hover:not(:disabled) { border-color: var(--acento); color: var(--acento); }
+
+.timer-etiqueta { display: block; font-size: 13px; color: var(--texto-tenue); margin-bottom: 10px; }
+
+.timer-config {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--texto-tenue);
+}
+
+.timer-config select {
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  min-height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.timer-sugerencia { color: var(--texto-tenue); font-style: italic; }
+
+/* Checkpoint metacognitivo (Schoenfeld): freno anti-madriguera */
+.checkpoint {
+  margin-top: 14px;
+  background: var(--lampara-suave);
+  border: 1px solid var(--lampara-borde);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.checkpoint-titulo {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--alerta);
+  margin-bottom: 4px;
+}
+
+.barra-progreso {
+  height: 5px;
+  background: var(--bg-sutil);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#timer-progreso {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--acento), #a99df0);
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
+/* ------------------------- Desconstrucción ------------------------ */
+
+.guia-desconstruccion {
+  font-size: 14px;
+  color: var(--texto-suave);
+  margin-bottom: 14px;
+}
+
+.guia-desconstruccion li { margin-left: 20px; margin-bottom: 2px; }
+
+textarea {
+  width: 100%;
+  min-height: 180px;
+  background: var(--bg);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 16px;             /* ≥16px evita zoom forzado en iOS */
+  line-height: 1.6;
+  padding: 14px;
+  resize: vertical;
+  transition: border-color var(--transicion);
+}
+
+textarea:focus { outline: none; border-color: var(--acento); }
+
+.textarea-pie {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--texto-tenue);
+}
+
+#contador-caracteres.ok { color: var(--exito); }
+#autosave-indicador { color: var(--texto-tenue); font-style: italic; }
+
+/* ------------------------------ Hints ----------------------------- */
+
+#hints-lista { list-style: none; margin-bottom: 16px; }
+
+.hint-item {
+  background: var(--bg-sutil);
+  border-left: 3px solid var(--acento);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.hint-nivel {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 4px;
+  margin-right: 8px;
+}
+
+.hint-ia {
+  font-size: 11px;
+  color: var(--texto-tenue);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+/* ----------------------------- Botones ---------------------------- */
+
+button.primario, button.secundario {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 22px;
+  min-height: 44px;            /* objetivo táctil */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter var(--transicion), border-color var(--transicion), color var(--transicion);
+  border: 1px solid transparent;
+}
+
+button.primario {
+  background: var(--acento);
+  color: #131110;
+}
+
+button.primario:hover:not(:disabled) { filter: brightness(1.12); }
+
+button.secundario {
+  background: transparent;
+  border-color: var(--borde);
+  color: var(--texto);
+}
+
+button.secundario:hover:not(:disabled) {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#bloqueo-mensaje {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--texto-tenue);
+}
+
+/* ------------------------ Solución y reflexión -------------------- */
+
+/* Revelado de solución: momento ceremonial → serif */
+#solucion-texto {
+  font-family: var(--serif);
+  font-size: 18px;
+  background: var(--bg-sutil);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+#explicacion-texto { color: var(--texto-suave); font-size: 15px; }
+
+.campo-reflexion { margin-bottom: 18px; }
+
+.campo-reflexion label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--texto-suave);
+}
+
+.campo-reflexion textarea { min-height: 80px; }
+
+/* Ficha del cuaderno de moralejas: el artefacto más valioso → luz de lámpara */
+.campo-ficha {
+  border-left: 3px solid var(--lampara);
+  padding-left: 14px;
+}
+
+.campo-ficha label { color: var(--texto); }
+
+textarea.textarea-corta { min-height: 56px; }
+
+fieldset.autoeval {
+  border: none;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+fieldset.autoeval legend {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-suave);
+  margin-bottom: 8px;
+}
+
+fieldset.autoeval label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 10px 16px;
+  min-height: 44px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color var(--transicion);
+}
+
+fieldset.autoeval label:has(input:checked) {
+  border-color: var(--acento);
+  background: var(--acento-suave);
+}
+
+.error { color: var(--peligro); font-size: 13px; margin-top: 8px; }
+
+/* ----------------------------- Resultado -------------------------- */
+
+#seccion-resultado { text-align: center; }
+
+/* El cierre de sesión es momento de logro: luz de lámpara */
+#resultado-score {
+  font-family: var(--serif);
+  font-size: 58px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--lampara);
+}
+
+.resultado-detalle { color: var(--texto-suave); font-size: 14px; margin-top: 6px; }
+
+/* Validación del proceso (§2.2): tras un fallo, dato + reencuadre */
+.resultado-proceso {
+  font-size: 14px;
+  color: var(--texto-suave);
+  background: var(--bg-sutil);
+  border-left: 3px solid var(--lampara);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  text-align: left;
+}
+
+/* Estrategia revelada tras completar (momento de aprendizaje explícito) */
+.resultado-estrategia {
+  font-size: 15px;
+  color: var(--texto);
+  margin-top: 14px;
+}
+
+.resultado-estrategia strong { color: var(--acento); }
+
+#btn-otro-problema { margin-top: 16px; }
+
+/* Separador con florón (ornamento tipográfico, no decorativo) */
+.separador-floron {
+  text-align: center;
+  color: var(--texto-tenue);
+  font-size: 16px;
+  margin: 18px 0 4px;
+}
+
+/* ----------------- Insignias reveladas (sello de tinta) ----------- */
+
+.insignias-reveladas { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+
+.insignia-revelada {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  background: var(--lampara-suave);
+  border: 1px solid var(--lampara-borde);
+  border-radius: 8px;
+  padding: 14px 16px;
+  animation: sello 0.3s ease-out;
+}
+
+/* El único momento de teatro permitido: el sello, sobrio */
+@keyframes sello {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.insignia-glifo {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--lampara);
+  line-height: 1;
+}
+
+.insignia-nombre {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--lampara);
+}
+
+.insignia-historia { font-size: 13px; color: var(--texto-suave); }
+
+/* --------------------- Vitrina "Mi estante" ----------------------- */
+
+.estante {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.estante-sello {
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+
+.estante-sello.ganado { border-color: var(--lampara-borde); }
+
+.estante-sello.ganado .estante-glifo { color: var(--lampara); }
+
+.estante-glifo {
+  font-family: var(--serif);
+  font-size: 30px;
+  color: var(--texto-tenue);
+  line-height: 1.2;
+}
+
+.estante-nombre {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Siluetas: las insignias no ganadas no revelan su nombre */
+.estante-sello.silueta { opacity: 0.55; }
+.estante-sello.silueta .estante-nombre { color: var(--texto-tenue); font-style: italic; }
+
+.estante-fecha { font-size: 12px; color: var(--texto-tenue); margin-top: 2px; }
+
+.estante-historia { font-size: 12.5px; color: var(--texto-suave); margin-top: 6px; }
+
+.estante-familia {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-tenue);
+  margin-top: 6px;
+}
+
+/* ------------------------ Avatar "El pensador" -------------------- */
+
+.avatar-figura { display: flex; justify-content: center; margin: 6px 0 14px; }
+
+.avatar-figura svg { max-width: 280px; height: auto; }
+
+.avatar-nota { font-size: 13px; color: var(--texto-tenue); text-align: center; }
+
+.rating-heuristicas { margin-top: 16px; font-size: 14px; color: var(--texto-suave); }
+
+.rating-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--borde);
+}
+
+.rating-fila:last-child { border-bottom: none; }
+
+.rating-dominada { color: var(--lampara); font-weight: 600; }
+
+/* ------------------------ Fresh start (§2.2) ---------------------- */
+
+.freshstart {
+  border-color: var(--lampara-borde);
+}
+
+.freshstart h2 { color: var(--lampara); }
+
+.freshstart-texto { font-family: var(--serif); font-size: 17px; margin-bottom: 14px; }
+
+.freshstart-acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ------------------------- Piso mínimo ---------------------------- */
+
+button.enlace {
+  background: none;
+  border: none;
+  padding: 8px;
+  font: inherit;
+  color: var(--acento);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.piso-invitacion {
+  text-align: center;
+  font-size: 13px;
+  color: var(--texto-tenue);
+  margin-top: 28px;
+}
+
+.piso-instruccion { font-size: 14px; color: var(--texto-suave); margin-bottom: 14px; }
+
+.piso-titulo { font-family: var(--serif); font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+
+.piso-enunciado {
+  font-size: 15px;
+  color: var(--texto-suave);
+  white-space: pre-line;
+  margin-bottom: 14px;
+}
+
+#btn-piso-completar { margin-top: 12px; }
+
+.piso-ficha {
+  background: var(--bg-sutil);
+  border-left: 3px solid var(--lampara);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--texto-suave);
+  margin-top: 14px;
+}
+
+.piso-ficha strong { color: var(--lampara); }
+
+/* --------------------- Cuaderno de moralejas ---------------------- */
+
+.cuaderno-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 460px;
+  overflow-y: auto;
+  margin-top: 14px;
+}
+
+.ficha-cuaderno {
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 14px;
+}
+
+.ficha-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.ficha-titulo { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--texto); }
+
+.ficha-fecha { font-size: 12px; color: var(--texto-tenue); }
+
+.chip-estrategia {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--acento);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+.ficha-linea { color: var(--texto-suave); margin-top: 4px; }
+
+.ficha-linea strong { color: var(--lampara); font-weight: 600; }
+
+.cuaderno-vacio { color: var(--texto-tenue); font-size: 14px; margin-top: 14px; font-style: italic; }
+
+/* -------------------------- Modo Estudio -------------------------- */
+
+.estudio-bloque-titulo { font-family: var(--serif); font-size: 22px; font-weight: 600; }
+
+.estudio-bloque-meta { font-size: 14px; color: var(--texto-suave); margin-bottom: 14px; }
+
+.estudio-unidades { list-style: none; margin: 14px 0; }
+
+.unidad-item { margin-bottom: 8px; }
+
+.unidad-boton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-height: 44px;
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color var(--transicion);
+}
+
+.unidad-boton:hover:not(:disabled) { border-color: var(--acento); }
+.unidad-boton:disabled { opacity: 0.45; cursor: not-allowed; }
+.unidad-item.hecha .unidad-estado { color: var(--exito); }
+.unidad-item.abierta .unidad-estado { color: var(--acento); }
+
+.unidad-nombre { font-weight: 600; }
+.unidad-libro { margin-left: auto; font-size: 12px; color: var(--texto-tenue); }
+
+.quiz-progreso {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-tenue);
+  margin: 16px 0 8px;
+}
+
+.quiz-enunciado { font-size: 16px; margin-bottom: 12px; white-space: pre-line; }
+
+.quiz-solucion {
+  background: var(--bg-sutil);
+  border-left: 3px solid var(--exito);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 15px;
+}
+
+.quiz-explicacion { color: var(--texto-suave); font-size: 14px; margin-top: 8px; }
+
+#unidad-quiz textarea, #examen-contenido textarea { margin-top: 4px; }
+
+#unidad-quiz button, #examen-contenido button { margin-top: 12px; }
+
+fieldset.autoeval.vertical { flex-direction: column; gap: 8px; }
+
+.cierre-titulo { font-weight: 600; margin-top: 14px; margin-bottom: 6px; }
+
+.ideas-clave { font-size: 14px; color: var(--texto-suave); margin-left: 20px; }
+
+.ideas-clave li { margin-bottom: 6px; }
+
+/* ----------------------------- Dashboard -------------------------- */
+
+.grid-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.stat {
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.stat .valor {
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat .etiqueta {
+  font-size: 12px;
+  color: var(--texto-tenue);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+.lista-estrategias { font-size: 14px; color: var(--texto-suave); }
+.lista-estrategias strong { color: var(--texto); }
+.lista-estrategias .fila { margin-bottom: 6px; }
+
+/* Gráficas SVG */
+.chart { width: 100%; height: auto; display: block; }
+.chart-grid { stroke: var(--borde); stroke-width: 1; }
+.chart-line { fill: none; stroke: var(--acento); stroke-width: 2; }
+.chart-label { fill: var(--texto-tenue); font-size: 12px; font-family: var(--fuente); }
+.chart-empty { fill: var(--texto-tenue); font-size: 14px; font-family: var(--fuente); }
+.chart-bar-bg { fill: var(--bg-sutil); }
+.chart-bar { fill: var(--acento); }
+.chart-dot { fill: var(--texto-suave); }
+.dot-resuelto { fill: var(--exito); }
+.dot-parcial { fill: var(--alerta); }
+.dot-fallado { fill: var(--texto-tenue); } /* el fallo no se pinta de rojo: es parte del proceso */
+
+/* --------------------------- Mentor IA ---------------------------- */
+
+.mentor-config { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+.mentor-config input {
+  flex: 1;
+  min-width: 220px;
+  background: var(--bg);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  color: var(--texto);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 12px;
+  min-height: 44px;
+}
+
+.mentor-config input:focus { outline: none; border-color: var(--acento); }
+
+#mentor-estado { font-size: 13px; color: var(--texto-tenue); margin-top: 10px; }
+
+.lista-cuentas { list-style: none; margin-bottom: 14px; }
+
+.cuenta-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 9px 14px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.cuenta-item label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.cuenta-item:has(input:checked) { border-color: var(--acento); background: var(--acento-suave); }
+.cuenta-key { font-family: var(--mono); font-size: 12px; color: var(--texto-tenue); }
+
+.cuenta-borrar {
+  background: transparent;
+  border: none;
+  color: var(--texto-tenue);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.cuenta-borrar:hover { color: var(--peligro); background: rgba(224, 143, 143, 0.1); }
+
+.nota-privacidad { font-size: 12px; color: var(--texto-tenue); margin-top: 10px; }
+
+/* ------------------- Pie de biblioteca (citas) --------------------- */
+
+.pie-biblioteca {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+  text-align: center;
+}
+
+.pie-biblioteca .floron {
+  display: block;
+  color: var(--texto-tenue);
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.pie-biblioteca blockquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--texto-suave);
+}
+
+.pie-biblioteca cite {
+  display: block;
+  font-family: var(--serif);
+  font-style: normal;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 14px;
+  color: var(--texto-tenue);
+  margin-top: 6px;
+}
+
+/* ---------------------------- Responsive -------------------------- */
+
+@media (max-width: 540px) {
+  .contenedor { padding: 0 14px 40px; }
+  .tarjeta { padding: 20px 16px; }
+  #problema-titulo { font-size: 24px; }
+  #timer-display { font-size: 26px; }
+  .header-inner { padding: 10px 14px; flex-wrap: wrap; }
+  .marca { font-size: 18px; }
+  .marca-sub { font-size: 10px; }
+  nav { order: 3; width: 100%; justify-content: space-between; }
+  nav button { flex: 1; min-height: 44px; }
+  textarea { min-height: 160px; }
+}
