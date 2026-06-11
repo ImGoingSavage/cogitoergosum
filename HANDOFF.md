@@ -461,8 +461,9 @@ módulos, JSON validado, cruce de IDs HTML↔JS en ambas direcciones):
 | Contenido Fase 1 | ✅ 6 unidades (Zeitz §2.3, §2.4, §3.1, §3.2, §3.3, §3.4), 24 preguntas, examen de 6 ítems |
 | Contenido Fase 2 (2026-06-10, madrugada) | ✅ 7 unidades (Zeitz §4.1 grafos, §6.1-§6.3 conteo, §7.1-§7.2 números + Engel cap. 5 como cantera), 30 preguntas, examen de 7 ítems (5 AMC 10A 2019 adaptados con source/url/year + Engel E6 + Königsberg) |
 | Contenido Fase 3 (2026-06-10, madrugada) | ✅ 6 unidades (Zeitz §6.4 recurrencias, §4.3 generatrices, §7.3 funciones aritméticas, §7.4 diofánticas, §7.5 ejemplos instructivos + Engel cap. 6 como cantera), 28 preguntas, examen de 6 ítems (AMC 10A 2018 P4/P19, AMC 10B 2019 P6/P14/P25 + Sophie Germain; todas las respuestas verificadas por fuerza bruta en Python). Pool acumulado de examen: 25 ítems |
+| Contenido Fase 4 (2026-06-11, tarde) | ✅ 5 unidades (Zeitz §5.2 factor tactic, §5.3 telescopio, §5.4 polinomios/Vieta, §5.5 desigualdades AM-GM/massage/Cauchy + Engel cap. 7 como cantera), 25 preguntas, examen de 7 ítems TODOS de probabilidad AMC (10B 2017 P9; 10A 2017 P15, P18; 10B 2018 P6, P9; 10B 2019 P17; 10A 2019 P20 — espejos ZIML 2017/2018/2019 10A+10B descargados y convertidos; respuestas verificadas por fuerza bruta/derivación en Python). Pool acumulado de examen: 32 ítems |
 | Tarjeta "Modo Estudio" en Dashboard | ✅ Bloque actual, unidades x/y, examen, racha |
-| Ingestión Fase 4+ | ❌ SIGUIENTE PASO — ver protocolo abajo |
+| Ingestión Fase 5+ | ❌ SIGUIENTE PASO — ver protocolo abajo |
 | Refinamientos del Modo Estudio | ❌ Ver lista al final |
 
 **Cómo funciona lo construido** (`js/study.js`, contenido en `data/study.json`,
@@ -504,19 +505,21 @@ progreso en `cps_estudio` — esquema documentado en `storage.js`):
    catálogo, pista única, solucion, disparador). CERO cambios de código.
 3. Orden del syllabus (PDF §7) y estado: ✅ Fase 0 (Pólya + Zeitz 1-2.2),
    ✅ Fase 1 (Zeitz §2.3-§3.4), ✅ Fase 2 (Zeitz §4.1 + §6.1-§6.3 +
-   §7.1-§7.2, Engel cap. 5, 5 AMC) y ✅ Fase 3 (Zeitz §6.4 + §4.3 +
-   §7.3-§7.5, Engel cap. 6, 5 AMC) ya ingeridas. **Siguiente tanda
-   (fase-4)**: Zeitz cap. 5 Álgebra — §5.2 factor tactic (p. 147), §5.3
-   sumas y telescopio (p. 157), §5.4 polinomios (p. 164) y §5.5
-   desigualdades AM-GM/Cauchy (p. 174 — conecta con la prioridad de
-   OPTIMIZACIÓN de su carrera); Engel cap. 7 Inequalities como cantera; y
-   para el examen, AMC/AIME de probabilidad (prioridad de carrera aún poco
-   cubierta — buscar en los espejos ZIML problemas de dados/monedas/
-   esperanza). Anclas Zeitz verificadas en el .txt: §4.3 línea 7980, §6.4
-   línea 13221, §7.1 línea 13733, §7.2 línea 14170, §7.3 línea 14445, §7.4
-   línea 14807; TOC completo en líneas 430-590. Anclas Engel: cap. 5 línea
-   4117, cap. 6 línea 5833 (prerrequisitos 1-19 en pp. 117-120; divisibilidad
-   con Sophie Germain ~línea 5990).
+   §7.1-§7.2, Engel cap. 5, 5 AMC), ✅ Fase 3 (Zeitz §6.4 + §4.3 +
+   §7.3-§7.5, Engel cap. 6, 5 AMC) y ✅ Fase 4 (2026-06-11: Zeitz
+   §5.2-§5.5 álgebra completa + Engel cap. 7 desigualdades, examen 100%
+   probabilidad AMC — 7 ítems verificados). **Siguiente tanda (fase-5), a
+   DECIDIR con el usuario**: de Zeitz quedan §4.2 (números complejos),
+   cap. 8 (geometría) y cap. 9 (cálculo); el PDF (líneas ~533 y ~648 del
+   texto extraído) marca como siguiente escalón subir el nivel a AMC 12 /
+   AIME con Engel por heurística (juegos, coloraciones, principio extremal
+   profundo). Anclas Zeitz verificadas en el .txt: §5.2 línea 9076 (factor
+   tactic 9147), §5.3 línea 9650 (telescopio 9731), §5.4 línea 10142
+   (ceros 10213, Vieta 10364), §5.5 línea 10708 (AM-GM 10878, massage/
+   Cauchy 11138); §4.3 línea 7980, §6.4 línea 13221, §7.1 línea 13733,
+   §7.2 línea 14170, §7.3 línea 14445, §7.4 línea 14807; TOC completo en
+   líneas 430-590. Anclas Engel: cap. 5 línea 4117, cap. 6 línea 5833,
+   cap. 7 línea 7935 (cadena de medias 7965, Nesbitt 8058).
 4. **Exámenes AMC/AIME: obtenerlos de la web** (decisión del usuario,
    2026-06-10). ⚠️ El wiki de AoPS y isinj.com BLOQUEAN el fetch directo
    (Cloudflare 403); web.archive.org tampoco está disponible. Lo que SÍ
@@ -534,8 +537,10 @@ progreso en `cps_estudio` — esquema documentado en `storage.js`):
    interna, no solo al Modo Estudio. Curados hasta ahora (todos al examen
    de su bloque, respuestas derivadas y verificadas): fase-2 → AMC 10A 2019
    P2, P4, P18, P19, P20; fase-3 → AMC 10A 2018 P4, P19 y AMC 10B 2019 P6,
-   P14, P25. Espejos ZIML ya descargados en /tmp (se pierden al reiniciar;
-   re-descargar con el mismo patrón de URL): 2019 10A/10B, 2018 10A/10B.
+   P14, P25; fase-4 (probabilidad) → AMC 10B 2017 P9, 10A 2017 P15 y P18,
+   10B 2018 P6 y P9, 10B 2019 P17, 10A 2019 P20. Espejos ZIML ya
+   descargados en /tmp (se pierden al reiniciar; re-descargar con el mismo
+   patrón de URL): 2017/2018/2019, 10A y 10B.
    Nota: los PDF de ZIML traen solo ~la mitad de los problemas de cada
    examen; verificar SIEMPRE la respuesta derivándola o por fuerza bruta
    en Python antes de publicarla en study.json.

@@ -106,7 +106,18 @@
       "Bash(rm -rf /tmp/cesp-dom)",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-dom --timeout=12000 --dump-dom \"http://localhost:8000/test-portada.html?modo=sesion\")",
       "Bash(rm -rf /tmp/cesp-dom2)",
-      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-dom2 --timeout=12000 --dump-dom \"http://localhost:8000/\")"
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-dom2 --timeout=12000 --dump-dom \"http://localhost:8000/\")",
+      "Bash(git commit -m ' *)",
+      "Bash(grep -n '^ *5\\\\.4 *Polynomials\\\\|5\\\\.4 *Polynomials$\\\\|Polynomial Operations\\\\|The Zeros of a Polynomial\\\\|Relationship Between Zeros' 'Biblioteca/Art and Craft of Problem Solving 3E \\(The\\).txt')",
+      "Bash(grep -n '5\\\\.5 *Inequalities$\\\\|^ *5\\\\.5 *Inequalities\\\\|AM-GM\\\\|Cauchy-Schwarz\\\\|Massage\\\\|massage' 'Biblioteca/Art and Craft of Problem Solving 3E \\(The\\).txt')",
+      "Bash(grep -n '^7\\\\. Inequalities\\\\|^ *7 *$\\\\|Inequalities' 'Biblioteca/Engel - Problem-Solving Strategies.txt')",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-f4 --timeout=12000 --dump-dom \"http://localhost:8000/test-fase4.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-f4b --virtual-time-budget=8000 --timeout=20000 --dump-dom \"http://localhost:8000/test-fase4.html\")",
+      "Bash(pgrep -qf \"cesp-f4b\")",
+      "Bash(pdftotext -layout Definitivo.pdf /tmp/definitivo.txt)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,900 --user-data-dir=/tmp/cesp-f4c --virtual-time-budget=6000 --timeout=15000 --screenshot=/tmp/fase4.png \"http://localhost:8000/test-fase4.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --user-data-dir=/tmp/cesp-f4d --timeout=14000 --dump-dom \"http://localhost:8000/test-fase4.html\")",
+      "Bash(pkill -f \"http.server 8000\")"
     ]
   }
 }

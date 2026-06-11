@@ -864,10 +864,16 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      con cuenta sembrada (burbuja+panel en forcejeo, botón de foto en
      Desconstrucción), sw.js **v8**. PENDIENTE humano: una pasada real con
      key (chat con foto, transcripción de hoja y revisión post-revelado).
-4. **Ingestión Fase 4+ del Modo Estudio**: protocolo completo y anclas de
-   página en HANDOFF §3.11.6 paso 3-4 (siguiente tanda: Zeitz cap. 5
-   álgebra + Engel cap. 7 + AMC/AIME de probabilidad). Solo datos, cero
-   código.
+4. ~~Ingestión Fase 4 del Modo Estudio~~ ✅ HECHA (2026-06-11, tarde):
+   bloque `fase-4` "Álgebra de competencia y probabilidad" en
+   `data/study.json` — 5 unidades (Zeitz §5.2 factor tactic, §5.3
+   telescopio, §5.4 polinomios/Vieta, §5.5 desigualdades + Engel cap. 7),
+   25 preguntas de retrieval, examen de 7 ítems TODOS de probabilidad AMC
+   (respuestas verificadas por fuerza bruta/derivación en Python; fuentes
+   y anclas actualizadas en HANDOFF §3.11.6). Cero código; sw.js v10.
+   **Siguiente tanda (fase-5) a decidir con el usuario**: quedan Zeitz
+   §4.2 complejos, cap. 8 geometría, cap. 9 cálculo — o subir a AMC 12/
+   AIME con Engel por heurística, como sugiere el PDF.
 5. **Publicar el frontend** (cuando el usuario quiera usarlo del celular
    sin servidor local): GitHub Pages (repo ya existe; servir la raíz) o
    Cloudflare Pages. La PWA exige HTTPS — Pages lo da. Recordar: el SW

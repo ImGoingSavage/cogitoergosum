@@ -1,25 +1,78 @@
 {
   "catalogoHeuristicas": [
-    { "id": "caso-pequeno", "nombre": "Caso pequeño → patrón", "descripcion": "Prueba un caso pequeño o particular primero; busca el patrón y luego pruébalo." },
-    { "id": "simetria", "nombre": "Simetría / WLOG", "descripcion": "Explota la simetría: sustituciones simétricas, sumar/restar ecuaciones, suponer orden." },
-    { "id": "invariante", "nombre": "Invariante / monovariante", "descripcion": "Busca una cantidad que no cambia (o que solo crece/decrece) con cada movida." },
-    { "id": "hacia-atras", "nombre": "Trabajar hacia atrás", "descripcion": "Cuando el final es claro y el inicio no, retrocede desde lo que quieres lograr." },
-    { "id": "caso-extremo", "nombre": "Caso extremo", "descripcion": "Considera el máximo, el mínimo, el primero: el borde suele forzar la estructura." },
-    { "id": "palomar", "nombre": "Palomar (pigeonhole)", "descripcion": "Más objetos que cajas: alguna caja tiene dos. Útil para demostrar existencia." },
-    { "id": "induccion", "nombre": "Inducción", "descripcion": "Afirmación sobre todo n: caso base + dónde se usa la hipótesis inductiva." },
-    { "id": "contradiccion", "nombre": "Contradicción", "descripcion": "Negar la tesis da algo manejable: contradicción o contrapositiva." },
-    { "id": "casework", "nombre": "Casework organizado", "descripcion": "Divide en casos exhaustivos y excluyentes; no improvises la partición." },
-    { "id": "pensamiento-ilusorio", "nombre": "Pensamiento ilusorio", "descripcion": "Supón que ya tienes la respuesta y mira qué propiedades debería cumplir." },
-    { "id": "parametrizar-dibujar", "nombre": "Parametrizar / dibujar", "descripcion": "Introduce una variable o dibuja una figura: hacer lo abstracto concreto." },
-    { "id": "penultimo-paso", "nombre": "Penúltimo paso", "descripcion": "Pregunta qué necesitarías tener justo antes de terminar, y persíguelo." }
+    {
+      "id": "caso-pequeno",
+      "nombre": "Caso pequeño → patrón",
+      "descripcion": "Prueba un caso pequeño o particular primero; busca el patrón y luego pruébalo."
+    },
+    {
+      "id": "simetria",
+      "nombre": "Simetría / WLOG",
+      "descripcion": "Explota la simetría: sustituciones simétricas, sumar/restar ecuaciones, suponer orden."
+    },
+    {
+      "id": "invariante",
+      "nombre": "Invariante / monovariante",
+      "descripcion": "Busca una cantidad que no cambia (o que solo crece/decrece) con cada movida."
+    },
+    {
+      "id": "hacia-atras",
+      "nombre": "Trabajar hacia atrás",
+      "descripcion": "Cuando el final es claro y el inicio no, retrocede desde lo que quieres lograr."
+    },
+    {
+      "id": "caso-extremo",
+      "nombre": "Caso extremo",
+      "descripcion": "Considera el máximo, el mínimo, el primero: el borde suele forzar la estructura."
+    },
+    {
+      "id": "palomar",
+      "nombre": "Palomar (pigeonhole)",
+      "descripcion": "Más objetos que cajas: alguna caja tiene dos. Útil para demostrar existencia."
+    },
+    {
+      "id": "induccion",
+      "nombre": "Inducción",
+      "descripcion": "Afirmación sobre todo n: caso base + dónde se usa la hipótesis inductiva."
+    },
+    {
+      "id": "contradiccion",
+      "nombre": "Contradicción",
+      "descripcion": "Negar la tesis da algo manejable: contradicción o contrapositiva."
+    },
+    {
+      "id": "casework",
+      "nombre": "Casework organizado",
+      "descripcion": "Divide en casos exhaustivos y excluyentes; no improvises la partición."
+    },
+    {
+      "id": "pensamiento-ilusorio",
+      "nombre": "Pensamiento ilusorio",
+      "descripcion": "Supón que ya tienes la respuesta y mira qué propiedades debería cumplir."
+    },
+    {
+      "id": "parametrizar-dibujar",
+      "nombre": "Parametrizar / dibujar",
+      "descripcion": "Introduce una variable o dibuja una figura: hacer lo abstracto concreto."
+    },
+    {
+      "id": "penultimo-paso",
+      "nombre": "Penúltimo paso",
+      "descripcion": "Pregunta qué necesitarías tener justo antes de terminar, y persíguelo."
+    }
   ],
-
   "bloques": [
     {
       "id": "fase-0",
       "titulo": "Fase 0 · Montar el sistema",
       "meta": "Aprender el método antes que el volumen: el bucle de Pólya, la mentalidad de Zeitz y tus primeras jugadas del catálogo. No se avanza temario; se aprende a forcejear bien.",
-      "unidades": ["polya-cuatro-pasos", "polya-diccionario", "zeitz-1", "zeitz-2a", "zeitz-2b"],
+      "unidades": [
+        "polya-cuatro-pasos",
+        "polya-diccionario",
+        "zeitz-1",
+        "zeitz-2a",
+        "zeitz-2b"
+      ],
       "examen": {
         "items": [
           {
@@ -77,7 +130,14 @@
       "id": "fase-1",
       "titulo": "Fase 1 · Cimientos + hábito",
       "meta": "Subir el escalón: los métodos de argumento y las primeras tácticas (simetría, extremo, palomar, invariantes). En paralelo, AMC 10 y Alcumus como banco de práctica diaria (camino 1). La clave es la mezcla, no el volumen.",
-      "unidades": ["zeitz-23", "zeitz-24", "zeitz-31", "zeitz-32", "zeitz-33", "zeitz-34"],
+      "unidades": [
+        "zeitz-23",
+        "zeitz-24",
+        "zeitz-31",
+        "zeitz-32",
+        "zeitz-33",
+        "zeitz-34"
+      ],
       "examen": {
         "items": [
           {
@@ -135,7 +195,15 @@
       "id": "fase-2",
       "titulo": "Fase 2 · Conteo y números",
       "meta": "Profundización temática al servicio de tu carrera: combinatoria y teoría de números, con grafos como puente. Zeitz pone el lenguaje (contar bien, congruencias), Engel pone la pelea olímpica y el examen mezcla AMC real con clásicos. El muestreo sigue siendo acumulativo: todo lo de las fases 0-1 puede reaparecer.",
-      "unidades": ["zeitz-41", "zeitz-61", "zeitz-62", "zeitz-63", "engel-comb", "zeitz-71", "zeitz-72"],
+      "unidades": [
+        "zeitz-41",
+        "zeitz-61",
+        "zeitz-62",
+        "zeitz-63",
+        "engel-comb",
+        "zeitz-71",
+        "zeitz-72"
+      ],
       "examen": {
         "items": [
           {
@@ -220,7 +288,14 @@
       "id": "fase-3",
       "titulo": "Fase 3 · Recurrencias, generatrices y aritmética fina",
       "meta": "El piso alto del conteo y los números: recurrencias (Fibonacci, Catalan), funciones generatrices como puente directo con ciencia de datos, funciones aritméticas (d, σ, φ), ecuaciones diofánticas y los ejemplos instructivos de Zeitz, con Engel cap. 6 como cantera. El examen mezcla AMC real con clásicos, y el muestreo sigue siendo acumulativo desde la fase 0.",
-      "unidades": ["zeitz-64", "zeitz-43", "zeitz-73", "zeitz-74", "zeitz-75", "engel-nt"],
+      "unidades": [
+        "zeitz-64",
+        "zeitz-43",
+        "zeitz-73",
+        "zeitz-74",
+        "zeitz-75",
+        "engel-nt"
+      ],
       "examen": {
         "items": [
           {
@@ -290,9 +365,101 @@
           }
         ]
       }
+    },
+    {
+      "id": "fase-4",
+      "titulo": "Fase 4 · Álgebra de competencia y probabilidad",
+      "meta": "El brazo algebraico del repertorio: factorizar sin piedad, telescopios, Vieta y el arte de las desigualdades (AM-GM, massage, Cauchy-Schwarz), con Engel cap. 7 como cantera — conexión directa con tu prioridad de OPTIMIZACIÓN. El examen introduce la otra prioridad, probabilidad estilo AMC (dados, monedas, geometría del azar): cada problema de azar es un conteo o una simetría disfrazados. El muestreo sigue acumulando desde la fase 0.",
+      "unidades": [
+        "zeitz-52",
+        "zeitz-53",
+        "zeitz-54",
+        "zeitz-55",
+        "engel-ineq"
+      ],
+      "examen": {
+        "items": [
+          {
+            "id": "f4-ex-1",
+            "heuristica": "casework",
+            "enunciado": "Un concurso de radio tiene 3 preguntas de opción múltiple, cada una con 3 opciones. El concursante gana si responde bien 2 o más preguntas. Si contesta las 3 completamente al azar, ¿cuál es la probabilidad de que gane?",
+            "pista": "\"2 o más\" son exactamente dos escenarios disjuntos. Sepáralos: ¿de cuántas maneras puede acertar exactamente 2, y con qué probabilidad ocurre cada configuración?",
+            "solucion": "7/27. Exactamente 2 bien: C(3,2) = 3 maneras de elegir cuáles acierta, cada una con probabilidad (1/3)²·(2/3), total 3·2/27 = 6/27. Las 3 bien: (1/3)³ = 1/27. Suma: 7/27.",
+            "disparador": "\"Al menos k éxitos\" → parte en casos exactos disjuntos (o ve al complemento). Cada caso = elegir CUÁLES posiciones × probabilidad de esa configuración — el conteo binomial detrás del azar.",
+            "source": "AMC 10B 2017 P9",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2017_AMC_10B_Problems/Problem_9",
+            "year": "2017"
+          },
+          {
+            "id": "f4-ex-2",
+            "heuristica": "parametrizar-dibujar",
+            "enunciado": "Chloé elige un número real uniformemente al azar del intervalo [0, 2017]. Por separado e independientemente, Laurent elige uno uniformemente de [0, 4034]. ¿Cuál es la probabilidad de que el número de Laurent sea mayor que el de Chloé?",
+            "pista": "Dibuja: el par (C, L) es un punto uniforme en un rectángulo de 2017 × 4034. ¿Qué región del rectángulo corresponde a L > C? La probabilidad es un cociente de áreas.",
+            "solucion": "3/4. En el rectángulo [0,2017]×[0,4034], la región \"perdedora\" L ≤ C es un triángulo rectángulo de catetos 2017 y 2017, de área 2017²/2 — exactamente 1/4 del rectángulo, cuya área es 2017·4034 = 2·2017². Así que P(L > C) = 1 − 1/4 = 3/4. Comprobación por casos: si L cae en la mitad alta [2017, 4034] (probabilidad 1/2) gana seguro; si cae en la baja, por simetría gana la mitad de las veces: 1/2 + 1/2·1/2 = 3/4.",
+            "disparador": "Elecciones CONTINUAS uniformes e independientes → parametriza y dibuja: la probabilidad es un ÁREA. \"Uniforme al azar en un intervalo\" es la señal de la probabilidad geométrica.",
+            "source": "AMC 10A 2017 P15",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2017_AMC_10A_Problems/Problem_15",
+            "year": "2017"
+          },
+          {
+            "id": "f4-ex-3",
+            "heuristica": "invariante",
+            "enunciado": "Amelia tiene una moneda que cae cara con probabilidad 1/3; Blaine tiene una que cae cara con probabilidad 2/5. Lanzan alternadamente sus monedas — Amelia primero — y gana quien obtenga la primera cara. Todos los lanzamientos son independientes. La probabilidad de que gane Amelia es p/q con p y q coprimos. ¿Cuánto vale q − p?",
+            "pista": "Si ambos fallan en la primera ronda, el juego queda EXACTAMENTE como al principio. Llama p a la probabilidad de que Amelia gane y escribe una ecuación que aproveche ese reinicio.",
+            "solucion": "4 (con P(Amelia gane) = 5/9). Sea p esa probabilidad: o Amelia gana de inmediato (1/3), o ambos fallan — (2/3)(3/5) = 2/5 — y el juego se reinicia idéntico, donde Amelia vuelve a ganar con probabilidad p. Así p = 1/3 + (2/5)p, de donde (3/5)p = 1/3 y p = 5/9. Entonces q − p = 9 − 5 = 4. (Equivale a sumar la serie geométrica (1/3)·Σ(2/5)^k.)",
+            "disparador": "Proceso que tras una ronda fallida vuelve a su estado inicial → la probabilidad es INVARIANTE ante el reinicio: monta p = (éxito inmediato) + (prob. de reinicio)·p. Es la serie geométrica de §5.3 vestida de azar.",
+            "source": "AMC 10A 2017 P18",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2017_AMC_10A_Problems/Problem_18",
+            "year": "2017"
+          },
+          {
+            "id": "f4-ex-4",
+            "heuristica": "hacia-atras",
+            "enunciado": "Una caja contiene 5 fichas numeradas 1, 2, 3, 4 y 5. Se extraen al azar una por una, sin reemplazo, hasta que la suma de los valores extraídos supere 4. ¿Cuál es la probabilidad de que se necesiten exactamente 3 extracciones?",
+            "pista": "Trabaja hacia atrás desde la condición de paro: tres fichas cualesquiera suman al menos 1+2+3 = 6 > 4. Entonces \"se necesitan 3\" depende SOLO de lo que pase con las dos primeras. ¿Qué deben cumplir?",
+            "solucion": "1/5. Tres fichas siempre superan 4 (mínimo 6), así que \"exactamente 3 extracciones\" equivale a que las dos primeras NO superen 4: que sumen ≤ 4. Los únicos pares posibles son {1,2} y {1,3}. Probabilidad: 2 pares × 2 órdenes / (5·4 ordenaciones de dos fichas) = 4/20 = 1/5.",
+            "disparador": "\"Hasta que ocurra X\" → traduce la condición de paro hacia atrás: ¿qué deben cumplir exactamente los pasos previos? El evento suele depender de MENOS pasos de los que aparenta.",
+            "source": "AMC 10B 2018 P6",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2018_AMC_10B_Problems/Problem_6",
+            "year": "2018"
+          },
+          {
+            "id": "f4-ex-5",
+            "heuristica": "simetria",
+            "enunciado": "Se lanzan 7 dados estándar de 6 caras. Sea p la probabilidad de que la suma de las caras superiores sea 10. ¿Qué OTRA suma ocurre con exactamente la misma probabilidad p?",
+            "pista": "Cada dado tiene una simetría natural que intercambia la cara x con la cara 7 − x. ¿Qué le hace esa simetría a la suma total de los 7 dados?",
+            "solucion": "39. Reemplazar el resultado x de cada dado por 7 − x es una biyección del espacio de lanzamientos que conserva probabilidades y manda la suma S a 7·7 − S = 49 − S. Por tanto P(S = 10) = P(S = 49 − 10) = P(S = 39).",
+            "disparador": "Dados o monedas y una suma → la reflexión x ↦ 7−x (o cara ↦ cruz) es una biyección que conserva la probabilidad: la distribución es simétrica alrededor del centro. Busca el espejo ANTES de ponerte a contar.",
+            "source": "AMC 10B 2018 P9",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2018_AMC_10B_Problems/Problem_9",
+            "year": "2018"
+          },
+          {
+            "id": "f4-ex-6",
+            "heuristica": "simetria",
+            "enunciado": "Una bola roja y una verde se lanzan, independiente y aleatoriamente, hacia urnas numeradas 1, 2, 3, …; para cada bola, la probabilidad de caer en la urna k es 2⁻ᵏ. ¿Cuál es la probabilidad de que la bola roja caiga en una urna de número MAYOR que la verde?",
+            "pista": "Hay tres eventos: roja más alta, verde más alta, empate. Dos de ellos son intercambiables. Calcula solo la probabilidad del empate (es una serie geométrica) y reparte lo que queda.",
+            "solucion": "1/3. P(empate) = Σₖ 2⁻ᵏ·2⁻ᵏ = Σₖ 4⁻ᵏ = (1/4)/(1 − 1/4) = 1/3. Las dos bolas son intercambiables, así que P(roja mayor) = P(verde mayor) = (1 − 1/3)/2 = 1/3.",
+            "disparador": "Dos actores intercambiables → calcula el EMPATE y reparte el resto a partes iguales por simetría. La serie geométrica (§5.3) cierra la cuenta del empate.",
+            "source": "AMC 10B 2019 P17",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10B_Problems/Problem_17",
+            "year": "2019"
+          },
+          {
+            "id": "f4-ex-7",
+            "heuristica": "invariante",
+            "enunciado": "Los números 1, 2, …, 9 se colocan al azar en las 9 casillas de una cuadrícula 3×3 (cada número se usa una vez). ¿Cuál es la probabilidad de que la suma de cada fila y de cada columna sea impar?",
+            "pista": "Olvida los valores: solo importa la PARIDAD. Hay cinco impares y cuatro pares. ¿Qué patrones de casillas pueden ocupar los impares para que las seis sumas salgan impares?",
+            "solucion": "1/14. Una suma de 3 números es impar sii contiene 1 o 3 impares. Cada fila y columna debe tener 1 o 3 casillas impares, y los conteos por fila deben sumar 5: solo puede ser (3,1,1) — y lo mismo por columnas. Eso fuerza que las casillas impares formen una CRUZ: una fila llena más una columna llena. Hay 3·3 = 9 cruces posibles entre los C(9,5) = 126 patrones de 5 casillas: 9/126 = 1/14. (Las permutaciones de valores dentro de un patrón son equiprobables y se cancelan.)",
+            "disparador": "\"Suma par/impar\" con valores colocados al azar → proyecta al invariante de PARIDAD y cuenta patrones de casillas, no permutaciones: la uniformidad respeta la proyección.",
+            "source": "AMC 10A 2019 P20",
+            "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_20",
+            "year": "2019"
+          }
+        ]
+      }
     }
   ],
-
   "unidades": [
     {
       "id": "polya-cuatro-pasos",
@@ -303,7 +470,10 @@
       "lectura": "Parte I, \"En el aula\": las cuatro fases (pp. 25-46 aprox.; el corazón está en pp. 28-36: Comprensión del problema, Concepción de un plan, Ejecución del plan y Visión retrospectiva).",
       "dosis": "~20 pp en una sesión de 30-45 min. Lee despacio, con lápiz; no avances temario hoy.",
       "objetivo": "Las preguntas concretas de cada fase y por qué la visión retrospectiva es la fase que construye la biblioteca (casi todos la saltan).",
-      "heuristicas": ["hacia-atras", "caso-pequeno"],
+      "heuristicas": [
+        "hacia-atras",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "Las cuatro fases: comprender el problema, concebir un plan, ejecutar el plan y mirar atrás. No son lineales: se vuelve atrás cuando hace falta.",
         "No avances sin poder reformular el problema con tus palabras: ¿qué se pide?, ¿qué datos tengo?, ¿cuál es la condición?",
@@ -358,7 +528,11 @@
       "lectura": "Breve diccionario de heurística (pp. 58 en adelante): SOLO las entradas Analogía, Descomponer y recomponer el problema, Generalización, Particularización, Trabajar hacia atrás (regresión) e Inducción.",
       "dosis": "~30 min hojeando esas 6 entradas. El diccionario no se lee de corrido: es material de consulta.",
       "objetivo": "Qué hace cada herramienta y, sobre todo, QUÉ SEÑAL del problema te debería hacer pensar en ella.",
-      "heuristicas": ["hacia-atras", "caso-pequeno", "induccion"],
+      "heuristicas": [
+        "hacia-atras",
+        "caso-pequeno",
+        "induccion"
+      ],
       "ideas_clave": [
         "Analogía: resolver un problema más simple con la misma estructura y trasplantar el método (el triángulo enseña sobre el tetraedro).",
         "Descomponer y recomponer: trocea el problema, pero no demasiado pronto ni demasiado fino — primero intenta verlo como un todo.",
@@ -406,7 +580,10 @@
       "lectura": "Capítulo 1 completo (pp. 1-11): 1.1 Exercises vs. Problems, 1.2 The Three Levels of Problem Solving, 1.3 A Problem Sampler, 1.4 How to Read This Book.",
       "dosis": "~10 pp + 1 problema del sampler con el bucle completo (hazlo como sesión del camino 1 si quieres).",
       "objetivo": "La distinción ejercicio/problema, los tres niveles (estrategias, tácticas, herramientas) y el contrato de lectura: forcejear antes de leer soluciones.",
-      "heuristicas": ["caso-pequeno", "pensamiento-ilusorio"],
+      "heuristicas": [
+        "caso-pequeno",
+        "pensamiento-ilusorio"
+      ],
       "ideas_clave": [
         "Ejercicio: sabes de inmediato qué hacer y solo ejecutas. Problema: no sabes ni por dónde empezar — y eso es lo que entrena.",
         "Tres niveles: estrategias (psicología y orientación, válidas para casi todo), tácticas (métodos matemáticos de amplio uso: simetría, extremo, palomar) y herramientas (trucos y técnicas específicas).",
@@ -453,7 +630,9 @@
       "lectura": "Sección 2.1, Psychological Strategies (pp. 12-23): Mental Toughness (el ratón de Pólya), confianza, concentración y creatividad.",
       "dosis": "~10 pp en una sesión corta. Lee buscando actitudes, no técnicas.",
       "objetivo": "Qué significa dureza mental en la práctica y cómo la confianza y la creatividad se entrenan deliberadamente.",
-      "heuristicas": ["pensamiento-ilusorio"],
+      "heuristicas": [
+        "pensamiento-ilusorio"
+      ],
       "ideas_clave": [
         "El ratón de Pólya: la moraleja de la perseverancia inteligente — vuelve a intentar, pero variando el punto de ataque, no repitiendo el mismo golpe.",
         "Dureza mental: confianza + concentración. Ambas se entrenan; nadie nace con ellas.",
@@ -501,7 +680,11 @@
       "lectura": "Sección 2.2, Strategies for Getting Started (pp. 23-37): The First Step — Orientation; I'm Oriented, Now What? (get your hands dirty, penultimate step, wishful thinking / make it easier).",
       "dosis": "~6-8 pp + 2 problemas de la sección con el bucle completo.",
       "objetivo": "Las tres jugadas de arranque y la señal de cada una: ensuciarse las manos, penúltimo paso y pensamiento ilusorio.",
-      "heuristicas": ["caso-pequeno", "penultimo-paso", "pensamiento-ilusorio"],
+      "heuristicas": [
+        "caso-pequeno",
+        "penultimo-paso",
+        "pensamiento-ilusorio"
+      ],
       "ideas_clave": [
         "Orientación primero: leer varias veces, identificar qué se pide, clasificar el problema, anticipar qué forma tendría una respuesta.",
         "Ensúciate las manos: experimenta con casos concretos y pequeños; los datos generados a mano son la materia prima de las conjeturas.",
@@ -556,7 +739,10 @@
       "lectura": "Sección 2.3, Methods of Argument (pp. 37-49): deducción y lógica simbólica, argumento por contradicción (p. 39) e inducción matemática (p. 42).",
       "dosis": "1 sección (~12 pp) + 2-3 problemas de la sección con bucle completo. Regla del PDF: concepto O problemas a tope, no ambos.",
       "objetivo": "Cuándo conviene negar la tesis (contradicción) y cómo se arma una inducción sin agujeros (base + paso + dónde se usa la hipótesis).",
-      "heuristicas": ["contradiccion", "induccion"],
+      "heuristicas": [
+        "contradiccion",
+        "induccion"
+      ],
       "ideas_clave": [
         "La contradicción brilla con tesis negativas (\"no existe\", \"es imposible\", \"es irracional\"): negar te regala un objeto concreto que atacar.",
         "Contrapositiva: probar \"si no B entonces no A\" suele ser más manejable que \"si A entonces B\" — son lógicamente idénticas.",
@@ -604,7 +790,9 @@
       "lectura": "Sección 2.4, Other Important Strategies (pp. 49-58): Draw a Picture! (p. 49), Recast the Problem in Other Ways (p. 51), Change Your Point of View (p. 55).",
       "dosis": "~9 pp + 2 problemas de la sección con bucle completo.",
       "objetivo": "Las tres formas de reformular: representación gráfica, traducción entre lenguajes (álgebra↔geometría↔conteo) y atacar el problema desde el complemento o desde otro observador.",
-      "heuristicas": ["parametrizar-dibujar"],
+      "heuristicas": [
+        "parametrizar-dibujar"
+      ],
       "ideas_clave": [
         "Un dibujo no es decoración: es una representación que hace visibles relaciones que la prosa esconde. Dibuja aunque el problema \"no sea de geometría\".",
         "Reformular = traducir el problema a otro lenguaje donde tus herramientas sean más fuertes: un conteo como grafo, un álgebra como geometría, un proceso como gráfica posición-tiempo.",
@@ -652,7 +840,9 @@
       "lectura": "Sección 3.1, Symmetry (pp. 59-70): simetría geométrica (p. 60) y simetría algebraica (p. 64).",
       "dosis": "1 sección (~11 pp) + 2-3 problemas de la sección con bucle completo.",
       "objetivo": "Reconocer simetrías (geométricas, algebraicas, estratégicas) y explotarlas: reflejar, emparejar, sustituir simétricamente, suponer orden sin pérdida de generalidad.",
-      "heuristicas": ["simetria"],
+      "heuristicas": [
+        "simetria"
+      ],
       "ideas_clave": [
         "Simetría = una transformación que deja el problema igual. Cada simetría que encuentres es trabajo que ya no harás dos veces.",
         "WLOG (\"sin pérdida de generalidad\"): si el problema no distingue entre x e y, puedes suponer x ≤ y — la simetría te autoriza.",
@@ -700,7 +890,9 @@
       "lectura": "Sección 3.2, The Extreme Principle (pp. 70-80).",
       "dosis": "1 sección (~10 pp) + 2-3 problemas de la sección con bucle completo.",
       "objetivo": "El hábito de mirar primero el elemento extremo (máximo, mínimo, primero, mayor distancia) y por qué sus propiedades vienen forzadas.",
-      "heuristicas": ["caso-extremo"],
+      "heuristicas": [
+        "caso-extremo"
+      ],
       "ideas_clave": [
         "Principio del extremo: todo conjunto finito no vacío de números tiene máximo y mínimo — y ese elemento extremo tiene propiedades especiales gratis.",
         "El extremo restringe: el vecino del máximo no puede superarlo, nada está más cerca que el par a distancia mínima — esas restricciones son palancas.",
@@ -748,7 +940,9 @@
       "lectura": "Sección 3.3, The Pigeonhole Principle (pp. 80-88): básico (p. 80), intermedio (p. 82) y avanzado (p. 83).",
       "dosis": "1 sección (~8 pp) + 2-3 problemas de la sección con bucle completo.",
       "objetivo": "Las tres versiones del palomar y, sobre todo, el arte de DISEÑAR las cajas: la partición correcta es el 90% del problema.",
-      "heuristicas": ["palomar"],
+      "heuristicas": [
+        "palomar"
+      ],
       "ideas_clave": [
         "Palomar básico: más palomas que casilleros → algún casillero con dos. Versión fuerte: n objetos en k cajas → alguna caja con al menos ⌈n/k⌉.",
         "El principio es trivial; el problema NUNCA te da las cajas. Diseñarlas (la partición correcta del espacio) es el verdadero trabajo.",
@@ -796,7 +990,9 @@
       "lectura": "Sección 3.4, Invariants (pp. 88-105): paridad (p. 90), aritmética modular y coloración (p. 95), monovariantes (p. 97).",
       "dosis": "1 sección (~17 pp; puedes partirla en dos sesiones) + 2-3 problemas con bucle completo.",
       "objetivo": "Encontrar la cantidad que el proceso conserva (invariante) o que solo avanza en una dirección (monovariante), y usarla para demostrar imposibilidad o terminación.",
-      "heuristicas": ["invariante"],
+      "heuristicas": [
+        "invariante"
+      ],
       "ideas_clave": [
         "Invariante: cantidad que NINGUNA movida cambia. Si el estado inicial y el final difieren en el invariante, llegar es imposible.",
         "Los invariantes más rentables: paridad, suma o producto, residuos módulo k, coloraciones del tablero.",
@@ -844,7 +1040,10 @@
       "lectura": "Sección 4.1, Graph Theory (pp. 105-116): conectividad y ciclos (p. 107), caminos eulerianos y hamiltonianos (p. 108), los dos hombres del Tíbet (p. 111).",
       "dosis": "1 sección (~11 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Reconocer cuándo un problema sobre \"objetos relacionados\" se vuelve transparente al recodificarlo como vértices y aristas, y manejar las tres herramientas básicas: lema del apretón de manos, árboles y caminos eulerianos.",
-      "heuristicas": ["parametrizar-dibujar", "caso-extremo"],
+      "heuristicas": [
+        "parametrizar-dibujar",
+        "caso-extremo"
+      ],
       "ideas_clave": [
         "Cualquier relación MUTUA entre objetos es un grafo en potencia: objetos = vértices, relación = aristas. Recodificar así convierte palabrería en estructura calculable.",
         "Lema del apretón de manos: la suma de los grados es 2·(número de aristas). Corolario inmediato y letal: el número de vértices de grado impar siempre es PAR.",
@@ -892,7 +1091,10 @@
       "lectura": "Sección 6.1, Introduction to Counting (pp. 189-197): permutaciones y combinaciones (p. 189), argumentos combinatorios (p. 192), triángulo de Pascal y binomio (p. 193).",
       "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Saber EXACTAMENTE cuándo sumar (casos disjuntos), cuándo multiplicar (etapas independientes) y cuándo dividir (descontar simetrías), y empezar a leer identidades como conteos dobles.",
-      "heuristicas": ["casework", "caso-pequeno"],
+      "heuristicas": [
+        "casework",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "Suma cuando partes en casos DISJUNTOS (sopa O ensalada); multiplica cuando encadenas decisiones independientes (sopa Y ensalada). El buen conteo es saber cuál operación toca, no recordar fórmulas.",
         "P(n,r) = n(n−1)⋯(n−r+1): elección CON orden. Cuidado con el off-by-one: el último factor es (n−r+1), no (n−r).",
@@ -947,7 +1149,10 @@
       "lectura": "Sección 6.2, Partitions and Bijections (pp. 197-207): contar subconjuntos (p. 197), manejo de información (p. 200), bolas en urnas y codificaciones clásicas (p. 203).",
       "dosis": "1 sección (~10 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Contar lo difícil partiéndolo en piezas disjuntas fáciles, o de un solo golpe construyendo una biyección con un \"código\" que sí sabes contar.",
-      "heuristicas": ["casework", "parametrizar-dibujar"],
+      "heuristicas": [
+        "casework",
+        "parametrizar-dibujar"
+      ],
       "ideas_clave": [
         "Dos tácticas en tándem: PARTIR (divide en piezas disjuntas y suma) y CODIFICAR (biyección entre tus objetos y las palabras de un código simple; cuenta el código).",
         "El ejemplo canónico: subconjuntos de n elementos ↔ cadenas de n símbolos sí/no (\"¿está el elemento i?\") → 2ⁿ, sin sumar ninguna C(n,k).",
@@ -995,7 +1200,10 @@
       "lectura": "Sección 6.3, The Principle of Inclusion-Exclusion (pp. 207-215): contar el complemento (p. 207), PIE con conjuntos (p. 208), PIE con funciones indicadoras (p. 212).",
       "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Contar lo que se traslapa: pasar al complemento cuando \"al menos uno\" confunde, y corregir el sobreconteo con la suma alternada de PIE.",
-      "heuristicas": ["casework", "contradiccion"],
+      "heuristicas": [
+        "casework",
+        "contradiccion"
+      ],
       "ideas_clave": [
         "\"Al menos uno…\" es la señal del COMPLEMENTO: cuenta el total y resta los que no tienen ninguno. Cadenas de n bits con algún 0: 2ⁿ − 1, sin tocar un solo caso.",
         "PIE con dos conjuntos: |A∪B| = |A| + |B| − |A∩B|. Sumar sobreconta exactamente la intersección; restarla repara la cuenta.",
@@ -1043,7 +1251,10 @@
       "lectura": "Capítulo 5, Enumerative Combinatorics (pp. 85-117): la técnica de la tabla con sumas-q (E1-E7, pp. 85-87). Después hojea la lista de problemas del capítulo y elige 2-3 a tu nivel.",
       "dosis": "Engel es cantera, no lectura corrida: ~3 pp de técnica + 2-3 problemas del capítulo con bucle completo.",
       "objetivo": "Pelear con combinatoria de nivel olímpico: problemas que no piden teoría nueva, solo organización astuta del conteo más las tácticas que ya tienes (extremo, invariantes, contradicción).",
-      "heuristicas": ["contradiccion", "invariante"],
+      "heuristicas": [
+        "contradiccion",
+        "invariante"
+      ],
       "ideas_clave": [
         "El sello de Engel: problemas \"sin prerrequisitos\" donde la dificultad está en ORGANIZAR el argumento, no en saber fórmulas. Un olímpico de prepa no corre con desventaja frente a un profesional.",
         "Técnica de la tabla (IMO 1977): escribe las p-sumas sucesivas como filas; en las columnas emergen solas las q-sumas. Sumar todo por filas y por columnas da el mismo total con signos en conflicto → contradicción.",
@@ -1091,7 +1302,10 @@
       "lectura": "Sección 7.1, Primes and Divisibility (pp. 224-232): el Teorema Fundamental de la Aritmética (p. 224); MCD, mcm y el algoritmo de la división (p. 226). Formulario de apoyo: Engel cap. 6, prerrequisitos 1-19 (pp. 117-120).",
       "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Dominar el lenguaje de la divisibilidad (b|a, factorización en potencias de primos, mcd/mcm) y entender por qué la factorización única ES un teorema con contenido, no una obviedad.",
-      "heuristicas": ["contradiccion", "induccion"],
+      "heuristicas": [
+        "contradiccion",
+        "induccion"
+      ],
       "ideas_clave": [
         "Euclides, infinitud de primos: supón la lista completa p₁,…,p_N y considera Q = p₁p₂⋯p_N + 1 (la movida crux). Ningún pᵢ divide a Q (residuo 1), así que algún primo nuevo existe. Apréndela hasta reproducirla sin mirar.",
         "Todo n > 1 se factoriza en primos (inducción fuerte) y la factorización es ÚNICA: eso es el TFA. En el \"mundo de los pares\" 60 = 2·30 = 6·10 con todos los factores primos ahí dentro: sin unicidad, la divisibilidad colapsa.",
@@ -1146,7 +1360,10 @@
       "lectura": "Sección 7.2, Congruence (pp. 232-236): qué tienen de bueno los primos (p. 233), pequeño teorema de Fermat (p. 234).",
       "dosis": "1 sección (~5 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Elegir el módulo correcto para colapsar el universo infinito de los enteros en un mundo finito Zₘ donde el problema se calcula a mano.",
-      "heuristicas": ["invariante", "caso-pequeno"],
+      "heuristicas": [
+        "invariante",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "a ≡ b (mod m) ⟺ a = b + mk. Las congruencias respetan suma y producto: puedes reducir ANTES de operar, no después.",
         "Potencias gigantes: busca una potencia pequeña ≡ ±1. Como 2⁴ ≡ −1 (mod 17), 2¹⁰⁰⁰ = (2⁴)²⁵⁰ ≡ (−1)²⁵⁰ = 1: residuo 1, sin calcular nada grande.",
@@ -1194,7 +1411,10 @@
       "lectura": "Sección 6.4, Recurrence (pp. 215-223): el dominó y la recurrencia de Fibonacci (p. 215), la recurrencia de Catalan (p. 217).",
       "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Cuando la fórmula global no se ve, estudiar la transición LOCAL de n a n+1: montar la recurrencia condicionando en el extremo, y reconocer las dos recurrencias estrella (Fibonacci y Catalan).",
-      "heuristicas": ["caso-pequeno", "induccion"],
+      "heuristicas": [
+        "caso-pequeno",
+        "induccion"
+      ],
       "ideas_clave": [
         "Si lo global no se comprende, mira lo local: ¿cómo se construye un objeto de tamaño n+1 a partir de los de tamaño ≤ n? Recurrencia + valores frontera = problema resuelto (al menos como algoritmo).",
         "La jugada estándar: PARTICIONA los objetos según cómo TERMINAN. Dominós en 2×n: el extremo derecho es un dominó vertical (deja t(n−1)) o dos horizontales (deja t(n−2)) → t(n) = t(n−1) + t(n−2): Fibonacci.",
@@ -1249,7 +1469,10 @@
       "lectura": "Sección 4.3, Generating Functions (pp. 128-138): ejemplos introductorios (p. 129), relaciones de recurrencia (p. 130), particiones (p. 132).",
       "dosis": "1 sección (~10 pp; densa — puedes partirla en dos sesiones) + 2 problemas con bucle completo.",
       "objetivo": "Empaquetar una sucesión entera en una sola función y dejar que el álgebra cuente por ti: el puente entre combinatoria, recurrencias y las series que usarás en ciencia de datos.",
-      "heuristicas": ["parametrizar-dibujar", "caso-pequeno"],
+      "heuristicas": [
+        "parametrizar-dibujar",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "La generatriz de a₀, a₁, a₂, … es a₀ + a₁x + a₂x² + ⋯: TODA la sucesión en un solo objeto algebraico.",
         "Dos hechos le dan el poder: xᵐ·xⁿ = xᵐ⁺ⁿ (multiplicar polinomios SUMA exponentes: convolución de elecciones) y el diccionario local↔global (coeficientes ↔ comportamiento de la función).",
@@ -1297,7 +1520,10 @@
       "lectura": "Sección 7.3, Number Theoretic Functions (pp. 236-242): sumas de divisores (p. 237), phi y mu (p. 238).",
       "dosis": "1 sección (~6 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Dominar las funciones multiplicativas: si f(ab) = f(a)f(b) para coprimos, basta conocer f en potencias de primos — la PPF vuelve a ser la radiografía.",
-      "heuristicas": ["casework", "caso-pequeno"],
+      "heuristicas": [
+        "casework",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "f es MULTIPLICATIVA si f(ab) = f(a)·f(b) cuando a ⊥ b (coprimos). Consecuencia: f queda determinada por sus valores en potencias de primos f(pʳ) — evalúa ahí y multiplica.",
         "d(n) = número de divisores = (e₁+1)(e₂+1)⋯ desde la PPF; σ(n) = suma de divisores, con σ(pʳ) = (pʳ⁺¹−1)/(p−1). Ambas multiplicativas.",
@@ -1352,7 +1578,10 @@
       "lectura": "Sección 7.4, Diophantine Equations (pp. 242-249): estrategia general y tácticas (p. 242), con el ejemplo 7.4.1 (triángulos con área = perímetro) como modelo de la táctica de factorizar.",
       "dosis": "1 sección (~7 pp) + 2-3 problemas con bucle completo.",
       "objetivo": "Atacar ecuaciones con soluciones enteras mediante las dos tácticas maestras: FACTORIZAR (producto de enteros = constante → finitas opciones) y FILTRAR módulo n (para demostrar que no hay soluciones).",
-      "heuristicas": ["penultimo-paso", "invariante"],
+      "heuristicas": [
+        "penultimo-paso",
+        "invariante"
+      ],
       "ideas_clave": [
         "Ante cualquier diofántica, cuatro preguntas: ¿está en forma simple (sin factores comunes)? ¿existe alguna solución? ¿se puede probar que NO hay? ¿puedo encontrarlas todas?",
         "Lineales ax + by = c: teoría completa — hay solución si y solo si mcd(a,b) | c, y de una solución salen todas (familia con parámetro t).",
@@ -1407,7 +1636,10 @@
       "lectura": "Sección 7.5, Miscellaneous Instructive Examples (pp. 249-258): ¿puede un polinomio dar siempre primos? (p. 249), la prueba combinatoria del pequeño Fermat (p. 250), sumas de dos cuadrados (p. 251).",
       "dosis": "1 sección (~9 pp; elige 2 de los 4 ejemplos por sesión) + 1-2 problemas con bucle completo.",
       "objetivo": "Ver la investigación matemática completa en miniatura: experimentar, conjeturar el patrón, y rematar con el argumento estructural — el antídoto contra \"la evidencia numérica me convenció\".",
-      "heuristicas": ["caso-pequeno", "contradiccion"],
+      "heuristicas": [
+        "caso-pequeno",
+        "contradiccion"
+      ],
       "ideas_clave": [
         "x² + x + 41 de Euler da primos para n = 0..39 — y falla en n = 40 y 41 (f(41) es múltiplo obvio de 41). Cuarenta confirmaciones no son una prueba: busca el caso que se delata a sí mismo.",
         "Ningún polinomio no constante con coeficientes enteros produce solo primos: si f(u) = p, el binomio da f(u + kp) ≡ f(u) ≡ 0 (mod p) — el polinomio repite el factor p en una progresión aritmética completa.",
@@ -1455,7 +1687,10 @@
       "lectura": "Capítulo 6, Number Theory (pp. 117 en adelante): los prerrequisitos 1-19 como formulario (pp. 117-120) y la sección de divisibilidad (a−b | aⁿ−bⁿ, Sophie Germain, p. 121). Después elige 2-3 problemas del capítulo a tu nivel.",
       "dosis": "Engel es cantera, no lectura corrida: el formulario + ~2 pp de divisibilidad, y 2-3 problemas con bucle completo.",
       "objetivo": "Consolidar el arsenal de divisibilidad listo-para-usar: factorizaciones de potencias, Legendre para factoriales, y los 19 prerrequisitos que en competencia se usan sin demostración.",
-      "heuristicas": ["invariante", "induccion"],
+      "heuristicas": [
+        "invariante",
+        "induccion"
+      ],
       "ideas_clave": [
         "La fórmula más útil en competencias (Engel dixit): a − b | aⁿ − bⁿ para todo n, y a + b | aⁿ + bⁿ para n IMPAR (es la primera con −b). De ahí sale gratis la diferencia de cuadrados.",
         "Sophie Germain: a⁴ + 4b⁴ = (a² + 2b² − 2ab)(a² + 2b² + 2ab) — una SUMA que sí factoriza, sumando y restando el término cruzado 4a²b² para completar el cuadrado.",
@@ -1498,6 +1733,297 @@
           "enunciado": "Te preguntan por la divisibilidad de un factorial (¿cuántos ceros? ¿divide 2¹⁰⁰ a 150!?) o de una diferencia de potencias. ¿Qué herramienta saca cada señal?",
           "solucion": "Factoriales → Legendre: multiplicidad de p en n! = Σ ⌊n/pᵏ⌋; compara exponentes primo por primo. Diferencias/sumas de potencias → a−b | aⁿ−bⁿ (y a+b con n impar), o reduce módulo el candidato a divisor buscando una potencia ≡ ±1. Ambas evitan calcular el número: solo cuentan estructura.",
           "explicacion": "Las dos señales cubren la mayoría de la divisibilidad \"grande\" de competencia: factoriales por capas de primos, potencias por factorización algebraica o ciclos modulares."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-52",
+      "bloque": "fase-4",
+      "orden": 25,
+      "titulo": "Zeitz · Manipulación algebraica: factoriza sin piedad",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 5.2, Algebraic Manipulation Revisited (pp. 147-157): el toque ligero (Ejemplo 5.2.1, p. 147), la Factor Tactic (pp. 148-149), crear cuadrados perfectos (pp. 149-150), sustituciones y simplificaciones (pp. 150-153).",
+      "dosis": "1 sección (~10 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Dejar de \"computar\" álgebra y empezar a manipularla con propósito: factorizar sin piedad, fabricar cuadrados perfectos que no estaban y sustituir para que el problema colapse.",
+      "heuristicas": [
+        "pensamiento-ilusorio",
+        "simetria"
+      ],
+      "ideas_clave": [
+        "El álgebra de competencia no es computación, es estética con propósito. Toque ligero: muévete siempre hacia mayor simplicidad, simetría o belleza. En x+y = xy = 3 → x³+y³, el mal camino es resolver el sistema (raíces complejas, fórmula cuadrática); el bueno pasa por x²+y² como penúltimo paso y da 0 casi sin calcular.",
+        "Factor tactic: \"factoriza sin piedad\" — multiplicar rara vez simplifica. Las dos fábricas: xⁿ−yⁿ = (x−y)(xⁿ⁻¹+xⁿ⁻²y+⋯+yⁿ⁻¹) para todo n, y xⁿ+yⁿ = (x+y)(xⁿ⁻¹−xⁿ⁻²y+⋯+yⁿ⁻¹) SOLO para n impar. Hay que saberlas activamente, no de memoria pasiva.",
+        "Sumar cero creativamente (y su hermana: multiplicar por uno astutamente): x⁴+4 = x⁴+4x²+4 − 4x² = (x²+2)² − (2x)² = (x²+2x+2)(x²−2x+2). Si los cuadrados perfectos no están, créalos — esa es la jugada crucial, no la fórmula.",
+        "Completar el cuadrado es el prototipo de crear cuadrados. Variantes que generan teoría: (x−y)²+4xy = (x+y)² produce ternas pitagóricas al sustituir cuadrados; (x²+y²)(a²+b²) = (xa−by)²+(ya+bx)² muestra que \"ser suma de dos cuadrados\" se conserva al multiplicar.",
+        "Sustitución: si una expresión fea se REPITE, bautízala. AIME 1983: en x²+18x+30 = 2√(x²+18x+45), poner y = √(x²+18x+45) (con y ≥ 0) colapsa todo a y²−2y−15 = (y−5)(y+3) = 0. La simetría también sugiere sustituciones: y = x + 1/x parte ecuaciones recíprocas de grado 4 en dos cuadráticas."
+      ],
+      "banco": [
+        {
+          "id": "z52-q1",
+          "tipo": "quiz",
+          "enunciado": "En el problema \"si x+y = xy = 3, halla x³+y³\", ¿por qué Zeitz llama \"el mal camino\" a resolver el sistema, y cuál es el camino del toque ligero?",
+          "solucion": "Resolver el sistema exige la fórmula cuadrática, produce raíces complejas y es tedioso y propenso a errores. El toque ligero apunta al objetivo: x³+y³ pide x²+y² como penúltimo paso. De (x+y)² = 9 y xy = 3 sale x²+y² = 3; entonces (x+y)(x²+y²) = x³+y³+xy(x+y) da 9 = x³+y³+9, es decir x³+y³ = 0.",
+          "explicacion": "La pregunta guía no es \"¿qué puedo calcular?\" sino \"¿qué necesito justo antes del final?\" — penúltimo paso + simetría."
+        },
+        {
+          "id": "z52-q2",
+          "tipo": "quiz",
+          "enunciado": "Enuncia la Factor Tactic y las dos factorizaciones de xⁿ±yⁿ con sus condiciones exactas. ¿Cuál de las dos falla para n par y por qué señal lo recuerdas?",
+          "solucion": "\"Factoriza sin piedad\": ante una expresión, intenta factorizar antes que expandir. xⁿ−yⁿ = (x−y)(xⁿ⁻¹+xⁿ⁻²y+⋯+yⁿ⁻¹) vale para TODO n; xⁿ+yⁿ = (x+y)(xⁿ⁻¹−xⁿ⁻²y+⋯+yⁿ⁻¹), con signos alternados, vale SOLO para n impar. Señal: x = −y anula x+y, y xⁿ+yⁿ solo se anula ahí cuando n es impar — la raíz delata el factor.",
+          "explicacion": "Probar la raíz candidata (teorema del factor) es la forma activa de recordar la condición, mejor que memorizarla."
+        },
+        {
+          "id": "z52-q3",
+          "tipo": "acertijo",
+          "enunciado": "Factoriza x⁴+4 como producto de dos polinomios con coeficientes reales (sin usar números complejos).",
+          "solucion": "Suma cero creativamente para fabricar un cuadrado: x⁴+4 = x⁴+4x²+4 − 4x² = (x²+2)² − (2x)² = (x²+2x+2)(x²−2x+2). La identidad general (Sophie Germain) es a⁴+4b⁴ = (a²+2b²+2ab)(a²+2b²−2ab).",
+          "explicacion": "El obstáculo era \"no es diferencia de cuadrados\"; la respuesta no fue abandonar la herramienta sino CREAR los cuadrados que faltaban."
+        },
+        {
+          "id": "z52-q4",
+          "tipo": "disparador",
+          "enunciado": "En una ecuación aparece la misma expresión cuadrática dos veces, una de ellas bajo una raíz: x²+18x+30 = 2√(x²+18x+45). ¿Qué jugada debía dispararse y qué cuidado exige?",
+          "solucion": "Sustituir la expresión repetida: y = √(x²+18x+45), recordando la restricción y ≥ 0. La ecuación colapsa a y² − 15 = 2y, se factoriza (y−5)(y+3) = 0, se descarta y = −3 por la restricción, y de y = 5 se vuelve a x (AIME 1983: el producto de las raíces reales resulta 20).",
+          "explicacion": "Señal → jugada: expresión fea REPETIDA → bautízala con una variable nueva, y arrastra siempre el dominio de la sustitución (aquí y ≥ 0) para descartar raíces fantasma."
+        },
+        {
+          "id": "z52-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante afirma: \"x⁴+4 no tiene raíces reales, así que es irreducible sobre los reales: no se puede factorizar.\" ¿Qué está bien y qué está mal?",
+          "solucion": "Bien: x⁴+4 > 0 para todo x real, así que efectivamente no tiene raíces reales (no hay factores LINEALES reales). Mal: confunde \"sin raíces reales\" con \"irreducible\". Sobre los reales todo polinomio se factoriza en piezas de grado ≤ 2; x⁴+4 = (x²+2x+2)(x²−2x+2), dos cuadráticas sin raíces reales.",
+          "explicacion": "Sin raíces reales solo prohíbe factores de grado 1. Los factores cuadráticos irreducibles existen y la suma-cero-creativa los encuentra."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-53",
+      "bloque": "fase-4",
+      "orden": 26,
+      "titulo": "Zeitz · Sumas y productos: el telescopio",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 5.3, Sums and Products (pp. 157-164): notación Σ y Π (p. 157), serie aritmética y pareo de Gauss (p. 158), serie geométrica y el telescope tool (pp. 158-159), la suma de los primeros n cuadrados por telescopio imperfecto (pp. 159-160), la serie armónica diverge (p. 162).",
+      "dosis": "1 sección (~8 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Dominar las dos jugadas maestras para sumar: el pareo simétrico (series aritméticas) y el telescopio (series geométricas y casi todo lo demás), incluida su versión imperfecta.",
+      "heuristicas": [
+        "simetria",
+        "penultimo-paso"
+      ],
+      "ideas_clave": [
+        "Serie aritmética = pareo de Gauss: escribe la suma dos veces, la segunda al revés; cada par de columnas suma lo mismo (a+ℓ) y sale S = n(a+ℓ)/2 — \"promedio por cantidad\". Es la herramienta de SIMETRÍA aditiva.",
+        "Serie geométrica: el pareo fracasa porque no hay simetría aditiva. La jugada es comparar S con rS — casi idénticas — y restar: S − rS = a − arⁿ, de donde S = a(1−rⁿ)/(1−r). Esa resta donde casi todo se cancela es el TELESCOPIO.",
+        "Telescopio en fracciones: 1/(k(k+1)) = 1/k − 1/(k+1), y la suma 1/(1·2)+⋯+1/(99·100) colapsa a 1 − 1/100. Lo difícil no es cancelar: es REESCRIBIR cada término como diferencia de consecutivos (sumar cero creativamente, otra vez).",
+        "El telescopio imperfecto también gana: para Σj² no existe u con u(k+1)−u(k) = k² evidente, pero u(k) = k³ da (k+1)³−k³ = 3k²+3k+1, que telescopia a (n+1)³−1 y DESPEJA la fórmula de Σj². Wishful thinking sistemático: no necesitas la diferencia exacta, solo una parecida.",
+        "El puente con los productos cruzados: (Σxᵢ)² = Σxᵢ² + 2Σ_{i<j} xᵢxⱼ, y una suma con índices 1 ≤ i < j ≤ n tiene C(n,2) términos. Este vocabulario de índices reaparece en Cauchy-Schwarz (§5.5) y en toda la combinatoria."
+      ],
+      "banco": [
+        {
+          "id": "z53-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué el pareo de Gauss funciona en la serie aritmética pero fracasa en la geométrica, y qué herramienta lo reemplaza ahí?",
+          "solucion": "El pareo explota la simetría ADITIVA: en una progresión aritmética, primero+último = segundo+penúltimo = …, así que las dos copias (una invertida) suman columnas constantes. En la geométrica los términos crecen multiplicativamente y los pares no son constantes. La reemplaza el telescopio: comparar S con rS, dos series casi idénticas cuya resta cancela todo salvo los extremos.",
+          "explicacion": "Dos estructuras, dos jugadas: simetría aditiva → parea; razón constante → compara S con rS y resta."
+        },
+        {
+          "id": "z53-q2",
+          "tipo": "acertijo",
+          "enunciado": "Calcula 1/(1·2) + 1/(2·3) + 1/(3·4) + ⋯ + 1/(99·100) como fracción irreducible.",
+          "solucion": "99/100. Cada término se reescribe 1/(k(k+1)) = 1/k − 1/(k+1); la suma telescopia: (1 − 1/2) + (1/2 − 1/3) + ⋯ + (1/99 − 1/100) = 1 − 1/100 = 99/100.",
+          "explicacion": "La jugada está en la reescritura en fracciones parciales, no en la cancelación (que es automática)."
+        },
+        {
+          "id": "z53-q3",
+          "tipo": "quiz",
+          "enunciado": "Reproduce el telescopio IMPERFECTO con el que Zeitz deduce la fórmula de 1²+2²+⋯+n²: ¿qué sucesión pruebas, qué obtienes y cómo cierras?",
+          "solucion": "Quisiéramos u con u(k+1)−u(k) = k². Probamos u(k) = k³: (k+1)³−k³ = 3k²+3k+1 — no es k², pero sirve. Sumando de 1 a n: Σ(3j²+3j+1) telescopia a (n+1)³−1 = n³+3n²+3n. Como Σj = n(n+1)/2 y Σ1 = n son conocidas, se despeja 3Σj² = n³+3n²+3n − 3n(n+1)/2 − n, de donde Σj² = n(n+1)(2n+1)/6.",
+          "explicacion": "No exigir el telescopio perfecto es la lección: una diferencia PARECIDA al término buscado basta, porque el resto ya se sabe sumar."
+        },
+        {
+          "id": "z53-q4",
+          "tipo": "disparador",
+          "enunciado": "¿Qué señales de un enunciado deben hacerte pensar \"telescopio\" y cuál es la jugada concreta?",
+          "solucion": "Señales: sumas (o productos) de muchos términos con estructura entre índices CONSECUTIVOS — productos k(k+1), raíces √(k+1)±√k, razón constante, factoriales consecutivos, logaritmos de cocientes. Jugada: reescribir cada término como u(k+1) − u(k) (o como cociente u(k+1)/u(k) en productos) para que la suma colapse a los extremos.",
+          "explicacion": "El telescopio es \"sumar cero creativamente\" en serie: introduces términos intermedios que se anulan por diseño."
+        },
+        {
+          "id": "z53-q5",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante escribe: \"1/(k(k+2)) = 1/k − 1/(k+2), así que en Σ_{k=1}^{n} 1/(k(k+2)) se cancela todo salvo el primero y el último término.\" Encuentra los dos errores.",
+          "solucion": "Primero: la descomposición correcta lleva un factor 1/2: 1/(k(k+2)) = (1/2)(1/k − 1/(k+2)) — verifícalo con k = 1. Segundo: como el salto es de 2, sobreviven DOS términos por cada extremo: la suma es (1/2)(1 + 1/2 − 1/(n+1) − 1/(n+2)). Un telescopio con salto d deja d supervivientes en cada punta.",
+          "explicacion": "Siempre verifica la descomposición con un valor pequeño y revisa QUÉ sobrevive escribiendo los primeros y últimos términos a mano (caso pequeño antes de generalizar)."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-54",
+      "bloque": "fase-4",
+      "orden": 27,
+      "titulo": "Zeitz · Polinomios: ceros, coeficientes y Vieta",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 5.4, Polynomials (pp. 164-174): teoremas del resto y del factor (pp. 165-166), teorema fundamental del álgebra y multiplicidad (p. 167), el USAMO 1975 del polinomio definido a propósito (pp. 167-168), relación ceros↔coeficientes — fórmulas de Vieta (pp. 168-170) y el USAMO 1984 (p. 170).",
+      "dosis": "1 sección (~10 pp) + 2-3 problemas con bucle completo.",
+      "objetivo": "Tratar los polinomios desde sus ceros: \"conocer los ceros es conocer el polinomio\" — y cuando los ceros no se ven, definir otro polinomio cuyos ceros sí se vean, o usar Vieta para trabajar con combinaciones simétricas sin resolver nada.",
+      "heuristicas": [
+        "parametrizar-dibujar",
+        "pensamiento-ilusorio"
+      ],
+      "ideas_clave": [
+        "Teorema del resto: dividir P(x) entre (x−a) deja resto P(a). Demostración de una línea: P(x) = Q(x)(x−a) + r es una identidad, y el tool \"sustituye valores convenientes\" con x = a da P(a) = r. Corolario inmediato (teorema del factor): a es cero ⟺ (x−a) divide a P.",
+        "\"Conocer los ceros es conocer el polinomio\": por el teorema fundamental, P de grado n se escribe aₙ(x−r₁)⋯(x−rₙ). Si los ceros de TU polinomio no se ven, define OTRO cuyos ceros sí: en USAMO 1975 (P(k) = k/(k+1) para k = 0..n), el polinomio Q(x) = (x+1)P(x) − x tiene ceros 0,1,…,n, luego Q = C·x(x−1)⋯(x−n).",
+        "Una identidad polinómica vale para TODO x: elige el valor que mate lo molesto. En USAMO 1975, x = −1 anula (x+1)P(x) y despeja C; después x = n+1 da la respuesta. Sustituir valores convenientes es la herramienta más barata del capítulo.",
+        "Vieta (polinomio mónico): aₖ = (−1)ⁿ⁻ᵏ · (suma de todos los productos de n−k ceros distintos). Para la cúbica x³+a₂x²+a₁x+a₀ con ceros q,r,s: a₂ = −(q+r+s), a₁ = qr+qs+rs, a₀ = −qrs. Memoriza el patrón \"suma de productos\" con signos alternados.",
+        "Vieta rara vez pide hallar los ceros: pide combinaciones SIMÉTRICAS de ellos. USAMO 1984: con ab = −32 y abcd = −1984 sale cd = 62; agrupando (a+b) y (c+d) como nuevas incógnitas, el sistema de Vieta se resuelve sin conocer jamás a,b,c,d individualmente."
+      ],
+      "banco": [
+        {
+          "id": "z54-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el teorema del resto y demuéstralo en una línea. ¿Qué herramienta general de Zeitz usa la demostración?",
+          "solucion": "Si P(x) se divide entre (x−a), el resto es P(a). Demostración: el algoritmo de la división da la IDENTIDAD P(x) = Q(x)(x−a) + r, válida para todo x; sustituyendo el valor conveniente x = a queda P(a) = r. La herramienta: \"sustituir valores convenientes\" en identidades.",
+          "explicacion": "De aquí sale gratis el teorema del factor: P(a) = 0 ⟺ (x−a) es factor. Es la base de toda la sección."
+        },
+        {
+          "id": "z54-q2",
+          "tipo": "quiz",
+          "enunciado": "USAMO 1975: P tiene grado n y P(k) = k/(k+1) para k = 0,1,…,n. Reproduce la jugada completa para hallar P(n+1).",
+          "solucion": "Los ceros de P no se ven, así que definimos Q(x) = (x+1)P(x) − x, de grado n+1, que cumple Q(k) = 0 para k = 0..n. Entonces Q(x) = C·x(x−1)⋯(x−n). Para hallar C sustituimos el valor conveniente x = −1: Q(−1) = 1 = C(−1)ⁿ⁺¹(n+1)!, luego C = (−1)ⁿ⁺¹/(n+1)!. Finalmente x = n+1: (n+2)P(n+1) − (n+1) = (−1)ⁿ⁺¹, de donde P(n+1) = (n+1+(−1)ⁿ⁺¹)/(n+2).",
+          "explicacion": "Tres herramientas encadenadas: definir una función nueva, teorema del factor, y sustituir valores convenientes (dos veces)."
+        },
+        {
+          "id": "z54-q3",
+          "tipo": "quiz",
+          "enunciado": "Escribe las tres relaciones de Vieta para la cúbica mónica x³+a₂x²+a₁x+a₀ con ceros q, r, s, y el patrón general para grado n.",
+          "solucion": "a₂ = −(q+r+s); a₁ = qr+qs+rs; a₀ = −qrs. En general, para un mónico de grado n: aₖ = (−1)ⁿ⁻ᵏ por la suma de todos los productos de n−k ceros con etiquetas distintas. Los signos alternan; el término independiente es (−1)ⁿ por el producto de todos los ceros.",
+          "explicacion": "El origen es contar cómo se forma cada término al expandir (x−r₁)⋯(x−rₙ): elegir x o −rᵢ en cada factor — combinatoria pura (C(n,k) términos por grado)."
+        },
+        {
+          "id": "z54-q4",
+          "tipo": "disparador",
+          "enunciado": "Un problema da información sobre las raíces de un polinomio (su suma, su producto, el producto de dos de ellas) pero NO pide las raíces. ¿Qué jugada debía dispararse y qué error de principiante evita?",
+          "solucion": "Vieta: traducir los datos a las funciones simétricas de las raíces y manipular ESAS ecuaciones, agrupando si conviene (a+b y c+d como bloques, como en USAMO 1984). El error que evita: intentar resolver la ecuación para hallar las raíces explícitas — normalmente imposible o innecesario.",
+          "explicacion": "Señal → jugada: \"relaciones entre raíces sin pedir raíces\" → Vieta + álgebra de combinaciones simétricas. Las raíces individuales casi nunca importan."
+        },
+        {
+          "id": "z54-q5",
+          "tipo": "acertijo",
+          "enunciado": "Sin resolver x² − 5x + 3 = 0, calcula la suma de los CUADRADOS de sus raíces.",
+          "solucion": "19. Por Vieta, r+s = 5 y rs = 3. El penúltimo paso: r²+s² = (r+s)² − 2rs = 25 − 6 = 19.",
+          "explicacion": "Vieta + la identidad del cuadrado del binomio: el dúo que calcula expresiones simétricas de raíces sin conocerlas. Compara con z52-q1 — es la misma jugada del toque ligero."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-55",
+      "bloque": "fase-4",
+      "orden": 28,
+      "titulo": "Zeitz · Desigualdades: AM-GM, massage y Cauchy-Schwarz",
+      "libro": "Zeitz — The Art and Craft of Problem Solving (3.ª ed.)",
+      "lectura": "Sección 5.5, Inequalities (pp. 174-186): aritmética básica y jerarquía de crecimiento (pp. 174-175), demostraciones con el signo \"?\" (pp. 175-176), la desigualdad AM-GM y su lectura geométrica (pp. 177-181), massage con telescopio (pp. 181-182) y Cauchy-Schwarz (pp. 183-184).",
+      "dosis": "1 sección (~12 pp) + 2-3 problemas con bucle completo. Conecta directo con tu prioridad de OPTIMIZACIÓN: AM-GM es maximizar/minimizar sin cálculo.",
+      "objetivo": "Probar y usar desigualdades como herramienta de estimación y optimización: reducir la desigualdad alegada a un cuadrado obvio, aplicar AM-GM con su caso de igualdad, y aflojar expresiones (massage) hasta que telescopien.",
+      "heuristicas": [
+        "caso-extremo",
+        "simetria"
+      ],
+      "ideas_clave": [
+        "Las igualdades son raras; la matemática real estima. Técnica del \"?\": escribe la desigualdad ALEGADA con un signo de interrogación y opera manteniendo equivalencia hasta llegar a algo obviamente cierto — típicamente (x−y)² ≥ 0. Cuidado: tomar recíprocos INVIERTE el sentido (si ambos lados tienen el mismo signo).",
+        "Jerarquía de crecimiento (de menor a mayor): logaritmos < potencias < exponenciales, donde \"domina\" significa \"para todo x suficientemente grande\". 0.001x² termina ganándole a 100000x. Dibuja gráficas hasta interiorizarlo.",
+        "AM-GM: (x+y)/2 ≥ √(xy) para no negativos, con igualdad SOLO si x = y. Geometría: de todos los rectángulos con perímetro fijo, el cuadrado maximiza el área. La demostración baja por equivalencias hasta (x−y)² ≥ 0. Versión n: AM ≥ GM con igualdad sii todos iguales.",
+        "Para optimizar, primero ADIVINA el caso de igualdad (casi siempre el punto simétrico: todas las variables iguales); eso te dice cómo partir los términos para que AM-GM cierre exacto. Si tu aplicación de AM-GM no alcanza la igualdad en el candidato, la partición está mal elegida.",
+        "Massage: afloja término a término cuando solo necesitas una estimación. Ejemplo 5.5.19: 2(√(n+1)−√n) < 1/√n < 2(√n−√(n−1)) (racionalizando), ambos lados telescopian y dan ⌊Σ₁¹⁰⁰⁰⁰ 1/√n⌋ = 198 — afinando el primer término cuando el encaje es burdo.",
+        "Cauchy-Schwarz: (Σaᵢbᵢ)² ≤ (Σaᵢ²)(Σbᵢ²), igualdad sii las sucesiones son proporcionales. Nace de \"una suma de cuadrados es ≥ 0\" aplicada a los términos (aᵢbⱼ−aⱼbᵢ)². Señal: productos cruzados, o un cuadrado de suma contra sumas de cuadrados."
+      ],
+      "banco": [
+        {
+          "id": "z55-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Cuál es mayor, √19+√99 o √20+√98? Resuélvelo con la técnica del \"?\" y di qué operación habría obligado a voltear el signo.",
+          "solucion": "√20+√98 es mayor. Con el \"?\": elevar al cuadrado ambos lados (positivos) deja 118+2√(19·99) ? 118+2√(20·98), o sea 19·99 ? 20·98. Restando 19·98: 19 ? 98, y como 19 < 98 el \"?\" se resuelve en \"<\" en toda la cadena. Habría volteado el signo tomar recíprocos de ambos lados (o multiplicar por un negativo).",
+          "explicacion": "Cada paso debe ser una EQUIVALENCIA; el \"?\" solo se sustituye al final, cuando la desigualdad es obvia."
+        },
+        {
+          "id": "z55-q2",
+          "tipo": "quiz",
+          "enunciado": "Enuncia AM-GM para dos variables con su caso de igualdad, da su lectura geométrica, y di a qué cuadrado se reduce la demostración.",
+          "solucion": "Para x, y ≥ 0: (x+y)/2 ≥ √(xy), con igualdad si y solo si x = y. Lectura geométrica: entre todos los rectángulos de perímetro fijo, el cuadrado tiene el área máxima. La demostración baja por equivalencias hasta x² − 2xy + y² ≥ 0, es decir (x−y)² ≥ 0 — y de ahí sale también que la igualdad exige x = y.",
+          "explicacion": "Casi toda desigualdad elemental es un cuadrado disfrazado; AM-GM es el disfraz más usado."
+        },
+        {
+          "id": "z55-q3",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuál es mayor, 1998/1999 o 1999/2000? Da dos caminos distintos de la sección.",
+          "solucion": "1999/2000. Camino 1 (definir función + afear útilmente): f(x) = x/(x+1) = 1/(1+1/x) es creciente — al crecer x, 1/x decrece y la fracción crece. Camino 2 (AM-GM): comparar equivale a 1998·2000 ? 1999², y AM-GM dice que el producto de dos números distintos con suma fija es MENOR que el cuadrado del promedio: 1998·2000 < 1999².",
+          "explicacion": "Nota el \"afeamiento\" deliberado de f: 1/(1+1/x) es más fea tipográficamente pero transparente para el análisis. A veces conviene hacer una expresión más fea para que hable."
+        },
+        {
+          "id": "z55-q4",
+          "tipo": "quiz",
+          "enunciado": "Reproduce el massage del Ejemplo 5.5.19: ¿cómo se encaja 1/√n para calcular ⌊Σ_{n=1}^{10000} 1/√n⌋ sin calculadora, y por qué hace falta afinar?",
+          "solucion": "Racionalizando: 2(√(n+1)−√n) = 2/(√(n+1)+√n) < 1/√n < 2/(√n+√(n−1)) = 2(√n−√(n−1)). Ambos lados telescopian: 2√10001−2 < A < 2√10000 = 200, lo que deja ⌊A⌋ en 198 o 199. El encaje superior es burdo en n = 1 (sobreestima exactamente en 1), así que se separa el término n = 1 y se aplica el encaje desde n = 2: queda A entre 198 y 199, luego ⌊A⌋ = 198.",
+          "explicacion": "Massage + telescopio: perturbar cada término hacia algo que colapse, y refinar SOLO donde la cota es mala (los primeros términos)."
+        },
+        {
+          "id": "z55-q5",
+          "tipo": "disparador",
+          "enunciado": "\"Halla el máximo de un producto cuando la suma está fija\" (o el mínimo de una suma con producto fijo). ¿Qué jugada debía dispararse y cuál es el primer paso ANTES de calcular?",
+          "solucion": "AM-GM. Primer paso: adivinar el caso de igualdad — el punto simétrico donde todas las variables son iguales — y verificar que la partición de términos que usarás alcanza la igualdad exactamente ahí. Si no la alcanza, reparte los términos de otro modo (pesos) antes de seguir.",
+          "explicacion": "Señal → jugada: optimizar producto↔suma → AM-GM anclada en su caso de igualdad. La igualdad primero, el álgebra después — así se elige la partición correcta."
+        }
+      ]
+    },
+    {
+      "id": "engel-ineq",
+      "bloque": "fase-4",
+      "orden": 29,
+      "titulo": "Engel · Cantera de desigualdades",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo 7, Inequalities (pp. 161-170): todo nace de x² ≥ 0 y la cadena de medias (pp. 161-163), ejemplos E1-E6 (pp. 162-163), Nesbitt con sus cuatro demostraciones (pp. 163-164). El resto del capítulo es cantera para problemas sueltos.",
+      "dosis": "Lectura corta (~6 pp) + elegir 2-3 problemas del capítulo como sesiones del camino 1.",
+      "objetivo": "Reconocer los CUATRO estilos de demostración de desigualdades (reducir a cuadrados, sumar desigualdades básicas, ordenar wlog, normalizar por homogeneidad) y la cadena de medias como repertorio aplicable sin demostración.",
+      "heuristicas": [
+        "simetria",
+        "caso-extremo"
+      ],
+      "ideas_clave": [
+        "Todo nace de x² ≥ 0 (y de Σxᵢ² ≥ 0). Con x = a−b se despliega el abanico: a²+b² ≥ 2ab, 2(a²+b²) ≥ (a+b)², a/b + b/a ≥ 2, x + 1/x ≥ 2… La cadena completa para a,b > 0: min ≤ HM = 2ab/(a+b) ≤ GM = √(ab) ≤ AM = (a+b)/2 ≤ QM = √((a²+b²)/2) ≤ max, igualdad sii a = b. En competencia se APLICAN sin demostrar.",
+        "Multiplicar desigualdades del mismo sentido (lados positivos): (a+b)(b+c)(c+a) ≥ 8abc sale de multiplicar tres AM-GM de dos variables. Divide la desigualdad grande en pares que ya sabes manejar.",
+        "a²+b²+c² ≥ ab+bc+ca tiene cuatro demostraciones-modelo que conviene conocer TODAS: (1) multiplicar por 2 y reducir a (a−b)²+(b−c)²+(c−a)² ≥ 0; (2) sumar las tres AM-GM por pares; (3) ordenar wlog a ≥ b ≥ c y factorizar (a−c)(a−b)+(b−c)² ≥ 0; (4) usar homogeneidad para normalizar y reducir variables. Son los cuatro estilos del oficio.",
+        "Nesbitt: a/(b+c) + b/(a+c) + c/(a+b) ≥ 3/2. La jugada estructural: sumar 3 (uno a cada fracción) simetriza los numeradores a (a+b+c), y todo se reduce a la forma producto de AM-HM: (u+v+w)(1/u+1/v+1/w) ≥ 9 — que a su vez es n + 2·C(3,2) pares xᵢ/xⱼ+xⱼ/xᵢ ≥ 2. Generalización: (Σaᵢ)(Σ1/aᵢ) ≥ n².",
+        "Reducir el espacio ANTES de calcular: si la desigualdad es simétrica, ordena wlog a ≥ b ≥ c; si es homogénea de grado d (f(ta,tb,tc) = t^d f(a,b,c)), normaliza gratis (a+b+c = 1 o abc = 1). Ambas jugadas convierten un mar de casos en uno solo."
+      ],
+      "banco": [
+        {
+          "id": "eng7-q1",
+          "tipo": "quiz",
+          "enunciado": "Escribe la cadena completa de medias para dos positivos a, b (con las cinco estaciones y sus fórmulas) y su caso de igualdad. ¿Qué estatus tiene esta cadena en una olimpiada?",
+          "solucion": "min(a,b) ≤ HM = 2ab/(a+b) ≤ GM = √(ab) ≤ AM = (a+b)/2 ≤ QM = √((a²+b²)/2) ≤ max(a,b), con igualdad en cualquier eslabón si y solo si a = b. En competencia se aplican directamente, sin demostrarlas: son repertorio, no teoremas a probar.",
+          "explicacion": "Engel: \"todo concursante debe poder aplicarlas en cualquier situación\". El entrenamiento es reconocer CUÁL eslabón pide cada problema."
+        },
+        {
+          "id": "eng7-q2",
+          "tipo": "acertijo",
+          "enunciado": "Demuestra que para a, b, c ≥ 0 se cumple (a+b)(b+c)(c+a) ≥ 8abc.",
+          "solucion": "Por AM-GM en cada par: (a+b)/2 ≥ √(ab), (b+c)/2 ≥ √(bc), (c+a)/2 ≥ √(ca). Multiplicando las tres (todo es no negativo): (a+b)(b+c)(c+a)/8 ≥ √(a²b²c²) = abc. Igualdad sii a = b = c.",
+          "explicacion": "Divide y vencerás: una desigualdad de tres variables partida en tres desigualdades de dos que ya posees."
+        },
+        {
+          "id": "eng7-q3",
+          "tipo": "quiz",
+          "enunciado": "Para a²+b²+c² ≥ ab+bc+ca, Engel da cuatro demostraciones de estilos distintos. Nómbralas y di qué enseña cada una.",
+          "solucion": "(1) Reducir a cuadrados: multiplicar por 2 y obtener (a−b)²+(b−c)²+(c−a)² ≥ 0 — el origen x² ≥ 0. (2) Sumar básicas: a²+b² ≥ 2ab por pares y promediar — reutiliza el repertorio. (3) Ordenar: wlog a ≥ b ≥ c y factorizar hasta (a−c)(a−b)+(b−c)² ≥ 0 — la simetría permite suponer un orden. (4) Normalizar: f es homogénea de grado 2, así que se puede fijar una escala y bajar el número de variables libres.",
+          "explicacion": "No es redundancia: cada estilo es la llave de problemas donde los otros tres se atascan. Tener los cuatro es tener el oficio."
+        },
+        {
+          "id": "eng7-q4",
+          "tipo": "quiz",
+          "enunciado": "Demuestra (a₁+⋯+aₙ)(1/a₁+⋯+1/aₙ) ≥ n² para positivos, contando términos, y di cómo cierra esta forma la desigualdad de Nesbitt.",
+          "solucion": "Al expandir el producto salen n términos aᵢ·(1/aᵢ) = 1 y C(n,2) pares aᵢ/aⱼ + aⱼ/aᵢ, cada uno ≥ 2 (es x+1/x ≥ 2). Total ≥ n + 2·C(n,2) = n + n(n−1) = n². Para Nesbitt: sumando 3 a f(a,b,c) se llega a (1/2)[(a+b)+(b+c)+(c+a)]·[1/(a+b)+1/(b+c)+1/(c+a)] ≥ (1/2)·9, luego f ≥ 9/2 − 3 = 3/2.",
+          "explicacion": "La versión producto de AM-HM es de las desigualdades más rentables del repertorio: aparece donde haya sumas contra sumas de recíprocos."
+        },
+        {
+          "id": "eng7-q5",
+          "tipo": "disparador",
+          "enunciado": "Te enfrentas a una desigualdad SIMÉTRICA y HOMOGÉNEA en a, b, c. ¿Qué dos jugadas estructurales debían dispararse antes de hacer cualquier álgebra?",
+          "solucion": "Por la simetría: ordenar sin pérdida de generalidad (wlog a ≥ b ≥ c) — o al menos suponer que a es extremal. Por la homogeneidad (f(ta,tb,tc) = t^d·f(a,b,c)): normalizar una escala gratis, p. ej. a+b+c = 1 o abc = 1. Ambas REDUCEN el espacio de búsqueda antes de calcular: menos variables libres, menos casos.",
+          "explicacion": "Señal → jugada: simetría → ordena wlog; homogeneidad → normaliza. Son los dos descuentos estructurales que Engel cobra siempre antes de pelear."
         }
       ]
     }
