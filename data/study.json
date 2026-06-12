@@ -104,6 +104,11 @@
       "id": "ecuacion-funcional",
       "nombre": "Ecuación funcional",
       "descripcion": "Sustituir valores especiales (0, 1, x=y, y=0) para forzar la forma de f; verificar que la conjetura satisface la ecuación."
+    },
+    {
+      "id": "skew-drift",
+      "nombre": "Training-serving skew y drift",
+      "descripcion": "El modelo en producción recibe features distintas de las del entrenamiento (skew) o la distribución cambia con el tiempo (drift). Defensa: definición única de features y monitoreo continuo."
     }
   ],
   "bloques": [
@@ -492,11 +497,11 @@
           },
           {
             "id": "f4-ex-7",
-            "heuristica": "invariante",
-            "enunciado": "Los números 1, 2, …, 9 se colocan al azar en las 9 casillas de una cuadrícula 3×3 (cada número se usa una vez). ¿Cuál es la probabilidad de que la suma de cada fila y de cada columna sea impar?",
-            "pista": "Olvida los valores: solo importa la PARIDAD. Hay cinco impares y cuatro pares. ¿Qué patrones de casillas pueden ocupar los impares para que las seis sumas salgan impares?",
-            "solucion": "1/14. Una suma de 3 números es impar sii contiene 1 o 3 impares. Cada fila y columna debe tener 1 o 3 casillas impares, y los conteos por fila deben sumar 5: solo puede ser (3,1,1) — y lo mismo por columnas. Eso fuerza que las casillas impares formen una CRUZ: una fila llena más una columna llena. Hay 3·3 = 9 cruces posibles entre los C(9,5) = 126 patrones de 5 casillas: 9/126 = 1/14. (Las permutaciones de valores dentro de un patrón son equiprobables y se cancelan.)",
-            "disparador": "\"Suma par/impar\" con valores colocados al azar → proyecta al invariante de PARIDAD y cuenta patrones de casillas, no permutaciones: la uniformidad respeta la proyección.",
+            "heuristica": "casework",
+            "enunciado": "Se eligen dos números reales, de forma independiente y uniforme, del intervalo [−20, 10]. ¿Cuál es la probabilidad de que su producto sea mayor que cero?",
+            "pista": "¿Qué condición sobre los SIGNOS de los dos números hace positivo el producto? ¿Qué fracción del intervalo [−20, 10] es negativa?",
+            "solucion": "5/9. El producto es positivo exactamente cuando ambos tienen el mismo signo (la probabilidad de que alguno sea exactamente 0 es nula). Cada número es negativo con probabilidad 20/30 = 2/3 y positivo con probabilidad 10/30 = 1/3. Por independencia: (2/3)² + (1/3)² = 4/9 + 1/9 = 5/9.",
+            "disparador": "Pregunta por el SIGNO de un producto de variables aleatorias → casework por signos; en un intervalo uniforme, la probabilidad de cada signo es la fracción de longitud correspondiente.",
             "source": "AMC 10A 2019 P20",
             "source_url": "https://artofproblemsolving.com/wiki/index.php/2019_AMC_10A_Problems/Problem_20",
             "year": "2019"
@@ -659,7 +664,7 @@
             "id": "f6-ex-5",
             "heuristica": "ecuacion-funcional",
             "enunciado": "Sea f: ℝ → ℝ una función continua tal que f(x+y) = f(x) + f(y) para todos x, y ∈ ℝ. Demuestra que f(x) = cx para alguna constante c.",
-            "solucion": "Paso 1 (naturales): por inducción f(n) = nf(1) =: nc. Paso 2 (racionales): f(1/q)·q = f(1) → f(1/q)=c/q; f(p/q)=pc/q=c·(p/q). Paso 3 (reales): para x irracional, existe una sucesión racional xₙ→x; por continuidad f(x) = lím f(xₙ) = lím cxₙ = cx. Por tanto f(x) = cx con c = f(1).",
+            "solucion": "Paso 1 (naturales): por inducción f(n) = nf(1) =: nc. Paso 2 (enteros y racionales): x=y=0 da f(0)=0, y y=−x da f(−x)=−f(x). De f(1)=f(q·(1/q))=qf(1/q) sale f(1/q)=c/q y f(p/q)=cp/q; por imparidad vale también para racionales negativos. Paso 3 (reales): para x irracional, existe una sucesión racional xₙ→x; por continuidad f(x) = lím f(xₙ) = lím cxₙ = cx. Por tanto f(x) = cx con c = f(1).",
             "disparador": "'f(x+y)=f(x)+f(y)' → Cauchy; sustituir y=0, luego y=x, construir la solución en ℚ por inducción, extender a ℝ por continuidad.",
             "pista": "Prueba primero que f(n) = nf(1) para n entero, luego extiende a racionales usando f(q·(1/q)) = qf(1/q).",
             "source": "clásico"
@@ -694,6 +699,7 @@
         "arena-q2",
         "arena-m1",
         "arena-m2",
+        "arena-s1",
         "arena-h1",
         "arena-h2"
       ],
@@ -724,7 +730,7 @@
           {
             "id": "f7-ex-2",
             "heuristica": "bayes-tasa-base",
-            "enunciado": "Un modelo de ML detecta anomalías en pipelines de datos. Tiene sensibilidad 94% y especificidad 99.2%. En producción, el 0.5% de los pipelines tienen anomalías reales en cualquier momento dado. Tu equipo recibe una alerta. ¿Cuál es la probabilidad de que sea anomalía real? ¿Cuántos pipelines deberías monitorear simultáneamente para que, cuando suene la alarma, haya >50% de probabilidad de que sea real?",
+            "enunciado": "Un modelo de ML detecta anomalías en pipelines de datos. Tiene sensibilidad 94% y especificidad 99.2%. En producción, el 0.5% de los pipelines tienen anomalías reales en cualquier momento dado. Tu equipo recibe una alerta. ¿Cuál es la probabilidad de que sea anomalía real? ¿Qué prevalencia mínima necesitaría el conjunto de pipelines monitoreados para que, cuando suene la alarma, haya >50% de probabilidad de que sea real — y cómo conseguirías esa prevalencia sin cambiar el modelo?",
             "pistas": [
               "Separa los dos tipos de positivos: verdaderos positivos (anomalía real + detectado) y falsos positivos (sin anomalía + detectado de todas formas).",
               "Tabla de contingencia: imagina 10,000 pipelines. ¿Cuántos tienen anomalía real? ¿Cuántos de esos los detecta el modelo? ¿Cuántos sanos produce falsas alarmas?",
@@ -776,7 +782,7 @@
               "Para la variante por categoría: añade categoria al PARTITION BY. ROW_NUMBER() OVER (PARTITION BY user_id, categoria ORDER BY ts). Filtra rn=2.",
               "Caso borde: si hay empate exacto de timestamp en la segunda y tercera compra, ROW_NUMBER desempata arbitrariamente. Si quieres todas las compras 'empatadas en posición 2', usa RANK en vez de ROW_NUMBER y filtra RANK=2."
             ],
-            "solucion": "CTE con ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY ts), filtrar WHERE rn=2. Para la variante: añadir categoria al PARTITION BY. Caso empate: RANK en vez de ROW_NUMBER.",
+            "solucion": "CTE con ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY ts), filtrar WHERE rn=2. Para la variante: añadir categoria al PARTITION BY. Caso empate: DENSE_RANK = 2 da la segunda compra con timestamp distinto; o conserva determinista en el ORDER BY (ts, evento_id). RANK NO sirve: con empate en el primer puesto produce 1,1,3 y el puesto 2 no existe.",
             "disparador": "Enésimo evento/compra por grupo → ROW_NUMBER() OVER (PARTITION BY grupo ORDER BY tiempo). CTE para materializar el ranking, luego filtrar. Si el enunciado menciona 'segunda', 'penúltima' o 'top-N', la señal es window function.",
             "metadata": {
               "ruta": "maang",
@@ -798,7 +804,7 @@
               "D (HbA1c a 6 meses): el uso de la app (X) puede mejorar D; D luego afecta la hospitalización Y. D está en el camino causal X→D→Y: es un mediador. Ajustar D cierra ese camino indirecto y sesga el estimado del efecto total de X.",
               "Variables que NO deben incluirse: D (mediador del efecto de X; ajustar bloquea el camino que queremos medir). C puede ser incluida si es solo un ajuste de confusión (si A y B ya están) pero no añade nada dado A y B, y podría ser collider si el médico recomienda la app basado en X latente: incluirla con cuidado o excluirla. Incluir: A (confounder) y B (confounder)."
             ],
-            "solucion": "DAG plausible: A→X, A→Y, B→X, B→Y, X→D→Y, A→C→X, B→C→X. D es mediador (excluir si se quiere efecto total). C es mediador/proxy (dado A y B, añade ruido). Modelo correcto para efecto total: Y ~ X + A + B.",
+            "solucion": "DAG plausible: A→X, A→Y, B→X, B→Y, X→D→Y, A→C→X, B→C→X. D es mediador (excluir si se quiere efecto total). C es un ANTECEDENTE del tratamiento (A,B→C→X; no está en ningún camino X→Y, así que dado A y B no aporta, y condicionarla puede amplificar sesgo residual (Z-bias)). Modelo correcto para efecto total: Y ~ X + A + B.",
             "disparador": "Variable downstream de X que también causa Y → mediador → NO ajustar si quieres efecto total. Variable causa de X Y de Y → confounder → SÍ ajustar. Dibuja el DAG ANTES de escribir la regresión.",
             "metadata": {
               "ruta": "health-ai-rwe",
@@ -812,7 +818,7 @@
           {
             "id": "f7-ex-6",
             "heuristica": "tiempo-cero",
-            "enunciado": "Investigadores estudian si los pacientes que completan un programa de rehabilitación cardíaca (≥12 sesiones, que suelen terminar en el mes 3-4) tienen menor mortalidad al año que los que no lo completan. Seleccionan pacientes que tuvieron un infarto, y los dividen en 'completaron el programa' vs 'no completaron'. Encuentran que el grupo que completó tiene mortalidad 40% menor. ¿Puedes identificar al menos dos problemas metodológicos? ¿Cómo redesiguarías el estudio para estimar el efecto causal?",
+            "enunciado": "Investigadores estudian si los pacientes que completan un programa de rehabilitación cardíaca (≥12 sesiones, que suelen terminar en el mes 3-4) tienen menor mortalidad al año que los que no lo completan. Seleccionan pacientes que tuvieron un infarto, y los dividen en 'completaron el programa' vs 'no completaron'. Encuentran que el grupo que completó tiene mortalidad 40% menor. ¿Puedes identificar al menos dos problemas metodológicos? ¿Cómo rediseñarías el estudio para estimar el efecto causal?",
             "pistas": [
               "¿Cuándo empieza exactamente el 'reloj' para cada grupo? ¿Es el mismo momento para ambos?",
               "El grupo 'completó el programa' requiere sobrevivir hasta el mes 3-4 para terminar las 12 sesiones. ¿Pueden morir antes del mes 3 y aun así quedar en este grupo? No → ese período es 'inmortal' por definición.",
@@ -828,6 +834,28 @@
               "skills": ["immortal-time", "target-trial", "confounding-indicacion", "tiempo-cero"],
               "errores_comunes": ["No ver el período inmortal", "Solo identificar confounding y olvidar el sesgo temporal", "Proponer ajuste multivariado sin corregir el t=0"],
               "casos_borde": ["¿Y si el programa empieza en el día 1 del alta? Entonces no hay tiempo inmortal de completar, pero sí confounding por indicación."],
+              "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-7",
+            "heuristica": "skew-drift",
+            "enunciado": "Un modelo de predicción de churn lleva 6 meses en producción (AUC offline 0.89). El monitoreo muestra que la distribución de las features es ESTABLE, pero la precisión real cae mes tras mes. (a) ¿Qué está pasando y qué revisas? (b) El equipo entrena una versión nueva (AUC offline 0.94), pero descubres que la feature 'días desde el último login' se calcula con un batch nocturno en entrenamiento y en TIEMPO REAL al servir. ¿Qué fallo es este y cuál sería su solución? (c) Describe el plan de despliegue y rollback de la versión nueva: qué señal vigilas, qué umbral dispara y a qué vuelves.",
+            "pistas": [
+              "Separa los tres niveles del sistema: lo que cambia en el MUNDO (los datos), lo que difiere entre ENTRENAMIENTO y SERVING (el pipeline), y lo que cambia entre VERSIONES (el despliegue). Cada inciso vive en un nivel.",
+              "(a) Si la distribución de entrada está estable pero la performance cae, ¿cuál de las dos puede haber cambiado: P(X) o P(Y|X)? ¿Cómo se llama cada caso?",
+              "(b) Un batch nocturno y un cálculo en tiempo real pueden diferir hasta en 24 horas. El modelo aprendió con una versión de la feature y predice con otra. ¿Cómo se llama esa discrepancia y a qué usuarios golpea más (piensa en los que acaban de loguearse)?",
+              "(a) es concept drift: P(Y|X) cambió aunque P(X) no — revisa el pipeline de labels y la cadencia de reentrenamiento. (b) es training-serving skew — la defensa es UNA sola definición de la feature y loggear lo servido. Para (c): elige una métrica guardrail observable sin esperar labels, un umbral explícito y una versión anterior lista.",
+              "(c) completo: despliegue canary (porcentaje pequeño del tráfico) con la versión nueva + guardrails: distribución de scores, tasa de alertas y precisión sobre labels tempranas, con umbral acordado ANTES del despliegue; si un guardrail lo cruza, reversión automática a la versión anterior (que sigue desplegada y caliente) + alerta al equipo. El rollback se diseña antes de desplegar, no durante el incidente."
+            ],
+            "solucion": "(a) Concept drift: la relación P(Y|X) cambió aunque P(X) esté estable — el comportamiento de churn evolucionó (nuevas razones de abandono que las mismas features ya no separan). Revisas: el pipeline de labels (¿siguen llegando bien y a tiempo?), la performance por cohortes recientes vs antiguas, y la cadencia de reentrenamiento con datos nuevos. Monitorear solo la distribución de features NUNCA detecta concept drift: necesita labels o proxies. (b) Training-serving skew: la feature que el modelo ve al servir difiere de la que vio al entrenar (hasta 24 h de desfase para el mismo usuario). Síntoma: brecha offline/online — el AUC de 0.94 no se traslada a producción, con degradación concentrada en usuarios activos recientes (justo donde el desfase es mayor). Defensa: una única definición de la feature (mismo código o feature store) y loggear las features TAL COMO se sirvieron para entrenar sobre lo loggeado. (c) Canary: la versión nueva recibe una fracción pequeña del tráfico y la anterior queda desplegada sirviendo el resto; guardrails definidos ANTES (distribución de scores y tasa de alertas como señales inmediatas; precisión con labels tempranas como confirmación), umbral explícito; si se cruza, reversión automática a la versión anterior. Un despliegue sin versión de retorno caliente no es un plan de rollback.",
+            "disparador": "Performance cae con features estables → concept drift (vigila labels, no solo P(X)). Pipeline de features duplicado offline/online → training-serving skew (una sola definición + loggear lo servido). Todo despliegue de modelo lleva canary + guardrails con umbral predefinido y versión anterior caliente para revertir.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": "C",
+              "skills": ["concept-drift", "training-serving-skew", "canary-deploy", "rollback"],
+              "errores_comunes": ["Confundir data drift con concept drift", "Proponer reentrenar sin corregir el skew del pipeline", "No definir el plan de rollback antes del despliegue"],
+              "casos_borde": ["¿Y si las labels llegan con 90 días de retraso? → proxies tempranos obligatorios"],
               "source": "original"
             }
           }
@@ -3015,7 +3043,7 @@
           "id": "z85b-q4",
           "tipo": "encuentra-error",
           "enunciado": "Un estudiante dice: 'como los triángulos PQR y P′Q′R′ tienen sus tres lados respectivamente iguales y paralelos, hay una homotecia que lleva uno al otro'. ¿Qué falla?",
-          "solucion": "Si los lados son iguales (razón 1) y paralelos, NO es una homotecia propia: es una TRASLACIÓN (homotecia de razón +1, cuyo 'centro' está en el infinito) o una simetría central (razón −1) si están en sentido opuesto. La homotecia con razón ≠ ±1 cambia el tamaño; con lados iguales no hay cambio de escala. El nombre correcto del movimiento importa para localizar el centro.",
+          "solucion": "Depende del sentido: si los lados iguales van en el MISMO sentido, ninguna homotecia (sin centro; informalmente, 'centro en el infinito'). Si van en sentido OPUESTO, sí es una homotecia: la de razón −1 (simetría central). El error es declarar 'homotecia' sin revisar el sentido: el nombre correcto del movimiento decide si hay centro que localizar.",
           "explicacion": "Homotecia, traslación y simetría central son parientes (k≠±1, k=+1, k=−1). Confundirlas lleva a buscar un centro finito que no existe (traslación) o con el signo equivocado."
         }
       ]
@@ -3601,9 +3629,58 @@
       ]
     },
     {
-      "id": "arena-h1",
+      "id": "arena-s1",
       "bloque": "fase-7",
       "orden": 5,
+      "titulo": "Arena ML Systems · Del modelo al sistema: skew, drift y rollback",
+      "libro": "Referencia: Huyen C — Designing Machine Learning Systems (O'Reilly 2022), caps. 8-9; Sculley et al. — 'Hidden Technical Debt in Machine Learning Systems' (NeurIPS 2015).",
+      "lectura": "Estudia la lección integrada. Foco: training-serving skew, data drift vs concept drift, por qué la métrica offline no garantiza la online, y monitoreo + rollback como parte del diseño.",
+      "dosis": "40-50 min. Antes de leer, intenta responder: ¿por qué un modelo con mejor AUC offline puede empeorar el producto en producción?",
+      "objetivo": "Distinguir skew de drift y proponer el monitoreo de cada uno, explicar por qué la métrica offline no garantiza la online, y diseñar con la plantilla (métricas, leakage, monitoreo, rollback) antes de hablar del modelo.",
+      "heuristicas": ["skew-drift", "caso-pequeno"],
+      "metadata": { "ruta": "ml-systems" },
+      "ideas_clave": [
+        "Training-serving skew: el modelo ve en producción features calculadas DISTINTO que en entrenamiento (otro código, otra ventana, otros defaults). Defensa: definición única de features y loggear las features servidas para reentrenar sobre ellas.",
+        "Data drift: cambia P(X), la distribución de entrada; concept drift: cambia P(Y|X), la relación aprendida. Se monitorean distinto: distribuciones de features (PSI/KS, sin labels) vs. performance real (labels, a menudo retrasadas).",
+        "La métrica offline (AUC) no garantiza la online (CTR, outcome): leakage temporal, skew y feedback loops abren la brecha. El A/B con guardrails es el árbitro.",
+        "Monitoreo y rollback se diseñan ANTES del despliegue: qué señal dispara la alarma y a qué versión exacta se regresa. Un modelo sin plan de rollback es deuda técnica.",
+        "En una entrevista de ML Systems el modelo es la pieza final: primero objetivo y métrica de negocio, datos disponibles/no disponibles, baseline, leakage, privacidad, monitoreo y rollback — la plantilla."
+      ],
+      "banco": [
+        {
+          "id": "ars1-q1",
+          "tipo": "quiz",
+          "enunciado": "Define training-serving skew, da tres causas típicas y la defensa principal.",
+          "solucion": "Training-serving skew: discrepancia entre las features/datos del entrenamiento y los del serving. Causas: (1) features calculadas con código distinto offline y online (ventanas, NULLs, defaults); (2) datos de entrenamiento no representativos del tráfico real; (3) feedback loops: el modelo en producción genera los datos del siguiente entrenamiento. Defensa: una única definición de features (feature store o código compartido) y loggear las features TAL COMO se sirvieron, para entrenar sobre lo loggeado.",
+          "explicacion": "El skew es silencioso: el modelo sigue funcionando, pero opera sobre features distintas de las que aprendió. Loggear las features servidas es el seguro: garantiza que el siguiente entrenamiento vea exactamente lo que ve el modelo en producción."
+        },
+        {
+          "id": "ars1-q2",
+          "tipo": "quiz",
+          "enunciado": "Data drift vs concept drift: define cada uno y di cómo monitorearías cada uno en producción.",
+          "solucion": "Data drift: cambia P(X) — p. ej. llega tráfico de otro segmento; el modelo puede seguir válido donde hay soporte. Concept drift: cambia P(Y|X) — la relación misma cambia; el modelo queda obsoleto aunque X parezca igual. Monitoreo: data drift con tests de distribución sobre features (PSI, KS) contra la distribución de entrenamiento, sin necesidad de labels; concept drift con la performance real — exige labels (a menudo retrasadas) o proxies tempranos (distribución de scores, tasa de aceptación).",
+          "explicacion": "La distinción clave es qué necesitas para detectar cada uno: data drift no requiere labels (solo comparar distribuciones de features); concept drift sí los requiere o exige proxies. En producción real los labels llegan tarde; diseñar proxies tempranos es parte del sistema."
+        },
+        {
+          "id": "ars1-q3",
+          "tipo": "acertijo",
+          "enunciado": "Reentrenas un modelo de ranking: el AUC offline sube de 0.85 a 0.91, pero al desplegarlo el CTR cae. Da al menos tres explicaciones plausibles y di qué harías a continuación.",
+          "solucion": "(1) Leakage temporal: el split de evaluación no respetó el tiempo y el modelo 'vio' el futuro. (2) Training-serving skew: las features offline no son las que se calculan al servir. (3) El offline se evalúa sobre datos generados por el modelo VIEJO (feedback loop): mejor AUC en esa distribución no implica mejor ranking en la nueva. (4) La métrica no captura el objetivo: AUC global vs calidad del top-k visible. Siguiente paso: auditar split temporal y paridad de features; decidir con A/B — el online es el árbitro.",
+          "explicacion": "La señal de alarma clásica de ML Systems: el offline dice sí, el online dice no. Casi siempre es uno de estos cuatro: leakage, skew, feedback loop o métrica equivocada. Aprende a nombrar los cuatro en orden."
+        },
+        {
+          "id": "ars1-q4",
+          "tipo": "disparador",
+          "enunciado": "En una entrevista te dicen: 'diseña el sistema de ML para detectar transacciones fraudulentas'. ¿Cuál es tu PRIMER movimiento, antes de hablar de modelos?",
+          "solucion": "La plantilla, no el modelo: (1) objetivo y métrica de negocio — ¿qué cuesta más, el fraude que pasa o el falso positivo? eso fija precision/recall y umbrales; (2) datos disponibles y NO disponibles, con el retraso de sus labels; (3) baseline simple (reglas) como piso; (4) puntos de leakage (features posteriores a la transacción); (5) privacidad; (6) monitoreo de skew/drift y rollback. El modelo es la última pieza: el entrevistador evalúa el plano completo.",
+          "explicacion": "Señal → jugada: 'diseña un sistema de ML' → plantilla primero. El error frecuente es proponer el modelo de inmediato (XGBoost, red neuronal) sin haber definido la métrica de negocio ni el plan de rollback. El entrevistador distingue al ingeniero de sistemas del tunner de hiperparámetros."
+        }
+      ]
+    },
+    {
+      "id": "arena-h1",
+      "bloque": "fase-7",
+      "orden": 6,
       "titulo": "Arena Health AI · DAGs y adjustment sets",
       "libro": "Referencia: Pearl & Mackenzie — The Book of Why (caps. 3-4), o Hernán & Robins — Causal Inference: What If (gratuito online, cap. 6-7).",
       "lectura": "Estudia la lección integrada. Foco: tipos de variables en un DAG (confounder, mediator, collider), criterio de backdoor, y por qué ajustar un collider es el error más común.",
@@ -3652,7 +3729,7 @@
     {
       "id": "arena-h2",
       "bloque": "fase-7",
-      "orden": 6,
+      "orden": 7,
       "titulo": "Arena Health AI · Target trial emulation e immortal time bias",
       "libro": "Referencia: Hernán & Robins — Causal Inference: What If (caps. 9-12, especialmente cap. 9: Target Trials), disponible online. Hernán MA — 'The C-Word: Scientific Euphemisms Do Not Improve Causal Inference From Observational Data' (Am J Public Health 2018).",
       "lectura": "Estudia la lección integrada. Foco: qué es el target trial, los 7 componentes del protocolo, el immortal time bias y cómo el rediseño lo elimina.",

@@ -145,15 +145,31 @@ export function bloqueActual() {
   return datos ? datos.bloques[indiceBloqueActual()] : null;
 }
 
-/** Las unidades se desbloquean en orden dentro del bloque. */
-function unidadDisponible(bloque, u) {
-  const us = unidadesDe(bloque);
-  const idx = us.findIndex((x) => x.id === u.id);
-  return us.slice(0, idx).every((x) => unidadCompletada(x.id));
+/** Candado de orden eliminado (2026-06-12): toda unidad es accesible.
+ *  Se conserva la función como punto único por si vuelve un modo guiado. */
+function unidadDisponible() {
+  return true;
 }
 
 function bloqueUnidadesCompletas(bloque) {
   return unidadesDe(bloque).every((u) => unidadCompletada(u.id));
+}
+
+/** Contexto de entrevista para el Mentor: no-null solo cuando hay actividad de fase-7. */
+export function contextoEntrevista() {
+  if (!disponible()) return null;
+  const ex = load('estudio').examenEnCurso;
+  if (ex && ex.bloqueId === 'fase-7') {
+    const bloque = datos.bloques.find((b) => b.id === 'fase-7');
+    const item = (bloque?.examen?.items ?? []).find((it) => it.id === ex.itemIds[ex.indice]);
+    return { ruta: 'arena', examen: true, enunciado: item?.enunciado ?? '' };
+  }
+  const panel = document.getElementById('estudio-unidad');
+  if (panel && !panel.hidden && panel.dataset.unidad) {
+    const u = unidad(panel.dataset.unidad);
+    if (u?.bloque === 'fase-7') return { ruta: u.metadata?.ruta ?? 'general', titulo: u.titulo };
+  }
+  return null;
 }
 
 /** Resumen para el Dashboard (camino 2). */
@@ -173,6 +189,14 @@ export function progresoResumen() {
   };
 }
 
+/* ========================= Navegación de bloques ========================= */
+
+let bloqueVisible = null;
+
+function bloqueVisibleObj() {
+  return bloqueVisible ?? bloqueActual();
+}
+
 /* ========================= Render: el camino ========================== */
 
 export function renderizar() {
@@ -183,9 +207,20 @@ export function renderizar() {
   }
 
   const e = load('estudio');
-  const b = bloqueActual();
+  const b = bloqueVisibleObj();
   $('estudio-bloque-titulo').textContent = b.titulo;
   $('estudio-bloque-meta').textContent = b.meta ?? '';
+  const sel = $('estudio-bloque-selector');
+  if (sel) {
+    sel.innerHTML = '';
+    datos.bloques.forEach((blq) => {
+      const opt = document.createElement('option');
+      opt.value = blq.id;
+      opt.textContent = `${bloqueAprobado(blq.id) ? '✓ ' : ''}${blq.titulo}`;
+      sel.appendChild(opt);
+    });
+    sel.value = b.id;
+  }
 
   // Lista de unidades del bloque con su estado
   const ul = $('estudio-unidades');
@@ -202,7 +237,7 @@ export function renderizar() {
     btn.className = 'unidad-boton';
     btn.disabled = !hecha && !abierta;
     const rutaLabel = u.metadata?.ruta
-      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${u.metadata.ruta === 'health-ai-rwe' ? 'health ai' : u.metadata.ruta}</span>`
+      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${({'quant':'quant','maang':'maang','health-ai-rwe':'health ai','ml-systems':'ml systems'}[u.metadata.ruta] ?? u.metadata.ruta)}</span>`
       : '';
     btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
     btn.querySelector('.unidad-nombre').textContent = u.titulo;
@@ -593,7 +628,7 @@ function itemExamen(id) {
 }
 
 function iniciarExamen() {
-  const b = bloqueActual();
+  const b = bloqueVisibleObj();
   update('estudio', (st) => {
     st.examenEnCurso = {
       bloqueId: b.id,
@@ -697,6 +732,22 @@ function renderPasoPrediccion(cont, item, ex) {
   fs.appendChild(labelNo);
   cont.appendChild(fs);
 
+  const fsConf = document.createElement('fieldset');
+  fsConf.className = 'autoeval vertical';
+  const legendConf = document.createElement('legend');
+  legendConf.textContent = '¿Qué tan seguro estás? (1 = adivinando, 5 = lo veo claro)';
+  fsConf.appendChild(legendConf);
+  [1, 2, 3, 4, 5].forEach((v) => {
+    const labelConf = document.createElement('label');
+    const inputConf = document.createElement('input');
+    inputConf.type = 'radio';
+    inputConf.name = 'examen-confianza';
+    inputConf.value = v;
+    labelConf.append(inputConf, ` ${v}`);
+    fsConf.appendChild(labelConf);
+  });
+  cont.appendChild(fsConf);
+
   const btn = document.createElement('button');
   btn.className = 'primario';
   btn.textContent = 'Registrar predicción y forcejear';
@@ -705,11 +756,13 @@ function renderPasoPrediccion(cont, item, ex) {
   btn.addEventListener('click', () => {
     const pred = cont.querySelector('input[name="examen-prediccion"]:checked')?.value;
     if (!pred) return;
+    const conf = Number(cont.querySelector('input[name="examen-confianza"]:checked')?.value ?? 3);
     update('estudio', (st) => {
       st.examenEnCurso.registros.push({
         itemId: item.id,
         heuristica: item.heuristica,
         prediccion: pred,
+        confianza: conf,
         pistaUsada: false,
         pistasUsadas: 0,
         resultado: null,
@@ -834,6 +887,18 @@ function renderPasoForcejeo(cont, item, ex) {
       : 'Tu predicción apuntó a otra jugada — compara: ¿qué señal del enunciado te faltó leer?');
     sol.appendChild(p1);
 
+    if (reg.confianza >= 4 && reg.prediccion !== item.heuristica) {
+      const pCal = document.createElement('p');
+      pCal.className = 'quiz-calibracion';
+      pCal.textContent = 'Ibas muy seguro y la jugada era otra: re-calibra tu confianza.';
+      sol.appendChild(pCal);
+    } else if (reg.confianza <= 2 && reg.prediccion === item.heuristica) {
+      const pCal = document.createElement('p');
+      pCal.className = 'quiz-calibracion';
+      pCal.textContent = 'Acertaste dudando: la intuición iba bien — confía un punto más la próxima.';
+      sol.appendChild(pCal);
+    }
+
     const p2 = document.createElement('p');
     p2.textContent = item.solucion;
     sol.appendChild(p2);
@@ -941,4 +1006,8 @@ function finalizarExamen() {
 
 export function configurarUI() {
   $('btn-examen-iniciar').addEventListener('click', iniciarExamen);
+  $('estudio-bloque-selector')?.addEventListener('change', (ev) => {
+    bloqueVisible = datos.bloques.find((x) => x.id === ev.target.value) ?? null;
+    renderizar();
+  });
 }

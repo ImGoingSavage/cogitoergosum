@@ -20,7 +20,7 @@ Este es el principio del **billar** (el rebote en la pared) y de la **ley de ref
 
 En configuraciones con ángulos de 60° o 90° —triángulos equiláteros, cuadrados, hexágonos—, **rotar 60° (o 90°) alrededor de un vértice** manda un segmento sobre otro y *fabrica* triángulos equiláteros o cuadrados «gratis».
 
-El ejemplo canónico es el **punto de Fermat** de un triángulo: construye triángulos equiláteros exteriores sobre cada lado y une su tercer vértice al vértice opuesto del triángulo original. Las tres líneas concurren en el punto que minimiza la suma de distancias a los tres vértices. La demostración usa rotar 60° alrededor de uno de los vértices para alinear los tres segmentos en una sola recta.
+El ejemplo canónico es el **punto de Fermat** de un triángulo: construye triángulos equiláteros exteriores sobre cada lado y une su tercer vértice al vértice opuesto del triángulo original. Las tres líneas concurren en el punto que minimiza la suma de distancias a los tres vértices (válido si ningún ángulo del triángulo es ≥ 120°; con un ángulo así, el mínimo se alcanza en ese vértice). La demostración usa rotar 60° alrededor de uno de los vértices para alinear los tres segmentos en una sola recta.
 
 **Firma de la rotación:** el enunciado tiene ángulos fijos (60°, 90°, 120°), polígonos regulares, o pide demostrar que tres segmentos «pueden colocarse como los lados de un triángulo».
 

@@ -42,7 +42,7 @@ Generalización: si xᵢ ≤ M_i para algún i, aplica inclusión-exclusión sob
 
 ## Biyección
 
-Traducir el conteo a otro conjunto que ya sabes contar. El ejemplo canónico: los **subconjuntos de {1,…,n} sin dos elementos consecutivos** están en biyección con las cadenas binarias de longitud n−1 sin dos 1's seguidos (escribe 0 para el hueco entre dos elegidos, 1 para incluir). El conteo es Fibonacci(n+2). La biyección colapsa el problema a una recurrencia conocida.
+Traducir el conteo a otro conjunto que ya sabes contar. El ejemplo canónico: los **subconjuntos de {1,…,n} sin dos elementos consecutivos** están en biyección con las cadenas binarias de longitud n sin dos 1's seguidos (la posición i lleva 1 exactamente si el elemento i está en el subconjunto). Su número f(n) cumple f(n) = f(n−1) + f(n−2) —según el último bit sea 0 o 1— con f(0)=1, f(1)=2, de donde f(n) = Fibonacci(n+2). La biyección colapsa el problema a una recurrencia conocida.
 
 **Protocolo**: busca una función f del conjunto A al conjunto B tal que f sea biyectiva (inyectiva + sobreyectiva). Calcular |B| es equivalente a calcular |A|, y B es generalmente más sencillo.
 

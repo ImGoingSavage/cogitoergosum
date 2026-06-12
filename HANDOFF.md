@@ -1,7 +1,7 @@
 # HANDOFF — Estado del proyecto y plan de continuación
 
 Documento de contexto para el siguiente agente que trabaje en este proyecto.
-Fecha de corte: 2026-06-10. **Actualizado 2026-06-11.**
+Fecha de corte: 2026-06-10. **Actualizado 2026-06-12.**
 
 > **⚠️ ACTUALIZACIÓN 2026-06-11 — léela antes que nada:**
 > 1. El proyecto pasa a llamarse **CogitoErgoSum**. La extensión del plan vive
@@ -368,8 +368,11 @@ En su lugar:
 3. **Problemas del libro entran al bucle completo del camino 1** (timer,
    desconstrucción, predicción, ficha): reutilizar la maquinaria existente,
    no construir una segunda máquina de práctica.
-4. **Desbloqueo por progreso**: las unidades se abren en orden; el examen de
-   bloque abre la siguiente etapa. No se saltan fases.
+4. **Acceso libre (desde 2026-06-12)**: todas las unidades y lecciones están
+   accesibles sin candado (`unidadDisponible()` devuelve siempre `true`).
+   El progreso oficial (racha, resumen, `bloqueActual()`) sigue anclado al
+   primer bloque sin examen aprobado. El selector `estudio-bloque-selector`
+   permite saltar a cualquier bloque desde la UI sin alterar ese ancla.
 
 #### 3.11.2 Examen de bloque = "examen del motor" del PDF §8b
 
@@ -471,8 +474,8 @@ módulos, JSON validado, cruce de IDs HTML↔JS en ambas direcciones):
 progreso en `cps_estudio` — esquema documentado en `storage.js`):
 
 - **Camino**: la pestaña Estudio muestra el bloque actual con sus unidades en
-  orden (✓ hecha / ▸ abierta / 🔒 bloqueada). Las unidades se desbloquean
-  secuencialmente; el examen se abre al completar todas.
+  orden (✓ hecha / ▸ abierta). Todas las unidades son accesibles; el examen
+  se muestra al completar las unidades del bloque visible.
 - **Unidad**: tarjeta de lectura dirigida (libro/lectura/dosis/"al leer,
   busca") → botón "Ya leí — evalúame" → quiz de retrieval pregunta por
   pregunta: el usuario responde por escrito (mín. 40 chars) ANTES de ver la
@@ -561,6 +564,13 @@ progreso en `cps_estudio` — esquema documentado en `storage.js`):
    3-5 líneas y preguntas propias. Validar siempre:
    `python3 -c "import json; json.load(open('data/study.json'))"` y
    `for f in js/*.js; do node --check $f; done`.
+6. **Campos del esquema actualizados (2026-06-12)**: `metadata.ruta` acepta
+   `'quant'|'maang'|'health-ai-rwe'|'ml-systems'`; la heurística `skew-drift`
+   existe en `catalogoHeuristicas`. Los ítems de examen de `fase-7` usan
+   `pistas[]` (array de 5 strings), no el campo `pista` (string) de fases
+   anteriores. `examenEnCurso.registros[]` guarda `confianza: 1-5` (1=adivinando,
+   5=lo veo claro). `examenEnCurso` almacena `bloqueId` para que `contextoEntrevista()`
+   pueda detectar si el examen activo es de `fase-7`.
 
 **Refinamientos pendientes del Modo Estudio (menores, en orden de valor):**
 

@@ -4,7 +4,7 @@
 
 El "target trial" (ensayo objetivo) es el experimento aleatorizado hipotético que un estudio observacional intenta emular. Formularlo explícitamente es el paso que diferencia el análisis causal riguroso del análisis descriptivo.
 
-La pregunta no es "¿qué asociación existe en los datos?" sino "¿qué ensayo clínico randomizado hubiéramos necesario para responder esta pregunta, y cómo lo emulamos con datos observacionales?"
+La pregunta no es "¿qué asociación existe en los datos?" sino "¿qué ensayo clínico aleatorizado habríamos necesitado para responder esta pregunta, y cómo lo emulamos con datos observacionales?"
 
 ---
 
@@ -59,6 +59,14 @@ Métodos de emulación:
 1. **Clonación + censura + ponderación:** cada sujeto es "clonado" en t=0 y asignado a ambas estrategias. La censura artificial cuando alguien se desvía de la estrategia asignada se pondera con IPW.
 2. **Sequential trials:** a cada semana/mes, se define una nueva cohorte de elegibles y se emula el trial desde ese punto.
 
+### [CAJA NEGRA OK] Ponderación IPW
+
+- **Qué puedes asumir:** existe un método estándar (inverse probability weighting) que re-pondera a los sujetos no censurados para compensar la censura artificial de la clonación.
+- **Por qué se permite asumirlo:** su derivación formal exige teoría que no aporta al reconocimiento del sesgo ni a proponer el rediseño.
+- **Qué sí debes razonar:** por qué la clonación necesita censura (un clon se desvía de su estrategia asignada) y por qué censurar sin re-ponderar introduce sesgo de selección.
+- **Intuición mínima:** cada sujeto que sigue en observación «habla por» los censurados de su perfil de riesgo.
+- **Cuándo reabrir la caja:** si vas a IMPLEMENTAR la emulación (no solo diseñarla): Hernán & Robins, cap. 12.
+
 ---
 
 ## Ejemplo: medicación antihipertensiva
@@ -83,6 +91,26 @@ Métodos de emulación:
 Un estudio incluye a pacientes que ya llevan tiempo en tratamiento (usuarios prevalentes) en vez de solo nuevos usuarios (incidentes). Los usuarios prevalentes son supervivientes del período inicial: los que tuvieron reacciones adversas o murieron ya salieron de la cohorte.
 
 **Solución:** active comparator new user design. Solo incluye usuarios que inician el tratamiento por primera vez, comparados con usuarios que inician un tratamiento alternativo al mismo tiempo.
+
+---
+
+## Plantilla de diseño (cópiala en la pizarra antes de proponer el análisis)
+
+| Campo | Tu respuesta |
+|---|---|
+| Supuestos | |
+| Métrica principal | |
+| Métrica secundaria / guardrails | |
+| Riesgos | |
+| Tradeoffs | |
+| Datos disponibles | |
+| Datos NO disponibles | |
+| Componentes del sistema | |
+| Puntos de leakage | |
+| Privacidad / PHI | |
+| Monitoreo | |
+| Rollback | |
+| Casos borde | |
 
 ---
 

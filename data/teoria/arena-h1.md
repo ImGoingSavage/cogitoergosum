@@ -124,7 +124,7 @@ Preguntas a hacerse antes de incluir una variable:
 
 Un estudio analiza el efecto de fumar (X) sobre el cáncer de pulmón (Y). Las variables disponibles son: ingreso (causa fumar, no causa directamente el cáncer), residencia en zona urbana (causa fumar y también causa el cáncer por contaminación), y tos crónica (causada por fumar, también causa la visita al médico donde se detecta el cáncer).
 
-1. Dibuja el DAG con estas 4 variables (X, Y, ingreso, urbana, tos).
+1. Dibuja el DAG con estas 5 variables (X, Y, ingreso, urbana, tos).
 2. ¿Qué variables ajustas para estimar el efecto total de X sobre Y?
 
 *Respuesta: Ajusta {ingreso, urbana} (confounders). No ajustes tos (es mediator del camino X → tos → diagnóstico → Y, y posiblemente collider en el diagnóstico). Efecto total: ajusta los confounders, no los mediators.*

@@ -881,16 +881,17 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    **Fase 6**: solo queda Zeitz §8.5 (transformaciones); lo natural es
    AIME y/o Engel caps. 8-12/14 — decidir con el usuario.
 4ter. ~~Fase 7 — Arena de Entrevistas de Élite~~ ✅ HECHA Y AUDITADA
-   (2026-06-12, commits ea21c60 + 7700fc3): bloque `fase-7`, 6 unidades
-   (2 Quant, 2 MAANG, 2 Health AI/RWE), 6 ítems de examen con `pistas[]`
+   (2026-06-12, commits ea21c60 + 7700fc3): bloque `fase-7`, 7 unidades
+   (2 Quant, 2 MAANG, 1 ML Systems, 2 Health AI/RWE), 7 ítems de examen con `pistas[]`
    de 5 niveles graduados (retrocompatible con `pista` string de fases
-   anteriores), 6 lecciones markdown, ruta-chips en la UI, sw.js v17.
+   anteriores), 7 lecciones markdown, ruta-chips en la UI, sw.js v17.
    La auditoría de Oleada 1 (14 criterios) encontró y corrigió 6
    problemas — ninguno estructural; veredicto: publicado. Su lista de
    "Oleada 2" quedó en el punto 8 de pendientes. Nota: la Fase 7 se
    construyó ANTES que la Fase 6 (decisión del usuario); la Fase 6 ya
    está EN CURSO (punto 7) e insertada en `bloques[]` antes de `fase-7`,
    así que el orden de desbloqueo quedará correcto. Ver bitácora al final.
+   (arena-s1 + f7-ex-7 añadidos 2026-06-12, bitácora (4)).
 5. ~~Publicar el frontend~~ ✅ HECHO (2026-06-11, noche; decisión del
    usuario: GitHub Pages): el repo `ImGoingSavage/cogitoergosum` se hizo
    **PÚBLICO** (auditado antes: cero secretos — la anon key es pública por
@@ -924,12 +925,12 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    - **Pizarra con Apple Pencil real en el iPad** (presión, rechazo de
      palma, lazo, resaltador) y lectura de 2-3 lecciones integradas en la
      tablet (bitácora "noche, 3").
-   - **Fase 7 en dispositivo real**: requiere examen de fase-5 aprobado
-     para desbloquearse (o sembrar `cps_estudio` para probar). Verificar:
-     ruta-chips visibles en la lista de unidades, lectura de las 6
-     lecciones arena-*, panel de pistas graduadas en el examen (pedir
-     2-3, recargar la página y confirmar que se reponen y el contador no
-     retrocede), y que las fases 1-5 siguen mostrando su pista única.
+   - **Fase 7 en dispositivo real**: ya NO requiere aprobar nada — usa el
+     selector de bloques (2026-06-12) para navegar directo a la Arena.
+     Verificar: ruta-chips visibles en la lista de unidades, lectura de
+     las 7 lecciones arena-*, panel de pistas graduadas en el examen
+     (pedir 2-3, recargar la página y confirmar que se reponen), y que
+     las fases 1-5 siguen mostrando su pista única.
 6bis. **Decidir el alcance del texto en las lecciones** (bitácora
    "noche, 3"): lecciones redactadas (estado actual) vs. texto íntegro del
    libro vía canal privado en Supabase — el texto íntegro NO puede ir al
@@ -953,7 +954,7 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    - ✅ Validación: `node --check` (18 módulos + sw), JSON válido,
      heurísticas en catálogo, sin IDs duplicados.
    **Estado del pool de examen acumulado: 47 ítems (40 fases 0-5 + 7
-   fase-6 + 6 fase-7 Arena = 53; nota: conteo exacto en study.json).**
+   fase-6 + 7 fase-7 Arena = 54; nota: conteo exacto en study.json).**
 8. **Menores acumulados** (en orden de valor):
    - Web Push diaria opcional (1/día máx, hora elegida, contenido neutro
      — §0.1): requiere un emisor push; con el sitio ya en HTTPS público
@@ -983,6 +984,18 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      - ~~Etiqueta "Resuelto con la pista" singular con `pistas[]`~~ ✅
        (ahora "Resuelto con las pistas" si `pistas.length > 1` — mismo
        commit).
+     - ~~Unidad ML Systems (skew, drift, rollback)~~ ✅ arena-s1 +
+       lección + banco[4] + heurística `skew-drift` + chip
+       `ml-systems` + f7-ex-7 (bitácora (4)).
+     - ~~Modo entrevistador del Mentor~~ ✅ `SYSTEM_CHAT_ENTREVISTADOR`
+       + `contextoEntrevista()` + contexto por ruta (bitácora (4)).
+     - ~~Plantilla de diseño y cajas negras en lecciones de sistemas~~ ✅
+       plantilla 13 campos en arena-s1/arena-h2; `[CAJA NEGRA OK]` IPW
+       en arena-h2 y Eve's law en arena-q1 (bitácora (4)).
+     - ~~Confianza 1-5 en la predicción del examen~~ ✅ fieldset +
+       frases de calibración (bitácora (4)).
+     - ~~Selector de bloques / acceso libre a lecciones~~ ✅ candado
+       eliminado + `estudio-bloque-selector` (bitácora (4)).
      - Suavizar "diseñado para eliminar a quienes…" en arena-m1 (tono
        mejorable aunque no juzga al usuario).
      - Colores de los ruta-chips en hex directo en vez de tokens
@@ -1205,8 +1218,11 @@ palma, dedo-desplaza, doble toque del dedo, pellizco, figura perfecta
 
 ### Cierre de jornada 2026-06-11, noche (estado al apagar)
 
-- **App v15** (sw.js al cierre de esa jornada; hoy va en **v17**:
-  v16 = Fase 7, v17 = hotfix de su auditoría, ambos 2026-06-12), todo
+- **App v15** (sw.js al cierre de esa jornada; hoy va en **v21**:
+  v16 = Fase 7, v17 = hotfix de su auditoría, ambos 2026-06-12,
+  v18 = lecciones integradas + pizarra, v19 = Fase 6 completa,
+  v20 = parches de sincronización, v21 = arena-s1 + selector de bloques
+  (todos 2026-06-12)), todo
   commiteado y pusheado en `main`. Los 3 SQL de `supabase/` aplicados y
   verificados por E2E (Fase C 8/8, claustro 10/10, pensar-juntos 9/9 con
   struggle-first probado).
@@ -1410,6 +1426,49 @@ Auditoría de arquitectura (Fable 5) sobre bbe1fa3: 1 mayor, 3 menores,
   (patrón stale-while-revalidate canónico).
 Verificado: node --check (18 módulos + sw), JSON, test de cadenas() en
 Mexico_City/UTC/Tokio, arranque headless limpio.
+
+---
+
+### Bitácora 2026-06-12 (4) — auditoría de contenido + Fase 7 completa contra spec
+
+**Correcciones de contenido (auditoría):**
+- **1 mayor**: biyección Fibonacci en `aime-cnt.md` — cadenas de longitud n (no n−1); la recurrencia y f(n)=Fibonacci(n+2) son correctas.
+- **8 menores**: f4-ex-7 reemplazado (problema de producto de signos 5/9, heurística `casework`); f6-ex-5 Cauchy completado con f(0)=0 y f(−x)=−f(x); f7-ex-2 segunda pregunta reformulada a prevalencia mínima; f7-ex-4 solución RANK/DENSE_RANK corregida; f7-ex-5 C como antecedente/Z-bias; f7-ex-6 typo "redesiguarías"; zeitz-85a punto de Fermat con cláusula ángulo ≥ 120°; zeitz-85b tangencia exterior/interior y lema PAC/PBD; z85b-q4 reescrito (depende del sentido del movimiento).
+
+**Unidad ML Systems (arena-s1):**
+- Lección integrada `data/teoria/arena-s1.md` (7 secciones: principio central, skew, drift, offline≠online, plantilla 13 campos, señales/jugadas, ejercicio).
+- Banco de 4 preguntas (`ars1-q1..4`): quiz×2, acertijo, disparador.
+- Heurística `skew-drift` añadida al catálogo.
+- Chip `ml-systems` (naranja) en la UI.
+- `arena-s1` insertada en `fase-7.unidades` con orden 5; arena-h1→6, arena-h2→7.
+
+**Examen de fase-7 ampliado a 7 ítems:**
+- `f7-ex-7` (heurística `skew-drift`, ruta `ml-systems`): concept drift vs data drift, training-serving skew en pipeline duplicado, plan canary + guardrails + rollback; 5 pistas progresivas.
+- Verificado: la aprobación del examen se calcula sobre `items.length` y `ex.registros.length` — no hay tamaño fijo hardcodeado.
+
+**Modo entrevistador del Mentor:**
+- `SYSTEM_CHAT_ENTREVISTADOR` en aiMentor.js con repertorio de preguntas por ruta.
+- `contextoEntrevista()` exportada de study.js: detecta examen fase-7 en curso (devuelve enunciado) o unidad fase-7 abierta (devuelve ruta y título).
+- `modoMentor()` en app.js delega a `contextoEntrevista()` para elegir entre `'entrevistador'` y `'estudio'`.
+- Sin API key: nada cambia, mentorDisponible() oculta todo.
+
+**Plantilla de diseño y cajas negras:**
+- Plantilla de 13 campos en arena-s1.md y arena-h2.md.
+- `[CAJA NEGRA OK]` IPW en arena-h2.md; Eve's law en arena-q1.md.
+
+**Confianza 1-5 en la predicción del examen:**
+- Fieldset de 5 radios `examen-confianza` antes del botón "Registrar predicción".
+- Campo `confianza` guardado en `registros[]`.
+- Frases de calibración al revelar: sobre-confianza (≥4 + errada) y sub-confianza (≤2 + correcta).
+
+**Candado de unidades eliminado + selector de bloques:**
+- `unidadDisponible()` devuelve siempre `true`.
+- `let bloqueVisible` + `bloqueVisibleObj()` en study.js.
+- `<select id="estudio-bloque-selector">` en index.html; CSS coherente.
+- `iniciarExamen()` y `renderizar()` usan `bloqueVisibleObj()`; `progresoResumen()` sigue con `bloqueActual()`.
+- El progreso oficial (rachas, resumen) sigue anclado al primer bloque sin examen aprobado.
+
+**sw.js → v21.** Verificaciones 1-5 en verde: node --check (18 módulos + sw), JSON válido, cruce SHELL sin faltantes, correcciones de auditoría confirmadas, no hay 6 hardcodeado en el flujo del examen.
 
 ---
 

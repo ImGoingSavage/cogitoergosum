@@ -24,14 +24,14 @@ El **círculo de los nueve puntos** (radio R/2) es la imagen del circuncírculo 
 
 Dos círculos tienen **dos centros de homotecia** sobre la recta de centros: el **externo** (razón +R/r, del mismo lado del segmento OO′) y el **interno** (razón −R/r, entre los centros). Las tangentes comunes pasan por ellos.
 
-Caso especial: si los círculos son **tangentes en T**, entonces T es el centro de homotecia interno y toda recta por T corta ambos círculos en puntos correspondientes —donde las tangentes a cada círculo son **paralelas** (una firma visual muy útil).
+Caso especial: si los círculos son **tangentes exteriormente en T**, entonces T es el centro de homotecia interno (si la tangencia es interior, T es el centro externo) y toda recta por T corta ambos círculos en puntos correspondientes —donde las tangentes a cada círculo son **paralelas** (una firma visual muy útil).
 
 ## Semejanza espiral: rotación + escala
 
 Una semejanza espiral de centro O, razón k y ángulo θ es, en números complejos, la transformación z ↦ a·z + b donde |a| = k y arg(a) = θ. Propiedades:
 
 - **Aparea cualquier par de segmentos**: dada AB y CD cualesquiera, existe una única semejanza espiral que lleva A↦C y B↦D.
-- Su **centro** se localiza como el segundo punto de intersección de los círculos circunscritos a los triángulos ACA′ y BCB′ (donde A′, B′ son posiciones intermedias en la construcción).
+- Su **centro** se localiza con el lema estándar: si P es la intersección de las rectas AB y CD, el centro es el segundo punto de intersección de los circuncírculos de los triángulos PAC y PBD.
 - En el **círculo unitario**, el conjugado de z es 1/z y las fórmulas del circuncentro, reflexiones y pies de alturas se vuelven limpias.
 
 ## Cómo elegir
@@ -53,7 +53,7 @@ Una semejanza espiral de centro O, razón k y ángulo θ es, en números complej
 
 ## Síntesis
 
-> **Chunk mínimo:** Homotecia de razón k y centro O: P ↦ O + k(P−O); produce figuras semejantes con lados paralelos. Firma: dos figuras con lados paralelos → hay una homotecia, su centro es la intersección de las rectas que unen correspondientes. El baricentro es el centro de la homotecia de razón −1/2 que manda vértices a puntos medios opuestos. Dos centros de homotecia para cada par de círculos (externo e interno). Semejanza espiral = rotación + homotecia (en complejos: z ↦ az+b); aparea cualquier par de segmentos; su centro es el segundo punto de intersección de dos círculos construidos. Elegir homotecia para razones/paralelas, semejanza espiral para razones + giros.
+> **Chunk mínimo:** Homotecia de razón k y centro O: P ↦ O + k(P−O); produce figuras semejantes con lados paralelos. Firma: dos figuras con lados paralelos → hay una homotecia, su centro es la intersección de las rectas que unen correspondientes. El baricentro es el centro de la homotecia de razón −1/2 que manda vértices a puntos medios opuestos. Dos centros de homotecia para cada par de círculos (externo e interno). Semejanza espiral = rotación + homotecia (en complejos: z ↦ az+b); aparea cualquier par de segmentos; su centro es la segunda intersección de los circuncírculos de PAC y PBD (P = AB∩CD). Elegir homotecia para razones/paralelas, semejanza espiral para razones + giros.
 
 ---
 

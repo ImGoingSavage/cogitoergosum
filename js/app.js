@@ -532,13 +532,17 @@ const MENTOR_MODOS_UI = {
     etiqueta: '· modo estudio',
     nota: 'Explica lo ya leído con ejemplos nuevos; en quizzes y exámenes solo guía con preguntas.',
   },
+  entrevistador: {
+    etiqueta: '· entrevistador técnico',
+    nota: 'Modo Arena: el mentor pregunta como entrevistador real; nunca revela ni confirma soluciones.',
+  },
   general: {
     etiqueta: '· tu entrenamiento',
     nota: 'Conversa sobre tus métricas — siempre contra tu propio pasado, nunca contra nadie.',
   },
 };
 
-const chatsEfimeros = { estudio: [], general: [] };
+const chatsEfimeros = { estudio: [], entrevistador: [], general: [] };
 let fotoMentorPendiente = null;   // bloque imagen para el próximo mensaje del chat
 let vistaActual = 'sesion';
 
@@ -548,7 +552,8 @@ function modoMentor() {
     if (a && !a.completado) return a.revelado ? 'revision' : 'forcejeo';
     return 'general';
   }
-  return vistaActual === 'estudio' ? 'estudio' : 'general';
+  if (vistaActual !== 'estudio') return 'general';
+  return Study.contextoEntrevista() ? 'entrevistador' : 'estudio';
 }
 
 function chatDeModo(modo) {
@@ -583,6 +588,13 @@ function contextoMentor(modo) {
     return modo === 'forcejeo'
       ? `${base}\n\nSolución de referencia (solo para tu contexto, JAMÁS la reveles ni la confirmes): ${p.solucion}`
       : `${base}\n\nSolución oficial (ya revelada al usuario): ${p.solucion}\n\nExplicación oficial: ${p.explicacion}`;
+  }
+  if (modo === 'entrevistador') {
+    const ctx = Study.contextoEntrevista();
+    if (!ctx) return 'El usuario está en la Arena de Entrevistas de Élite.';
+    return ctx.examen
+      ? `Entrevista simulada en el EXAMEN de la Arena. Problema en curso (JAMÁS reveles ni confirmes la solución): ${ctx.enunciado}`
+      : `Entrevista simulada — ruta: ${ctx.ruta}. Unidad en estudio: «${ctx.titulo}».`;
   }
   if (modo === 'estudio') {
     const r = Study.progresoResumen();

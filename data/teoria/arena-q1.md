@@ -81,6 +81,14 @@ $$\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y) + 2\text{Cov}(X,Y)$$
 
 Aquí sí aparece la covarianza. Si te piden varianza, sí necesitas información sobre la dependencia. Si te piden media, no.
 
+### [CAJA NEGRA OK] Ley de varianza total (Eve's law)
+
+- **Qué puedes asumir:** Var[X] = E[Var(X|K)] + Var(E[X|K]) para cualquier variable condicionante K aleatoria.
+- **Por qué se permite asumirlo:** la demostración es un ejercicio de esperanzas iteradas que no necesitas reproducir para usarla bien en entrevista.
+- **Qué sí debes razonar:** cuál es la K natural del problema (el nivel extra de aleatoriedad) y cómo la varianza total se descompone en dos sumandos: ruido promedio dentro de cada escenario + variación entre escenarios.
+- **Intuición mínima:** varianza total = varianza «dentro» + varianza «entre».
+- **Cuándo reabrir la caja:** al estudiar esperanza condicional formal (es la descomposición de la varianza): Casella & Berger o Gut.
+
 ---
 
 ## Señales de reconocimiento y jugadas
