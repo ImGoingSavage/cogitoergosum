@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v24';
+const VERSION = 'cogitoergosum-v25';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -39,6 +39,8 @@ const SHELL = [
   'js/avatar.js',
   'js/api.js',
   'js/sync.js',
+  'js/cuentaUI.js',
+  'js/mentorChat.js',
   'js/claustro.js',
   'js/markdown.js',
   'js/pizarra.js',
