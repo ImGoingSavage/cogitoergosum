@@ -589,6 +589,7 @@
           <input id="cuenta-nombre" type="text" placeholder="Nombre (ej. Cuenta personal)" autocomplete="off" />
           <input id="cuenta-apikey" type="password" placeholder="API key de Anthropic (sk-ant-…)" autocomplete="off" />
           <button id="btn-cuenta-agregar" class="secundario">Agregar cuenta</button>
+          <button id="btn-cuenta-probar" class="secundario">Probar la cuenta</button>
         </div>
         <p id="mentor-estado"></p>
         <p class="nota-privacidad">
@@ -598,6 +599,15 @@
           servidor nuestro. Habilita pistas dinámicas y variantes frescas; sin key, la app funciona
           completa con las pistas curadas incluidas.
         </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Diagnóstico</h2>
+        <p class="nota-privacidad">
+          Últimos avisos técnicos de este dispositivo (jamás se suben).
+          Útil si el mentor o la sincronización no responden.
+        </p>
+        <div id="diagnostico-lista" class="lista-estrategias"></div>
       </article>
 
     </section>

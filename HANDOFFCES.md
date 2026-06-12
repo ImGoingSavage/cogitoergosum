@@ -1006,6 +1006,20 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      - Ampliar la Arena: más unidades por ruta — mismo protocolo: unidad
        + lección + banco + ítem de examen con `pistas[]` y
        `source: "original"`.
+9. **Plan de la auditoría de arquitectura 2026-06-12** (hallazgos, plan de
+   6 oleadas y tabla de estado en la **bitácora (5)**, al final de este
+   archivo). Es ahora el trabajo de MAYOR VALOR del proyecto — por delante
+   de cualquier contenido nuevo, porque el multi-dispositivo real depende
+   de él:
+   - [x] **Oleadas 1-3** ✅ EJECUTADAS (2026-06-12, bitácora (6)).
+   - [ ] **Oleada 4**: login con Google (requiere Google Cloud Console y
+     decidir la política de identidad; checklist en la bitácora (5)).
+   - [ ] **Reset de usuarios de prueba** (tras la Oleada 2; censo SQL y
+     backup primero — queries en la auditoría).
+   - [ ] **Oleada 5**: limpieza arquitectónica (versionado de datos
+     locales, extraer módulos de app.js, script del shell).
+   - [ ] **Oleada 6**: responsividad/hardening + decisión credenciales +
+     pruebas humanas (punto 6).
 
 ### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
 
@@ -1469,6 +1483,122 @@ Mexico_City/UTC/Tokio, arranque headless limpio.
 - El progreso oficial (rachas, resumen) sigue anclado al primer bloque sin examen aprobado.
 
 **sw.js → v21.** Verificaciones 1-5 en verde: node --check (18 módulos + sw), JSON válido, cruce SHELL sin faltantes, correcciones de auditoría confirmadas, no hay 6 hardcodeado en el flujo del examen.
+
+---
+
+### Bitácora 2026-06-12 (5) — auditoría senior de arquitectura + plan por oleadas (SOLO documentación)
+
+Auditoría completa (Fable 5) sobre el commit 8a13241, contrastando
+documentación contra código real: 18 módulos JS, los 3 SQL, index.html,
+sw.js y los puntos de llamada verificados por grep. Diez áreas: persistencia
+multi-dispositivo, sync Supabase, mentor IA, login Google, borrado de
+usuarios, escalabilidad, excepciones, responsividad, seguridad y SW/PWA.
+**En esta sesión NO se tocó código ni datos**: solo esta documentación y
+`PROMPT-MAESTRO-OLEADAS-1-3.md`.
+
+**Hallazgos de severidad Alta (los 5 riesgos del proyecto):**
+
+1. **La sincronización solo BAJA datos al login.** `adoptarOUnir()` tiene un
+   único llamador (app.js, tras login) y `descargarEventos()` ninguno. Dos
+   dispositivos con sesión persistente NO convergen hasta un re-login, y el
+   snapshot (last-writer-wins) puede RETROCEDER en el servidor: el último en
+   subir pisa el progreso del otro hasta el siguiente login. El event log
+   preserva los datos, pero nada lo lee. → Parche: bajada continua
+   (unirRemoto() dentro de sincronizar(), Oleada 3).
+2. **`invitaciones.usado_por` referencia auth.users SIN `on delete`**
+   (schema-fase-d.sql): `borrar_mi_cuenta()` falla con error de FK para
+   cualquier usuario que canjeó un código (viola §0.1 "2 clics") y bloquea
+   el reset de usuarios de prueba. Los E2E pasaron por orden afortunado de
+   borrado. → Parche SQL: `on delete set null` (Oleada 2).
+3. **El mentor es indiagnosticable**: los errores de la API de Claude
+   descartan status y cuerpo ("API ${status}" → catch genérico). Hipótesis
+   del bug "no responde aunque pegué la key", en orden de probabilidad:
+   (a) Console sin saldo (400 credit balance), (b) key pegada en OTRO origen
+   o dispositivo (LocalStorage es por origen: localhost ≠ github.io ≠
+   celular), (c) credencial de claude.ai en vez de API key sk-ant- (401).
+   → Parche: status+cuerpo en los Error + botón «Probar la cuenta» (Oleada 1).
+4. **`cps_credenciales` guarda la contraseña en texto plano.** Fue decisión
+   explícita del usuario (bitácora noche, 4); innecesaria técnicamente
+   porque la sesión ya persiste por refresh token. PENDIENTE de decisión
+   del usuario — NO tocar sin preguntarle.
+5. **`storage.save()` no maneja cuota llena**: una excepción a mitad de
+   `completarSesion()` puede dejar estado parcial. → Parche: poda de
+   `sesionesArchivadas` + reintento + registro (Oleada 1).
+
+**Hallazgos Media/Baja**: sin idempotencia server-side de events (reintentos
+del outbox pueden duplicar filas); un solo breakpoint CSS (540px — tablet
+usa layout desktop); `cache.addAll` con 88 archivos frágil a un 404 (ya
+ocurrió una vez); disciplina de VERSION puramente manual; el modo
+entrevistador se activa también para ítems viajeros de fases 0-6 dentro del
+examen de fase-7 (pool acumulativo); etiqueta del último botón en quiz de
+repaso compara contra `banco.length` en vez del subconjunto; `tokenVigente()`
+invalida la sesión en silencio; `login.mp4` pesa 4.8 MB.
+
+**Lo que la auditoría declaró BIEN DISEÑADO (no tocar):** el modelo
+event-log + recomputo de rachas (está sub-disparado, no mal diseñado),
+storage/api/sync como fachadas (cambiar de backend sigue siendo un archivo),
+las políticas RLS (struggle-first garantizado por servidor), el patrón
+"sin key no existe", el timer por timestamps y el manejo de Range del video.
+
+**Plan aprobado — 6 oleadas** (cada una deja la app funcional; backlog
+completo P0-P3 en la conversación de auditoría):
+
+| Oleada | Contenido | Estado |
+|---|---|---|
+| 1 | Mentor diagnosticable (status+cuerpo, «Probar la cuenta», aviso sk-ant-), puerta única `llamarMessagesAPI` (problemFactory unificado), `save()` con poda ante cuota, registro `cps_diagnostico` + tarjeta Dashboard | ❌ Lista para ejecutar con el prompt maestro |
+| 2 | SQL: FK `usado_por → set null` + `events.uid unique`; `on_conflict=uid` en api.js | ❌ Ídem (el SQL lo pega el usuario ANTES del código) |
+| 3 | Convergencia multi-dispositivo: `unirRemoto()` + bajada continua en `sincronizar()` + disparo por visibilitychange (≥5 min) + aviso de sesión inválida | ❌ Ídem |
+| 4 | Login con Google (Supabase Auth, flujo implícito sin SDK: `/auth/v1/authorize?provider=google`, tokens en el hash; checklist completo en la auditoría). ⚠️ Con "Confirm email" desactivado, mismo correo por Google puede crear un usuario DUPLICADO — decidir política antes | ❌ Requiere acciones del usuario (Google Cloud Console + Supabase) |
+| 5 | Limpieza: `cps_schemaVersion` + migraciones en storage.js, extraer mentorChat.js/cuentaUI.js de app.js, script versionado de verificación del shell, coherencia del entrevistador (solo ítems con `metadata.ruta`) | ❌ |
+| 6 | Responsividad/hardening: breakpoint ~900px (tablet), barra de pizarra con wrap en móvil, comprimir login.mp4 (4.8→~2 MB), decisión sobre `cps_credenciales`, pasada Lighthouse | ❌ |
+
+**Fuera de las oleadas, pendiente CON el usuario:** reset de usuarios de
+prueba (censo SQL → backup → `delete from auth.users where email <> '…'`;
+desbloqueado por la FK de la Oleada 2) y las pruebas humanas del punto 6
+de «QUÉ FALTA».
+
+**PROMPT MAESTRO GENERADO**: `PROMPT-MAESTRO-OLEADAS-1-3.md` (raíz del
+repo). Instrucciones exactas, paso a paso y con código literal, para que un
+agente (Sonnet 4.6+) ejecute las oleadas 1-3 en una sesión. Orden crítico
+codificado dentro: el SQL va PRIMERO y el agente debe esperar la
+confirmación del usuario (el `on_conflict=uid` del código rompería la
+sincronización si llegara antes que la columna; el SQL sí es retrocompatible
+con la app v21 en vivo). Su Paso 12 escribe la **bitácora (6)** de este
+archivo al terminar y marca las casillas de la tabla de arriba.
+
+---
+
+### Bitácora 2026-06-12 (6) — Oleadas 1-3: sincronización convergente + mentor diagnosticable
+
+**SQL aplicado** (`supabase/schema-parches-2026-06-12.sql`):
+- FK `invitaciones.usado_por → on delete set null`: `borrar_mi_cuenta()` ya no falla con error de FK para usuarios que canjearon un código (§0.1).
+- `events.uid text unique`: idempotencia del outbox — reintentos duplicados se ignoran con `on_conflict=uid`.
+
+**Bajada continua (convergencia multi-dispositivo):**
+- `unirRemoto(remoto)` extraída en `sync.js`: función pura que une historial, pisos, sesiones archivadas, problemas generados, estudio, insignias y revisiones, y recomputa las rachas. La llaman tanto `adoptarOUnir()` (rama "unido") como la bajada continua.
+- En `sincronizar()`, antes de subir el snapshot propio, se descarga el remoto y se une con `unirRemoto()`. Dos dispositivos con sesión viva convergen sin re-login; el snapshot del servidor nunca retrocede.
+- Disparador por `visibilitychange` (≥5 min de inactividad) en `iniciar()`: volver a la pestaña tras un rato trae el progreso del otro dispositivo sin re-login.
+- `cps:sesion-invalida` disparado por `tokenVigente()` cuando el refresh falla: la UI puede reaccionar (syncUI llama `avisar()`).
+- Al adoptar un snapshot en dispositivo nuevo, se limpia `quizEnCurso` y `examenEnCurso` (estado efímero de otro aparato).
+
+**Eventos idempotentes:** `subirEventos` incluye el campo `uid` en cada fila y usa `events?on_conflict=uid` con `resolution=ignore-duplicates`. Los reintentos del outbox no crean duplicados en el servidor.
+
+**Mentor diagnosticable:**
+- `llamarMessagesAPI(body)` exportada de `aiMentor.js`: única puerta de red a `api.anthropic.com` para todos los módulos. Los errores HTTP incluyen status y cuerpo completo (max 200 chars) — ya no se descarta el motivo del fallo.
+- `llamarClaude` y `llamarApi` reescritas para usar `llamarMessagesAPI` (el código de fetch vive en un solo lugar).
+- `problemFactory.js` unificado: eliminados `API_URL` y `MODEL` propios; usa `llamarMessagesAPI` importada.
+- `probarCuenta()` exportada: llama con `max_tokens: 1` y devuelve `{ ok, mensaje }` siempre sin lanzar; distingue 401, 400/credit, 404, 429 con frases accionables.
+- Botón «Probar la cuenta» en la tarjeta "Potenciar con Claude" del Dashboard; aviso de prefijo `sk-ant-` al agregar una cuenta.
+
+**Cuota segura y diagnóstico local:**
+- `storage.save()` atrapa `QuotaExceededError`: poda `sesionesArchivadas` a 100 y reintenta; si falla de nuevo, registra en diagnóstico sin lanzar (evita estado parcial en `completarSesion()`).
+- `registrarDiagnostico(origen, mensaje)` en `storage.js`: ring buffer de 50 entradas en `cps_diagnostico` (fuera de `CLAVES_SYNC` — solo este dispositivo).
+- Catches instrumentados: `sincronizar()` (sync), `solicitarHint` (mentor-hint), y los 3 catches del mentor en `app.js` (mentor).
+- Tarjeta «Diagnóstico» en el Dashboard: muestra los últimos 15 avisos, útil para depurar fallas silenciosas.
+
+**Micro-arreglo study.js:** botón "Siguiente pregunta"/"Cerrar evaluación" en `renderPreguntaQuiz()` ahora compara contra `ids.length` (subconjunto del repaso) en lugar de `u.banco.length` — la etiqueta ya no miente en la última pregunta de un repaso.
+
+**sw.js → v22.** Verificado: `node --check` 18 módulos + sw, JSON OK, SHELL OK, cruce de IDs HTML↔JS, todos los cables confirmados por grep.
 
 ---
 

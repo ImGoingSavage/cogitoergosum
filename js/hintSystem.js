@@ -9,7 +9,7 @@
  * cada hint penaliza la puntuación y queda registrado en la asignación.
  */
 
-import { load, update } from './storage.js';
+import { load, update, registrarDiagnostico } from './storage.js';
 import { generarHintIA, mentorDisponible } from './aiMentor.js';
 
 export const PENALIZACION_POR_HINT = 8;
@@ -45,7 +45,8 @@ export async function solicitarHint(problema) {
         texto = dinamico;
         fuente = 'ia';
       }
-    } catch {
+    } catch (e) {
+      registrarDiagnostico('mentor-hint', e.message);
       // El hint estático curado es el respaldo silencioso.
     }
   }

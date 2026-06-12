@@ -103,12 +103,49 @@ export function eliminarCuenta(id) {
   });
 }
 
+/**
+ * Prueba la cuenta activa con una llamada mínima (1 token). Devuelve
+ * { ok, mensaje } SIEMPRE — jamás lanza. Vive en la tarjeta de Ajustes:
+ * no toca ninguna otra superficie (cero degradación sin IA, §0.7).
+ */
+export async function probarCuenta() {
+  const cuenta = cuentaActiva();
+  if (!cuenta?.apiKey) return { ok: false, mensaje: 'No hay cuenta activa: agrega una API key primero.' };
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': cuenta.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({ model: MODEL, max_tokens: 1, messages: [{ role: 'user', content: 'ping' }] }),
+    });
+    if (res.ok) return { ok: true, mensaje: `✓ Cuenta funcionando (${MODEL}).` };
+    const cuerpo = await res.text().catch(() => '');
+    if (res.status === 401) return { ok: false, mensaje: 'API 401: la key no es válida. Debe ser una API key de platform.claude.com (empieza con sk-ant-).' };
+    if (res.status === 400 && /credit/i.test(cuerpo)) return { ok: false, mensaje: 'API 400: tu Console no tiene saldo. Recarga crédito en platform.claude.com → Billing.' };
+    if (res.status === 404) return { ok: false, mensaje: `API 404: tu cuenta no tiene acceso al modelo ${MODEL}.` };
+    if (res.status === 429) return { ok: false, mensaje: 'API 429: límite de velocidad; espera un minuto y reintenta.' };
+    return { ok: false, mensaje: `API ${res.status}: ${cuerpo.slice(0, 160)}` };
+  } catch {
+    return { ok: false, mensaje: 'Sin respuesta de api.anthropic.com (¿red, VPN o bloqueador de contenido?).' };
+  }
+}
+
 /* ========================= Llamadas a la API ========================== */
 
-async function llamarClaude(userPrompt) {
+/**
+ * Llamada cruda a la Messages API con la cuenta activa: añade headers y key,
+ * y convierte todo error HTTP en Error con status + cuerpo (diagnosticable).
+ * Única puerta de red a api.anthropic.com para TODOS los módulos (§3.10);
+ * la excepción documentada es probarCuenta(), que ES la herramienta de
+ * diagnóstico y necesita el status crudo.
+ */
+export async function llamarMessagesAPI(body) {
   const cuenta = cuentaActiva();
   if (!cuenta?.apiKey) return null;
-
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: {
@@ -117,17 +154,22 @@ async function llamarClaude(userPrompt) {
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true',
     },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 1024,
-      system: SYSTEM_MENTOR,
-      messages: [{ role: 'user', content: userPrompt }],
-    }),
+    body: JSON.stringify({ model: MODEL, ...body }),
   });
+  if (!res.ok) {
+    const cuerpo = await res.text().catch(() => '');
+    throw new Error(`API ${res.status}: ${cuerpo.slice(0, 200)}`);
+  }
+  return res.json();
+}
 
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  if (data.stop_reason === 'refusal') return null;
+async function llamarClaude(userPrompt) {
+  const data = await llamarMessagesAPI({
+    max_tokens: 1024,
+    system: SYSTEM_MENTOR,
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+  if (!data || data.stop_reason === 'refusal') return null;
   const bloque = (data.content ?? []).find((b) => b.type === 'text');
   return bloque?.text?.trim() ?? null;
 }
@@ -163,23 +205,8 @@ async function llamarApi({ system, mensajes, maxTokens = 1024, schema = null }) 
     ? `${system}\n\nResponde ÚNICAMENTE con un objeto JSON válido que cumpla el esquema indicado, sin texto adicional ni bloques de código.`
     : system;
 
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': cuenta.apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: maxTokens,
-      system: systemFinal,
-      messages: mensajes,
-    }),
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
+  const data = await llamarMessagesAPI({ max_tokens: maxTokens, system: systemFinal, messages: mensajes });
+  if (!data) return null;
   if (data.stop_reason === 'refusal') return null;
   const texto = (data.content ?? []).find((b) => b.type === 'text')?.text?.trim() ?? null;
   if (!texto) return null;

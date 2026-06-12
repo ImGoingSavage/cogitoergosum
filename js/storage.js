@@ -94,6 +94,9 @@ const DEFAULTS = {
   deviceId: null,        // identificador del dispositivo (se genera una vez)
   sesionSupabase: null,  // {accessToken, refreshToken, expiraEn, userId, email}
   ultimaSync: null,      // ISO de la última sincronización exitosa
+  // Registro local de avisos técnicos (ring buffer 50). Para depurar fallos
+  // que por diseño son silenciosos (sync, IA). Solo este dispositivo.
+  diagnostico: [],
 };
 
 /**
@@ -130,7 +133,23 @@ export function load(name) {
 }
 
 export function save(name, value) {
-  localStorage.setItem(key(name), JSON.stringify(value));
+  const json = JSON.stringify(value);
+  try {
+    localStorage.setItem(key(name), json);
+  } catch {
+    // LocalStorage lleno: podar lo más pesado (archivo de sesiones) y
+    // reintentar UNA vez. Si aun así falla, registrar sin lanzar: una
+    // excepción a mitad de completarSesion() dejaría estado parcial.
+    try {
+      const archivadas = JSON.parse(localStorage.getItem(key('sesionesArchivadas')) ?? '[]');
+      if (Array.isArray(archivadas) && archivadas.length > 100) {
+        localStorage.setItem(key('sesionesArchivadas'), JSON.stringify(archivadas.slice(-100)));
+      }
+      localStorage.setItem(key(name), json);
+    } catch {
+      registrarDiagnostico('storage', `No se pudo guardar «${name}»: LocalStorage lleno.`);
+    }
+  }
 }
 
 export function update(name, fn) {
@@ -154,6 +173,20 @@ export function hoy() {
 
 export function resetTotal() {
   Object.keys(DEFAULTS).forEach((n) => remove(n));
+}
+
+/**
+ * Anota un aviso técnico. Usa setItem crudo con try/catch propio: jamás
+ * recursa en save() ni tumba al llamador (el diagnóstico nunca rompe nada).
+ */
+export function registrarDiagnostico(origen, mensaje) {
+  try {
+    const lista = JSON.parse(localStorage.getItem(key('diagnostico')) ?? '[]');
+    lista.push({ ts: new Date().toISOString(), origen, mensaje: String(mensaje).slice(0, 300) });
+    localStorage.setItem(key('diagnostico'), JSON.stringify(lista.slice(-50)));
+  } catch {
+    // Nada: el diagnóstico es lo único que puede perderse en silencio.
+  }
 }
 
 /* ---------------- Sincronización (Fase C, §5.2 C.4) ---------------- */

@@ -33,6 +33,7 @@ import {
   prepararImagen,
   analizarFotoDesconstruccion,
   revisarIntento,
+  probarCuenta,
 } from './aiMentor.js';
 import * as Factory from './problemFactory.js';
 import * as Study from './study.js';
@@ -107,6 +108,9 @@ async function init() {
   Claustro.init();
   Claustro.configurarUI();
   Sync.iniciar(); // sincronización opcional: no-op sin sesión o sin red
+  // Una sincronización pudo unir progreso de otro dispositivo: refrescar
+  // SOLO el header (repintar la sesión a mitad de un forcejeo molestaría).
+  window.addEventListener('cps:sync-completada', () => Study.actualizarHeaderRachas());
   // Carga en paralelo: study.json, sellos y mapa del avatar
   await Promise.all([Study.init(), Badges.init(), Avatar.init()]);
   Study.configurarUI();
@@ -681,7 +685,8 @@ async function enviarMensajeMentor() {
     } else {
       $('mentor-chat-estado').textContent = 'El mentor no respondió esta vez; tu trabajo sigue intacto.';
     }
-  } catch {
+  } catch (e) {
+    Storage.registrarDiagnostico('mentor', e.message);
     $('mentor-chat-estado').textContent = 'No se pudo contactar al mentor (¿red o cuenta?).';
   }
   $('btn-mentor-enviar').disabled = false;
@@ -743,7 +748,8 @@ function configurarFotoDesconstruccion() {
       } else {
         $('descon-foto-estado').textContent = 'El mentor no pudo leer la hoja esta vez; intenta con más luz o de frente.';
       }
-    } catch {
+    } catch (e) {
+      Storage.registrarDiagnostico('mentor', e.message);
       $('descon-foto-estado').textContent = 'No se pudo analizar la foto (¿red o cuenta?). Tu forcejeo sigue intacto.';
     }
   });
@@ -808,7 +814,8 @@ function configurarRevisionIA() {
       } else {
         $('revision-estado').textContent = 'El mentor no respondió esta vez.';
       }
-    } catch {
+    } catch (e) {
+      Storage.registrarDiagnostico('mentor', e.message);
       $('revision-estado').textContent = 'No se pudo pedir la revisión (¿red o cuenta?).';
     }
     fotoRevisionPendiente = null;
@@ -1503,6 +1510,23 @@ function renderizarDashboard() {
   const barras = $('chart-estrategias');
   barras.innerHTML = '';
   barras.appendChild(Analytics.svgBarrasEstrategias());
+
+  const diag = $('diagnostico-lista');
+  diag.innerHTML = '';
+  const avisos = Storage.load('diagnostico').slice(-15).reverse();
+  if (!avisos.length) {
+    const p = document.createElement('p');
+    p.className = 'fila';
+    p.textContent = 'Sin avisos registrados.';
+    diag.appendChild(p);
+  } else {
+    avisos.forEach((d) => {
+      const p = document.createElement('p');
+      p.className = 'fila';
+      p.textContent = `${d.ts.slice(0, 16).replace('T', ' ')} · ${d.origen} · ${d.mensaje}`;
+      diag.appendChild(p);
+    });
+  }
 }
 
 /**
@@ -1660,7 +1684,16 @@ function configurarMentorUI() {
       $('cuenta-nombre').value = '';
       $('cuenta-apikey').value = '';
       renderizarCuentas();
+      if (!creada.apiKey.startsWith('sk-ant-')) {
+        $('mentor-estado').textContent =
+          'Aviso: la key no empieza con sk-ant- — verifica que sea una API key de la Console (no una contraseña de claude.ai). Usa «Probar la cuenta».';
+      }
     }
+  });
+  $('btn-cuenta-probar').addEventListener('click', async () => {
+    $('mentor-estado').textContent = 'Probando la cuenta…';
+    const r = await probarCuenta();
+    $('mentor-estado').textContent = r.mensaje;
   });
 }
 

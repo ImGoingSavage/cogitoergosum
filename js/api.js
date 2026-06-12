@@ -101,6 +101,11 @@ async function tokenVigente() {
       sesion = guardarSesion(data);
     } catch {
       remove('sesionSupabase'); // refresh inválido: la sesión caducó de verdad
+      try {
+        window.dispatchEvent(new CustomEvent('cps:sesion-invalida'));
+      } catch {
+        // Entornos sin window.
+      }
       return null;
     }
   }
@@ -131,10 +136,11 @@ export async function subirEventos(eventos) {
   const filas = eventos.map((e) => ({
     user_id: sesion.userId,
     device_id: deviceId(),
+    uid: e.uid,
     tipo: e.tipo,
     payload: { ...e.payload, _uid: e.uid, _ts: e.ts },
   }));
-  await rest('POST', 'events', filas);
+  await rest('POST', 'events?on_conflict=uid', filas, 'resolution=ignore-duplicates');
 }
 
 /**

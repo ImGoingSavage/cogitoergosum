@@ -465,7 +465,7 @@ function renderPreguntaQuiz() {
 
     const btnSig = document.createElement('button');
     btnSig.className = 'primario';
-    btnSig.textContent = qc.indice + 1 < u.banco.length ? 'Siguiente pregunta' : 'Cerrar evaluación';
+    btnSig.textContent = qc.indice + 1 < ids.length ? 'Siguiente pregunta' : 'Cerrar evaluación';
     cont.appendChild(btnSig);
 
     btnSig.addEventListener('click', () => {

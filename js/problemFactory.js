@@ -22,10 +22,7 @@
  */
 
 import { load, update } from './storage.js';
-import { cuentaActiva, mentorDisponible } from './aiMentor.js';
-
-const API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-opus-4-8';
+import { cuentaActiva, mentorDisponible, llamarMessagesAPI } from './aiMentor.js';
 
 // Los ids generados viven por encima de cualquier id estático futuro.
 const ID_BASE = 10000;
@@ -127,28 +124,14 @@ export async function generarVariante(semilla) {
   ].join('\n\n');
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': cuenta.apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 16000,
-        thinking: { type: 'adaptive' },
-        system: SYSTEM_FACTORY,
-        output_config: {
-          format: { type: 'json_schema', schema: SCHEMA_VARIANTE },
-        },
-        messages: [{ role: 'user', content: userPrompt }],
-      }),
+    const data = await llamarMessagesAPI({
+      max_tokens: 16000,
+      thinking: { type: 'adaptive' },
+      system: SYSTEM_FACTORY,
+      output_config: { format: { type: 'json_schema', schema: SCHEMA_VARIANTE } },
+      messages: [{ role: 'user', content: userPrompt }],
     });
-
-    if (!res.ok) return null;
-    const data = await res.json();
+    if (!data) return null;
     // Refusal o salida truncada: descartar en silencio.
     if (data.stop_reason === 'refusal' || data.stop_reason === 'max_tokens') return null;
 

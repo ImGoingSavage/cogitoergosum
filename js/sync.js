@@ -51,6 +51,14 @@ function avisar() {
 export function iniciar() {
   window.addEventListener('online', () => sincronizar());
   window.addEventListener('cps:evento-encolado', () => programar());
+  // Al volver a la pestaña tras ≥5 min, traer lo que otros dispositivos
+  // hayan subido (la bajada continua de sincronizar() hace la unión).
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    const ultima = Storage.load('ultimaSync');
+    if (!ultima || Date.now() - new Date(ultima).getTime() > 5 * 60_000) sincronizar();
+  });
+  window.addEventListener('cps:sesion-invalida', () => avisar());
   sincronizar(); // intento inicial (no-op sin sesión o sin red)
 }
 
@@ -88,11 +96,23 @@ export async function sincronizar() {
       const enviados = new Set(lote.map((e) => e.uid));
       Storage.update('outbox', (c) => c.filter((e) => !enviados.has(e.uid)));
     }
+    // Bajada continua: el snapshot remoto se UNE antes de subir el propio.
+    // Dos dispositivos con sesión viva convergen sin re-login y el snapshot
+    // del servidor nunca retrocede (sin esto, el último en subir borraba el
+    // progreso del otro hasta el siguiente login).
+    try {
+      const snap = await Api.descargarSnapshot();
+      if (snap?.estado) unirRemoto(snap.estado);
+    } catch (e) {
+      Storage.registrarDiagnostico('sync', `bajada: ${e.message}`);
+      // La subida continúa; la unión se reintenta en el próximo disparo.
+    }
     await Api.subirSnapshot(snapshotLocal());
     Storage.save('ultimaSync', new Date().toISOString());
     // El claustro refresca la vitrina pública al terminar (sin ciclos)
     window.dispatchEvent(new CustomEvent('cps:sync-completada'));
-  } catch {
+  } catch (e) {
+    Storage.registrarDiagnostico('sync', e.message);
     // Cola intacta; se reintentará en el próximo disparo.
   } finally {
     sincronizando = false;
@@ -136,9 +156,28 @@ export async function adoptarOUnir() {
     Storage.CLAVES_SYNC.forEach((k) => {
       if (remoto[k] != null) Storage.save(k, remoto[k]);
     });
+    // Lo en-curso es de ESTE dispositivo: jamás se adopta un quiz o examen
+    // a medias de otro aparato.
+    Storage.update('estudio', (e) => {
+      e.quizEnCurso = null;
+      e.examenEnCurso = null;
+      return e;
+    });
     return 'adoptado';
   }
 
+  // Escalares de perfil/preferencias: se conservan los locales (este
+  // dispositivo es la verdad inmediata); las rachas se recomputan en unirRemoto.
+  unirRemoto(remoto);
+  return 'unido';
+}
+
+/**
+ * Une el estado remoto al local. Los escalares de perfil/preferencias se
+ * conservan locales (este dispositivo es la verdad inmediata); las rachas
+ * se recomputan del historial unido.
+ */
+function unirRemoto(remoto) {
   unirLista('historial', remoto.historial, claveSesion);
   unirLista('pisosMinimos', remoto.pisosMinimos, (p) => p.uid ?? `${p.fecha}|${p.problemId}`);
   unirLista('sesionesArchivadas', remoto.sesionesArchivadas, claveSesion);
@@ -146,11 +185,8 @@ export async function adoptarOUnir() {
   unirEstudio(remoto.estudio);
   unirInsignias(remoto.insignias);
   unirRevisiones(remoto.revisiones);
-  // Escalares de perfil/preferencias: se conservan los locales (este
-  // dispositivo es la verdad inmediata); las rachas se recomputan abajo.
   recomputarRachaEntrenamiento();
   recomputarRachaEstudio();
-  return 'unido';
 }
 
 function claveSesion(h) {
