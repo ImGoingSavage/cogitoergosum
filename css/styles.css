@@ -143,9 +143,10 @@ body {
 
 /* -------------- Portada de inicio de sesión (login) ---------------- */
 /* El video login.mp4 ya es nocturno (mármol sobre negro): no se invierte;
-   un viñeteado sutil garantiza la lectura de la tarjeta. El vidrio aquí es
-   el más profundo de la app (blur 30 + saturate alto + brillo interior):
-   es el único momento "de teatro" del umbral, sobrio igualmente. */
+   un viñeteado sutil garantiza la lectura de la tarjeta. El vidrio de la
+   tarjeta es CLARO a propósito (pedido del usuario, 2026-06-11): el mármol
+   debe verse a través — blur bajo y lámina casi transparente; la
+   legibilidad la sostienen el viñeteado y el propio video oscuro. */
 
 #pantalla-login {
   position: fixed;
@@ -174,6 +175,21 @@ body {
   object-position: center;
 }
 
+/* El video nativo mide 544×680: en escritorio, cover lo escalaría ~3.5×
+   y se pixela. Zoom out: contain con tope de ~1.5× el tamaño natural,
+   centrado — su propio fondo negro se funde con .login-fondo y los
+   bordes no se notan. En móvil cover apenas escala (~1.2×) y se queda. */
+@media (min-width: 541px) {
+  .login-fondo video {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    object-fit: contain;
+    max-width: 816px;   /* 1.5 × 544 */
+    max-height: 1020px; /* 1.5 × 680 */
+  }
+}
+
 .login-fondo::after {
   content: "";
   position: absolute;
@@ -191,14 +207,16 @@ body {
   text-align: center;
   padding: 44px 36px 30px;
   border-radius: 28px;
-  /* Vidrio líquido: lámina translúcida con luz entrando por arriba */
-  background: linear-gradient(168deg, rgba(236, 231, 221, 0.09), rgba(19, 17, 16, 0.42));
-  -webkit-backdrop-filter: blur(30px) saturate(1.7);
-  backdrop-filter: blur(30px) saturate(1.7);
+  /* Vidrio líquido CLARO: lámina casi transparente con luz por arriba —
+     el mármol del fondo se ve a través (antes: blur 30 + lámina 0.42,
+     que lo tapaba por completo) */
+  background: linear-gradient(168deg, rgba(236, 231, 221, 0.05), rgba(19, 17, 16, 0.2));
+  -webkit-backdrop-filter: blur(6px) saturate(1.4);
+  backdrop-filter: blur(6px) saturate(1.4);
   border: 1px solid rgba(236, 231, 221, 0.16);
   box-shadow:
-    inset 0 1px 0 rgba(236, 231, 221, 0.18),
-    0 24px 64px rgba(0, 0, 0, 0.5);
+    inset 0 1px 0 rgba(236, 231, 221, 0.14),
+    0 24px 64px rgba(0, 0, 0, 0.4);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -1413,4 +1431,257 @@ button.secundario.peligro:hover:not(:disabled) {
   nav { order: 3; width: 100%; justify-content: space-between; }
   nav button { flex: 1; min-height: 44px; }
   textarea { min-height: 160px; }
+}
+
+/* ============== Lección integrada del Modo Estudio (teoría) ============ */
+/* La teoría completa de cada unidad, legible en la app (data/teoria/*.md).
+   Tipografía de lectura larga: serif, medida cómoda, ritmo de libro. */
+
+.leccion {
+  margin-top: 18px;
+  padding: 22px 24px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  font-family: var(--serif);
+  font-size: 17.5px;
+  line-height: 1.78;
+}
+
+.leccion h1 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+.leccion h2 {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  margin: 26px 0 8px;
+}
+
+.leccion h3 {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 20px 0 6px;
+  color: var(--texto);
+}
+
+.leccion p { margin: 10px 0; }
+
+.leccion ul, .leccion ol { margin: 10px 0 10px 26px; }
+
+.leccion li { margin: 5px 0; }
+
+.leccion blockquote {
+  margin: 14px 0;
+  padding: 10px 18px;
+  border-left: 2px solid var(--lampara-borde);
+  background: var(--lampara-suave);
+  border-radius: 0 var(--radio) var(--radio) 0;
+  font-style: italic;
+}
+
+.leccion blockquote p { margin: 4px 0; }
+
+.leccion code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--bg-elevado);
+  border: 1px solid var(--borde);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+
+.leccion hr {
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: 22px auto;
+  width: 60%;
+}
+
+.leccion table {
+  border-collapse: collapse;
+  margin: 14px 0;
+  width: 100%;
+  font-size: 16px;
+}
+
+.leccion th, .leccion td {
+  border: 1px solid var(--borde);
+  padding: 7px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.leccion th { background: var(--bg-elevado); font-weight: 600; }
+
+.leccion-error { color: var(--texto-suave); font-style: italic; }
+
+/* ================= Pizarra de trabajo (estilo cuaderno) ================ */
+/* Escribir a mano con el Apple Pencil directamente en la app: pluma con
+   presión, goma, lazo, grosor, colores, deshacer/rehacer y páginas.
+   El lienzo es papel oscuro de la biblioteca con retícula de puntos. */
+
+body.sin-scroll { overflow: hidden; }
+
+#pizarra-flotante {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 30;
+}
+
+#pizarra-burbuja {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--texto);
+  background: var(--vidrio);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  border: 1px solid var(--vidrio-borde);
+  transition: border-color var(--transicion), color var(--transicion);
+}
+
+#pizarra-burbuja:hover { border-color: var(--acento); color: var(--acento); }
+
+#pizarra-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  background: #1d1a16;
+}
+
+#pizarra-overlay[hidden] { display: none; }
+
+.pizarra-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 8px 12px;
+  background: rgba(27, 24, 21, 0.92);
+  border-bottom: 1px solid var(--borde);
+}
+
+.pizarra-grupo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pizarra-titulo {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--texto-suave);
+}
+
+.pizarra-boton {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--texto);
+  font-size: 17px;
+  cursor: pointer;
+  transition: border-color var(--transicion), color var(--transicion),
+    background var(--transicion);
+}
+
+.pizarra-boton:hover:not(:disabled) { border-color: var(--borde); }
+
+.pizarra-boton.activo {
+  border-color: var(--acento);
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+
+.pizarra-boton:disabled { opacity: 0.35; cursor: default; }
+
+.pizarra-boton.peligro-armado { color: var(--peligro); border-color: var(--peligro); font-size: 13px; }
+
+.pizarra-sel-borrar { font-size: 13px; color: var(--acento); border-color: var(--acento); }
+
+.pizarra-grosor {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+}
+
+.pizarra-grosor input[type='range'] {
+  width: 92px;
+  accent-color: var(--acento);
+}
+
+#piz-grosor-vista {
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--texto);
+  width: 4px;
+  height: 4px;
+}
+
+.piz-colores { display: inline-flex; gap: 6px; padding: 0 4px; }
+
+.piz-color {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.piz-color.activo { border-color: var(--acento); box-shadow: 0 0 0 2px var(--bg); }
+
+.pizarra-paginas {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+#pizarra-lienzo-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  /* Papel de la biblioteca: retícula de puntos discreta para escribir */
+  background-image: radial-gradient(rgba(236, 231, 221, 0.08) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+}
+
+#pizarra-canvas {
+  position: absolute;
+  inset: 0;
+  touch-action: none;          /* el lienzo es del pencil: sin scroll/zoom */
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: crosshair;
+}
+
+#pizarra-canvas[data-herramienta='goma'] { cursor: cell; }
+#pizarra-canvas[data-herramienta='lazo'] { cursor: copy; }
+
+@media (max-width: 540px) {
+  #pizarra-flotante { left: 12px; bottom: 12px; }
+  .pizarra-barra { padding: 6px 8px; }
+  .pizarra-titulo { display: none; }
+  .pizarra-grosor input[type='range'] { width: 70px; }
+  .leccion { padding: 18px 16px; font-size: 16.5px; }
 }

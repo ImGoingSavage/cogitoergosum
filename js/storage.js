@@ -74,6 +74,11 @@ const DEFAULTS = {
   // username, ficha compartida (opt-in) y entregas de "pensar juntos"
   // que esperan red (jamás bloquean el cierre de una sesión).
   claustro: { username: null, fichaCompartidaUid: null, pjEntregasPendientes: [] },
+  // Pizarras a mano alzada (papel de borrador del pencil, pizarra.js):
+  // { contexto: { paginas: [[trazo,…]], pagina, actualizado } }.
+  // Locales del dispositivo A PROPÓSITO (pesan y son borrador): fuera de
+  // CLAVES_SYNC, igual que la asignación en curso.
+  pizarras: {},
   // Portada de inicio de sesión: true si el usuario eligió "continuar sin
   // cuenta" (decisión por dispositivo; NO viaja al servidor). La cuenta es
   // siempre opcional (§0.7): la portada invita, jamás bloquea.

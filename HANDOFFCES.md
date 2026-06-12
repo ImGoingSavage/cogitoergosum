@@ -910,6 +910,13 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      recorrido de UI con humano.
    - Una pasada real del mentor con API key: mensaje al chat socrático,
      foto de una hoja (transcripción) y revisión post-revelado.
+   - **Pizarra con Apple Pencil real en el iPad** (presión, rechazo de
+     palma, lazo, resaltador) y lectura de 2-3 lecciones integradas en la
+     tablet (bitácora "noche, 3").
+6bis. **Decidir el alcance del texto en las lecciones** (bitácora
+   "noche, 3"): lecciones redactadas (estado actual) vs. texto íntegro del
+   libro vía canal privado en Supabase — el texto íntegro NO puede ir al
+   repo público (copyright). Decisión del usuario.
 7. **Fase 6 del Modo Estudio** (decidir la dirección CON el usuario antes
    de ingerir): de Zeitz solo queda §8.5 (transformaciones: simetría,
    movimientos rígidos, homotecia) como sección sustantiva. Lo natural
@@ -960,7 +967,84 @@ móvil, camino "sin cuenta" y sesión sembrada):
   cubre cualquier `assets/video/*.mp4` (cache-first con Range, misma
   `cogitoergosum-media-v1`).
 
-### Cierre de jornada 2026-06-11, noche (estado al apagar — VIGENTE)
+### Bitácora 2026-06-11 (noche, 3) — Estudio autocontenido + pizarra (VIGENTE)
+
+Pedido del usuario: (1) cada sección del Modo Estudio debe traer las páginas
+del libro en markdown para estudiar sin cargar el libro; (2) al final de cada
+sección, un resumen-chunk mínimo de lo revisado; (3) una pizarra tipo
+GoodNotes en Estudio y Entrenamiento (lazo, lápiz, goma, tamaños, etc.).
+Un agente anterior empezó este trabajo y fue INTERRUMPIDO sin documentarlo;
+este apartado documenta lo suyo y lo que faltó, ya terminado y verificado.
+
+**Lo que dejó el agente interrumpido (sin commit, sin bitácora):**
+- `data/teoria/*.md` — 36 lecciones REDACTADAS para la app (una por unidad,
+  ~5 KB), `js/markdown.js` (render Markdown→HTML mínimo y seguro: escapa
+  todo antes de transformar) y botón "📖 Leer la lección aquí" en la vista
+  de unidad (`study.js → alternarLeccion`, caché en memoria + precache SW).
+- `js/pizarra.js` (~650 líneas, completa y de buena factura): pluma con
+  presión del pencil, goma de trazo, lazo (seleccionar/mover/borrar),
+  grosor 1-14, 4 tintas de la biblioteca, deshacer/rehacer (100 niveles),
+  varias páginas, rechazo de palma, atajos ⌘Z/⌘⇧Z/Esc, limpiar con doble
+  toque. Una pizarra POR CONTEXTO (problema del día / unidad / examen /
+  libre), persistida en `cps_pizarras` (storage.js) con poda a 30 tableros
+  y manejo de LocalStorage lleno. EXCLUIDA de CLAVES_SYNC a propósito
+  (borrador local, pesa). Burbuja ✎ visible solo en Sesión y Estudio
+  (`actualizarVisibilidad`), contexto inyectado desde app.js
+  (`configurarPizarra`). CSS de overlay/barra/botones en styles.css.
+- `sw.js` subido a v13 con markdown.js, pizarra.js y las lecciones en el
+  precache… **incluyendo 2 lecciones que NUNCA escribió** (`engel-extremo`,
+  `engel-juegos`): como el install usa `cache.addAll`, el 404 de esas dos
+  ROMPÍA la instalación del SW v13 completo. Ahí lo interrumpieron.
+- También bajó el video de login a 0.3× (antes 0.5×).
+
+**Lo terminado hoy (este agente):**
+- ✅ Escritas las 2 lecciones faltantes con el estilo y estructura de las
+  demás: `engel-extremo.md` (receta variacional, 3 hechos base, E1, E2,
+  Sylvester-Gallai) y `engel-juegos.md` (W/L, hacia atrás, Bachet y sus
+  3 variantes modulares, pareo/espejo, doble verificación) — alineadas con
+  los bancos de quiz de sus unidades. El precache v13 queda íntegro (38/38).
+- ✅ **Síntesis al final de las 38 lecciones** (pedido 2 del usuario):
+  sección `## Síntesis` con UN chunk mínimo en blockquote que concatena con
+  precisión lo revisado, colocada antes del pie "Antes del quiz" (orden
+  pedagógico: chunk → instrucción de retrieval).
+- ✅ **Resaltador en la pizarra** (la herramienta GoodNotes que faltaba):
+  botón ▰, tinta translúcida (alfa 0.38) de ancho constante (3× el grosor),
+  pintada como UN solo path para que las uniones no doblen el alfa; la goma
+  y el lazo lo tratan como cualquier trazo (radio de borrado ajustado al
+  ancho real). Persistencia: flag `m` en el trazo.
+- ✅ Verificación: node --check en 17 módulos + sw; JSON válidos; cruce
+  unidades↔lecciones↔precache 38/38/38 sin huecos; cruce IDs HTML↔JS;
+  render markdown probado (Síntesis → blockquote, sin HTML inyectable);
+  arranque en Chrome headless sin errores de consola. `sw.js` se queda en
+  **v13**: la v13 rota nunca llegó a instalarse en ningún navegador (addAll
+  fallaba), así que no hace falta otro bump.
+- ⚠️ NADA de esto está commiteado aún (tampoco lo del agente interrumpido).
+
+**⚠️ DECISIÓN PENDIENTE DEL USUARIO — "contenido completo, tal cual":**
+el pedido original era poner TODO el texto del libro de cada sección, no un
+resumen. Lo que existe son lecciones redactadas que cubren el temario
+completo de cada unidad (definiciones, teoremas, demostraciones y ejemplos
+del syllabus), pero NO son las páginas íntegras de Zeitz/Engel/Pólya. El
+agente anterior tomó esa decisión sin documentarla, y hay una razón dura
+para no copiar el texto íntegro: **el repo es PÚBLICO y GitHub Pages lo
+sirve a internet** — subir capítulos completos de libros con copyright es
+distribuirlos públicamente (la misma razón por la que `Biblioteca/` está en
+.gitignore). Opciones para decidir CON el usuario antes de mover nada:
+  a) Quedarse con las lecciones redactadas (estado actual, publicable).
+  b) **Canal privado**: tabla `teoria_privada` en Supabase con RLS
+     solo-dueño + script LOCAL que cargue las secciones desde
+     `Biblioteca/*.txt`; study.js intentaría primero el .md local/precache
+     y, con sesión, el texto íntegro privado. El texto jamás tocaría el
+     repo. (Esfuerzo medio; es la única vía que da texto íntegro EN la
+     tablet vía el sitio público sin publicar el libro.)
+  c) Carpeta local gitignoreada con el texto íntegro: solo serviría
+     sirviendo la app desde la Mac, no en la PWA instalada desde Pages.
+
+**PENDIENTE humano (pizarra):** probarla con Apple Pencil real en el iPad —
+presión, rechazo de palma, lazo con el dedo, resaltador sobre tinta — y
+ajustar `ancho()`/alfa si la sensación no convence.
+
+### Cierre de jornada 2026-06-11, noche (estado al apagar)
 
 - **App v12** (sw.js), todo commiteado y pusheado en `main`. Los 3 SQL de
   `supabase/` aplicados y verificados por E2E (Fase C 8/8, claustro 10/10,

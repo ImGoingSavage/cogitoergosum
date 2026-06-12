@@ -316,6 +316,11 @@
         <h2>Unidad</h2>
         <h3 id="unidad-titulo" class="piso-titulo"></h3>
         <div id="unidad-lectura" class="lista-estrategias"></div>
+        <!-- Lección integrada (pedido 2026-06-11): teoría completa redactada
+             para la app (data/teoria/*.md) — estudiable sin el libro físico.
+             El puntero al libro se conserva para quien quiera profundizar. -->
+        <button id="btn-unidad-leccion" class="secundario" hidden>📖 Leer la lección aquí</button>
+        <div id="unidad-leccion" class="leccion" hidden></div>
         <button id="btn-quiz-iniciar" class="primario" hidden>Ya leí — evalúame</button>
         <div id="unidad-quiz" hidden></div>
         <div id="unidad-cierre" hidden></div>
@@ -594,6 +599,47 @@
     </section>
 
   </main>
+
+  <!-- Pizarra de trabajo (pedido 2026-06-11): escribir a mano con el Apple
+       Pencil (o dedo/mouse) para forcejear ahí mismo. Pluma con presión,
+       resaltador, goma, lazo, grosor, colores, deshacer/rehacer y páginas.
+       Cada problema/unidad/examen guarda SU pizarra en este dispositivo. -->
+  <div id="pizarra-flotante" hidden>
+    <button id="pizarra-burbuja" title="Abrir la pizarra" aria-label="Abrir la pizarra">✎</button>
+  </div>
+
+  <section id="pizarra-overlay" hidden aria-label="Pizarra de trabajo">
+    <header class="pizarra-barra">
+      <div class="pizarra-grupo">
+        <button id="btn-pizarra-cerrar" class="pizarra-boton" title="Cerrar — tu trazo queda guardado" aria-label="Cerrar la pizarra">✕</button>
+        <span id="pizarra-titulo" class="pizarra-titulo"></span>
+      </div>
+      <div class="pizarra-grupo pizarra-herramientas" role="toolbar" aria-label="Herramientas">
+        <button id="btn-piz-pluma" class="pizarra-boton" title="Pluma" aria-label="Pluma">✒</button>
+        <button id="btn-piz-marcador" class="pizarra-boton" title="Resaltador — tinta translúcida" aria-label="Resaltador">▰</button>
+        <button id="btn-piz-goma" class="pizarra-boton" title="Goma — borra trazos completos" aria-label="Goma">◌</button>
+        <button id="btn-piz-lazo" class="pizarra-boton" title="Lazo — rodea trazos para moverlos o borrarlos" aria-label="Lazo">⬚</button>
+        <label class="pizarra-grosor" title="Grosor del trazo">
+          <input id="piz-grosor" type="range" min="1" max="14" step="1" value="3" aria-label="Grosor del trazo" />
+          <span id="piz-grosor-vista" aria-hidden="true"></span>
+        </label>
+        <div id="piz-colores" class="piz-colores"></div>
+      </div>
+      <div class="pizarra-grupo">
+        <button id="btn-piz-sel-borrar" class="pizarra-boton pizarra-sel-borrar" hidden>Borrar selección</button>
+        <button id="btn-piz-deshacer" class="pizarra-boton" title="Deshacer" aria-label="Deshacer">↩</button>
+        <button id="btn-piz-rehacer" class="pizarra-boton" title="Rehacer" aria-label="Rehacer">↪</button>
+        <button id="btn-piz-limpiar" class="pizarra-boton" title="Limpiar la página (doble toque)" aria-label="Limpiar la página">⌫</button>
+        <span class="pizarra-paginas">
+          <button id="btn-piz-pag-prev" class="pizarra-boton" title="Página anterior" aria-label="Página anterior">‹</button>
+          <span id="piz-pag-info">1/1</span>
+          <button id="btn-piz-pag-next" class="pizarra-boton" title="Página siguiente" aria-label="Página siguiente">›</button>
+          <button id="btn-piz-pag-nueva" class="pizarra-boton" title="Nueva página" aria-label="Nueva página">+</button>
+        </span>
+      </div>
+    </header>
+    <div id="pizarra-lienzo-wrap"><canvas id="pizarra-canvas"></canvas></div>
+  </section>
 
   <!-- Mentor flotante (§4.4 ampliado): disponible en TODAS las vistas, SOLO
        con cuenta de Claude activa (sin key no existe — no se muestra

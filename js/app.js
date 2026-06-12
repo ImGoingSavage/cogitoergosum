@@ -41,6 +41,7 @@ import * as Avatar from './avatar.js';
 import * as Api from './api.js';
 import * as Sync from './sync.js';
 import * as Claustro from './claustro.js';
+import * as Pizarra from './pizarra.js';
 
 const MIN_DESCONSTRUCCION = 200;
 const MIN_FICHA = 15;        // moraleja y disparador: al menos una frase corta
@@ -102,6 +103,7 @@ async function init() {
   configurarMentorFlotante();
   configurarFotoDesconstruccion();
   configurarRevisionIA();
+  configurarPizarra();
   Claustro.init();
   Claustro.configurarUI();
   Sync.iniciar(); // sincronización opcional: no-op sin sesión o sin red
@@ -1552,6 +1554,39 @@ function cambiarVista(vista) {
     $(`nav-${v}`).classList.toggle('activo', vista === v);
   });
   actualizarMentorUI(); // el mentor flotante cambia de modo según la vista
+  Pizarra.actualizarVisibilidad(vista); // la pizarra vive en sesión y estudio
+}
+
+/**
+ * Pizarra a mano alzada (pedido 2026-06-11): el contexto decide QUÉ pizarra
+ * se abre — la del problema del día, la de la unidad de estudio abierta o
+ * la del examen en curso. Cada una persiste por separado en el dispositivo.
+ */
+function configurarPizarra() {
+  Pizarra.init();
+  Pizarra.setContexto(() => {
+    if (vistaActual === 'sesion') {
+      const a = Storage.load('asignacion');
+      if (a?.problemId != null) {
+        const p = problemas.find((x) => x.id === a.problemId);
+        return {
+          clave: `problema-${a.problemId}`,
+          titulo: p ? `Pizarra — ${p.titulo}` : 'Pizarra del problema',
+        };
+      }
+      return { clave: 'entrenamiento', titulo: 'Pizarra de entrenamiento' };
+    }
+    const e = Storage.load('estudio');
+    if (e.examenEnCurso) {
+      return { clave: `examen-${e.examenEnCurso.bloqueId}`, titulo: 'Pizarra — examen del bloque' };
+    }
+    const panel = $('estudio-unidad');
+    if (panel && !panel.hidden && panel.dataset.unidad) {
+      return { clave: `unidad-${panel.dataset.unidad}`, titulo: 'Pizarra — unidad de estudio' };
+    }
+    return { clave: 'estudio', titulo: 'Pizarra de estudio' };
+  });
+  Pizarra.actualizarVisibilidad(vistaActual);
 }
 
 function renderizarCuentas() {
@@ -1623,13 +1658,13 @@ function configurarPantallaLogin() {
       video.pause();
       return;
     }
-    // A 0.5×, como el fondo: el mármol fluye lento, sin robar atención
-    video.defaultPlaybackRate = 0.5;
-    video.playbackRate = 0.5;
+    // A 0.3×: el mármol apenas fluye, sin robar atención
+    video.defaultPlaybackRate = 0.3;
+    video.playbackRate = 0.3;
     video.play().catch(() => {}); // si el navegador lo impide, queda el póster
   };
   // Algunos navegadores reinician el rate al cargar metadatos: reafirmarlo
-  video.addEventListener('loadedmetadata', () => { video.playbackRate = 0.5; });
+  video.addEventListener('loadedmetadata', () => { video.playbackRate = 0.3; });
   document.addEventListener('visibilitychange', ajustarVideo);
   reducido.addEventListener?.('change', ajustarVideo);
 

@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v12';
+const VERSION = 'cogitoergosum-v13';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -40,11 +40,53 @@ const SHELL = [
   'js/api.js',
   'js/sync.js',
   'js/claustro.js',
+  'js/markdown.js',
+  'js/pizarra.js',
   'data/problems.json',
   'data/study.json',
   'data/quotes.json',
   'data/badges.json',
   'data/avatar.json',
+  // Lecciones de teoría del Modo Estudio (una por unidad): texto plano
+  // pequeño — precachearlas garantiza estudiar sin red desde el iPad.
+  'data/teoria/polya-cuatro-pasos.md',
+  'data/teoria/polya-diccionario.md',
+  'data/teoria/zeitz-1.md',
+  'data/teoria/zeitz-2a.md',
+  'data/teoria/zeitz-2b.md',
+  'data/teoria/zeitz-23.md',
+  'data/teoria/zeitz-24.md',
+  'data/teoria/zeitz-31.md',
+  'data/teoria/zeitz-32.md',
+  'data/teoria/zeitz-33.md',
+  'data/teoria/zeitz-34.md',
+  'data/teoria/zeitz-41.md',
+  'data/teoria/zeitz-61.md',
+  'data/teoria/zeitz-62.md',
+  'data/teoria/zeitz-63.md',
+  'data/teoria/engel-comb.md',
+  'data/teoria/zeitz-71.md',
+  'data/teoria/zeitz-72.md',
+  'data/teoria/zeitz-64.md',
+  'data/teoria/zeitz-43.md',
+  'data/teoria/zeitz-73.md',
+  'data/teoria/zeitz-74.md',
+  'data/teoria/zeitz-75.md',
+  'data/teoria/engel-nt.md',
+  'data/teoria/zeitz-52.md',
+  'data/teoria/zeitz-53.md',
+  'data/teoria/zeitz-54.md',
+  'data/teoria/zeitz-55.md',
+  'data/teoria/engel-ineq.md',
+  'data/teoria/zeitz-42.md',
+  'data/teoria/zeitz-82.md',
+  'data/teoria/zeitz-83.md',
+  'data/teoria/zeitz-84.md',
+  'data/teoria/zeitz-9.md',
+  'data/teoria/engel-inv.md',
+  'data/teoria/engel-color.md',
+  'data/teoria/engel-extremo.md',
+  'data/teoria/engel-juegos.md',
   'assets/fonts/EBGaramond-Regular.woff2',
   'assets/fonts/EBGaramond-SemiBold.woff2',
   'assets/fonts/EBGaramond-Italic.woff2',

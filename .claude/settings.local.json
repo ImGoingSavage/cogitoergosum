@@ -130,7 +130,10 @@
       "Bash(git commit -q -m 'Pages: .nojekyll \\(sitio estático puro, sin procesamiento Jekyll\\) *)",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --window-size=1280,860 --user-data-dir=/tmp/cesp-live --virtual-time-budget=8000 --timeout=25000 --screenshot=/tmp/live-pages.png \"https://imgoingsavage.github.io/cogitoergosum/\")",
       "Bash(git commit -q -m 'HANDOFFCES: bitácora de publicación en GitHub Pages \\(sitio en vivo verificado\\) *)",
-      "Bash(git commit -q -m 'Video de login a 0.5×, como el fondo \\(rate reafirmado en loadedmetadata\\); sw v12 *)"
+      "Bash(git commit -q -m 'Video de login a 0.5×, como el fondo \\(rate reafirmado en loadedmetadata\\); sw v12 *)",
+      "Bash(git commit -q -m 'HANDOFFCES §5.4: lista de pendientes al día \\(pruebas humanas, fase 6, menores\\) y cierre de jornada vigente *)",
+      "Bash(git -C /Users/EdgarDevice/Desktop/ProyectoX diff --stat)",
+      "Bash(git commit -q -m ' *)"
     ]
   }
 }

@@ -19,6 +19,7 @@
 
 import { load, update, hoy, encolarEvento } from './storage.js';
 import * as Badges from './badges.js';
+import { renderMarkdown } from './markdown.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -230,6 +231,40 @@ export function renderizar() {
   actualizarHeaderRachas();
 }
 
+/* ================== Lección integrada (teoría en la app) =============== */
+
+/**
+ * Teoría completa de cada unidad, redactada para la app (data/teoria/*.md)
+ * y legible aquí mismo: estudiable sin el libro físico (pedido 2026-06-11).
+ * El puntero al libro se conserva como referencia para profundizar.
+ */
+const leccionesCache = {}; // unidadId → HTML listo (null si no se pudo cargar)
+
+async function alternarLeccion(u) {
+  const btn = $('btn-unidad-leccion');
+  const cont = $('unidad-leccion');
+  if (!cont.hidden) {
+    cont.hidden = true;
+    btn.textContent = '📖 Leer la lección aquí';
+    return;
+  }
+  if (!(u.id in leccionesCache)) {
+    btn.disabled = true;
+    try {
+      const res = await fetch(`data/teoria/${u.id}.md`);
+      leccionesCache[u.id] = res.ok ? renderMarkdown(await res.text()) : null;
+    } catch {
+      leccionesCache[u.id] = null;
+    }
+    btn.disabled = false;
+  }
+  cont.innerHTML =
+    leccionesCache[u.id] ??
+    '<p class="leccion-error">La lección no está disponible ahora mismo — revisa la conexión e inténtalo de nuevo (una vez cargada queda guardada para leer sin red).</p>';
+  cont.hidden = false;
+  btn.textContent = 'Cerrar la lección';
+}
+
 /* ===================== Render: unidad y su quiz ======================= */
 
 function abrirUnidad(unidadId) {
@@ -256,6 +291,15 @@ function abrirUnidad(unidadId) {
     p.append(b, v);
     $('unidad-lectura').appendChild(p);
   });
+
+  // Lección integrada: cerrada al entrar; se abre/cierra con el botón
+  const btnLeccion = $('btn-unidad-leccion');
+  btnLeccion.hidden = false;
+  btnLeccion.disabled = false;
+  btnLeccion.textContent = '📖 Leer la lección aquí';
+  $('unidad-leccion').hidden = true;
+  $('unidad-leccion').innerHTML = '';
+  btnLeccion.onclick = () => alternarLeccion(u);
 
   const e = load('estudio');
   const enCurso = e.quizEnCurso?.unidadId === u.id;
