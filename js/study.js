@@ -201,7 +201,10 @@ export function renderizar() {
     const btn = document.createElement('button');
     btn.className = 'unidad-boton';
     btn.disabled = !hecha && !abierta;
-    btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span><span class="unidad-libro"></span>`;
+    const rutaLabel = u.metadata?.ruta
+      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${u.metadata.ruta.replace('health-ai-rwe','health ai').replace('maang','maang').replace('quant','quant')}</span>`
+      : '';
+    btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
     btn.querySelector('.unidad-nombre').textContent = u.titulo;
     btn.querySelector('.unidad-libro').textContent = u.libro;
     btn.addEventListener('click', () => abrirUnidad(u.id));
@@ -620,6 +623,7 @@ function renderPasoPrediccion(cont, item, ex) {
         heuristica: item.heuristica,
         prediccion: pred,
         pistaUsada: false,
+        pistasUsadas: 0,
         resultado: null,
         disparadorOk: null,
       });
@@ -636,8 +640,45 @@ function renderPasoForcejeo(cont, item, ex) {
   ta.placeholder = 'Forcejea aquí por escrito: intentos, casos pequeños, caminos muertos…';
   cont.appendChild(ta);
 
+  // Pistas graduadas (fase-7+): array de 5 niveles
+  if (item.pistas?.length) {
+    const pistasContainer = document.createElement('div');
+    pistasContainer.className = 'pistas-container';
+    cont.appendChild(pistasContainer);
+
+    let nivelActual = 0;
+    const mostrarSiguientePista = () => {
+      if (nivelActual >= item.pistas.length) return;
+      const div = document.createElement('div');
+      div.className = 'hint-item';
+      const nivel = document.createElement('span');
+      nivel.className = 'pista-nivel';
+      nivel.textContent = `Pista ${nivelActual + 1}/${item.pistas.length}: `;
+      div.appendChild(nivel);
+      div.appendChild(document.createTextNode(item.pistas[nivelActual]));
+      pistasContainer.appendChild(div);
+      nivelActual++;
+      update('estudio', (st) => {
+        const r = st.examenEnCurso.registros.at(-1);
+        r.pistaUsada = true;
+        r.pistasUsadas = nivelActual;
+        return st;
+      });
+      if (nivelActual < item.pistas.length) {
+        btnPistas.textContent = `Pedir pista ${nivelActual + 1}/${item.pistas.length}`;
+      } else {
+        btnPistas.hidden = true;
+      }
+    };
+
+    const btnPistas = document.createElement('button');
+    btnPistas.className = 'secundario';
+    btnPistas.textContent = `Pedir pista 1/${item.pistas.length}`;
+    pistasContainer.appendChild(btnPistas);
+    btnPistas.addEventListener('click', mostrarSiguientePista);
+
   // Una sola pista permitida, como en el protocolo del PDF
-  if (item.pista) {
+  } else if (item.pista) {
     const btnPista = document.createElement('button');
     btnPista.className = 'secundario';
     btnPista.textContent = 'Pedir LA pista (solo hay una)';

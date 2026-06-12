@@ -59,6 +59,36 @@
       "id": "penultimo-paso",
       "nombre": "Penúltimo paso",
       "descripcion": "Pregunta qué necesitarías tener justo antes de terminar, y persíguelo."
+    },
+    {
+      "id": "linealidad-esperanza",
+      "nombre": "Linealidad de la esperanza",
+      "descripcion": "E[X+Y]=E[X]+E[Y] sin necesitar independencia. Descompón en variables indicadoras 0/1 y suma sus probabilidades."
+    },
+    {
+      "id": "bayes-tasa-base",
+      "nombre": "Bayes / tasa base",
+      "descripcion": "Actualiza priors con evidencia: P(A|B)∝P(B|A)·P(A). Con prevalencia baja, la mayoría de positivos son falsos aunque el test sea bueno."
+    },
+    {
+      "id": "hashing-memoria",
+      "nombre": "Hashing como memoria comprada",
+      "descripcion": "Un hash map (dict) compra O(1) lookup a cambio de O(n) espacio. Transforma búsqueda en O(n²) en conteo/lookup en O(n)."
+    },
+    {
+      "id": "ventana-sql",
+      "nombre": "Window function SQL",
+      "descripcion": "OVER(PARTITION BY … ORDER BY …) añade ranking, acumulado o comparación con fila vecina sin colapsar el resultado en grupos."
+    },
+    {
+      "id": "dag-ajuste",
+      "nombre": "DAG y adjustment set",
+      "descripcion": "Dibuja el grafo causal. Confounders se ajustan; colliders NO se ajustan (ajustar un collider abre caminos espurios)."
+    },
+    {
+      "id": "tiempo-cero",
+      "nombre": "Definir el tiempo cero",
+      "descripcion": "El inicio del seguimiento debe coincidir con elegibilidad y asignación. Ambigüedad en t=0 = immortal time bias."
     }
   ],
   "bloques": [
@@ -563,6 +593,155 @@
             "source": "Engel, Problem-Solving Strategies, cap. 2, problema 5",
             "source_url": "",
             "year": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "fase-7",
+      "titulo": "Fase 7 · Arena de Entrevistas de Élite",
+      "meta": "Entrenamiento transferible para entrevistas técnicas de alto nivel: Quant/Hedge Fund, MAANG/Big Tech y Health AI/RWE. El objetivo no es una lista de preguntas sino una máquina de transferencia cognitiva: reconocer estructura, forcejear, calibrar, comunicar y defender decisiones bajo presión.",
+      "unidades": [
+        "arena-q1",
+        "arena-q2",
+        "arena-m1",
+        "arena-m2",
+        "arena-h1",
+        "arena-h2"
+      ],
+      "examen": {
+        "items": [
+          {
+            "id": "f7-ex-1",
+            "heuristica": "linealidad-esperanza",
+            "enunciado": "Un log de búsqueda tiene n consultas. Cada consulta regresa k resultados de forma independiente, donde k ~ Uniforme({1, 2, 3, 4, 5}). Cada resultado se 'clica' con probabilidad 0.3, de forma independiente. Sea X el número total de clics en las primeras 100 consultas. Calcula E[X] de la forma más rápida posible. ¿Y Var[X] si las consultas son independientes entre sí?",
+            "pistas": [
+              "¿Cuántas piezas independientes forman X? ¿Puedes expresar X como suma de piezas más simples?",
+              "Define Cᵢⱼ = 1 si el resultado j de la consulta i recibe un clic. ¿Qué es X en términos de esos indicadores?",
+              "E[X] = ∑ᵢ ∑ⱼ E[Cᵢⱼ]. Por linealidad puedes sumar aunque k varíe. Para cada consulta i: E[clics en consulta i] = E[k] × 0.3.",
+              "E[k] = (1+2+3+4+5)/5 = 3. Así E[clics en consulta i] = 3 × 0.3 = 0.9. Para 100 consultas: E[X] = 100 × 0.9 = 90.",
+              "Var[X]: como las consultas son independientes, Var[X] = 100 × Var[clics en una consulta]. Var[clics | k] = k×0.3×0.7. E[Var[clics|k]] = E[k]×0.21 = 3×0.21. Var[E[clics|k]] = Var[k×0.3] = 0.09×Var[k] = 0.09×2 = 0.18. Por ley de varianza total: 0.63 + 0.18 = 0.81. Var[X] = 100×0.81 = 81."
+            ],
+            "solucion": "E[X] = 90. Var[X] = 81. Vía linealidad: E[clics por consulta] = E[k]·p = 3·0.3 = 0.9; para 100 consultas, E[X] = 90. Para la varianza: ley de varianza total sobre k y sobre los clics binomiales condicionados, Var[X] = 100·0.81 = 81.",
+            "disparador": "Suma de muchos eventos con dos niveles de aleatoriedad (cuántos + si cada uno ocurre) → linealidad para la media; ley de varianza total (Eve's law) para la varianza. Nunca es necesaria la independencia para la media.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "C",
+              "skills": ["valor-esperado", "linealidad", "varianza-condicional"],
+              "errores_comunes": ["Asumir que necesitas independencia para sumar esperanzas", "Olvidar la ley de varianza total cuando k es aleatoria"],
+              "casos_borde": ["k=0 posible? No (mínimo 1 resultado). Si k=0 existiera, E[clics]=0 para esa consulta."],
+              "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-2",
+            "heuristica": "bayes-tasa-base",
+            "enunciado": "Un modelo de ML detecta anomalías en pipelines de datos. Tiene sensibilidad 94% y especificidad 99.2%. En producción, el 0.5% de los pipelines tienen anomalías reales en cualquier momento dado. Tu equipo recibe una alerta. ¿Cuál es la probabilidad de que sea anomalía real? ¿Cuántos pipelines deberías monitorear simultáneamente para que, cuando suene la alarma, haya >50% de probabilidad de que sea real?",
+            "pistas": [
+              "Separa los dos tipos de positivos: verdaderos positivos (anomalía real + detectado) y falsos positivos (sin anomalía + detectado de todas formas).",
+              "Tabla de contingencia: imagina 10,000 pipelines. ¿Cuántos tienen anomalía real? ¿Cuántos de esos los detecta el modelo? ¿Cuántos sanos produce falsas alarmas?",
+              "VP = 0.94 × (0.005 × 10000) = 47. FP = 0.008 × (0.995 × 10000) = 79.6 ≈ 80. VPP = 47 / (47+80) ≈ 37%.",
+              "Para que VPP > 50%: necesitas VP > FP. VP = sens·prev·N y FP = (1-espec)·(1-prev)·N. Despeja prev: prev > (1-espec)/(sens + 1 - espec).",
+              "prev > 0.008 / (0.94 + 0.008) = 0.008 / 0.948 ≈ 0.84%. Si el 0.84% de los pipelines monitoreados tiene anomalía, la alarma ya supera el 50%. Si monitoras solo los pipelines con comportamiento sospechoso previo (subsetting), la prevalencia efectiva sube."
+            ],
+            "solucion": "VPP ≈ 37% con prev=0.5%. Para VPP > 50%: prev > ~0.84%. La clave es que en baja prevalencia la mayoría de alarmas son falsas. Estrategia: aplicar el modelo solo en subsegmentos de alto riesgo, donde la prev efectiva supera el umbral.",
+            "disparador": "Modelo de clasificación en producción + preguntan por VPP → tabla de contingencia o fórmula de Bayes. La especificidad domina el error cuando la prevalencia es baja. Siempre pregunta la base rate antes de evaluar el modelo.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "C",
+              "skills": ["bayes", "VPP", "tablas-contingencia", "prevalencia"],
+              "errores_comunes": ["Confundir sensibilidad con VPP", "Olvidar que especificidad importa más cuando la prevalencia es baja"],
+              "casos_borde": ["prev → 0: VPP → 0 aunque el test sea perfecto", "prev → 1: VPP → sensibilidad"],
+              "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-3",
+            "heuristica": "hashing-memoria",
+            "enunciado": "Tienes una lista de n transacciones financieras: cada transacción es un entero (puede ser negativo: ingreso o gasto). Necesitas encontrar todas las parejas (i, j) con i < j tal que transacciones[i] + transacciones[j] = 0. (a) Diseña el algoritmo más eficiente posible y analiza su complejidad. (b) ¿Qué cambia si necesitas encontrar TRIPLETES que sumen cero? (c) ¿Qué caso borde puede romper tu solución de (a)?",
+            "pistas": [
+              "Para encontrar el complemento de cada elemento sin recorrer todo el array en cada paso, ¿qué estructura de datos necesitas?",
+              "Para cada elemento x, su complemento es -x. Si ya guardaste todos los elementos vistos en una estructura de O(1) lookup, puedes preguntar '¿está -x ya aquí?' en O(1).",
+              "Hash map/set: recorre el array. Para cada transacciones[j], pregunta si -transacciones[j] está en el conjunto de los ya vistos. Si sí, es una pareja. Inserta transacciones[j] al conjunto. Complejidad: O(n) tiempo, O(n) espacio.",
+              "Para tripletes (b): fija el primer elemento en un bucle O(n) y aplica la solución de pares al subarray restante. Total: O(n²) tiempo, O(n) espacio. (Con ordenación previa también O(n²) usando dos punteros.)",
+              "Caso borde (c): valores duplicados, por ejemplo [0, 0, 0]. El par (0, 0) existe pero al insertar el primer 0 y luego preguntar si -0=0 ya existe, se encuentra el mismo elemento. Necesitas cuidar si quieres pares de índices distintos (usa multiset o guarda el índice, no solo el valor)."
+            ],
+            "solucion": "(a) O(n) tiempo y espacio: hash set + lookup del complemento. (b) O(n²) fijando uno y reduciendo al problema de pares. (c) Duplicados del mismo valor: asegurar que i ≠ j usando multiset con conteo o guardando índices.",
+            "disparador": "Buscar complementos en un array → hash map/set. El patrón universal: 'para cada x, ¿existe algo relacionado con x en lo ya visto?' → store + lookup en un pase. El costo: O(n) extra espacio.",
+            "metadata": {
+              "ruta": "maang",
+              "nivel": "C",
+              "skills": ["hashing", "two-sum", "complejidad"],
+              "errores_comunes": ["O(n²) por fuerza bruta", "Olvidar el caso borde de duplicados", "No distinguir pares de índices vs pares de valores"],
+              "casos_borde": ["Todos ceros", "Array con un solo elemento", "Valores repetidos"],
+              "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-4",
+            "heuristica": "ventana-sql",
+            "enunciado": "Tabla `eventos(evento_id, user_id, tipo, ts)`. Tipos posibles: 'compra', 'vista', 'click'. Escribe una consulta SQL que devuelva, para cada usuario, la fecha (día, no timestamp) de su segunda compra. Usuarios con menos de dos compras no deben aparecer. Después: ¿qué cambiarías si quisieras la segunda compra de cada usuario POR CATEGORÍA de producto (añadiendo columna categoria)?",
+            "pistas": [
+              "¿Cómo numerarías las compras de cada usuario en orden cronológico, sin colapsar las filas?",
+              "ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY ts) asigna un número único y ordenado a cada compra de cada usuario.",
+              "WITH compras_numeradas AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY ts) AS rn FROM eventos WHERE tipo = 'compra') SELECT user_id, DATE(ts) AS segunda_compra FROM compras_numeradas WHERE rn = 2;",
+              "Para la variante por categoría: añade categoria al PARTITION BY. ROW_NUMBER() OVER (PARTITION BY user_id, categoria ORDER BY ts). Filtra rn=2.",
+              "Caso borde: si hay empate exacto de timestamp en la segunda y tercera compra, ROW_NUMBER desempata arbitrariamente. Si quieres todas las compras 'empatadas en posición 2', usa RANK en vez de ROW_NUMBER y filtra RANK=2."
+            ],
+            "solucion": "CTE con ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY ts), filtrar WHERE rn=2. Para la variante: añadir categoria al PARTITION BY. Caso empate: RANK en vez de ROW_NUMBER.",
+            "disparador": "Enésimo evento/compra por grupo → ROW_NUMBER() OVER (PARTITION BY grupo ORDER BY tiempo). CTE para materializar el ranking, luego filtrar. Si el enunciado menciona 'segunda', 'penúltima' o 'top-N', la señal es window function.",
+            "metadata": {
+              "ruta": "maang",
+              "nivel": "C",
+              "skills": ["ROW_NUMBER", "PARTITION BY", "CTE", "SQL-analytics"],
+              "errores_comunes": ["Usar subquery correlacionada O(n²)", "Olvidar filtrar el tipo antes del ranking", "ROW_NUMBER vs RANK en caso de empates"],
+              "casos_borde": ["Timestamps duplicados", "Usuario con solo 1 compra (excluir)"],
+              "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-5",
+            "heuristica": "dag-ajuste",
+            "enunciado": "Un equipo de salud digital quiere estimar el efecto del uso de una app de monitoreo de glucosa (X) sobre la probabilidad de hospitalización (Y) en pacientes diabéticos. Variables disponibles: edad (A), nivel de hemoglobina glicosilada (HbA1c) al inicio (B), si el médico recomendó la app (C), y nivel de HbA1c a los 6 meses (D). Proponen el modelo: Y ~ X + A + B + C + D. (a) Dibuja mentalmente el DAG más plausible. (b) Identifica el rol de cada variable. (c) ¿Qué variables no deberían incluirse y por qué?",
+            "pistas": [
+              "Antes de escribir ningún modelo, pregunta: ¿qué causa qué? Traza una flecha por cada relación causal que creas plausible.",
+              "Edad (A): ¿causa la hospitalización? ¿Causa el uso de la app? Probablemente ambas. HbA1c inicial (B): ¿causa el uso de la app? ¿Causa la hospitalización? ¿La app afecta el HbA1c a los 6 meses (D)?",
+              "C (recomendación médica): el médico recomienda la app basándose en el nivel de HbA1c (B) y quizás en la edad (A). ¿C es causa de X o consecuencia de B y A? Si C está 'entre' A/B y X, puede ser mediador o simplemente un paso en el camino A→C→X.",
+              "D (HbA1c a 6 meses): el uso de la app (X) puede mejorar D; D luego afecta la hospitalización Y. D está en el camino causal X→D→Y: es un mediador. Ajustar D cierra ese camino indirecto y sesga el estimado del efecto total de X.",
+              "Variables que NO deben incluirse: D (mediador del efecto de X; ajustar bloquea el camino que queremos medir). C puede ser incluida si es solo un ajuste de confusión (si A y B ya están) pero no añade nada dado A y B, y podría ser collider si el médico recomienda la app basado en X latente: incluirla con cuidado o excluirla. Incluir: A (confounder) y B (confounder)."
+            ],
+            "solucion": "DAG plausible: A→X, A→Y, B→X, B→Y, X→D→Y, A→C→X, B→C→X. D es mediador (excluir si se quiere efecto total). C es mediador/proxy (dado A y B, añade ruido). Modelo correcto para efecto total: Y ~ X + A + B.",
+            "disparador": "Variable downstream de X que también causa Y → mediador → NO ajustar si quieres efecto total. Variable causa de X Y de Y → confounder → SÍ ajustar. Dibuja el DAG ANTES de escribir la regresión.",
+            "metadata": {
+              "ruta": "health-ai-rwe",
+              "nivel": "C",
+              "skills": ["DAG", "confounding", "mediacion", "adjustment-set"],
+              "errores_comunes": ["Ajustar todo lo disponible", "No distinguir mediador de confounder", "Incluir variables post-tratamiento"],
+              "casos_borde": ["Mediador parcial: el efecto de X es directo + indirecto vía D", "C podría ser collider en otros DAGs"],
+              "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-6",
+            "heuristica": "tiempo-cero",
+            "enunciado": "Investigadores estudian si los pacientes que completan un programa de rehabilitación cardíaca (≥12 sesiones, que suelen terminar en el mes 3-4) tienen menor mortalidad al año que los que no lo completan. Seleccionan pacientes que tuvieron un infarto, y los dividen en 'completaron el programa' vs 'no completaron'. Encuentran que el grupo que completó tiene mortalidad 40% menor. ¿Puedes identificar al menos dos problemas metodológicos? ¿Cómo redesiguarías el estudio para estimar el efecto causal?",
+            "pistas": [
+              "¿Cuándo empieza exactamente el 'reloj' para cada grupo? ¿Es el mismo momento para ambos?",
+              "El grupo 'completó el programa' requiere sobrevivir hasta el mes 3-4 para terminar las 12 sesiones. ¿Pueden morir antes del mes 3 y aun así quedar en este grupo? No → ese período es 'inmortal' por definición.",
+              "Immortal time bias: los meses 1-4 de seguimiento, los pacientes del grupo 'completó' no podían morir (o quedar fuera del grupo) mientras seguían en el programa. Ese tiempo no está en riesgo para el outcome, pero se cuenta como seguimiento en el grupo tratado.",
+              "Segundo problema: confounding por indicación. Los que completan el programa pueden ser más jóvenes, más sanos o más motivados. Su menor mortalidad puede deberse a esas características, no al programa.",
+              "Rediseño — target trial: elegibilidad: todos los pacientes post-infarto en t=0 (días después del alta). Estrategias: 'inscribirse y completar ≥12 sesiones' vs 'no inscribirse'. Asignar en t=0, seguir 12 meses desde t=0. Para emularlo observacionalmente: clone-censor-weight o análisis per-protocol con censura al incumplimiento y ponderación por probabilidad de cumplimiento."
+            ],
+            "solucion": "Dos problemas: (1) Immortal time bias: meses 1-4, el grupo 'completó' no podía fallar por definición → sesgo artificial a su favor. (2) Confounding por indicación: los completadores son pacientes más sanos o más adherentes. Rediseño: definir t=0 en el momento del alta, asignar estrategias ('inscribirse' vs 'no inscribirse') en t=0, y seguir desde ahí.",
+            "disparador": "El grupo 'tratado' requiere sobrevivir un proceso antes de ser clasificado como tal → immortal time. Dibuja la línea temporal de 3 pacientes: ¿pueden morir durante ese período y aun así quedar en el grupo? Si la respuesta es 'no', hay tiempo inmortal. Solución: t=0 común para todos.",
+            "metadata": {
+              "ruta": "health-ai-rwe",
+              "nivel": "C",
+              "skills": ["immortal-time", "target-trial", "confounding-indicacion", "tiempo-cero"],
+              "errores_comunes": ["No ver el período inmortal", "Solo identificar confounding y olvidar el sesgo temporal", "Proponer ajuste multivariado sin corregir el t=0"],
+              "casos_borde": ["¿Y si el programa empieza en el día 1 del alta? Entonces no hay tiempo inmortal de completar, pero sí confounding por indicación."],
+              "source": "original"
+            }
           }
         ]
       }
@@ -2654,6 +2833,300 @@
           "enunciado": "Un estudiante analiza un juego y declara: \"encontré posiciones desde las que puedo forzar que el rival siempre tenga movimientos malos, así que son ganadoras; no necesito revisar las posiciones perdedoras\". ¿Qué verificación se saltó?",
           "solucion": "La mitad del certificado. Para que su conjunto L sea correcto debe verificar DOS cosas: que de cada L todos los movimientos caen en W (el rival no puede quedarse en L), Y que de cada W existe movimiento a L. Si solo verificó la segunda, su 'L' podría tener escapatorias: una posición etiquetada L con algún movimiento hacia otra 'L' rompe toda la estrategia.",
           "explicacion": "W/L es una partición con dos condiciones acopladas; la conjetura del patrón de L exige siempre la doble verificación, igual que una inducción exige base Y paso."
+        }
+      ]
+    },
+    {
+      "id": "arena-q1",
+      "bloque": "fase-7",
+      "orden": 1,
+      "titulo": "Arena Quant · Linealidad de la esperanza",
+      "libro": "Referencia: Blitzstein & Hwang — Introduction to Probability (caps. 4-5), o cualquier texto de probabilidad de primer curso.",
+      "lectura": "Estudia la lección integrada de esta unidad. El concepto central es E[X+Y]=E[X]+E[Y] sin requerir independencia, y su aplicación mediante variables indicadoras.",
+      "dosis": "30-40 min. Lee con papel: construye un ejemplo propio de descomposición en indicadores antes de avanzar.",
+      "objetivo": "Entender POR QUÉ la linealidad no necesita independencia (demostración a mano), reconocer la señal de 'cuántos objetos cumplen condición' → indicadores, y calcular E[X] para casos combinatorios bajo presión.",
+      "heuristicas": ["linealidad-esperanza", "caso-pequeno"],
+      "metadata": { "ruta": "quant" },
+      "ideas_clave": [
+        "E[X+Y]=E[X]+E[Y] para cualquier X, Y con esperanzas finitas — sin importar si son independientes, correlacionadas o dependientes.",
+        "Descomposición en indicadores: si X = I₁ + I₂ + … + Iₙ donde Iₖ ∈ {0,1}, entonces E[X] = P(I₁=1) + P(I₂=1) + … + P(Iₙ=1).",
+        "Señal de reconocimiento: '¿cuántos objetos de un conjunto cumplen una propiedad aleatoria?' → define un indicador por objeto y suma.",
+        "El número armónico Hₙ = 1 + 1/2 + 1/3 + … + 1/n aparece naturalmente cuando P(Iₖ=1) = 1/k.",
+        "Trampa frecuente en entrevistas: asumir que 'necesito independencia para calcular E[X]'. No: la independencia afecta la varianza, no la media."
+      ],
+      "banco": [
+        {
+          "id": "arq1-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el teorema de linealidad de la esperanza en tus palabras y da el paso clave de la demostración (sin memorizar: razona desde la definición de esperanza).",
+          "solucion": "E[X+Y] = ∑ₓᵧ (x+y)·P(X=x, Y=y) = ∑ₓᵧ x·P(X=x,Y=y) + ∑ₓᵧ y·P(X=x,Y=y) = E[X] + E[Y]. La independencia no aparece en ningún paso: solo se usa la linealidad de la suma y la marginación de la distribución conjunta.",
+          "explicacion": "Si lo demostraste con integrales (caso continuo), el argumento es idéntico: la linealidad de la integral hace el trabajo."
+        },
+        {
+          "id": "arq1-q2",
+          "tipo": "quiz",
+          "enunciado": "Un mazo de 52 cartas se mezcla aleatoriamente. ¿Cuántos pares adyacentes (posiciones i e i+1) del mismo palo esperas ver? Resuélvelo con indicadores, no contando directamente.",
+          "solucion": "Hay 51 pares adyacentes. Para el par (i, i+1): P(mismo palo) = 12/51 (una vez fijada la carta en la posición i, hay 12 cartas del mismo palo en las 51 restantes). E[X] = 51 × 12/51 = 12.",
+          "explicacion": "El resultado 12 es elegante: hay 4 palos × 3 pares de cartas del mismo palo que serían adyacentes en un mazo ordenado por palo, multiplicado por... no, simplemente E[X] = 51 × 12/51 = 12. Las cartas adyacentes no son independientes pero la linealidad funciona igual."
+        },
+        {
+          "id": "arq1-q3",
+          "tipo": "quiz",
+          "enunciado": "Se lanzan n dados (6 caras, justos). Sea X el número de valores distintos que aparecen. Calcula E[X] para n=6.",
+          "solucion": "Define Iₖ = 1 si el valor k aparece al menos una vez. P(Iₖ=1) = 1 − (5/6)⁶ ≈ 0.665. E[X] = 6 × (1 − (5/6)⁶) = 6 × (1 − 15625/46656) ≈ 6 × 0.665 ≈ 3.99.",
+          "explicacion": "La señal: 'cuántos valores distintos de un conjunto aparecen' → indicador por valor. No es inmediato contarlos directamente porque los dados no son independientes en cuanto a cuáles valores cubre el conjunto."
+        },
+        {
+          "id": "arq1-q4",
+          "tipo": "disparador",
+          "enunciado": "En una entrevista te dicen: 'n personas arrojan sus llaves al centro; cada persona toma una al azar. ¿Cuántas personas esperan recuperar SU llave?' Detectas que es linealidad de la esperanza. ¿Qué indicador defines y cuál es la respuesta?",
+          "solucion": "Iₖ = 1 si la persona k recupera su propia llave. P(Iₖ=1) = 1/n para cada k. E[número de coincidencias] = n × 1/n = 1, para cualquier n ≥ 1. Sorprendentemente, la esperanza es siempre 1 sin importar n.",
+          "explicacion": "Señal → jugada: 'coincidencias al azar en una permutación' → indicador por objeto, P = 1/n, suma = 1. El resultado (siempre 1) es la respuesta que diferencia al candidato que razona del que memoriza."
+        }
+      ]
+    },
+    {
+      "id": "arena-q2",
+      "bloque": "fase-7",
+      "orden": 2,
+      "titulo": "Arena Quant · Bayes, tasas base y señales ruidosas",
+      "libro": "Referencia: Blitzstein & Hwang — Introduction to Probability (cap. 2), o cualquier tratamiento de probabilidad condicional y teorema de Bayes.",
+      "lectura": "Estudia la lección integrada. Foco: regla de Bayes, tabla de contingencia, VPP/VPN, y cómo la prevalencia domina el valor predictivo.",
+      "dosis": "30-40 min. Trabaja el ejemplo de detección de enfermedades con papel: tabla de 10.000 casos antes de leer la solución.",
+      "objetivo": "Calcular VPP/VPN desde primeros principios, entender el efecto de la base rate sobre el VPP, y comunicar el resultado en términos que un no-estadístico entienda.",
+      "heuristicas": ["bayes-tasa-base", "caso-pequeno"],
+      "metadata": { "ruta": "quant" },
+      "ideas_clave": [
+        "P(enfermo|+) = P(+|enfermo)·P(enfermo) / P(+). El denominador P(+) = sens·prev + (1−espec)·(1−prev).",
+        "Con prevalencia baja, la mayoría de positivos son FALSOS POSITIVOS aunque el test sea muy bueno: la especificidad domina.",
+        "Tabla de contingencia con N=10,000: VP, FP, FN, VN. El VPP = VP/(VP+FP) se lee directamente.",
+        "Likelihood ratio (LR+) = sensibilidad/(1−especificidad): multiplicar los odds previos por LR+ da los odds posteriores.",
+        "En entrevistas quant y health AI: pide siempre la prevalencia antes de calcular VPP. Sin ella, el cálculo es incompleto."
+      ],
+      "banco": [
+        {
+          "id": "arq2-q1",
+          "tipo": "quiz",
+          "enunciado": "Un test tiene sensibilidad 90% y especificidad 95%. La prevalencia es 10%. Usando una tabla de contingencia para 1000 personas, calcula VPP y VPN.",
+          "solucion": "100 enfermos: 90 VP + 10 FN. 900 sanos: 45 FP + 855 VN. VPP = 90/(90+45) = 90/135 = 66.7%. VPN = 855/(855+10) = 98.8%.",
+          "explicacion": "La tabla evita errores de fórmula. Nota que incluso con buenos parámetros, VPP=67%: uno de cada tres positivos es falso. La prevalencia del 10% ya es relativamente alta; con 1% el VPP caería mucho más."
+        },
+        {
+          "id": "arq2-q2",
+          "tipo": "quiz",
+          "enunciado": "Define Likelihood Ratio positivo (LR+) y explica cómo se usa con los odds del prior para obtener los odds del posterior.",
+          "solucion": "LR+ = P(+|enfermo) / P(+|sano) = sensibilidad / (1−especificidad). Odds posteriores = LR+ × odds previos, donde odds previos = prev/(1−prev). Convierte odds posteriores a probabilidad: P = odds/(1+odds).",
+          "explicacion": "La forma de odds es más cómoda para combinar múltiples tests: se multiplican los LR de cada test independiente."
+        },
+        {
+          "id": "arq2-q3",
+          "tipo": "quiz",
+          "enunciado": "Un modelo de fraude tiene VPP=28% en producción (como el ejemplo del manual). El gerente dice 'necesitamos que el 80% de las alertas sean fraude real'. ¿Qué especificidad requeriría el modelo, asumiendo misma sensibilidad (97%) y misma prevalencia (0.2%)?",
+          "solucion": "VPP=0.8: VP/(VP+FP)=0.8 → FP = VP/4. VP = 0.97×0.002×N = 0.00194N. FP = 0.00194N/4 = 0.000485N. FPR = FP/(sanos×N) = 0.000485/0.998 ≈ 0.000486. Especificidad = 1−0.000486 ≈ 99.95%. Es extremadamente exigente — en práctica, se subsegmenta la población para subir la prevalencia efectiva.",
+          "explicacion": "Cuando la prevalencia es muy baja, exigir VPP alto requiere una especificidad casi perfecta. La alternativa real es refinar el subconjunto al que se aplica el modelo (aumentar la prev efectiva)."
+        },
+        {
+          "id": "arq2-q4",
+          "tipo": "disparador",
+          "enunciado": "En una entrevista para un hedge fund te dicen: 'tu señal de trading tiene un 70% de precisión en backtesting con datos balanceados (50% positivos/negativos). ¿Es buena señal?' ¿Qué pregunta haces primero?",
+          "solucion": "Preguntas: '¿Cuál es la proporción real de días donde la señal es positiva (la prevalencia de la condición)?'. En backtesting balanceado artificialmente, la precisión del 70% no se traduce directamente al mundo real donde la distribución puede ser 5%/95%. El VPP real podría ser mucho menor.",
+          "explicacion": "Señal → jugada: 'precisión' en datos balanceados es métricamente diferente de VPP en producción. La primera pregunta siempre es la base rate real."
+        }
+      ]
+    },
+    {
+      "id": "arena-m1",
+      "bloque": "fase-7",
+      "orden": 3,
+      "titulo": "Arena MAANG · Hashing, frecuencia y memoria comprada",
+      "libro": "Referencia: CLRS — Introduction to Algorithms (cap. 11: Hash Tables), o cualquier texto de estructuras de datos.",
+      "lectura": "Estudia la lección integrada. Foco: hash map como estructura de O(1) lookup, los patrones 'complemento' y 'frecuencia', y análisis de complejidad con colisiones.",
+      "dosis": "40-50 min. Implementa el two-sum en pseudocódigo o Python antes de leer la solución. Analiza los casos borde manualmente.",
+      "objetivo": "Reconocer los problemas que se resuelven con hashing, implementar los patrones fundamentales, y analizar complejidad espacial y temporal con rigor.",
+      "heuristicas": ["hashing-memoria", "caso-pequeno"],
+      "metadata": { "ruta": "maang" },
+      "ideas_clave": [
+        "Hash map: O(1) amortizado para insert, lookup y delete. El costo: O(n) espacio adicional.",
+        "Patrón 'complemento': para cada elemento x, busca si su complemento (target − x, −x, etc.) ya fue visto. Almacena los vistos en un set.",
+        "Patrón 'frecuencia': cuenta apariciones de cada elemento en una sola pasada. dict/Counter en Python.",
+        "Worst case con colisiones: O(n) por operación. Con hash functions de calidad (Python dict), O(1) esperado en práctica.",
+        "Señal de reconocimiento: 'para cada elemento, ¿existe algo relacionado entre los ya vistos?' → store-and-lookup. La clave es el orden: primero busca, luego inserta (o viceversa, según si se permiten self-pairs)."
+      ],
+      "banco": [
+        {
+          "id": "arm1-q1",
+          "tipo": "quiz",
+          "enunciado": "Describe el algoritmo two-sum en O(n) tiempo y O(n) espacio. ¿Por qué el orden 'buscar antes de insertar' importa cuando el array puede tener duplicados?",
+          "solucion": "Recorre el array. Para cada elemento x: busca (target − x) en el hash set. Si lo encuentras, retorna el par. Luego inserta x. Orden importa: si insertaras x ANTES de buscar, el primer 0 buscaría 0 y lo encontraría en sí mismo (self-pair), produciendo el índice equivocado. Al buscar antes de insertar, solo los elementos ANTERIORES están disponibles.",
+          "explicacion": "El orden de operaciones es la diferencia entre un par de índices distintos y un bug. En entrevistas: menciona este caso borde explícitamente antes de que el entrevistador lo señale."
+        },
+        {
+          "id": "arm1-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Cuál es la complejidad de encontrar todos los tripletes que suman cero en un array de n enteros? Describe el algoritmo más eficiente que conozcas.",
+          "solucion": "O(n²) tiempo, O(n) espacio (o O(1) extra con sort in-place). Método: ordena O(n log n), luego para cada elemento arr[i], usa dos punteros (izquierda = i+1, derecha = n-1) que se mueven hacia el centro buscando arr[j]+arr[k] = −arr[i]. Cada iteración exterior es O(n) y el inner loop también O(n). También O(n²) con hashing: fija arr[i] y aplica two-sum al resto.",
+          "explicacion": "O(n²) es óptimo para el caso general (demostrable). Si el entrevistador pregunta por algo mejor: no existe para el caso general, pero con restricciones (valores acotados, etc.) pueden existir soluciones O(n) con hash tricks."
+        },
+        {
+          "id": "arm1-q3",
+          "tipo": "acertijo",
+          "enunciado": "Un array tiene n+1 enteros, todos entre 1 y n. Por tanto hay al menos un duplicado. Encuentra UN duplicado en O(n) tiempo y O(1) espacio extra (sin modificar el array).",
+          "solucion": "Floyd's cycle detection (tortoise and hare): trata el array como una lista enlazada donde arr[i] apunta al nodo arr[i]. El duplicado crea un ciclo. Fase 1: slow = arr[arr[0]], fast = arr[arr[arr[0]]] hasta que coincidan. Fase 2: slow = arr[0], ambos a paso 1 hasta coincidir: ese es el duplicado.",
+          "explicacion": "Este problema está diseñado para eliminar a quienes piensan solo en hash map (O(n) espacio). El O(1) espacio fuerza pensar en invariantes del ciclo. Señal → jugada: 'duplicado en array de rango acotado, sin espacio extra' → ciclo de Floyd."
+        },
+        {
+          "id": "arm1-q4",
+          "tipo": "disparador",
+          "enunciado": "Ves un problema: 'dado un array de strings, agrupa los anagramas juntos'. ¿Qué estructura de datos usas y cuál es la clave del hash map?",
+          "solucion": "Hash map donde la clave es la 'firma canónica' del anagrama: los caracteres ordenados alfabéticamente (o un conteo de caracteres como tupla). Valor: lista de palabras con esa firma. Una sola pasada O(n·k log k) donde k es la longitud máxima de palabra.",
+          "explicacion": "Señal → jugada: 'agrupar por equivalencia' → hash map con una representación canónica como clave. El diseño de la clave es la decisión creativa; el resto es mecánico."
+        }
+      ]
+    },
+    {
+      "id": "arena-m2",
+      "bloque": "fase-7",
+      "orden": 4,
+      "titulo": "Arena MAANG · SQL Window Functions",
+      "libro": "Referencia: documentación de PostgreSQL (cap. Window Functions), o Mode Analytics SQL Tutorial.",
+      "lectura": "Estudia la lección integrada. Foco: OVER(PARTITION BY … ORDER BY …), las funciones ROW_NUMBER/RANK/DENSE_RANK/LAG/LEAD/SUM, y cuándo usar cada una.",
+      "dosis": "40-50 min. Crea una tabla de 8 filas a mano y calcula la salida de ROW_NUMBER, RANK y SUM OVER antes de leer la lección.",
+      "objetivo": "Escribir consultas analíticas sin subqueries correlacionadas, distinguir ROW_NUMBER/RANK/DENSE_RANK en caso de empates, y usar CTEs para materializar rankings antes de filtrar.",
+      "heuristicas": ["ventana-sql", "caso-pequeno"],
+      "metadata": { "ruta": "maang" },
+      "ideas_clave": [
+        "OVER(PARTITION BY col ORDER BY col2): calcula la función dentro de cada partición, en el orden dado, sin colapsar las filas en grupos.",
+        "ROW_NUMBER: único, sin empates. RANK: empates con salto (1,1,3). DENSE_RANK: empates sin salto (1,1,2).",
+        "LAG(col, n) / LEAD(col, n): valor de la fila n posiciones atrás/adelante dentro de la partición. Útil para comparar con el período anterior.",
+        "SUM/AVG/COUNT OVER: acumulados o totales por ventana sin colapsar. SUM OVER sin ORDER BY = total de la partición. Con ORDER BY = acumulado.",
+        "Patrón CTE: materializa el ranking con WITH ranked AS (...), luego filtra WHERE rn = N. No filtres dentro del OVER (el WHERE se evalúa después de las funciones de ventana)."
+      ],
+      "banco": [
+        {
+          "id": "arm2-q1",
+          "tipo": "quiz",
+          "enunciado": "Tabla `ventas(id, empleado_id, monto, fecha)`. Escribe la consulta que devuelve para cada venta el monto acumulado del empleado hasta esa fecha (inclusive). ¿Qué función de ventana usas?",
+          "solucion": "SELECT id, empleado_id, monto, fecha, SUM(monto) OVER (PARTITION BY empleado_id ORDER BY fecha ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS acumulado FROM ventas; La cláusula ROWS … es opcional en PostgreSQL (default con ORDER BY es RANGE UNBOUNDED PRECEDING TO CURRENT ROW, que puede diferir con timestamps duplicados).",
+          "explicacion": "RANGE vs ROWS: con ORDER BY fecha y fechas repetidas, RANGE incluye todas las filas con la misma fecha en el acumulado (comparte el total); ROWS incluye solo hasta la fila actual. En entrevistas: menciona la diferencia."
+        },
+        {
+          "id": "arm2-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Cuándo usarías RANK en vez de ROW_NUMBER? Da un ejemplo donde la diferencia importa.",
+          "solucion": "RANK cuando dos filas son equivalentes en la columna de ordenación y quieres que compartan el mismo número de posición. Ejemplo: competidores con el mismo puntaje deben tener el mismo puesto. ROW_NUMBER asigna orden arbitrario a los empatados — útil cuando necesitas exactamente 1 fila (top-1, segunda compra de un usuario) y el empate no debe duplicar el resultado.",
+          "explicacion": "En entrevistas SQL: siempre menciona el comportamiento ante empates. El entrevistador casi siempre lo preguntará."
+        },
+        {
+          "id": "arm2-q3",
+          "tipo": "acertijo",
+          "enunciado": "Tabla `sesiones(session_id, user_id, inicio, fin)`. Escribe la consulta que devuelve los usuarios cuya sesión más larga es también su primera sesión (la de menor timestamp de inicio). Solo los usuarios que cumplen ambas condiciones.",
+          "solucion": "WITH base AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY inicio) AS rn_inicio, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY (fin-inicio) DESC) AS rn_duracion FROM sesiones) SELECT user_id FROM base WHERE rn_inicio = 1 AND rn_duracion = 1;",
+          "explicacion": "Dos rankings en el mismo CTE: primera sesión por inicio y primera por duración. La condición 'son la misma sesión' = misma fila con ambos rn=1. Dos window functions en un CTE: patrón common."
+        },
+        {
+          "id": "arm2-q4",
+          "tipo": "disparador",
+          "enunciado": "En una entrevista te piden 'para cada producto, el porcentaje de ventas que representa respecto al total de su categoría'. ¿Qué función de ventana usas y cómo evitas la subquery correlacionada?",
+          "solucion": "SELECT producto_id, categoria_id, monto, monto * 100.0 / SUM(monto) OVER (PARTITION BY categoria_id) AS pct_categoria FROM ventas; SUM OVER sin ORDER BY = total de la partición. No hace falta subquery: la función de ventana calcula el total de la categoría para cada fila sin agruparlas.",
+          "explicacion": "Señal → jugada: 'proporción respecto al total del grupo' → SUM/COUNT OVER (PARTITION BY grupo) sin ORDER BY. Es el patrón más limpio para ratios y porcentajes por categoría."
+        }
+      ]
+    },
+    {
+      "id": "arena-h1",
+      "bloque": "fase-7",
+      "orden": 5,
+      "titulo": "Arena Health AI · DAGs y adjustment sets",
+      "libro": "Referencia: Pearl & Mackenzie — The Book of Why (caps. 3-4), o Hernán & Robins — Causal Inference: What If (gratuito online, cap. 6-7).",
+      "lectura": "Estudia la lección integrada. Foco: tipos de variables en un DAG (confounder, mediator, collider), criterio de backdoor, y por qué ajustar un collider es el error más común.",
+      "dosis": "40-50 min. Dibuja un DAG de 4 nodos a mano con al menos un confounder y un collider antes de leer la solución de los ejercicios.",
+      "objetivo": "Clasificar variables en un DAG, identificar el conjunto de ajuste mínimo, y detectar cuándo añadir una variable a un modelo sesgará el estimado.",
+      "heuristicas": ["dag-ajuste", "caso-pequeno"],
+      "metadata": { "ruta": "health-ai-rwe" },
+      "ideas_clave": [
+        "Confounder: causa tanto la exposición X como el outcome Y (camino trasero: X ← C → Y). Ajustar lo cierra.",
+        "Mediator: está en el camino causal X → M → Y. Ajustar cierra el camino indirecto y estima el efecto directo solamente.",
+        "Collider: ambas flechas apuntan hacia él (X → C ← Y). NO ajustar. Ajustar un collider ABRE una asociación espuria entre X e Y.",
+        "Criterio de backdoor: un conjunto de variables Z bloquea todos los caminos traseros de X a Y si (1) ninguna variable de Z es descendiente de X, y (2) se bloquean todos los caminos no causales.",
+        "Regla práctica: 'ajusta todo' es un error. Dibuja el DAG antes de escribir la regresión. Nunca incluyas variables post-tratamiento."
+      ],
+      "banco": [
+        {
+          "id": "arh1-q1",
+          "tipo": "quiz",
+          "enunciado": "Define confounder, mediator y collider con una frase cada uno. Luego dibuja un DAG simple de 4 nodos (X, Y, y dos variables adicionales) que contenga un confounder y un collider.",
+          "solucion": "Confounder: causa X y causa Y (C→X y C→Y); sin ajustar, la asociación X-Y incluye la 'explicación alternativa' vía C. Mediator: en el camino X→M→Y; ajustar M estima el efecto directo (sin M). Collider: X→C←Y; ajustar C abre una asociación espuria. DAG ejemplo: C→X, C→Y (confounder C), X→Co←Y (collider Co).",
+          "explicacion": "La señal del collider: las flechas llegan al nodo, no salen. Pensar en 'collider' como una intersección de causalidad: dos caminos independientes que convergen."
+        },
+        {
+          "id": "arh1-q2",
+          "tipo": "acertijo",
+          "enunciado": "Paradoja de Berkson: en un hospital, observas que los pacientes con enfermedad A parecen tener MENOS probabilidad de enfermedad B, aunque en la población general no hay relación. ¿Cómo lo explica un DAG?",
+          "solucion": "Ser hospitalizado (H) es un collider: Enfermedad A → H ← Enfermedad B (ambas aumentan la probabilidad de hospitalización). Al estudiar SOLO pacientes hospitalizados, estás condicionando en H. Esto abre el camino A → H ← B y crea una correlación negativa espuria entre A y B en la muestra hospitalaria.",
+          "explicacion": "Berkson's bias es collider bias aplicado a selección de muestra. Siempre que la muestra sea seleccionada por un proceso relacionado con la exposición Y el outcome, el collider está presente."
+        },
+        {
+          "id": "arh1-q3",
+          "tipo": "quiz",
+          "enunciado": "En un DAG con X→Y, C→X, C→Y (C es confounder), A→X, A→C (A causa X vía C y directamente). ¿Qué conjunto mínimo de variables cierra todos los caminos traseros de X a Y?",
+          "solucion": "Ajustar {C} es suficiente: bloquea el camino trasero X←C→Y. El camino A→X→Y es un camino causal (de frente), no trasero. El camino A→C→Y ya es bloqueado ajustando C. Ajustar A también sería válido pero no es el mínimo suficiente si C ya está ajustado.",
+          "explicacion": "El conjunto de ajuste mínimo no siempre incluye todos los confounders ancestrales: a veces ajustar uno bloquea varios caminos. La herramienta formal es el criterio de backdoor."
+        },
+        {
+          "id": "arh1-q4",
+          "tipo": "disparador",
+          "enunciado": "Un colega propone agregar la variable 'adherencia al tratamiento' al modelo de regresión para 'controlar su efecto'. El tratamiento X causa la adherencia A, que causa el outcome Y. ¿Qué le dices?",
+          "solucion": "No la incluyas para estimar el efecto total de X sobre Y. Adherencia A es un mediator (X → A → Y): ajustar A cierra el camino indirecto y el modelo estimaría solo el efecto directo de X (no mediado por adherencia). Si eso es lo que quieres, bien; si quieres el efecto total, no ajustes.",
+          "explicacion": "Señal → jugada: colega quiere 'controlar' variable que está causalmente downstream de X → pregunta: ¿quieres efecto directo o total? La confusión entre controlar para 'reducir ruido' y controlar para 'estimar el efecto correcto' es el error más frecuente en data science aplicada."
+        }
+      ]
+    },
+    {
+      "id": "arena-h2",
+      "bloque": "fase-7",
+      "orden": 6,
+      "titulo": "Arena Health AI · Target trial emulation e immortal time bias",
+      "libro": "Referencia: Hernán & Robins — Causal Inference: What If (caps. 9-12, especialmente cap. 9: Target Trials), disponible online. Hernán MA — 'The C-Word: Scientific Euphemisms Do Not Improve Causal Inference From Observational Data' (Am J Public Health 2018).",
+      "lectura": "Estudia la lección integrada. Foco: qué es el target trial, los 7 componentes del protocolo, el immortal time bias y cómo el rediseño lo elimina.",
+      "dosis": "40-50 min. Toma un estudio observacional que hayas leído o inventado y aplica los 7 componentes del target trial antes de leer la lección.",
+      "objetivo": "Identificar immortal time bias en un estudio descrito, enunciar el target trial correspondiente con sus 7 componentes, y proponer el rediseño que elimina el sesgo.",
+      "heuristicas": ["tiempo-cero", "caso-pequeno"],
+      "metadata": { "ruta": "health-ai-rwe" },
+      "ideas_clave": [
+        "Target trial (ensayo objetivo): el experimento aleatorizado hipotético que el estudio observacional intenta emular. Enunciarlo explícitamente fuerza a identificar los sesgos.",
+        "Los 7 componentes: elegibilidad, estrategias de tratamiento, asignación, inicio del seguimiento (t=0), outcome, final del seguimiento, estimando.",
+        "Immortal time bias: periodo entre entrada al estudio y inicio/clasificación del tratamiento durante el cual el sujeto 'no puede' sufrir el evento (o no puede ser clasificado en el grupo de comparación).",
+        "Señal: el grupo 'tratado' requiere sobrevivir un proceso antes de ser clasificado. Dibuja la línea temporal de tres pacientes.",
+        "Solución: definir t=0 común para todos los sujetos, en el momento de elegibilidad y asignación. En observacional: clone-censor-weight o análisis de la intención de tratar emulado."
+      ],
+      "banco": [
+        {
+          "id": "arh2-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Qué es el 'tiempo cero' de un estudio y por qué debe coincidir con el momento de elegibilidad y asignación? ¿Qué sesgo aparece cuando no coinciden?",
+          "solucion": "El tiempo cero es el momento desde el que se mide el seguimiento y el riesgo. Debe coincidir con: (1) momento en que el sujeto cumple los criterios de elegibilidad, (2) momento en que se 'asigna' al tratamiento o control. Cuando no coinciden, el grupo tratado acumula tiempo de seguimiento en el que no podía sufrir el evento (o en el que no podía ser clasificado como 'no tratado'), sobreestimando artificialmente el beneficio del tratamiento.",
+          "explicacion": "La solución es siempre 'retrocede al momento de elegibilidad y asigna desde ahí'. En el target trial, t=0 es el inicio del ensayo hipotético."
+        },
+        {
+          "id": "arh2-q2",
+          "tipo": "acertijo",
+          "enunciado": "Un paper concluye que los pacientes que tomaron un medicamento antihipertensivo por más de 2 años tienen 30% menos infartos que los que lo tomaron menos de 2 años. ¿Ves un problema con esta comparación? ¿Cómo lo rediseñarías?",
+          "solucion": "Immortal time bias: el grupo '>2 años' tuvo que sobrevivir los primeros 2 años sin infarto para alcanzar la clasificación. El grupo '<2 años' incluye sujetos que murieron o tuvieron infarto en los primeros 2 años y no pudieron seguir tomando el medicamento. El rediseño: definir dos cohortes en t=0 (inicio del tratamiento) y comparar según la adherencia proyectada (con análisis per-protocol).",
+          "explicacion": "Es el error de comparar 'supervivientes sanos del tratamiento' con 'todos los que iniciaron'. La asimetría de clasificación crea tiempo inmortal."
+        },
+        {
+          "id": "arh2-q3",
+          "tipo": "quiz",
+          "enunciado": "Enuncia los 7 componentes del protocolo de un target trial, usando como ejemplo el estudio de una app de meditación para reducir burnout.",
+          "solucion": "(1) Elegibilidad: empleados activos al 1 de enero, sin uso previo de la app. (2) Estrategias de tratamiento: 'usar la app ≥30 min/semana por 3 meses' vs 'no usar la app'. (3) Asignación: aleatorización hipotética en t=0. (4) Inicio del seguimiento (t=0): 1 de enero, mismo para todos. (5) Outcome: burnout diagnosticado antes del 31 de diciembre. (6) Final del seguimiento: 31 de diciembre o primer evento. (7) Estimando: diferencia de riesgo o razón de riesgos del efecto per-protocol.",
+          "explicacion": "Enunciar todos los componentes es el paso que distingue al analista riguroso: es imposible diseñar el análisis sin decidir explícitamente cada uno. La vaguedad en t=0 o en el estimando es la fuente de la mayoría de los sesgos."
+        },
+        {
+          "id": "arh2-q4",
+          "tipo": "disparador",
+          "enunciado": "Ves un análisis donde el grupo 'tratado con inmunoterapia' se define como 'pacientes que recibieron al menos 3 ciclos'. El seguimiento empieza desde el diagnóstico. ¿Qué preguntas haces antes de aceptar los resultados?",
+          "solucion": "Preguntas clave: (1) ¿Cuándo empieza el seguimiento para el grupo tratado? ¿Desde el diagnóstico o desde el tercer ciclo? (2) ¿Pueden los pacientes del grupo 'tratado' morir entre el diagnóstico y el tercer ciclo? Si no, el período diagnóstico → 3er ciclo es tiempo inmortal. (3) ¿Cómo se clasifica a alguien que empieza los ciclos pero no llega al tercero? ¿Va al grupo control, o se excluye? La exclusión puede sesgar.",
+          "explicacion": "Señal → jugada: 'grupo definido por completar N eventos' + 'seguimiento empieza antes de esos N eventos' → immortal time. Pregunta: '¿puede alguien sufrir el outcome durante el periodo requerido para clasificarse como tratado?'"
         }
       ]
     }

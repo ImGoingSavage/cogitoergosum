@@ -1032,6 +1032,22 @@ button.enlace {
 .unidad-nombre { font-weight: 600; }
 .unidad-libro { margin-left: auto; font-size: 12px; color: var(--texto-tenue); }
 
+.ruta-chip {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.ruta-quant    { background: rgba(124,77,255,0.18); color: #a78bfa; }
+.ruta-maang    { background: rgba(6,182,212,0.18);  color: #67e8f9; }
+.ruta-health-ai-rwe { background: rgba(34,197,94,0.18);  color: #86efac; }
+
+.pistas-container { margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
+.pista-nivel { font-weight: 700; color: var(--ambar); }
+
 .quiz-progreso {
   font-size: 12px;
   font-weight: 600;
