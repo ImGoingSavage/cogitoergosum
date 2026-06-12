@@ -1012,14 +1012,14 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    de cualquier contenido nuevo, porque el multi-dispositivo real depende
    de él:
    - [x] **Oleadas 1-3** ✅ EJECUTADAS (2026-06-12, bitácora (6)).
-   - [ ] **Oleada 4**: login con Google (requiere Google Cloud Console y
-     decidir la política de identidad; checklist en la bitácora (5)).
+   - [x] **Oleadas 4-6** ✅ EJECUTADAS (2026-06-12, bitácora (7)).
    - [ ] **Reset de usuarios de prueba** (tras la Oleada 2; censo SQL y
      backup primero — queries en la auditoría).
-   - [ ] **Oleada 5**: limpieza arquitectónica (versionado de datos
-     locales, extraer módulos de app.js, script del shell).
-   - [ ] **Oleada 6**: responsividad/hardening + decisión credenciales +
-     pruebas humanas (punto 6).
+   - [ ] **Módulo extraction** (diferida oleada 5): extraer `js/cuentaUI.js`
+     y `js/mentorChat.js` de app.js — refactor sin cambio funcional, alta
+     complejidad por estado compartido. Sin urgencia mientras app.js < 2100 l.
+   - [ ] **Comprimir login.mp4** de 4.8 MB a ~2 MB (ffmpeg; solo cosmético:
+     la app funciona igual — el SW cachea el video al vuelo).
 
 ### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
 
@@ -1599,6 +1599,30 @@ archivo al terminar y marca las casillas de la tabla de arriba.
 **Micro-arreglo study.js:** botón "Siguiente pregunta"/"Cerrar evaluación" en `renderPreguntaQuiz()` ahora compara contra `ids.length` (subconjunto del repaso) en lugar de `u.banco.length` — la etiqueta ya no miente en la última pregunta de un repaso.
 
 **sw.js → v22.** Verificado: `node --check` 18 módulos + sw, JSON OK, SHELL OK, cruce de IDs HTML↔JS, todos los cables confirmados por grep.
+
+---
+
+### Bitácora 2026-06-12 (7) — Oleadas 4-6: OAuth Google + hardening + limpieza
+
+**Oleada 4 — Login con Google (OAuth 2.0 vía Supabase):**
+- `js/api.js`: `loginConGoogle()` redirige a `/auth/v1/authorize?provider=google`; `manejarHashOAuth()` consume el fragment `#access_token=…` al volver, guarda sesión y limpia el hash con `history.replaceState`. No-op si no hay hash ni token — cero ruido en arranques normales.
+- `index.html`: botón `#btn-login-google` ("Entrar con Google") en `.login-acciones` con clase `login-google` para el separador visual.
+- `css/styles.css`: `.login-google` con `border-top` sutil para separar visualmente de email/contraseña.
+- `js/app.js → init()`: `Api.manejarHashOAuth()` se ejecuta ANTES de `configurarPantallaLogin()`; si devuelve sesión, la portada no se abre y se llama `despuesDeEntrar()` tras cargar los problemas (merge + sync como si el usuario hubiese entrado con email).
+- Listener `#btn-login-google`: muestra "Redirigiendo a Google…" y llama `Api.loginConGoogle()`.
+- **Configura en Supabase** → Authentication → Providers → Google: pega el `Client ID` y `Client Secret` de Google Cloud Console. Ruta de retorno: la misma URL de la app (GitHub Pages o `localhost`).
+
+**Oleada 5 — Limpieza arquitectónica (sin extracción de módulos):**
+- `js/study.js → contextoEntrevista()`: el modo entrevistador solo se activa cuando el ítem actual tiene `item.metadata.ruta`; los ítems acumulados de fases 0-6 (sin `metadata.ruta`) devuelven `null` — el Mentor vuelve a modo `estudio` para ellos.
+- `js/storage.js`: `schemaVersion: 1` en DEFAULTS (fuera de CLAVES_SYNC); `migrarSiNecesario()` exportada — stub idempotente listo para futuras migraciones. Se llama en `init()` como primera instrucción.
+- `scripts/verificar-shell.py` NUEVO: comprueba que todos los archivos de SHELL existen, que los JSON son válidos y que no hay IDs duplicados en index.html. Salida "OK — N archivos" o lista de errores + exit 1. Ejecutar con `python3 scripts/verificar-shell.py` (89/89 OK).
+- Extracción de `js/cuentaUI.js` y `js/mentorChat.js` **diferida**: alta complejidad por estado compartido (`vistaActual`, `problemaActual`, `chatsEfimeros`); sin urgencia mientras app.js < 2100 líneas.
+
+**Oleada 6 — Responsividad y hardening:**
+- `css/styles.css`: breakpoint `@media (max-width: 900px)` (tablet): reduce `gap`, `padding` y `font-size` de los botones de la barra de la pizarra para evitar overflow horizontal en iPad.
+- `cps_credenciales` ELIMINADA (decisión del usuario): clave `credenciales` borrada de DEFAULTS en `storage.js`; toda la lógica de `precargarCredenciales()` y 6 llamadas a `Storage.save('credenciales', …)` eliminadas de `app.js` (tanto en `configurarPantallaLogin` como en `configurarCuentaUI`); texto "Al entrar, tus credenciales se recuerdan solo en este dispositivo." eliminado de `index.html → login-nota`.
+
+**sw.js → v23.** Verificado: `node --check` 18 módulos + sw, `python3 scripts/verificar-shell.py` 89/89 OK, sin IDs duplicados en HTML, todos los cables confirmados por grep.
 
 ---
 

@@ -162,7 +162,10 @@ export function contextoEntrevista() {
   if (ex && ex.bloqueId === 'fase-7') {
     const bloque = datos.bloques.find((b) => b.id === 'fase-7');
     const item = (bloque?.examen?.items ?? []).find((it) => it.id === ex.itemIds[ex.indice]);
-    return { ruta: 'arena', examen: true, enunciado: item?.enunciado ?? '' };
+    // Solo entrevistador cuando el ítem ES de arena (tiene ruta); los ítems
+    // acumulados de fases 0-6 no tienen metadata.ruta y no invocan ese modo.
+    if (!item?.metadata?.ruta) return null;
+    return { ruta: item.metadata.ruta, examen: true, enunciado: item?.enunciado ?? '' };
   }
   const panel = document.getElementById('estudio-unidad');
   if (panel && !panel.hidden && panel.dataset.unidad) {

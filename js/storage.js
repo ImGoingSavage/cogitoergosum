@@ -84,10 +84,9 @@ const DEFAULTS = {
   // cuenta" (decisión por dispositivo; NO viaja al servidor). La cuenta es
   // siempre opcional (§0.7): la portada invita, jamás bloquea.
   loginOmitido: false,
-  // Credenciales recordadas (pedido 2026-06-11): { email, password } del
-  // último login exitoso para precargar el formulario tras cerrar sesión.
-  // SOLO en este dispositivo (fuera de CLAVES_SYNC, igual que mentorIA).
-  credenciales: null,
+  // Versión del esquema de datos locales. Sube en 1 cada vez que una
+  // migración de migrarSiNecesario() cambia la forma de alguna clave.
+  schemaVersion: 1,
   // ---- Sincronización opcional (Fase C, HANDOFFCES §5.2) ----
   // Cola de eventos pendientes de subir; LocalStorage sigue siendo la verdad
   outbox: [],            // [{uid, tipo, payload, ts}]
@@ -173,6 +172,17 @@ export function hoy() {
 
 export function resetTotal() {
   Object.keys(DEFAULTS).forEach((n) => remove(n));
+}
+
+/**
+ * Migraciones de datos locales. Se llama UNA VEZ al arrancar la app.
+ * Cada bloque `if (v < N)` aplica los cambios de la versión N y sube el
+ * contador: idempotente, seguro de llamar incluso si ya se ejecutó.
+ */
+export function migrarSiNecesario() {
+  const v = load('schemaVersion') ?? 0;
+  // v1 → estado inicial: sin transformaciones estructurales.
+  if (v < 1) save('schemaVersion', 1);
 }
 
 /**

@@ -77,6 +77,36 @@ export async function iniciarSesion(email, password) {
   return guardarSesion(data);
 }
 
+/**
+ * Redirige a Google OAuth vía Supabase. El usuario vuelve a la misma URL
+ * con #access_token=…&refresh_token=… en el hash; manejarHashOAuth() lo
+ * consume en el arranque.
+ */
+export function loginConGoogle() {
+  const origen = window.location.href.split('#')[0];
+  window.location.href =
+    `${URL_BASE}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(origen)}`;
+}
+
+/**
+ * Consume el hash de retorno del flujo OAuth (Google → Supabase → app).
+ * Si hay access_token guarda la sesión y limpia el hash. No-op si no hay
+ * hash o si ya fue consumido. Retorna la sesión guardada o null.
+ */
+export function manejarHashOAuth() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return null;
+  const params = new URLSearchParams(hash);
+  if (!params.get('access_token')) return null;
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+  return guardarSesion({
+    access_token: params.get('access_token'),
+    refresh_token: params.get('refresh_token'),
+    expires_in: Number(params.get('expires_in')) || 3600,
+    token_type: params.get('token_type'),
+  });
+}
+
 export async function cerrarSesion() {
   const sesion = sesionActual();
   if (sesion) {

@@ -276,6 +276,9 @@ body {
 /* Secundario sobre vidrio: borde de luz, no de piedra */
 button.login-vidrio { border-color: rgba(236, 231, 221, 0.18); }
 
+/* Google OAuth: separador visual entre email/pass y proveedor externo */
+button.login-google { margin-top: 4px; border-top: 1px solid rgba(236, 231, 221, 0.08); padding-top: 14px; }
+
 .login-mensaje { font-size: 13px; color: var(--texto-suave); margin-top: 12px; min-height: 1.4em; }
 
 .login-omitir { margin-top: 10px; color: var(--texto-suave); font-size: 14px; }
@@ -1749,6 +1752,13 @@ body.sin-scroll { overflow: hidden; }
 
 #pizarra-canvas[data-herramienta='goma'] { cursor: cell; }
 #pizarra-canvas[data-herramienta='lazo'] { cursor: copy; }
+
+/* ===== Tablet (≤900px): comprimir barra pizarra para evitar overflow ===== */
+@media (max-width: 900px) {
+  .pizarra-barra { gap: 6px 10px; padding: 7px 10px; }
+  .pizarra-boton { min-width: 36px; min-height: 36px; font-size: 15px; }
+  .piz-grosor-preset { width: 30px; height: 30px; }
+}
 
 @media (max-width: 540px) {
   #pizarra-flotante { left: 12px; bottom: 12px; }
