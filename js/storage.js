@@ -83,6 +83,10 @@ const DEFAULTS = {
   // cuenta" (decisión por dispositivo; NO viaja al servidor). La cuenta es
   // siempre opcional (§0.7): la portada invita, jamás bloquea.
   loginOmitido: false,
+  // Credenciales recordadas (pedido 2026-06-11): { email, password } del
+  // último login exitoso para precargar el formulario tras cerrar sesión.
+  // SOLO en este dispositivo (fuera de CLAVES_SYNC, igual que mentorIA).
+  credenciales: null,
   // ---- Sincronización opcional (Fase C, HANDOFFCES §5.2) ----
   // Cola de eventos pendientes de subir; LocalStorage sigue siendo la verdad
   outbox: [],            // [{uid, tipo, payload, ts}]

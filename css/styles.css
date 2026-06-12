@@ -175,18 +175,18 @@ body {
   object-position: center;
 }
 
-/* El video nativo mide 544×680: en escritorio, cover lo escalaría ~3.5×
-   y se pixela. Zoom out: contain con tope de ~1.5× el tamaño natural,
-   centrado — su propio fondo negro se funde con .login-fondo y los
-   bordes no se notan. En móvil cover apenas escala (~1.2×) y se queda. */
+/* El video nativo mide 544×680. Pedido del usuario (2026-06-11): que el
+   mármol se vea GRANDE alrededor de la tarjeta. En escritorio: cover con
+   tope de ~2× el tamaño natural (más allá se pixela feo), centrado — su
+   fondo negro se funde con .login-fondo. En móvil, cover normal. */
 @media (min-width: 541px) {
   .login-fondo video {
     position: absolute;
     inset: 0;
     margin: auto;
-    object-fit: contain;
-    max-width: 816px;   /* 1.5 × 544 */
-    max-height: 1020px; /* 1.5 × 680 */
+    width: min(100%, 1088px);   /* 2 × 544 */
+    height: min(100%, 1360px);  /* 2 × 680 */
+    object-fit: cover;
   }
 }
 
@@ -1281,21 +1281,25 @@ button.secundario.peligro:hover:not(:disabled) {
   gap: 10px;
 }
 
+/* Burbuja más visible (pedido 2026-06-11): fondo casi opaco, borde índigo
+   y sombra — sobre el video, el vidrio al 60% se perdía. El índigo es el
+   token de "lo interactivo" (§1), no luz de lámpara. */
 #mentor-burbuja {
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  font-size: 22px;
+  font-size: 25px;
   cursor: pointer;
-  color: var(--texto);
-  background: var(--vidrio);
+  color: var(--acento);
+  background: rgba(27, 24, 21, 0.88);
   -webkit-backdrop-filter: blur(14px) saturate(1.15);
   backdrop-filter: blur(14px) saturate(1.15);
-  border: 1px solid var(--vidrio-borde);
+  border: 1px solid rgba(141, 150, 247, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   transition: border-color var(--transicion), color var(--transicion);
 }
 
-#mentor-burbuja:hover { border-color: var(--acento); color: var(--acento); }
+#mentor-burbuja:hover { border-color: var(--acento); color: var(--texto); }
 
 #mentor-panel {
   width: min(380px, calc(100vw - 36px));
@@ -1536,21 +1540,23 @@ body.sin-scroll { overflow: hidden; }
   z-index: 30;
 }
 
+/* Misma receta de visibilidad que la burbuja del mentor (pedido 2026-06-11) */
 #pizarra-burbuja {
-  width: 52px;
-  height: 52px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  font-size: 22px;
+  font-size: 25px;
   cursor: pointer;
-  color: var(--texto);
-  background: var(--vidrio);
+  color: var(--acento);
+  background: rgba(27, 24, 21, 0.88);
   -webkit-backdrop-filter: blur(14px) saturate(1.15);
   backdrop-filter: blur(14px) saturate(1.15);
-  border: 1px solid var(--vidrio-borde);
+  border: 1px solid rgba(141, 150, 247, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   transition: border-color var(--transicion), color var(--transicion);
 }
 
-#pizarra-burbuja:hover { border-color: var(--acento); color: var(--acento); }
+#pizarra-burbuja:hover { border-color: var(--acento); color: var(--texto); }
 
 #pizarra-overlay {
   position: fixed;

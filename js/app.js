@@ -1670,8 +1670,17 @@ function configurarPantallaLogin() {
 
   const mensaje = (texto) => { $('login-mensaje').textContent = texto; };
 
+  // Credenciales recordadas en ESTE dispositivo: entrar de nuevo es un tap
+  const precargarCredenciales = () => {
+    const c = Storage.load('credenciales');
+    if (!c) return;
+    if (!$('login-email').value) $('login-email').value = c.email ?? '';
+    if (!$('login-password').value) $('login-password').value = c.password ?? '';
+  };
+
   abrirPortadaLogin = () => {
     mensaje('');
+    precargarCredenciales();
     pantalla.hidden = false;
     ajustarVideo();
   };
@@ -1700,6 +1709,7 @@ function configurarPantallaLogin() {
     mensaje('Iniciando sesión…');
     try {
       await Api.iniciarSesion(email, password);
+      Storage.save('credenciales', { email, password }); // recordadas en este dispositivo
       cerrarPortada();
       await despuesDeEntrar();
     } catch (e) {
@@ -1717,6 +1727,7 @@ function configurarPantallaLogin() {
     try {
       const sesion = await Api.registrar(email, password);
       if (sesion) {
+        Storage.save('credenciales', { email, password });
         cerrarPortada();
         await despuesDeEntrar();
       } else {
@@ -1729,6 +1740,7 @@ function configurarPantallaLogin() {
 
   // Al abrir la app: portada solo sin sesión y sin "continuar sin cuenta"
   if (!Api.sesionActual() && !Storage.load('loginOmitido')) abrirPortadaLogin();
+  else precargarCredenciales();
 }
 
 /* ================= Mi cuenta (sincronización opcional) ================ */
@@ -1784,6 +1796,13 @@ function configurarCuentaUI() {
     password: $('sync-password').value,
   });
 
+  // Credenciales recordadas (mismo criterio que la portada): precargar aquí
+  const guardadas = Storage.load('credenciales');
+  if (guardadas) {
+    $('sync-email').value = guardadas.email ?? '';
+    $('sync-password').value = guardadas.password ?? '';
+  }
+
   $('btn-sync-registrar').addEventListener('click', async () => {
     const { email, password } = credenciales();
     if (!email || password.length < 8) {
@@ -1793,8 +1812,10 @@ function configurarCuentaUI() {
     mensajeCuenta('Creando cuenta…');
     try {
       const sesion = await Api.registrar(email, password);
-      if (sesion) await despuesDeEntrar();
-      else mensajeCuenta('Cuenta creada. Revisa tu correo para confirmarla y luego inicia sesión.');
+      if (sesion) {
+        Storage.save('credenciales', { email, password });
+        await despuesDeEntrar();
+      } else mensajeCuenta('Cuenta creada. Revisa tu correo para confirmarla y luego inicia sesión.');
     } catch (e) {
       mensajeCuenta(`No se pudo crear la cuenta: ${e.message}`);
     }
@@ -1809,6 +1830,7 @@ function configurarCuentaUI() {
     mensajeCuenta('Iniciando sesión…');
     try {
       await Api.iniciarSesion(email, password);
+      Storage.save('credenciales', { email, password });
       await despuesDeEntrar();
     } catch (e) {
       mensajeCuenta(`No se pudo iniciar sesión: ${e.message}`);
@@ -1855,6 +1877,8 @@ function configurarCuentaUI() {
     if (!seguro) return;
     try {
       await Api.borrarCuenta();
+      // La cuenta ya no existe: precargar sus credenciales sería confundir
+      Storage.save('credenciales', null);
       mensajeCuenta('Cuenta borrada del servidor. Tus datos locales siguen en este dispositivo.');
     } catch (e) {
       mensajeCuenta(`No se pudo borrar: ${e.message}`);

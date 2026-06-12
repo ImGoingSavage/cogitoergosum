@@ -1044,6 +1044,50 @@ distribuirlos públicamente (la misma razón por la que `Biblioteca/` está en
 presión, rechazo de palma, lazo con el dedo, resaltador sobre tinta — y
 ajustar `ancho()`/alfa si la sensación no convence.
 
+### Bitácora 2026-06-11 (noche, 4) — credenciales recordadas + visibilidad
+
+Pedido del usuario a otro agente que se quedó SIN TOKENS a medio camino
+(las capturas de dónde se quedó estaban en la carpeta local `Estado actual`,
+ahora gitignoreada por ser material personal). Lo que pidió: (1) que cada
+dispositivo recuerde las credenciales de inicio de sesión para no
+reteclearlas; (2) video del login más grande para ver el mármol tras la
+tarjeta; (3) iconos del mentor y la pizarra más visibles; (4) explicarle
+qué hace la burbuja del mentor.
+
+**Lo que el agente interrumpido dejó hecho (working tree, sin commit):**
+- `storage.js`: clave `credenciales` ({email, password} del último login
+  exitoso) en DEFAULTS, FUERA de CLAVES_SYNC (solo este dispositivo, igual
+  que mentorIA). Guardado en texto plano en LocalStorage: decisión
+  consciente del usuario para su propia app (la nota de la portada lo
+  declara: "tus credenciales se recuerdan solo en este dispositivo").
+- `app.js`: `precargarCredenciales()` en la portada (al abrirla y en el
+  arranque sin portada) + precarga en la tarjeta "Mi cuenta" del Dashboard;
+  `Storage.save('credenciales', …)` en los 4 puntos de éxito (portada
+  entrar/registrar, Dashboard entrar/registrar).
+- `index.html`: nota de transparencia en la portada.
+- `styles.css`: video del login a cover 2× (1088×1360 máx) — la edición
+  que en su sesión aparecía fallida sí quedó aplicada.
+
+**Lo terminado por este agente:**
+- ✅ Burbujas del mentor (🪶) y la pizarra (✎) más visibles: 58 px, icono
+  índigo (token de lo interactivo §1 — NO lámpara), fondo casi opaco
+  rgba(27,24,21,0.88), borde índigo 0.45 y sombra; sobre el video el
+  vidrio al 60% se perdía. Verificado por captura sobre el póster.
+- ✅ Borrar cuenta ahora limpia `credenciales` (precargar credenciales de
+  una cuenta que ya no existe sería confundir). Cerrar sesión NO las
+  limpia: ese es exactamente el caso de uso de la precarga.
+- ✅ `Estado actual*` en .gitignore (capturas personales, repo público).
+- ✅ sw.js **v14** (cambió el shell). Verificación: node --check (17
+  módulos+sw), captura del login (mármol grande y visible a través de la
+  tarjeta) y de las burbujas.
+- ℹ️ Respuesta a la pregunta (4): la burbuja 🪶 inferior derecha es el
+  MENTOR SOCRÁTICO (§4.4): solo existe con cuenta de Claude activa y al
+  pulsarla abre el panel de chat, cuyo modo depende de la vista (forcejeo:
+  socrático puro, jamás revela; tras revelar: compara con la solución;
+  estudio: explica lo leído; general: coach sobre tus métricas). La ✎
+  inferior izquierda abre la pizarra (goma de trazo, lazo, resaltador,
+  doble toque en ⌫ para limpiar la página).
+
 ### Cierre de jornada 2026-06-11, noche (estado al apagar)
 
 - **App v12** (sw.js), todo commiteado y pusheado en `main`. Los 3 SQL de
