@@ -1013,13 +1013,14 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    de él:
    - [x] **Oleadas 1-3** ✅ EJECUTADAS (2026-06-12, bitácora (6)).
    - [x] **Oleadas 4-6** ✅ EJECUTADAS (2026-06-12, bitácora (7)).
-   - [ ] **Reset de usuarios de prueba** (tras la Oleada 2; censo SQL y
-     backup primero — queries en la auditoría).
-   - [ ] **Módulo extraction** (diferida oleada 5): extraer `js/cuentaUI.js`
-     y `js/mentorChat.js` de app.js — refactor sin cambio funcional, alta
-     complejidad por estado compartido. Sin urgencia mientras app.js < 2100 l.
-   - [ ] **Comprimir login.mp4** de 4.8 MB a ~2 MB (ffmpeg; solo cosmético:
-     la app funciona igual — el SW cachea el video al vuelo).
+   - [x] **Extracción de módulos** ✅ EJECUTADA (2026-06-12, bitácora (8)):
+     `js/cuentaUI.js` y `js/mentorChat.js` extraídos de app.js.
+     app.js: 2017 → 1454 l; sw.js → v25.
+   - ~~Reset de usuarios de prueba~~ **CANCELADO** por decisión del usuario.
+   - [ ] **Comprimir login.mp4** de 4.8 MB a ~2 MB (ffmpeg; cosmético):
+     instalar con `brew install ffmpeg` y ejecutar:
+     `ffmpeg -i assets/video/login.mp4 -c:v libx264 -crf 28 -preset slow assets/video/login-small.mp4`
+     luego reemplazar el archivo y subir VERSION.
 
 ### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
 
@@ -1623,6 +1624,24 @@ archivo al terminar y marca las casillas de la tabla de arriba.
 - `cps_credenciales` ELIMINADA (decisión del usuario): clave `credenciales` borrada de DEFAULTS en `storage.js`; toda la lógica de `precargarCredenciales()` y 6 llamadas a `Storage.save('credenciales', …)` eliminadas de `app.js` (tanto en `configurarPantallaLogin` como en `configurarCuentaUI`); texto "Al entrar, tus credenciales se recuerdan solo en este dispositivo." eliminado de `index.html → login-nota`.
 
 **sw.js → v23.** Verificado: `node --check` 18 módulos + sw, `python3 scripts/verificar-shell.py` 89/89 OK, sin IDs duplicados en HTML, todos los cables confirmados por grep.
+
+---
+
+### Bitácora 2026-06-12 (8) — Extracción de módulos + login.mp4 pendiente
+
+**Extracción de `js/cuentaUI.js` y `js/mentorChat.js` de app.js:**
+- app.js: 2017 → 1454 líneas (-563). Refactor sin cambio funcional.
+- `js/cuentaUI.js` (267 l): portada de login + tarjeta "Mi cuenta". Recibe `onEntrado` callback via `iniciar()` para que app.js ejecute `renderizarSesion()` + `actualizarFreshStartUI()` después del login sin ciclo de importación. Exporta: `configurarLogin`, `configurarCuenta`, `despuesDeEntrar`, `abrirPortada`, `renderizar`.
+- `js/mentorChat.js` (358 l): todo el chat socrático, superficies de IA y fotos. Recibe `getVistaActual` / `getProblemaActual` via `iniciar()` (mismo patrón). Exporta: `actualizarSuperficiesIA`, `actualizarMentorUI`, `enviarMensajeMentor`, `iniciarConFoto`, `configurarFlotante`, `configurarFoto`, `configurarRevision`.
+- `configurarPizarra()` en app.js usa `MentorChat.iniciarConFoto()` en lugar del bloque inline.
+- Imports de aiMentor.js en app.js reducidos (chatMentor/prepararImagen/etc. ahora solo en mentorChat.js).
+- sw.js → **v25**: `js/cuentaUI.js` y `js/mentorChat.js` añadidos al SHELL (91 archivos; verificado con `scripts/verificar-shell.py`).
+
+**Reset de usuarios de prueba cancelado** por decisión del usuario.
+
+**login.mp4 pendiente de comprimir** (ffmpeg no instalado en el momento; cosmético): `brew install ffmpeg` y luego `ffmpeg -i assets/video/login.mp4 -c:v libx264 -crf 28 -preset slow assets/video/login.mp4`. Subir VERSION en sw.js al hacerlo.
+
+**Opacidad del recuadro de login** subida (2026-06-12): gradiente 0.05→0.20 → 0.10→0.72; blur 6px → 20px; sw.js → v24 (commit anterior a esta bitácora).
 
 ---
 
