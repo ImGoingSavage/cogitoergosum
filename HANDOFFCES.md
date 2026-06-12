@@ -880,13 +880,16 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    verificadas por cómputo). Pool de examen acumulado: 40. sw.js v11.
    **Fase 6**: solo queda Zeitz §8.5 (transformaciones); lo natural es
    AIME y/o Engel caps. 8-12/14 — decidir con el usuario.
-4ter. ~~Fase 7 — Arena de Entrevistas de Élite~~ ✅ HECHA (2026-06-12,
-   commit ea21c60): bloque `fase-7`, 6 unidades (2 Quant, 2 MAANG, 2
-   Health AI/RWE), 6 ítems de examen con `pistas[]` de 5 niveles graduados
-   (retrocompatible con `pista` string de fases anteriores), 6 lecciones
-   markdown, ruta-chips en la UI, sw.js v16 (75 archivos verificados).
-   Nota: no existe `fase-6` — el bloque se saltó por decisión del usuario;
-   el hueco es del historial, no del código. Ver bitácora completa al final.
+4ter. ~~Fase 7 — Arena de Entrevistas de Élite~~ ✅ HECHA Y AUDITADA
+   (2026-06-12, commits ea21c60 + 7700fc3): bloque `fase-7`, 6 unidades
+   (2 Quant, 2 MAANG, 2 Health AI/RWE), 6 ítems de examen con `pistas[]`
+   de 5 niveles graduados (retrocompatible con `pista` string de fases
+   anteriores), 6 lecciones markdown, ruta-chips en la UI, sw.js v17.
+   La auditoría de Oleada 1 (14 criterios) encontró y corrigió 6
+   problemas — ninguno estructural; veredicto: publicado. Su lista de
+   "Oleada 2" quedó en el punto 8 de pendientes. Nota: no existe
+   `fase-6` — el bloque se saltó por decisión del usuario; el hueco es
+   del historial, no del código. Ver bitácora completa al final.
 5. ~~Publicar el frontend~~ ✅ HECHO (2026-06-11, noche; decisión del
    usuario: GitHub Pages): el repo `ImGoingSavage/cogitoergosum` se hizo
    **PÚBLICO** (auditado antes: cero secretos — la anon key es pública por
@@ -920,6 +923,12 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    - **Pizarra con Apple Pencil real en el iPad** (presión, rechazo de
      palma, lazo, resaltador) y lectura de 2-3 lecciones integradas en la
      tablet (bitácora "noche, 3").
+   - **Fase 7 en dispositivo real**: requiere examen de fase-5 aprobado
+     para desbloquearse (o sembrar `cps_estudio` para probar). Verificar:
+     ruta-chips visibles en la lista de unidades, lectura de las 6
+     lecciones arena-*, panel de pistas graduadas en el examen (pedir
+     2-3, recargar la página y confirmar que se reponen y el contador no
+     retrocede), y que las fases 1-5 siguen mostrando su pista única.
 6bis. **Decidir el alcance del texto en las lecciones** (bitácora
    "noche, 3"): lecciones redactadas (estado actual) vs. texto íntegro del
    libro vía canal privado en Supabase — el texto íntegro NO puede ir al
@@ -948,6 +957,26 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      benchmarks: Anki/Lichess).
    - Exponer `evaluarDesconstruccion()` en la UI durante el forcejeo
      (cuidando el gating: feedback de redacción, jamás de corrección).
+   - **Oleada 2 de Fase 7** (hallazgos no urgentes de la auditoría
+     2026-06-12; ninguno rompe nada):
+     - `renderPasoPrediccion` construye las opciones del catálogo
+       COMPLETO (18 heurísticas): los exámenes de fases 1-5 ahora
+       muestran 6 distractores más. Pedagógicamente aceptable (más
+       retrieval); si molesta, filtrar las opciones por las heurísticas
+       de los bloques ya desbloqueados.
+     - Etiqueta del radio "Resuelto con la pista" (singular) cuando el
+       ítem tiene `pistas[]` múltiples.
+     - Suavizar "diseñado para eliminar a quienes…" en arena-m1 (describe
+       al entrevistador, no juzga al usuario, pero el tono es mejorable).
+     - Colores de los ruta-chips en hex directo en vez de tokens
+       (contraste AA verificado; solo disciplina de estilo).
+     - Decidir si `pistasUsadas` pesa en algo o se muestra en el
+       Dashboard (hoy es solo dato, coherente con "registrar, no
+       penalizar").
+     - Ampliar la Arena: más unidades por ruta (la espec. original
+       contemplaba crecimiento por oleadas) — mismo protocolo: unidad +
+       lección + banco + ítem de examen con `pistas[]` y
+       `source: "original"`.
 
 ### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
 
@@ -1160,10 +1189,11 @@ palma, dedo-desplaza, doble toque del dedo, pellizco, figura perfecta
 
 ### Cierre de jornada 2026-06-11, noche (estado al apagar)
 
-- **App v15** (sw.js al cierre de esa jornada; actualizado a **v16** el
-  2026-06-12 con la Fase 7), todo commiteado y pusheado en `main`. Los 3
-  SQL de `supabase/` aplicados y verificados por E2E (Fase C 8/8, claustro
-  10/10, pensar-juntos 9/9 con struggle-first probado).
+- **App v15** (sw.js al cierre de esa jornada; hoy va en **v17**:
+  v16 = Fase 7, v17 = hotfix de su auditoría, ambos 2026-06-12), todo
+  commiteado y pusheado en `main`. Los 3 SQL de `supabase/` aplicados y
+  verificados por E2E (Fase C 8/8, claustro 10/10, pensar-juntos 9/9 con
+  struggle-first probado).
 - **El sitio está PÚBLICO y en vivo**:
   https://imgoingsavage.github.io/cogitoergosum/ (GitHub Pages, branch
   main/raíz, `.nojekyll`, HTTPS). El repo es público desde hoy (auditado:
@@ -1279,6 +1309,40 @@ SHELL existen en el filesystem (python3 cruzado).
   retrocompatible. Si se quiere enriquecer algún ítem anterior, basta con
   reemplazar `"pista": "..."` por `"pistas": ["...", "...", ...]` en ese
   ítem — sin cambios de código.
+
+#### Auditoría de Oleada 1 (mismo día, commit 7700fc3 — sw.js v17)
+
+Pedida por el usuario contra 14 criterios (rupturas de Estudio y
+Entrenamiento, Pages/subpath, SW/SHELL, JSON, dependencias, secretos,
+IA opcional, Constitución, copyright, lenguaje, pedagogía). Veredicto:
+**publicar** — 6 hallazgos, ninguno estructural, todos parchados:
+
+1. `arq1-q2`: la explicación contenía razonamiento a medio pensar
+   ("multiplicado por... no, simplemente") que el usuario habría leído
+   tal cual. Reescrita.
+2. `arq2-q3`: referenciaba un "ejemplo del manual" con VPP=28% que no
+   existe (el de la lección da ≈49%). Corregido a los datos reales.
+3. `.pista-nivel` usaba `var(--ambar)` — token INEXISTENTE (el ámbar
+   real es `--lampara`/`--alerta`); el color fallaba en silencio.
+   Ahora `--alerta` (sancionado para atención por su propio comentario).
+4. **Pistas graduadas no sobrevivían recargas**: el panel arrancaba de
+   cero y volver a pedir podía REGRESAR `pistasUsadas` (3→1). Ahora se
+   reponen desde el registro al renderizar y el contador nunca decrece
+   (`Math.max`). Además las pistas se insertan ANTES del botón.
+5. Anglicismos: "modelo excellent" (arena-q2.md), "patrón common"
+   (arm2-q3).
+6. Limpieza de los `.replace()` no-op del ruta-chip.
+
+Verificado limpio en la misma auditoría: esquema fase-7 = fase-5
+(`metadata` aditivo), `disparador` presente en los 6 ítems de examen,
+heurísticas de unidades e ítems existen en el catálogo, cero IDs de
+banco duplicados, lecciones resueltas por `data/teoria/${u.id}.md` con
+nombres coincidentes, Cartógrafo mayor usa su propio mapa de
+`badges.json` (las 6 heurísticas nuevas no lo afectan), rutas relativas
+(subpath OK), SHELL 75/75, cero dependencias/secretos nuevos, pistas
+estáticas (IA sigue opcional), ítems `source: "original"` y lecciones de
+redacción propia con fuentes citadas. Hallazgos NO urgentes → punto 8
+de "QUÉ FALTA" ("Oleada 2 de Fase 7").
 
 ---
 
