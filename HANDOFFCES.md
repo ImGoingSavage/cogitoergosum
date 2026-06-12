@@ -880,6 +880,13 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    verificadas por cómputo). Pool de examen acumulado: 40. sw.js v11.
    **Fase 6**: solo queda Zeitz §8.5 (transformaciones); lo natural es
    AIME y/o Engel caps. 8-12/14 — decidir con el usuario.
+4ter. ~~Fase 7 — Arena de Entrevistas de Élite~~ ✅ HECHA (2026-06-12,
+   commit ea21c60): bloque `fase-7`, 6 unidades (2 Quant, 2 MAANG, 2
+   Health AI/RWE), 6 ítems de examen con `pistas[]` de 5 niveles graduados
+   (retrocompatible con `pista` string de fases anteriores), 6 lecciones
+   markdown, ruta-chips en la UI, sw.js v16 (75 archivos verificados).
+   Nota: no existe `fase-6` — el bloque se saltó por decisión del usuario;
+   el hueco es del historial, no del código. Ver bitácora completa al final.
 5. ~~Publicar el frontend~~ ✅ HECHO (2026-06-11, noche; decisión del
    usuario: GitHub Pages): el repo `ImGoingSavage/cogitoergosum` se hizo
    **PÚBLICO** (auditado antes: cero secretos — la anon key es pública por
@@ -917,14 +924,16 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    "noche, 3"): lecciones redactadas (estado actual) vs. texto íntegro del
    libro vía canal privado en Supabase — el texto íntegro NO puede ir al
    repo público (copyright). Decisión del usuario.
-7. **Fase 6 del Modo Estudio** (decidir la dirección CON el usuario antes
-   de ingerir): de Zeitz solo queda §8.5 (transformaciones: simetría,
+7. **Fase 6 del Modo Estudio** (PENDIENTE, sin bloquear la Fase 7 ya
+   implementada): de Zeitz solo queda §8.5 (transformaciones: simetría,
    movimientos rígidos, homotecia) como sección sustantiva. Lo natural
-   según el PDF: subir el nivel a **AIME** (los espejos ZIML también
-   existen para AIME) y/o seguir con Engel por heurística — caps. 8
-   (inducción), 9 (sucesiones), 10 (polinomios), 11 (funcionales),
-   12 (geometría), 14 (estrategias adicionales). Protocolo de ingestión y
-   anclas de TODO lo ya usado en HANDOFF §3.11.6 (pasos 2-5).
+   según el PDF: subir el nivel a **AIME** y/o seguir con Engel caps.
+   8-12/14. Decidir dirección CON el usuario antes de ingerir. Protocolo
+   de ingestión y anclas de TODO lo ya usado en HANDOFF §3.11.6 (pasos
+   2-5). **Aviso de secuencia**: `bloques[]` es secuencial — si se quiere
+   que Fase 6 desbloquee ANTES de Fase 7 hay que insertarla en el array
+   antes de `fase-7`; si se prefiere como ruta paralela/opcional, añadirla
+   al final o como bloque sin prerequisito explícito.
 8. **Menores acumulados** (en orden de valor):
    - Web Push diaria opcional (1/día máx, hora elegida, contenido neutro
      — §0.1): requiere un emisor push; con el sitio ya en HTTPS público
@@ -1151,9 +1160,10 @@ palma, dedo-desplaza, doble toque del dedo, pellizco, figura perfecta
 
 ### Cierre de jornada 2026-06-11, noche (estado al apagar)
 
-- **App v12** (sw.js), todo commiteado y pusheado en `main`. Los 3 SQL de
-  `supabase/` aplicados y verificados por E2E (Fase C 8/8, claustro 10/10,
-  pensar-juntos 9/9 con struggle-first probado).
+- **App v15** (sw.js al cierre de esa jornada; actualizado a **v16** el
+  2026-06-12 con la Fase 7), todo commiteado y pusheado en `main`. Los 3
+  SQL de `supabase/` aplicados y verificados por E2E (Fase C 8/8, claustro
+  10/10, pensar-juntos 9/9 con struggle-first probado).
 - **El sitio está PÚBLICO y en vivo**:
   https://imgoingsavage.github.io/cogitoergosum/ (GitHub Pages, branch
   main/raíz, `.nojekyll`, HTTPS). El repo es público desde hoy (auditado:
@@ -1169,6 +1179,108 @@ palma, dedo-desplaza, doble toque del dedo, pellizco, figura perfecta
   arriba) → fase 6 de estudio a decidir con el usuario (punto 7) →
   menores (punto 8). No hay código roto ni verificación pendiente del
   lado del agente.
+
+### Bitácora 2026-06-12 — Fase 7 Arena de Entrevistas de Élite
+
+**Pedido del usuario:** extender el Modo Estudio con una nueva fase para
+preparación de entrevistas de élite en tres rutas: Quant/Hedge Fund,
+MAANG/Big Tech, y Health AI/RWE. Especificación de 26 secciones entregada
+en la sesión anterior (resumida en el handoff de compresión de contexto).
+
+**Commit ea21c60 — pusheado a main. Estado final del JSON:**
+`44 unidades · 7 bloques · 18 heurísticas · 75 archivos en SHELL`.
+
+#### data/study.json
+
+- **6 heurísticas nuevas** añadidas a `catalogoHeuristicas` después de
+  `penultimo-paso`:
+  `linealidad-esperanza`, `bayes-tasa-base`, `hashing-memoria`,
+  `ventana-sql`, `dag-ajuste`, `tiempo-cero`.
+
+- **Bloque `fase-7`** en `bloques[]` con 6 ítems de examen:
+
+  | id | heurística | ruta |
+  |----|-----------|------|
+  | f7-ex-1 | linealidad-esperanza | quant |
+  | f7-ex-2 | bayes-tasa-base | quant |
+  | f7-ex-3 | hashing-memoria | maang |
+  | f7-ex-4 | ventana-sql | maang |
+  | f7-ex-5 | dag-ajuste | health-ai-rwe |
+  | f7-ex-6 | tiempo-cero | health-ai-rwe |
+
+  Cada ítem tiene `pistas[]` (array de 5 strings, nivel creciente) y
+  `metadata` con `ruta`, `skills[]`, `errores_comunes[]`, `casos_borde[]`
+  y `source: "original"` (problemas originales, sin copyright).
+
+- **6 unidades** añadidas a `unidades[]` (al final, tras las de fase-5),
+  cada una con `banco[]` de 4 ejercicios de tipos variados (quiz,
+  acertijo, disparador) e `ideas_clave[]`. Tienen `metadata.ruta` para
+  los ruta-chips en la UI.
+
+#### data/teoria/ — 6 lecciones nuevas
+
+| archivo | título | ruta |
+|---------|--------|------|
+| `arena-q1.md` | Linealidad de la esperanza bajo presión | quant |
+| `arena-q2.md` | Bayes, tasas base y señales ruidosas | quant |
+| `arena-m1.md` | Hashing, frecuencia y memoria comprada | maang |
+| `arena-m2.md` | SQL Window Functions | maang |
+| `arena-h1.md` | DAGs y adjustment sets | health-ai-rwe |
+| `arena-h2.md` | Target trial emulation e immortal time bias | health-ai-rwe |
+
+Todas con sección `## Señales de reconocimiento y jugadas` (tabla) y
+`## Ejercicio de consolidación` (pregunta con respuesta oculta), en línea
+con las lecciones de fases anteriores.
+
+#### js/study.js — 3 cambios retrocompatibles
+
+1. **`renderPasoForcejeo`**: detecta `item.pistas?.length` primero →
+   panel `.pistas-container` con botón `"Pedir pista N/5"` que revela
+   pistas una a una y actualiza `r.pistaUsada` + `r.pistasUsadas` en el
+   registro. El camino `else if (item.pista)` sigue intacto para todas
+   las fases anteriores (fases 1-5).
+2. **`renderPasoPrediccion`**: añade `pistasUsadas: 0` al objeto de
+   registro empujado al stack (además del `pistaUsada: false` existente).
+3. **`renderizar` (lista de unidades)**: si `u.metadata?.ruta` existe,
+   inserta `<span class="ruta-chip ruta-{ruta}">` entre el nombre y el
+   libro.
+
+#### css/styles.css — reglas nuevas (tras `.unidad-libro`)
+
+```css
+.ruta-chip          /* base: font 10px, uppercase, padding 2px 7px */
+.ruta-quant         /* fondo violeta 18% opaco, texto #a78bfa */
+.ruta-maang         /* fondo cyan 18% opaco, texto #67e8f9 */
+.ruta-health-ai-rwe /* fondo verde 18% opaco, texto #86efac */
+.pistas-container   /* flex column, gap 8px */
+.pista-nivel        /* etiqueta "Pista N/5:", color --ambar */
+```
+
+#### sw.js — v16
+
+Añadidas al SHELL las 6 rutas:
+`data/teoria/arena-q1.md`, `arena-q2.md`, `arena-m1.md`, `arena-m2.md`,
+`arena-h1.md`, `arena-h2.md`. Verificación: todos los 75 archivos del
+SHELL existen en el filesystem (python3 cruzado).
+
+#### Verificación pre-commit
+
+- `node --check` en todos los módulos JS + sw.js: OK
+- `python3` validó study.json: 44 unidades, 7 bloques, 18 heurísticas
+- SHELL vs filesystem: 75/75 sin faltantes
+
+#### Qué NO se hizo (y por qué)
+
+- **Fase 6** (`fase-6` en `bloques[]`): no existe. El usuario saltó de
+  fase-5 a fase-7 directamente. Queda pendiente (ver item 7 en "QUÉ
+  FALTA").
+- **pistas[] en fases 1-5**: no se migraron los ítems existentes de
+  `pista` (string) a `pistas` (array). No hacía falta: el código nuevo es
+  retrocompatible. Si se quiere enriquecer algún ítem anterior, basta con
+  reemplazar `"pista": "..."` por `"pistas": ["...", "...", ...]` en ese
+  ítem — sin cambios de código.
+
+---
 
 ### Convenciones que NO se negocian (resumen operativo)
 
