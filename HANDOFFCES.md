@@ -948,34 +948,35 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      — §0.1): requiere un emisor push; con el sitio ya en HTTPS público
      dejó de estar bloqueada por infraestructura.
    - Refinamientos del Modo Estudio (lista al final de HANDOFF §3.11.6):
-     preguntas falladas ("no lo tenía") hacia repetición espaciada; timer
-     visible en el examen; persistir el textarea de forcejeo del examen;
-     piso mínimo de estudio para la racha 📘 (decidir con el usuario);
-     materializar los problemas sugeridos en `dosis` como sesiones del
-     camino 1.
+     ~~timer visible en el examen~~ ✅ (mm:ss en la cabecera, sobrevive
+     recargas, limpia su intervalo al salir del panel — commit 3f8e3e6);
+     ~~persistir el textarea de forcejeo del examen~~ ✅ (autosave en
+     `textareasPorItem[item.id]`, restaurado en cada render — mismo
+     commit); preguntas falladas ("no lo tenía") hacia repetición
+     espaciada; piso mínimo de estudio para la racha 📘 (decidir con el
+     usuario); materializar los problemas sugeridos en `dosis` como
+     sesiones del camino 1.
    - FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9 y tabla de
      benchmarks: Anki/Lichess).
    - Exponer `evaluarDesconstruccion()` en la UI durante el forcejeo
      (cuidando el gating: feedback de redacción, jamás de corrección).
-   - **Oleada 2 de Fase 7** (hallazgos no urgentes de la auditoría
-     2026-06-12; ninguno rompe nada):
-     - `renderPasoPrediccion` construye las opciones del catálogo
-       COMPLETO (18 heurísticas): los exámenes de fases 1-5 ahora
-       muestran 6 distractores más. Pedagógicamente aceptable (más
-       retrieval); si molesta, filtrar las opciones por las heurísticas
-       de los bloques ya desbloqueados.
-     - Etiqueta del radio "Resuelto con la pista" (singular) cuando el
-       ítem tiene `pistas[]` múltiples.
-     - Suavizar "diseñado para eliminar a quienes…" en arena-m1 (describe
-       al entrevistador, no juzga al usuario, pero el tono es mejorable).
+   - **Oleada 2 de Fase 7** (hallazgos no urgentes de la auditoría):
+     - ~~Filtrar opciones de predicción al bloque en curso~~ ✅ (union
+       de heurísticas de unidades + ítems del bloque: de 18 a 7-10
+       opciones según el bloque; respuesta correcta siempre presente —
+       verificado por script; commit 3f8e3e6).
+     - ~~Etiqueta "Resuelto con la pista" singular con `pistas[]`~~ ✅
+       (ahora "Resuelto con las pistas" si `pistas.length > 1` — mismo
+       commit).
+     - Suavizar "diseñado para eliminar a quienes…" en arena-m1 (tono
+       mejorable aunque no juzga al usuario).
      - Colores de los ruta-chips en hex directo en vez de tokens
        (contraste AA verificado; solo disciplina de estilo).
      - Decidir si `pistasUsadas` pesa en algo o se muestra en el
        Dashboard (hoy es solo dato, coherente con "registrar, no
        penalizar").
-     - Ampliar la Arena: más unidades por ruta (la espec. original
-       contemplaba crecimiento por oleadas) — mismo protocolo: unidad +
-       lección + banco + ítem de examen con `pistas[]` y
+     - Ampliar la Arena: más unidades por ruta — mismo protocolo: unidad
+       + lección + banco + ítem de examen con `pistas[]` y
        `source: "original"`.
 
 ### Bitácora 2026-06-11 (tarde, 2): portada de login + cerrar sesión
