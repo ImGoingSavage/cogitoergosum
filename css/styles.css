@@ -207,16 +207,13 @@ body {
   text-align: center;
   padding: 44px 36px 30px;
   border-radius: 28px;
-  /* Vidrio líquido CLARO: lámina casi transparente con luz por arriba —
-     el mármol del fondo se ve a través (antes: blur 30 + lámina 0.42,
-     que lo tapaba por completo) */
-  background: linear-gradient(168deg, rgba(236, 231, 221, 0.05), rgba(19, 17, 16, 0.2));
-  -webkit-backdrop-filter: blur(6px) saturate(1.4);
-  backdrop-filter: blur(6px) saturate(1.4);
-  border: 1px solid rgba(236, 231, 221, 0.16);
+  background: linear-gradient(168deg, rgba(236, 231, 221, 0.10), rgba(19, 17, 16, 0.72));
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(236, 231, 221, 0.22);
   box-shadow:
-    inset 0 1px 0 rgba(236, 231, 221, 0.14),
-    0 24px 64px rgba(0, 0, 0, 0.4);
+    inset 0 1px 0 rgba(236, 231, 221, 0.18),
+    0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
