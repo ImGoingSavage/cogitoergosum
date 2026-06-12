@@ -202,7 +202,7 @@ export function renderizar() {
     btn.className = 'unidad-boton';
     btn.disabled = !hecha && !abierta;
     const rutaLabel = u.metadata?.ruta
-      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${u.metadata.ruta.replace('health-ai-rwe','health ai').replace('maang','maang').replace('quant','quant')}</span>`
+      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${u.metadata.ruta === 'health-ai-rwe' ? 'health ai' : u.metadata.ruta}</span>`
       : '';
     btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
     btn.querySelector('.unidad-nombre').textContent = u.titulo;
@@ -646,8 +646,12 @@ function renderPasoForcejeo(cont, item, ex) {
     pistasContainer.className = 'pistas-container';
     cont.appendChild(pistasContainer);
 
+    const btnPistas = document.createElement('button');
+    btnPistas.className = 'secundario';
+    pistasContainer.appendChild(btnPistas);
+
     let nivelActual = 0;
-    const mostrarSiguientePista = () => {
+    const revelarPista = (registrar) => {
       if (nivelActual >= item.pistas.length) return;
       const div = document.createElement('div');
       div.className = 'hint-item';
@@ -656,26 +660,25 @@ function renderPasoForcejeo(cont, item, ex) {
       nivel.textContent = `Pista ${nivelActual + 1}/${item.pistas.length}: `;
       div.appendChild(nivel);
       div.appendChild(document.createTextNode(item.pistas[nivelActual]));
-      pistasContainer.appendChild(div);
+      pistasContainer.insertBefore(div, btnPistas);
       nivelActual++;
-      update('estudio', (st) => {
-        const r = st.examenEnCurso.registros.at(-1);
-        r.pistaUsada = true;
-        r.pistasUsadas = nivelActual;
-        return st;
-      });
-      if (nivelActual < item.pistas.length) {
-        btnPistas.textContent = `Pedir pista ${nivelActual + 1}/${item.pistas.length}`;
-      } else {
-        btnPistas.hidden = true;
+      if (registrar) {
+        update('estudio', (st) => {
+          const r = st.examenEnCurso.registros.at(-1);
+          r.pistaUsada = true;
+          r.pistasUsadas = Math.max(r.pistasUsadas ?? 0, nivelActual);
+          return st;
+        });
       }
+      btnPistas.hidden = nivelActual >= item.pistas.length;
+      btnPistas.textContent = `Pedir pista ${nivelActual + 1}/${item.pistas.length}`;
     };
+    btnPistas.addEventListener('click', () => revelarPista(true));
 
-    const btnPistas = document.createElement('button');
-    btnPistas.className = 'secundario';
+    // Tras una recarga, reponer las pistas ya pedidas (el examen persiste)
+    const yaPedidas = load('estudio').examenEnCurso?.registros.at(-1)?.pistasUsadas ?? 0;
     btnPistas.textContent = `Pedir pista 1/${item.pistas.length}`;
-    pistasContainer.appendChild(btnPistas);
-    btnPistas.addEventListener('click', mostrarSiguientePista);
+    for (let i = 0; i < yaPedidas; i++) revelarPista(false);
 
   // Una sola pista permitida, como en el protocolo del PDF
   } else if (item.pista) {

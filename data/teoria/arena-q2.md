@@ -93,7 +93,7 @@ Tabla para $N = 1\,000\,000$:
 
 $$\text{VPP} = \frac{1940}{1940 + 1996} = \frac{1940}{3936} \approx 49.3\%$$
 
-Con un modelo excellent (99.8% especificidad), **la mitad de las alertas son falsas** en producción.
+Con un modelo excelente (99.8% de especificidad), **la mitad de las alertas son falsas** en producción.
 
 La única forma de mejorar esto sustancialmente sin cambiar el modelo: aplicarlo a segmentos de mayor riesgo (subir la prevalencia efectiva).
 

@@ -1046,7 +1046,7 @@ button.enlace {
 .ruta-health-ai-rwe { background: rgba(34,197,94,0.18);  color: #86efac; }
 
 .pistas-container { margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
-.pista-nivel { font-weight: 700; color: var(--ambar); }
+.pista-nivel { font-weight: 700; color: var(--alerta); }
 
 .quiz-progreso {
   font-size: 12px;

@@ -2867,7 +2867,7 @@
           "tipo": "quiz",
           "enunciado": "Un mazo de 52 cartas se mezcla aleatoriamente. ¿Cuántos pares adyacentes (posiciones i e i+1) del mismo palo esperas ver? Resuélvelo con indicadores, no contando directamente.",
           "solucion": "Hay 51 pares adyacentes. Para el par (i, i+1): P(mismo palo) = 12/51 (una vez fijada la carta en la posición i, hay 12 cartas del mismo palo en las 51 restantes). E[X] = 51 × 12/51 = 12.",
-          "explicacion": "El resultado 12 es elegante: hay 4 palos × 3 pares de cartas del mismo palo que serían adyacentes en un mazo ordenado por palo, multiplicado por... no, simplemente E[X] = 51 × 12/51 = 12. Las cartas adyacentes no son independientes pero la linealidad funciona igual."
+          "explicacion": "Los indicadores de pares adyacentes NO son independientes entre sí (comparten cartas), pero la linealidad no lo necesita: E[X] = 51 × 12/51 = 12, un cálculo de una línea para un conteo que sería muy incómodo por casos."
         },
         {
           "id": "arq1-q3",
@@ -2921,7 +2921,7 @@
         {
           "id": "arq2-q3",
           "tipo": "quiz",
-          "enunciado": "Un modelo de fraude tiene VPP=28% en producción (como el ejemplo del manual). El gerente dice 'necesitamos que el 80% de las alertas sean fraude real'. ¿Qué especificidad requeriría el modelo, asumiendo misma sensibilidad (97%) y misma prevalencia (0.2%)?",
+          "enunciado": "Un modelo de fraude tiene VPP≈49% en producción (el ejemplo de la lección: sensibilidad 97%, especificidad 99.8%, prevalencia 0.2%). El gerente dice 'necesitamos que el 80% de las alertas sean fraude real'. ¿Qué especificidad requeriría el modelo, asumiendo misma sensibilidad y misma prevalencia?",
           "solucion": "VPP=0.8: VP/(VP+FP)=0.8 → FP = VP/4. VP = 0.97×0.002×N = 0.00194N. FP = 0.00194N/4 = 0.000485N. FPR = FP/(sanos×N) = 0.000485/0.998 ≈ 0.000486. Especificidad = 1−0.000486 ≈ 99.95%. Es extremadamente exigente — en práctica, se subsegmenta la población para subir la prevalencia efectiva.",
           "explicacion": "Cuando la prevalencia es muy baja, exigir VPP alto requiere una especificidad casi perfecta. La alternativa real es refinar el subconjunto al que se aplica el modelo (aumentar la prev efectiva)."
         },
@@ -3021,7 +3021,7 @@
           "tipo": "acertijo",
           "enunciado": "Tabla `sesiones(session_id, user_id, inicio, fin)`. Escribe la consulta que devuelve los usuarios cuya sesión más larga es también su primera sesión (la de menor timestamp de inicio). Solo los usuarios que cumplen ambas condiciones.",
           "solucion": "WITH base AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY inicio) AS rn_inicio, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY (fin-inicio) DESC) AS rn_duracion FROM sesiones) SELECT user_id FROM base WHERE rn_inicio = 1 AND rn_duracion = 1;",
-          "explicacion": "Dos rankings en el mismo CTE: primera sesión por inicio y primera por duración. La condición 'son la misma sesión' = misma fila con ambos rn=1. Dos window functions en un CTE: patrón common."
+          "explicacion": "Dos rankings en el mismo CTE: primera sesión por inicio y primera por duración. La condición 'son la misma sesión' = misma fila con ambos rn=1. Dos window functions en un CTE: un patrón muy común."
         },
         {
           "id": "arm2-q4",
