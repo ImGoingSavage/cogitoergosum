@@ -321,7 +321,13 @@ function abrirUnidad(unidadId) {
     $('btn-quiz-iniciar').hidden = false;
     $('btn-quiz-iniciar').onclick = () => {
       update('estudio', (st) => {
-        st.quizEnCurso = { unidadId: u.id, indice: 0, resultados: [] };
+        st.quizEnCurso = {
+          unidadId: u.id,
+          preguntasIds: u.banco.map((q) => q.id),
+          indice: 0,
+          resultados: [],
+          esRepaso: false,
+        };
         return st;
       });
       $('btn-quiz-iniciar').hidden = true;
@@ -337,7 +343,11 @@ function renderPreguntaQuiz() {
   const qc = e.quizEnCurso;
   const u = unidad(qc?.unidadId);
   if (!u) return;
-  const q = u.banco[qc.indice];
+
+  // Soporte para preguntasIds (repaso y quiz normal)
+  const ids = qc.preguntasIds ?? u.banco.map((b) => b.id);
+  const qid = ids[qc.indice];
+  const q = u.banco.find((b) => b.id === qid);
   if (!q) return finalizarQuiz();
 
   const cont = $('unidad-quiz');
@@ -346,7 +356,8 @@ function renderPreguntaQuiz() {
 
   const head = document.createElement('p');
   head.className = 'quiz-progreso';
-  head.textContent = `${NOMBRES_TIPO[q.tipo] ?? 'Pregunta'} · ${qc.indice + 1} de ${u.banco.length}`;
+  const prefijo = qc.esRepaso ? 'Repaso' : (NOMBRES_TIPO[q.tipo] ?? 'Pregunta');
+  head.textContent = `${prefijo} · ${qc.indice + 1} de ${ids.length}`;
   cont.appendChild(head);
 
   const enunciado = document.createElement('p');
@@ -449,14 +460,23 @@ function finalizarQuiz() {
   if (!u) return;
 
   const aciertos = qc.resultados.filter((r) => r.evaluacion === 'bien').length;
-  const registro = {
-    fecha: hoy(),
-    aciertos,
-    total: u.banco.length,
-    resultados: qc.resultados,
-  };
+  const esRepaso = qc.esRepaso ?? false;
+
+  // Preguntas que necesitan otro repaso (mal o parcial)
+  const bienIds = new Set(
+    qc.resultados.filter((r) => r.evaluacion === 'bien').map((r) => r.preguntaId)
+  );
+  const nuevasPendientes = (qc.preguntasIds ?? u.banco.map((b) => b.id))
+    .filter((id) => !bienIds.has(id));
+
+  const registro = esRepaso
+    ? { ...load('estudio').unidadesCompletadas[u.id] }   // preserva la primera fecha y aciertos
+    : { fecha: hoy(), aciertos, total: u.banco.length, resultados: qc.resultados };
+
   update('estudio', (st) => {
-    st.unidadesCompletadas[u.id] = registro;
+    if (!esRepaso) st.unidadesCompletadas[u.id] = registro;
+    st.pendientesRepaso ??= {};
+    st.pendientesRepaso[u.id] = nuevasPendientes;
     st.quizEnCurso = null;
     return st;
   });
@@ -469,6 +489,24 @@ function finalizarQuiz() {
   $('unidad-quiz').hidden = true;
   renderizar();
   abrirUnidad(u.id);
+}
+
+/** Inicia un quiz de repaso con solo las preguntas aún pendientes. */
+function iniciarRepaso(u) {
+  const pendientes = load('estudio').pendientesRepaso?.[u.id] ?? [];
+  if (!pendientes.length) return;
+  update('estudio', (st) => {
+    st.quizEnCurso = {
+      unidadId: u.id,
+      preguntasIds: pendientes,
+      indice: 0,
+      resultados: [],
+      esRepaso: true,
+    };
+    return st;
+  });
+  $('unidad-cierre').hidden = true;
+  renderPreguntaQuiz();
 }
 
 /** Sellos recién ganados, pendientes de revelar en el próximo cierre pintado. */
@@ -500,10 +538,22 @@ function mostrarCierreUnidad(u, registro) {
     cierre.appendChild(ul);
   }
 
+  // Botón de repaso si hay preguntas pendientes
+  const pendientes = load('estudio').pendientesRepaso?.[u.id] ?? [];
+  if (pendientes.length) {
+    const btnRepaso = document.createElement('button');
+    btnRepaso.className = 'secundario';
+    btnRepaso.textContent =
+      `Repasar ${pendientes.length} pregunta${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`;
+    btnRepaso.addEventListener('click', () => iniciarRepaso(u));
+    cierre.appendChild(btnRepaso);
+  }
+
   const nota = document.createElement('p');
   nota.className = 'nota-privacidad';
-  nota.textContent =
-    'Si alguna pregunta salió "no lo tenía", vuelve al pasaje del libro hoy mismo: releer con un hueco detectado vale el doble.';
+  nota.textContent = pendientes.length
+    ? 'Las preguntas marcadas "no lo tenía" o "a medias" aparecen aquí hasta que las domines.'
+    : 'Todas las preguntas dominadas — el recall fue completo.';
   cierre.appendChild(nota);
 
   if (sellosPendientes.length) {
