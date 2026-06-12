@@ -77,10 +77,15 @@ export async function sincronizar() {
   sincronizando = true;
   try {
     const cola = Storage.load('outbox');
-    if (cola.length) {
-      await Api.subirEventos(cola);
+    // Lotes de 200: cada lote confirmado sale del outbox de inmediato. Si un
+    // lote intermedio falla, los anteriores NO se re-suben (sin duplicados en
+    // el event log) y los restantes quedan en cola para el próximo disparo.
+    const LOTE = 200;
+    for (let i = 0; i < cola.length; i += LOTE) {
+      const lote = cola.slice(i, i + LOTE);
+      await Api.subirEventos(lote);
       // Quita SOLO lo enviado: pudo encolarse algo nuevo durante el await
-      const enviados = new Set(cola.map((e) => e.uid));
+      const enviados = new Set(lote.map((e) => e.uid));
       Storage.update('outbox', (c) => c.filter((e) => !enviados.has(e.uid)));
     }
     await Api.subirSnapshot(snapshotLocal());
@@ -178,6 +183,13 @@ function unirEstudio(remoto) {
         local.intentos = Math.max(local.intentos ?? 0, ex.intentos ?? 0);
       }
     });
+    // Pendientes de repaso: unión por unidad. Puede revivir una pregunta ya
+    // repasada en este dispositivo si el snapshot remoto era viejo — repasar
+    // de más es pedagógicamente inocuo, perder el recordatorio no.
+    Object.entries(remoto.pendientesRepaso ?? {}).forEach(([id, ids]) => {
+      e.pendientesRepaso ??= {};
+      e.pendientesRepaso[id] = [...new Set([...(e.pendientesRepaso[id] ?? []), ...(ids ?? [])])];
+    });
     e.mejorRachaEstudio = Math.max(e.mejorRachaEstudio ?? 0, remoto.mejorRachaEstudio ?? 0, remoto.rachaEstudio ?? 0);
     return e;
   });
@@ -232,7 +244,10 @@ function cadenas(fechas) {
   let previa = null;
   dias.forEach((f) => {
     if (previa) {
-      const d = new Date(previa);
+      // 'T00:00:00' fuerza parseo LOCAL: new Date('YYYY-MM-DD') a secas es
+      // medianoche UTC y en husos al oeste desplaza un día (las rachas no
+      // encadenarían). Mismo patrón que spacedRepetition.js.
+      const d = new Date(previa + 'T00:00:00');
       d.setDate(d.getDate() + 1);
       const siguiente = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       actual = f === siguiente ? actual + 1 : 1;

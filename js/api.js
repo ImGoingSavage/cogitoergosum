@@ -137,6 +137,12 @@ export async function subirEventos(eventos) {
   await rest('POST', 'events', filas);
 }
 
+/**
+ * RESERVA, sin llamadores hoy: el arranque en dispositivo nuevo usa solo el
+ * snapshot (sync.js → adoptarOUnir), que siempre está al día porque
+ * sincronizar() lo sube tras cada drenado. Se conserva como parte de la
+ * interfaz C.3 para una futura reconstrucción completa desde el event log.
+ */
 export async function descargarEventos(desdeISO) {
   const filtro = desdeISO ? `&ts=gt.${encodeURIComponent(desdeISO)}` : '';
   return (await rest('GET', `events?select=ts,tipo,payload&order=ts.asc${filtro}`)) ?? [];

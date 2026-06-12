@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v19';
+const VERSION = 'cogitoergosum-v20';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -144,19 +144,30 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  event.respondWith(
-    caches.open(VERSION).then(async (cache) => {
-      const enCache = await cache.match(request);
-      const refresco = fetch(request)
-        .then((res) => {
-          if (res && res.ok) cache.put(request, res.clone());
-          return res;
-        })
-        .catch(() => null);
-      return enCache ?? (await refresco) ?? Response.error();
-    })
-  );
+  event.respondWith(responderShell(event, request));
 });
+
+/**
+ * App shell: cache-first con refresco en segundo plano (stale-while-
+ * revalidate). El refresco se registra con event.waitUntil para que el
+ * navegador no termine el SW antes de completar el cache.put (válido:
+ * waitUntil se llama mientras la promesa de respondWith sigue pendiente).
+ */
+async function responderShell(event, request) {
+  const cache = await caches.open(VERSION);
+  const enCache = await cache.match(request);
+  const refresco = fetch(request)
+    .then((res) => {
+      if (res && res.ok) cache.put(request, res.clone());
+      return res;
+    })
+    .catch(() => null);
+  if (enCache) {
+    event.waitUntil(refresco);
+    return enCache;
+  }
+  return (await refresco) ?? Response.error();
+}
 
 /**
  * Sirve los videos offline-first. Se guarda SIEMPRE la respuesta completa

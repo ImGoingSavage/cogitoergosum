@@ -1391,6 +1391,28 @@ pidió actualizar este handoff antes de seguir).
 
 ---
 
+### Bitácora 2026-06-12 (3) — parches de la auditoría de sincronización
+
+Auditoría de arquitectura (Fable 5) sobre bbe1fa3: 1 mayor, 3 menores,
+1 sugerencia, 0 críticos. Parches aplicados (sw.js → v20):
+- **sync.js `cadenas()`**: `new Date(fecha + 'T00:00:00')` — el parseo UTC
+  de 'YYYY-MM-DD' hacía que días consecutivos no encadenaran en husos al
+  oeste y `adoptarOUnir()` habría recomputado una racha de N días como 1
+  (verificado por test en 3 husos; el flujo diario local nunca estuvo
+  afectado). ERA EL ÚNICO BLOQUEANTE para la prueba humana de 2
+  dispositivos (C.6).
+- **sync.js `unirEstudio()`**: ahora une `pendientesRepaso` (antes se
+  descartaban los del otro dispositivo).
+- **sync.js `sincronizar()`**: outbox en lotes de 200, removiendo cada lote
+  confirmado de inmediato (sin duplicados si falla un lote intermedio).
+- **api.js `descargarEventos()`**: documentada como reserva sin llamadores.
+- **sw.js**: refresco en segundo plano registrado con `event.waitUntil`
+  (patrón stale-while-revalidate canónico).
+Verificado: node --check (18 módulos + sw), JSON, test de cadenas() en
+Mexico_City/UTC/Tokio, arranque headless limpio.
+
+---
+
 ### Convenciones que NO se negocian (resumen operativo)
 
 - Español en todo; vanilla JS, ES6 modules, CERO librerías/CDNs/build.
