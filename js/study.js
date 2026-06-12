@@ -551,6 +551,8 @@ function iniciarExamen() {
       indice: 0,
       paso: 'prediccion',
       registros: [],
+      iniciadoEn: Date.now(),
+      textareasPorItem: {},
     };
     return st;
   });
@@ -570,9 +572,32 @@ function renderExamen() {
   cont.innerHTML = '';
   $('estudio-unidad').hidden = true;
 
-  const head = document.createElement('p');
-  head.className = 'quiz-progreso';
-  head.textContent = `Problema ${ex.indice + 1} de ${ex.itemIds.length}`;
+  const head = document.createElement('div');
+  head.className = 'examen-cabecera';
+
+  const progreso = document.createElement('span');
+  progreso.className = 'quiz-progreso';
+  progreso.textContent = `Problema ${ex.indice + 1} de ${ex.itemIds.length}`;
+  head.appendChild(progreso);
+
+  if (ex.iniciadoEn) {
+    const reloj = document.createElement('span');
+    reloj.className = 'examen-reloj';
+    const tick = () => {
+      const seg = Math.floor((Date.now() - ex.iniciadoEn) / 1000);
+      const m = Math.floor(seg / 60).toString().padStart(2, '0');
+      const s = (seg % 60).toString().padStart(2, '0');
+      reloj.textContent = `${m}:${s}`;
+    };
+    tick();
+    const iv = setInterval(tick, 1000);
+    // Limpia el intervalo cuando el panel desaparece del DOM
+    new MutationObserver((_, obs) => {
+      if (!document.contains(reloj)) { clearInterval(iv); obs.disconnect(); }
+    }).observe(document.body, { childList: true, subtree: true });
+    head.appendChild(reloj);
+  }
+
   cont.appendChild(head);
 
   const enunciado = document.createElement('p');
@@ -595,7 +620,20 @@ function renderPasoPrediccion(cont, item, ex) {
     'Antes de atacar: ¿qué jugada del catálogo crees que pide este problema?';
   fs.appendChild(legend);
 
-  (datos.catalogoHeuristicas ?? []).forEach((h) => {
+  // Heurísticas relevantes para este examen: unión de lo enseñado en las
+  // unidades del bloque + lo que realmente se pide en los ítems del examen.
+  // Así se excluyen las heurísticas de otros bloques que el usuario aún
+  // no ha visto, sin ocultar jamás la respuesta correcta.
+  const bloqueObj = datos.bloques.find((b) => b.id === ex.bloqueId) ?? {};
+  const heurBloque = new Set([
+    ...unidadesDe(bloqueObj).flatMap((u) => u.heuristicas ?? []),
+    ...(bloqueObj.examen?.items ?? []).map((it) => it.heuristica).filter(Boolean),
+  ]);
+  const opcionesPred = (datos.catalogoHeuristicas ?? []).filter(
+    (h) => heurBloque.has(h.id)
+  );
+  // Fallback: si el bloque no mapea heurísticas, mostrar el catálogo completo
+  (opcionesPred.length ? opcionesPred : datos.catalogoHeuristicas ?? []).forEach((h) => {
     const label = document.createElement('label');
     const input = document.createElement('input');
     input.type = 'radio';
@@ -638,6 +676,18 @@ function renderPasoPrediccion(cont, item, ex) {
 function renderPasoForcejeo(cont, item, ex) {
   const ta = document.createElement('textarea');
   ta.placeholder = 'Forcejea aquí por escrito: intentos, casos pequeños, caminos muertos…';
+  // Restaurar y persistir el texto de forcejeo del examen (sobrevive recargas)
+  const textoGuardado = load('estudio').examenEnCurso?.textareasPorItem?.[item.id] ?? '';
+  if (textoGuardado) ta.value = textoGuardado;
+  ta.addEventListener('input', () => {
+    update('estudio', (st) => {
+      if (st.examenEnCurso) {
+        st.examenEnCurso.textareasPorItem ??= {};
+        st.examenEnCurso.textareasPorItem[item.id] = ta.value;
+      }
+      return st;
+    });
+  });
   cont.appendChild(ta);
 
   // Pistas graduadas (fase-7+): array de 5 niveles
@@ -699,12 +749,13 @@ function renderPasoForcejeo(cont, item, ex) {
     });
   }
 
+  const labelConPista = item.pistas?.length > 1 ? 'Resuelto con las pistas' : 'Resuelto con la pista';
   const fs = document.createElement('fieldset');
   fs.className = 'autoeval';
   fs.innerHTML =
     '<legend>Resultado honesto:</legend>' +
     '<label><input type="radio" name="examen-resultado" value="resuelto-solo" /> Resuelto sin ayuda</label>' +
-    '<label><input type="radio" name="examen-resultado" value="resuelto-pista" /> Resuelto con la pista</label>' +
+    `<label><input type="radio" name="examen-resultado" value="resuelto-pista" /> ${labelConPista}</label>` +
     '<label><input type="radio" name="examen-resultado" value="no-resuelto" /> No resuelto</label>';
   cont.appendChild(fs);
 

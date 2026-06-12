@@ -1048,13 +1048,26 @@ button.enlace {
 .pistas-container { margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
 .pista-nivel { font-weight: 700; color: var(--alerta); }
 
+.examen-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0 8px;
+  gap: 12px;
+}
 .quiz-progreso {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--texto-tenue);
-  margin: 16px 0 8px;
+}
+.examen-reloj {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--texto-tenue);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
 }
 
 .quiz-enunciado { font-size: 16px; margin-bottom: 12px; white-space: pre-line; }
