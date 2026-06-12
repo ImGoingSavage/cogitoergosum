@@ -744,7 +744,7 @@ juntos") queda SIN construir hasta validarlo con el usuario.
 
 ---
 
-## §5.4 MAPA PARA EL SIGUIENTE AGENTE (actualizado 2026-06-11, tarde)
+## §5.4 MAPA PARA EL SIGUIENTE AGENTE (actualizado 2026-06-12)
 
 Todo lo que hace falta saber para continuar el proyecto desde este punto,
 sin releer la conversación. Léelo junto con: `claude.md` (pedagogía),
@@ -887,9 +887,10 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    anteriores), 6 lecciones markdown, ruta-chips en la UI, sw.js v17.
    La auditoría de Oleada 1 (14 criterios) encontró y corrigió 6
    problemas — ninguno estructural; veredicto: publicado. Su lista de
-   "Oleada 2" quedó en el punto 8 de pendientes. Nota: no existe
-   `fase-6` — el bloque se saltó por decisión del usuario; el hueco es
-   del historial, no del código. Ver bitácora completa al final.
+   "Oleada 2" quedó en el punto 8 de pendientes. Nota: la Fase 7 se
+   construyó ANTES que la Fase 6 (decisión del usuario); la Fase 6 ya
+   está EN CURSO (punto 7) e insertada en `bloques[]` antes de `fase-7`,
+   así que el orden de desbloqueo quedará correcto. Ver bitácora al final.
 5. ~~Publicar el frontend~~ ✅ HECHO (2026-06-11, noche; decisión del
    usuario: GitHub Pages): el repo `ImGoingSavage/cogitoergosum` se hizo
    **PÚBLICO** (auditado antes: cero secretos — la anon key es pública por
@@ -933,16 +934,26 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
    "noche, 3"): lecciones redactadas (estado actual) vs. texto íntegro del
    libro vía canal privado en Supabase — el texto íntegro NO puede ir al
    repo público (copyright). Decisión del usuario.
-7. **Fase 6 del Modo Estudio** (PENDIENTE, sin bloquear la Fase 7 ya
-   implementada): de Zeitz solo queda §8.5 (transformaciones: simetría,
-   movimientos rígidos, homotecia) como sección sustantiva. Lo natural
-   según el PDF: subir el nivel a **AIME** y/o seguir con Engel caps.
-   8-12/14. Decidir dirección CON el usuario antes de ingerir. Protocolo
-   de ingestión y anclas de TODO lo ya usado en HANDOFF §3.11.6 (pasos
-   2-5). **Aviso de secuencia**: `bloques[]` es secuencial — si se quiere
-   que Fase 6 desbloquee ANTES de Fase 7 hay que insertarla en el array
-   antes de `fase-7`; si se prefiere como ruta paralela/opcional, añadirla
-   al final o como bloque sin prerequisito explícito.
+7. ~~Fase 6 del Modo Estudio~~ ✅ **HECHA (2026-06-12, commit pendiente).**
+   Bloque **"Fase 6 · Transformaciones, Engel avanzado y AIME"**, 10 unidades
+   en orden de dificultad creciente, pusheado a main. Detalle:
+   - ✅ 3 heurísticas nuevas en `catalogoHeuristicas` (total 21):
+     `transformacion`, `recurrencia`, `ecuacion-funcional`.
+   - ✅ Bloque `fase-6` en `bloques[]` ANTES de `fase-7` con examen de 7
+     ítems (`f6-ex-1..7`; pista string, estilo competencia).
+   - ✅ 10 unidades en `unidades[]` con banco[4], ideas_clave[5],
+     heurísticas en catálogo, IDs sin duplicados:
+     `zeitz-85a`, `zeitz-85b` (Zeitz §8.5), `engel-ind`, `engel-suc`,
+     `engel-pol`, `engel-fun`, `engel-geo2` (Engel avanzado),
+     `aime-alg`, `aime-geo`, `aime-cnt` (nivel AIME).
+   - ✅ 10 lecciones `data/teoria/{id}.md` (formato estándar: secciones
+     temáticas + Disparadores + Síntesis en blockquote + pie de retrieval).
+   - ✅ `sw.js` → **v19**: 10 rutas nuevas en SHELL (total 88 archivos,
+     54 lecciones; cruce filesystem 88/88 sin faltantes).
+   - ✅ Validación: `node --check` (18 módulos + sw), JSON válido,
+     heurísticas en catálogo, sin IDs duplicados.
+   **Estado del pool de examen acumulado: 47 ítems (40 fases 0-5 + 7
+   fase-6 + 6 fase-7 Arena = 53; nota: conteo exacto en study.json).**
 8. **Menores acumulados** (en orden de valor):
    - Web Push diaria opcional (1/día máx, hora elegida, contenido neutro
      — §0.1): requiere un emisor push; con el sitio ya en HTTPS público
@@ -952,10 +963,14 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
      recargas, limpia su intervalo al salir del panel — commit 3f8e3e6);
      ~~persistir el textarea de forcejeo del examen~~ ✅ (autosave en
      `textareasPorItem[item.id]`, restaurado en cada render — mismo
-     commit); preguntas falladas ("no lo tenía") hacia repetición
-     espaciada; piso mínimo de estudio para la racha 📘 (decidir con el
-     usuario); materializar los problemas sugeridos en `dosis` como
-     sesiones del camino 1.
+     commit); ~~preguntas falladas ("no lo tenía") hacia repetición
+     espaciada~~ ✅ (commit 09061e1: las preguntas marcadas "mal"/"parcial"
+     en un quiz se guardan en `pendientesRepaso[unidadId]`; botón "Repasar
+     N pregunta(s) pendiente(s)" en el cierre de unidad re-corre el quiz
+     solo con esas IDs vía `iniciarRepaso(u)`, preservando el registro
+     original de la unidad completada); piso mínimo de estudio para la
+     racha 📘 (decidir con el usuario); materializar los problemas
+     sugeridos en `dosis` como sesiones del camino 1.
    - FSRS simplificado y "reintenta tus fallos" (HANDOFF §3.9 y tabla de
      benchmarks: Anki/Lichess).
    - Exponer `evaluarDesconstruccion()` en la UI durante el forcejeo
@@ -1344,6 +1359,35 @@ nombres coincidentes, Cartógrafo mayor usa su propio mapa de
 estáticas (IA sigue opcional), ítems `source: "original"` y lecciones de
 redacción propia con fuentes citadas. Hallazgos NO urgentes → punto 8
 de "QUÉ FALTA" ("Oleada 2 de Fase 7").
+
+### Bitácora 2026-06-12 (2) — repetición espaciada de estudio + Fase 6 a medias
+
+Pedido del usuario en una sola instrucción: "comienza con la repetición
+espaciada, para la fase 6 mete Zeitz, sube a AIME y mete más Engel, es
+decir haz las 3" y, después, "ordénalos por dificultad".
+
+**✅ Repetición espaciada del Modo Estudio (commit 09061e1, pusheado).**
+Las preguntas de un quiz marcadas "mal" o "parcial" se acumulan en
+`pendientesRepaso[unidadId]` (clave nueva en `storage.estudio`, dentro de
+CLAVES_SYNC porque viaja con el progreso). El cierre de unidad ofrece
+"Repasar N pregunta(s) pendiente(s)" → `iniciarRepaso(u)` re-corre el quiz
+con `esRepaso: true` y SOLO esas IDs; al terminar, las acertadas salen de
+la lista y el registro de la unidad completada (fecha/aciertos originales)
+se preserva con spread. El quiz ahora opera sobre `preguntasIds[]` (IDs, no
+índices) para que el subconjunto de repaso funcione sin tocar `u.banco`.
+Verificado: node --check, JSON, arranque headless.
+
+**⚠️ Fase 6 — INICIADA Y A MEDIAS (working tree, SIN commit).** Ver el
+detalle completo y la lista de lo que falta en el punto **7 de "QUÉ FALTA"**
+(reescrito hoy). Resumen del estado: en `data/study.json` ya están las **3
+heurísticas nuevas** (`transformacion`, `recurrencia`, `ecuacion-funcional`,
+total 21) y el **bloque `fase-6`** con su examen de **7 ítems**, insertado
+correctamente ANTES de `fase-7`. **Faltan las 10 unidades, sus 10 lecciones
+markdown, el bump de `sw.js` a v19 y la validación.** Mientras tanto el JSON
+está en estado roto intermedio (fase-6 apunta a 10 unidades inexistentes; la
+app no crashea pero renderiza el bloque vacío): **NO commitear ni publicar
+hasta completar las unidades.** La interrupción fue deliberada (el usuario
+pidió actualizar este handoff antes de seguir).
 
 ---
 

@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v18';
+const VERSION = 'cogitoergosum-v19';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -93,6 +93,16 @@ const SHELL = [
   'data/teoria/arena-m2.md',
   'data/teoria/arena-h1.md',
   'data/teoria/arena-h2.md',
+  'data/teoria/zeitz-85a.md',
+  'data/teoria/zeitz-85b.md',
+  'data/teoria/engel-ind.md',
+  'data/teoria/engel-suc.md',
+  'data/teoria/engel-pol.md',
+  'data/teoria/engel-fun.md',
+  'data/teoria/engel-geo2.md',
+  'data/teoria/aime-alg.md',
+  'data/teoria/aime-geo.md',
+  'data/teoria/aime-cnt.md',
   'assets/fonts/EBGaramond-Regular.woff2',
   'assets/fonts/EBGaramond-SemiBold.woff2',
   'assets/fonts/EBGaramond-Italic.woff2',

@@ -89,6 +89,21 @@
       "id": "tiempo-cero",
       "nombre": "Definir el tiempo cero",
       "descripcion": "El inicio del seguimiento debe coincidir con elegibilidad y asignación. Ambigüedad en t=0 = immortal time bias."
+    },
+    {
+      "id": "transformacion",
+      "nombre": "Transformación geométrica",
+      "descripcion": "Reflejo, rotación o homotecia que convierte la figura en una más simple o hace aparecer el segmento/punto buscado."
+    },
+    {
+      "id": "recurrencia",
+      "nombre": "Recurrencia / punto fijo",
+      "descripcion": "Expresar a_{n+1} en función de a_n, hallar raíces características o un punto fijo, y deducir la forma cerrada o la periodicidad."
+    },
+    {
+      "id": "ecuacion-funcional",
+      "nombre": "Ecuación funcional",
+      "descripcion": "Sustituir valores especiales (0, 1, x=y, y=0) para forzar la forma de f; verificar que la conjetura satisface la ecuación."
     }
   ],
   "bloques": [
@@ -593,6 +608,79 @@
             "source": "Engel, Problem-Solving Strategies, cap. 2, problema 5",
             "source_url": "",
             "year": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "fase-6",
+      "titulo": "Fase 6 · Transformaciones, Engel avanzado y AIME",
+      "meta": "Cierre del ciclo Zeitz (§8.5), profundización con los capítulos más exigentes de Engel (inducción fuerte, recurrencias, polinomios, ecuaciones funcionales, geometría avanzada) y primer contacto con problemas reales de nivel AIME. Orden estricto de dificultad creciente.",
+      "unidades": ["zeitz-85a", "zeitz-85b", "engel-ind", "engel-suc", "engel-pol", "engel-fun", "engel-geo2", "aime-alg", "aime-geo", "aime-cnt"],
+      "examen": {
+        "items": [
+          {
+            "id": "f6-ex-1",
+            "heuristica": "transformacion",
+            "enunciado": "Dos casas A y B están del MISMO lado de un río recto. Quieres caminar de A a algún punto P de la orilla (a llenar una cubeta) y de ahí a B, recorriendo la menor distancia total AP + PB. ¿Cómo se localiza P y cuánto vale el mínimo?",
+            "solucion": "Refleja B respecto a la recta de la orilla y obtén B′. Para CUALQUIER punto P de la orilla, PB = PB′ (la reflexión preserva distancias), luego AP + PB = AP + PB′ ≥ AB′ por la desigualdad triangular, con igualdad exactamente cuando A, P, B′ están alineados. Por tanto P es la intersección del segmento recto AB′ con la orilla, y la distancia mínima es |AB′|. La reflexión convirtió un camino quebrado en uno recto.",
+            "disparador": "'Camino que toca una recta y vuelve' / 'mínima distancia con un rebote' → refleja el extremo a través de la recta: el camino óptimo es la línea recta al punto reflejado (principio del espejo / billar).",
+            "pista": "Refleja B al otro lado del río. ¿Qué le pasa a la longitud PB bajo esa reflexión, y cuál es el camino más corto entre dos puntos?",
+            "source": "clásico"
+          },
+          {
+            "id": "f6-ex-2",
+            "heuristica": "transformacion",
+            "enunciado": "Dos círculos de radios r y R son externamente tangentes. Una tangente exterior común toca al círculo pequeño en P y al grande en Q. Calcula la longitud PQ en términos de r y R.",
+            "solucion": "Sean O₁, O₂ los centros: por tangencia externa O₁O₂ = r + R. Los radios O₁P y O₂Q son ambos perpendiculares a la tangente PQ, así que O₁P ∥ O₂Q y PQO₂O₁ es un trapecio rectángulo. Baja la perpendicular de O₁ a O₂Q: forma un triángulo rectángulo con hipotenusa O₁O₂ = r+R, un cateto PQ y el otro cateto R−r (diferencia de radios). Pitágoras: PQ² = (r+R)² − (R−r)² = 4rR, luego PQ = 2√(rR). (La homotecia de centro T que lleva un círculo al otro confirma que P y Q se corresponden.)",
+            "disparador": "'Tangente exterior común a dos círculos' + 'longitud del segmento entre los puntos de tangencia' → trapecio rectángulo de centros y radios; Pitágoras con catetos PQ y (R−r), hipotenusa la distancia entre centros.",
+            "pista": "Dibuja los dos centros y los radios hasta P y Q (perpendiculares a la tangente). Buscas la base del trapecio rectángulo que forman.",
+            "source": "clásico"
+          },
+          {
+            "id": "f6-ex-3",
+            "heuristica": "induccion",
+            "enunciado": "Demuestra que para todo entero n ≥ 1: 1² + 2² + 3² + ⋯ + n² = n(n+1)(2n+1)/6.",
+            "solucion": "Base: n=1 → 1 = 1·2·3/6 = 1 ✓. Paso: supón que la fórmula vale para n=k. Entonces la suma hasta k+1 es k(k+1)(2k+1)/6 + (k+1)². Factorizando (k+1)/6: (k+1)[k(2k+1) + 6(k+1)]/6 = (k+1)(2k²+7k+6)/6 = (k+1)(k+2)(2k+3)/6, que es la fórmula para n=k+1. □",
+            "disparador": "'Suma de potencias hasta n' → la señal es la fórmula cerrada conjeturada; el mecanismo es inducción con álgebra limpia en el paso inductivo.",
+            "pista": "Escribe la fórmula para n=k+1 como (suma hasta k) + (k+1)² y factoriza (k+1) del resultado.",
+            "source": "clásico"
+          },
+          {
+            "id": "f6-ex-4",
+            "heuristica": "recurrencia",
+            "enunciado": "La sucesión a₁=1, a₂=3, aₙ = 4aₙ₋₁ − 4aₙ₋₂ para n≥3. Encuentra una fórmula cerrada para aₙ.",
+            "solucion": "Ecuación característica: r² = 4r − 4 → r² − 4r + 4 = 0 → (r−2)² = 0 → raíz doble r=2. Caso de raíz repetida: aₙ = (A + Bn)·2ⁿ. Con a₁=1: (A+B)·2=1 → A+B=1/2. Con a₂=3: (A+2B)·4=3 → A+2B=3/4. Restando: B=1/4, A=1/4. Fórmula: aₙ = (1+n)/4 · 2ⁿ = (n+1)·2ⁿ⁻².",
+            "disparador": "'Recurrencia lineal de orden 2 con coeficientes constantes' → ecuación característica; raíz doble → factor extra n en la solución.",
+            "pista": "Escribe la ecuación característica r² − 4r + 4 = 0 y observa qué forma toma la solución cuando hay una raíz repetida.",
+            "source": "clásico"
+          },
+          {
+            "id": "f6-ex-5",
+            "heuristica": "ecuacion-funcional",
+            "enunciado": "Sea f: ℝ → ℝ una función continua tal que f(x+y) = f(x) + f(y) para todos x, y ∈ ℝ. Demuestra que f(x) = cx para alguna constante c.",
+            "solucion": "Paso 1 (naturales): por inducción f(n) = nf(1) =: nc. Paso 2 (racionales): f(1/q)·q = f(1) → f(1/q)=c/q; f(p/q)=pc/q=c·(p/q). Paso 3 (reales): para x irracional, existe una sucesión racional xₙ→x; por continuidad f(x) = lím f(xₙ) = lím cxₙ = cx. Por tanto f(x) = cx con c = f(1).",
+            "disparador": "'f(x+y)=f(x)+f(y)' → Cauchy; sustituir y=0, luego y=x, construir la solución en ℚ por inducción, extender a ℝ por continuidad.",
+            "pista": "Prueba primero que f(n) = nf(1) para n entero, luego extiende a racionales usando f(q·(1/q)) = qf(1/q).",
+            "source": "clásico"
+          },
+          {
+            "id": "f6-ex-6",
+            "heuristica": "invariante",
+            "enunciado": "Un tablero 8×8 tiene un número en cada casilla: todos valen +1 salvo UNA casilla que vale −1. En cada movimiento eliges una fila o una columna y cambias el signo de sus 8 números. ¿Es posible llegar a la posición donde las 64 casillas valen +1?",
+            "solucion": "No. Invariante: el PRODUCTO de los 64 números. Al cambiar el signo de una fila (o columna) completa multiplicas 8 entradas por −1, así que el producto se multiplica por (−1)⁸ = 1: queda IGUAL. La posición inicial tiene 63 unos y un −1, producto = −1. La posición buscada (todo +1) tiene producto = +1. Como el producto nunca cambia y −1 ≠ +1, la meta es inalcanzable. (Clave: 8 es par; en un tablero impar el producto SÍ cambiaría de signo y el argumento fallaría.)",
+            "disparador": "'Operación que voltea una fila/columna entera, ¿se alcanza tal configuración?' → busca una cantidad invariante: el producto global de signos no cambia porque cada operación afecta un número PAR de celdas.",
+            "pista": "No persigas la secuencia de movimientos. Pregúntate qué cantidad global NO cambia al voltear 8 signos a la vez. Piensa en el producto de todas las casillas.",
+            "source": "clásico"
+          },
+          {
+            "id": "f6-ex-7",
+            "heuristica": "caso-pequeno",
+            "enunciado": "¿De cuántas formas puede escribirse 2025 como suma de dos o más enteros positivos consecutivos?",
+            "solucion": "14. Una suma de k consecutivos que empieza en a vale k·a + k(k−1)/2; igualándola a N=2025 y multiplicando por 2: k(2a + k − 1) = 2N = 4050. Los dos factores k y (2a+k−1) tienen PARIDAD OPUESTA (su diferencia 2a−1 es impar) y su producto es 2N. Cada factorización 2N = (par)·(impar) con el factor impar = d corresponde a exactamente una representación con a ≥ 1; el número de tales factorizaciones es el número de divisores impares de N. Como 2025 = 3⁴·5², sus divisores impares son (4+1)(2+1)=15. Descontamos la representación trivial de un solo sumando (k=1): quedan 15 − 1 = 14. (Verificado por fuerza bruta: hay exactamente 14 valores de k ≥ 2.)",
+            "disparador": "'¿De cuántas formas N = suma de consecutivos?' → 2N = k(2a+k−1) con factores de paridad opuesta; el conteo es (número de divisores impares de N) − 1.",
+            "pista": "Escribe la suma de k términos desde a y despeja: 2·2025 = k(2a+k−1). Los dos factores tienen paridad opuesta — ¿cuántas formas hay de partir 2N así?",
+            "source": "clásico"
           }
         ]
       }
@@ -2833,6 +2921,486 @@
           "enunciado": "Un estudiante analiza un juego y declara: \"encontré posiciones desde las que puedo forzar que el rival siempre tenga movimientos malos, así que son ganadoras; no necesito revisar las posiciones perdedoras\". ¿Qué verificación se saltó?",
           "solucion": "La mitad del certificado. Para que su conjunto L sea correcto debe verificar DOS cosas: que de cada L todos los movimientos caen en W (el rival no puede quedarse en L), Y que de cada W existe movimiento a L. Si solo verificó la segunda, su 'L' podría tener escapatorias: una posición etiquetada L con algún movimiento hacia otra 'L' rompe toda la estrategia.",
           "explicacion": "W/L es una partición con dos condiciones acopladas; la conjetura del patrón de L exige siempre la doble verificación, igual que una inducción exige base Y paso."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-85a",
+      "bloque": "fase-6",
+      "orden": 39,
+      "titulo": "Zeitz §8.5a · Transformaciones rígidas: reflexión, rotación, traslación",
+      "libro": "Zeitz — The Art and Craft of Problem Solving",
+      "lectura": "Sección 8.5 (Transformations), primera mitad: isometrías del plano (reflexión, rotación, traslación) y su uso para reubicar los datos de un problema sin alterar distancias ni ángulos. El principio del espejo/billar y la rotación de 60° en configuraciones equiláteras.",
+      "dosis": "Lectura (~5 pp) + 2-3 problemas de la sección como sesiones del camino 1.",
+      "objetivo": "Reconocer cuándo un movimiento rígido (que conserva forma y tamaño) lleva una figura a una posición donde el problema se vuelve trivial: reflexiones para minimizar caminos, rotaciones para juntar segmentos en triángulos equiláteros, traslaciones para reunir piezas separadas.",
+      "heuristicas": ["transformacion", "simetria"],
+      "ideas_clave": [
+        "Una ISOMETRÍA (reflexión, rotación, traslación) conserva distancias y ángulos. La jugada es aplicarla a PARTE de la figura para alinear datos dispersos: lo que se conserva sigue valiendo, y la nueva posición suele exhibir una recta, un triángulo conocido o una colinealidad que no se veía.",
+        "Principio del espejo (reflexión): para minimizar un camino que TOCA una recta ℓ y regresa (AP+PB con A,B del mismo lado), refleja un extremo a través de ℓ. El camino quebrado se endereza: el mínimo es la recta al punto reflejado, AP+PB ≥ |AB′|, con igualdad cuando A, P, B′ se alinean. Es el mismo principio del billar y de la ley de reflexión de la luz.",
+        "Rotación: en configuraciones con triángulos equiláteros o cuadrados, rotar 60° (o 90°) alrededor de un vértice manda un segmento sobre otro y fabrica triángulos equiláteros 'gratis'. Es la llave del punto de Fermat y de los problemas tipo 'demuestra que estos tres segmentos son iguales'.",
+        "Traslación: desliza un segmento para REUNIR dos piezas separadas. El ejemplo canónico: trasladar una diagonal de un trapecio junto a la otra forma un triángulo cuyos lados son las dos diagonales y la suma de las bases — y ahí ya puedes usar la desigualdad triangular o Pitágoras.",
+        "La firma para buscar un movimiento rígido: el enunciado pide MINIMIZAR un camino, o IGUALAR segmentos/ángulos, o tiene simetría evidente (puntos del mismo lado de una recta, polígonos regulares, lados iguales). Pregúntate: '¿qué reflexión, rotación o traslación pone estas piezas en línea?'."
+      ],
+      "banco": [
+        {
+          "id": "z85a-q1",
+          "tipo": "quiz",
+          "enunciado": "Enuncia el principio de reflexión para minimizar AP + PB cuando P recorre una recta ℓ y los puntos A, B están del mismo lado de ℓ. ¿Dónde queda el P óptimo y cuánto vale el mínimo?",
+          "solucion": "Refleja B respecto a ℓ y llama B′ a su imagen. Para todo P en ℓ se cumple PB = PB′, luego AP + PB = AP + PB′ ≥ |AB′| por la desigualdad triangular, con igualdad cuando A, P, B′ están alineados. Por tanto el P óptimo es la intersección del segmento recto AB′ con ℓ, y la distancia mínima es |AB′|.",
+          "explicacion": "La reflexión convierte 'camino quebrado mínimo' en 'segmento recto': el truco fundamental de billar/espejo. Si A y B estuvieran en lados OPUESTOS, no haría falta reflejar: el segmento AB ya cruza ℓ."
+        },
+        {
+          "id": "z85a-q2",
+          "tipo": "acertijo",
+          "enunciado": "Sobre los lados AB y AC de un triángulo se construyen, hacia afuera, los triángulos equiláteros ABZ y ACY. Usa una rotación de 60° centrada en A para demostrar que BY = CZ.",
+          "solucion": "Considera la rotación ρ de 60° alrededor de A que lleva Z a B (posible porque AZ = AB y el ángulo ∠ZAB = 60° del equilátero ABZ). Esa misma rotación lleva C a Y: AC = AY y ∠CAY = 60° del equilátero ACY (con la orientación correcta). Como ρ es una isometría que manda Z↦B y C↦Y, manda el segmento ZC al segmento BY, luego |BY| = |ZC|. ∎",
+          "explicacion": "La rotación de 60° es EL reflejo entrenado en cuanto aparece un equilátero: aparea AZ con AB y AC con AY de un solo golpe, y la igualdad de segmentos cae sin coordenadas."
+        },
+        {
+          "id": "z85a-q3",
+          "tipo": "disparador",
+          "enunciado": "Te dan un trapecio del que conoces las longitudes de sus dos diagonales y la suma de sus bases, y te piden algo sobre su área o sobre cuándo las diagonales son perpendiculares. ¿Qué transformación debía dispararse?",
+          "solucion": "Una TRASLACIÓN: desliza una diagonal (traslada un vértice superior por el vector de la base) para colocarla a continuación de la otra. Se forma un triángulo cuyos dos lados son las dos diagonales y cuya base es la suma de las bases del trapecio. El área del trapecio iguala la de ese triángulo, y las diagonales son perpendiculares ⟺ ese triángulo es rectángulo (Pitágoras sobre las diagonales).",
+          "explicacion": "Señal → jugada: 'datos repartidos en piezas que no se tocan' (las dos diagonales) → traslación que las reúne en un solo triángulo manejable."
+        },
+        {
+          "id": "z85a-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para minimizar AP + PB con A y B en lados OPUESTOS de la recta ℓ, un estudiante refleja B a B′ y responde |AB′|. ¿Por qué está mal?",
+          "solucion": "La reflexión solo ayuda cuando A y B están del MISMO lado (endereza el camino que rebota). Si ya están en lados opuestos, el segmento recto AB cruza ℓ por sí solo: el mínimo es |AB|, alcanzado en P = AB ∩ ℓ. Reflejar B a B′ (que cae del mismo lado que A) responde un problema distinto y da un valor incorrecto.",
+          "explicacion": "El método tiene una precondición geométrica. Antes de reflejar, mira de qué lado están los puntos: la transformación correcta depende de la configuración."
+        }
+      ]
+    },
+    {
+      "id": "zeitz-85b",
+      "bloque": "fase-6",
+      "orden": 40,
+      "titulo": "Zeitz §8.5b · Homotecia y semejanza espiral",
+      "libro": "Zeitz — The Art and Craft of Problem Solving",
+      "lectura": "Sección 8.5 (Transformations), segunda mitad: transformaciones que cambian el tamaño. Homotecia (dilatación con centro y razón), su aparición en círculos tangentes, el baricentro y el círculo de los nueve puntos; semejanza espiral (rotación + homotecia) y su lectura con números complejos.",
+      "dosis": "Lectura (~5 pp) + 2-3 problemas de círculos/semejanza como sesiones del camino 1.",
+      "objetivo": "Detectar homotecias en configuraciones con lados paralelos o círculos tangentes y usarlas para transportar razones; entender la semejanza espiral como la transformación que aparea dos segmentos cualesquiera.",
+      "heuristicas": ["transformacion", "parametrizar-dibujar"],
+      "ideas_clave": [
+        "HOMOTECIA de centro O y razón k: cada punto P va a O + k·(P−O). Lleva una figura a otra SEMEJANTE con lados paralelos a los originales. Su firma en una figura: dos triángulos (o segmentos) con lados respectivamente paralelos → hay una homotecia que lleva uno al otro, y su centro es la intersección de las rectas que unen puntos correspondientes.",
+        "El BARICENTRO es el centro de una homotecia de razón −1/2 que manda cada vértice al punto medio del lado opuesto; por eso divide cada mediana en razón 2:1. La recta de Euler y el círculo de los nueve puntos (radio = R/2) salen de homotecias centradas en el baricentro y en el ortocentro.",
+        "Dos círculos tienen DOS centros de homotecia sobre la recta de centros: el externo (razón +R/r) y el interno (razón −R/r). Las tangentes comunes pasan por ellos. Si los círculos son tangentes en T, T es el centro de homotecia interno y toda recta por T corta los círculos en puntos correspondientes (tangentes paralelas allí).",
+        "SEMEJANZA ESPIRAL: rotación seguida de homotecia con el mismo centro = multiplicar por un complejo a en el plano (z ↦ a·z + b). Aparea CUALQUIER par de segmentos AB y CD: existe una única semejanza espiral que lleva A↦C y B↦D, y su centro se localiza como segundo punto de intersección de dos círculos.",
+        "Firma para buscar un cambio de escala: 'lados paralelos', 'razón o proporción constante', 'círculos tangentes o anidados', 'dos copias semejantes giradas una respecto a la otra'. Homotecia si solo hay escala; semejanza espiral si además hay giro."
+      ],
+      "banco": [
+        {
+          "id": "z85b-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Qué homotecia transforma el triángulo ABC en su triángulo medial (el de los puntos medios de los lados)? Da el centro y la razón, y deduce la razón en que el baricentro divide a cada mediana.",
+          "solucion": "La homotecia de centro G (baricentro) y razón −1/2: manda A al punto medio de BC, B al punto medio de CA y C al de AB (el signo negativo refleja por G). Como la razón tiene valor absoluto 1/2, G divide cada mediana de modo que el tramo del vértice al baricentro es el doble del tramo del baricentro al punto medio: AG:GM = 2:1.",
+          "explicacion": "Ver el triángulo medial como imagen homotética de ABC explica de un golpe el 2:1, el paralelismo de los lados medios y que ambos triángulos comparten baricentro."
+        },
+        {
+          "id": "z85b-q2",
+          "tipo": "acertijo",
+          "enunciado": "Dos círculos son tangentes (exteriormente) en T. Una recta por T corta al primer círculo otra vez en A y al segundo en B. Demuestra que las tangentes a los círculos en A y en B son paralelas.",
+          "solucion": "T es el centro de homotecia interno que lleva un círculo al otro (razón negativa −R/r). Esa homotecia manda A a B (ambos sobre la recta por T, en círculos correspondientes) y lleva la tangente en A a la tangente en B. Una homotecia transforma toda recta en una recta PARALELA a ella; por tanto las tangentes en A y B son paralelas. ∎",
+          "explicacion": "La homotecia centrada en el punto de tangencia es el motor de casi todos los lemas de círculos tangentes (incluido el del punto medio del arco en configuraciones de incírculo/excírculo)."
+        },
+        {
+          "id": "z85b-q3",
+          "tipo": "disparador",
+          "enunciado": "En una figura aparecen dos triángulos cuyos lados son respectivamente paralelos, y te piden probar que tres rectas (las que unen vértices correspondientes) concurren. ¿Qué debía dispararse?",
+          "solucion": "Una HOMOTECIA: lados respectivamente paralelos ⇒ un triángulo es imagen homotética del otro. El centro de esa homotecia es justamente el punto donde concurren las rectas que unen vértices correspondientes (todas pasan por el centro). Identificarlo demuestra la concurrencia sin cuentas.",
+          "explicacion": "Señal → jugada: 'lados paralelos entre dos figuras semejantes' → homotecia; sus rectas de correspondencia concurren en el centro. (Es el esqueleto del teorema de los dos centros de homotecia / Monge.)"
+        },
+        {
+          "id": "z85b-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante dice: 'como los triángulos PQR y P′Q′R′ tienen sus tres lados respectivamente iguales y paralelos, hay una homotecia que lleva uno al otro'. ¿Qué falla?",
+          "solucion": "Si los lados son iguales (razón 1) y paralelos, NO es una homotecia propia: es una TRASLACIÓN (homotecia de razón +1, cuyo 'centro' está en el infinito) o una simetría central (razón −1) si están en sentido opuesto. La homotecia con razón ≠ ±1 cambia el tamaño; con lados iguales no hay cambio de escala. El nombre correcto del movimiento importa para localizar el centro.",
+          "explicacion": "Homotecia, traslación y simetría central son parientes (k≠±1, k=+1, k=−1). Confundirlas lleva a buscar un centro finito que no existe (traslación) o con el signo equivocado."
+        }
+      ]
+    },
+    {
+      "id": "engel-ind",
+      "bloque": "fase-6",
+      "orden": 41,
+      "titulo": "Engel · Inducción: fuerte, fortalecida y descenso",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo de inducción: inducción ordinaria vs. fuerte (suponer todos los casos ≤ n), el truco de FORTALECER la hipótesis, la inducción de Cauchy (hacia adelante en potencias de 2 y hacia atrás) y el descenso infinito como inducción disfrazada.",
+      "dosis": "Lectura + 3 problemas de inducción de distinto sabor (identidad, construcción, desigualdad).",
+      "objetivo": "Elegir la variante de inducción adecuada y reconocer cuándo conviene probar un enunciado MÁS fuerte; evitar las trampas clásicas (base mal puesta, paso que no usa la hipótesis, 'todos los caballos del mismo color').",
+      "heuristicas": ["induccion", "caso-pequeno"],
+      "ideas_clave": [
+        "Inducción ORDINARIA: base P(n₀) + paso P(n)⇒P(n+1). Inducción FUERTE: el paso supone P(k) para TODO k ≤ n. Necesitas la fuerte cuando el caso n+1 depende de varios anteriores (recurrencias tipo Fibonacci, factorización de enteros, descomposición de juegos).",
+        "FORTALECER la hipótesis (la paradoja del inventor): a veces probar un enunciado más general/más fuerte es MÁS fácil, porque en el paso inductivo dispones de una hipótesis más potente. Si la inducción 'no cierra', pregúntate qué afirmación auxiliar te haría falta y prueba esa.",
+        "Inducción de CAUCHY (usada en AM-GM): demuestra para n = potencias de 2 (hacia adelante, duplicando) y luego 'baja' de n a n−1; juntas cubren todos los naturales.",
+        "DESCENSO INFINITO: para probar que algo es imposible, supón un contraejemplo MÍNIMO y construye uno estrictamente menor → contradicción (no hay sucesión infinita decreciente de naturales). Es inducción fuerte vista del revés.",
+        "Trampas: (a) olvidar/equivocar la base; (b) un 'paso' que en realidad no usa la hipótesis (no es inducción); (c) 'todos los caballos del mismo color' — el paso n→n+1 falla justo en n=1→2 porque los dos subconjuntos no se solapan. Verifica que el paso funcione desde la base real."
+      ],
+      "banco": [
+        {
+          "id": "eind-q1",
+          "tipo": "quiz",
+          "enunciado": "¿En qué se diferencia la inducción fuerte de la ordinaria, y da un ejemplo de enunciado que REQUIERA la fuerte?",
+          "solucion": "En la ordinaria el paso supone solo P(n) para probar P(n+1); en la FUERTE supone P(k) para todo k ≤ n. Se requiere la fuerte cuando P(n+1) depende de varios casos anteriores, no solo del inmediato. Ejemplo: 'todo entero ≥ 2 es producto de primos' — al factorizar n = a·b necesitas que TANTO a COMO b (ambos < n, pero no n−1) ya sean productos de primos. La hipótesis ordinaria (solo n−1) no basta.",
+          "explicacion": "La elección no es estética: si la recurrencia 'mira' más de un paso atrás, la inducción ordinaria no alcanza a cubrir las dependencias."
+        },
+        {
+          "id": "eind-q2",
+          "tipo": "acertijo",
+          "enunciado": "Conjetura una fórmula cerrada para la suma 1·1! + 2·2! + 3·3! + ⋯ + n·n! y demuéstrala por inducción.",
+          "solucion": "Calcula casos pequeños: n=1 → 1; n=2 → 1+4 = 5; n=3 → 5+18 = 23. Son 2!−1, 3!−1, 4!−1. Conjetura: la suma vale (n+1)! − 1. Inducción: base n=1 → 1 = 2!−1 ✓. Paso: si la suma hasta n es (n+1)!−1, sumar (n+1)·(n+1)! da (n+1)!−1 + (n+1)·(n+1)! = (n+1)!·(1 + n+1) − 1 = (n+1)!·(n+2) − 1 = (n+2)! − 1. □",
+          "explicacion": "La clave algebraica es k·k! = (k+1)! − k!, que telescopia: la inducción solo confirma lo que el telescopio ya sugería. Caso pequeño → conjetura → demostración."
+        },
+        {
+          "id": "eind-q3",
+          "tipo": "encuentra-error",
+          "enunciado": "'Teorema: en todo conjunto de n caballos, todos son del mismo color. Paso: dado un conjunto de n+1, quita uno: los n restantes son del mismo color por hipótesis; quita otro: igual; luego todos coinciden.' ¿Dónde falla?",
+          "solucion": "El paso n→n+1 falla exactamente en n=1 → 2. Para 'pegar' los dos subconjuntos de tamaño n hace falta que se SOLAPEN en al menos un caballo (un color común que transmita la igualdad). Con n+1 = 2 caballos, los subconjuntos de tamaño 1 son {caballo₁} y {caballo₂}: no se solapan, no hay puente. La cadena de igualdades se rompe en el primer eslabón y nunca arranca.",
+          "explicacion": "Una inducción puede tener base correcta (n=1 trivial) y paso 'correcto' para n grande, y aun así ser falsa si el paso no es válido DESDE la base. Hay que verificar el primer paso real, n₀→n₀+1."
+        },
+        {
+          "id": "eind-q4",
+          "tipo": "disparador",
+          "enunciado": "Intentas probar por inducción una desigualdad y el paso 'no cierra' por poco: te falta un término. ¿Qué maniobra clásica deberías considerar?",
+          "solucion": "FORTALECER la hipótesis (la paradoja del inventor): prueba por inducción un enunciado MÁS fuerte que el pedido —típicamente añadiendo el término que te faltaba como margen—, porque entonces el paso inductivo dispone de más munición. Suena contraintuitivo (probar más es más fácil), pero es el remedio estándar cuando la inducción se queda corta por un término.",
+          "explicacion": "Señal → jugada: 'el paso falla por un término' → no abandones la inducción; refuerza el enunciado para que la hipótesis cargue ese término."
+        }
+      ]
+    },
+    {
+      "id": "engel-suc",
+      "bloque": "fase-6",
+      "orden": 42,
+      "titulo": "Engel · Sucesiones y recurrencias",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo de sucesiones y recurrencias: lineales homogéneas de coeficientes constantes (ecuación característica), no homogéneas (solución particular + homogénea), puntos fijos para recurrencias a_{n+1}=f(a_n), telescopio y sustituciones que linealizan.",
+      "dosis": "Lectura + 3 recurrencias (una lineal, una no homogénea, una no lineal que se linealiza).",
+      "objetivo": "Resolver recurrencias lineales con la ecuación característica (incluida la raíz repetida), localizar puntos fijos para entender convergencia, y reconocer la sustitución que convierte una recurrencia no lineal en lineal.",
+      "heuristicas": ["recurrencia", "induccion"],
+      "ideas_clave": [
+        "Recurrencia lineal homogénea de coeficientes constantes a_n = c₁a_{n−1}+⋯+c_k a_{n−k}: escribe la ECUACIÓN CARACTERÍSTICA x^k = c₁x^{k−1}+⋯+c_k. Raíces distintas r_i ⇒ a_n = Σ A_i r_iⁿ; los A_i salen de las condiciones iniciales.",
+        "RAÍZ REPETIDA de multiplicidad m: su contribución no es solo r^n, sino (A₀ + A₁n + ⋯ + A_{m−1}n^{m−1})·rⁿ. El factor polinomial en n es la señal de que dos raíces colapsaron (límite de r₁ⁿ y r₂ⁿ cuando r₂→r₁).",
+        "No homogénea a_n = (lineal) + g(n): solución general = solución de la homogénea + UNA particular. Para g(n) polinómica prueba una particular polinómica; para g(n)=b·sⁿ prueba C·sⁿ (y multiplica por n si s ya es raíz característica).",
+        "PUNTO FIJO de a_{n+1}=f(a_n): resuelve L=f(L). Si la sucesión converge, lo hace a un punto fijo; |f′(L)|<1 lo hace atractor (las trayectorias se acercan), |f′(L)|>1 repulsor. Restar el punto fijo (b_n = a_n − L) a menudo deja una recurrencia más simple.",
+        "TELESCOPIO y SUSTITUCIÓN: si a_{n+1}−a_n o a_{n+1}/a_n es manejable, suma/multiplica en cascada. Para recurrencias no lineales, prueba b_n = 1/a_n, log a_n o a_n − L: muchas (como a_{n+1}=a_n/(1+a_n)) se vuelven LINEALES tras la sustitución correcta."
+      ],
+      "banco": [
+        {
+          "id": "esuc-q1",
+          "tipo": "quiz",
+          "enunciado": "Resuelve la recurrencia a₀=0, a₁=1, aₙ = 5aₙ₋₁ − 6aₙ₋₂. Da la fórmula cerrada.",
+          "solucion": "Ecuación característica x² = 5x − 6 → x² − 5x + 6 = 0 → (x−2)(x−3)=0, raíces 2 y 3 (distintas). Forma general aₙ = A·2ⁿ + B·3ⁿ. Con a₀=0: A+B=0. Con a₁=1: 2A+3B=1. De A=−B: −2B+3B = B = 1, luego A=−1. Fórmula: aₙ = 3ⁿ − 2ⁿ.",
+          "explicacion": "Raíces distintas → combinación de exponenciales puras. Comprueba siempre con los dos términos iniciales: a₂ = 9−4 = 5 = 5·1 − 6·0 ✓."
+        },
+        {
+          "id": "esuc-q2",
+          "tipo": "acertijo",
+          "enunciado": "La recurrencia a₀=0, aₙ = 2aₙ₋₁ + 1 (n≥1). Resuélvela usando su punto fijo.",
+          "solucion": "Punto fijo: L = 2L + 1 → L = −1. Sustituye bₙ = aₙ − L = aₙ + 1: entonces bₙ = aₙ+1 = 2aₙ₋₁+1+1 = 2(aₙ₋₁+1) = 2bₙ₋₁, recurrencia geométrica. b₀ = a₀+1 = 1, luego bₙ = 2ⁿ y aₙ = 2ⁿ − 1.",
+          "explicacion": "Restar el punto fijo convierte una recurrencia afín (no homogénea) en una geométrica pura. Es el caso más simple del método 'solución particular constante + homogénea'."
+        },
+        {
+          "id": "esuc-q3",
+          "tipo": "disparador",
+          "enunciado": "Te dan una recurrencia NO lineal: a₁=1 y aₙ₊₁ = aₙ/(1 + aₙ). ¿Qué sustitución debería dispararse para resolverla?",
+          "solucion": "Tomar RECÍPROCOS: con bₙ = 1/aₙ, la recurrencia 1/aₙ₊₁ = (1+aₙ)/aₙ = 1/aₙ + 1 se vuelve bₙ₊₁ = bₙ + 1, aritmética. Con b₁ = 1, bₙ = n, así que aₙ = 1/n. La no linealidad desaparece bajo la sustitución correcta.",
+          "explicacion": "Señal → jugada: cociente del tipo a/(1+a) → recíprocos linealizan. El repertorio de sustituciones (1/aₙ, log aₙ, aₙ − L) es lo primero que se prueba ante una recurrencia no lineal."
+        },
+        {
+          "id": "esuc-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para aₙ = 4aₙ₋₁ − 4aₙ₋₂ un estudiante escribe la característica (x−2)²=0 y propone aₙ = A·2ⁿ. Con dos condiciones iniciales el sistema le sale incompatible. ¿Qué olvidó?",
+          "solucion": "Olvidó que una raíz REPETIDA aporta un factor lineal en n: la forma correcta es aₙ = (A + Bn)·2ⁿ, no solo A·2ⁿ. Con un único parámetro A no se pueden ajustar dos condiciones iniciales independientes; por eso el sistema es incompatible. Con (A+Bn)·2ⁿ hay dos parámetros y todo cierra.",
+          "explicacion": "La multiplicidad de la raíz dicta el grado del polinomio en n que la acompaña. Raíz doble → grado 1 (A+Bn); triple → grado 2 (A+Bn+Cn²)."
+        }
+      ]
+    },
+    {
+      "id": "engel-pol",
+      "bloque": "fase-6",
+      "orden": 43,
+      "titulo": "Engel · Polinomios: factor, Vieta y valores especiales",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo de polinomios: teorema del factor y del residuo, principio de identidad (coincidir en grado+1 puntos ⇒ idénticos), fórmulas de Vieta como funciones simétricas de las raíces, evaluación en valores especiales (1, 0, −1, raíces de la unidad) y la raíz racional para coeficientes enteros.",
+      "dosis": "Lectura + 3 problemas (Vieta, interpolación/identidad, valores especiales).",
+      "objetivo": "Manejar un polinomio por sus raíces (factor, Vieta) y por sus valores (identidad, sustituciones especiales), eligiendo según lo que el problema regala; usar los coeficientes enteros para acotar raíces.",
+      "heuristicas": ["invariante", "caso-pequeno"],
+      "ideas_clave": [
+        "TEOREMA DEL FACTOR: P(a)=0 ⟺ (x−a) divide a P. Un polinomio de grado n tiene a lo más n raíces; corolario potente (principio de IDENTIDAD): si dos polinomios de grado ≤ n coinciden en n+1 puntos, son idénticos. Sirve para 'fabricar' un polinomio que se anula donde quieres.",
+        "VIETA: para P(x)=a_n xⁿ+⋯+a₀ con raíces r₁,…,rₙ: Σr_i = −a_{n−1}/a_n, Σ_{i<j} r_i r_j = a_{n−2}/a_n, …, Πr_i = (−1)ⁿ a₀/a_n. Las funciones simétricas elementales de las raíces son INVARIANTES bajo permutarlas: por eso quedan codificadas en los coeficientes.",
+        "VALORES ESPECIALES: P(1) = suma de TODOS los coeficientes; P(0) = término independiente; P(−1) = suma alternada. Para sumar coeficientes en posiciones en progresión (cada 3, cada 4…) usa el FILTRO de raíces de la unidad: promedia P evaluado en las raíces correspondientes.",
+        "COEFICIENTES ENTEROS: el teorema de la raíz racional acota las raíces racionales (p/q con p | a₀, q | a_n). Además a−b divide a P(a)−P(b) para enteros a,b: una herramienta para descartar valores o forzar divisibilidades.",
+        "IDENTIDADES DE NEWTON: conectan las sumas de potencias de las raíces p_k = Σ r_i^k con las simétricas elementales e_k de Vieta; permiten calcular Σ r_i², Σ r_i³, … sin hallar las raíces."
+      ],
+      "banco": [
+        {
+          "id": "epol-q1",
+          "tipo": "quiz",
+          "enunciado": "Sin resolver la cúbica, usa Vieta para dar la suma, la suma de productos por pares y el producto de las raíces de x³ − 6x² + 11x − 6. Luego identifícalas.",
+          "solucion": "Para x³ − 6x² + 11x − 6 (mónico): suma de raíces = −(−6) = 6; suma de productos por pares = 11; producto = −(−6) = 6. Buscando tres números con suma 6 y producto 6 y que sumen 11 por pares: 1, 2, 3 (1+2+3=6; 1·2+1·3+2·3 = 2+3+6 = 11; 1·2·3 = 6). Las raíces son 1, 2 y 3.",
+          "explicacion": "Vieta da el 'perfil simétrico' de las raíces directamente de los coeficientes; con enteros pequeños, ese perfil suele bastar para adivinarlas y luego verificarlas con el teorema del factor."
+        },
+        {
+          "id": "epol-q2",
+          "tipo": "acertijo",
+          "enunciado": "P(x) es mónico de grado 4 y cumple P(1)=1, P(2)=2, P(3)=3, P(4)=4. Halla P(5).",
+          "solucion": "Define Q(x) = P(x) − x: es mónico de grado 4 y se anula en 1,2,3,4, luego por el teorema del factor Q(x) = (x−1)(x−2)(x−3)(x−4). Entonces P(x) = x + (x−1)(x−2)(x−3)(x−4). Evaluando en 5: P(5) = 5 + (4)(3)(2)(1) = 5 + 24 = 29.",
+          "explicacion": "El truco de la 'función auxiliar que se anula' (P(x)−x) es el principio de identidad en acción: fabricas un polinomio cuyas raíces conoces y recuperas P sumando lo que restaste."
+        },
+        {
+          "id": "epol-q3",
+          "tipo": "disparador",
+          "enunciado": "Te piden la suma de todos los coeficientes de (3x − 2)¹⁰ desarrollado. ¿Qué evaluación instantánea lo resuelve?",
+          "solucion": "Evaluar en x = 1: la suma de coeficientes de cualquier polinomio P es P(1). Aquí (3·1 − 2)¹⁰ = 1¹⁰ = 1. (Para la suma de coeficientes de potencias pares menos impares, evalúa en x=−1.)",
+          "explicacion": "Señal → jugada: 'suma de coeficientes' → P(1); 'suma alternada' → P(−1); 'coeficientes cada k posiciones' → filtro de raíces k-ésimas de la unidad. Evaluar en el punto correcto evita desarrollar."
+        },
+        {
+          "id": "epol-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Un estudiante afirma: 'el polinomio P(x)=x²+1 tiene coeficientes enteros, así que por el teorema de la raíz racional tiene una raíz racional p/q con p|1 y q|1, es decir ±1'. Concluye que P(1) o P(−1) es 0. ¿Qué confundió?",
+          "solucion": "El teorema de la raíz racional NO afirma que existan raíces racionales: dice que SI hay una raíz racional, entonces es de la forma p/q con p|a₀ y q|a_n. Es una restricción sobre las candidatas, no una garantía de existencia. Para x²+1 las únicas candidatas serían ±1, pero P(1)=2 y P(−1)=2: ninguna es raíz, así que x²+1 simplemente no tiene raíces racionales (de hecho ninguna real).",
+          "explicacion": "Confundir 'las raíces racionales (si las hay) están entre estas' con 'hay una raíz racional' es el error clásico. El teorema PODA candidatos; la existencia hay que verificarla evaluando."
+        }
+      ]
+    },
+    {
+      "id": "engel-fun",
+      "bloque": "fase-6",
+      "orden": 44,
+      "titulo": "Engel · Ecuaciones funcionales",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo de ecuaciones funcionales: el reflejo de las SUSTITUCIONES especiales (x=0, y=0, x=y, y=−x), probar inyectividad/sobreyectividad, conjeturar la familia de soluciones y verificarla, y la ecuación de Cauchy con sus hipótesis de regularidad.",
+      "dosis": "Lectura + 3 ecuaciones funcionales de dificultad creciente.",
+      "objetivo": "Atacar una ecuación funcional con sustituciones que fuercen valores y simetrías, deducir propiedades estructurales (inyectividad, paridad), conjeturar y VERIFICAR la familia de soluciones, y reconocer las formas tipo Cauchy.",
+      "heuristicas": ["ecuacion-funcional", "caso-pequeno"],
+      "ideas_clave": [
+        "El PRIMER reflejo: sustituir valores especiales. y=0 y x=0 suelen despejar f(0); x=y revela cuadrados/simetrías; y=−x relaciona f con su reflejo; x=1 calibra constantes. Cada sustitución es un 'caso pequeño' que arranca información concreta.",
+        "Deduce PROPIEDADES estructurales antes de adivinar la fórmula: ¿es f inyectiva (f(a)=f(b)⇒a=b, permite cancelar f)? ¿sobreyectiva (toda y tiene preimagen, permite sustituir 'la x tal que f(x)=…')? ¿par/impar? ¿f(0) forzado?",
+        "CONJETURA + VERIFICACIÓN: con los valores forzados, adivina la familia (lineal f(x)=cx, afín, cuadrática, exponencial f(x)=aˣ, identidad). SIEMPRE sustituye la conjetura en la ecuación original para confirmar que la satisface; después argumenta unicidad.",
+        "CAUCHY f(x+y)=f(x)+f(y): sobre ℚ fuerza f(x)=cx por inducción; para extender a ℝ basta UNA hipótesis de regularidad (continuidad, monotonía o acotación en un intervalo). Sin ninguna, existen soluciones patológicas. Parientes: f(x+y)=f(x)f(y) → exponencial (toma logaritmos); f(xy)=f(x)+f(y) → logaritmo.",
+        "Cuidado con asumir regularidad no dada y con dar por buena una conjetura sin verificarla. En olimpiada casi siempre basta con los racionales o con una hipótesis extra del enunciado para cerrar la unicidad."
+      ],
+      "banco": [
+        {
+          "id": "efun-q1",
+          "tipo": "acertijo",
+          "enunciado": "Una función f:ℝ→ℝ cumple f(x) + 2f(1 − x) = x² para todo x. Halla f(2).",
+          "solucion": "Sustituye x=2: f(2) + 2f(−1) = 4. Sustituye x=−1 (para que 1−x = 2 reaparezca): f(−1) + 2f(2) = 1. Llama a=f(2), b=f(−1): a + 2b = 4 y 2a + b = 1. Resolviendo: de la primera a = 4 − 2b; sustituyendo, 2(4−2b)+b = 1 → 8 − 3b = 1 → b = 7/3, y a = 4 − 14/3 = −2/3. Así f(2) = −2/3.",
+          "explicacion": "El patrón f(x) y f(1−x): sustituir x y luego 1−x produce DOS ecuaciones lineales en los dos valores buscados. La involución x↦1−x es la simetría que cierra el sistema."
+        },
+        {
+          "id": "efun-q2",
+          "tipo": "quiz",
+          "enunciado": "Sea f:ℝ→ℝ continua con f(x+y) = f(x) + f(y) para todo x,y. Bosqueja por qué f(x)=cx, indicando dónde se usa la continuidad.",
+          "solucion": "y=0 da f(0)=0. Por inducción f(n)=nf(1) para n natural, y f(−x)=−f(x) extiende a enteros. Para racionales, q·f(p/q)=f(p)=p·f(1) ⇒ f(p/q)=(p/q)f(1). Así f(x)=cx en ℚ con c=f(1). La CONTINUIDAD cierra los irracionales: si xₙ→x con xₙ racionales, f(x)=lím f(xₙ)=lím c·xₙ=cx.",
+          "explicacion": "La estructura aditiva fija f sobre ℚ sin ninguna hipótesis; la regularidad (aquí continuidad) solo se necesita para el salto de ℚ a ℝ. Sin ella habría soluciones no lineales."
+        },
+        {
+          "id": "efun-q3",
+          "tipo": "disparador",
+          "enunciado": "Apareces ante f:ℝ⁺→ℝ con f(xy) = f(x) + f(y). ¿Qué te debe sugerir la forma y qué sustitución pruebas primero?",
+          "solucion": "La forma 'producto adentro, suma afuera' es la firma del LOGARITMO. Primer reflejo: x=y=1 da f(1)=2f(1) ⇒ f(1)=0; y=1/x da f(1)=f(x)+f(1/x) ⇒ f(1/x)=−f(x). La conjetura f(x)=c·ln x (o c·log_b x) se verifica de inmediato; con continuidad es la única.",
+          "explicacion": "Señal → jugada: f(xy)=f(x)+f(y) → logaritmo; f(x+y)=f(x)f(y) → exponencial; f(x+y)=f(x)+f(y) → lineal (Cauchy). Reconocer la familia orienta toda la resolución."
+        },
+        {
+          "id": "efun-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para f(x+y)=f(x)+f(y) un estudiante prueba f(x)=cx en ℚ y concluye 'por tanto f(x)=cx para todo real, listo'. Sin más hipótesis, ¿por qué la conclusión es injustificada?",
+          "solucion": "El salto de ℚ a ℝ requiere alguna hipótesis de regularidad (continuidad, monotonía o acotación en algún intervalo). Sin ella, usando una base de Hamel de ℝ sobre ℚ se construyen soluciones aditivas que NO son lineales (patológicas, no medibles). La igualdad f(x)=cx solo está demostrada en los racionales hasta que se invoque continuidad u otra condición.",
+          "explicacion": "Es el error simétrico al de asumir continuidad de más: aquí se concluye de más sin tenerla. En olimpiada el enunciado casi siempre regala la hipótesis que permite cerrar; hay que USARLA explícitamente."
+        }
+      ]
+    },
+    {
+      "id": "engel-geo2",
+      "bloque": "fase-6",
+      "orden": 45,
+      "titulo": "Engel · Geometría avanzada: vectores, complejos y trigonometría",
+      "libro": "Engel — Problem-Solving Strategies",
+      "lectura": "Capítulo de geometría con herramientas analíticas: vectores y producto punto, números complejos para el plano (rotación = multiplicar por e^{iθ}), trigonometría (leyes de senos y cosenos, áreas) y cuándo cada herramienta es la adecuada.",
+      "dosis": "Lectura + 3 problemas resolviendo el MISMO tipo con dos herramientas distintas para sentir cuál conviene.",
+      "objetivo": "Traducir un problema de geometría a vectores, complejos o trigonometría según su 'firma', y resolverlo con cálculo controlado en lugar de cacería sintética cuando esta se atasca.",
+      "heuristicas": ["transformacion", "parametrizar-dibujar"],
+      "ideas_clave": [
+        "VECTORES: coloca el origen donde haya más simetría. El baricentro es (A+B+C)/3; colinealidad de P,Q,R ⟺ Q−P y R−P son paralelos (determinante 0); perpendicularidad ⟺ producto punto 0. Ideal cuando abundan puntos medios, razones y paralelas (geometría afín).",
+        "COMPLEJOS para el plano: identifica puntos con números. Rotar z un ángulo θ alrededor del origen = multiplicar por e^{iθ}; alrededor de w = w + e^{iθ}(z−w). Distancia = |z−w|. En el CÍRCULO UNITARIO, conjugado de z es 1/z y muchas fórmulas (circuncentro, reflexiones, pie de altura) se vuelven limpias.",
+        "TRIGONOMETRÍA: ley de senos a/sin A = 2R (¡da el circunradio!); ley de cosenos para un lado a partir de dos lados y el ángulo; área = (1/2)ab·sin C. La cacería de ángulos + estas leyes resuelve cuando se mezclan ángulos y longitudes.",
+        "Producto PUNTO y CRUZ (o determinante): proyecciones y perpendicularidad con el punto; áreas con signo y concurrencia con el cruz/determinante. Son el puente entre 'figura' y 'número'.",
+        "Elige por la FIRMA: muchas razones/paralelas/puntos medios → vectores; rotaciones, círculos, simetrías → complejos; datos que mezclan ángulos con longitudes → trigonometría. Saber traducir evita quedarte atascado en lo puramente sintético."
+      ],
+      "banco": [
+        {
+          "id": "egeo-q1",
+          "tipo": "quiz",
+          "enunciado": "En el plano complejo, ¿por qué número multiplicas un punto z para rotarlo, alrededor del origen, 90° antihorario? ¿Y 60° antihorario?",
+          "solucion": "Por e^{iθ} con θ el ángulo. Para 90°: e^{iπ/2} = i (z ↦ iz). Para 60°: e^{iπ/3} = cos60° + i·sin60° = 1/2 + i·(√3/2). Para rotar alrededor de un punto w en vez del origen: z ↦ w + e^{iθ}(z − w).",
+          "explicacion": "Multiplicar por un complejo de módulo 1 ES rotar; esa es la razón de que los números complejos sean la herramienta natural para problemas con giros y polígonos regulares."
+        },
+        {
+          "id": "egeo-q2",
+          "tipo": "acertijo",
+          "enunciado": "Demuestra con vectores que los puntos medios de los lados de CUALQUIER cuadrilátero ABCD forman un paralelogramo (teorema de Varignon).",
+          "solucion": "Sean A,B,C,D los vectores de posición y P,Q,R,S los puntos medios de AB,BC,CD,DA: P=(A+B)/2, Q=(B+C)/2, R=(C+D)/2, S=(D+A)/2. Entonces PQ = Q−P = (C−A)/2 y SR = R−S = (C−A)/2. Como PQ = SR (iguales y paralelos, ambos = (C−A)/2, la mitad de la diagonal AC), PQRS es un paralelogramo. ∎",
+          "explicacion": "Los vectores trivializan lo que sintéticamente exige el teorema del segmento medio dos veces: PQ y SR resultan ser literalmente el mismo vector, la mitad de una diagonal."
+        },
+        {
+          "id": "egeo-q3",
+          "tipo": "disparador",
+          "enunciado": "Un problema de triángulo te da dos lados y el ángulo comprendido, y pide el tercer lado y el circunradio. ¿Qué herramientas se disparan?",
+          "solucion": "Ley de COSENOS para el tercer lado: c² = a² + b² − 2ab·cos C. Una vez con los tres lados (o con un ángulo), ley de SENOS para el circunradio: a/sin A = 2R, de donde R = a/(2 sin A). La firma 'mezcla ángulos y longitudes' apunta a trigonometría antes que a coordenadas.",
+          "explicacion": "Señal → jugada: 'dos lados y el ángulo entre ellos' → ley de cosenos; 'necesito R' → ley de senos (a/sin A = 2R). El reflejo trigonométrico ahorra montar coordenadas."
+        },
+        {
+          "id": "egeo-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para hallar un ángulo, un estudiante usa la ley de senos, obtiene sin X = 0.8 y concluye X ≈ 53.13° sin más. ¿Qué riesgo ignoró?",
+          "solucion": "El caso AMBIGUO de la ley de senos: sin X = 0.8 tiene DOS soluciones en (0°,180°): X ≈ 53.13° y X ≈ 126.87° (suplementario). Ambas pueden ser geométricamente válidas según la configuración. Hay que descartar una con información adicional (suma de ángulos < 180°, qué lado es mayor, etc.). La ley de COSENOS no sufre esto: el coseno determina el ángulo unívocamente en (0°,180°).",
+          "explicacion": "El seno no distingue un ángulo de su suplementario; por eso, cuando importa cuál es, conviene cerrar con la ley de cosenos o con una restricción del problema."
+        }
+      ]
+    },
+    {
+      "id": "aime-alg",
+      "bloque": "fase-6",
+      "orden": 46,
+      "titulo": "AIME · Álgebra: sucesiones, Vieta y sustitución",
+      "libro": "AIME (American Invitational Mathematics Examination)",
+      "lectura": "Problemas de álgebra de nivel AIME: representación en bases, raíces enteras vía Vieta con acotación, sistemas simétricos resueltos por sustitución (suma y producto), y manejo de radicales. Respuesta entera 0–999.",
+      "dosis": "3-4 problemas AIME de álgebra como sesiones del camino 1, con cronómetro y desconstrucción.",
+      "objetivo": "Atacar problemas de competición real (AIME) de álgebra: reconocer la estructura (base posicional, Vieta, simetría) que reduce un enunciado aparatoso a una cuenta corta y exacta.",
+      "heuristicas": ["penultimo-paso", "casework"],
+      "ideas_clave": [
+        "REPRESENTACIÓN EN BASES: una sucesión definida por 'sumas de potencias distintas de b' se indexa por los números en base 2 leídos en base b. El n-ésimo término se obtiene escribiendo n en binario y reinterpretándolo en la base correcta.",
+        "VIETA + ACOTACIÓN: si un polinomio con coeficientes dados tiene raíces ENTERAS, traduce los coeficientes a relaciones simétricas (suma, suma de pares, producto) y acota: pocas ternas de enteros las cumplen. Combinar a+b+c=0 con ab+bc+ca=k reduce a una ecuación cuadrática en dos variables (a²+ab+b² = −k).",
+        "SISTEMAS SIMÉTRICOS: ante ecuaciones simétricas en x,y, sustituye s=x+y, p=xy; el sistema se vuelve manejable y x,y son las raíces de t²−st+p=0. Generaliza a funciones simétricas de más variables.",
+        "RADICALES y EXTRANEIDAD: al elevar al cuadrado para quitar raíces pueden aparecer soluciones FALSAS; toda solución debe verificarse en la ecuación original. Elevar al cuadrado es implicación, no equivalencia.",
+        "El AIME pide un ENTERO 0–999: aprovecha esa restricción para validar (una respuesta fuera de rango o no entera delata un error) y como pista de que la estructura colapsa a algo exacto y pequeño."
+      ],
+      "banco": [
+        {
+          "id": "aalg-q1",
+          "tipo": "acertijo",
+          "enunciado": "La sucesión creciente 1, 3, 4, 9, 10, 12, 13, … consta de todos los enteros positivos que son potencias de 3 o sumas de potencias DISTINTAS de 3. Halla el término número 100. (AIME 1986)",
+          "solucion": "Cada término corresponde a elegir un subconjunto de potencias de 3, igual que un número binario elige potencias de 2. Así, el n-ésimo término = escribe n en binario y lee esos dígitos en base 3. Para n=100: 100 en binario es 1100100. Leído en base 3: 1·3⁶ + 1·3⁵ + 0 + 0 + 1·3² + 0 + 0 = 729 + 243 + 9 = 981.",
+          "explicacion": "La biyección 'subconjuntos ↔ binario' convierte un problema de orden en una conversión de bases. El penúltimo paso ('quiero el 100-ésimo subconjunto en orden') sugiere de inmediato el binario de 100."
+        },
+        {
+          "id": "aalg-q2",
+          "tipo": "quiz",
+          "enunciado": "El polinomio x³ − 2011x + m tiene tres raíces ENTERAS a, b, c. Halla |a| + |b| + |c|. (AIME 2011)",
+          "solucion": "Por Vieta (no hay término x²): a+b+c = 0 y ab+bc+ca = −2011. Sustituyendo c = −(a+b) en la segunda: ab + (a+b)(−(a+b)) = −2011 → ab − a² − 2ab − b² = −2011 → a² + ab + b² = 2011. Buscando enteros, una solución es a=10, b=39 (100 + 390 + 1521 = 2011), de donde c = −49. Entonces |a|+|b|+|c| = 10 + 39 + 49 = 98.",
+          "explicacion": "a+b+c=0 colapsa Vieta a una sola forma cuadrática a²+ab+b²=2011, que se resuelve buscando enteros acotados. Es el patrón 'Vieta + acotación' típico del AIME."
+        },
+        {
+          "id": "aalg-q3",
+          "tipo": "disparador",
+          "enunciado": "Un problema te da x + y y x² + y² (o pide x³ + y³) en un sistema simétrico. ¿Qué sustitución debería dispararse?",
+          "solucion": "Pasar a las simétricas s = x+y y p = xy. Entonces x²+y² = s²−2p y x³+y³ = s³−3sp; cualquier polinomio simétrico se expresa en s y p. Si hace falta x e y por separado, son las raíces de t² − s·t + p = 0. El sistema aparatoso se vuelve dos incógnitas limpias.",
+          "explicacion": "Señal → jugada: 'ecuaciones simétricas en dos variables' → s=x+y, p=xy. Reduce el grado y el desorden, y devuelve x,y como raíces de una cuadrática."
+        },
+        {
+          "id": "aalg-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Resolviendo √(x+7) = x − 1, un estudiante eleva al cuadrado, obtiene x+7 = x²−2x+1 → x²−3x−6=0 y reporta ambas raíces. ¿Qué debió verificar?",
+          "solucion": "Elevar al cuadrado puede CREAR soluciones falsas: toda candidata debe sustituirse en la ecuación ORIGINAL. Aquí x²−3x−6=0 da x=(3±√33)/2 ≈ 4.37 y ≈ −1.37. La negativa hace x−1 < 0, pero √(x+7) ≥ 0: no puede ser, es extraña. Solo x≈4.37 es válida. (Además se requiere x+7 ≥ 0.)",
+          "explicacion": "√(·) = (expresión) exige que la expresión sea ≥ 0; al cuadrar se pierde esa condición de signo y entran raíces espurias. Verificar en el original no es opcional."
+        }
+      ]
+    },
+    {
+      "id": "aime-geo",
+      "bloque": "fase-6",
+      "orden": 47,
+      "titulo": "AIME · Geometría: Herón, potencia de un punto y coordenadas",
+      "libro": "AIME (American Invitational Mathematics Examination)",
+      "lectura": "Problemas de geometría de nivel AIME: el triángulo 13-14-15 y las fórmulas de área/inradio/circunradio (Herón, K=rs, R=abc/4K), potencia de un punto (secante-tangente) y el 'coordinate bash' cuando la figura pide ejes. Respuesta entera 0–999.",
+      "dosis": "3-4 problemas AIME de geometría con desconstrucción y, si ayuda, la pizarra.",
+      "objetivo": "Resolver geometría de competición combinando las fórmulas métricas del triángulo, la potencia de un punto y la colocación inteligente de coordenadas, sin perderse en cacerías sintéticas.",
+      "heuristicas": ["parametrizar-dibujar", "transformacion"],
+      "ideas_clave": [
+        "TRIÁNGULO con tres lados: área por HERÓN K=√(s(s−a)(s−b)(s−c)) con s el semiperímetro; inradio r = K/s; circunradio R = abc/(4K). El 13-14-15 es el ejemplo canónico del AIME: s=21, K=84, r=4, R=65/8 (vale memorizarlo).",
+        "POTENCIA DE UN PUNTO P respecto a un círculo: para una secante que corta en A,B y otra en C,D, PA·PB = PC·PD; si una es tangente en T, PT² = PA·PB. Es positiva fuera, cero sobre el círculo, negativa dentro; resuelve longitudes con cuerdas y tangentes.",
+        "COORDINATE BASH: cuando hay perpendiculares, puntos medios, o piden una longitud exacta en una figura con ángulos rectos, coloca ejes en un vértice/centro útil. Convierte la geometría en álgebra rutinaria; pon el origen donde más términos se anulen.",
+        "SEMEJANZA y razones: triángulos semejantes (por AA, casi siempre de paralelas o de ángulos iguales en círculos) transportan razones de longitudes; buscar el par semejante correcto es a menudo el penúltimo paso.",
+        "El AIME pide un ENTERO 0–999, a veces como m+n de una fracción m/n irreducible o a+b√c: si tu respuesta es R=65/8, el problema seguramente pide 65+8=73 o similar. Lee qué número exacto se reporta."
+      ],
+      "banco": [
+        {
+          "id": "ageo-q1",
+          "tipo": "quiz",
+          "enunciado": "Para el triángulo de lados 13, 14, 15 halla su área, su inradio y su circunradio.",
+          "solucion": "Semiperímetro s = (13+14+15)/2 = 21. Herón: K = √(21·(21−13)(21−14)(21−15)) = √(21·8·7·6) = √7056 = 84. Inradio r = K/s = 84/21 = 4. Circunradio R = abc/(4K) = (13·14·15)/(4·84) = 2730/336 = 65/8.",
+          "explicacion": "El 13-14-15 es un triángulo de lados enteros con área entera (84) e inradio entero (4): por eso aparece tanto en el AIME. Tener Herón, r=K/s y R=abc/4K a mano resuelve media docena de problemas."
+        },
+        {
+          "id": "ageo-q2",
+          "tipo": "acertijo",
+          "enunciado": "Desde un punto exterior P se traza una secante que corta a un círculo en A y B con PA=4 y PB=9, y una tangente que toca en T. Halla PT.",
+          "solucion": "Por la potencia del punto P: PT² = PA·PB = 4·9 = 36, luego PT = 6. (La potencia de P respecto al círculo vale PA·PB para cualquier secante por P, y para la tangente es PT².)",
+          "explicacion": "Tangente-secante es el caso límite de secante-secante (los dos cortes de la tangente coinciden en T). PT² = PA·PB es de las identidades que más rinden con cuerdas, tangentes y cuadriláteros cíclicos."
+        },
+        {
+          "id": "ageo-q3",
+          "tipo": "disparador",
+          "enunciado": "Una figura tiene varios ángulos rectos, pide una longitud exacta y los datos son números concretos. ¿Qué enfoque deberías considerar antes de buscar la construcción sintética perfecta?",
+          "solucion": "COORDINATE BASH: coloca ejes alineados con los ángulos rectos (origen en una esquina, lados sobre los ejes). Los puntos toman coordenadas simples, las perpendiculares son horizontales/verticales y la longitud pedida sale por distancia o por intersección de rectas. La firma 'ángulos rectos + números concretos + longitud exacta' premia las coordenadas.",
+          "explicacion": "Señal → jugada: 'perpendiculares y datos numéricos' → coordenadas. No siempre es lo más elegante, pero en el AIME, donde solo importa el número final, suele ser lo más seguro."
+        },
+        {
+          "id": "ageo-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "En un triángulo obtuso, un estudiante calcula la altura desde un vértice y asume que su pie cae DENTRO del lado opuesto, planteando ahí su ecuación de áreas. ¿Por qué puede equivocarse?",
+          "solucion": "En un triángulo OBTUSO, el pie de la altura desde un vértice agudo puede caer FUERA del lado opuesto (sobre su prolongación). Si la ecuación asume que el pie divide al lado en dos segmentos positivos interiores, las longitudes con signo se equivocan. Hay que ubicar el pie según los ángulos (o usar coordenadas/áreas con signo) antes de plantear.",
+          "explicacion": "La configuración (agudo vs. obtuso) cambia dónde caen pies de altura y ortocentro. Dibujar a escala y vigilar el caso obtuso evita ecuaciones con el segmento del lado equivocado."
+        }
+      ]
+    },
+    {
+      "id": "aime-cnt",
+      "bloque": "fase-6",
+      "orden": 48,
+      "titulo": "AIME · Conteo y probabilidad: complemento, biyección y casos",
+      "libro": "AIME (American Invitational Mathematics Examination)",
+      "lectura": "Problemas de conteo y probabilidad de nivel AIME: conteo complementario, principio de inclusión-exclusión, estrellas y barras, biyecciones (subconjuntos sin elementos consecutivos ↔ Fibonacci) y probabilidad como conteo de casos favorables sobre totales. Respuesta entera 0–999.",
+      "dosis": "3-4 problemas AIME de conteo, cuidando no sobre/sub-contar.",
+      "objetivo": "Contar sin duplicar ni omitir: elegir entre conteo directo, complementario, inclusión-exclusión o biyección según cuál hace el problema más simétrico, y traducir probabilidad a conteo.",
+      "heuristicas": ["casework", "caso-pequeno"],
+      "ideas_clave": [
+        "CONTEO COMPLEMENTARIO: cuando 'lo que quieres' es enredado pero 'lo que NO quieres' es fácil, cuenta el total menos el complemento. Firma: 'al menos uno', 'no todos', condiciones de exclusión.",
+        "INCLUSIÓN-EXCLUSIÓN: |A∪B∪C| = Σ|A| − Σ|A∩B| + |A∩B∩C|. Para contar elementos que evitan varias propiedades, resta los que tienen cada una y corrige los solapamientos.",
+        "ESTRELLAS Y BARRAS: el número de soluciones enteras NO negativas de x₁+⋯+x_k = n es C(n+k−1, k−1). Para soluciones POSITIVAS, sustituye y_i = x_i − 1 y cuenta C(n−1, k−1). Confundir las dos es el error más común.",
+        "BIYECCIÓN: traduce el conteo a otro que ya sabes. Ejemplo: subconjuntos de {1,…,n} SIN dos elementos consecutivos están en biyección con cadenas binarias sin dos unos seguidos → su número es F(n+2) (Fibonacci). Buscar la biyección correcta colapsa el problema.",
+        "PROBABILIDAD = casos favorables / casos totales (en espacios equiprobables): cuenta numerador y denominador con las técnicas anteriores. La LINEALIDAD de la esperanza (E[ΣX_i]=ΣE[X_i]) cuenta 'en promedio' sin enumerar, incluso con dependencias."
+      ],
+      "banco": [
+        {
+          "id": "acnt-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Cuántos enteros del 1 al 1000 no son divisibles ni por 2 ni por 5?",
+          "solucion": "Conteo complementario / inclusión-exclusión. Divisibles por 2: 500; por 5: 200; por 10 (ambos): 100. Divisibles por 2 o por 5: 500 + 200 − 100 = 600. Los que no son divisibles por ninguno: 1000 − 600 = 400. (Equivale a 1000 · (1/2) · (4/5) = 400.)",
+          "explicacion": "Inclusión-exclusión evita contar dos veces los múltiplos de 10. El factor (1/2)(4/5) refleja que 'no divisible por 2' y 'no divisible por 5' son independientes en cada bloque de 10."
+        },
+        {
+          "id": "acnt-q2",
+          "tipo": "acertijo",
+          "enunciado": "¿Cuántos subconjuntos de {1, 2, …, 10} NO contienen dos elementos consecutivos? (Incluye el conjunto vacío.)",
+          "solucion": "Hay una biyección con cadenas binarias de longitud 10 sin dos '1' seguidos (1 = 'elemento elegido'). Su número satisface Fibonacci: f(n) = f(n−1) + f(n−2) (el último elemento se elige o no), con f(0)=1, f(1)=2. Así f(n) = F(n+2). Para n=10: F(12) = 144. Hay 144 subconjuntos.",
+          "explicacion": "La recurrencia sale de un caso pequeño: 'el elemento n está o no'. Si está, n−1 no puede estar (quedan f(n−2)); si no, quedan f(n−1). Reconocer Fibonacci es la biyección que resuelve."
+        },
+        {
+          "id": "acnt-q3",
+          "tipo": "disparador",
+          "enunciado": "Te piden la probabilidad de que 'ocurra al menos un' evento entre varios, o de que 'no haya ninguna' coincidencia. ¿Qué enfoque debería dispararse?",
+          "solucion": "Conteo COMPLEMENTARIO: P(al menos uno) = 1 − P(ninguno). 'Al menos uno' obliga a sumar muchos casos solapados; 'ninguno' suele ser un solo producto limpio. (Si los eventos se solapan de forma estructurada, inclusión-exclusión sobre las intersecciones.)",
+          "explicacion": "Señal → jugada: 'al menos uno' / 'no todos' → complemento (1 − P(caso fácil)). Es el primer reflejo de probabilidad porque convierte una unión enredada en una sola cuenta."
+        },
+        {
+          "id": "acnt-q4",
+          "tipo": "encuentra-error",
+          "enunciado": "Para contar las soluciones enteras POSITIVAS de a+b+c+d = 12, un estudiante aplica estrellas y barras como C(12+4−1, 4−1) = C(15,3) = 455. ¿Cuál es el error?",
+          "solucion": "C(15,3) cuenta las soluciones NO negativas (permite ceros). Para soluciones POSITIVAS (cada variable ≥ 1) hay que sustituir a'=a−1, …: a'+b'+c'+d' = 12−4 = 8 con a',…≥0, dando C(8+4−1, 3) = C(11,3) = 165. El estudiante contó de más (incluyó soluciones con variables nulas).",
+          "explicacion": "Estrellas y barras tiene DOS versiones: no negativas C(n+k−1,k−1) y positivas C(n−1,k−1). Identificar si se admiten ceros es el paso que más errores causa en conteo."
         }
       ]
     },
