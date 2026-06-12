@@ -1564,6 +1564,24 @@ function cambiarVista(vista) {
  */
 function configurarPizarra() {
   Pizarra.init();
+  // Evaluar con el mentor (pedido 2026-06-11): la página de la pizarra
+  // viaja como imagen al chat socrático. El botón solo existe con cuenta
+  // de Claude activa (§0.7); el MODO del chat ya protege el gating —
+  // durante el forcejeo el mentor pregunta y orienta, jamás confirma.
+  Pizarra.configurarMentor({
+    disponible: mentorDisponible,
+    evaluar: (jpegDataUrl) => {
+      fotoMentorPendiente = {
+        type: 'image',
+        source: { type: 'base64', media_type: 'image/jpeg', data: jpegDataUrl.split(',')[1] },
+      };
+      $('mentor-panel').hidden = false;
+      actualizarMentorUI();
+      $('mentor-entrada').value =
+        'Te comparto mi pizarra con el proceso que llevo escrito a mano. Léela con cuidado y evalúa mi razonamiento.';
+      enviarMensajeMentor();
+    },
+  });
   Pizarra.setContexto(() => {
     if (vistaActual === 'sesion') {
       const a = Storage.load('asignacion');

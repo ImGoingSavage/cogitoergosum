@@ -1621,25 +1621,59 @@ body.sin-scroll { overflow: hidden; }
 
 .pizarra-sel-borrar { font-size: 13px; color: var(--acento); border-color: var(--acento); }
 
-.pizarra-grosor {
+/* Los 3 puntos de grosor por herramienta (la fila de presets de GoodNotes) */
+.piz-grosores {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   padding: 0 6px;
 }
 
-.pizarra-grosor input[type='range'] {
-  width: 92px;
-  accent-color: var(--acento);
+.piz-grosor-preset {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  padding: 0;
 }
 
-#piz-grosor-vista {
-  display: inline-block;
-  border-radius: 50%;
-  background: var(--texto);
-  width: 4px;
-  height: 4px;
+.piz-grosor-preset span { display: block; border-radius: 50%; }
+
+.piz-grosor-preset.activo { border-color: var(--acento); background: var(--acento-suave); }
+
+/* Evaluar con el mentor: índigo de lo interactivo; solo existe con cuenta */
+.piz-mentor {
+  font-size: 13px;
+  color: var(--acento);
+  border-color: rgba(141, 150, 247, 0.45);
 }
+
+/* Chips flotantes del lienzo: nivel de zoom y avisos breves (figura, goma) */
+.piz-chip {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(27, 24, 21, 0.92);
+  border: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-family: var(--mono);
+  font-size: 13px;
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: calc(100% - 32px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.piz-toast { bottom: 52px; font-family: var(--fuente); color: var(--texto); }
 
 .piz-colores { display: inline-flex; gap: 6px; padding: 0 4px; }
 
@@ -1688,6 +1722,6 @@ body.sin-scroll { overflow: hidden; }
   #pizarra-flotante { left: 12px; bottom: 12px; }
   .pizarra-barra { padding: 6px 8px; }
   .pizarra-titulo { display: none; }
-  .pizarra-grosor input[type='range'] { width: 70px; }
+  .piz-grosor-preset { width: 28px; height: 28px; }
   .leccion { padding: 18px 16px; font-size: 16.5px; }
 }

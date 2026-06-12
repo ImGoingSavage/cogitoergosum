@@ -1088,6 +1088,67 @@ qué hace la burbuja del mentor.
   inferior izquierda abre la pizarra (goma de trazo, lazo, resaltador,
   doble toque en ⌫ para limpiar la página).
 
+### Bitácora 2026-06-11 (noche, 5) — pizarra GoodNotes + evaluar con el mentor
+
+Pedido del usuario: (1) que la pizarra sea prácticamente idéntica a
+GoodNotes (utilidades, posiciones, shortcuts como el doble toque del
+pencil) copiando funcionalidad con cuidado de derechos (funcionalidad sí,
+trade dress no); (2) botón DENTRO de la pizarra que cargue lo escrito al
+mentor socrático para evaluarlo, visible SOLO con API key de Claude bien
+configurada.
+
+**Pizarra (js/pizarra.js reescrita; index.html + styles.css):**
+- Memoria por herramienta (como GoodNotes): pluma y resaltador recuerdan
+  su color y grosor; goma su tamaño. **3 presets de grosor** por
+  herramienta (la fila de puntos de GoodNotes) en vez del slider;
+  persistidos en `cps_pizarras._ajustes` (clave meta: la poda de tableros
+  ignora claves `_*`).
+- **Figura perfecta (dibuja y sostén ~0.6 s)**: el trazo se ajusta a
+  línea, polilínea, triángulo, cuadrilátero/rectángulo o elipse.
+  Reconocedor propio: RDP anclado en los 2 puntos más alejados (RDP
+  ingenuo degenera en contornos cerrados), limpieza de vértices
+  colineales, umbral de elipse 0.18 (un rectángulo da error medio ≈1/3
+  contra su elipse inscrita — verificado con test sintético de 7 casos).
+  Las figuras se pintan como polilíneas RECTAS (flag `f`): el suavizado
+  de puntos medios redondeaba las esquinas ajustadas.
+- **Gestos GoodNotes**: el dedo NO dibuja cuando hay pencil — desplaza el
+  lienzo; pellizco de 2 dedos = zoom 0.5×–4× (chip de % visible); toque
+  corto de 2 dedos = deshacer, de 3 = rehacer (clasificado por el MÁXIMO
+  de dedos del gesto, robusto al orden de levantado); **doble toque del
+  DEDO = alternar pluma↔goma**. ⚠️ HONESTO: el doble toque del PROPIO
+  pencil es UIPencilInteraction (nativo iPadOS) y Safari NO lo expone a
+  web apps — el doble toque del dedo es el sustituto, documentado en el
+  hint (toast al detectar el primer pencil). Mouse: rueda desplaza,
+  ⌘/Ctrl+rueda zoom al cursor. Rechazo de palma: contactos ≥36 px de
+  ancho se ignoran; si el pen está dibujando, el tacto no gesticula.
+- **Lazo**: ahora también **Duplicar** (offset 24 px, la selección pasa a
+  las copias). Sin dibujar: un dedo dibuja como antes (modo tacto puro);
+  un 2.º dedo aborta el trazo a medias y pasa a gesto (como GoodNotes).
+- Robustez: `setPointerCapture` con try/catch (punteros sintéticos);
+  `getCoalescedEvents()` vacío (eventos sintéticos) cae a `[e]`.
+- Arnés local `test-seed.html` (gitignoreado) prueba la pizarra real por
+  eventos sintéticos en headless; capturas verificadas (trazo con
+  presión, resaltador translúcido, rectángulo ajustado perfecto).
+
+**Evaluar con el mentor (§4.4):**
+- Botón `🪶 Evaluar` en la barra de la pizarra, SOLO visible con cuenta
+  de Claude activa (`mentorDisponible()`, regla §0.7: sin key no existe).
+- Exporta la página actual como JPEG (recorte al bbox de lo dibujado,
+  fondo del papel, ≤1500 px) → cierra la pizarra (el panel del mentor
+  vive debajo de su overlay) → abre el chat del mentor y envía la imagen
+  como foto adjunta con un mensaje fijo. El MODO del chat protege el
+  gating como siempre: en forcejeo el mentor pregunta y orienta SIN
+  confirmar ni revelar (§0/§4 — "evaluar" durante el forcejeo es
+  socrático por diseño); tras revelar sí compara con la solución oficial.
+  La imagen jamás se persiste (regla existente del chat).
+- sw.js **v15**. Verificación: node --check (17 módulos+sw), test
+  unitario del reconocedor (7/7), cruce IDs HTML↔JS, arranque headless
+  limpio y capturas del arnés.
+
+**PENDIENTE humano:** probar en el iPad con Apple Pencil real: presión,
+palma, dedo-desplaza, doble toque del dedo, pellizco, figura perfecta
+(sostener al final del trazo) y el flujo Evaluar→mentor con su API key.
+
 ### Cierre de jornada 2026-06-11, noche (estado al apagar)
 
 - **App v12** (sw.js), todo commiteado y pusheado en `main`. Los 3 SQL de

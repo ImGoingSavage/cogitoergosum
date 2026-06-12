@@ -601,10 +601,13 @@
 
   </main>
 
-  <!-- Pizarra de trabajo (pedido 2026-06-11): escribir a mano con el Apple
-       Pencil (o dedo/mouse) para forcejear ahí mismo. Pluma con presión,
-       resaltador, goma, lazo, grosor, colores, deshacer/rehacer y páginas.
-       Cada problema/unidad/examen guarda SU pizarra en este dispositivo. -->
+  <!-- Pizarra de trabajo estilo GoodNotes (pedido 2026-06-11): pluma con
+       presión, resaltador, goma, lazo (mover/duplicar/borrar), 3 presets
+       de grosor por herramienta, figura perfecta al dibujar-y-sostener,
+       dedo que desplaza, pellizco para zoom, toque de 2 dedos = deshacer,
+       3 = rehacer, doble toque del dedo = pluma↔goma. Cada problema/
+       unidad/examen guarda SU pizarra en este dispositivo. El botón
+       "Evaluar" (mentor) solo existe con cuenta de Claude activa. -->
   <div id="pizarra-flotante" hidden>
     <button id="pizarra-burbuja" title="Abrir la pizarra" aria-label="Abrir la pizarra">✎</button>
   </div>
@@ -616,20 +619,20 @@
         <span id="pizarra-titulo" class="pizarra-titulo"></span>
       </div>
       <div class="pizarra-grupo pizarra-herramientas" role="toolbar" aria-label="Herramientas">
-        <button id="btn-piz-pluma" class="pizarra-boton" title="Pluma" aria-label="Pluma">✒</button>
+        <button id="btn-piz-pluma" class="pizarra-boton" title="Pluma — dibuja y sostén para figura perfecta" aria-label="Pluma">✒</button>
+        <button id="btn-piz-goma" class="pizarra-boton" title="Goma — borra trazos completos · doble toque del dedo alterna pluma/goma" aria-label="Goma">◌</button>
         <button id="btn-piz-marcador" class="pizarra-boton" title="Resaltador — tinta translúcida" aria-label="Resaltador">▰</button>
-        <button id="btn-piz-goma" class="pizarra-boton" title="Goma — borra trazos completos" aria-label="Goma">◌</button>
-        <button id="btn-piz-lazo" class="pizarra-boton" title="Lazo — rodea trazos para moverlos o borrarlos" aria-label="Lazo">⬚</button>
-        <label class="pizarra-grosor" title="Grosor del trazo">
-          <input id="piz-grosor" type="range" min="1" max="14" step="1" value="3" aria-label="Grosor del trazo" />
-          <span id="piz-grosor-vista" aria-hidden="true"></span>
-        </label>
+        <button id="btn-piz-lazo" class="pizarra-boton" title="Lazo — rodea trazos para moverlos, duplicarlos o borrarlos" aria-label="Lazo">⬚</button>
+        <span id="piz-grosores" class="piz-grosores" role="group" aria-label="Grosor del trazo"></span>
         <div id="piz-colores" class="piz-colores"></div>
       </div>
       <div class="pizarra-grupo">
+        <button id="btn-piz-mentor" class="pizarra-boton piz-mentor" hidden
+          title="Enviar esta página al mentor socrático">🪶 Evaluar</button>
+        <button id="btn-piz-sel-duplicar" class="pizarra-boton pizarra-sel-borrar" hidden>Duplicar</button>
         <button id="btn-piz-sel-borrar" class="pizarra-boton pizarra-sel-borrar" hidden>Borrar selección</button>
-        <button id="btn-piz-deshacer" class="pizarra-boton" title="Deshacer" aria-label="Deshacer">↩</button>
-        <button id="btn-piz-rehacer" class="pizarra-boton" title="Rehacer" aria-label="Rehacer">↪</button>
+        <button id="btn-piz-deshacer" class="pizarra-boton" title="Deshacer (toque de 2 dedos)" aria-label="Deshacer">↩</button>
+        <button id="btn-piz-rehacer" class="pizarra-boton" title="Rehacer (toque de 3 dedos)" aria-label="Rehacer">↪</button>
         <button id="btn-piz-limpiar" class="pizarra-boton" title="Limpiar la página (doble toque)" aria-label="Limpiar la página">⌫</button>
         <span class="pizarra-paginas">
           <button id="btn-piz-pag-prev" class="pizarra-boton" title="Página anterior" aria-label="Página anterior">‹</button>
@@ -639,7 +642,11 @@
         </span>
       </div>
     </header>
-    <div id="pizarra-lienzo-wrap"><canvas id="pizarra-canvas"></canvas></div>
+    <div id="pizarra-lienzo-wrap">
+      <canvas id="pizarra-canvas"></canvas>
+      <span id="piz-zoom" class="piz-chip" hidden>100%</span>
+      <span id="piz-toast" class="piz-chip piz-toast" hidden></span>
+    </div>
   </section>
 
   <!-- Mentor flotante (§4.4 ampliado): disponible en TODAS las vistas, SOLO

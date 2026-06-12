@@ -138,7 +138,8 @@
       "Bash(curl -s -o /dev/null -w \"teoria zeitz-1: %{http_code}\\\\n\" https://imgoingsavage.github.io/cogitoergosum/data/teoria/zeitz-1.md)",
       "Bash(curl -s https://imgoingsavage.github.io/cogitoergosum/)",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --user-data-dir=/tmp/ces-piz-test2 --virtual-time-budget=6000 --timeout=20000 --dump-dom \"http://localhost:8099/\")",
-      "Bash(pkill -f \"ces-piz-test\")"
+      "Bash(pkill -f \"ces-piz-test\")",
+      "Bash(curl -s \"https://imgoingsavage.github.io/cogitoergosum/sw.js\")"
     ]
   }
 }
