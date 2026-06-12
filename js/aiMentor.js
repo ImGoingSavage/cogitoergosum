@@ -120,7 +120,6 @@ async function llamarClaude(userPrompt) {
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 1024,
-      thinking: { type: 'adaptive' },
       system: SYSTEM_MENTOR,
       messages: [{ role: 'user', content: userPrompt }],
     }),
@@ -158,14 +157,11 @@ export async function generarHintIA(problema, nivel, desconstruccion) {
 async function llamarApi({ system, mensajes, maxTokens = 1024, schema = null }) {
   const cuenta = cuentaActiva();
   if (!cuenta?.apiKey) return null;
-  const body = {
-    model: MODEL,
-    max_tokens: maxTokens,
-    thinking: { type: 'adaptive' },
-    system,
-    messages: mensajes,
-  };
-  if (schema) body.output_config = { format: { type: 'json_schema', schema } };
+
+  // Cuando se pide JSON estructurado, inyectamos la instrucción en el system
+  const systemFinal = schema
+    ? `${system}\n\nResponde ÚNICAMENTE con un objeto JSON válido que cumpla el esquema indicado, sin texto adicional ni bloques de código.`
+    : system;
 
   const res = await fetch(API_URL, {
     method: 'POST',
@@ -175,14 +171,22 @@ async function llamarApi({ system, mensajes, maxTokens = 1024, schema = null }) 
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true',
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: maxTokens,
+      system: systemFinal,
+      messages: mensajes,
+    }),
   });
   if (!res.ok) throw new Error(`API ${res.status}`);
   const data = await res.json();
   if (data.stop_reason === 'refusal') return null;
   const texto = (data.content ?? []).find((b) => b.type === 'text')?.text?.trim() ?? null;
   if (!texto) return null;
-  return schema ? JSON.parse(texto) : texto;
+  if (!schema) return texto;
+  // Extraer JSON aunque el modelo envuelva en comillas o bloque de código
+  const match = texto.match(/\{[\s\S]*\}/);
+  return match ? JSON.parse(match[0]) : JSON.parse(texto);
 }
 
 /**
