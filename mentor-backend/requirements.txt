@@ -1,0 +1,11 @@
+# Backend del Mentor local. Python 3.11+. Versiones ancladas por integridad
+# (OWASP A06: componentes desactualizados). Actualizar con pip-audit.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+httpx==0.28.1
+qdrant-client==1.12.2
+PyJWT[crypto]==2.10.1
+python-dotenv==1.0.1
+slowapi==0.1.9

@@ -1,0 +1,22 @@
+# Servicio systemd para el túnel. Instalar en /etc/systemd/system/.
+#   sudo cp cogito-mentor.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now cogito-mentor
+[Unit]
+Description=Cloudflare Tunnel - CogitoErgoSum Mentor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=USUARIO
+ExecStart=/usr/local/bin/cloudflared tunnel --config /home/USUARIO/.cloudflared/config.yml run
+Restart=on-failure
+RestartSec=5
+# Endurecimiento básico del servicio (OWASP A05):
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

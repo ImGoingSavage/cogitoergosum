@@ -1148,6 +1148,19 @@ fieldset.autoeval.vertical { flex-direction: column; gap: 8px; }
 
 .mentor-config { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
+/* Fila de checkbox + etiqueta (mentor local): ocupa el ancho completo para
+   que el resto de campos caigan debajo. */
+.check-fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-basis: 100%;
+  color: var(--texto-suave);
+  font-size: 14px;
+  cursor: pointer;
+}
+.check-fila input { flex: 0 0 auto; min-width: 0; cursor: pointer; }
+
 .mentor-config input {
   flex: 1;
   min-width: 220px;

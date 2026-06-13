@@ -16,6 +16,7 @@
 import * as Storage from './storage.js';
 import * as Analytics from './analytics.js';
 import * as Study from './study.js';
+import * as MentorLocal from './mentorLocal.js';
 import {
   mentorDisponible,
   chatMentor,
@@ -145,13 +146,17 @@ export function actualizarSuperficiesIA() {
 }
 
 export function actualizarMentorUI() {
-  const ia = mentorDisponible();
+  const modo = modoMentor();
+  // El mentor local (RAG sobre la biblioteca) es útil SOLO en modo estudio
+  // (TEORÍA). Así, un usuario sin Claude pero con backend local ve la burbuja
+  // en Estudio; en forcejeo/Arena el chat sigue siendo de Claude (gating).
+  const localUtil = MentorLocal.configurado() && modo === 'estudio';
+  const ia = mentorDisponible() || localUtil;
   $('mentor-flotante').hidden = !ia;
   if (!ia) {
     $('mentor-panel').hidden = true;
     return;
   }
-  const modo = modoMentor();
   $('mentor-modo').textContent = MENTOR_MODOS_UI[modo].etiqueta;
   $('mentor-nota').textContent = MENTOR_MODOS_UI[modo].nota;
   renderizarMentorMensajes(modo);
@@ -196,7 +201,30 @@ export async function enviarMensajeMentor() {
         { type: 'text', text: texto || 'Te adjunto una foto de mi trabajo.' },
       ];
     }
-    const respuesta = await chatMentor(modo, contextoMentor(modo), mensajes);
+    let respuesta = null;
+    // En modo estudio (TEORÍA) y sin foto, intenta primero el mentor local
+    // (RAG sobre la biblioteca). Si la laptop está apagada o falla, cae a
+    // Claude; si tampoco hay Claude, queda el aviso de "no respondió".
+    if (modo === 'estudio' && !foto && (await MentorLocal.disponible())) {
+      const r = await MentorLocal.explicar({
+        contexto_flujo: 'TEORIA',
+        topic: '',
+        difficulty: 1,
+        problem_statement: '',
+        user_desconstruccion: '',
+        user_code_or_answer: '',
+        error_message: '',
+        user_question: texto || 'Explícame este tema apoyándote en la biblioteca.',
+      });
+      if (r?.answer) {
+        respuesta = r.answer;
+        const fuentes = [...new Set((r.retrieved_context ?? []).map((c) => c.fuente).filter(Boolean))].slice(0, 3);
+        if (fuentes.length) respuesta += `\n\n— Apoyado en: ${fuentes.join(', ')}`;
+      }
+    }
+    if (respuesta == null) {
+      respuesta = await chatMentor(modo, contextoMentor(modo), mensajes);
+    }
     if (respuesta) {
       guardarMensajeMentor(modo, { role: 'assistant', content: respuesta });
       $('mentor-chat-estado').textContent = '';

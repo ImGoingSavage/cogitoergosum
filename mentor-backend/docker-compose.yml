@@ -1,0 +1,20 @@
+# Qdrant local. Bind a 127.0.0.1 A PROPÓSITO: la base vectorial NUNCA se
+# expone a la red ni al túnel. Solo FastAPI (mismo host) la alcanza.
+# OWASP A05 (Security Misconfiguration): sin puertos públicos, sin default
+# de "escucha en 0.0.0.0".
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    container_name: cogito-qdrant
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"   # REST, solo loopback
+      - "127.0.0.1:6334:6334"   # gRPC, solo loopback
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+    # Límite de memoria: en 16 GB hay que dejar aire para Ollama (~2 GB con
+    # el 1.5B) y el SO. Qdrant con este corpus cabe de sobra en 1 GB.
+    deploy:
+      resources:
+        limits:
+          memory: 1500m

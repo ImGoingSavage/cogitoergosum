@@ -1,0 +1,13 @@
+# Secretos y estado local: JAMÁS al repo (el repo es público en Pages).
+.env
+*.db
+*.db-journal
+*.sqlite3
+qdrant_storage/
+__pycache__/
+*.pyc
+.venv/
+venv/
+cloudflared/credentials.json
+cloudflared/cert.pem
+*.log

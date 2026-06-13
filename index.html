@@ -602,6 +602,33 @@
       </article>
 
       <article class="tarjeta">
+        <h2>Mentor local (opcional) — RAG sobre tu biblioteca</h2>
+        <p class="piso-instruccion">
+          Si tienes el backend del mentor corriendo (RAG + DeepSeek en una
+          laptop, ver <code>mentor-backend/</code>), conéctalo aquí. En el Modo
+          Estudio, el mentor explicará apoyándose en la biblioteca. Es opcional:
+          si está apagado, la app sigue igual. Tu API key de Claude jamás se
+          envía a este backend.
+        </p>
+        <div class="mentor-config">
+          <label class="check-fila">
+            <input id="local-habilitado" type="checkbox" />
+            <span>Activar mentor local en este dispositivo</span>
+          </label>
+          <input id="local-url" type="url" placeholder="URL del backend (https://mentor.tu-dominio.com)" autocomplete="off" />
+          <input id="local-token" type="password" placeholder="Service token (el de tu .env)" autocomplete="off" />
+          <button id="btn-local-guardar" class="secundario">Guardar</button>
+          <button id="btn-local-probar" class="secundario">Probar conexión</button>
+        </div>
+        <p id="local-estado"></p>
+        <p class="nota-privacidad">
+          La URL y el token viven SOLO en este dispositivo (LocalStorage, fuera
+          de la sincronización). Para usar el mentor local necesitas tu cuenta
+          iniciada: el backend valida tu sesión.
+        </p>
+      </article>
+
+      <article class="tarjeta">
         <h2>Diagnóstico</h2>
         <p class="nota-privacidad">
           Últimos avisos técnicos de este dispositivo (jamás se suben).

@@ -1645,6 +1645,54 @@ archivo al terminar y marca las casillas de la tabla de arriba.
 
 ---
 
+### Bitácora 2026-06-13 (9) — Mentor local híbrido: backend RAG + cliente frontend
+
+Nuevo subsistema **opcional** (no toca el mentor Claude actual). Diseñado tras
+una auditoría de arquitectura senior (ver el mensaje del agente / README §0).
+
+**Backend** (`mentor-backend/`, NO se sirve en Pages como app; es un
+deployable aparte para una laptop Linux i5/16GB):
+- Stack: FastAPI + Qdrant (Docker, loopback) + Ollama (`deepseek-r1:1.5b` +
+  `nomic-embed-text`). Cliente Claude BYOK se queda 100% en el navegador: la
+  key JAMÁS llega a este backend (enrutarla aumentaría su exposición).
+- `ingest.py`: ingesta idempotente (hash SHA-256) de `Biblioteca/*.txt` con
+  chunking estructural y metadata (materia/tema/dificultad/tipo_contenido).
+- Dual prompt: TEORÍA (expositor) vs EVALUACIÓN (socrático estricto). Política
+  anti-fuga en 3 capas: filtro Qdrant excluye `solucion`/`moraleja` en
+  EVALUACIÓN + segundo filtro en memoria + auditoría de la salida.
+- Cola `asyncio` + 1 worker + timeout + TTL (NO BackgroundTasks). 202 + polling.
+- Auth: JWT de Supabase verificado por firma (JWKS/RS256) + service token +
+  rate limit. OWASP comentado in-situ. Métricas en SQLite (sin texto de usuario).
+- **GARANTÍA "nunca texto íntegro"**: `retrieved_context` expone solo
+  metadatos; el `texto` del chunk se queda en el servidor y alimenta el
+  contexto del modelo; al usuario solo llega la SÍNTESIS. Decisión de corpus:
+  textos íntegros (cada usuario aportó su copia comprada); `Biblioteca/` y
+  `qdrant_storage/` siguen fuera del repo (.gitignore).
+- 14 archivos, sintaxis verificada. NO probado end-to-end aquí (esta Mac no es
+  el target: Ollama/Qdrant/i5 viven en la laptop Linux). Correr `README §2`.
+
+**Frontend** (`js/mentorLocal.js` + cableado):
+- `mentorLocal.js`: cliente del backend (health probe con cache 60s, POST
+  202 + polling, fallback graceful a null). Config local en `cps_mentorLocal`
+  (url, serviceToken, on/off) — FUERA de CLAVES_SYNC, como `mentorIA`.
+- `mentorChat.js`: en modo **estudio** (TEORÍA) y sin foto, intenta el mentor
+  local primero; si la laptop está apagada o falla, cae a Claude; si tampoco
+  hay Claude, queda el aviso de "no respondió". Forcejeo/Arena/revisión siguen
+  en Claude (gating intacto — el 1.5B no hace de tutor socrático).
+- `actualizarMentorUI()`: la burbuja aparece para usuarios sin Claude pero con
+  backend local SOLO en modo estudio.
+- UI: tarjeta "Mentor local (opcional)" en el Dashboard (`local-*` IDs) +
+  `configurarMentorLocalUI()` en app.js. Estilo `.check-fila` en styles.css.
+- `sw.js` → **v26**: `js/mentorLocal.js` en SHELL (92 archivos verificados).
+
+**Pendiente humano (en la laptop Linux):** `ollama pull`, `docker compose up`,
+`pip install`, `python ingest.py`, `uvicorn`, túnel cloudflared; luego en la
+app: activar el mentor local con la URL del túnel y el service token, y probar
+una explicación en Modo Estudio. Decidir `EVALUACION_FALLBACK` (curated por
+defecto; "local" arriesga el 1.5B).
+
+---
+
 ### Convenciones que NO se negocian (resumen operativo)
 
 - Español en todo; vanilla JS, ES6 modules, CERO librerías/CDNs/build.

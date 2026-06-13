@@ -1,0 +1,19 @@
+# Config de cloudflared. Copia a ~/.cloudflared/config.yml en la laptop.
+# El túnel SOLO publica FastAPI (127.0.0.1:8000). Qdrant (6333) y Ollama
+# (11434) JAMÁS se exponen: quedan en loopback, alcanzables solo por FastAPI.
+
+tunnel: cogito-mentor
+credentials-file: /home/USUARIO/.cloudflared/cogito-mentor.json
+
+ingress:
+  - hostname: mentor.TU-DOMINIO.com
+    service: http://127.0.0.1:8000
+    originRequest:
+      # El origin (FastAPI) hace su propia auth (JWT Supabase + service token).
+      # Estos timeouts evitan que un job lento de 1.5B tumbe la conexión antes
+      # de que el frontend reciba el 202 (la generación va por la cola, no por
+      # esta request).
+      connectTimeout: 10s
+      noTLSVerify: false
+  # Todo lo demás se rechaza (no hay regla comodín a otros servicios locales).
+  - service: http_status:404

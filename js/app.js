@@ -39,6 +39,7 @@ import * as Api from './api.js';
 import * as Sync from './sync.js';
 import * as CuentaUI from './cuentaUI.js';
 import * as MentorChat from './mentorChat.js';
+import * as MentorLocal from './mentorLocal.js';
 import * as Claustro from './claustro.js';
 import * as Pizarra from './pizarra.js';
 
@@ -102,6 +103,7 @@ async function init() {
   configurarNavegacion();
   configurarTimerUI();
   configurarMentorUI();
+  configurarMentorLocalUI();
   configurarFactoryUI();
   configurarPisoMinimo();
   configurarFreshStart();
@@ -1388,6 +1390,31 @@ function configurarMentorUI() {
     $('mentor-estado').textContent = 'Probando la cuenta…';
     const r = await probarCuenta();
     $('mentor-estado').textContent = r.mensaje;
+  });
+}
+
+/* ============ Mentor local opcional (backend RAG, mentorLocal.js) ========= */
+
+function configurarMentorLocalUI() {
+  const cfg = Storage.load('mentorLocal') ?? { habilitado: false, url: '', serviceToken: '' };
+  $('local-habilitado').checked = Boolean(cfg.habilitado);
+  $('local-url').value = cfg.url ?? '';
+  $('local-token').value = cfg.serviceToken ?? '';
+
+  $('btn-local-guardar').addEventListener('click', () => {
+    Storage.save('mentorLocal', {
+      habilitado: $('local-habilitado').checked,
+      url: $('local-url').value.trim(),
+      serviceToken: $('local-token').value,
+    });
+    $('local-estado').textContent = 'Guardado. Usa «Probar conexión» para verificar.';
+    MentorChat.actualizarMentorUI(); // la burbuja puede aparecer/ocultarse
+  });
+
+  $('btn-local-probar').addEventListener('click', async () => {
+    $('local-estado').textContent = 'Probando…';
+    const r = await MentorLocal.probar();
+    $('local-estado').textContent = r.mensaje;
   });
 }
 

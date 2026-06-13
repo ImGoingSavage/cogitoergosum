@@ -71,6 +71,10 @@ const DEFAULTS = {
   problemasGenerados: [],
   // Configuración del mentor IA (opcional)
   mentorIA: { habilitado: false, apiKey: '' },
+  // Mentor local opcional (backend RAG+DeepSeek en la laptop, mentorLocal.js).
+  // Config del dispositivo: url del túnel, service token y on/off. NUNCA viaja
+  // al servidor (fuera de CLAVES_SYNC, igual que mentorIA): es plomería local.
+  mentorLocal: { habilitado: false, url: '', serviceToken: '' },
   // El claustro (Fase D, §2.4): preferencias sociales del usuario.
   // username, ficha compartida (opt-in) y entregas de "pensar juntos"
   // que esperan red (jamás bloquean el cierre de una sesión).
