@@ -1746,7 +1746,50 @@ defecto; "local" arriesga el 1.5B).
   Anthropic para terceros; usar API key por usuario, §4).
 - Notificaciones de comparación, culpa o urgencia.
 - Apps nativas de tienda (la PWA cubre los tres dispositivos sin costo ni
-  proceso de revisión; reevaluar solo si la PWA muestra límites reales).
+  proceso de revisión; eevaluar solo si la PWA muestra límites reales).
+
+---
+
+## §6b. PROTOCOLO DE TRABAJO PARALELO CON MÚLTIPLES CUENTAS
+
+Cuando dos sesiones de Claude trabajan en paralelo sobre este repo:
+
+### Regla de oro
+**Una sesión activa por archivo a la vez.** Nunca dos sesiones editando
+`data/study.json` o `sw.js` simultáneamente.
+
+### Antes de empezar (siempre)
+1. `git pull` para partir del estado más reciente.
+2. Revisar `data/arena-ingesta-ledger.json`: tomar el **siguiente libro
+   en estado `"pendiente"`** según el orden de prioridad §10 de
+   `PROMPT-MAESTRO-ARENA.md`.
+3. Marcar ese libro como `"en_progreso"` y hacer commit del ledger
+   **antes** de empezar el trabajo de contenido.
+4. Nunca tomar un libro que otra sesión tenga en `"en_progreso"`.
+
+### Al terminar (siempre)
+1. Marcar el libro como `"completado"` con `preguntas_agregadas` y
+   `unidades_creadas` actualizados.
+2. Commit de todos los archivos tocados (study.json, sw.js, teoría .md,
+   ledger, HANDOFFCES.md con la bitácora del turno).
+3. Push antes de cerrar la sesión.
+
+### División recomendada por sector
+| Cuenta | Sectores preferentes |
+|--------|---------------------|
+| A | `quant` (Practical Guide, Joshi, probabilidad) |
+| B | `maang`, `ciencia-datos`, `conductual` |
+| Cualquiera | `ml-systems`, `health-ai-rwe`, Sector C |
+
+### Prompt de arranque para una sesión nueva
+```
+lee HANDOFFCES.md primero (§0 es ley, §5.4 es el mapa),
+luego ejecuta las indicaciones de PROMPT-MAESTRO-ARENA.md.
+Antes de empezar: haz git pull y revisa el ledger
+(data/arena-ingesta-ledger.json) para saber qué libro tomar —
+elige el siguiente en estado "pendiente" según el orden §10,
+pero NUNCA el que otra sesión tenga en "en_progreso".
+```
 
 ---
 
