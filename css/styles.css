@@ -1047,6 +1047,8 @@ button.enlace {
 .ruta-maang    { background: rgba(6,182,212,0.18);  color: #67e8f9; }
 .ruta-health-ai-rwe { background: rgba(34,197,94,0.18);  color: #86efac; }
 .ruta-ml-systems    { background: rgba(251,146,60,0.18);  color: #fdba74; }
+.ruta-ciencia-datos { background: rgba(244,114,182,0.18); color: #f9a8d4; }
+.ruta-conductual    { background: rgba(234,179,8,0.18);   color: #fde047; }
 
 .pistas-container { margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
 .pista-nivel { font-weight: 700; color: var(--alerta); }

@@ -240,7 +240,7 @@ export function renderizar() {
     btn.className = 'unidad-boton';
     btn.disabled = !hecha && !abierta;
     const rutaLabel = u.metadata?.ruta
-      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${({'quant':'quant','maang':'maang','health-ai-rwe':'health ai','ml-systems':'ml systems'}[u.metadata.ruta] ?? u.metadata.ruta)}</span>`
+      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${({'quant':'quant','maang':'maang','health-ai-rwe':'health ai','ml-systems':'ml systems','ciencia-datos':'ciencia de datos','conductual':'conductual'}[u.metadata.ruta] ?? u.metadata.ruta)}</span>`
       : '';
     btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
     btn.querySelector('.unidad-nombre').textContent = u.titulo;

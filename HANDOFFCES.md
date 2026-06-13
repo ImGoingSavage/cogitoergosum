@@ -1747,3 +1747,26 @@ defecto; "local" arriesga el 1.5B).
 - Notificaciones de comparación, culpa o urgencia.
 - Apps nativas de tienda (la PWA cubre los tres dispositivos sin costo ni
   proceso de revisión; reevaluar solo si la PWA muestra límites reales).
+
+---
+
+## Bitácora 2026-06-12 (10) — Arena tanda 1: Heard on the Street, 31 preguntas
+
+**Qué se hizo**
+
+- Creado `data/arena-ingesta-ledger.json` con las 43 entradas del plan maestro
+  (estado `pendiente` por defecto; `en_progreso` para Heard on the Street).
+- Cableadas rutas nuevas `ciencia-datos` y `conductual` en CSS (`styles.css`)
+  y en el mapa de etiquetas de `study.js` (línea 243).
+- Añadidas 3 heurísticas a `catalogoHeuristicas` (total: 25):
+  `paridad-cuadrados`, `no-arbitraje`, `cadena-markov-ee`.
+- Creadas 3 unidades en `fase-7` (arena-q3/q4/q5, órdenes 8-10) con 31
+  preguntas de banco combinadas (arq3-q1..q11, arq4-q1..q10, arq5-q1..q10).
+- Añadidos 3 ítems al examen de `fase-7` (f7-ex-8/9/10; total: 10 ítems).
+- Creados `data/teoria/arena-q{3,4,5}.md`; toda la matemática verificada
+  con Python antes de incluirla.
+- `sw.js` → `v27`; nuevos archivos de teoría en SHELL.
+
+**Estado** — Heard on the Street: 31/60 preguntas (en_progreso; faltan 29).
+**Siguiente** — Completar cuota (arena-q6/q7 con ~29 preguntas más) y luego
+iniciar A Practical Guide to Quantitative Finance Interviews.

@@ -109,6 +109,21 @@
       "id": "skew-drift",
       "nombre": "Training-serving skew y drift",
       "descripcion": "El modelo en producción recibe features distintas de las del entrenamiento (skew) o la distribución cambia con el tiempo (drift). Defensa: definición única de features y monitoreo continuo."
+    },
+    {
+      "id": "paridad-cuadrados",
+      "nombre": "Paridad de divisores / cuadrados perfectos",
+      "descripcion": "Solo los cuadrados perfectos tienen número impar de divisores; cada d ≠ √n se empareja con n/d."
+    },
+    {
+      "id": "no-arbitraje",
+      "nombre": "No arbitraje / replicación",
+      "descripcion": "Dos portfolios con el mismo payoff en todos los escenarios futuros deben costar lo mismo hoy."
+    },
+    {
+      "id": "cadena-markov-ee",
+      "nombre": "Sistema de ecuaciones de estado",
+      "descripcion": "Define E[X | estado i], escribe ecuaciones balanceadas por estado y resuelve el sistema lineal."
     }
   ],
   "bloques": [
@@ -621,7 +636,18 @@
       "id": "fase-6",
       "titulo": "Fase 6 · Transformaciones, Engel avanzado y AIME",
       "meta": "Cierre del ciclo Zeitz (§8.5), profundización con los capítulos más exigentes de Engel (inducción fuerte, recurrencias, polinomios, ecuaciones funcionales, geometría avanzada) y primer contacto con problemas reales de nivel AIME. Orden estricto de dificultad creciente.",
-      "unidades": ["zeitz-85a", "zeitz-85b", "engel-ind", "engel-suc", "engel-pol", "engel-fun", "engel-geo2", "aime-alg", "aime-geo", "aime-cnt"],
+      "unidades": [
+        "zeitz-85a",
+        "zeitz-85b",
+        "engel-ind",
+        "engel-suc",
+        "engel-pol",
+        "engel-fun",
+        "engel-geo2",
+        "aime-alg",
+        "aime-geo",
+        "aime-cnt"
+      ],
       "examen": {
         "items": [
           {
@@ -701,7 +727,10 @@
         "arena-m2",
         "arena-s1",
         "arena-h1",
-        "arena-h2"
+        "arena-h2",
+        "arena-q3",
+        "arena-q4",
+        "arena-q5"
       ],
       "examen": {
         "items": [
@@ -721,9 +750,18 @@
             "metadata": {
               "ruta": "quant",
               "nivel": "C",
-              "skills": ["valor-esperado", "linealidad", "varianza-condicional"],
-              "errores_comunes": ["Asumir que necesitas independencia para sumar esperanzas", "Olvidar la ley de varianza total cuando k es aleatoria"],
-              "casos_borde": ["k=0 posible? No (mínimo 1 resultado). Si k=0 existiera, E[clics]=0 para esa consulta."],
+              "skills": [
+                "valor-esperado",
+                "linealidad",
+                "varianza-condicional"
+              ],
+              "errores_comunes": [
+                "Asumir que necesitas independencia para sumar esperanzas",
+                "Olvidar la ley de varianza total cuando k es aleatoria"
+              ],
+              "casos_borde": [
+                "k=0 posible? No (mínimo 1 resultado). Si k=0 existiera, E[clics]=0 para esa consulta."
+              ],
               "source": "original"
             }
           },
@@ -743,9 +781,20 @@
             "metadata": {
               "ruta": "quant",
               "nivel": "C",
-              "skills": ["bayes", "VPP", "tablas-contingencia", "prevalencia"],
-              "errores_comunes": ["Confundir sensibilidad con VPP", "Olvidar que especificidad importa más cuando la prevalencia es baja"],
-              "casos_borde": ["prev → 0: VPP → 0 aunque el test sea perfecto", "prev → 1: VPP → sensibilidad"],
+              "skills": [
+                "bayes",
+                "VPP",
+                "tablas-contingencia",
+                "prevalencia"
+              ],
+              "errores_comunes": [
+                "Confundir sensibilidad con VPP",
+                "Olvidar que especificidad importa más cuando la prevalencia es baja"
+              ],
+              "casos_borde": [
+                "prev → 0: VPP → 0 aunque el test sea perfecto",
+                "prev → 1: VPP → sensibilidad"
+              ],
               "source": "original"
             }
           },
@@ -765,9 +814,21 @@
             "metadata": {
               "ruta": "maang",
               "nivel": "C",
-              "skills": ["hashing", "two-sum", "complejidad"],
-              "errores_comunes": ["O(n²) por fuerza bruta", "Olvidar el caso borde de duplicados", "No distinguir pares de índices vs pares de valores"],
-              "casos_borde": ["Todos ceros", "Array con un solo elemento", "Valores repetidos"],
+              "skills": [
+                "hashing",
+                "two-sum",
+                "complejidad"
+              ],
+              "errores_comunes": [
+                "O(n²) por fuerza bruta",
+                "Olvidar el caso borde de duplicados",
+                "No distinguir pares de índices vs pares de valores"
+              ],
+              "casos_borde": [
+                "Todos ceros",
+                "Array con un solo elemento",
+                "Valores repetidos"
+              ],
               "source": "original"
             }
           },
@@ -787,9 +848,21 @@
             "metadata": {
               "ruta": "maang",
               "nivel": "C",
-              "skills": ["ROW_NUMBER", "PARTITION BY", "CTE", "SQL-analytics"],
-              "errores_comunes": ["Usar subquery correlacionada O(n²)", "Olvidar filtrar el tipo antes del ranking", "ROW_NUMBER vs RANK en caso de empates"],
-              "casos_borde": ["Timestamps duplicados", "Usuario con solo 1 compra (excluir)"],
+              "skills": [
+                "ROW_NUMBER",
+                "PARTITION BY",
+                "CTE",
+                "SQL-analytics"
+              ],
+              "errores_comunes": [
+                "Usar subquery correlacionada O(n²)",
+                "Olvidar filtrar el tipo antes del ranking",
+                "ROW_NUMBER vs RANK en caso de empates"
+              ],
+              "casos_borde": [
+                "Timestamps duplicados",
+                "Usuario con solo 1 compra (excluir)"
+              ],
               "source": "original"
             }
           },
@@ -809,9 +882,21 @@
             "metadata": {
               "ruta": "health-ai-rwe",
               "nivel": "C",
-              "skills": ["DAG", "confounding", "mediacion", "adjustment-set"],
-              "errores_comunes": ["Ajustar todo lo disponible", "No distinguir mediador de confounder", "Incluir variables post-tratamiento"],
-              "casos_borde": ["Mediador parcial: el efecto de X es directo + indirecto vía D", "C podría ser collider en otros DAGs"],
+              "skills": [
+                "DAG",
+                "confounding",
+                "mediacion",
+                "adjustment-set"
+              ],
+              "errores_comunes": [
+                "Ajustar todo lo disponible",
+                "No distinguir mediador de confounder",
+                "Incluir variables post-tratamiento"
+              ],
+              "casos_borde": [
+                "Mediador parcial: el efecto de X es directo + indirecto vía D",
+                "C podría ser collider en otros DAGs"
+              ],
               "source": "original"
             }
           },
@@ -831,9 +916,20 @@
             "metadata": {
               "ruta": "health-ai-rwe",
               "nivel": "C",
-              "skills": ["immortal-time", "target-trial", "confounding-indicacion", "tiempo-cero"],
-              "errores_comunes": ["No ver el período inmortal", "Solo identificar confounding y olvidar el sesgo temporal", "Proponer ajuste multivariado sin corregir el t=0"],
-              "casos_borde": ["¿Y si el programa empieza en el día 1 del alta? Entonces no hay tiempo inmortal de completar, pero sí confounding por indicación."],
+              "skills": [
+                "immortal-time",
+                "target-trial",
+                "confounding-indicacion",
+                "tiempo-cero"
+              ],
+              "errores_comunes": [
+                "No ver el período inmortal",
+                "Solo identificar confounding y olvidar el sesgo temporal",
+                "Proponer ajuste multivariado sin corregir el t=0"
+              ],
+              "casos_borde": [
+                "¿Y si el programa empieza en el día 1 del alta? Entonces no hay tiempo inmortal de completar, pero sí confounding por indicación."
+              ],
               "source": "original"
             }
           },
@@ -853,10 +949,117 @@
             "metadata": {
               "ruta": "ml-systems",
               "nivel": "C",
-              "skills": ["concept-drift", "training-serving-skew", "canary-deploy", "rollback"],
-              "errores_comunes": ["Confundir data drift con concept drift", "Proponer reentrenar sin corregir el skew del pipeline", "No definir el plan de rollback antes del despliegue"],
-              "casos_borde": ["¿Y si las labels llegan con 90 días de retraso? → proxies tempranos obligatorios"],
+              "skills": [
+                "concept-drift",
+                "training-serving-skew",
+                "canary-deploy",
+                "rollback"
+              ],
+              "errores_comunes": [
+                "Confundir data drift con concept drift",
+                "Proponer reentrenar sin corregir el skew del pipeline",
+                "No definir el plan de rollback antes del despliegue"
+              ],
+              "casos_borde": [
+                "¿Y si las labels llegan con 90 días de retraso? → proxies tempranos obligatorios"
+              ],
               "source": "original"
+            }
+          },
+          {
+            "id": "f7-ex-8",
+            "heuristica": "paridad-cuadrados",
+            "enunciado": "100 bombillas en fila, apagadas. Persona k activa/desactiva cada k-ésima bombilla (k=1…100). (a) ¿En qué estado queda la bombilla 64? (b) ¿Cuántas bombillas quedan encendidas en total y cuáles son? (c) Con n bombillas y n personas, ¿cuántas quedan encendidas?",
+            "pistas": [
+              "¿Qué determina si la bombilla n queda encendida o apagada? Piensa en cuántos 'toques' recibe en total.",
+              "La bombilla n recibe un toque por cada divisor suyo. ¿Cuándo tiene un número impar de divisores?",
+              "Los divisores vienen en pares (d, n/d). ¿Cuándo se rompe el emparejamiento? Pista: cuando d = n/d.",
+              "El emparejamiento se rompe cuando n = d², es decir cuando n es cuadrado perfecto. Entonces y solo entonces el número de divisores es impar.",
+              "(a) 64=8²: 7 divisores → encendida. (b) Los cuadrados perfectos ≤100: {1,4,9,16,25,36,49,64,81,100} → 10 encendidas. (c) ⌊√n⌋ encendidas."
+            ],
+            "solucion": "(a) ENCENDIDA: 64=8² tiene 7 divisores (impar) → número impar de toques → enciende. (b) 10 bombillas: los cuadrados perfectos del 1 al 100. (c) ⌊√n⌋ bombillas en general.",
+            "disparador": "# toques en bombilla n = # divisores de n. Impar ⟺ n es cuadrado perfecto. Con n bombillas: ⌊√n⌋ quedan encendidas.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "B",
+              "skills": [
+                "divisores",
+                "cuadrados-perfectos",
+                "palomar"
+              ],
+              "errores_comunes": [
+                "Calcular 100/2=50 (número de pares de toques) olvidando que los cuadrados tienen uno impar",
+                "No generalizar a ⌊√n⌋"
+              ],
+              "casos_borde": [
+                "n=1: solo 1 bombilla encendida (1=1²)"
+              ],
+              "source": "Heard on the Street (Q1.13-1.14)"
+            }
+          },
+          {
+            "id": "f7-ex-9",
+            "heuristica": "bayes-tasa-base",
+            "enunciado": "Test médico: 100% sensible, 7% de falsos positivos. Prevalencia de la enfermedad: 0.5%. Un paciente aleatorio da positivo. (a) ¿Cuál es P(tiene la enfermedad)? (b) El médico dice '93% de precisión → 93% de chance de estar enfermo.' ¿Por qué está equivocado? (c) ¿Cuántos falsos positivos esperas por cada verdadero positivo en 10,000 personas?",
+            "pistas": [
+              "Dibuja el árbol: empieza por la prevalencia (0.5%). Dos ramas: tiene/no tiene la enfermedad. Luego aplica la tasa del test a cada rama.",
+              "¿Qué pregunta P(+|E) = 93%? ¿Qué pregunta P(E|+)? Son probabilidades condicionadas al revés. El médico confunde una con la otra.",
+              "Aplica Bayes: P(E|+) = P(+|E)·P(E) / [P(+|E)·P(E) + P(+|¬E)·P(¬E)].",
+              "Numéricamente: numerador = 1×0.005 = 0.005. Denominador = 0.005 + 0.07×0.995 = 0.005 + 0.06965 = 0.07465.",
+              "P(E|+) = 0.005/0.07465 ≈ 6.7%. En 10,000: 50 enfermos dan +, 0.07×9950 ≈ 697 sanos dan falso +. Ratio: 697/50 ≈ 14 falsos positivos por cada verdadero positivo."
+            ],
+            "solucion": "(a) P(E|+) ≈ 6.7%. (b) El médico confunde P(+|E)=100% con P(E|+). Son condicionales en sentidos opuestos; la tasa base baja aplasta la especificidad. (c) ≈14 falsos positivos por cada verdadero positivo.",
+            "disparador": "Prevalencia baja + falsos positivos moderados → la mayoría de positivos son falsos. Siempre ancla el numerador de Bayes en P(E).",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "B",
+              "skills": [
+                "bayes",
+                "sensibilidad",
+                "especificidad",
+                "valor-predictivo-positivo"
+              ],
+              "errores_comunes": [
+                "Confundir P(+|E) con P(E|+) (falacia del fiscal)",
+                "Ignorar la prevalencia",
+                "No usar el árbol de probabilidad"
+              ],
+              "casos_borde": [
+                "Si prevalencia=50%: P(E|+) = 1/(1+0.07) ≈ 93% (ahí sí el médico tendría razón)"
+              ],
+              "source": "Heard on the Street (Q4.30)"
+            }
+          },
+          {
+            "id": "f7-ex-10",
+            "heuristica": "no-arbitraje",
+            "enunciado": "Put-call parity: C − P = S − K·e^(−rT). (a) Demuéstrala por no-arbitraje construyendo dos portfolios. (b) Con r=0, S=K, T=1 y C=$5, ¿cuánto vale la put? (c) ¿Por qué la call con upside ilimitado no es siempre más cara que la put con upside limitado a K?",
+            "pistas": [
+              "Portfolio A hoy: long call + K·e^(−rT) en efectivo (invertidos a tasa r). Portfolio B hoy: long put + long acción. Calcula el payoff de cada portfolio si S(T)>K y si S(T)≤K.",
+              "Ambos portfolios valen max(S(T), K) al vencimiento en todos los casos. Por no-arbitraje, deben costar lo mismo hoy: C + K·e^(−rT) = P + S.",
+              "Para (b): con r=0 y S=K la paridad da C = P. Si C=$5, entonces P=$5.",
+              "Para (c): la paridad es la respuesta. La 'paradoja' del upside ilimitado ya está capturada en el precio de equilibrio. Con r=0 y S=K, la distribución log-normal es simétrica alrededor del forward = S.",
+              "Forma de recordar la paridad: {call + bono} = {put + acción}. El bono financia la compra del subyacente si la call vence OTM; la put compensa la pérdida del subyacente si baja de K."
+            ],
+            "solucion": "(a) Portfolios A y B tienen payoff idéntico (max(S(T),K)) → mismo precio hoy → C + Ke^{-rT} = P + S. (b) Con r=0, S=K: C=P=$5. (c) La paridad garantiza que el mayor upside de la call ya se refleja en su precio; no hay discrepancia.",
+            "disparador": "Put-call parity = no-arbitraje entre {call+bono} y {put+acción}. ATM con r=0: C=P siempre. La 'paradoja' del upside ilimitado no viola la paridad.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "B",
+              "skills": [
+                "put-call-parity",
+                "no-arbitraje",
+                "replicacion",
+                "black-scholes"
+              ],
+              "errores_comunes": [
+                "Olvidar descontar K a valor presente en la paridad",
+                "Afirmar que C > P siempre por el upside ilimitado (incorrecto: depende de S vs K)"
+              ],
+              "casos_borde": [
+                "Con S>>K: C >> P (call deep ITM). Con S<<K: P >> C (put deep ITM)"
+              ],
+              "source": "Heard on the Street (Q2.3, Q2.1)"
             }
           }
         ]
@@ -2961,7 +3164,10 @@
       "lectura": "Sección 8.5 (Transformations), primera mitad: isometrías del plano (reflexión, rotación, traslación) y su uso para reubicar los datos de un problema sin alterar distancias ni ángulos. El principio del espejo/billar y la rotación de 60° en configuraciones equiláteras.",
       "dosis": "Lectura (~5 pp) + 2-3 problemas de la sección como sesiones del camino 1.",
       "objetivo": "Reconocer cuándo un movimiento rígido (que conserva forma y tamaño) lleva una figura a una posición donde el problema se vuelve trivial: reflexiones para minimizar caminos, rotaciones para juntar segmentos en triángulos equiláteros, traslaciones para reunir piezas separadas.",
-      "heuristicas": ["transformacion", "simetria"],
+      "heuristicas": [
+        "transformacion",
+        "simetria"
+      ],
       "ideas_clave": [
         "Una ISOMETRÍA (reflexión, rotación, traslación) conserva distancias y ángulos. La jugada es aplicarla a PARTE de la figura para alinear datos dispersos: lo que se conserva sigue valiendo, y la nueva posición suele exhibir una recta, un triángulo conocido o una colinealidad que no se veía.",
         "Principio del espejo (reflexión): para minimizar un camino que TOCA una recta ℓ y regresa (AP+PB con A,B del mismo lado), refleja un extremo a través de ℓ. El camino quebrado se endereza: el mínimo es la recta al punto reflejado, AP+PB ≥ |AB′|, con igualdad cuando A, P, B′ se alinean. Es el mismo principio del billar y de la ley de reflexión de la luz.",
@@ -3009,7 +3215,10 @@
       "lectura": "Sección 8.5 (Transformations), segunda mitad: transformaciones que cambian el tamaño. Homotecia (dilatación con centro y razón), su aparición en círculos tangentes, el baricentro y el círculo de los nueve puntos; semejanza espiral (rotación + homotecia) y su lectura con números complejos.",
       "dosis": "Lectura (~5 pp) + 2-3 problemas de círculos/semejanza como sesiones del camino 1.",
       "objetivo": "Detectar homotecias en configuraciones con lados paralelos o círculos tangentes y usarlas para transportar razones; entender la semejanza espiral como la transformación que aparea dos segmentos cualesquiera.",
-      "heuristicas": ["transformacion", "parametrizar-dibujar"],
+      "heuristicas": [
+        "transformacion",
+        "parametrizar-dibujar"
+      ],
       "ideas_clave": [
         "HOMOTECIA de centro O y razón k: cada punto P va a O + k·(P−O). Lleva una figura a otra SEMEJANTE con lados paralelos a los originales. Su firma en una figura: dos triángulos (o segmentos) con lados respectivamente paralelos → hay una homotecia que lleva uno al otro, y su centro es la intersección de las rectas que unen puntos correspondientes.",
         "El BARICENTRO es el centro de una homotecia de razón −1/2 que manda cada vértice al punto medio del lado opuesto; por eso divide cada mediana en razón 2:1. La recta de Euler y el círculo de los nueve puntos (radio = R/2) salen de homotecias centradas en el baricentro y en el ortocentro.",
@@ -3057,7 +3266,10 @@
       "lectura": "Capítulo de inducción: inducción ordinaria vs. fuerte (suponer todos los casos ≤ n), el truco de FORTALECER la hipótesis, la inducción de Cauchy (hacia adelante en potencias de 2 y hacia atrás) y el descenso infinito como inducción disfrazada.",
       "dosis": "Lectura + 3 problemas de inducción de distinto sabor (identidad, construcción, desigualdad).",
       "objetivo": "Elegir la variante de inducción adecuada y reconocer cuándo conviene probar un enunciado MÁS fuerte; evitar las trampas clásicas (base mal puesta, paso que no usa la hipótesis, 'todos los caballos del mismo color').",
-      "heuristicas": ["induccion", "caso-pequeno"],
+      "heuristicas": [
+        "induccion",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "Inducción ORDINARIA: base P(n₀) + paso P(n)⇒P(n+1). Inducción FUERTE: el paso supone P(k) para TODO k ≤ n. Necesitas la fuerte cuando el caso n+1 depende de varios anteriores (recurrencias tipo Fibonacci, factorización de enteros, descomposición de juegos).",
         "FORTALECER la hipótesis (la paradoja del inventor): a veces probar un enunciado más general/más fuerte es MÁS fácil, porque en el paso inductivo dispones de una hipótesis más potente. Si la inducción 'no cierra', pregúntate qué afirmación auxiliar te haría falta y prueba esa.",
@@ -3105,7 +3317,10 @@
       "lectura": "Capítulo de sucesiones y recurrencias: lineales homogéneas de coeficientes constantes (ecuación característica), no homogéneas (solución particular + homogénea), puntos fijos para recurrencias a_{n+1}=f(a_n), telescopio y sustituciones que linealizan.",
       "dosis": "Lectura + 3 recurrencias (una lineal, una no homogénea, una no lineal que se linealiza).",
       "objetivo": "Resolver recurrencias lineales con la ecuación característica (incluida la raíz repetida), localizar puntos fijos para entender convergencia, y reconocer la sustitución que convierte una recurrencia no lineal en lineal.",
-      "heuristicas": ["recurrencia", "induccion"],
+      "heuristicas": [
+        "recurrencia",
+        "induccion"
+      ],
       "ideas_clave": [
         "Recurrencia lineal homogénea de coeficientes constantes a_n = c₁a_{n−1}+⋯+c_k a_{n−k}: escribe la ECUACIÓN CARACTERÍSTICA x^k = c₁x^{k−1}+⋯+c_k. Raíces distintas r_i ⇒ a_n = Σ A_i r_iⁿ; los A_i salen de las condiciones iniciales.",
         "RAÍZ REPETIDA de multiplicidad m: su contribución no es solo r^n, sino (A₀ + A₁n + ⋯ + A_{m−1}n^{m−1})·rⁿ. El factor polinomial en n es la señal de que dos raíces colapsaron (límite de r₁ⁿ y r₂ⁿ cuando r₂→r₁).",
@@ -3153,7 +3368,10 @@
       "lectura": "Capítulo de polinomios: teorema del factor y del residuo, principio de identidad (coincidir en grado+1 puntos ⇒ idénticos), fórmulas de Vieta como funciones simétricas de las raíces, evaluación en valores especiales (1, 0, −1, raíces de la unidad) y la raíz racional para coeficientes enteros.",
       "dosis": "Lectura + 3 problemas (Vieta, interpolación/identidad, valores especiales).",
       "objetivo": "Manejar un polinomio por sus raíces (factor, Vieta) y por sus valores (identidad, sustituciones especiales), eligiendo según lo que el problema regala; usar los coeficientes enteros para acotar raíces.",
-      "heuristicas": ["invariante", "caso-pequeno"],
+      "heuristicas": [
+        "invariante",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "TEOREMA DEL FACTOR: P(a)=0 ⟺ (x−a) divide a P. Un polinomio de grado n tiene a lo más n raíces; corolario potente (principio de IDENTIDAD): si dos polinomios de grado ≤ n coinciden en n+1 puntos, son idénticos. Sirve para 'fabricar' un polinomio que se anula donde quieres.",
         "VIETA: para P(x)=a_n xⁿ+⋯+a₀ con raíces r₁,…,rₙ: Σr_i = −a_{n−1}/a_n, Σ_{i<j} r_i r_j = a_{n−2}/a_n, …, Πr_i = (−1)ⁿ a₀/a_n. Las funciones simétricas elementales de las raíces son INVARIANTES bajo permutarlas: por eso quedan codificadas en los coeficientes.",
@@ -3201,7 +3419,10 @@
       "lectura": "Capítulo de ecuaciones funcionales: el reflejo de las SUSTITUCIONES especiales (x=0, y=0, x=y, y=−x), probar inyectividad/sobreyectividad, conjeturar la familia de soluciones y verificarla, y la ecuación de Cauchy con sus hipótesis de regularidad.",
       "dosis": "Lectura + 3 ecuaciones funcionales de dificultad creciente.",
       "objetivo": "Atacar una ecuación funcional con sustituciones que fuercen valores y simetrías, deducir propiedades estructurales (inyectividad, paridad), conjeturar y VERIFICAR la familia de soluciones, y reconocer las formas tipo Cauchy.",
-      "heuristicas": ["ecuacion-funcional", "caso-pequeno"],
+      "heuristicas": [
+        "ecuacion-funcional",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "El PRIMER reflejo: sustituir valores especiales. y=0 y x=0 suelen despejar f(0); x=y revela cuadrados/simetrías; y=−x relaciona f con su reflejo; x=1 calibra constantes. Cada sustitución es un 'caso pequeño' que arranca información concreta.",
         "Deduce PROPIEDADES estructurales antes de adivinar la fórmula: ¿es f inyectiva (f(a)=f(b)⇒a=b, permite cancelar f)? ¿sobreyectiva (toda y tiene preimagen, permite sustituir 'la x tal que f(x)=…')? ¿par/impar? ¿f(0) forzado?",
@@ -3249,7 +3470,10 @@
       "lectura": "Capítulo de geometría con herramientas analíticas: vectores y producto punto, números complejos para el plano (rotación = multiplicar por e^{iθ}), trigonometría (leyes de senos y cosenos, áreas) y cuándo cada herramienta es la adecuada.",
       "dosis": "Lectura + 3 problemas resolviendo el MISMO tipo con dos herramientas distintas para sentir cuál conviene.",
       "objetivo": "Traducir un problema de geometría a vectores, complejos o trigonometría según su 'firma', y resolverlo con cálculo controlado en lugar de cacería sintética cuando esta se atasca.",
-      "heuristicas": ["transformacion", "parametrizar-dibujar"],
+      "heuristicas": [
+        "transformacion",
+        "parametrizar-dibujar"
+      ],
       "ideas_clave": [
         "VECTORES: coloca el origen donde haya más simetría. El baricentro es (A+B+C)/3; colinealidad de P,Q,R ⟺ Q−P y R−P son paralelos (determinante 0); perpendicularidad ⟺ producto punto 0. Ideal cuando abundan puntos medios, razones y paralelas (geometría afín).",
         "COMPLEJOS para el plano: identifica puntos con números. Rotar z un ángulo θ alrededor del origen = multiplicar por e^{iθ}; alrededor de w = w + e^{iθ}(z−w). Distancia = |z−w|. En el CÍRCULO UNITARIO, conjugado de z es 1/z y muchas fórmulas (circuncentro, reflexiones, pie de altura) se vuelven limpias.",
@@ -3297,7 +3521,10 @@
       "lectura": "Problemas de álgebra de nivel AIME: representación en bases, raíces enteras vía Vieta con acotación, sistemas simétricos resueltos por sustitución (suma y producto), y manejo de radicales. Respuesta entera 0–999.",
       "dosis": "3-4 problemas AIME de álgebra como sesiones del camino 1, con cronómetro y desconstrucción.",
       "objetivo": "Atacar problemas de competición real (AIME) de álgebra: reconocer la estructura (base posicional, Vieta, simetría) que reduce un enunciado aparatoso a una cuenta corta y exacta.",
-      "heuristicas": ["penultimo-paso", "casework"],
+      "heuristicas": [
+        "penultimo-paso",
+        "casework"
+      ],
       "ideas_clave": [
         "REPRESENTACIÓN EN BASES: una sucesión definida por 'sumas de potencias distintas de b' se indexa por los números en base 2 leídos en base b. El n-ésimo término se obtiene escribiendo n en binario y reinterpretándolo en la base correcta.",
         "VIETA + ACOTACIÓN: si un polinomio con coeficientes dados tiene raíces ENTERAS, traduce los coeficientes a relaciones simétricas (suma, suma de pares, producto) y acota: pocas ternas de enteros las cumplen. Combinar a+b+c=0 con ab+bc+ca=k reduce a una ecuación cuadrática en dos variables (a²+ab+b² = −k).",
@@ -3345,7 +3572,10 @@
       "lectura": "Problemas de geometría de nivel AIME: el triángulo 13-14-15 y las fórmulas de área/inradio/circunradio (Herón, K=rs, R=abc/4K), potencia de un punto (secante-tangente) y el 'coordinate bash' cuando la figura pide ejes. Respuesta entera 0–999.",
       "dosis": "3-4 problemas AIME de geometría con desconstrucción y, si ayuda, la pizarra.",
       "objetivo": "Resolver geometría de competición combinando las fórmulas métricas del triángulo, la potencia de un punto y la colocación inteligente de coordenadas, sin perderse en cacerías sintéticas.",
-      "heuristicas": ["parametrizar-dibujar", "transformacion"],
+      "heuristicas": [
+        "parametrizar-dibujar",
+        "transformacion"
+      ],
       "ideas_clave": [
         "TRIÁNGULO con tres lados: área por HERÓN K=√(s(s−a)(s−b)(s−c)) con s el semiperímetro; inradio r = K/s; circunradio R = abc/(4K). El 13-14-15 es el ejemplo canónico del AIME: s=21, K=84, r=4, R=65/8 (vale memorizarlo).",
         "POTENCIA DE UN PUNTO P respecto a un círculo: para una secante que corta en A,B y otra en C,D, PA·PB = PC·PD; si una es tangente en T, PT² = PA·PB. Es positiva fuera, cero sobre el círculo, negativa dentro; resuelve longitudes con cuerdas y tangentes.",
@@ -3393,7 +3623,10 @@
       "lectura": "Problemas de conteo y probabilidad de nivel AIME: conteo complementario, principio de inclusión-exclusión, estrellas y barras, biyecciones (subconjuntos sin elementos consecutivos ↔ Fibonacci) y probabilidad como conteo de casos favorables sobre totales. Respuesta entera 0–999.",
       "dosis": "3-4 problemas AIME de conteo, cuidando no sobre/sub-contar.",
       "objetivo": "Contar sin duplicar ni omitir: elegir entre conteo directo, complementario, inclusión-exclusión o biyección según cuál hace el problema más simétrico, y traducir probabilidad a conteo.",
-      "heuristicas": ["casework", "caso-pequeno"],
+      "heuristicas": [
+        "casework",
+        "caso-pequeno"
+      ],
       "ideas_clave": [
         "CONTEO COMPLEMENTARIO: cuando 'lo que quieres' es enredado pero 'lo que NO quieres' es fácil, cuenta el total menos el complemento. Firma: 'al menos uno', 'no todos', condiciones de exclusión.",
         "INCLUSIÓN-EXCLUSIÓN: |A∪B∪C| = Σ|A| − Σ|A∩B| + |A∩B∩C|. Para contar elementos que evitan varias propiedades, resta los que tienen cada una y corrige los solapamientos.",
@@ -3441,8 +3674,13 @@
       "lectura": "Estudia la lección integrada de esta unidad. El concepto central es E[X+Y]=E[X]+E[Y] sin requerir independencia, y su aplicación mediante variables indicadoras.",
       "dosis": "30-40 min. Lee con papel: construye un ejemplo propio de descomposición en indicadores antes de avanzar.",
       "objetivo": "Entender POR QUÉ la linealidad no necesita independencia (demostración a mano), reconocer la señal de 'cuántos objetos cumplen condición' → indicadores, y calcular E[X] para casos combinatorios bajo presión.",
-      "heuristicas": ["linealidad-esperanza", "caso-pequeno"],
-      "metadata": { "ruta": "quant" },
+      "heuristicas": [
+        "linealidad-esperanza",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "quant"
+      },
       "ideas_clave": [
         "E[X+Y]=E[X]+E[Y] para cualquier X, Y con esperanzas finitas — sin importar si son independientes, correlacionadas o dependientes.",
         "Descomposición en indicadores: si X = I₁ + I₂ + … + Iₙ donde Iₖ ∈ {0,1}, entonces E[X] = P(I₁=1) + P(I₂=1) + … + P(Iₙ=1).",
@@ -3490,8 +3728,13 @@
       "lectura": "Estudia la lección integrada. Foco: regla de Bayes, tabla de contingencia, VPP/VPN, y cómo la prevalencia domina el valor predictivo.",
       "dosis": "30-40 min. Trabaja el ejemplo de detección de enfermedades con papel: tabla de 10.000 casos antes de leer la solución.",
       "objetivo": "Calcular VPP/VPN desde primeros principios, entender el efecto de la base rate sobre el VPP, y comunicar el resultado en términos que un no-estadístico entienda.",
-      "heuristicas": ["bayes-tasa-base", "caso-pequeno"],
-      "metadata": { "ruta": "quant" },
+      "heuristicas": [
+        "bayes-tasa-base",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "quant"
+      },
       "ideas_clave": [
         "P(enfermo|+) = P(+|enfermo)·P(enfermo) / P(+). El denominador P(+) = sens·prev + (1−espec)·(1−prev).",
         "Con prevalencia baja, la mayoría de positivos son FALSOS POSITIVOS aunque el test sea muy bueno: la especificidad domina.",
@@ -3539,8 +3782,13 @@
       "lectura": "Estudia la lección integrada. Foco: hash map como estructura de O(1) lookup, los patrones 'complemento' y 'frecuencia', y análisis de complejidad con colisiones.",
       "dosis": "40-50 min. Implementa el two-sum en pseudocódigo o Python antes de leer la solución. Analiza los casos borde manualmente.",
       "objetivo": "Reconocer los problemas que se resuelven con hashing, implementar los patrones fundamentales, y analizar complejidad espacial y temporal con rigor.",
-      "heuristicas": ["hashing-memoria", "caso-pequeno"],
-      "metadata": { "ruta": "maang" },
+      "heuristicas": [
+        "hashing-memoria",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "maang"
+      },
       "ideas_clave": [
         "Hash map: O(1) amortizado para insert, lookup y delete. El costo: O(n) espacio adicional.",
         "Patrón 'complemento': para cada elemento x, busca si su complemento (target − x, −x, etc.) ya fue visto. Almacena los vistos en un set.",
@@ -3588,8 +3836,13 @@
       "lectura": "Estudia la lección integrada. Foco: OVER(PARTITION BY … ORDER BY …), las funciones ROW_NUMBER/RANK/DENSE_RANK/LAG/LEAD/SUM, y cuándo usar cada una.",
       "dosis": "40-50 min. Crea una tabla de 8 filas a mano y calcula la salida de ROW_NUMBER, RANK y SUM OVER antes de leer la lección.",
       "objetivo": "Escribir consultas analíticas sin subqueries correlacionadas, distinguir ROW_NUMBER/RANK/DENSE_RANK en caso de empates, y usar CTEs para materializar rankings antes de filtrar.",
-      "heuristicas": ["ventana-sql", "caso-pequeno"],
-      "metadata": { "ruta": "maang" },
+      "heuristicas": [
+        "ventana-sql",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "maang"
+      },
       "ideas_clave": [
         "OVER(PARTITION BY col ORDER BY col2): calcula la función dentro de cada partición, en el orden dado, sin colapsar las filas en grupos.",
         "ROW_NUMBER: único, sin empates. RANK: empates con salto (1,1,3). DENSE_RANK: empates sin salto (1,1,2).",
@@ -3637,8 +3890,13 @@
       "lectura": "Estudia la lección integrada. Foco: training-serving skew, data drift vs concept drift, por qué la métrica offline no garantiza la online, y monitoreo + rollback como parte del diseño.",
       "dosis": "40-50 min. Antes de leer, intenta responder: ¿por qué un modelo con mejor AUC offline puede empeorar el producto en producción?",
       "objetivo": "Distinguir skew de drift y proponer el monitoreo de cada uno, explicar por qué la métrica offline no garantiza la online, y diseñar con la plantilla (métricas, leakage, monitoreo, rollback) antes de hablar del modelo.",
-      "heuristicas": ["skew-drift", "caso-pequeno"],
-      "metadata": { "ruta": "ml-systems" },
+      "heuristicas": [
+        "skew-drift",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "ml-systems"
+      },
       "ideas_clave": [
         "Training-serving skew: el modelo ve en producción features calculadas DISTINTO que en entrenamiento (otro código, otra ventana, otros defaults). Defensa: definición única de features y loggear las features servidas para reentrenar sobre ellas.",
         "Data drift: cambia P(X), la distribución de entrada; concept drift: cambia P(Y|X), la relación aprendida. Se monitorean distinto: distribuciones de features (PSI/KS, sin labels) vs. performance real (labels, a menudo retrasadas).",
@@ -3686,8 +3944,13 @@
       "lectura": "Estudia la lección integrada. Foco: tipos de variables en un DAG (confounder, mediator, collider), criterio de backdoor, y por qué ajustar un collider es el error más común.",
       "dosis": "40-50 min. Dibuja un DAG de 4 nodos a mano con al menos un confounder y un collider antes de leer la solución de los ejercicios.",
       "objetivo": "Clasificar variables en un DAG, identificar el conjunto de ajuste mínimo, y detectar cuándo añadir una variable a un modelo sesgará el estimado.",
-      "heuristicas": ["dag-ajuste", "caso-pequeno"],
-      "metadata": { "ruta": "health-ai-rwe" },
+      "heuristicas": [
+        "dag-ajuste",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "health-ai-rwe"
+      },
       "ideas_clave": [
         "Confounder: causa tanto la exposición X como el outcome Y (camino trasero: X ← C → Y). Ajustar lo cierra.",
         "Mediator: está en el camino causal X → M → Y. Ajustar cierra el camino indirecto y estima el efecto directo solamente.",
@@ -3735,8 +3998,13 @@
       "lectura": "Estudia la lección integrada. Foco: qué es el target trial, los 7 componentes del protocolo, el immortal time bias y cómo el rediseño lo elimina.",
       "dosis": "40-50 min. Toma un estudio observacional que hayas leído o inventado y aplica los 7 componentes del target trial antes de leer la lección.",
       "objetivo": "Identificar immortal time bias en un estudio descrito, enunciar el target trial correspondiente con sus 7 componentes, y proponer el rediseño que elimina el sesgo.",
-      "heuristicas": ["tiempo-cero", "caso-pequeno"],
-      "metadata": { "ruta": "health-ai-rwe" },
+      "heuristicas": [
+        "tiempo-cero",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "health-ai-rwe"
+      },
       "ideas_clave": [
         "Target trial (ensayo objetivo): el experimento aleatorizado hipotético que el estudio observacional intenta emular. Enunciarlo explícitamente fuerza a identificar los sesgos.",
         "Los 7 componentes: elegibilidad, estrategias de tratamiento, asignación, inicio del seguimiento (t=0), outcome, final del seguimiento, estimando.",
@@ -3772,6 +4040,301 @@
           "enunciado": "Ves un análisis donde el grupo 'tratado con inmunoterapia' se define como 'pacientes que recibieron al menos 3 ciclos'. El seguimiento empieza desde el diagnóstico. ¿Qué preguntas haces antes de aceptar los resultados?",
           "solucion": "Preguntas clave: (1) ¿Cuándo empieza el seguimiento para el grupo tratado? ¿Desde el diagnóstico o desde el tercer ciclo? (2) ¿Pueden los pacientes del grupo 'tratado' morir entre el diagnóstico y el tercer ciclo? Si no, el período diagnóstico → 3er ciclo es tiempo inmortal. (3) ¿Cómo se clasifica a alguien que empieza los ciclos pero no llega al tercero? ¿Va al grupo control, o se excluye? La exclusión puede sesgar.",
           "explicacion": "Señal → jugada: 'grupo definido por completar N eventos' + 'seguimiento empieza antes de esos N eventos' → immortal time. Pregunta: '¿puede alguien sufrir el outcome durante el periodo requerido para clasificarse como tratado?'"
+        }
+      ]
+    },
+    {
+      "id": "arena-q3",
+      "bloque": "fase-7",
+      "orden": 8,
+      "titulo": "Arena Quant · Brainteasers y lógica cuantitativa",
+      "libro": "Heard on the Street (T. Crack, 15ª ed.)",
+      "lectura": "data/teoria/arena-q3.md",
+      "dosis": [],
+      "objetivo": "Resolver brainteasers cuantitativos clásicos de entrevistas Wall Street: series, relojes, cubos, combinatoria elemental y trampas de razonamiento.",
+      "heuristicas": [
+        "invariante",
+        "paridad-cuadrados"
+      ],
+      "metadata": {
+        "ruta": "quant"
+      },
+      "ideas_clave": [
+        "La suma 1+2+…+n = n(n+1)/2; la señal es 'suma de enteros' → pairing de Gauss.",
+        "Velocidades: minutero = 6°/min, horario = 0.5°/min; diferencia relativa = 5.5°/min.",
+        "Bombilla n encendida ⟺ n es cuadrado perfecto (número impar de divisores).",
+        "Capa exterior de cubo n³ = n³ − (n−2)³; crece cuadráticamente con n.",
+        "Principio del palomar: k colores → k+1 calcetines garantizan un par."
+      ],
+      "banco": [
+        {
+          "id": "arq3-q1",
+          "tipo": "quiz",
+          "enunciado": "¿Cuál es la suma de los enteros del 1 al 100? Generaliza: da la fórmula para la suma del 1 al n y explica el razonamiento sin memorizar la fórmula.",
+          "solucion": "S = n(n+1)/2. Para n=100: S = 100×101/2 = 5050. Truco de Gauss: empareja el primero con el último (1+100=101), el segundo con el penúltimo (2+99=101), … hay 50 pares, cada uno suma 101 → 50×101 = 5050.",
+          "explicacion": "Señal: 'suma de primeros n enteros'. Jugada: pairing/simetría. Fórmulas útiles: Σk² = n(n+1)(2n+1)/6; Σk³ = [n(n+1)/2]²."
+        },
+        {
+          "id": "arq3-q2",
+          "tipo": "quiz",
+          "enunciado": "¿Cuántos grados hay entre el minutero y el horario de un reloj analógico cuando marca las 3:15?",
+          "solucion": "7.5°. El minutero apunta a las 3 → 90°. El horario arranca en las 3 (90°) y avanza 0.5°/min × 15 min = 7.5°, quedando en 97.5°. Diferencia = |97.5 − 90| = 7.5°.",
+          "explicacion": "Error clásico: olvidar que el horario se mueve mientras transcurren los 15 minutos. Velocidades: minutero 6°/min, horario 0.5°/min."
+        },
+        {
+          "id": "arq3-q3",
+          "tipo": "quiz",
+          "enunciado": "¿Cuándo es la primera vez después de las 3:00 PM que el minutero y el horario quedan exactamente superpuestos?",
+          "solucion": "A los 180/11 ≈ 16 min 21.8 seg → aproximadamente las 3:16:22. A las 3PM el horario lleva 90° de ventaja. El minutero gana 5.5°/min. Tiempo de alcance = 90/5.5 = 180/11 min.",
+          "explicacion": "Ecuación: 6t = 90 + 0.5t → 5.5t = 90 → t = 180/11. En general, la k-ésima superposición tras las 12:00 ocurre a los k × (720/11) minutos."
+        },
+        {
+          "id": "arq3-q4",
+          "tipo": "quiz",
+          "enunciado": "100 bombillas en fila, apagadas. La persona k (k=1…100) activa/desactiva cada k-ésima bombilla. ¿En qué estado queda la bombilla 64? ¿Por qué?",
+          "solucion": "ENCENDIDA. La bombilla n recibe un toque por cada divisor de n. Los divisores vienen en pares (d, n/d) excepto cuando d = n/d, es decir n = d². Solo los cuadrados perfectos tienen número impar de divisores. 64 = 8² → 7 divisores (1,2,4,8,16,32,64) → 7 toques, impar → encendida.",
+          "explicacion": "Invariante: paridad del número de divisores. Los cuadrados perfectos son los únicos números con número impar de divisores."
+        },
+        {
+          "id": "arq3-q5",
+          "tipo": "quiz",
+          "enunciado": "Con las mismas 100 bombillas y 100 personas: ¿cuántas bombillas quedan encendidas al final, y cuáles son?",
+          "solucion": "10 bombillas: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 (los cuadrados perfectos del 1 al 100). Con n bombillas quedan ⌊√n⌋ encendidas; para n=100: ⌊√100⌋ = 10.",
+          "explicacion": "Generalización directa de Q4: las bombillas encendidas son exactamente los cuadrados perfectos ≤ n."
+        },
+        {
+          "id": "arq3-q6",
+          "tipo": "quiz",
+          "enunciado": "Una rana duplica su área cada día y cubre un estanque en 30 días. Si empiezas con 8 ranas idénticas, ¿en cuántos días cubrirán el estanque?",
+          "solucion": "27 días. 8 = 2³ representa 3 días de ventaja. Necesitas 2^d × 8 = 2^30, es decir 2^(d+3) = 2^30 → d = 27. Error clásico: dividir 30 entre 8.",
+          "explicacion": "Pensamiento exponencial inverso: multiplicar el punto de partida por 2^k es equivalente a adelantar k días. La duplicación opera sobre las áreas, no sobre el tiempo."
+        },
+        {
+          "id": "arq3-q7",
+          "tipo": "quiz",
+          "enunciado": "¿Cuántos ceros finales tiene 100! (100 factorial)? Explica el método general.",
+          "solucion": "24 ceros. Cada cero final proviene de un factor 10 = 2×5. Los factores de 2 son abundantes; el cuello de botella son los 5: ⌊100/5⌋ + ⌊100/25⌋ = 20 + 4 = 24.",
+          "explicacion": "Método de Legendre: el exponente del primo p en n! es Σₖ₌₁^∞ ⌊n/pᵏ⌋. Para 5 en 100!: ⌊100/5⌋+⌊100/25⌋+⌊100/125⌋ = 20+4+0 = 24."
+        },
+        {
+          "id": "arq3-q8",
+          "tipo": "quiz",
+          "enunciado": "Un macro-cubo de 10×10×10 microcubos flota en el aire. La capa exterior se desprende y cae. ¿Cuántos microcubos caen?",
+          "solucion": "488. La capa exterior = total − núcleo interior = 10³ − 8³ = 1000 − 512 = 488. El núcleo interior tiene dimensiones (n−2)³ = 8×8×8.",
+          "explicacion": "Técnica: exterior = n³ − (n−2)³. Para cualquier cubo de lado n: exterior = 6n² − 12n + 8 = 6(n−1)² − 6 + 2. Para n=10: 488."
+        },
+        {
+          "id": "arq3-q9",
+          "tipo": "quiz",
+          "enunciado": "En un tablero 20×20 la casilla (i,j) tiene i+j−1 cubos (i,j ∈ {1,…,20}). ¿Cuántos cubos hay en total en el tablero?",
+          "solucion": "8000. Σᵢ Σⱼ (i+j−1) = Σᵢ [Σⱼ j + 20i − 20] = Σᵢ [210 + 20i − 20] = 20×190 + 20×(20×21/2) = 3800 + 4200 = 8000.",
+          "explicacion": "Suma fila a fila: fija i, Σⱼ₌₁²⁰(i+j−1) = 20i + (1+…+20) − 20 = 20i + 190. Luego Σᵢ₌₁²⁰(20i+190) = 20×210 + 20×190 = 8000."
+        },
+        {
+          "id": "arq3-q10",
+          "tipo": "quiz",
+          "enunciado": "Un cajón tiene 8 calcetines rojos y 11 azules. Con la luz apagada, ¿cuántos calcetines debes sacar para GARANTIZAR un par del mismo color?",
+          "solucion": "3 calcetines. En el peor caso sacas 1 rojo y 1 azul (2 calcetines, ningún par). El tercero, sea del color que sea, completa un par. Principio del palomar: 3 calcetines, 2 colores → al menos 2 iguales.",
+          "explicacion": "Generalización: con k colores distintos necesitas k+1 calcetines. La cantidad de calcetines de cada color es irrelevante siempre que haya al menos k+1 en total."
+        },
+        {
+          "id": "arq3-q11",
+          "tipo": "quiz",
+          "enunciado": "Juego de números: por turnos se dicen enteros. El primero en decir '50' gana. Reglas: el primer jugador empieza entre 1 y 10; cada número nuevo debe superar al anterior en 1 a 10. ¿Juegas primero o segundo? ¿Cuál es tu estrategia?",
+          "solucion": "Jugas PRIMERO. Llama '6' y luego siempre responde x del rival con 11−x. Posiciones ganadoras: 6, 17, 28, 39, 50 (diferencias de 11). Desde 6, siempre puedes forzar estos hitos.",
+          "explicacion": "Patrón: el primer jugador que ocupa 50 gana; los puntos clave son {50−11k}. El jugador que controla los hitos desde el inicio gana. Estrategia: tu número + número del rival = 11 (constante)."
+        }
+      ]
+    },
+    {
+      "id": "arena-q4",
+      "bloque": "fase-7",
+      "orden": 9,
+      "titulo": "Arena Quant · Probabilidad y Bayes",
+      "libro": "Heard on the Street (T. Crack, 15ª ed.)",
+      "lectura": "data/teoria/arena-q4.md",
+      "dosis": [],
+      "objetivo": "Dominar probabilidad condicional, Bayes y valor esperado bajo presión: Monty Hall, test médicos, ruletas, monedas y geometría probabilística.",
+      "heuristicas": [
+        "bayes-tasa-base",
+        "cadena-markov-ee"
+      ],
+      "metadata": {
+        "ruta": "quant"
+      },
+      "ideas_clave": [
+        "Monty Hall: el anfitrión con información concentra las 2/3 de probabilidad en la puerta no elegida.",
+        "Bayes con tasa base baja: prevalencia del 0.5% aplasta el 93% de especificidad → solo 6.7% de positivos están enfermos.",
+        "P(triángulo de palo roto) = 1/4: condición de triángulo ⟺ cada trozo < 1/2.",
+        "Cadena de Markov para consecutivos: E[2 H] = 6, E[3 H] = 14 con moneda justa (E = Σ 2^k).",
+        "Bolas en frascos: poner 1 blanca sola en un frasco garantiza P=1 para ese frasco → óptimo ≈ 74.75%."
+      ],
+      "banco": [
+        {
+          "id": "arq4-q1",
+          "tipo": "quiz",
+          "enunciado": "Monty Hall: tienes 3 puertas. Elegiste la puerta 3. El anfitrión abre la 2 (siempre vacía) y te ofrece cambiar a la 1. ¿Deberías cambiar? Justifica con probabilidades.",
+          "solucion": "SÍ, cambia. P(ganar si cambias) = 2/3; P(ganar si te quedas) = 1/3. Razonamiento: al elegir la 3, P(premio en 3) = 1/3 y P(premio en {1 ó 2}) = 2/3. Cuando el anfitrión revela que la 2 está vacía (con su información), esas 2/3 se concentran en la 1.",
+          "explicacion": "Error clásico: 'quedan 2 puertas → P=1/2 cada una'. Incorrecto: el anfitrión actúa con información, no al azar. Su acción no redistribuye uniformemente. Verificar por fuerza bruta: de 3 escenarios igualmente probables, cambiar gana en 2."
+        },
+        {
+          "id": "arq4-q2",
+          "tipo": "quiz",
+          "enunciado": "Enfermedad con prevalencia 0.5%. Test: 100% sensible, 7% falsos positivos. Un desconocido da positivo. ¿Cuál es P(tiene la enfermedad)?",
+          "solucion": "≈ 6.7%. Por Bayes: P(E|+) = P(+|E)·P(E)/P(+) = 1×0.005/(1×0.005 + 0.07×0.995) = 0.005/0.07465 ≈ 0.067. En 10,000 personas: 50 enfermos dan +, ~697 sanos dan falso +. Ratio: 50/747 ≈ 6.7%.",
+          "explicacion": "La tasa base (0.5%) domina. Error clásico del médico: confundir P(+|E)=93% de especificidad con P(E|+). Son probabilidades condicionadas en sentidos opuestos."
+        },
+        {
+          "id": "arq4-q3",
+          "tipo": "quiz",
+          "enunciado": "Partes un palo al azar en dos puntos elegidos uniformemente en [0,1]. ¿Cuál es la probabilidad de que los tres trozos formen un triángulo?",
+          "solucion": "1/4. Condición de triángulo: cada trozo < 1/2. El espacio muestral es el triángulo {0<X<Y<1} en el plano. La región favorable (todos los trozos <1/2) es el triángulo central con área = 1/4 del espacio total.",
+          "explicacion": "Geometría probabilística: espacio = triángulo superior, región favorable = triángulo interior centrado. Área favorable / área total = (1/2 × 1/2 × 1/2)/(1/2 × 1/1) = 1/8 / (1/2) = 1/4."
+        },
+        {
+          "id": "arq4-q4",
+          "tipo": "quiz",
+          "enunciado": "Tienes dos hijos y uno de ellos es una niña (no sabes nada del otro). ¿Cuál es P(ambos sean niñas)?",
+          "solucion": "1/3. El espacio muestral equiprobable dado 'al menos una niña' es {NN, NV, VN}. Solo {NN} da ambas niñas. P = 1/3. Contraste: si una niña específica te abre la puerta (identidad conocida), P = 1/2.",
+          "explicacion": "Diferencia sutil: 'al menos una niña' vs 'esta niña específica'. La condición más débil preserva más ambigüedad → P menor. El espacio muestral original era {NN, NV, VN, VV}; la condición elimina VV."
+        },
+        {
+          "id": "arq4-q5",
+          "tipo": "quiz",
+          "enunciado": "De una baraja de 52 cartas sacas 2 sin reposición. ¿Cuál es P(ambas son Reyes)?",
+          "solucion": "1/221 ≈ 0.45%. Dos métodos: (1) C(4,2)/C(52,2) = 6/1326 = 1/221. (2) P(1ª Rey)×P(2ª Rey|1ª Rey) = (4/52)×(3/51) = 12/2652 = 1/221.",
+          "explicacion": "Sin reposición: la segunda extracción es condicional a la primera. El denominador cambia de 52 a 51."
+        },
+        {
+          "id": "arq4-q6",
+          "tipo": "quiz",
+          "enunciado": "X e Y se eligen independientemente de Uniforme[0,1]. ¿Cuál es P(XY > 1/2)?",
+          "solucion": "1/2 − ln(2)/2 ≈ 15.3%. La región {XY>1/2} está acotada por la hipérbola y=1/(2x) para x∈[1/2,1]. Área = ∫₁/₂¹ (1 − 1/(2x))dx = [x − (ln x)/2]₁/₂¹ = (1−0) − (1/2 + ln(2)/2) = 1/2 − ln(2)/2.",
+          "explicacion": "Para x<1/2, la hipérbola y=1/(2x)>1 queda fuera del cuadrado [0,1]² → no hay área favorable ahí. Solo integramos en [1/2,1]."
+        },
+        {
+          "id": "arq4-q7",
+          "tipo": "quiz",
+          "enunciado": "Un frasco tiene 999 monedas justas y 1 moneda con dos caras. Sacas una al azar, la lanzas 10 veces y obtienes 10 caras. ¿Cuál es P(es la de dos caras)?",
+          "solucion": "1024/2023 ≈ 50.6%. Por Bayes: P(2C|10H) = P(10H|2C)·P(2C)/P(10H) = 1·(1/1000) / [1/1000 + (1/1024)·(999/1000)] = 1024/(1024+999) = 1024/2023.",
+          "explicacion": "La moneda de dos caras es rara (1/1000) pero produce 10H con certeza. La justa produce 10H con probabilidad 1/1024 ≈ 0.001. Los dos efectos casi se cancelan, resultando en ~50-50 posterior."
+        },
+        {
+          "id": "arq4-q8",
+          "tipo": "quiz",
+          "enunciado": "Lanzas una moneda justa. ¿Cuántos lanzamientos esperas para (a) 2 caras consecutivas? (b) 3 caras consecutivas?",
+          "solucion": "(a) 6. (b) 14. Sistema de estados: sea Eₖ el valor esperado de lanzamientos adicionales desde el estado 'k caras consecutivas acumuladas'. Para p=1/2: E₀ = 1/p²+1/p = 6; para 3 consecutivas: E₀ = 1/p+1/p²+1/p³ = 2+4+8 = 14.",
+          "explicacion": "Recurrencia: E₀ = 1 + (1−p)E₀ + p·E₁; E₁ = 1 + (1−p)E₀. Resolviendo: p·E₀ = 1+p·E₁ y E₁ = 1+(1−p)E₀. Patrón general: E[k consecutivas] = Σⱼ₌₁ᵏ (1/p)ʲ."
+        },
+        {
+          "id": "arq4-q9",
+          "tipo": "quiz",
+          "enunciado": "Revólver de 6 recámaras: 2 balas contiguas cargadas. Se giró el tambor al azar y sobreviviste al primer disparo. ¿Prefieres girar de nuevo o disparar directamente la siguiente recámara?",
+          "solucion": "NO gires: P(sobrevivir|no girar) = 3/4 = 75% > P(sobrevivir|girar) = 4/6 ≈ 66.7%. Dado que sobreviviste, las posiciones iniciales de las balas son {2,3},{3,4},{4,5},{5,6} (igualmente probables). Solo si las balas son {2,3} la recámara 2 dispara → P(disparo) = 1/4.",
+          "explicacion": "Clave: condicionar en haber sobrevivido elimina las posiciones {1,2} y {6,1}. Entre las 4 posiciones restantes, solo una pone una bala en la siguiente recámara."
+        },
+        {
+          "id": "arq4-q10",
+          "tipo": "quiz",
+          "enunciado": "Tienes 50 bolas blancas y 50 negras, y 2 frascos. Distribúyelas como quieras. Con ojos vendados se elige un frasco al azar y luego una bola al azar. ¿Cómo maximizas P(bola blanca)?",
+          "solucion": "P máxima ≈ 74.75%: pon exactamente 1 bola blanca en el frasco A y 49 blancas + 50 negras en el frasco B. P = 1/2·(1) + 1/2·(49/99) = 1/2 + 49/198 ≈ 0.7475.",
+          "explicacion": "Intuición: el frasco A garantiza P=1 cuando se elige ese frasco. El frasco B tiene la mayor proporción posible de blancas dado lo que queda. Cualquier bola adicional en A 'diluye' la garantía sin compensar la pérdida en B."
+        }
+      ]
+    },
+    {
+      "id": "arena-q5",
+      "bloque": "fase-7",
+      "orden": 10,
+      "titulo": "Arena Quant · Derivadas y mercados financieros",
+      "libro": "Heard on the Street (T. Crack, 15ª ed.)",
+      "lectura": "data/teoria/arena-q5.md",
+      "dosis": [],
+      "objetivo": "Dominar preguntas de derivados financieros, put-call parity, Black-Scholes, estructura temporal y razonamiento de no-arbitraje para entrevistas quant.",
+      "heuristicas": [
+        "no-arbitraje",
+        "simetria"
+      ],
+      "metadata": {
+        "ruta": "quant"
+      },
+      "ideas_clave": [
+        "Con σ=0 la call vale S−K·e^(−rT) y delta=1: el precio del subyacente es determinístico.",
+        "Put-call parity: C−P = S−K·e^(−rT). Con r=0 y ATM: C=P siempre.",
+        "Straddle break-even: Strike ± Prima; apuesta pura a volatilidad.",
+        "Black-Scholes usa tasa libre de riesgo porque el portafolio delta-hedged es libre de riesgo.",
+        "Regla √T: para retornos i.i.d., σ(T años) = σ(anual)×√T."
+      ],
+      "banco": [
+        {
+          "id": "arq5-q1",
+          "tipo": "quiz",
+          "enunciado": "Black-Scholes con σ=0, S=K=$100, r=5%, T=1 año. ¿Cuánto vale la call europea? ¿Cómo la cubres si la vendiste?",
+          "solucion": "C = S − K·e^(−rT) = 100 − 100·e^(−0.05) ≈ $4.88. Delta = 1 (el subyacente crece deterministamente a S·e^(rT) > K, así que siempre vence in-the-money). Cobertura: compra 1 acción por cada call vendida.",
+          "explicacion": "Con σ=0, S(T) = S·e^(rT) = 100·e^(0.05) ≈ $105.13 con certeza. La call siempre paga 5.13. Su PV = 5.13·e^(−0.05) ≈ 4.88. Resultado = C = S − K·e^(−rT)."
+        },
+        {
+          "id": "arq5-q2",
+          "tipo": "quiz",
+          "enunciado": "Bajo Black-Scholes con r=0, sin dividendos, una call ATM europea y una put ATM europea (mismos S, K, T). ¿Cuál vale más?",
+          "solucion": "Valen lo mismo: C = P. Put-call parity: C = P + S − K·e^(−rT). Con r=0 y S=K: C = P + K − K = P. La paridad garantiza igualdad aunque el upside de la call sea ilimitado.",
+          "explicacion": "La 'paradoja' (call ilimitada vs put limitada a K) se resuelve porque el put-call parity refleja la simetría de la distribución log-normal alrededor del forward F = S cuando r=0."
+        },
+        {
+          "id": "arq5-q3",
+          "tipo": "quiz",
+          "enunciado": "Compras un straddle ATM: call + put con strike $25, costo total $5. ¿En qué precios al vencimiento ganas dinero? ¿Qué movimiento mínimo necesitas?",
+          "solucion": "Ganas si S(T) < $20 o S(T) > $30. Necesitas un movimiento de más de $5 en cualquier dirección. Break-even = $25 ± $5 = $20 y $30. Payoff = |S(T) − 25| − 5.",
+          "explicacion": "El straddle es la apuesta pura a volatilidad: ganas si el subyacente se mueve más que la prima total, sin importar la dirección."
+        },
+        {
+          "id": "arq5-q4",
+          "tipo": "quiz",
+          "enunciado": "¿Cuántas acciones debes tener (delta) para cubrir una call europea at-the-money?",
+          "solucion": "Δ ≈ 0.5 (exactamente N(d₁) ≈ N(0.05) ≈ 0.52 con r>0, pero para ATM con r→0: d₁→0, N(d₁)→0.5). Intuitivamente: hay ~50% de probabilidad de que la call termine in-the-money, así que una variación de $1 en S mueve la call ~$0.50.",
+          "explicacion": "Delta = N(d₁) donde d₁ = [ln(S/K) + (r+σ²/2)T]/(σ√T). Para S=K (ATM), el término ln(S/K)=0 y d₁ = (r+σ²/2)√T/σ ≈ 0 para tasas bajas → delta ≈ 0.5."
+        },
+        {
+          "id": "arq5-q5",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué theta y gamma tienen signos opuestos para opciones vainilla? ¿Es siempre así?",
+          "solucion": "Sí (para opciones sin dividendos en condiciones normales). De la ecuación de B-S: Θ + ½σ²S²Γ + rSΔ − rC = 0. Una posición long gamma (Γ>0) exige Θ<0 (pérdida de tiempo value). Short gamma: Θ>0 (cobras tiempo). Intercambias convexidad por tiempo.",
+          "explicacion": "Intuición: long gamma significa que el portafolio gana con movimientos grandes en cualquier dirección (gamma scalping), pero paga un 'alquiler' en forma de theta negativa (el tiempo trabaja en tu contra)."
+        },
+        {
+          "id": "arq5-q6",
+          "tipo": "quiz",
+          "enunciado": "La tasa spot a 5 años es 10% y la tasa spot a 10 años es 15% (anual). ¿Cuál es la tasa forward implícita del año 5 al año 10?",
+          "solucion": "≈20.23% exacto (aprox. lineal: 20%). Exacto: (1+f)^5 = (1.15)^10/(1.10)^5 → f ≈ 20.23%. Aprox. lineal: (15%×10 − 10%×5)/5 = 20%. La aproximación subestima el exacto por la composición.",
+          "explicacion": "No-arbitraje: invertir 10 años directamente debe equivaler a invertir 5 años y luego reinvertir los 5 siguientes a la tasa forward: (1+r₁₀)^10 = (1+r₅)^5·(1+f₅₋₁₀)^5."
+        },
+        {
+          "id": "arq5-q7",
+          "tipo": "quiz",
+          "enunciado": "Juego de San Petersburgo: lanzas una moneda hasta que salga cara; en el lanzamiento k ganas $2^k. ¿Cuánto pagarías por jugar?",
+          "solucion": "El valor esperado es infinito (E = Σₖ₌₁^∞ 2^k·(1/2)^k = Σ1 = ∞), pero nadie pagaría arbitrariamente. La paradoja de San Petersburgo: E[payoff] = ∞ pero la disposición real a pagar es pequeña. Razones: utilidad logarítmica, capital finito del banquero, tiempo de vida finito.",
+          "explicacion": "Bernoulli resolvió la paradoja con utilidad logarítmica: E[log(W+payoff)] es finito. La lección financiera: valor esperado ≠ precio justo cuando la distribución tiene colas pesadas."
+        },
+        {
+          "id": "arq5-q8",
+          "tipo": "quiz",
+          "enunciado": "Si la desviación estándar de los retornos anuales continuamente compuestos es 10%, ¿cuál es la desviación estándar de los retornos de 4 años?",
+          "solucion": "20% = 10%×√4. Para retornos i.i.d.: Var(r₁+r₂+r₃+r₄) = 4·Var(r). SD(4 años) = SD(anual)×√4 = 10%×2 = 20%.",
+          "explicacion": "La regla √T es fundamental en finanzas: σ(T) = σ(1)×√T. Vale solo para retornos i.i.d. (sin autocorrelación). Con reversión a la media, la volatilidad de largo plazo es menor que σ×√T."
+        },
+        {
+          "id": "arq5-q9",
+          "tipo": "quiz",
+          "enunciado": "Call europea ATM: S=K=$100, r=0, T=1 año. La SD del precio al vencimiento es $10 (≈10% vol). ¿El precio de la call es más cercano a $1, $5 o $10?",
+          "solucion": "≈$4, más cercano a $5. Con σ=10%, r=0, S=K: d₁=d₂=0+0.05=0.05 y -0.05. C = 100·(N(0.05)−N(−0.05)) ≈ 100×0.04 ≈ $4. Regla de dedo: C ≈ 0.4·S·σ·√T = 0.4×100×0.10×1 = $4.",
+          "explicacion": "Fórmula de Brenner-Subrahmanyam (ATM, r≈0): C ≈ S·σ·√(T/2π) ≈ S·σ·√T/2.507. Para S=100, σ=0.1, T=1: C ≈ 100×0.1/2.507 ≈ $3.99."
+        },
+        {
+          "id": "arq5-q10",
+          "tipo": "quiz",
+          "enunciado": "¿Por qué Black-Scholes usa la tasa libre de riesgo y no el retorno esperado μ del activo para valorar opciones?",
+          "solucion": "Porque el portafolio delta-hedgeado (long opción + short Δ acciones) no tiene riesgo de mercado: must earn r (no-arbitraje). El μ desaparece en la derivación de la EDP de B-S porque se cancela al eliminar el riesgo. La valoración es neutral al riesgo.",
+          "explicacion": "Intuición: dos activos con el mismo payoff en todos los estados deben valer lo mismo hoy (no-arbitraje). El precio de la opción no depende de lo optimistas o pesimistas que seamos sobre el activo; el delta hedge elimina esa dependencia."
         }
       ]
     }
