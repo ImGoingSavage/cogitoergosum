@@ -786,6 +786,35 @@ python3 -m http.server 8000   # y probar en navegador (módulos ES6 exigen HTTP)
 
 ### QUÉ FALTA, en orden de valor
 
+> ## 📍 PUNTO ACTUAL (2026-06-13) — léelo primero
+>
+> **Frontend (camino 1 + 2 + claustro + Fases A-D):** COMPLETO, verificado y
+> en producción (https://imgoingsavage.github.io/cogitoergosum/). Oleadas de
+> auditoría 1-6 + extracción de módulos: HECHAS (bitácoras 6, 7, 8).
+>
+> **Frontera actual = MENTOR LOCAL HÍBRIDO** (bitácora 9). Todo el código
+> está escrito y subido (commit `225c624`): backend en `mentor-backend/`
+> (FastAPI+Qdrant+Ollama) y cliente frontend `js/mentorLocal.js` + UI. PERO
+> **el backend NUNCA se ha ejecutado** — vive solo como código. El frontend
+> ya trae la tarjeta "Mentor local (opcional)" pero está inerte hasta que
+> apunte a un backend vivo.
+>
+> **La acción pendiente es de DESPLIEGUE, no de código, y es HUMANA** (en la
+> laptop Linux i5 de Edgar; el agente no tiene acceso a esa máquina). El
+> runbook paso a paso es **`mentor-backend/PUESTA-EN-MARCHA.md`** — 5 etapas:
+> 0) prerequisitos (Docker/Python/Ollama + pull de modelos + copiar Biblioteca),
+> 1) Qdrant + `python ingest.py`, 2) uvicorn + probar `/health` local,
+> 3) Cloudflare Tunnel, 4) conectar la app (URL + service token en el
+> Dashboard), 5) medir latencia del 1.5B y decidir `EVALUACION_FALLBACK`.
+>
+> **Lo que el agente SÍ puede hacer si se le pide** (sin la laptop): un
+> `run.sh` de arranque, ajustar prompts/`num_predict`/política anti-fuga,
+> exponer `/metrics` en la app, o corregir bugs que aparezcan al probar.
+>
+> **Menores aún abiertos, independientes del mentor local:** comprimir
+> `login.mp4` 4.8 MB→~2 MB (ffmpeg, cosmético, punto 9 de abajo); lista de
+> "menores acumulados" (punto 8).
+
 0. ~~Fondo de video + liquid glass~~ ✅ HECHO (2026-06-11, noche). Detalle:
    - El video llegó como `fondo .mp4` en la raíz → movido a
      `assets/video/fondo.mp4`. Ya venía óptimo (H.264, 720×1280 vertical,

@@ -8,6 +8,10 @@ Claude se queda 100 % en el cliente (BYOK), como hoy.
 > laptop está apagada, la app sigue funcionando exactamente como ahora
 > (Constitución §0.7: la IA y la cuenta son SIEMPRE opcionales).
 
+> 👉 **¿Vas a desplegarlo? No leas todo esto: sigue el paso a paso en
+> [`PUESTA-EN-MARCHA.md`](PUESTA-EN-MARCHA.md).** Este README es la referencia
+> de arquitectura (el *porqué*); aquel es la guía operativa (el *cómo*).
+
 ---
 
 ## 0. Decisiones de arquitectura (por qué NO se siguió la propuesta al pie)
