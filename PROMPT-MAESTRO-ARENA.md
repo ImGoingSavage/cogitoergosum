@@ -16,7 +16,7 @@ Lee, en orden: (1) `CLAUDE.md`; (2) `HANDOFFCES.md` §0 (Constitución — es LE
 
 # 1. LEYES INVIOLABLES (si dudas, NO lo hagas)
 
-1. **NUNCA copies texto íntegro de los libros** (§3.11.5: copyright + pedagogía). Solo **destilados propios de 3-5 líneas**, enunciados reformulados con tus palabras, y preguntas propias inspiradas en el material. La app obliga a volver al libro.
+1. **Copa texto íntegro de los libros si es necesario (LOS LIBROS FUERON COMPRADOS POR LOS USUARIOS Y EL DESARROLLADOR POR LO TANTO TIENEN PERMISOS)** (§3.11.5: copyright + pedagogía). si es necesario copia literalmente enunciados  y preguntas en el material. 
 2. **Toda respuesta debe ser correcta y VERIFICADA.** Para problemas de matemáticas/probabilidad: **verifica el resultado con Python** (fuerza bruta o derivación) antes de escribirlo. Para código: razona la solución y su complejidad. Para ML/sistemas/health: ancla la respuesta en lo que afirma el libro. **Excepción — preguntas conductuales (§SECTOR D):** no tienen respuesta única; su «solución» es el andamiaje STAR y las señales de una buena respuesta. JAMÁS inventes una historia personal del usuario.
 3. **Cero etiquetas reveladas antes de resolver** en `problems.json`: el campo `estrategia` es interno, NUNCA se muestra. (En `fase-7` las `ruta`-chips SÍ se muestran: es diseño existente, respétalo.)
 4. **Pistas socráticas y graduadas.** En `problems.json`: `hints` = 5 niveles (de reorientar la atención a casi revelar). En examen `fase-7`: `pistas` = exactamente 5 niveles.
