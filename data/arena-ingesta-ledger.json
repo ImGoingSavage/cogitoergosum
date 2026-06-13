@@ -53,11 +53,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Probabilidad y estadística/fifty_challenging_problems_in__2 (1).pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "en_progreso",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 60,
+      "unidades_creadas": [
+        "arena-fc1",
+        "arena-fc2",
+        "arena-fc3",
+        "arena-fc4"
+      ],
       "cuota_minima": 60,
-      "notas": "Iniciado 2026-06-13 (cuenta A)"
+      "notas": "Completado 2026-06-13 (cuenta A). 4 unidades: coincidencias, geometría, paradojas, apuestas/colas."
     },
     {
       "libro": "Introduction to Probability (Blitzstein & Hwang)",
