@@ -1813,3 +1813,51 @@ pero NUNCA el que otra sesión tenga en "en_progreso".
 **Estado** — Heard on the Street: 31/60 preguntas (en_progreso; faltan 29).
 **Siguiente** — Completar cuota (arena-q6/q7 con ~29 preguntas más) y luego
 iniciar A Practical Guide to Quantitative Finance Interviews.
+
+## Bitácora 2026-06-13 (Arena tanda 4) — Quant Job Interview (Joshi), 67 preguntas
+
+**Qué se hizo** (ruta `quant`, libro completado en el ledger)
+
+- Destilado **Quant Job Interview Questions and Answers** (Joshi, Denson &
+  Downes) del cap. 3 (probabilidad y procesos estocásticos) y cap. 8
+  (logic/brainteasers), apuntando a las secciones de ejercicios por el índice.
+- **6 unidades nuevas** en `fase-7` (arena-q8..q13, órdenes 17-22) con **61
+  preguntas de banco** (10-11 por unidad):
+  - arena-q8 · Esperanza, juegos y parada óptima.
+  - arena-q9 · Probabilidad condicional, Bayes y conteo.
+  - arena-q10 · Distribuciones, geometría y estadísticos de orden.
+  - arena-q11 · Movimiento browniano, Itô y martingalas.
+  - arena-q12 · Brainteasers: trucos, invariantes y conteo.
+  - arena-q13 · Brainteasers: lógica, inducción y juegos.
+- **6 ítems de examen** `f7-ex-15..20` (total fase-7: 20 ítems), con `pistas[]`
+  de 5 niveles **como strings** (lo que renderiza `study.js`; ver nota abajo).
+- **4 heurísticas nuevas** en `catalogoHeuristicas` (total 33):
+  `parada-optima`, `martingala-parada`, `conservacion`, `desdoblar`.
+- **6 lecciones** `data/teoria/arena-q{8..13}.md` (destilados con tablas de
+  disparadores y síntesis en blockquote, formato estándar).
+- `sw.js` → **v30**; las 6 lecciones añadidas al SHELL (107 archivos).
+- Script de ingesta re-ejecutable e idempotente: `scripts/ingest-joshi.py`
+  (aborta si arena-q8 ya existe).
+
+**Verificación** — `node --check sw.js` OK; `study.json`/`problems.json` JSON
+válido; `scripts/verificar-shell.py` → OK 107 archivos; unicidad global de ids
+sin duplicados; integridad referencial (heurísticas, lecturas .md, registro en
+bloque) OK; **todas las respuestas numéricas verificadas con Python** (parada
+óptima 14/3, 3 caras→14 tiros, Bayes 8/17, hormiga en cubo 8 min, ruina 0.92,
+P(X₂<0)=1/4, Romeo&Julieta 7/16, dardo 2R/3, matriz de correlaciones no PSD,
+det=−0.316, etc.); recursos sirven 200 por HTTP.
+
+**Notas para el siguiente agente**
+- ⚠️ Bug latente preexistente (NO mío): los ítems `f7-ex-13` y `f7-ex-14`
+  (tanda 3) usan `pistas` como objetos `{nivel,texto}`, pero `study.js:818`
+  hace `createTextNode(item.pistas[n])` → renderiza "[object Object]". El
+  esquema correcto y el que la UI muestra bien es **array de strings** (§4.3
+  del PROMPT). Conviene migrar f7-ex-13/14 a strings en una pasada futura.
+- `node --check` sobre `js/*.js` falla en ESTE entorno (Linux) porque son
+  módulos ES y node los trata como CommonJS; es ambiental, no del código (falla
+  en archivos no tocados). La verificación real es `verificar-shell.py` + el
+  navegador.
+
+**Siguiente** — Según orden §10: **Fifty Challenging Problems in Probability**
+(ruta `quant`, cuota 60), luego Blitzstein/DeGroot/Casella, y después ruta
+`maang` (Cracking the Coding → System Design).

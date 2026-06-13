@@ -42,11 +42,18 @@
       "archivo": "Arena/Entrevista quant/Quant Job Interview_Mark_Joshi.pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 67,
+      "unidades_creadas": [
+        "arena-q8",
+        "arena-q9",
+        "arena-q10",
+        "arena-q11",
+        "arena-q12",
+        "arena-q13"
+      ],
       "cuota_minima": 60,
-      "notas": ""
+      "notas": "2026-06-13 (Opus): 61 preguntas banco + 6 ítems examen (f7-ex-15..20). 4 heurísticas nuevas: parada-optima, martingala-parada, conservacion, desdoblar. Cap. 3 (probabilidad y procesos estocásticos) y cap. 8 (brainteasers). Evitados duplicados con arena-q1..q7/p1..p4 (dos hijos, ruleta rusa ya estaba pero se reformuló, palo roto, etc.). Respuestas verificadas con Python. sw.js v30."
     },
     {
       "libro": "Fifty Challenging Problems in Probability",
