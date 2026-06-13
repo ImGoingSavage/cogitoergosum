@@ -134,6 +134,16 @@
       "id": "escalado-varianza",
       "nombre": "Escalado √T y varianza",
       "descripcion": "Var(aX) = a²·Var(X); para retornos i.i.d. la volatilidad escala con √T; no aplica con autocorrelación."
+    },
+    {
+      "id": "caminata-aleatoria",
+      "nombre": "Ruina del jugador / caminata aleatoria",
+      "descripcion": "Define P_k = P(absorción en N | inicio k). Para p=1/2: P_k = k/N. Para p≠1/2: P_k = (1−(q/p)^k)/(1−(q/p)^N). Duración esperada p=1/2: E[T|k] = k(N−k)."
+    },
+    {
+      "id": "serie-taylor",
+      "nombre": "Aproximación de Taylor / linearización",
+      "descripcion": "f(x+ε) ≈ f(x) + f'(x)ε + ½f''(x)ε². Conecta Δ con la derivada primera y Γ con la segunda. Usa para simplificar funciones no lineales cerca de un punto conocido."
     }
   ],
   "bloques": [
@@ -742,7 +752,11 @@
         "arena-q4",
         "arena-q5",
         "arena-q6",
-        "arena-q7"
+        "arena-q7",
+        "arena-p1",
+        "arena-p2",
+        "arena-p3",
+        "arena-p4"
       ],
       "examen": {
         "items": [
@@ -1164,6 +1178,99 @@
                 "r_dom = r_ext → F = S (forward = spot)"
               ],
               "source": "Heard on the Street (T. Crack, 15ª ed.) — Finance chapter"
+            }
+          },
+          {
+            "id": "f7-ex-13",
+            "heuristica": "caminata-aleatoria",
+            "enunciado": "Ruina del jugador: empiezas con $5, meta $10, moneda con p=0.45 (ligeramente desfavorable). (a) Calcula P(llegar a $10 antes de arruinarte). (b) ¿Cuánto cambia si p=0.5? (c) Si el casino cobra una comisión del 5% en cada apuesta ganada, ¿cómo modelarías esto?",
+            "pistas": [
+              {
+                "nivel": 1,
+                "texto": "¿Cuáles son las dos posibles 'salidas' del juego? Define Pₖ = P(llegar a N | inicio k) y escribe la ecuación de balance."
+              },
+              {
+                "nivel": 2,
+                "texto": "La ecuación Pₖ = p·P_{k+1} + q·P_{k−1} tiene solución general Pₖ = A + B·(q/p)^k. ¿Cuáles son las condiciones de frontera P₀=0 y P_N=1?"
+              },
+              {
+                "nivel": 3,
+                "texto": "Para p=0.45, q=0.55: ρ = q/p = 0.55/0.45 = 11/9. Pₖ = (1−ρᵏ)/(1−ρᴺ). Calcula para k=5, N=10."
+              },
+              {
+                "nivel": 4,
+                "texto": "ρ^5 = (11/9)^5 ≈ 2.052; ρ^10 ≈ 4.211. P₅ = (1−2.052)/(1−4.211) ≈ 0.328. Para p=0.5: P₅=k/N=0.5."
+              },
+              {
+                "nivel": 5,
+                "texto": "P(ganar, p=0.45) ≈ 32.8% vs P(ganar, p=0.5) = 50%. El 5% de desfavorabilidad casi reduce a la mitad tus chances. Comisión: si ganas $1 pero pagas 5¢ → p efectiva < 0.5 incluso con moneda justa."
+              }
+            ],
+            "solucion": "p=0.45: ρ=(0.55/0.45)^5≈2.052; P₅=(1−2.052)/(1−(ρ^10))≈(−1.052)/(−3.211)≈32.8%. p=0.5: P₅=5/10=50%. Diferencia: 17.2 puntos porcentuales por solo p=0.05 de desfavorabilidad.",
+            "disparador": "Señal: 'paseo entre dos barreras, probabilidad de cada una'. Jugada: ruina del jugador. Para p≠1/2: ratio geométrico (q/p)^k determina las chances. La fórmula es exponencial en k — una pequeña desventaja compuesta se vuelve devastadora.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "avanzado",
+              "skills": [
+                "ruina del jugador",
+                "recurrencia lineal",
+                "probabilidad de absorción"
+              ],
+              "errores_comunes": [
+                "Usar k/N para p≠1/2",
+                "Olvidar que ρ^N puede ser muy grande haciendo la fracción cercana a 1/ρ^k"
+              ],
+              "casos_borde": [
+                "p=0: P₀=...=P_{N-1}=0; p=1: P₁=...=PN=1"
+              ],
+              "source": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)"
+            }
+          },
+          {
+            "id": "f7-ex-14",
+            "heuristica": "serie-taylor",
+            "enunciado": "Una call europea tiene precio C = C(S, σ). (a) Usa Taylor de primer orden en S para definir Delta y explicar la P&L de un portafolio delta-neutral en dt. (b) Incluye el término de segundo orden en S para definir Gamma e interpretar la P&L de un portafolio long-gamma. (c) ¿Cuándo un portafolio long-gamma pierde dinero?",
+            "pistas": [
+              {
+                "nivel": 1,
+                "texto": "Escribe C(S+ΔS) ≈ C(S) + C'(S)·ΔS + ½C''(S)·(ΔS)². ¿Qué nombres tienen C' y C''?"
+              },
+              {
+                "nivel": 2,
+                "texto": "Delta = ∂C/∂S (sensibilidad lineal). Si vendo la opción y compro Δ acciones, la P&L = ΔC − Δ·ΔS. ¿Qué queda?"
+              },
+              {
+                "nivel": 3,
+                "texto": "P&L delta-neutral = ½Γ·(ΔS)² ≥ 0 para Γ>0. Siempre ganas con cualquier movimiento. ¿Entonces dónde está el costo?"
+              },
+              {
+                "nivel": 4,
+                "texto": "El costo es el tiempo: Θ < 0 (la opción pierde valor cada día). La P&L total en dt: ½Γ·(ΔS)² + Θ·dt. Long gamma gana si |(ΔS)²/dt| > |Θ|/½Γ, es decir si la vol realizada supera la implícita."
+              },
+              {
+                "nivel": 5,
+                "texto": "Long gamma pierde cuando la volatilidad realizada < implícita (el mercado se mueve poco). El portafolio paga diariamente por la convexidad; si el activo no se mueve lo suficiente, el tiempo corroe más de lo que gana la gamma."
+              }
+            ],
+            "solucion": "P&L delta-neutral en dt: ½Γ·(ΔS)² + Θ·dt. Long gamma (Γ>0, Θ<0): gana cuando vol_realizada > vol_implícita (el movimiento compensa el decay). Pierde cuando vol_realizada < vol_implícita. Equilibrio: (ΔS/S)² = σ²_implícita·dt.",
+            "disparador": "Señal: 'P&L de un portafolio de opciones'. Taylor de segundo orden en S conecta Gamma (curvatura) con Theta (decay temporal) vía la PDE de Black-Scholes. Long gamma es una apuesta a que el activo se moverá más de lo que el mercado espera.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "avanzado",
+              "skills": [
+                "Taylor de opciones",
+                "Greeks",
+                "P&L de delta-hedge",
+                "volatilidad implícita vs realizada"
+              ],
+              "errores_comunes": [
+                "Creer que long gamma siempre gana (ignorar Theta)",
+                "Confundir vol implícita con vol realizada"
+              ],
+              "casos_borde": [
+                "Gamma→0 lejos del strike: el portafolio es casi lineal"
+              ],
+              "source": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)"
             }
           }
         ]
@@ -4713,6 +4820,582 @@
           "enunciado": "¿Por qué la volatilidad diaria se escala por √252 para obtener volatilidad anual? ¿Cuáles son los supuestos implícitos? ¿Cuándo falla esta escalación?",
           "solucion": "Si los retornos diarios son i.i.d. con varianza σ_d², la varianza anual = 252·σ_d² (hay ~252 días de trading), entonces σ_anual = σ_d·√252. Supuestos: retornos i.i.d. (sin autocorrelación), distribución estacionaria, varianza finita. Falla cuando: hay autocorrelación (momentum o reversión a la media), la volatilidad es estocástica (GARCH, vol clustering), o la distribución cambia (crisis).",
           "explicacion": "Señal: 'convertir vol diaria a anual'. El factor √252 (no 252) es el que escala desviaciones estándar. En práctica: la volatilidad real de largo plazo crece menos que √T si hay reversión a la media, y más si hay clustering de alta volatilidad persistente."
+        }
+      ]
+    },
+    {
+      "id": "arena-p1",
+      "bloque": "fase-7",
+      "orden": 13,
+      "titulo": "Acertijos matemáticos y razonamiento rápido",
+      "libro": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+      "lectura": "data/teoria/arena-p1.md",
+      "dosis": "15 preguntas · brain teasers, cálculo mental y patrones",
+      "objetivo": "Identificar la estructura invariante detrás de acertijos y resolver en tiempo de entrevista mediante atajos algebraicos",
+      "heuristicas": [
+        "invariante",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "quant",
+        "nivel": "intermedio",
+        "skills": [
+          "cálculo mental",
+          "series telescópicas",
+          "teoría de números elemental",
+          "conteo"
+        ],
+        "fuente": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+        "session": "2026-06-13"
+      },
+      "ideas_clave": [
+        "Sumas telescópicas: 1/(k(k+1)) = 1/k − 1/(k+1).",
+        "Identidades de cuadrados: (a−b)(a+b)=a²−b², (a±b)²=a²±2ab+b².",
+        "Para potencias mod m: reduce la base mod m, halla el período, reduce el exponente mod período.",
+        "El problema del cumpleaños: umbral ~√(2N·ln2), no N/2.",
+        "Inducción y simetría colapsan conteos difíciles."
+      ],
+      "banco": [
+        {
+          "id": "arp1-q1",
+          "tipo": "calculo",
+          "enunciado": "Calcula la suma S = 1/(1×2) + 1/(2×3) + 1/(3×4) + … + 1/(99×100). Busca un patrón antes de sumar término a término.",
+          "solucion": "S = 99/100. Descomposición parcial: 1/(k(k+1)) = 1/k − 1/(k+1). La suma telescopa: (1 − 1/2) + (1/2 − 1/3) + … + (1/99 − 1/100) = 1 − 1/100 = 99/100.",
+          "explicacion": "Señal: denominador producto de consecutivos. Jugada: fracciones parciales A/(k) + B/(k+1) → telescopio. Generalización: Σ_{k=1}^{n} 1/(k(k+1)) = n/(n+1)."
+        },
+        {
+          "id": "arp1-q2",
+          "tipo": "quiz",
+          "enunciado": "Tienes 8 bolas idénticas a la vista; una pesa levemente diferente (puedes asumir más pesada). Con una balanza de platillos (sin pesas), ¿cuál es el número mínimo de pesadas para identificar la bola diferente?",
+          "solucion": "2 pesadas. Divide en grupos de 3-3-2. Pesada 1: pon 3 vs 3. Si la balanza se inclina, la más pesada está en el grupo más pesado; si balancea, está entre las 2 restantes. Pesada 2: dentro del grupo sospechoso de 3, pon 1 vs 1 (deja 1 aparte); si balancea, es la dejada aparte; si se inclina, es la más pesada.",
+          "explicacion": "Estrategia de búsqueda binaria en árbol ternario: cada pesada tiene 3 resultados (izquierda más pesada, derecha más pesada, equilibrio). Con k pesadas puedes distinguir hasta 3^k bolas. Para 8 < 9 = 3², bastan 2 pesadas."
+        },
+        {
+          "id": "arp1-q3",
+          "tipo": "calculo",
+          "enunciado": "Calcula S = 1 − 2 + 3 − 4 + 5 − 6 + … + 99 − 100. ¿Hay un atajo sin sumar término a término?",
+          "solucion": "S = −50. Agrupa en pares: (1−2) + (3−4) + … + (99−100) = 50 pares de (−1) = −50.",
+          "explicacion": "Señal: serie alternante de la forma Σ(−1)^{k+1}·k. La agrupación en pares es el atajo. Variante: 1−2+3−4+…+(2n−1)−2n = −n. Para n=50: S = −50."
+        },
+        {
+          "id": "arp1-q4",
+          "tipo": "calculo",
+          "enunciado": "Calcula mentalmente 97 × 103 sin hacer multiplicación larga. ¿Cuál es la estrategia? ¿Y 98²?",
+          "solucion": "97×103 = (100−3)(100+3) = 100²−3² = 10000−9 = 9991. Para 98²: (100−2)² = 10000−400+4 = 9604.",
+          "explicacion": "Identidades útiles: (a−b)(a+b) = a²−b²; (a−b)² = a²−2ab+b². Elige a = múltiplo de 10 más cercano. Error frecuente: calcular 97×103 directamente. El atajo algebraico es siempre más rápido en entrevista."
+        },
+        {
+          "id": "arp1-q5",
+          "tipo": "calculo",
+          "enunciado": "¿Cuántas veces aparece el dígito 1 al escribir todos los enteros del 1 al 100?",
+          "solucion": "21 veces. Posición de unidades: 1,11,21,31,41,51,61,71,81,91 → 10 unos. Posición de decenas: 10,11,12,…,19 → 10 unos. Posición de centenas: 100 → 1 uno. Total: 10+10+1 = 21.",
+          "explicacion": "Señal: 'contar apariciones de un dígito'. Método: cuenta por posición, no por número. Cuidado con 11 (contribuye a unidades Y decenas). Generalización: para dígito d en 1..n, contar para cada posición cuántas veces aparece d en esa posición."
+        },
+        {
+          "id": "arp1-q6",
+          "tipo": "calculo",
+          "enunciado": "¿Cuánto es 4444^4444 mod 9? Resuelve sin calculadora.",
+          "solucion": "7. Paso 1: 4444 mod 9 = (4+4+4+4) mod 9 = 16 mod 9 = 7. Paso 2: ciclo de 7^k mod 9 — 7¹=7, 7²=4, 7³=1, 7⁴=7, … período 3. Paso 3: exponente 4444 mod 3 = (4+4+4+4) mod 3 = 16 mod 3 = 1. Entonces 7^4444 mod 9 = 7^1 mod 9 = 7.",
+          "explicacion": "Señal: 'potencia grande mod m'. Jugada: (1) reduce la base mod m, (2) encuentra el período del ciclo, (3) reduce el exponente mod período. Herramienta: teorema de Euler / Fermat pequeño. Para mod 9 el truco de suma de dígitos es el primer paso."
+        },
+        {
+          "id": "arp1-q7",
+          "tipo": "calculo",
+          "enunciado": "n puntos en una circunferencia; cada par está unido por una cuerda. ¿Cuántas cuerdas hay? ¿Cuántas intersecciones tienen (en posición general, sin 3 cuerdas concurrentes)?",
+          "solucion": "Cuerdas: C(n,2) = n(n−1)/2. Intersecciones interiores: cada intersección es determinada por exactamente 4 puntos (las dos cuerdas que se cortan); C(n,4) = n(n−1)(n−2)(n−3)/24. Para n=6: 15 cuerdas, C(6,4)=15 intersecciones.",
+          "explicacion": "Señal: 'contar pares/grupos de puntos'. Cuerdas = pares de puntos. Intersecciones = cuartetos de puntos. La biyección entre combinaciones y objetos geométricos es la clave."
+        },
+        {
+          "id": "arp1-q8",
+          "tipo": "calculo",
+          "enunciado": "Calcula el producto P = (1−1/4)(1−1/9)(1−1/16)⋯(1−1/n²). ¿Cuál es el valor para n→∞?",
+          "solucion": "P_n = (n+1)/(2n). Para n→∞: P → 1/2. Demostración: 1−1/k² = (k−1)(k+1)/k². Producto telescópico: [1·3/(2²)] × [2·4/(3²)] × [3·5/(4²)] × ⋯ = [1×2×3×⋯×(n−1)] / [2×3×⋯×n] × [3×4×⋯×(n+1)] / [2×3×⋯×n] = (1/n) × (n+1)/2 = (n+1)/(2n).",
+          "explicacion": "Señal: 'producto de términos de la forma 1−1/k²'. Factoriza con diferencia de cuadrados y busca el telescopio. Muchos productos con factores (k±c)/k son telescópicos."
+        },
+        {
+          "id": "arp1-q9",
+          "tipo": "calculo",
+          "enunciado": "Suma todos los dígitos de todos los enteros del 1 al 100 (por ejemplo, 99 contribuye 9+9=18). ¿Cuánto es la suma total?",
+          "solucion": "901. Rango 1–9: suma dígitos = 1+2+…+9 = 45. Rango 10–99 (decenas d, unidades u): dígito de decenas d∈{1..9} aparece 10 veces cada uno → 10×45 = 450; dígito de unidades u∈{0..9} aparece 9 veces cada uno → 9×45 = 405; subtotal = 855. Número 100: 1+0+0 = 1. Total: 45+855+1 = 901.",
+          "explicacion": "Señal: 'suma de dígitos de todos los enteros en un rango'. Aborda por posición, no por número. Para 1–999 el mismo método: cada posición cubre dígitos 0–9 uniformemente en bloques de 100."
+        },
+        {
+          "id": "arp1-q10",
+          "tipo": "calculo",
+          "enunciado": "Simplifica (√6 + √5) / (√6 − √5). ¿Cuál es la forma más simple sin raíz en el denominador?",
+          "solucion": "(√6+√5)² / ((√6)²−(√5)²) = (6 + 2√30 + 5) / 1 = 11 + 2√30.",
+          "explicacion": "Racionalización: multiplica numerador y denominador por el conjugado (√6+√5). Forma general: (a+b)/(a−b) × (a+b)/(a+b) = (a+b)² / (a²−b²). Si a²−b² ∈ ℤ, el denominador se elimina."
+        },
+        {
+          "id": "arp1-q11",
+          "tipo": "conceptual",
+          "enunciado": "Para |x| < 1, ¿cuánto es Σ_{k=0}^{∞} x^k? ¿Y Σ_{k=1}^{∞} k·x^{k−1}? Aplica esto a calcular Σ_{k=0}^{∞} k·(1/2)^k.",
+          "solucion": "Σ x^k = 1/(1−x). Derivando respecto a x: Σ k·x^{k−1} = 1/(1−x)². Multiplicando por x: Σ k·x^k = x/(1−x)². Para x=1/2: Σ k·(1/2)^k = (1/2)/(1/2)² = 2.",
+          "explicacion": "La derivación término a término de series de potencias es legítima dentro del radio de convergencia. El resultado Σ k·x^k = x/(1−x)² aparece en cálculos de esperanza de distribuciones geométricas y en valoración de perpetuidades crecientes."
+        },
+        {
+          "id": "arp1-q12",
+          "tipo": "calculo",
+          "enunciado": "¿Cuántos cuadrados (de todos los tamaños) hay en un tablero de ajedrez de 8×8?",
+          "solucion": "204. Un cuadrado de lado k ocupa una posición (i,j) con i ∈ {1,…,9−k} y j ∈ {1,…,9−k}: hay (9−k)² posiciones. Total = Σ_{k=1}^{8} (9−k)² = 8²+7²+…+1² = n(n+1)(2n+1)/6 con n=8 = 8×9×17/6 = 204.",
+          "explicacion": "Señal: 'contar objetos anidados'. Parametriza por el tamaño y cuenta posiciones para cada tamaño. La suma de cuadrados Σk² = n(n+1)(2n+1)/6 aparece frecuentemente en conteo y análisis de algoritmos."
+        },
+        {
+          "id": "arp1-q13",
+          "tipo": "calculo",
+          "enunciado": "¿Cuál es el menor n tal que n! > 10^6? Estima primero, luego verifica.",
+          "solucion": "n = 10. Estimación: log₁₀(n!) ≈ n·log₁₀(n/e) (Stirling) → para n=10: 10·log(10/e) ≈ 10×0.568 ≈ 5.68 < 6; necesitamos un poco más. 9! = 362 880 < 10^6. 10! = 3 628 800 > 10^6. El primer n es 10.",
+          "explicacion": "Para estimaciones de n!: la fórmula de Stirling da n! ≈ √(2πn)·(n/e)^n. Más fácil en entrevista: multiplica hasta pasar el umbral. Otra ruta: Σlog(k) para k=1..n — log(10!) = log(1)+…+log(10) ≈ 6.56 > 6."
+        },
+        {
+          "id": "arp1-q14",
+          "tipo": "calculo",
+          "enunciado": "Tres hormigas se ubican en los vértices de un triángulo equilátero. Cada hormiga elige al azar (p=1/2) caminar en sentido horario o antihorario. ¿Cuál es la probabilidad de que ninguna pareja colisione?",
+          "solucion": "P = 1/4. Colisión ocurre si dos hormigas se mueven hacia cada otro. No hay colisión si y solo si TODAS van horario o TODAS van antihorario: P = 2 × (1/2)³ = 2/8 = 1/4.",
+          "explicacion": "Señal: 'objetos en movimiento simétrico'. El evento de no-colisión es 'todas en la misma dirección'. Generalización con n vértices y n hormigas: P(no colisión) = 2/2^n = 2^{1−n}."
+        },
+        {
+          "id": "arp1-q15",
+          "tipo": "calculo",
+          "enunciado": "El problema del cumpleaños: ¿cuántas personas se necesitan para que P(al menos 2 compartan cumpleaños) > 50%? Estima con la aproximación exponencial.",
+          "solucion": "n = 23. Aproximación: P(no coincidencia) ≈ e^{−n(n−1)/(2×365)}. Igualando a 0.5: n(n−1)/730 ≈ ln2 ≈ 0.693 → n(n−1) ≈ 506 → n ≈ 23. Valor exacto: con n=23, P(≥1 coincidencia) ≈ 50.7%.",
+          "explicacion": "La raíz es que el número de pares crece como n²/2, por eso el umbral es √(730·ln2) ≈ 22.5, no 183 (la mitad de 365). Contraintuitivo pero exacto. La aproximación e^{−k(k−1)/(2×365)} es válida para k << 365."
+        }
+      ]
+    },
+    {
+      "id": "arena-p2",
+      "bloque": "fase-7",
+      "orden": 14,
+      "titulo": "Combinatoria y probabilidad discreta",
+      "libro": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+      "lectura": "data/teoria/arena-p2.md",
+      "dosis": "16 preguntas · combinatoria, probabilidad discreta y esperanza",
+      "objetivo": "Modelar problemas de conteo y probabilidad con las herramientas correctas: complemento, inclusión-exclusión, linealidad de E[], Markov y Chebyshev",
+      "heuristicas": [
+        "linealidad-esperanza",
+        "ley-total-esperanza"
+      ],
+      "metadata": {
+        "ruta": "quant",
+        "nivel": "intermedio",
+        "skills": [
+          "combinatoria",
+          "probabilidad condicional",
+          "distribuciones discretas",
+          "desigualdades probabilísticas"
+        ],
+        "fuente": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+        "session": "2026-06-13"
+      },
+      "ideas_clave": [
+        "Stars and bars: Σxᵢ=n con xᵢ≥0 → C(n+k−1,k−1) soluciones.",
+        "Derangements: D(n)/n! → 1/e ≈ 37% de permutaciones son desarreglos.",
+        "Ruina del jugador (p=1/2): P(llegar a N | inicio k) = k/N; duración esperada = k(N−k).",
+        "Coupon collector con n: E[T] = n·Hₙ.",
+        "E[máx de n uniformes en {1..N}] = n(N+1)/(n+1)."
+      ],
+      "banco": [
+        {
+          "id": "arp2-q1",
+          "tipo": "calculo",
+          "enunciado": "¿De cuántas maneras puedes caminar de (0,0) a (m,n) en una retícula, moviéndote solo derecha o arriba? Calcula para (4,3) y generaliza.",
+          "solucion": "C(m+n, n). Para (4,3): C(7,3) = 35. Razón: el camino tiene m+n pasos, de los cuales n son hacia arriba (el resto, a la derecha); elegir qué n pasos son 'arriba' determina el camino.",
+          "explicacion": "Señal: 'contar caminos en retícula con movimientos restringidos'. El argumento es biyección: camino ↔ secuencia de n Us y m Rs. Generalización: con obstáculos, usa programación dinámica o reflexión."
+        },
+        {
+          "id": "arp2-q2",
+          "tipo": "calculo",
+          "enunciado": "Inclusión-exclusión: en una baraja de 52 cartas, ¿cuál es la probabilidad de que una mano de 5 cartas contenga al menos un as?",
+          "solucion": "P = 1 − C(48,5)/C(52,5) = 1 − (48!47!·…·44!) / (52!·…·48!) = 1 − 1712304/2598960 ≈ 1 − 0.6588 = 0.3412. Complemento: probabilidad de CERO ases = C(48,5)/C(52,5).",
+          "explicacion": "Complemento es más fácil que inclusión-exclusión directa aquí. General: P(al menos uno de A,B,…) = 1 − P(ninguno). Si los eventos fueran independientes: 1 − (1−p)^n, pero aquí no lo son (barajas sin reemplazo)."
+        },
+        {
+          "id": "arp2-q3",
+          "tipo": "calculo",
+          "enunciado": "Stars and bars: ¿cuántas soluciones enteras no negativas tiene x₁ + x₂ + x₃ + x₄ = 10? ¿Y si cada xᵢ ≥ 1?",
+          "solucion": "Sin restricción (xᵢ ≥ 0): C(n+k−1, k−1) = C(10+3, 3) = C(13,3) = 286. Con xᵢ ≥ 1: sustituye yᵢ = xᵢ−1 → Σyᵢ = 6 → C(6+3,3) = C(9,3) = 84.",
+          "explicacion": "Señal: 'distribución de n objetos idénticos en k cajas'. Visualiza n estrellas separadas por k−1 barras; el número de disposiciones es C(n+k−1, k−1). La sustitución yᵢ = xᵢ − mín traslada el problema."
+        },
+        {
+          "id": "arp2-q4",
+          "tipo": "calculo",
+          "enunciado": "¿Cuántas formas hay de ordenar las letras de MISSISSIPPI? ¿Cuántas permutaciones de 4 de sus letras distintas empiezan por M?",
+          "solucion": "MISSISSIPPI: 11 letras con M×1, I×4, S×4, P×2. Permutaciones = 11!/(1!·4!·4!·2!) = 39916800/(1·24·24·2) = 34650. Letras distintas: {M,I,S,P} → 4; permutaciones de 4 que empiezan por M = 3! = 6.",
+          "explicacion": "Señal: 'ordenar con repetición'. Divide n! entre el factorial de cada multiplicidad. Si se pide 'empieza por X': fija X en la primera posición y cuenta el resto."
+        },
+        {
+          "id": "arp2-q5",
+          "tipo": "calculo",
+          "enunciado": "Define desarreglo D(n) como permutación de {1,…,n} sin punto fijo. Da la fórmula y calcula D(4). ¿Cuánto es D(n)/n! cuando n→∞?",
+          "solucion": "D(n) = n! · Σ_{k=0}^{n} (−1)^k/k!. D(4) = 24·(1−1+1/2−1/6+1/24) = 24·(9/24) = 9. Para n→∞: D(n)/n! → e^{−1} ≈ 0.3679.",
+          "explicacion": "Señal: 'distribución de sobres a destinatarios equivocados'. La fórmula viene de inclusión-exclusión sobre eventos Aᵢ = 'elemento i en su lugar'. La convergencia a 1/e es notable: ~37% de permutaciones aleatorias no tienen ningún punto fijo."
+        },
+        {
+          "id": "arp2-q6",
+          "tipo": "calculo",
+          "enunciado": "Sacas 3 cartas (con reemplazo) de un mazo de 10 cartas numeradas del 1 al 10. ¿Cuál es el valor esperado del máximo? Generaliza para n extracciones de {1,…,N}.",
+          "solucion": "E[max de n extracciones de {1,…,N}] = n(N+1)/(n+1). Para n=3, N=10: E = 3×11/4 = 8.25. Derivación: P(max ≤ k) = (k/N)^n → E[max] = Σ_{k=1}^{N} P(max ≥ k) = Σ(1 − ((k−1)/N)^n) = N − Σ(j/N)^n para j=0..N−1.",
+          "explicacion": "Señal: 'valor esperado de estadística de orden en uniforme discreta'. La fórmula n(N+1)/(n+1) es elegante: el k-ésimo orden estadístico de n uniformes {1..N} tiene E[X_(k)] = k(N+1)/(n+1)."
+        },
+        {
+          "id": "arp2-q7",
+          "tipo": "calculo",
+          "enunciado": "Ruina del jugador con barrera: empiezas con $3, quieres llegar a $10, ganas $1 con p=1/2 y pierdes $1 con q=1/2. ¿Cuál es la probabilidad de arruinarte (llegar a $0)? ¿Y con p=0.4?",
+          "solucion": "p=1/2: P(arruinarse) = 1 − P(llegar a 10) = 1 − 3/10 = 7/10. P(llegar a N | inicio k, p=1/2) = k/N. Para p=0.4 (q/p = 3/2): P(llegar a 10 | inicio 3) = (1−(3/2)^3)/(1−(3/2)^10) = (1−27/8)/(1−57.67) ≈ (−19/8)/(−56.67) ≈ 0.042. Probabilidad de arruinarse ≈ 0.958.",
+          "explicacion": "Señal: 'caminar hasta absorción en uno de dos extremos'. Para p=1/2: proporcional al inicio. Para p≠1/2: ratio geométrico (q/p)^k. El desfavorecido (p<1/2) tiene probabilidad de ganar exponencialmente baja."
+        },
+        {
+          "id": "arp2-q8",
+          "tipo": "calculo",
+          "enunciado": "Duración esperada del juego de la ruina: empiezas con $k, barreras en 0 y N, moneda justa (p=1/2). ¿Cuántos pasos en promedio hasta absorción?",
+          "solucion": "E[T | inicio k, p=1/2] = k(N−k). Para k=5, N=10: E[T] = 5×5 = 25. Para k=3, N=10: E[T] = 3×7 = 21. Máximo en k = N/2 (centro).",
+          "explicacion": "La fórmula sigue de la ecuación de balance: E[T|k] = 1 + (E[T|k+1] + E[T|k−1])/2. Sistema lineal de N−1 ecuaciones → solución k(N−k). Para p≠1/2 la fórmula es más compleja."
+        },
+        {
+          "id": "arp2-q9",
+          "tipo": "conceptual",
+          "enunciado": "Enuncia la aproximación de Poisson al binomial. ¿Bajo qué condiciones es válida? Estima P(0 defectos en 1000 piezas con tasa de defecto 0.3%).",
+          "solucion": "Bin(n,p) ≈ Poisson(λ) con λ = np cuando n→∞, p→0, np=λ fijo. Para n=1000, p=0.003: λ=3. P(X=0) = e^{−3} ≈ 0.0498. Exacto: (1−0.003)^{1000} ≈ e^{−3} ≈ 0.0498.",
+          "explicacion": "La aproximación de Poisson es el límite de eventos raros (p→0) con muchas oportunidades (n→∞). Útil para conteo de llegadas, defectos, accidentes. E[Poisson(λ)] = Var[Poisson(λ)] = λ — si Var >> Media, el modelo es sobre-disperso."
+        },
+        {
+          "id": "arp2-q10",
+          "tipo": "conceptual",
+          "enunciado": "La distribución geométrica tiene la propiedad de falta de memoria. Enuncia esta propiedad formalmente. ¿Qué distribución continua tiene la misma propiedad?",
+          "solucion": "P(X > m+n | X > m) = P(X > n). En palabras: dado que ya esperaste m intentos sin éxito, el tiempo restante tiene la misma distribución. Equivalente continuo: distribución exponencial, con P(X > s+t | X > s) = P(X > t).",
+          "explicacion": "La falta de memoria caracteriza a la geométrica (discreta) y a la exponencial (continua): son las ÚNICAS distribuciones con esta propiedad en sus respectivos dominios. Implica que el proceso no 'recuerda' cuánto tiempo lleva esperando."
+        },
+        {
+          "id": "arp2-q11",
+          "tipo": "calculo",
+          "enunciado": "Sean X₁,…,Xₙ i.i.d. con distribución Uniforme[0,1]. Calcula E[X_(1)] (el mínimo) y E[X_(n)] (el máximo). Generaliza a E[X_(k)].",
+          "solucion": "E[X_(k)] = k/(n+1). E[mín] = 1/(n+1); E[máx] = n/(n+1). Derivación: F_{(k)}(x) = Σ_{j=k}^{n} C(n,j) x^j (1−x)^{n−j} → E[X_(k)] = ∫₀¹ [1−F_{(k)}(x)] dx = k/(n+1) (por simetría o Beta distribution).",
+          "explicacion": "Señal: 'estadísticas de orden de uniformes'. Los n uniformes dividen [0,1] en n+1 intervalos de igual longitud esperada 1/(n+1). Esto explica las fórmulas: el k-ésimo punto divide en k segmentos de longitud esperada 1/(n+1)."
+        },
+        {
+          "id": "arp2-q12",
+          "tipo": "conceptual",
+          "enunciado": "Enuncia la desigualdad de Markov y la de Chebyshev. ¿Cuál es más fuerte? Aplica Chebyshev para acotar P(|X−μ| ≥ 2σ).",
+          "solucion": "Markov: P(X ≥ a) ≤ E[X]/a (para X ≥ 0, a > 0). Chebyshev: P(|X−μ| ≥ kσ) ≤ 1/k². Chebyshev es más fuerte: usa la varianza. P(|X−μ| ≥ 2σ) ≤ 1/4 = 25%. (Para la normal: P(|X−μ| ≥ 2σ) ≈ 4.6%, mucho mejor con la distribución exacta.)",
+          "explicacion": "Estas cotas son universales (valen para CUALQUIER distribución con E[X] o Var[X] finita). Su utilidad es en pruebas teóricas, no como estimaciones numéricas precisas. La desigualdad de Jensen (E[f(X)] ≥ f(E[X]) para f convexa) es una prima importante."
+        },
+        {
+          "id": "arp2-q13",
+          "tipo": "conceptual",
+          "enunciado": "Enuncia la desigualdad de Jensen para funciones convexas. Da dos aplicaciones: una en finanzas y una en probabilidad.",
+          "solucion": "Jensen: si f es convexa, E[f(X)] ≥ f(E[X]). (Invertido para f cóncava.) Finanzas: E[e^X] ≥ e^{E[X]} — el precio esperado de una acción con retorno log-normal supera e^{retorno esperado} (la prima +σ²/2). Probabilidad: E[X²] ≥ (E[X])² → Var(X) ≥ 0.",
+          "explicacion": "La intuición: una función convexa tiene una 'sección parabólica' que siempre queda por encima de la tangente. Aplicaciones: seguros (E[utilidad(pérdida)] < utilidad(E[pérdida])), opciones, medias de Hölder."
+        },
+        {
+          "id": "arp2-q14",
+          "tipo": "calculo",
+          "enunciado": "Una variable aleatoria X tiene P(X=−1)=1/3, P(X=0)=1/3, P(X=1)=1/3. ¿Cuántas observaciones i.i.d. necesitas para que P(|X̄ − 0| > 0.01) ≤ 0.01 por Chebyshev?",
+          "solucion": "Var(X) = E[X²] = (1+0+1)/3 = 2/3. Por Chebyshev: P(|X̄|>ε) ≤ Var(X̄)/ε² = (2/3)/n / (0.01)² = (2/3)/(n·0.0001). Queremos ≤ 0.01: (2/3)/(n·0.0001) ≤ 0.01 → n ≥ (2/3)/(0.01·0.0001) = 666 667.",
+          "explicacion": "Chebyshev da cotas conservadoras. En la práctica, con CLT: X̄ ≈ N(0, (2/3)/n) → necesitarías solo n ≈ (2/3)×(2.576/0.01)² ≈ 44 000. La diferencia ilustra que Chebyshev no asume la forma de la distribución."
+        },
+        {
+          "id": "arp2-q15",
+          "tipo": "calculo",
+          "enunciado": "Lanzas un dado de 6 caras repetidamente. ¿Cuántos lanzamientos esperas hasta obtener todas las caras al menos una vez? (Coupon collector con n=6.)",
+          "solucion": "E[T] = 6·H₆ = 6·(1+1/2+1/3+1/4+1/5+1/6) = 6·49/20 = 6×2.45 = 14.7. Más precisamente: 6·(1+0.5+0.333+0.25+0.2+0.167) = 6×2.45 = 14.7 lanzamientos.",
+          "explicacion": "Señal: 'esperar hasta completar todos los tipos'. Etapas: cuando tienes k caras distintas, la tasa de éxito es (6−k)/6, por lo que E[espera en etapa k] = 6/(6−k). La suma es E[T] = 6×H₆."
+        },
+        {
+          "id": "arp2-q16",
+          "tipo": "calculo",
+          "enunciado": "Sean X ~ Exp(λ) e Y ~ Exp(μ) independientes. ¿Cuál es P(X < Y)? ¿Cuál es la distribución de min(X,Y)?",
+          "solucion": "P(X < Y) = λ/(λ+μ). min(X,Y) ~ Exp(λ+μ). Derivación de P(X<Y): integra P(X<Y) = ∫₀^∞ P(X<y)·fY(y)dy = ∫₀^∞ (1−e^{−λy})·μe^{−μy}dy = 1 − μ/(λ+μ) = λ/(λ+μ).",
+          "explicacion": "Señal: 'competencia de dos exponenciales'. El mínimo de independientes Exp(λ_i) es Exp(Σλᵢ): los tiempos de Poisson compiten y la tasa de que cualquiera dispare es la suma de tasas. P(X<Y) = λ/(λ+μ): proporcional a la tasa propia."
+        }
+      ]
+    },
+    {
+      "id": "arena-p3",
+      "bloque": "fase-7",
+      "orden": 15,
+      "titulo": "Procesos estocásticos y movimiento browniano",
+      "libro": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+      "lectura": "data/teoria/arena-p3.md",
+      "dosis": "15 preguntas · caminatas, BM, Poisson y martingalas",
+      "objetivo": "Conectar la caminata aleatoria discreta con el BM continuo; calcular probabilidades y esperanzas en cadenas de Markov y Poisson",
+      "heuristicas": [
+        "caminata-aleatoria",
+        "cadena-markov-ee"
+      ],
+      "metadata": {
+        "ruta": "quant",
+        "nivel": "avanzado",
+        "skills": [
+          "movimiento browniano",
+          "ruina del jugador",
+          "martingalas",
+          "Poisson",
+          "Girsanov"
+        ],
+        "fuente": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+        "session": "2026-06-13"
+      },
+      "ideas_clave": [
+        "Cov(B_s,B_t) = min(s,t) — el BM es una función de covarianza de 'mínimo'.",
+        "Variación cuadrática [B,B]_t = t — de aquí nace el lema de Itô.",
+        "Ruina p=1/2: proporcional al inicio. Ruina p≠1/2: geométrico (q/p)^k.",
+        "Proceso de Poisson: superposición y adelgazamiento son Poisson.",
+        "Cambio de medida (Girsanov): elimina el drift y convierte μ en r (neutral al riesgo)."
+      ],
+      "banco": [
+        {
+          "id": "arp3-q1",
+          "tipo": "conceptual",
+          "enunciado": "Define la caminata aleatoria simple Sₙ = X₁+…+Xₙ con P(Xᵢ=+1)=P(Xᵢ=−1)=1/2 y S₀=0. Calcula E[Sₙ], Var(Sₙ), E[Sₙ²] y describe la distribución aproximada para n grande.",
+          "solucion": "E[Sₙ] = 0; Var(Sₙ) = n (Var(Xᵢ)=1, i.i.d. → Var(Sₙ)=n); E[Sₙ²] = n. Para n grande por TCL: Sₙ/√n → N(0,1) en distribución.",
+          "explicacion": "La caminata aleatoria es el modelo discreto del movimiento browniano. El resultado clave: la dispersión crece como √n (no n). Esto fundamenta el √T en volatilidad financiera."
+        },
+        {
+          "id": "arp3-q2",
+          "tipo": "calculo",
+          "enunciado": "Ruina del jugador: empiezas con $k, barreras absorbentes en 0 y N, P(subir $1) = p, P(bajar $1) = q = 1−p. Deriba P(llegar a N antes de 0) para los dos casos p=1/2 y p≠1/2.",
+          "solucion": "Sea Pₖ = P(llegar a N | inicio k). Ecuación: Pₖ = p·P_{k+1} + q·P_{k−1}, con P₀=0, P_N=1. Para p=1/2: Pₖ = k/N. Para p≠1/2 (ρ=q/p): Pₖ = (1−ρᵏ)/(1−ρᴺ).",
+          "explicacion": "Señal: 'absorción en cadena de Markov en línea'. La ecuación de recurrencia lineal tiene soluciones 1 y ρ^k; ajustar con las condiciones de frontera da la fórmula. Para p<1/2: Pₖ→0 exponencialmente rápido al aumentar k; el 'casino' tiene ventaja devastadora."
+        },
+        {
+          "id": "arp3-q3",
+          "tipo": "conceptual",
+          "enunciado": "Define el movimiento browniano estándar B_t. Enuncia sus 5 propiedades fundamentales y calcula Cov(B_s, B_t) para s ≤ t.",
+          "solucion": "Propiedades: (1) B₀ = 0; (2) incrementos independientes: B_t−B_s ⊥ B_s−B_u para u<s<t; (3) incrementos estacionarios: B_t−B_s ~ N(0, t−s); (4) trayectorias continuas; (5) variación cuadrática [B,B]_t = t. Covarianza: Cov(B_s,B_t) = E[B_sB_t] = min(s,t). Dem.: para s≤t: E[B_sB_t] = E[B_s(B_t−B_s)] + E[B_s²] = 0 + s = s.",
+          "explicacion": "Cov(B_s,B_t)=min(s,t) es fundamental: lo usan para calcular varianza de integrales estocásticas, la correlación entre log-precios a diferentes horizontes y en modelos de tasa de interés."
+        },
+        {
+          "id": "arp3-q4",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué es la variación cuadrática de B_t? ¿Por qué es diferente de la variación total? ¿Qué implica para el lema de Itô?",
+          "solucion": "Variación cuadrática [B,B]_t = t (en el límite L²). Variación total de B_t es ∞ (las trayectorias son tan 'rugosas' que su variación total diverge). Implicación para Itô: como (dB_t)² = dt en el cálculo estocástico, la fórmula de Taylor necesita el término de segundo orden en dB: df ≈ f'dB + ½f''(dB)² = f'dB + ½f''dt — esto es el lema de Itô.",
+          "explicacion": "En cálculo ordinario, (dx)² = 0 al segundo orden. En cálculo estocástico, (dB)² = dt ≠ 0. Por eso el lema de Itô difiere de la regla de la cadena clásica. Esta diferencia de primer principio es lo que genera el drift de Itô (−σ²/2)."
+        },
+        {
+          "id": "arp3-q5",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué es una martingala? Verifica que B_t, B_t²−t y M_t = e^(σB_t − σ²t/2) son martingalas respecto a la filtración natural.",
+          "solucion": "Martingala: E[M_t | F_s] = M_s para s≤t. Para B_t: E[B_t|F_s] = E[B_s+(B_t−B_s)|F_s] = B_s (incremento independiente con media 0). Para B_t²−t: E[(B_t)²−t|F_s] = E[(B_s+(B_t−B_s))²|F_s]−t = B_s²+(t−s)−t = B_s²−s. Para M_t: usando E[e^{σZ}]=e^{σ²/2} para Z~N(0,1).",
+          "explicacion": "B_t²−t es la 'compensación' de B_t² (la corrección que lo convierte en martingala). M_t es la medida de Girsanov, fundamental para cambio de medida en finanzas. Toda martingala local positiva es martingala si es uniformemente integrable."
+        },
+        {
+          "id": "arp3-q6",
+          "tipo": "calculo",
+          "enunciado": "Tiempo de primer toque: B_t es movimiento browniano y T_a = inf{t ≥ 0 : B_t = a} para a > 0. ¿Es E[T_a] finita? ¿Cuánto vale P(T_a < ∞)?",
+          "solucion": "P(T_a < ∞) = 1 (el BM alcanza cualquier nivel con probabilidad 1). E[T_a] = ∞. Dem.: si E[T_a] < ∞, el teorema de muestreo opcional aplicaría: E[B_{T_a}] = E[B_0] = 0, pero B_{T_a} = a → contradicción. La distribución de T_a es Lévy estable de índice 1/2: densidad f(t) = a/(√(2πt³))·e^{−a²/(2t)}.",
+          "explicacion": "El BM es recurrente pero las excursiones hasta nivel a son largas. E[T_a]=∞ significa que el tiempo esperado es infinito aunque siempre llegues. La distribución de T_a tiene cola pesada de Pareto con índice 1/2."
+        },
+        {
+          "id": "arp3-q7",
+          "tipo": "conceptual",
+          "enunciado": "Enuncia el principio de reflexión de Brownian motion. Aplícalo para calcular P(max_{s≤t} B_s ≥ a) para a > 0.",
+          "solucion": "Reflexión: para a > 0, P(T_a ≤ t, B_t ≥ a) = P(B_t ≥ a) [la trayectoria que alcanza a y sigue está en biyección con sí misma]. Por simetría: P(max_{s≤t} B_s ≥ a) = P(B_t ≥ a) + P(B_t ≥ a) = 2P(B_t ≥ a) = 2(1−Φ(a/√t)) = 2Φ(−a/√t).",
+          "explicacion": "El principio de reflexión: una vez que B toca a, la parte futura se 'refleja' equiprobablemente. Consecuencia: P(max B_s ≥ a) = 2·P(B_t ≥ a). Se usa en valoración de opciones de barrera y knock-out."
+        },
+        {
+          "id": "arp3-q8",
+          "tipo": "calculo",
+          "enunciado": "GBM: dS = μS dt + σS dW. Usa el lema de Itô para derivar la distribución de S(T). Calcula E[S(T)] y Var[S(T)] en términos de S(0), μ, σ, T.",
+          "solucion": "Por lema de Itô con f=ln(S): d(ln S) = (μ−σ²/2)dt + σdW → ln(S(T)/S(0)) ~ N((μ−σ²/2)T, σ²T). E[S(T)] = S(0)e^{μT}. Var[S(T)] = S(0)²e^{2μT}(e^{σ²T}−1) (usando E[e^X] = e^{μ+σ²/2} para X normal).",
+          "explicacion": "La distinción clave: E[ln S(T)] = ln S(0)+(μ−σ²/2)T pero ln E[S(T)] = ln S(0)+μT. El drift del log es μ−σ²/2, no μ. La diferencia es la corrección de Jensen."
+        },
+        {
+          "id": "arp3-q9",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué es un proceso de Ornstein-Uhlenbeck (OU)? ¿Cómo se diferencia del BM? ¿Para qué se usa en finanzas?",
+          "solucion": "dX = −κ(X−θ)dt + σdW. Parámetros: κ (velocidad de reversión), θ (nivel de largo plazo), σ (volatilidad). Diferencia con BM: OU tiene reversión a la media → varianza estacionaria σ²/(2κ), no crece con t. Distribución estacionaria: N(θ, σ²/(2κ)). Usos: tasas de interés (modelo de Vasicek), spreads de crédito, pares trading.",
+          "explicacion": "El BM tiene varianza que crece indefinidamente (Var[B_t]=t). El OU llega a equilibrio porque la deriva lo 'jala' hacia θ. Para κ grande, revierte rápido; para κ≈0, se aproxima al BM."
+        },
+        {
+          "id": "arp3-q10",
+          "tipo": "calculo",
+          "enunciado": "Proceso de Poisson N(t) con tasa λ. Calcula E[N(t)], Var[N(t)] y P(N(t)=k). ¿Cuál es la distribución del tiempo entre llegadas?",
+          "solucion": "N(t) ~ Poisson(λt). E[N(t)] = λt; Var[N(t)] = λt. P(N(t)=k) = e^{−λt}(λt)^k/k!. Tiempo entre llegadas: Exp(λ) con E[T]=1/λ.",
+          "explicacion": "Señal: 'conteo de eventos aleatorios en tiempo'. El proceso de Poisson tiene incrementos independientes y estacionarios. Propiedad key: si se mezclan Poisson(λ₁) y Poisson(λ₂) independientes, obtienes Poisson(λ₁+λ₂). Si se adelgaza Poisson(λ) con probabilidad p, obtienes Poisson(pλ)."
+        },
+        {
+          "id": "arp3-q11",
+          "tipo": "calculo",
+          "enunciado": "Mezcla y adelgazamiento de Poisson: (a) Si llegan coches y motos de forma independiente como Poisson(3/hora) y Poisson(2/hora), ¿cuál es la distribución del total de vehículos? (b) Si cada vehículo es coche con p=0.6, ¿qué proceso describe los coches?",
+          "solucion": "(a) Total ~ Poisson(3+2) = Poisson(5/hora). (b) Coches ~ Poisson(5×0.6) = Poisson(3/hora); motos ~ Poisson(5×0.4) = Poisson(2/hora). Nota: adelgazamiento y la fuente original son independientes.",
+          "explicacion": "Superposición: suma de independientes Poisson es Poisson. Adelgazamiento: cada evento del Poisson(λ) se incluye con probabilidad p → Poisson(λp). Estas propiedades hacen al Poisson el modelo default para conteo de eventos raros independientes."
+        },
+        {
+          "id": "arp3-q12",
+          "tipo": "calculo",
+          "enunciado": "Cadena de Markov: estados {0,1,2} con matriz de transición P = [[0.5,0.4,0.1],[0.2,0.6,0.2],[0.3,0.3,0.4]]. Encuentra la distribución estacionaria π.",
+          "solucion": "Resuelve πP = π, Ση πᵢ = 1. Sistema: π₀ = 0.5π₀+0.2π₁+0.3π₂; π₁ = 0.4π₀+0.6π₁+0.3π₂; π₂ = 0.1π₀+0.2π₁+0.4π₂. Simplificando: −0.5π₀+0.2π₁+0.3π₂=0; 0.4π₀−0.4π₁+0.3π₂=0; Σπᵢ=1. Solución: π ≈ (0.322, 0.452, 0.226).",
+          "explicacion": "La distribución estacionaria describe el comportamiento a largo plazo. Para cadenas ergódicas, converge desde cualquier estado inicial. Método: resuelve el sistema lineal (n−1 ecuaciones independientes + normalización)."
+        },
+        {
+          "id": "arp3-q13",
+          "tipo": "conceptual",
+          "enunciado": "¿Por qué la caminata aleatoria en ℤ¹ y ℤ² es recurrente, pero en ℤ³ es transitoria? ¿Qué dice esto sobre el BM en dimensión d?",
+          "solucion": "Criterio de Chung-Fuchs: la caminata en ℤᵈ es recurrente ↔ Σ P₀₀(n) = ∞ (probabilidad de retorno al origen en n pasos). Para d=1,2: las sumas divergen → recurrente. Para d≥3: convergen → transitoria. BM d-dimensional análogo: recurrente para d≤2, transitorio para d≥3.",
+          "explicacion": "Intuitivo: en 1D hay solo 2 direcciones y siempre vuelves. En 2D hay más espacio pero los retornos siguen siendo frecuentes (probabilidad logarítmicamente decreciente). En 3D hay tanto espacio que te 'pierdes'. Esto tiene consecuencias en física (difusión) y teoría de potencial."
+        },
+        {
+          "id": "arp3-q14",
+          "tipo": "conceptual",
+          "enunciado": "Explica el teorema de muestreo opcional (OST) de Doob. ¿Cuándo se puede aplicar para calcular el valor esperado en un tiempo de parada τ?",
+          "solucion": "OST: si M_t es martingala y τ es un tiempo de parada, entonces E[M_τ] = E[M₀] bajo condiciones técnicas (τ acotado, o M acotada, o E[τ]<∞ y incrementos acotados). Uso: para calcular probabilidades de absorción y valores esperados en juegos de azar. Ejemplo: E[B_{T_a}] = E[B_0] = 0 — pero T_a tiene E[T_a]=∞, así que OST no aplica directamente.",
+          "explicacion": "El OST falla cuando no se cumplen las condiciones: E[τ]=∞ puede dar E[M_τ] ≠ E[M₀]. En finanzas: se usa para valorar opciones de tipo americano y para derivar fórmulas de arbitraje en tiempos de parada óptimos."
+        },
+        {
+          "id": "arp3-q15",
+          "tipo": "calculo",
+          "enunciado": "Cambio de medida (Girsanov): si W_t es BM bajo ℙ y dQ/dP = e^(θW_T − θ²T/2), ¿cuál es la distribución de W_t bajo ℚ?",
+          "solucion": "Bajo ℚ: Ŵ_t = W_t − θt es movimiento browniano estándar (teorema de Girsanov). Equivalentemente: dW = dŴ + θdt, por lo que un proceso con drift θ bajo ℙ se convierte en BM puro bajo ℚ. En finanzas: la medida ℙ es la 'real' (con drift μ) y ℚ es la 'neutral al riesgo' (drift = r). El cambio de medida elimina μ y permite calcular precios de derivados como esperanza descontada.",
+          "explicacion": "El precio de una opción = E^ℚ[e^{−rT}·payoff]. El cambio de medida de Girsanov es la versión continua de la substitución q/p de la caminata aleatoria. Es la idea central que une la probabilidad moderna con las finanzas matemáticas."
+        }
+      ]
+    },
+    {
+      "id": "arena-p4",
+      "bloque": "fase-7",
+      "orden": 16,
+      "titulo": "Cálculo y álgebra lineal para finanzas cuantitativas",
+      "libro": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+      "lectura": "data/teoria/arena-p4.md",
+      "dosis": "16 preguntas · series de Taylor, álgebra lineal y análisis numérico",
+      "objetivo": "Aplicar Taylor para interpretar Greeks, eigenvalores para optimización y análisis numérico para pricing",
+      "heuristicas": [
+        "serie-taylor",
+        "no-arbitraje"
+      ],
+      "metadata": {
+        "ruta": "quant",
+        "nivel": "avanzado",
+        "skills": [
+          "series de Taylor",
+          "álgebra lineal",
+          "optimización",
+          "análisis numérico",
+          "función característica"
+        ],
+        "fuente": "A Practical Guide to Quantitative Finance Interviews (X. Zhou)",
+        "session": "2026-06-13"
+      },
+      "ideas_clave": [
+        "Taylor de C(S): ΔC ≈ Δ·ΔS + ½Γ·(ΔS)² — Delta es lineal, Gamma es curvatura.",
+        "tr(AB) = tr(BA); det(A) = ∏λᵢ; tr(A) = Σλᵢ.",
+        "PCA = descomposición espectral de Σ; primeras PCs capturan el nivel y la pendiente.",
+        "Newton-Raphson: convergencia cuadrática.",
+        "Integral gaussiana: ∫e^{−x²}dx = √π (truco 2D polar)."
+      ],
+      "banco": [
+        {
+          "id": "arp4-q1",
+          "tipo": "calculo",
+          "enunciado": "Escribe las series de Taylor de e^x, sin(x) y cos(x) alrededor de 0. Usa la de e^x para estimar e^{0.1} con error < 10^{-4}.",
+          "solucion": "e^x = Σ x^n/n! = 1+x+x²/2+x³/6+… Sin(x) = x−x³/6+x⁵/120−… Cos(x) = 1−x²/2+x⁴/24−… Para e^{0.1}: 1+0.1+0.005+0.0001667 ≈ 1.10517; el error del 4to término es ~0.1⁴/24 ≈ 4×10^{-6} < 10^{-4}.",
+          "explicacion": "Señal: 'aproximar función cerca de 0'. La regla práctica: para |x|=0.1, el error después de k términos es O(x^{k+1}/(k+1)!). Para x=0.1 y k=3: error ≈ 0.1⁴/24 ≈ 0.000004. Las series de Taylor de e, sin, cos son las tres más usadas en física y finanzas."
+        },
+        {
+          "id": "arp4-q2",
+          "tipo": "calculo",
+          "enunciado": "Evalúa los límites: (a) lím_{x→0} sin(x)/x, (b) lím_{x→0} (e^x − 1 − x)/x², (c) lím_{x→∞} x·e^{-x}.",
+          "solucion": "(a) 1 (L'Hôpital o Taylor: sin(x) ≈ x). (b) 1/2 (Taylor: e^x−1−x = x²/2+O(x³)). (c) 0 (la exponencial domina cualquier potencial; L'Hôpital: lím e^{-x}/(1/x) → 0).",
+          "explicacion": "Para límites 0/0 o ∞/∞: L'Hôpital o Taylor. Taylor es más rápido cuando los primeros términos son evidentes. Para comparar crecimientos: poly << exp << poly·exp en cualquier dirección."
+        },
+        {
+          "id": "arp4-q3",
+          "tipo": "calculo",
+          "enunciado": "Calcula ∫x·e^x dx e ∫ln(x) dx usando integración por partes. Enuncia la regla.",
+          "solucion": "Regla: ∫u dv = uv − ∫v du. Para ∫xe^x dx: u=x, dv=e^x dx → uv−∫v du = xe^x − ∫e^x dx = xe^x − e^x + C = (x−1)e^x + C. Para ∫ln(x) dx: u=ln(x), dv=dx → x·ln(x)−∫x·(1/x)dx = x·ln(x) − x + C.",
+          "explicacion": "Mnemónico LIATE para elegir u: Logarítmica, Inversa trig, Algebraica, Trigonométrica, Exponencial — elige el primero de la lista como u. ∫x^n·e^x dx requiere n integraciones por partes; la forma general: e^x·(x^n − nx^{n-1} + … ± n!)."
+        },
+        {
+          "id": "arp4-q4",
+          "tipo": "conceptual",
+          "enunciado": "Usa la expansión de Taylor del precio de una opción C(S) para interpretar Delta y Gamma. ¿Qué dice esta expansión sobre la P&L de un portafolio delta-hedgeado?",
+          "solucion": "C(S+ΔS) ≈ C(S) + Δ·ΔS + ½Γ·(ΔS)². P&L del delta-hedge (short ΔS acciones, long call): P&L = ΔC − Δ·ΔS ≈ ½Γ·(ΔS)². El portafolio es 'long gamma': gana con cualquier movimiento grande (convexo en ΔS). Costo: el theta (Θ<0) que corroe el valor cada día.",
+          "explicacion": "La interpretación de Taylor: Delta captura la exposición lineal; Gamma captura la convexidad. Un portafolio delta-neutral no tiene exposición de primer orden: solo gana/pierde por la curvatura. Esta es la intuición del trading de volatilidad: comprás gamma si crees que el activo se moverá más de lo que implica el precio de la opción."
+        },
+        {
+          "id": "arp4-q5",
+          "tipo": "calculo",
+          "enunciado": "Para matrices A y B compatibles, demuestra que tr(AB) = tr(BA). ¿Es cierto AB = BA en general? Da un contraejemplo.",
+          "solucion": "tr(AB) = Σᵢ (AB)ᵢᵢ = Σᵢ Σⱼ AᵢⱼBⱼᵢ = Σⱼ Σᵢ BⱼᵢAᵢⱼ = Σⱼ (BA)ⱼⱼ = tr(BA). AB ≠ BA en general: [[1,1],[0,0]]·[[0,0],[1,0]] = [[1,0],[0,0]] pero el orden inverso da [[0,0],[1,1]].",
+          "explicacion": "tr(ABC) = tr(CAB) = tr(BCA) (permutación cíclica). La traza es invariante bajo permutaciones cíclicas pero NO bajo permutaciones arbitrarias. Consecuencia: los valores propios de AB y BA coinciden (aunque las matrices sean distintas)."
+        },
+        {
+          "id": "arp4-q6",
+          "tipo": "conceptual",
+          "enunciado": "Para una matriz A n×n con valores propios λ₁,…,λₙ (contados con multiplicidad), ¿cuánto son det(A) y tr(A)? Calcula ambos para A = [[3,1],[1,3]].",
+          "solucion": "det(A) = ∏ λᵢ; tr(A) = Σ λᵢ. Para A=[[3,1],[1,3]]: det = 9−1=8; tr=6. Valores propios: (3−λ)²−1=0 → λ=2 y λ=4. Verificación: 2×4=8 ✓; 2+4=6 ✓.",
+          "explicacion": "Estas relaciones son invariantes de la matriz independientes de la base. Det = 0 ↔ algún λᵢ=0 ↔ A es singular. El polinomio característico es p(λ) = det(A−λI) = (−1)^n(λ^n − tr(A)λ^{n-1} + … ± det(A))."
+        },
+        {
+          "id": "arp4-q7",
+          "tipo": "conceptual",
+          "enunciado": "¿Cuándo es una matriz simétrica positiva definida (SPD)? ¿Por qué toda matriz de covarianza es semidefinida positiva? ¿Cuándo es estrictamente positiva definida?",
+          "solucion": "SPD: A simétrica con xᵀAx > 0 para todo x≠0 (equivalente: todos los valores propios > 0; o todos los menores principales > 0 — criterio de Sylvester). Covarianza Σ = E[(X−μ)(X−μ)ᵀ]: xᵀΣx = E[(xᵀ(X−μ))²] ≥ 0 → semidefinida positiva. Es SPD si no hay combinación lineal determinista de los componentes (sin multicolinealidad perfecta).",
+          "explicacion": "En finanzas: la matriz de covarianza de retornos debe ser SPD para invertirla (optimización de Markowitz). Si hay activos perfectamente correlacionados, la matriz es singular y el sistema es indeterminado."
+        },
+        {
+          "id": "arp4-q8",
+          "tipo": "calculo",
+          "enunciado": "Aplica Newton-Raphson para encontrar √2 empezando de x₀ = 1.5. Escribe la iteración y calcula 3 pasos. ¿Cuál es la tasa de convergencia?",
+          "solucion": "f(x) = x²−2, f'(x) = 2x. Iteración: xₙ₊₁ = xₙ − (xₙ²−2)/(2xₙ) = (xₙ+2/xₙ)/2. x₀=1.5 → x₁=1.41667 → x₂=1.41422 → x₃=1.41421356. √2 ≈ 1.41421356. Convergencia cuadrática: el error se cuadra en cada paso (εₙ₊₁ ≈ C·εₙ²).",
+          "explicacion": "Newton-Raphson tiene convergencia cuadrática cuando f'(x*)≠0 y x₀ es suficientemente cercano a la raíz. Consecuencia práctica: el número de dígitos correctos se duplica en cada iteración. Alternativa cuando f' es difícil: método de la secante (convergencia superlineal, orden φ≈1.618)."
+        },
+        {
+          "id": "arp4-q9",
+          "tipo": "calculo",
+          "enunciado": "Problema de Markowitz: minimiza la varianza del portafolio xᵀΣx sujeto a 1ᵀx=1 (pesos suman 1) y μᵀx = r (retorno objetivo r). Escribe el Lagrangiano y las condiciones de primer orden.",
+          "solucion": "L = ½xᵀΣx − λ(μᵀx−r) − γ(1ᵀx−1). CPO: ∂L/∂x = Σx − λμ − γ1 = 0 → x* = Σ⁻¹(λμ+γ1). Sustituyendo en las restricciones: 2×2 sistema para (λ,γ). Solución: x* es combinación de dos portafolios (mutual fund theorem).",
+          "explicacion": "El Lagrangiano transforma un problema restringido en uno no-restringido. CPO ∇f = λ∇g implica que el gradiente del objetivo es proporcional al de la restricción activa. Para n activos: Σx* = λμ + γ1 — un sistema lineal n×n en x*."
+        },
+        {
+          "id": "arp4-q10",
+          "tipo": "calculo",
+          "enunciado": "Calcula la función generatriz de momentos M_X(t) = E[e^{tX}] para X ~ N(0,1) y X ~ Exp(λ). Úsala para calcular E[X] y E[X²].",
+          "solucion": "Normal N(0,1): M(t) = e^{t²/2}. Momentos: M'(0)=0=E[X]; M''(0)=1=E[X²]. Exp(λ): M(t) = λ/(λ−t) para t<λ. Momentos: M'(0)=1/λ=E[X]; M''(0)=2/λ²=E[X²].",
+          "explicacion": "La mgf codifica todos los momentos: E[X^n] = M^{(n)}(0). Para sumas de independientes: M_{X+Y}(t) = M_X(t)·M_Y(t). La mgf de N(μ,σ²) es e^{μt+σ²t²/2}: el argumento del exponente justifica E[e^X] = e^{μ+σ²/2}."
+        },
+        {
+          "id": "arp4-q11",
+          "tipo": "calculo",
+          "enunciado": "Descompón A = [[4,2],[2,3]] en sus valores y vectores propios. Verifica que A = PΛP⁻¹.",
+          "solucion": "det(A−λI) = (4−λ)(3−λ)−4 = λ²−7λ+8 = 0 → λ = (7±√17)/2 ≈ 5.56, 1.44. Para λ₁≈5.56: (A−λ₁I)v=0 → v₁ ∝ (2, λ₁−4) = (2, 1.56). Para λ₂≈1.44: v₂ ∝ (2, 1.44−4) = (2,−2.56). Verificación: tr(A)=7=λ₁+λ₂ ✓; det(A)=8=λ₁λ₂ ✓.",
+          "explicacion": "Descomposición espectral A = PΛP⁻¹ (P = matriz de vectores propios por columnas). Para A simétrica: P es ortogonal (P⁻¹=Pᵀ) — descomposición espectral. PCA = descomposición espectral de la covarianza: los valores propios son las varianzas explicadas."
+        },
+        {
+          "id": "arp4-q12",
+          "tipo": "calculo",
+          "enunciado": "Calcula ∫₀^∞ x^n·e^{−x} dx. ¿Cuál es la conexión con la función Gamma y el factorial?",
+          "solucion": "∫₀^∞ x^n e^{−x} dx = n! (función Gamma: Γ(n+1) = n!). Dem. por partes: ∫x^n e^{-x} dx = [−x^n e^{-x}]₀^∞ + n∫x^{n-1}e^{-x}dx = n·Γ(n) → Γ(n+1) = n·Γ(n). Con Γ(1)=1: Γ(n+1)=n!.",
+          "explicacion": "La función Gamma extiende el factorial a reales: Γ(1/2) = √π. Aparece en la distribución chi-cuadrado (Γ(n/2)), t-Student, Beta, y en la normalización de muchas densidades. En entrevistas: ∫₀^∞ e^{-x²} dx = √π/2 → Gaussian integral."
+        },
+        {
+          "id": "arp4-q13",
+          "tipo": "calculo",
+          "enunciado": "Regla trapezoidal: aproxima ∫₀¹ e^{-x²} dx con n=4 subintervalos. ¿Cuál es el orden del error?",
+          "solucion": "h = 0.25. Nodos: x₀=0, x₁=0.25, x₂=0.5, x₃=0.75, x₄=1. Valores: e^0=1, e^{-0.0625}≈0.9394, e^{-0.25}≈0.7788, e^{-0.5625}≈0.5698, e^{-1}≈0.3679. Trampa: h/2·[f₀ + 2f₁ + 2f₂ + 2f₃ + f₄] = 0.125·[1 + 1.8788 + 1.5576 + 1.1396 + 0.3679] ≈ 0.125·5.9439 ≈ 0.7430. Exacto: erfc(1)×√π/2 ≈ 0.7468. Error ∝ h².",
+          "explicacion": "La regla trapezoidal tiene error O(h²). Simpson tiene O(h⁴). Para mayor precisión: Gauss-Legendre (exacta para polinomios de grado ≤ 2n−1 con n puntos). En Monte Carlo: error ∝ 1/√N independiente de la dimensión — mejor para integrales de alta dimensión."
+        },
+        {
+          "id": "arp4-q14",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué es la transformada de Fourier de una función f(x)? ¿Por qué se usa en probabilidad (función característica)? Calcula la función característica de N(0,1).",
+          "solucion": "F̂(ω) = ∫_{-∞}^∞ f(x)e^{−iωx} dx. En probabilidad: función característica φ_X(t) = E[e^{itX}]. Siempre existe (a diferencia de la mgf). Para N(0,1): φ(t) = e^{−t²/2} (misma forma que mgf con t→it).",
+          "explicacion": "La función característica identifica unívocamente la distribución. La inversa da la densidad. Usos: demostrar el TCL (φ_{X̄}(t) = φ_X(t/√n)^n → e^{−t²/2}); valorar opciones con transformada de Fourier (método de Carr-Madan) cuando la función característica es conocida pero la densidad no."
+        },
+        {
+          "id": "arp4-q15",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué es PCA (Análisis de Componentes Principales)? ¿Cuál es el problema de optimización que resuelve? Aplica a una matriz de covarianza 2×2 sencilla.",
+          "solucion": "PCA busca direcciones ortogonales que maximizan la varianza explicada. Problema: max_{‖v‖=1} vᵀΣv → solución: v = vector propio de mayor valor propio. Para Σ=[[2,1],[1,2]]: λ₁=3 (vector (1,1)/√2), λ₂=1 (vector (1,−1)/√2). PC1 explica λ₁/(λ₁+λ₂)=75% de la varianza total.",
+          "explicacion": "PCA = rotación para alinear ejes con las direcciones de mayor variabilidad. Los componentes principales son los vectores propios de Σ; los valores propios son las varianzas explicadas. En finanzas: las primeras 2-3 PCs de la curva de tasas explican >95% de su movimiento (nivel, pendiente, curvatura)."
+        },
+        {
+          "id": "arp4-q16",
+          "tipo": "calculo",
+          "enunciado": "Calcula la integral gaussiana ∫_{-∞}^∞ e^{−x²} dx. Usa el truco de elevar al cuadrado en 2D y pasar a coordenadas polares.",
+          "solucion": "Sea I = ∫e^{−x²}dx. Entonces I² = ∫∫e^{−x²−y²}dxdy. En polares: x=r·cosθ, y=r·sinθ, dxdy=r dr dθ. I² = ∫₀^{2π}dθ ∫₀^∞ e^{−r²}r dr = 2π·[−e^{−r²}/2]₀^∞ = 2π·(1/2) = π. Por lo tanto I = √π. Consecuencia: la normal N(0,1/2) integra a 1; ∫_{-∞}^∞ e^{−x²/2}dx = √(2π).",
+          "explicacion": "El truco de Gaussian integral (elevar al cuadrado + coordenadas polares) es uno de los más elegantes en análisis. El resultado √π conecta la función Gamma con la distribución normal: Γ(1/2) = √π. No tiene primitiva elemental — solo existen los valores como probabilidades Φ(x)."
         }
       ]
     }

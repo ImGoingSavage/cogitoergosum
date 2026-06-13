@@ -26,11 +26,16 @@
       "archivo": "Arena/Entrevista quant/a-practical-guide-to-quantitative-finance-interviews.pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "en_progreso",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-p1",
+        "arena-p2",
+        "arena-p3",
+        "arena-p4"
+      ],
       "cuota_minima": 60,
-      "notas": "Iniciado 2026-06-13"
+      "notas": "2026-06-13: 62 preguntas banco (p1 acertijos, p2 combinatoria, p3 procesos, p4 cálculo). 2 heurísticas nuevas: caminata-aleatoria, serie-taylor. 2 ítems examen: f7-ex-13/14."
     },
     {
       "libro": "Quant Job Interview Questions and Answers (Mark Joshi)",
