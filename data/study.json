@@ -124,6 +124,16 @@
       "id": "cadena-markov-ee",
       "nombre": "Sistema de ecuaciones de estado",
       "descripcion": "Define E[X | estado i], escribe ecuaciones balanceadas por estado y resuelve el sistema lineal."
+    },
+    {
+      "id": "ley-total-esperanza",
+      "nombre": "Ley de la esperanza total / torre",
+      "descripcion": "E[X] = E[E[X|Y]]; descompone esperanzas complejas condicionando en un evento auxiliar conocido."
+    },
+    {
+      "id": "escalado-varianza",
+      "nombre": "Escalado √T y varianza",
+      "descripcion": "Var(aX) = a²·Var(X); para retornos i.i.d. la volatilidad escala con √T; no aplica con autocorrelación."
     }
   ],
   "bloques": [
@@ -730,7 +740,9 @@
         "arena-h2",
         "arena-q3",
         "arena-q4",
-        "arena-q5"
+        "arena-q5",
+        "arena-q6",
+        "arena-q7"
       ],
       "examen": {
         "items": [
@@ -1060,6 +1072,98 @@
                 "Con S>>K: C >> P (call deep ITM). Con S<<K: P >> C (put deep ITM)"
               ],
               "source": "Heard on the Street (Q2.3, Q2.1)"
+            }
+          },
+          {
+            "id": "f7-ex-11",
+            "heuristica": "ley-total-esperanza",
+            "enunciado": "Una moneda injusta cae cara con probabilidad p. Definas X = número de lanzamientos hasta la primera cara. (a) Calcula E[X] usando la ley de la esperanza total condicionando en el primer lanzamiento. (b) Calcula Var(X). (c) Para p = 0.3, ¿cuánto es E[X]?",
+            "pistas": [
+              {
+                "nivel": 1,
+                "texto": "¿Qué dos eventos pueden ocurrir en el primer lanzamiento? ¿Cuál es tu estado después de cada uno?"
+              },
+              {
+                "nivel": 2,
+                "texto": "Si el primer resultado es cara, ¿cuántos lanzamientos tomó? Si es cruz, ¿qué tan distinto es el problema desde ahí?"
+              },
+              {
+                "nivel": 3,
+                "texto": "Escribe E[X] = P(cara)·E[X|cara] + P(cruz)·E[X|cruz] y nota que el caso cruz reinicia el proceso."
+              },
+              {
+                "nivel": 4,
+                "texto": "Resuelve la ecuación E[X] = 1 + (1−p)·E[X]. Para Var(X): usa E[X²] − (E[X])²."
+              },
+              {
+                "nivel": 5,
+                "texto": "E[X] = 1/p (distribución geométrica). Var(X) = (1−p)/p². Para p=0.3: E[X] = 10/3 ≈ 3.33."
+              }
+            ],
+            "solucion": "E[X] = 1/p. Para p=0.3: E[X] = 10/3 ≈ 3.33. Var(X) = (1−p)/p². Derivación: E[X] = p·1 + (1−p)·(1+E[X]) → E[X] = 1 + (1−p)E[X] → pE[X] = 1 → E[X] = 1/p.",
+            "disparador": "La señal es 'lanzamiento hasta primera cara' o cualquier espera geométrica. La ley de la esperanza total (condiciona en el primer evento) convierte una recurrencia en una ecuación lineal.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "intermedio",
+              "skills": [
+                "distribución geométrica",
+                "ley de la esperanza total",
+                "recurrencia"
+              ],
+              "errores_comunes": [
+                "Sumar 1 + (1-p)·E[X] y olvidar que E[X|cruz] = 1 + E[X], no solo E[X]"
+              ],
+              "casos_borde": [
+                "p=1: E[X]=1, Var=0; p→0: E[X]→∞"
+              ],
+              "source": "Heard on the Street (T. Crack, 15ª ed.) — Probability chapter"
+            }
+          },
+          {
+            "id": "f7-ex-12",
+            "heuristica": "no-arbitraje",
+            "enunciado": "La tasa spot USD a 1 año es 4% y la tasa EUR a 1 año es 1%. El tipo de cambio spot es EUR/USD = 1.08. (a) ¿Cuál debe ser el tipo de cambio forward EUR/USD a 1 año por paridad de tasas cubierta? (b) Si el forward de mercado es 1.12, ¿hay arbitraje? Describe la operación. (c) ¿Por qué puede la CIP violarse en crisis?",
+            "pistas": [
+              {
+                "nivel": 1,
+                "texto": "Piensa en dos estrategias de inversión: (1) invertir $1 en USD al 4%; (2) convertir a EUR, invertir al 1% y fijar el forward."
+              },
+              {
+                "nivel": 2,
+                "texto": "Ambas estrategias deben tener el mismo resultado al vencimiento. ¿Qué valor en USD obtienes con cada una?"
+              },
+              {
+                "nivel": 3,
+                "texto": "Estrategia 1: 1.04 USD. Estrategia 2: (1/1.08)·1.01·F dólares. Para que sean iguales, despeja F."
+              },
+              {
+                "nivel": 4,
+                "texto": "F = 1.08 × 1.04/1.01 ≈ 1.1121. Si mercado = 1.12 > 1.1121: el EUR está 'caro' en el forward → vende EUR forward y opera el arbitraje."
+              },
+              {
+                "nivel": 5,
+                "texto": "Arbitraje: pide prestado USD a 4%, convierte a EUR a 1.08, invierte al 1%, vende EUR a 1.12 forward. Ganancia ≈ 0.008 USD por euro. En crisis: financiamiento caro en divisas rompe el arbitraje."
+              }
+            ],
+            "solucion": "F_CIP = 1.08 × (1.04/1.01) ≈ 1.1121. Si forward mercado = 1.12 > 1.1121: arbitraje existe. Operación: (1) pedir prestado USD, (2) convertir a EUR, (3) invertir en EUR, (4) vender EUR forward a 1.12. Ganancia = 1.12 − 1.1121 ≈ 0.008 por euro. En crisis: escasez de liquidez en USD encareció pedir prestado USD, rompiendo la igualdad.",
+            "disparador": "Señal: 'tipo de cambio + dos tasas de interés'. Jugada: CIP como condición de no-arbitraje entre mercado FX y tasas. Si el forward de mercado difiere de F_CIP, hay una operación rentable sin riesgo.",
+            "metadata": {
+              "ruta": "quant",
+              "nivel": "avanzado",
+              "skills": [
+                "paridad de tasas",
+                "no-arbitraje",
+                "forex",
+                "forward"
+              ],
+              "errores_comunes": [
+                "Usar diferencia aditiva de tasas en lugar de cociente multiplicativo",
+                "Confundir USD/EUR con EUR/USD"
+              ],
+              "casos_borde": [
+                "r_dom = r_ext → F = S (forward = spot)"
+              ],
+              "source": "Heard on the Street (T. Crack, 15ª ed.) — Finance chapter"
             }
           }
         ]
@@ -4335,6 +4439,280 @@
           "enunciado": "¿Por qué Black-Scholes usa la tasa libre de riesgo y no el retorno esperado μ del activo para valorar opciones?",
           "solucion": "Porque el portafolio delta-hedgeado (long opción + short Δ acciones) no tiene riesgo de mercado: must earn r (no-arbitraje). El μ desaparece en la derivación de la EDP de B-S porque se cancela al eliminar el riesgo. La valoración es neutral al riesgo.",
           "explicacion": "Intuición: dos activos con el mismo payoff en todos los estados deben valer lo mismo hoy (no-arbitraje). El precio de la opción no depende de lo optimistas o pesimistas que seamos sobre el activo; el delta hedge elimina esa dependencia."
+        }
+      ]
+    },
+    {
+      "id": "arena-q6",
+      "bloque": "fase-7",
+      "orden": 11,
+      "titulo": "Estadística inferencial · Distribuciones y estimación",
+      "libro": "Heard on the Street (T. Crack, 15ª ed.)",
+      "lectura": "data/teoria/arena-q6.md",
+      "dosis": "15 preguntas · inferencia estadística y propiedades de distribuciones",
+      "objetivo": "Aplicar CLT, LGN, pruebas de hipótesis, regresión y esperanza condicional en contextos cuantitativos",
+      "heuristicas": [
+        "linealidad-esperanza",
+        "ley-total-esperanza"
+      ],
+      "metadata": {
+        "ruta": "quant",
+        "nivel": "intermedio",
+        "skills": [
+          "estadística inferencial",
+          "distribuciones",
+          "regresión",
+          "esperanza condicional"
+        ],
+        "fuente": "Heard on the Street (T. Crack, 15ª ed.)",
+        "session": "2026-06-12"
+      },
+      "ideas_clave": [
+        "La regla 68-95-99.7 conecta σ con probabilidades concretas.",
+        "LGN y CLT son proposiciones distintas: convergencia puntual vs distribucional.",
+        "La ley de la esperanza total E[X] = E[E[X|Y]] reduce cálculos complejos.",
+        "El error estándar σ/√n mide la precisión del estimador, no la variabilidad del dato.",
+        "MLE bajo normalidad = mínimos cuadrados."
+      ],
+      "banco": [
+        {
+          "id": "arq6-q1",
+          "tipo": "quiz",
+          "enunciado": "Para una distribución normal, ¿qué porcentaje de los datos cae dentro de μ±σ, μ±2σ y μ±3σ? ¿Qué significa que un dato esté a 4σ de la media?",
+          "solucion": "μ±1σ: 68.27%; μ±2σ: 95.45%; μ±3σ: 99.73%. A 4σ: probabilidad ≈0.0063% (≈1 en 15 800). Regla mnemónica: 68-95-99.7 ('la regla empírica').",
+          "explicacion": "Señal: 'datos normalmente distribuidos'. Anclaje: 2σ cubre 95%; un valor a 3σ ya es muy inusual. En finanzas, 4σ diario implica que estadísticamente ocurre una vez cada ~60 años — pero ocurre con mayor frecuencia por colas pesadas reales."
+        },
+        {
+          "id": "arq6-q2",
+          "tipo": "conceptual",
+          "enunciado": "Explica la diferencia entre la Ley de los Grandes Números (LGN) y el Teorema Central del Límite (TCL). ¿Pueden aplicarse a distribuciones con varianza infinita?",
+          "solucion": "LGN: la media muestral X̄_n converge en probabilidad a μ (el promedio se estabiliza). TCL: la distribución de √n(X̄_n − μ)/σ converge a N(0,1) (la media estandarizada se vuelve normal). La LGN solo requiere E[X] < ∞; el TCL clásico requiere σ² < ∞. Con varianza infinita (Cauchy): la LGN falla, el TCL no aplica en su forma estándar.",
+          "explicacion": "Error clásico: confundir 'la media se acerca a μ' (LGN) con 'la distribución de la media es normal' (TCL). La LGN es sobre el límite puntual; el TCL es sobre la forma de la distribución."
+        },
+        {
+          "id": "arq6-q3",
+          "tipo": "calculo",
+          "enunciado": "El tiempo de espera en una tienda tiene σ = 5 minutos. Si tomas muestras de n = 100 clientes, ¿cuál es el error estándar de la media muestral? ¿Y con n = 400?",
+          "solucion": "σ_X̄ = σ/√n. Con n=100: σ_X̄ = 5/√100 = 0.5 min. Con n=400: σ_X̄ = 5/√400 = 0.25 min. Para reducir el error a la mitad se necesita cuadruplicar el tamaño muestral.",
+          "explicacion": "El error estándar escala con 1/√n, no con 1/n. Esta dependencia de √n es la misma raíz de la escala de volatilidad en finanzas: ambas vienen de que la varianza de n i.i.d. es n·σ²."
+        },
+        {
+          "id": "arq6-q4",
+          "tipo": "conceptual",
+          "enunciado": "Define el p-valor correctamente. ¿Qué afirmación es incorrecta: (A) P(datos tan extremos | H₀ verdadera) = 0.03, o (B) P(H₀ verdadera | estos datos) = 0.03?",
+          "solucion": "El p-valor es P(observar datos al menos tan extremos | H₀ es verdadera) → (A) es la definición correcta. (B) es incorrecto: P(H₀ | datos) requiere Bayes con probabilidad a priori de H₀. Un p-valor = 0.03 no significa '3% de probabilidad de que la hipótesis nula sea cierta'.",
+          "explicacion": "El error de transposición ('confundir P(A|B) con P(B|A)') es el más frecuente en estadística. Un p-valor bajo solo dice que los datos serían improbables si H₀ fuese verdadera; no cuantifica la verdad de H₀."
+        },
+        {
+          "id": "arq6-q5",
+          "tipo": "quiz",
+          "enunciado": "Define error tipo I y error tipo II en una prueba de hipótesis. ¿Cuál es más grave en un test de detección de cáncer? ¿Y en un test de spam?",
+          "solucion": "Tipo I (α): rechazar H₀ cuando es verdadera (falso positivo). Tipo II (β): no rechazar H₀ cuando es falsa (falso negativo). En detección de cáncer: Tipo II es más grave (no detectar cáncer real). En spam: Tipo I puede ser más grave (bloquear correo legítimo).",
+          "explicacion": "El contexto determina cuál error es peor. Reducir α aumenta β (y viceversa) para n fijo. Solo aumentar n reduce ambos simultáneamente."
+        },
+        {
+          "id": "arq6-q6",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué es el poder estadístico de una prueba? Si β = 0.20, ¿cuál es el poder? ¿Qué factores lo aumentan?",
+          "solucion": "Poder = P(rechazar H₀ | H₁ es verdadera) = 1 − β. Si β = 0.20, poder = 80%. Factores que lo aumentan: mayor n (el más fácil), mayor tamaño del efecto real, menor varianza en los datos, mayor α (pero a costa de más falsos positivos).",
+          "explicacion": "Un estudio con poder bajo puede fallar en detectar efectos reales. En ciencia de datos: poder 80% es el umbral convencional. Al diseñar experimentos A/B, el cálculo de poder determina el tamaño muestral necesario."
+        },
+        {
+          "id": "arq6-q7",
+          "tipo": "calculo",
+          "enunciado": "Sean X e Y con Var(X) = 4, Var(Y) = 9, Cov(X,Y) = 3. Calcula Var(X + Y) y Var(X − Y). ¿Cuándo Var(X+Y) = Var(X) + Var(Y)?",
+          "solucion": "Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y) = 4 + 9 + 6 = 19. Var(X−Y) = Var(X) + Var(Y) − 2Cov(X,Y) = 4 + 9 − 6 = 7. Igualdad cuando Cov = 0, es decir, X e Y son no correlacionadas.",
+          "explicacion": "Señal: 'varianza de suma de variables'. Correlación positiva infla la varianza conjunta; negativa la reduce. En portfolios: activos negativamente correlacionados reducen el riesgo total. Nota: independencia implica no correlación, pero no al revés."
+        },
+        {
+          "id": "arq6-q8",
+          "tipo": "calculo",
+          "enunciado": "¿Cuál es el rango posible del coeficiente de correlación ρ(X,Y)? Demuestra que |ρ| ≤ 1. ¿Cuándo ρ = 1 exactamente?",
+          "solucion": "ρ = Cov(X,Y)/(σ_X·σ_Y), con ρ ∈ [−1, 1]. Demostración: Cauchy-Schwarz: [E[XY]]² ≤ E[X²]E[Y²], y aplicando a variables centradas. ρ = 1 si y solo si Y = aX + b con a > 0 (relación lineal perfecta positiva); ρ = −1 si a < 0.",
+          "explicacion": "ρ mide solo relación lineal. Dos variables pueden tener ρ = 0 y una relación cuadrática perfecta (Y = X²). Error frecuente: interpretar ρ ≈ 0 como independencia."
+        },
+        {
+          "id": "arq6-q9",
+          "tipo": "conceptual",
+          "enunciado": "En una regresión lineal simple Y = β₀ + β₁X + ε, ¿qué mide R²? ¿Puede R² ser negativo? ¿Qué problema tiene R² ajustado vs R²?",
+          "solucion": "R² = 1 − SSR/SST = fracción de varianza de Y explicada por X. Va de 0 a 1 en regresión OLS con intercepto. En scikit-learn con `score()` puede ser negativo si el modelo es peor que predecir siempre la media. R² ajustado penaliza predictores adicionales: R²_adj = 1 − (1−R²)(n−1)/(n−p−1); R² nunca baja al agregar variables, R² ajustado sí.",
+          "explicacion": "Señal: 'bondad de ajuste de regresión'. Trampa: R² alto no implica causalidad ni buen modelo predictivo; puede haber sobreajuste o variables confundidoras."
+        },
+        {
+          "id": "arq6-q10",
+          "tipo": "calculo",
+          "enunciado": "Sea Y el número de lanzamientos de una moneda justa hasta obtener cara. Calcula E[Y] usando la ley de la esperanza total condicionando en el primer resultado.",
+          "solucion": "E[Y] = E[E[Y|primer lanzamiento]]. Con probabilidad 1/2, obtienes cara en el primer intento: E[Y|H] = 1. Con probabilidad 1/2, obtienes cruz: E[Y|T] = 1 + E[Y] (el proceso se reinicia). Entonces E[Y] = 1/2·1 + 1/2·(1 + E[Y]) → E[Y] = 1 + E[Y]/2 → E[Y] = 2.",
+          "explicacion": "Ley de la esperanza total: E[X] = E[E[X|Y]]. Es la herramienta estándar para calcular E cuando hay una estructura condicional natural. Señal: 'calcular E[] con reinicio o ramificación'."
+        },
+        {
+          "id": "arq6-q11",
+          "tipo": "calculo",
+          "enunciado": "Enuncia la ley de la varianza total. Aplícala: X es el resultado de un dado justo (1-6). Y = X². Calcula Var(Y).",
+          "solucion": "Ley: Var(X) = E[Var(X|Y)] + Var(E[X|Y]). Para Y = X²: E[Y] = E[X²] = (1+4+9+16+25+36)/6 = 91/6 ≈ 15.17. E[Y²] = E[X⁴] = (1+16+81+256+625+1296)/6 = 2275/6. Var(Y) = E[Y²] − (E[Y])² = 2275/6 − (91/6)² = 2275/6 − 8281/36 = 13650/36 − 8281/36 = 5369/36 ≈ 149.1.",
+          "explicacion": "La ley de varianza total separa la varianza en dos componentes: varianza media condicional y varianza de la esperanza condicional. Útil en modelos mixtos y análisis de varianza (ANOVA)."
+        },
+        {
+          "id": "arq6-q12",
+          "tipo": "calculo",
+          "enunciado": "El problema del coleccionista de cupones: hay n tipos distintos de cupones, distribuidos uniformemente. ¿Cuántos cupones necesitas comprar en expectativa para completar la colección? Calcula para n = 4.",
+          "solucion": "E[T] = n·(1 + 1/2 + 1/3 + … + 1/n) = n·H_n. Para n=4: E[T] = 4·(1 + 1/2 + 1/3 + 1/4) = 4·(25/12) = 25/3 ≈ 8.33. Derivación: cuando tienes k cupones distintos, la probabilidad de obtener uno nuevo es (n−k)/n, así que el tiempo esperado en este estado es n/(n−k). Suma: Σ n/(n−k) para k=0..n−1.",
+          "explicacion": "Señal: 'coleccionar todos los tipos'. Linealidad de E[]: E[T] = suma de E[tiempo entre tipos]. Este problema aparece en hashing, caching y cobertura de casos de prueba."
+        },
+        {
+          "id": "arq6-q13",
+          "tipo": "conceptual",
+          "enunciado": "¿Por qué la Estimación de Máxima Verosimilitud (MLE) para una distribución normal equivale a mínimos cuadrados? ¿Qué asume sobre los errores?",
+          "solucion": "Para ε_i ~ N(0, σ²) i.i.d., la log-verosimilitud es: ℓ(β) = −(n/2)log(2πσ²) − (1/2σ²)·Σ(y_i − xᵢᵀβ)². Maximizar ℓ respecto a β equivale a minimizar Σ(y_i − xᵢᵀβ)² (SSR). Asunción clave: errores normales, homocedásticos, no correlacionados.",
+          "explicacion": "Si los errores no son normales, MLE y OLS pueden diferir. Para errores Laplace (distribución de doble exponencial), MLE corresponde a mínimos de valor absoluto (LAD regression), más robusta a outliers."
+        },
+        {
+          "id": "arq6-q14",
+          "tipo": "conceptual",
+          "enunciado": "Si Z₁, Z₂, …, Zₙ son N(0,1) independientes, ¿cuál es la distribución de Q = Σ Zᵢ²? ¿Cuál es E[Q] y Var(Q)?",
+          "solucion": "Q ~ χ²(n) (chi-cuadrado con n grados de libertad). E[Q] = n; Var(Q) = 2n. La distribución χ² surge naturalmente en pruebas de bondad de ajuste, prueba F, estimación de varianza (n·S²/σ² ~ χ²(n−1)), y en la distribución t de Student (t = Z/√(χ²(k)/k)).",
+          "explicacion": "Señal: 'suma de cuadrados de normales estándar'. La familia chi-cuadrado conecta con las distribuciones t y F: Z²/1 ~ χ²(1); χ²(n)/n → 1 por LGN cuando n→∞."
+        },
+        {
+          "id": "arq6-q15",
+          "tipo": "calculo",
+          "enunciado": "Si X ~ N(μ, σ²), ¿cuál es la distribución de Y = aX + b? ¿Y si X₁, X₂ son N(μ₁,σ₁²) y N(μ₂,σ₂²) independientes, cuál es la distribución de X₁ + X₂?",
+          "solucion": "Y = aX + b ~ N(aμ + b, a²σ²). Para la suma: X₁ + X₂ ~ N(μ₁ + μ₂, σ₁² + σ₂²) (las normales son cerradas bajo sumas de independientes). La varianza suma (no los desvíos estándar).",
+          "explicacion": "Señal: 'transformación lineal de normal' o 'suma de normales'. El cierre bajo transformaciones lineales y convolución es la propiedad más útil de la distribución normal. Si hay correlación: Var(X₁+X₂) = σ₁² + σ₂² + 2ρσ₁σ₂."
+        }
+      ]
+    },
+    {
+      "id": "arena-q7",
+      "bloque": "fase-7",
+      "orden": 12,
+      "titulo": "Finanzas avanzadas · Bonos, Greeks y procesos estocásticos",
+      "libro": "Heard on the Street (T. Crack, 15ª ed.)",
+      "lectura": "data/teoria/arena-q7.md",
+      "dosis": "14 preguntas · bonos, CAPM, Greeks avanzados y GBM",
+      "objetivo": "Calcular duración, Sharpe, beta y aplicar lema de Itô para derivados sobre activos lognormales",
+      "heuristicas": [
+        "no-arbitraje",
+        "escalado-varianza"
+      ],
+      "metadata": {
+        "ruta": "quant",
+        "nivel": "avanzado",
+        "skills": [
+          "bonos",
+          "CAPM",
+          "Greeks",
+          "Ito's lemma",
+          "GBM"
+        ],
+        "fuente": "Heard on the Street (T. Crack, 15ª ed.)",
+        "session": "2026-06-12"
+      },
+      "ideas_clave": [
+        "Duración = sensibilidad del precio del bono a tasas; mayor cupón = menor duración.",
+        "CAPM: solo β (riesgo sistemático) es compensado; el idiosincrásico se diversifica.",
+        "Vega > 0 para calls y puts: más volatilidad → más valor para ambas opciones.",
+        "E[e^X] = e^(μ+σ²/2) — el 'drift de Jensen' de la lognormal.",
+        "Lema de Itô: d(ln S) = (μ − σ²/2)dt + σdW (el −σ²/2 es el drift de Itô)."
+      ],
+      "banco": [
+        {
+          "id": "arq7-q1",
+          "tipo": "conceptual",
+          "enunciado": "¿Qué mide la duración de un bono? ¿Cuál es la duración de un bono cupón-cero con vencimiento en 5 años? ¿Y de un bono con cupón pagado a perpetuidad?",
+          "solucion": "Duración de Macaulay: media ponderada del tiempo hasta cada flujo de caja, con pesos = VP del flujo / precio del bono. Bono cupón-cero: toda la duración es el vencimiento → D = 5 años. Perpetuidad con tasa y: D = (1+y)/y. Para y=10%: D = 11 años.",
+          "explicacion": "Señal: 'sensibilidad del bono a tasas' o 'vida media de flujos'. Bono cupón-cero: el único flujo es al vencimiento. Perpetuidad: flujos infinitos pero los lejanos se descuentan fuertemente."
+        },
+        {
+          "id": "arq7-q2",
+          "tipo": "calculo",
+          "enunciado": "Un bono tiene duración modificada D_mod = 6.5 años. Si la tasa de interés sube 50 puntos base (0.50%), ¿cuánto cambia el precio del bono aproximadamente? ¿Sube o baja?",
+          "solucion": "ΔP/P ≈ −D_mod·Δy = −6.5 × 0.005 = −0.0325 = −3.25%. El precio baja porque la tasa subió. Para un bono de $1 000: ΔP ≈ −$32.50. La relación es inversa: tasas suben → precios bajan.",
+          "explicacion": "Señal: 'impacto de tasa en precio de bono'. Duración modificada D_mod = D_Macaulay / (1+y). La convexidad añade una corrección positiva de segundo orden: ΔP/P ≈ −D_mod·Δy + ½·Convexidad·(Δy)²."
+        },
+        {
+          "id": "arq7-q3",
+          "tipo": "conceptual",
+          "enunciado": "Explica la convexidad de un bono. ¿Por qué un bono con mayor convexidad es preferible (con precio igual)? ¿Qué instrumento tiene convexidad negativa?",
+          "solucion": "Convexidad = ∂²P/∂y²/P. Mide la curvatura de la relación precio-tasa. Con mayor convexidad: cuando las tasas bajan el precio sube más de lo que predice la duración; cuando suben cae menos → ganancia asimétrica. Igual precio → mayor convexidad es mejor. Convexidad negativa: hipotecas prepagables (MBS callable), bonos callable — el emisor prepaga cuando bajan las tasas, limitando la ganancia del tenedor.",
+          "explicacion": "La convexidad es gratis si el precio es igual; por eso los bonos con mayor convexidad se compran a prima cuando los inversores anticipan movimientos de tasas grandes."
+        },
+        {
+          "id": "arq7-q4",
+          "tipo": "quiz",
+          "enunciado": "Un bono tiene cupón del 5% y vence a la par en 3 años. Si la tasa de mercado es 7%, ¿el bono se negocia sobre la par, a la par, o bajo la par? ¿Y si la tasa es 3%?",
+          "solucion": "Tasa mercado > cupón → bono bajo la par (descuento). Tasa mercado < cupón → bono sobre la par (prima). Intuición: si mercado ofrece 7% y el bono solo paga 5%, alguien solo lo compra más barato. Si el mercado ofrece 3% y el bono paga 5%, lo pagan más caro.",
+          "explicacion": "Regla mnemónica: precio y tasa son inversamente proporcionales. A vencimiento: el precio siempre converge a la par (pull to par). Entre tanto, la diferencia entre cupón y tasa de mercado determina la prima o descuento."
+        },
+        {
+          "id": "arq7-q5",
+          "tipo": "calculo",
+          "enunciado": "El portafolio A tiene retorno esperado 12%, desviación estándar 15%, tasa libre de riesgo 3%. El portafolio B tiene retorno esperado 9%, desviación estándar 8%. ¿Cuál tiene mejor ratio de Sharpe?",
+          "solucion": "Sharpe(A) = (12% − 3%) / 15% = 0.60. Sharpe(B) = (9% − 3%) / 8% = 0.75. B tiene mejor Sharpe aunque tiene menor retorno absoluto: genera más retorno por unidad de riesgo.",
+          "explicacion": "Señal: 'comparar portafolios ajustando por riesgo'. Sharpe mide exceso de retorno por unidad de volatilidad total. Limitación: asume volatilidad = riesgo, lo que penaliza injustamente estrategias con retornos positivos asimétricos."
+        },
+        {
+          "id": "arq7-q6",
+          "tipo": "calculo",
+          "enunciado": "Según CAPM, una acción con β = 1.5, tasa libre de riesgo 2% y prima de mercado (E[R_m] − r_f) = 6%. ¿Cuál es el retorno esperado? ¿Qué significa β = 1.5 intuitivamente?",
+          "solucion": "E[R] = r_f + β·(E[R_m] − r_f) = 2% + 1.5 × 6% = 11%. β = 1.5 significa que cuando el mercado sube 1%, la acción sube ~1.5%; cuando el mercado baja 1%, la acción baja ~1.5%. La acción amplifica los movimientos del mercado.",
+          "explicacion": "CAPM: solo el riesgo sistemático (β) se compensa; el riesgo idiosincrásico se diversifica. β = Cov(R_acción, R_mercado) / Var(R_mercado). Una acción defensiva (β < 1) oscila menos que el mercado; una cíclica (β > 1) oscila más."
+        },
+        {
+          "id": "arq7-q7",
+          "tipo": "calculo",
+          "enunciado": "Una acción tiene correlación 0.6 con el mercado, desviación estándar del 20% y el mercado tiene σ_m = 15%. Calcula β. Si el mercado cae 2%, ¿cuánto se espera que caiga la acción?",
+          "solucion": "β = Cov(R, R_m) / Var(R_m) = ρ·σ·σ_m / σ_m² = ρ·σ/σ_m = 0.6 × 20% / 15% = 0.8. Si el mercado cae 2%: caída esperada ≈ 0.8 × 2% = 1.6%.",
+          "explicacion": "Descomposición: β = ρ·(σ/σ_m). Una acción con baja correlación y alta volatilidad puede tener β moderado. La parte no sistemática (σ idiosincrásico) no aparece en β porque se puede diversificar."
+        },
+        {
+          "id": "arq7-q8",
+          "tipo": "conceptual",
+          "enunciado": "¿Cuál es el signo de vega para una call y para una put? ¿Por qué ambas opciones valen más con mayor volatilidad implícita?",
+          "solucion": "Vega = ∂C/∂σ > 0 para calls y puts. Razón: una opción es un derecho asimétrico — te beneficias de los movimientos grandes (captura el upside), mientras que el downside está limitado a la prima pagada. Mayor volatilidad → mayor probabilidad de que la opción expire in-the-money → mayor valor. Esto aplica tanto a calls como a puts.",
+          "explicacion": "Intuición: si σ = 0, call ATM vale max(S−K,0) = 0; put ATM = 0. Al aumentar σ, ambas valen más porque hay más dispersión alrededor del strike. El valor de una opción nunca puede ser negativo (es un derecho, no obligación)."
+        },
+        {
+          "id": "arq7-q9",
+          "tipo": "quiz",
+          "enunciado": "¿Cuál es el signo de rho (∂C/∂r) para una call europea vs una put europea? Explica la intuición.",
+          "solucion": "Rho_call > 0: mayor tasa de interés → el strike K·e^{-rT} tiene menor valor presente → la call vale más (cuesta menos financiar el equivalente en acciones). Rho_put < 0: mayor tasa → el derecho a vender a K vale menos porque K descontado es menor.",
+          "explicacion": "Rho es el menos importante de los Greeks en la práctica habitual (las tasas cambian más lento que el precio o la vol). Sin embargo, en opciones sobre divisas o de largo plazo, rho puede ser significativo. En general |rho| > 0 para vencimientos largos."
+        },
+        {
+          "id": "arq7-q10",
+          "tipo": "conceptual",
+          "enunciado": "Enuncia la Paridad de Tasas de Interés Cubierta (CIP). Si la tasa USD a 1 año es 5% y la tasa EUR es 2%, ¿qué tipo de cambio forward EUR/USD implica CIP si el spot es 1.10?",
+          "solucion": "CIP: (1 + r_dom) = F/S · (1 + r_ext), donde F es el tipo forward, S el spot. Reordenando: F = S · (1 + r_dom)/(1 + r_ext) = 1.10 × 1.05/1.02 ≈ 1.1324. El EUR está a descuento forward (se espera que el USD se aprecie) porque la tasa USD es más alta.",
+          "explicacion": "CIP es una condición de no-arbitraje entre el mercado de divisas y los mercados de tasas. Si se viola, hay arbitraje: pedir prestado en EUR, convertir a USD, invertir y cubrir con un forward. Durante la crisis financiera 2008 y COVID-2020 la CIP se violó significativamente."
+        },
+        {
+          "id": "arq7-q11",
+          "tipo": "calculo",
+          "enunciado": "Si X ~ N(μ, σ²), calcula E[e^X]. ¿Cuál es la media de una distribución lognormal con parámetros μ=0, σ=0.2? ¿Y la mediana?",
+          "solucion": "E[e^X] = e^(μ + σ²/2). Esta es la función generatriz de momentos de la normal evaluada en t=1. Para μ=0, σ=0.2: E[e^X] = e^(0 + 0.02) ≈ 1.0202. Mediana = e^μ = e^0 = 1. La media siempre > mediana para lognormal (distribución sesgada a la derecha).",
+          "explicacion": "Señal: 'retornos log-normales'. En finanzas: si log(S_T/S_0) ~ N(μT, σ²T), entonces E[S_T] = S_0·e^(μT + σ²T/2). La diferencia μ vs μ+σ²/2 explica por qué el retorno esperado de las acciones difiere del retorno del log-precio."
+        },
+        {
+          "id": "arq7-q12",
+          "tipo": "conceptual",
+          "enunciado": "Enuncia el Lema de Itô para f(t, S_t) donde dS_t = μS_t dt + σS_t dW_t. Aplícalo para calcular df si f = ln(S_t).",
+          "solucion": "Lema de Itô: df = (∂f/∂t + μS·∂f/∂S + ½σ²S²·∂²f/∂S²) dt + σS·∂f/∂S dW. Para f = ln(S): ∂f/∂t = 0, ∂f/∂S = 1/S, ∂²f/∂S² = −1/S². Entonces d(ln S) = (μ − σ²/2) dt + σ dW. Integrando: ln(S_T/S_0) = (μ − σ²/2)T + σW_T ~ N((μ−σ²/2)T, σ²T).",
+          "explicacion": "El término −σ²/2 es el 'drift de Itô' y no aparece en el cálculo clásico. Es la fuente de la distinción entre retorno esperado μ y crecimiento del logaritmo μ−σ²/2. Para μ=10%, σ=20%: el precio log crece al 10%−2% = 8% por año en media."
+        },
+        {
+          "id": "arq7-q13",
+          "tipo": "calculo",
+          "enunciado": "El precio de una acción sigue GBM: S(0)=100, μ=10%, σ=20%, T=1 año. ¿Cuál es la distribución de S(1)? Calcula E[S(1)] y P(S(1) > 110).",
+          "solucion": "S(1) ~ Lognormal con ln(S(1)) ~ N(ln(100) + (μ−σ²/2)·1, σ²·1) = N(ln(100) + 0.08, 0.04). E[S(1)] = 100·e^(0.10) ≈ 110.52. P(S(1) > 110) = P(ln S(1) > ln 110) = P(Z > (ln 1.10 − 0.08)/0.20) = P(Z > (0.0953−0.08)/0.20) = P(Z > 0.0765) ≈ 1 − Φ(0.0765) ≈ 46.9%.",
+          "explicacion": "La probabilidad real (world measure) de que el precio suba 10% es ~47%. Bajo la medida de riesgo neutral, μ se reemplaza por r, y se obtiene el precio de opciones. Estas son medidas diferentes: la física predice retornos esperados, la neutral al riesgo fija precios."
+        },
+        {
+          "id": "arq7-q14",
+          "tipo": "conceptual",
+          "enunciado": "¿Por qué la volatilidad diaria se escala por √252 para obtener volatilidad anual? ¿Cuáles son los supuestos implícitos? ¿Cuándo falla esta escalación?",
+          "solucion": "Si los retornos diarios son i.i.d. con varianza σ_d², la varianza anual = 252·σ_d² (hay ~252 días de trading), entonces σ_anual = σ_d·√252. Supuestos: retornos i.i.d. (sin autocorrelación), distribución estacionaria, varianza finita. Falla cuando: hay autocorrelación (momentum o reversión a la media), la volatilidad es estocástica (GARCH, vol clustering), o la distribución cambia (crisis).",
+          "explicacion": "Señal: 'convertir vol diaria a anual'. El factor √252 (no 252) es el que escala desviaciones estándar. En práctica: la volatilidad real de largo plazo crece menos que √T si hay reversión a la media, y más si hay clustering de alta volatilidad persistente."
         }
       ]
     }

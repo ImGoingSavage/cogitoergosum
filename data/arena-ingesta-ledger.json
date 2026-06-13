@@ -7,11 +7,19 @@
       "archivo": "Arena/Entrevista quant/07e72968-a7da-47b9-8a74-bb5d3e1b1674.pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "en_progreso",
-      "preguntas_agregadas": 30,
-      "unidades_creadas": ["arena-q3", "arena-q4", "arena-q5"],
+      "estado": "completado",
+      "preguntas_agregadas": 68,
+      "unidades_creadas": [
+        "arena-q1",
+        "arena-q2",
+        "arena-q3",
+        "arena-q4",
+        "arena-q5",
+        "arena-q6",
+        "arena-q7"
+      ],
       "cuota_minima": 60,
-      "notas": "Tanda 1 (2026-06-13): 30 preguntas en 3 unidades (brainteasers, probabilidad, derivadas). Pendiente: stats/finanzas avanzadas."
+      "notas": "Tanda 1 (sesión 2026-06-12): q1/q2 de sesión previa + q3/q4/q5/q6/q7 en esta sesión. 68 preguntas banco + 5 heurísticas + 12 ítems examen fase-7."
     },
     {
       "libro": "A Practical Guide to Quantitative Finance Interviews",
