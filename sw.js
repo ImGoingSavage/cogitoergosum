@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v39';
+const VERSION = 'cogitoergosum-v40';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -143,6 +143,10 @@ const SHELL = [
   'data/teoria/arena-pst2.md',
   'data/teoria/arena-pst3.md',
   'data/teoria/arena-pst4.md',
+  'data/teoria/arena-dmls1.md',
+  'data/teoria/arena-dmls2.md',
+  'data/teoria/arena-dmls3.md',
+  'data/teoria/arena-dmls4.md',
   'data/teoria/arena-m1.md',
   'data/teoria/arena-m2.md',
   'data/teoria/arena-h1.md',

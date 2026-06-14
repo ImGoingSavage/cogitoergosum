@@ -204,11 +204,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/Designing Machine Learning Systems.pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-dmls1",
+        "arena-dmls2",
+        "arena-dmls3",
+        "arena-dmls4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades de valor NUEVO de diseño de sistemas de ML end-to-end (complementa el MLOps básico de Cracking cds3 sin duplicar): dmls1 encuadre de problemas (objetivos negocio/ML, desacoplar, tipos de tarea), dmls2 datos de entrenamiento (muestreo reservoir/importance/estratificado, natural labels/weak supervision/active learning, desbalance), dmls3 despliegue (batch vs online, batch/streaming features, compresión low-rank/distillation/pruning/quantization, edge vs cloud), dmls4 distribution shift (covariate/label/concept)/monitoreo/continual learning/test en producción (shadow/A-B/canary/interleaving/bandits). 60 banco + 2 examen (f7-ex-44 test en producción, f7-ex-45 tipos de shift). Órdenes 59-62. 9 heurísticas nuevas (encuadrar-objetivo-ml, elegir-tipo-tarea-ml, muestreo-streaming, usar-natural-labels, manejar-desbalance-clases, elegir-batch-vs-online, comprimir-modelo, diagnosticar-distribution-shift, test-en-produccion); reúsa detectar-data-drift y diseno-experimento-ab. VERSION v40. Siguiente §10: ver ledger libros[13+]."
     },
     {
       "libro": "Reliable Machine Learning",
