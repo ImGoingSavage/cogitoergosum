@@ -119,11 +119,11 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Entrevista software/Cracking-the-Coding-Interview-6th-Edition-189-Programming-Questions-and-Solutions.pdf",
       "sector": "A",
       "ruta": "maang",
-      "estado": "en_progreso",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": ["arena-cc1", "arena-cc2", "arena-cc3", "arena-cc4"],
       "cuota_minima": 60,
-      "notas": "Iniciado 2026-06-13 (cuenta A). Sector maang. Próximo: arena-cc1/cc2/cc3/cc4. Slots reservados: sw v34, f7-ex-23..24. Estudio en curso; study.json se aplica DESPUÉS de que Casella (cuenta B) pushee."
+      "notas": "2026-06-13 (cuenta A, Sonnet 4.6): completado. 4 unidades (órdenes 39-42): cc1 arrays/hash (15q), cc2 árboles/grafos (15q), cc3 recursión/DP (15q), cc4 ordenamiento/binaria/bits (15q) = 60 banco + 2 ítems examen (f7-ex-34 prog-dinámica, f7-ex-35 divide-y-vencerás). 2 heurísticas nuevas: divide-y-venceras, programacion-dinamica. sw.js v35 (127 archivos). IDs reales calculados dinámicamente sobre la base ya integrada (Joshi+Casella): orden 38→39, f7-ex-33→34. Siguiente agente: órdenes desde 43, f7-ex-36+, VERSION v36+."
     },
     {
       "libro": "System Design Interview (Alex Xu)",

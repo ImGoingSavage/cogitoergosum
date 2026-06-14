@@ -170,7 +170,7 @@ unit_cc4 = {
     "lectura": "data/teoria/arena-cc4.md",
     "dosis": 30,
     "objetivo": "Aplicar QuickSort, MergeSort, búsqueda binaria sobre respuesta y trucos de bits en entrevistas.",
-    "heuristicas": ["divide-y-venceras", "invariantes"],
+    "heuristicas": ["divide-y-venceras", "invariante"],
     "metadata": {"ruta": "maang", "nivel": 2},
     "ideas_clave": [
         "QuickSort: in-place, O(n log n) promedio. MergeSort: estable, O(n log n) garantizado.",
