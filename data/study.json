@@ -1260,26 +1260,11 @@
             "heuristica": "caminata-aleatoria",
             "enunciado": "Ruina del jugador: empiezas con $5, meta $10, moneda con p=0.45 (ligeramente desfavorable). (a) Calcula P(llegar a $10 antes de arruinarte). (b) ¿Cuánto cambia si p=0.5? (c) Si el casino cobra una comisión del 5% en cada apuesta ganada, ¿cómo modelarías esto?",
             "pistas": [
-              {
-                "nivel": 1,
-                "texto": "¿Cuáles son las dos posibles 'salidas' del juego? Define Pₖ = P(llegar a N | inicio k) y escribe la ecuación de balance."
-              },
-              {
-                "nivel": 2,
-                "texto": "La ecuación Pₖ = p·P_{k+1} + q·P_{k−1} tiene solución general Pₖ = A + B·(q/p)^k. ¿Cuáles son las condiciones de frontera P₀=0 y P_N=1?"
-              },
-              {
-                "nivel": 3,
-                "texto": "Para p=0.45, q=0.55: ρ = q/p = 0.55/0.45 = 11/9. Pₖ = (1−ρᵏ)/(1−ρᴺ). Calcula para k=5, N=10."
-              },
-              {
-                "nivel": 4,
-                "texto": "ρ^5 = (11/9)^5 ≈ 2.052; ρ^10 ≈ 4.211. P₅ = (1−2.052)/(1−4.211) ≈ 0.328. Para p=0.5: P₅=k/N=0.5."
-              },
-              {
-                "nivel": 5,
-                "texto": "P(ganar, p=0.45) ≈ 32.8% vs P(ganar, p=0.5) = 50%. El 5% de desfavorabilidad casi reduce a la mitad tus chances. Comisión: si ganas $1 pero pagas 5¢ → p efectiva < 0.5 incluso con moneda justa."
-              }
+              "¿Cuáles son las dos posibles 'salidas' del juego? Define Pₖ = P(llegar a N | inicio k) y escribe la ecuación de balance.",
+              "La ecuación Pₖ = p·P_{k+1} + q·P_{k−1} tiene solución general Pₖ = A + B·(q/p)^k. ¿Cuáles son las condiciones de frontera P₀=0 y P_N=1?",
+              "Para p=0.45, q=0.55: ρ = q/p = 0.55/0.45 = 11/9. Pₖ = (1−ρᵏ)/(1−ρᴺ). Calcula para k=5, N=10.",
+              "ρ^5 = (11/9)^5 ≈ 2.052; ρ^10 ≈ 4.211. P₅ = (1−2.052)/(1−4.211) ≈ 0.328. Para p=0.5: P₅=k/N=0.5.",
+              "P(ganar, p=0.45) ≈ 32.8% vs P(ganar, p=0.5) = 50%. El 5% de desfavorabilidad casi reduce a la mitad tus chances. Comisión: si ganas $1 pero pagas 5¢ → p efectiva < 0.5 incluso con moneda justa."
             ],
             "solucion": "p=0.45: ρ=(0.55/0.45)^5≈2.052; P₅=(1−2.052)/(1−(ρ^10))≈(−1.052)/(−3.211)≈32.8%. p=0.5: P₅=5/10=50%. Diferencia: 17.2 puntos porcentuales por solo p=0.05 de desfavorabilidad.",
             "disparador": "Señal: 'paseo entre dos barreras, probabilidad de cada una'. Jugada: ruina del jugador. Para p≠1/2: ratio geométrico (q/p)^k determina las chances. La fórmula es exponencial en k — una pequeña desventaja compuesta se vuelve devastadora.",
@@ -1306,26 +1291,11 @@
             "heuristica": "serie-taylor",
             "enunciado": "Una call europea tiene precio C = C(S, σ). (a) Usa Taylor de primer orden en S para definir Delta y explicar la P&L de un portafolio delta-neutral en dt. (b) Incluye el término de segundo orden en S para definir Gamma e interpretar la P&L de un portafolio long-gamma. (c) ¿Cuándo un portafolio long-gamma pierde dinero?",
             "pistas": [
-              {
-                "nivel": 1,
-                "texto": "Escribe C(S+ΔS) ≈ C(S) + C'(S)·ΔS + ½C''(S)·(ΔS)². ¿Qué nombres tienen C' y C''?"
-              },
-              {
-                "nivel": 2,
-                "texto": "Delta = ∂C/∂S (sensibilidad lineal). Si vendo la opción y compro Δ acciones, la P&L = ΔC − Δ·ΔS. ¿Qué queda?"
-              },
-              {
-                "nivel": 3,
-                "texto": "P&L delta-neutral = ½Γ·(ΔS)² ≥ 0 para Γ>0. Siempre ganas con cualquier movimiento. ¿Entonces dónde está el costo?"
-              },
-              {
-                "nivel": 4,
-                "texto": "El costo es el tiempo: Θ < 0 (la opción pierde valor cada día). La P&L total en dt: ½Γ·(ΔS)² + Θ·dt. Long gamma gana si |(ΔS)²/dt| > |Θ|/½Γ, es decir si la vol realizada supera la implícita."
-              },
-              {
-                "nivel": 5,
-                "texto": "Long gamma pierde cuando la volatilidad realizada < implícita (el mercado se mueve poco). El portafolio paga diariamente por la convexidad; si el activo no se mueve lo suficiente, el tiempo corroe más de lo que gana la gamma."
-              }
+              "Escribe C(S+ΔS) ≈ C(S) + C'(S)·ΔS + ½C''(S)·(ΔS)². ¿Qué nombres tienen C' y C''?",
+              "Delta = ∂C/∂S (sensibilidad lineal). Si vendo la opción y compro Δ acciones, la P&L = ΔC − Δ·ΔS. ¿Qué queda?",
+              "P&L delta-neutral = ½Γ·(ΔS)² ≥ 0 para Γ>0. Siempre ganas con cualquier movimiento. ¿Entonces dónde está el costo?",
+              "El costo es el tiempo: Θ < 0 (la opción pierde valor cada día). La P&L total en dt: ½Γ·(ΔS)² + Θ·dt. Long gamma gana si |(ΔS)²/dt| > |Θ|/½Γ, es decir si la vol realizada supera la implícita.",
+              "Long gamma pierde cuando la volatilidad realizada < implícita (el mercado se mueve poco). El portafolio paga diariamente por la convexidad; si el activo no se mueve lo suficiente, el tiempo corroe más de lo que gana la gamma."
             ],
             "solucion": "P&L delta-neutral en dt: ½Γ·(ΔS)² + Θ·dt. Long gamma (Γ>0, Θ<0): gana cuando vol_realizada > vol_implícita (el movimiento compensa el decay). Pierde cuando vol_realizada < vol_implícita. Equilibrio: (ΔS/S)² = σ²_implícita·dt.",
             "disparador": "Señal: 'P&L de un portafolio de opciones'. Taylor de segundo orden en S conecta Gamma (curvatura) con Theta (decay temporal) vía la PDE de Black-Scholes. Long gamma es una apuesta a que el activo se moverá más de lo que el mercado espera.",
