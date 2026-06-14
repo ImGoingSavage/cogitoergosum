@@ -2107,3 +2107,53 @@ archivos). Contenido anclado en el paper (§1.2).
 **Siguiente** — orden §10 (ml-systems): **Interpretable Machine Learning
 (Molnar)** (libros[19]), luego ISL. Después ruta `health-ai-rwe` y Sectores D/C.
 Próxima unidad: órdenes desde 87, `f7-ex-58`+, VERSION v47+.
+
+## Bitácora 2026-06-14 (Arena tanda 19) — Interpretable Machine Learning (Molnar), 62 preguntas
+
+Procesado `Interpretable Machine Learning` (Christoph Molnar) — libros[19] del
+ledger, ruta `ml-systems`, cuota 25. 19º libro en `completado`. Aporta el **marco
+completo de interpretabilidad** (taxonomía + modelos intrínsecos + métodos
+agnósticos + Shapley/ejemplos), valor NUEVO frente al MLOps/observabilidad/deuda
+técnica ya vistos. 4 unidades por las 4 partes del libro (`fase-7`, órdenes 87-90):
+- **arena-iml1** — conceptos y taxonomía: def. de interpretabilidad, cuándo SÍ/NO
+  se necesita, los **4 ejes** (intrínseca/post-hoc · específica/**agnóstica** ·
+  **global/local** · tipo de resultado), alcance, explicaciones **contrastivas/
+  selectivas/sociales** (ciencias sociales), propiedades de métodos y de
+  explicaciones (**fidelity/stability**), niveles application/human/functionally-grounded.
+- **arena-iml2** — modelos interpretables: lineal (peso ceteris paribus,
+  **t-statistic**, R² ajustado, multicolinealidad, weight/effect plots); logística
+  (**odds ratio** exp(β)); GLM (link+distribución); **GAM** (splines aditivos);
+  árbol (camino+impureza+inestabilidad); reglas IF-THEN (soporte/accuracy/OneR);
+  **RuleFit** (reglas de árboles + LASSO).
+- **arena-iml3** — métodos agnósticos: **PDP** (efecto marginal + supuesto de
+  independencia + oculta heterogeneidad), **ICE** (una línea/instancia = interacción,
+  c-ICE), **ALE** (ventanas + diferencias locales sobre datos reales + acumular,
+  insesgado bajo correlación vs M-plots), **H-statistic** de Friedman (H²∈[0,1]),
+  **importancia por permutación** (ΔError en TEST, features correlacionadas),
+  **surrogate global** (target=ŷ, fidelity R²).
+- **arena-iml4** — LIME (4 pasos, texto/superpíxeles, inestable), **valores de
+  Shapley** (contribución marginal media + 4 axiomas, **eficiencia** = suman ŷ−ŷ̄),
+  **SHAP** (KernelSHAP/TreeSHAP, importancia global consistente), **contrafactuales**
+  (mínimo cambio que voltea, Wachter, accionable), adversariales, **prototipos/
+  críticas** (MMD-critic), **instancias influyentes** (DFBETA/influence functions),
+  **anchors**.
+
+60 banco (15/unidad) + 2 examen (**f7-ex-58** PDP vs ALE bajo correlación,
+**f7-ex-59** Shapley/SHAP vs permutación/LIME + contrafactual) = 62. 14 heurísticas
+nuevas (interpretabilidad-cuando-y-taxonomia, explicacion-contrastiva-selectiva,
+preferir-modelo-interpretable, interpretar-odds-ratio, usar-gam-no-linealidad,
+pdp-ice-efectos, ale-features-correlacionadas, interaccion-h-statistic,
+importancia-por-permutacion, surrogate-global, lime-sustituto-local,
+valores-shapley-shap, contrafactual-explicacion, explicaciones-por-ejemplos);
+reúsa interpretar-coeficientes-regresion (lineal) y lente-de-equidad (iml4).
+Catálogo total **150** heurísticas. `sw.js` **v47** (+4 lecciones
+`data/teoria/arena-iml{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (90 unidades en `fase-7`, 59 ítems de examen); `verificar-shell.py` OK (175
+archivos). Contenido anclado en el libro (§1.2).
+
+**Siguiente** — orden §10 (ml-systems): **Introduction to Statistical Learning
+(ISLR)** (libros[20]). Después ruta `health-ai-rwe` (What If, Survival Analysis,
+OHDSI, Book of Why, Mixtape) y Sectores D (conductual) / C (problems.json).
+Próxima unidad: órdenes desde 91, `f7-ex-60`+, VERSION v48+.

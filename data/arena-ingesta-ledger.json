@@ -316,11 +316,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/Molnar-interpretable-machine-learning_compressed.pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-iml1",
+        "arena-iml2",
+        "arena-iml3",
+        "arena-iml4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades organizadas por las 4 partes del libro (valor NUEVO: el marco completo de interpretabilidad, complementa el MLOps/observabilidad/deuda técnica ya vistos): iml1 conceptos y taxonomía (def. de interpretabilidad, cuándo SÍ/NO se necesita, 4 ejes intrínseca-posthoc/específica-agnóstica/global-local/tipo de resultado, alcance, explicaciones contrastivas-selectivas-sociales de las ciencias sociales, propiedades de métodos y explicaciones fidelity/stability, niveles application/human/functionally-grounded), iml2 modelos interpretables (lineal: peso ceteris paribus + t-statistic + R² ajustado + multicolinealidad + weight/effect plots; logística: odds ratio exp(β); GLM link+distribución; GAM splines aditivos; árbol: camino+impureza+inestabilidad; reglas IF-THEN soporte/accuracy/OneR; RuleFit), iml3 métodos agnósticos (PDP efecto marginal+supuesto de independencia+oculta heterogeneidad; ICE una línea/instancia=interacción+c-ICE; ALE ventanas+diferencias locales sobre datos reales+acumular, insesgado bajo correlación vs M-plots; H-statistic de Friedman H²∈[0,1]; importancia por permutación ΔError en TEST+features correlacionadas; surrogate global target=ŷ+fidelity R²), iml4 LIME (4 pasos+texto/superpíxeles+inestable), valores de Shapley (contribución marginal media+4 axiomas+eficiencia suma ŷ−ŷ̄), SHAP (KernelSHAP/TreeSHAP+importancia global consistente), contrafactuales (mínimo cambio que voltea+Wachter+accionable), adversariales, prototipos/críticas (MMD-critic), instancias influyentes (DFBETA/influence functions), anchors. 60 banco (15/unidad) + 2 examen (f7-ex-58 PDP vs ALE bajo correlación, f7-ex-59 Shapley/SHAP vs permutación/LIME + contrafactual). Órdenes 87-90. 14 heurísticas nuevas (interpretabilidad-cuando-y-taxonomia, explicacion-contrastiva-selectiva, preferir-modelo-interpretable, interpretar-odds-ratio, usar-gam-no-linealidad, pdp-ice-efectos, ale-features-correlacionadas, interaccion-h-statistic, importancia-por-permutacion, surrogate-global, lime-sustituto-local, valores-shapley-shap, contrafactual-explicacion, explicaciones-por-ejemplos); reúsa interpretar-coeficientes-regresion (lineal) y lente-de-equidad (iml4). Catálogo total 150 heurísticas. VERSION v47 (175 archivos). Próximo libro §10 (ml-systems): Introduction to Statistical Learning (ISLR)."
     },
     {
       "libro": "Introduction to Statistical Learning",
