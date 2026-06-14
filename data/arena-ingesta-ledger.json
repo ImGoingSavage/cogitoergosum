@@ -220,11 +220,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/Reliable Machine Learning (Chen, CathyMurphy, Niall RichardParisa etc.) (Z-Library).pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-rml1",
+        "arena-rml2",
+        "arena-rml3",
+        "arena-rml4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades de valor NUEVO sobre confiabilidad/SRE para ML (complementa Huyen DMLS y el MLOps básico de Cracking cds3 sin duplicar): rml1 ciclo de vida del ML + SLOs (loop, golden signals, salud modelo, métrica de negocio; models-as-code, launch slowly, isolate-at-data-layer, 'most failures are not ML failures'), rml2 datos como pasivo + principios de entrenamiento confiable (data as liability, Sweeney 87%, borrado por cifrado, MCAR/MAR/MNAR, feature store, model management, models-will-be-retrained, multi-versión, good-models-become-bad/fallback, train-too-fast/race conditions, utilization vs efficiency, training-serving skew), rml3 serving+observabilidad (QPS/latencia/tail/dónde-vive/GPU-vs-CPU-sparse; 4 arquitecturas offline/online/MaaS/edge; monitoreo vs observabilidad, mentalidad de detección, skew, retraining como roll-forward), rml4 respuesta a incidentes (estado+roles+registro; fases; IC/comms/ops/planning; Public/Fuzzy/Unbounded; Historia 1 búsqueda; preparación por rol; ética). 60 banco + 2 examen (f7-ex-46 incidente ML, f7-ex-47 SLOs de ML). Órdenes 63-66. 10 heurísticas nuevas (confiabilidad-ml-no-es-ml, definir-slo-ml, desplegar-modelo-gradual, datos-como-pasivo, asumir-reentrenamiento, vigilar-training-serving-skew, elegir-arquitectura-serving, observabilidad-ml-produccion, responder-incidente-ml, monitorear-edad-modelo); reúsa elegir-batch-vs-online. VERSION v41. Próximo libro §10 (ml-systems): Machine Learning Design Patterns."
     },
     {
       "libro": "Machine Learning Design Patterns",

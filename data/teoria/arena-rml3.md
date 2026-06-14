@@ -1,0 +1,49 @@
+# Serving, monitoreo y observabilidad de modelos
+
+## Cuatro preguntas clave de serving
+
+1. **Carga (QPS):** ¿cuántas queries por segundo? Estrategias: replicar, hardware acelerador (con batching), abaratar el modelo (menos features/capas, cuantización/sparsificación) y **cascadas** (un modelo barato resuelve los casos fáciles, los difíciles van a uno caro).
+2. **Latencia:** ¿cuánto tiempo por predicción? **Replicar NO baja la latencia de UNA predicción** (sube el throughput); para eso usa hardware potente o abarata el modelo. Mira la **tail latency** (peor 1–5%), no solo la media.
+3. **Dónde vive:** nube (escala fácil, +latencia de red, privacidad/jurisdicción), servidores propios (privacidad/latencia crítica/hardware especial, -flexibilidad) o **edge/on-device** (latencia/privacidad, pero tamaño/energía limitados y actualizar es difícil).
+4. **Hardware:** deep = matrices **densas** → **GPU** (miles de ALUs); modelos **sparse** (pocas piezas de un universo grande) aprovechan poco la GPU → la **CPU** puede ser mejor.
+
+## Cuatro arquitecturas de serving
+
+- **Offline (batch inference):** precomputa predicciones a un store → predicción on-demand se vuelve **lookup**. + Simple, verificable (revisas TODAS las predicciones), rápido, roll-out/rollback por tablas. − Datos de antemano, no cubre la **cola larga** ni el contexto en línea, escala mal.
+- **Online:** infiere en tiempo real con contexto. + **Adaptable** (se adapta al concept drift en inferencia), modelos suplementarios. − Presupuesto de latencia (store en memoria tipo Redis), despliegue complejo, no escala horizontal sin más, más supervisión.
+- **MaaS (Model-as-a-Service):** modelo como **microservicio** con API. + Aislamiento, **escalado horizontal** (stateless), versionado y A/B fáciles, monitoreo centralizado. La estrategia más flexible y escalable.
+- **Edge:** on-device. + Latencia/privacidad. − Tamaño limitado, actualizar es caro o imposible.
+
+**Actualizar sin caída:** (1) doble RAM + hot-swap, o (2) sobre-aprovisionar réplicas y actualizar por turnos (10% fuera de línea, permite canarying).
+
+## Monitoreo vs observabilidad
+
+- **Monitoreo:** ¿el sistema funciona? (datos almacenables y visualizables).
+- **Observabilidad:** atributo del software; métricas **etiquetadas/sliceables** que dejan inferir **por qué**. No solo `requests_total`, sino `requests_total{lang=es}`.
+
+**El cambio de mentalidad:** el modelista usa métricas para **optimizar** antes de desplegar; falta usarlas para **detectar** después. Monitorea en tres capas —**modelo, datos y servicio**— durante todo el ciclo de vida.
+
+**Training-serving skew:** diferencia de cómo se computa una feature (o qué datos hay) entre train y serving. Causa común de caídas **evitables** y difíciles de depurar; se manifiesta como caída sutil de calidad. Mantén el pipeline de features consistente y monitoréalo.
+
+**Retraining como roll-forward:** el rollback es la táctica común; reentrenar es "roll-forward" — útil si el rollback no funciona, pero **no mitiga** si reentrenas sobre los mismos datos o si tarda demasiado.
+
+---
+
+## Disparadores
+
+| Señal | Jugada |
+|-------|--------|
+| "Tengo mucho QPS" | Replica / acelera+batch / abarata / cascada |
+| "La latencia de una predicción es alta" | Hardware potente o modelo más barato — NO más réplicas |
+| "El espacio de queries es acotado y conocido" | Offline/batch a un store |
+| "Necesito contexto de sesión en tiempo real" | Online o MaaS |
+| "La métrica agregada se ve bien pero hay quejas" | Slicing (observabilidad): busca el subgrupo afectado |
+| "Rinde peor en prod que en eval offline" | Training-serving skew |
+
+---
+
+> **Síntesis:** La arquitectura de serving sale de **carga, latencia, dónde vive y hardware**. Elige entre **offline** (precompute, verificable), **online** (tiempo real, adaptable), **MaaS** (microservicio escalable) y **edge** (on-device). Para operar, pasa de monitoreo a **observabilidad** (métricas en slices), adopta la mentalidad de **detectar** en producción (no solo optimizar antes), vigila el **training-serving skew** y recuerda que el **retraining** no siempre mitiga una caída.
+
+---
+
+*Retrieval: cierra y responde: (1) ¿por qué replicar no baja la latencia de una predicción?; (2) ¿cuándo offline vs online vs MaaS vs edge?; (3) ¿qué añade la observabilidad sobre el monitoreo?; (4) ¿qué es el training-serving skew?*

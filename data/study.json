@@ -525,6 +525,86 @@
       "cuando_usar": "Antes de promover un modelo candidato a producción completa, para validarlo con tráfico real minimizando el daño.",
       "ejemplo": "Shadow primero (registra sin servir), luego A/B aleatorio; si hay muchos candidatos y se busca eficiencia, bandits.",
       "patron": "shadow→A/B→canary; bandits para asignación adaptativa"
+    },
+    {
+      "id": "confiabilidad-ml-no-es-ml",
+      "nombre": "La mayoría de fallos no son fallos de ML",
+      "descripcion": "Cuando un sistema de ML cae, lo más probable es que la causa NO sea ML sino un fallo clásico de sistemas/datos distribuidos (permisos perdidos, versión equivocada copiada a serving, pipeline mal monitoreado). El ML solo cambia el impacto y lo difícil de detectar, no la causa. Primero haz fiable el sistema distribuido genérico (versionado, despliegue, permisos, replicación, verificación) y solo después ataca lo específico de ML.",
+      "cuando_usar": "Al diseñar la confiabilidad de un sistema de ML o al triar una caída: no asumas que la causa es el modelo.",
+      "ejemplo": "'El modelo trained en nada porque el job perdió permiso de lectura'; 'la versión copiada a serving no era la que creíamos'.",
+      "patron": "Primero sistemas/datos, después ML; el ML cambia detección/impacto, no la causa"
+    },
+    {
+      "id": "definir-slo-ml",
+      "nombre": "Definir SLOs para un sistema de ML",
+      "descripcion": "Un SLO es un umbral sobre un SLI (indicador medible) que define si el sistema cumple requisitos (p.ej. '99.99% de requests en <150 ms'). Para ML, separa por subsistema (serving, training, aplicación) y por capa: las cuatro señales doradas (latency, traffic, errors, saturation), la salud básica del modelo, y —lo decisivo— SLOs ligados a la métrica de NEGOCIO (CTR, ingreso atribuible) medidos en agregado y por slices.",
+      "cuando_usar": "Al instrumentar un sistema de ML en producción para saber si 'funciona' de forma accionable.",
+      "ejemplo": "Serving: tasa de error; training: throughput y '95% de runs terminan en X s'; aplicación: CTR de sugerencias e ingreso por modelo, por geografía.",
+      "patron": "SLOs por subsistema (serving/training/app) × capa (golden signals → salud modelo → métrica de negocio)"
+    },
+    {
+      "id": "desplegar-modelo-gradual",
+      "nombre": "Desplegar modelos como código, despacio y con rollback",
+      "descripcion": "Un modelo es código: puede tumbar el serving igual que un binario, así que merece el mismo rigor. Despliega progresivamente limitando daño en dos dimensiones (usuarios y servidores), cambia poco a poco ('release, not refactor'), aísla el rollout también en la capa de datos (un formato nuevo leído por código viejo causa caídas), vigila SLOs durante el lanzamiento y nunca lances sin plan de rollback.",
+      "cuando_usar": "Al poner en producción una nueva versión de un modelo o del sistema de serving.",
+      "ejemplo": "Subir el modelo al 1% de usuarios y al 10% de servidores; tener dashboard de métricas frescas que pueda frenar el lanzamiento automáticamente.",
+      "patron": "modelo=código; ramp-up usuarios×servidores; aislar en capa de datos; rollback obligatorio"
+    },
+    {
+      "id": "datos-como-pasivo",
+      "nombre": "Tratar los datos como pasivo, no solo como activo",
+      "descripcion": "Acumular datos no es gratis: 'más datos == mejor' es falso si los datos exponen riesgo legal/ético. La anonimización es difícil (Sweeney: 87% de personas identificables solo con género+edad+código postal), así que la pseudonimización debe tratarse como tan arriesgada como el dato crudo. Borrar de verdad es difícil (copias, backups); dos tácticas: reescritura periódica omitiendo lo 'borrado', o cifrar todo y tirar la llave.",
+      "cuando_usar": "Al decidir qué datos recolectar/almacenar y cómo cumplir privacidad (GDPR, borrado a petición).",
+      "ejemplo": "Cifrar los datos de cada usuario con su clave; 'borrar' = perder la clave, y el dato queda ilegible en todos los backups.",
+      "patron": "dato=activo y pasivo; anonimizar es difícil; borrar = reescribir u olvidar la llave"
+    },
+    {
+      "id": "asumir-reentrenamiento",
+      "nombre": "Asumir que todo modelo será reentrenado",
+      "descripcion": "Todo modelo será reentrenado (nuevos datos, nueva idea, recuperación ante desastre). Diséñalo desde el principio: versiona configs, datos y metadatos; guarda snapshots; soporta servir varias versiones a la vez (A/B de modelos). Y asume que un buen modelo se volverá malo: ten un fallback (heurística simple) y la capacidad de rollback a una versión previa —aunque el fallback deja de bastar a medida que el modelo supera con creces a la heurística.",
+      "cuando_usar": "Al construir el sistema de entrenamiento/serving, no después de la primera caída de calidad.",
+      "ejemplo": "Recomendaciones: fallback = 'muestra lo más popular'; además guarda primary/new/old del modelo para revertir rápido.",
+      "patron": "versiona todo + snapshots + multi-versión; fallback heurístico + rollback"
+    },
+    {
+      "id": "vigilar-training-serving-skew",
+      "nombre": "Vigilar el training-serving skew",
+      "descripcion": "El skew más peligroso es el training-serving skew: cualquier diferencia entre cómo se computa una feature (o qué datos hay) en entrenamiento versus en serving. Causa caídas sutiles y evitables porque el modelo ve en producción algo distinto de lo que aprendió. Mantén el pipeline de features lo más consistente posible entre ambos mundos (idealmente un feature store que los unifique) y monitoréalo: es de los errores más comunes y difíciles de depurar.",
+      "cuando_usar": "Al diseñar el pipeline de features y al diagnosticar por qué un modelo rinde peor en producción que en evaluación offline.",
+      "ejemplo": "Una feature que en training era 'income' y en serving quedó como 'zip code'; o distinta cuantización/normalización entre ambos.",
+      "patron": "misma definición de feature en train y serving; feature store unificado; monitorear"
+    },
+    {
+      "id": "elegir-arquitectura-serving",
+      "nombre": "Elegir arquitectura de serving",
+      "descripcion": "Cuatro arquetipos según carga/latencia/contexto: OFFLINE (batch inference) precomputa predicciones a un store —simple, verificable, rápido, pero no cubre la cola larga ni contexto en línea; ONLINE infiere en tiempo real con contexto y se adapta al drift en inferencia, a costa de latencia, escalado y supervisión; MaaS sirve el modelo como microservicio (aislamiento, escalado horizontal, versionado/A-B fáciles); EDGE en el dispositivo (latencia/privacidad, pero tamaño limitado y actualizar es difícil).",
+      "cuando_usar": "Al decidir cómo exponer un modelo a la aplicación, partiendo de QPS, presupuesto de latencia, necesidad de contexto y dónde debe vivir.",
+      "ejemplo": "Popularidad de productos: offline/batch a una tabla. Recomendación personalizada con contexto de sesión: online o MaaS. Wake-word en el móvil: edge.",
+      "patron": "offline=precompute; online=tiempo real+adaptable; MaaS=microservicio; edge=on-device"
+    },
+    {
+      "id": "observabilidad-ml-produccion",
+      "nombre": "Observabilidad de ML en producción (no solo en desarrollo)",
+      "descripcion": "Monitoreo = saber si el sistema funciona; observabilidad = métricas etiquetadas/sliceables que dejan inferir POR QUÉ se comporta así (no solo requests_total, sino requests_total{lang=es}). El cambio de mentalidad clave: el modelista usa métricas para OPTIMIZAR antes de desplegar, pero hace falta usarlas para DETECTAR después de desplegar. Monitorea en tres capas —modelo, datos y servicio (infra)— durante todo el ciclo de vida, no solo en desarrollo.",
+      "cuando_usar": "Al instrumentar un modelo desplegado: garantiza visibilidad post-despliegue, no solo KPIs de modelado pre-despliegue.",
+      "ejemplo": "Slicing por idioma revela que un 5% de usuarios recibe siempre malos resultados aunque la métrica agregada se vea bien.",
+      "patron": "observabilidad=métricas en slices; detección post-deploy; monitorear modelo+datos+servicio"
+    },
+    {
+      "id": "responder-incidente-ml",
+      "nombre": "Responder a un incidente de ML",
+      "descripcion": "Un incidente bien gestionado necesita: saber su ESTADO (fases: pre-incidente→trigger→inicio→detección→troubleshooting→mitigación→resolución→follow-up), ROLES claros (incident commander, comms lead, ops lead, planning lead) y REGISTRO para el postmortem. Frente a uno no-ML, el de ML es Public (lo ven antes los usuarios), Fuzzy (inicio/fin/impacto difusos) y Unbounded (involucra a más de la organización: producto, finanzas, legal).",
+      "cuando_usar": "Cuando un sistema de ML se degrada de forma urgente y hay que coordinar la respuesta.",
+      "ejemplo": "Caída de calidad de búsqueda: el IC coordina, comms avisa a retail/soporte, ops controla cambios, planning agenda el postmortem.",
+      "patron": "estado+roles+registro; ML = Public, Fuzzy, Unbounded"
+    },
+    {
+      "id": "monitorear-edad-modelo",
+      "nombre": "Monitorear la frescura del modelo y la señal de calidad",
+      "descripcion": "En sistemas de ML la degradación silenciosa suele ser la única señal end-to-end de un fallo de infraestructura. Defensas concretas: monitorear la EDAD del modelo en serving (wall-clock o edad de datos) y alertar si supera un umbral; vigilar un golden set de queries (alertar si cambia demasiado O si deja de cambiar); alertar si la tasa de entrenamiento cae por debajo del umbral que pone en riesgo la fecha límite; y monitorear la métrica de calidad percibida por el usuario (p.ej. CTR top-5).",
+      "cuando_usar": "Al diseñar el monitoreo de un sistema de entrenamiento+serving continuo para detectar antes que el usuario.",
+      "ejemplo": "Historia de YarnIt: un modelo de búsqueda quedó congelado 3 semanas (log-feeders sin memoria); un golden set 'sospechosamente estable' lo delató.",
+      "patron": "alerta por edad del modelo; golden set (cambia demasiado o nada); tasa de training; CTR"
     }
   ],
   "bloques": [
@@ -1183,7 +1263,11 @@
         "arena-dmls1",
         "arena-dmls2",
         "arena-dmls3",
-        "arena-dmls4"
+        "arena-dmls4",
+        "arena-rml1",
+        "arena-rml2",
+        "arena-rml3",
+        "arena-rml4"
       ],
       "examen": {
         "items": [
@@ -2689,6 +2773,72 @@
                 "Los tres tipos pueden coexistir, complicando el diagnóstico"
               ],
               "source": "Designing Machine Learning Systems (Chip Huyen) — Cap. 8"
+            }
+          },
+          {
+            "id": "f7-ex-46",
+            "heuristica": "responder-incidente-ml",
+            "enunciado": "Un modelo de ranking de búsqueda en producción lleva semanas degradándose: el CTR de los primeros resultados cayó poco a poco y nadie lo notó hasta que un nuevo dashboard lo reveló. (a) ¿Por qué este tipo de caída suele detectarse tarde y a menudo solo como un problema de calidad? (b) Aplica las fases de un incidente y los cuatro roles a esta situación. (c) Propón cuatro alertas de monitoreo que habrían detectado el problema antes.",
+            "pistas": [
+              "Piensa en por qué la calidad del modelo es difícil de monitorear (no hay 'suficientemente bueno' objetivo).",
+              "Recuerda los principios Public/Fuzzy/Unbounded de los incidentes de ML.",
+              "Fases: pre-incidente→trigger→inicio→detección→troubleshooting→mitigación→resolución→follow-up.",
+              "Roles: incident commander, comms lead, ops lead, planning lead. ¿Quién coordina, comunica, controla cambios, agenda?",
+              "Para alertar: la frescura del modelo, un golden set, la tasa de entrenamiento y la métrica de calidad del usuario."
+            ],
+            "solucion": "(a) Se detecta tarde porque monitorear la CALIDAD del modelo es difícil (no hay un umbral objetivo de 'suficientemente bueno', es multidimensional) y, en sistemas mal instrumentados, los problemas de infraestructura se manifiestan SOLO como una caída gradual de calidad: el cambio de calidad es a menudo la única señal end-to-end. Encaja con los principios Public (lo nota antes el usuario que el desarrollador), Fuzzy (inicio/impacto difusos: ¿caída o modelo aún no tan bueno?) y Unbounded (involucra a varios equipos). (b) Pre-incidente: arquitectura train/serving donde un sistema produce el modelo y otro lo sirve; el acoplamiento al log es el punto débil. Trigger: crecimiento de datos que supera un cuello de botella (log-feeders sin memoria). Inicio: semanas antes de notarse. Detección: vía el dashboard de CTR. Troubleshooting: el incident commander coordina; comms lead avisa a retail/soporte y pide ayuda al equipo de modelo; ops lead controla y registra los cambios de producción (subir log-feeders); planning lead registra los work items y agenda el postmortem. Mitigación/resolución: completar un run de entrenamiento y desplegar un modelo fresco. (c) Alertas: (1) edad del modelo en serving sobre un umbral; (2) golden set que cambia demasiado O que deja de cambiar; (3) tasa de entrenamiento por debajo del umbral que arriesga la fecha límite; (4) CTR de los primeros resultados por debajo de un umbral, idealmente horario.",
+            "disparador": "Señal: 'el modelo en producción se degradó en silencio y nadie lo vio'. Jugada: gestiona el incidente con estado+roles+registro asumiendo Public/Fuzzy/Unbounded, y monta alertas de frescura del modelo, golden set, tasa de training y métrica de calidad del usuario.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "incident response",
+                "roles de incidente",
+                "monitoreo de calidad",
+                "frescura del modelo"
+              ],
+              "errores_comunes": [
+                "Asumir que la causa es el modelo (suele ser sistemas/datos)",
+                "Confiar solo en métricas agregadas que ocultan slices afectados"
+              ],
+              "casos_borde": [
+                "A veces no hay mitigación rápida y mitigación=resolución",
+                "La degradación de calidad puede ser mejora pendiente, no una caída"
+              ],
+              "source": "Reliable Machine Learning (Chen et al.) — Cap. 11"
+            }
+          },
+          {
+            "id": "f7-ex-47",
+            "heuristica": "definir-slo-ml",
+            "enunciado": "Te piden definir SLOs para el sistema de recomendaciones de una tienda online basada en ML. (a) ¿Qué es un SLO y un SLI? (b) Propón SLOs separados por subsistema (serving, training y aplicación) y explica por qué ninguno de ellos mide aún la calidad ML. (c) ¿Qué SLO añadirías para capturar el valor de negocio y cómo lo medirías?",
+            "pistas": [
+              "Un SLO es un umbral sobre un SLI medible; piensa en un ejemplo con porcentaje y latencia.",
+              "Separa por subsistema y recuerda las cuatro señales doradas.",
+              "Serving→errores; training→throughput y '% de runs terminan en X'; app→llamadas exitosas al modelo.",
+              "La calidad ML no la mide la infraestructura: necesitas una métrica de negocio.",
+              "Mide el negocio en agregado y por slices (geografía, tipo de cliente), sobre horizontes más largos."
+            ],
+            "solucion": "(a) Un SLI es una medición específica del sistema; un SLO es un umbral predefinido sobre ese SLI que define si cumple requisitos, p.ej. '99.99% de requests con código 20x en <150 ms'. (b) Serving: tasa de error del servicio del modelo (como cualquier servicio). Training: throughput (ejemplos o bytes por segundo) y un SLO de finalización, p.ej. '95% de los runs de entrenamiento terminan en menos de X segundos'. Aplicación: número de recomendaciones mostradas y proporción de llamadas exitosas al modelo desde la app. Ninguno mide la calidad ML: solo dicen que la infraestructura corre, no que las recomendaciones sean buenas. (c) Añadiría SLOs ligados al propósito de negocio: CTR de las sugerencias generadas por el modelo y un SLO end-to-end de ingreso atribuible al modelo, medidos no solo en agregado sino en subslices razonables (por geografía o tipo de cliente) y sobre periodos más largos. Estos los deben especificar producto/negocio.",
+            "disparador": "Señal: '¿cómo sé si mi sistema de ML funciona de forma accionable?'. Jugada: define SLOs por subsistema (serving/training/app) con las señales doradas y AÑADE SLOs de métrica de negocio (CTR, ingreso) por slices, porque la infraestructura no mide la calidad ML.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 2,
+              "skills": [
+                "SLO/SLI",
+                "golden signals",
+                "métricas de negocio",
+                "monitoreo por slices"
+              ],
+              "errores_comunes": [
+                "Creer que un SLO de infraestructura (error/latencia) mide la calidad del modelo",
+                "No medir por slices y ocultar fallos en subgrupos"
+              ],
+              "casos_borde": [
+                "Los SLOs de calidad ML se miden en horizontes más largos",
+                "Aleatorizar el acceso al modelo para el A/B es estadísticamente delicado"
+              ],
+              "source": "Reliable Machine Learning (Chen et al.) — Cap. 1"
             }
           }
         ]
@@ -12535,6 +12685,534 @@
           "enunciado": "Un modelo en producción empieza a fallar. Esboza cómo lo diagnosticarías y cómo validarías el reemplazo.",
           "solucion": "Diagnóstico: monitorear métricas operacionales y proxies (distribución de inputs/predicciones); aplicar two-sample tests para detectar shift y clasificar su tipo —covariate (cambia P(X)), label (cambia P(Y)) o concept drift (cambia P(Y|X))— usando observabilidad para hallar el segmento afectado. Validación del reemplazo: entrenar un candidato (stateless o stateful), probarlo primero en shadow deployment (sin servir), luego en A/B aleatorio con significancia o canary gradual, y solo entonces promoverlo a todo el tráfico.",
           "explicacion": "Primero identificar el tipo de shift con tests y observabilidad, luego validar el nuevo modelo con exposición de riesgo creciente (shadow→A/B/canary) antes del despliegue total."
+        }
+      ]
+    },
+    {
+      "id": "arena-rml1",
+      "bloque": "fase-7",
+      "orden": 63,
+      "titulo": "Confiabilidad de extremo a extremo: el ciclo de vida del ML y los SLOs",
+      "libro": "Reliable Machine Learning (Chen, Murphy, Parisa et al., O'Reilly)",
+      "lectura": "data/teoria/arena-rml1.md",
+      "dosis": 30,
+      "objetivo": "Ver el sistema de ML como un loop de producción, separar SLOs por subsistema y capa, y desplegar modelos como código con rollback.",
+      "heuristicas": [
+        "definir-slo-ml",
+        "confiabilidad-ml-no-es-ml",
+        "desplegar-modelo-gradual"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 1
+      },
+      "ideas_clave": [
+        "Un sistema de ML es un loop que nunca termina: funcione bien o mal, se vuelve a iterar",
+        "SLOs de ML = por subsistema (serving/training/app) y por capa (golden signals → salud modelo → negocio)",
+        "Un modelo es código: despliega despacio, aísla en la capa de datos y ten rollback",
+        "La mayoría de los fallos de un sistema de ML no son fallos de ML"
+      ],
+      "banco": [
+        {
+          "id": "arrml1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los autores afirman que un sistema de ML 'nunca está realmente terminado'?",
+          "solucion": "Porque es un loop: si el modelo no funciona lo bastante bien, el equipo itera (cambia features, datos, estructura) para mejorarlo; y si funciona bien, la organización se entusiasma y hace exactamente el mismo trabajo para mejorarlo más. En ambos casos el primer modelo es solo un punto de partida y se vuelve a recorrer el ciclo.",
+          "explicacion": "El ciclo de vida del ML es cíclico, no lineal: el resultado (bueno o malo) siempre realimenta otra ronda de trabajo."
+        },
+        {
+          "id": "arrml1-q2",
+          "tipo": "concepto",
+          "enunciado": "Enumera las etapas del ciclo de vida (el 'ML loop') según el libro.",
+          "solucion": "Recolección y análisis de datos → pipelines de entrenamiento → construir y validar la aplicación (integración) → evaluación de calidad y desempeño → definir y medir SLOs → lanzamiento (launch) → monitoreo y bucles de realimentación, y vuelta al inicio.",
+          "explicacion": "Empieza y termina en los datos; no hay un orden único y a menudo hay que revisitar etapas."
+        },
+        {
+          "id": "arrml1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un pipeline de entrenamiento de ML es más difícil de operar de forma fiable que un ETL convencional?",
+          "solucion": "Tiene todos los modos de fallo de un pipeline de datos normal MÁS unos específicos de ML: puede fallar de forma silenciosa por cambios de distribución, datos faltantes o submuestreo. Omitir una fracción pequeña pero NO aleatoria de datos puede llevarlo de 'casi correcto' a 'muy equivocado' sin error visible.",
+          "explicacion": "La sensibilidad sutil a la distribución de los datos es lo que distingue al pipeline de ML; por eso necesita monitoreo de datos, no solo de procesos."
+        },
+        {
+          "id": "arrml1-q4",
+          "tipo": "concepto",
+          "enunciado": "Lista los fallos más comunes de un pipeline de entrenamiento de ML.",
+          "solucion": "Falta de datos; datos con formato incorrecto; bugs en el parseo o en la implementación del algoritmo; mala configuración del pipeline o del modelo; escasez de recursos; fallos de hardware (frecuentes porque los cómputos son grandes y largos); y fallos del sistema distribuido (que a menudo surgen justo por haber distribuido para evitar fallos de hardware).",
+          "explicacion": "Casi todos son fallos genéricos de sistemas distribuidos; lo ML-específico es que pueden manifestarse como caídas silenciosas de calidad."
+        },
+        {
+          "id": "arrml1-q5",
+          "tipo": "concepto",
+          "enunciado": "Define SLO y SLI y da un ejemplo concreto.",
+          "solucion": "Un SLI (service-level indicator) es una medición específica del sistema; un SLO (service-level objective) es un umbral predefinido sobre ese SLI que define si el sistema cumple los requisitos. Ejemplo: '99.99% de las requests HTTP se completan con éxito (código 20x) en menos de 150 ms'.",
+          "explicacion": "Los SLOs traducen 'funciona bien' en algo medible y accionable; los fijan negocio/producto junto con ingeniería."
+        },
+        {
+          "id": "arrml1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo conviene separar los SLOs de un sistema de ML?",
+          "solucion": "Por subsistema (serving, training y la aplicación) y por capa: (1) las cuatro señales doradas genéricas; (2) la salud básica del modelo (¿tiene el tamaño esperado?, ¿carga sin errores?); y (3) SLOs ligados al propósito de negocio (CTR de sugerencias, ingreso atribuible al modelo), medidos en agregado y por slices razonables (geografía, tipo de cliente).",
+          "explicacion": "Ningún SLO de infraestructura mide la calidad ML; para eso hacen falta SLOs de negocio sobre horizontes más largos."
+        },
+        {
+          "id": "arrml1-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son las 'cuatro señales doradas' (golden signals) y de dónde vienen?",
+          "solucion": "Latencia, tráfico, errores y saturación. Vienen de la práctica clásica de SRE para sistemas no-ML y aplican igual a un sistema de ML: trata el extremo a extremo como un sistema de ingesta, procesamiento y serving de datos y monitoréalo así.",
+          "explicacion": "La idea es hallar métricas genéricas de alto nivel representativas del comportamiento global; los sistemas de ML 'son sistemas' y tienen estos mismos modos de fallo."
+        },
+        {
+          "id": "arrml1-q8",
+          "tipo": "concepto",
+          "enunciado": "Distingue las tres categorías de señales de monitoreo: salud del sistema, salud básica del modelo y calidad del modelo.",
+          "solucion": "Salud del sistema (golden signals): genérica, igual que cualquier sistema (¿corren los procesos?, ¿avanzan?, ¿llega data nueva?). Salud básica del modelo (señales ML genéricas): hechos básicos del modelo SIN entender su contenido (¿tamaño esperado?, ¿carga sin error?). Calidad del modelo (señales específicas del dominio): lo más difícil, requiere métricas de negocio y juicio de contexto.",
+          "explicacion": "El criterio que separa salud básica de calidad es si necesitas entender el contenido del modelo para monitorear: si no, es salud básica (valiosa y barata)."
+        },
+        {
+          "id": "arrml1-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la calidad del modelo es lo más difícil de monitorear?",
+          "solucion": "Porque no hay una medida objetiva de 'suficientemente bueno': es un espacio multidimensional difícil de medir y no hay línea dura entre un problema operativo y una mera oportunidad de mejora; la diferencia es el contexto (la misma mala recomendación puede ser un incidente urgente si es una regresión reciente, o una oportunidad si se lanzó así).",
+          "explicacion": "Por eso negocio/producto deben fijar métricas del mundo real y los ingenieros/SRE encontrar qué medidas se correlacionan con ellas."
+        },
+        {
+          "id": "arrml1-q10",
+          "tipo": "concepto",
+          "enunciado": "'Los modelos son código': ¿qué implicación tiene para el despliegue?",
+          "solucion": "Un modelo nuevo puede tumbar el sistema de serving o arruinar las recomendaciones igual que un binario, e incluso afectar el entrenamiento (p.ej. con transfer learning). Por eso los lanzamientos de modelo y de código tienen riesgo equivalente y deben usar mitigaciones equivalentes (control de releases, monitoreo, rollback).",
+          "explicacion": "Tratar al modelo como artefacto de segunda, exento del rigor de release, es una fuente típica de caídas."
+        },
+        {
+          "id": "arrml1-q11",
+          "tipo": "concepto",
+          "enunciado": "En un despliegue progresivo ('launch slowly'), ¿qué dos dimensiones se limitan y por qué?",
+          "solucion": "Usuarios y servidores. No queremos exponer a TODOS los usuarios a un modelo malo si resultó serlo, así que se muestra primero a un subconjunto pequeño y se crece de forma incremental; y no queremos arriesgar toda la flota de cómputo si el sistema no corre bien, así que se despliega a una fracción de servidores primero.",
+          "explicacion": "El ramp-up limita el daño y da confianza en dos ejes a la vez; lo más delicado es que el sistema nuevo no interfiera con el viejo durante el rollout."
+        },
+        {
+          "id": "arrml1-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la regla 'release, not refactor' es especialmente aguda en sistemas de ML?",
+          "solucion": "Porque el comportamiento global del sistema ya cambia mucho por sí solo (por cambios en los datos subyacentes, etc.). Un refactor que sería trivial en otro contexto puede volver imposible deducir qué está fallando, al mezclar cambios estructurales con la variabilidad propia del ML.",
+          "explicacion": "Principio general: cambia lo mínimo posible a la vez; en ML el ruido de fondo hace que mezclar cambios sea aún más peligroso."
+        },
+        {
+          "id": "arrml1-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa 'aislar los rollouts en la capa de datos' y qué enseña la historia del rollback de pagos?",
+          "solucion": "Que la separación entre versión nueva y vieja debe darse también en los datos, no solo en código/serving: si una versión nueva escribe datos en un formato/semántica que una versión vieja consume, diagnosticar se vuelve largo y sutil. En la historia, un rollout cambió un formato de datos; al hacer rollback los logs nuevos ya escritos quedaron ilegibles para el binario viejo y los errores saltaron al 100% —si hubieran dejado completar el rollout, habrían desaparecido.",
+          "explicacion": "Hay que pensar el rollback de forma holística, incluyendo la capa de datos; un formato nuevo debe poder leerse ANTES de empezar a escribirse."
+        },
+        {
+          "id": "arrml1-q14",
+          "tipo": "concepto",
+          "enunciado": "Distingue live launch, dark launch y el punto medio de 'fracción de usuarios'.",
+          "solucion": "Live launch: el modelo toma tráfico real y afecta el sitio (hay que monitorear métricas clave para no dañar la experiencia). Dark launch: se consulta el modelo y se registra el resultado pero NO se usa de cara al usuario; da confianza en la integración técnica pero poca sobre la calidad. Punto medio: usar el modelo solo para una fracción de usuarios/queries, ganando confianza tanto en la integración como en la calidad.",
+          "explicacion": "El dark launch valida 'que funciona técnicamente'; para validar 'que es bueno' hace falta exponerlo (a una fracción) a usuarios reales."
+        },
+        {
+          "id": "arrml1-q15",
+          "tipo": "concepto",
+          "enunciado": "'Most failures will not be ML failures': ¿qué implica para priorizar el trabajo de confiabilidad?",
+          "solucion": "Que la mayoría de los fallos observados en sistemas de ML no son ML-específicos sino fallos de software y sistemas distribuidos (permisos, versionado, copia equivocada, pipelines mal gestionados). Por tanto: primero haz fiable el sistema distribuido genérico (versionado y despliegue, permisos y acceso a datos, políticas de actualización, replicación, verificación) y solo después aborda lo específico de ML.",
+          "explicacion": "Lo ML-específico cambia el impacto y la dificultad de detección, pero rara vez la causa raíz; ahí está el mayor retorno de confiabilidad."
+        }
+      ]
+    },
+    {
+      "id": "arena-rml2",
+      "bloque": "fase-7",
+      "orden": 64,
+      "titulo": "Datos como pasivo y principios de sistemas de entrenamiento confiables",
+      "libro": "Reliable Machine Learning (Chen, Murphy, Parisa et al., O'Reilly)",
+      "lectura": "data/teoria/arena-rml2.md",
+      "dosis": 30,
+      "objetivo": "Gestionar los datos como pasivo (privacidad, borrado, sesgo) y aplicar los principios de confiabilidad del entrenamiento: reentrenamiento, multi-versión, fallback, skew.",
+      "heuristicas": [
+        "datos-como-pasivo",
+        "asumir-reentrenamiento",
+        "vigilar-training-serving-skew"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Los datos también son un pasivo: 'más datos == mejor' es falso si exponen riesgo legal/ético",
+        "Perder una fracción pequeña pero SESGADA de datos corrompe el modelo silenciosamente",
+        "Asume que todo modelo será reentrenado: versiona configs, datos y snapshots",
+        "Un buen modelo se volverá malo: ten fallback heurístico y rollback"
+      ],
+      "banco": [
+        {
+          "id": "arrml2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué quiere decir tratar los datos como 'pasivo' (data as liability) y por qué 'más datos == mejor' es engañoso?",
+          "solucion": "Que recolectar, almacenar y curar datos expone complejidad y riesgo (legal, ético, de privacidad) que, mal gestionado, daña a la organización y a los usuarios. Aunque más datos de calidad suele mejorar el modelo, las mejores formas de curar son caras y el dato acumulado es responsabilidad: hay que cumplir leyes, asegurar el acceso, anonimizar y poder borrar.",
+          "explicacion": "El dato es activo Y pasivo; el objetivo de la sección es disuadir del 'más datos siempre es mejor' y del 'esto es fácil'."
+        },
+        {
+          "id": "arrml2-q2",
+          "tipo": "concepto",
+          "enunciado": "Explica con el ejemplo del apagón de pagos en español por qué los pipelines de ML son especialmente sensibles a los datos.",
+          "solucion": "Si un apagón de pagos afecta solo al sitio en español, caen las compras completadas de búsquedas en español. Un modelo que predice qué recomendar 'aprende' que los resultados en español casi nunca llevan a compra, así que muestra menos resultados en español (o resultados en otros idiomas a hispanohablantes) y empeora las ventas en español incluso después de que el apagón termina. El modelo no puede 'saber' la razón real del cambio.",
+          "explicacion": "Una causa externa y temporal se hornea en el modelo vía los datos; por eso hay que monitorear datos por slices, no solo el sistema vivo."
+        },
+        {
+          "id": "arrml2-q3",
+          "tipo": "concepto",
+          "enunciado": "Al perder datos, ¿cuál es la pregunta clave, y qué son MCAR, MAR y MNAR?",
+          "solucion": "La pregunta es: ¿la pérdida está sesgada de algún modo? Perder 1 de cada 1.000 registros al azar es casi siempre ignorable; perder TODOS los datos de España, o de quienes compran por la mañana, no lo es. MCAR (missing completely at random): la propensión a faltar es totalmente aleatoria. MAR (missing at random): la propensión a faltar no depende del dato faltante sino de otra variable. MNAR (not missing at random): la propensión a faltar se correlaciona con el propio dato.",
+          "explicacion": "El peligro no es la cantidad perdida sino su sesgo: una pérdida sistemática (MAR/MNAR) introduce sesgos nuevos en el modelo."
+        },
+        {
+          "id": "arrml2-q4",
+          "tipo": "concepto",
+          "enunciado": "Diferencia pseudonimización de anonimización y explica el hallazgo de Latanya Sweeney.",
+          "solucion": "Pseudonimización: reemplazar identificadores privados por otros de forma reversible (reversible solo con acceso a un dato/sistema extra); protege de inspección casual pero hay que tratarla como tan arriesgada como el dato no anonimizado. Anonimización: eliminar permanentemente la conexión con la persona (p.ej. agregando para que ningún dato se ate a menos de N personas reales). Sweeney mostró que el 87% de los estadounidenses son identificables de forma única con solo tres datos: género, edad y código postal —y reidentificó los registros médicos 'anonimizados' del gobernador de Massachusetts.",
+          "explicacion": "La anonimización correcta es una especialización difícil (cercana a la criptografía); no basta con quitar el nombre."
+        },
+        {
+          "id": "arrml2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué borrar datos 'de verdad' es difícil y qué dos optimizaciones propone el libro?",
+          "solucion": "Porque las copias se multiplican (sistemas distribuidos parten el dato en muchas piezas en muchas máquinas, más backups e índices) y, como desde MS-DOS, 'borrar' a menudo solo quita la referencia. Dos tácticas: (1) reescritura periódica —cuando un proceso regenera los datos, simplemente no incluir los 'borrados' la próxima vez; (2) cifrar todos los datos y tirar algunas llaves —si pierdes la llave de un usuario ya no puedes leer su dato (requiere un manejo de llaves muy fiable).",
+          "explicacion": "Conviene también un breve retardo antes del borrado real para permitir cancelar la petición; el cifrado protege además el dato en reposo."
+        },
+        {
+          "id": "arrml2-q6",
+          "tipo": "concepto",
+          "enunciado": "Enumera las fases del ciclo de vida del dato en un sistema de ML.",
+          "solucion": "Creación (se genera/captura en algún sistema, p.ej. logs de serving), ingestión (recepción + filtrado/muestreo y escritura a almacenamiento), procesamiento (validación, limpieza/consistencia y enriquecimiento/extensión, incluido el etiquetado) y post-procesamiento (gestión, almacenamiento/replicación y análisis), hasta el borrado.",
+          "explicacion": "Igual que los modelos, los datos en producción tienen un ciclo de vida con requisitos de fiabilidad propios en cada fase."
+        },
+        {
+          "id": "arrml2-q7",
+          "tipo": "concepto",
+          "enunciado": "Nombra las técnicas de normalización que cita el libro y su riesgo común.",
+          "solucion": "Scaling a un rango (mapear X a un rango fijo, p.ej. 0–1), clipping (recortar los máximos, útil con pocos outliers extremos), log scaling (x' = log(x), útil con distribuciones de ley de potencias) y z-score (mapear a número de desviaciones estándar de la media). Riesgo: cada una es peligrosa si el rango/distribución/media se calcula sobre datos con propiedades distintas a aquellos donde luego se aplica.",
+          "explicacion": "Normalizar es clave para métodos basados en descenso de gradiente; pero parámetros estimados en un conjunto y aplicados en otro introducen skew."
+        },
+        {
+          "id": "arrml2-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un feature store y qué dos grandes problemas resuelve frente a 'un montón de archivos en un directorio'?",
+          "solucion": "Es el sistema dedicado donde se almacenan las features extraídas. Frente al enfoque no estructurado resuelve: (1) la consistencia —los entornos no estructurados sufren training-serving skew (features definidas distinto en train y serving) y semánticas inconsistentes con el tiempo; y (2) la colaboración/innovación —da un lugar consistente para entender la procedencia y autoría de cada feature (quién la añadió, cuándo y por qué), facilitando rastrear de un buen modelo a sus features.",
+          "explicacion": "Empezar con 'archivos en un directorio' acelera el arranque pero a largo plazo daña consistencia y gobernanza (compliance, ética, legal)."
+        },
+        {
+          "id": "arrml2-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un model management system y qué tres funciones ofrece?",
+          "solucion": "Es el sistema que ata serving con training y almacenamiento. Ofrece: (1) metadatos de los modelos (configuración, hiperparámetros, autoría); (2) snapshots de modelos entrenados (útiles para bootstrap vía transfer learning y para recuperación ante desastre si borras un modelo por error); y (3) metadatos de features (autoría y uso de cada feature por cada modelo).",
+          "explicacion": "Sin estos datos a menudo es imposible averiguar qué está fallando en producción; todos tienen una forma rudimentaria (scripts en el home del lead) que conviene formalizar."
+        },
+        {
+          "id": "arrml2-q10",
+          "tipo": "concepto",
+          "enunciado": "'Models will be retrained': ¿por qué asumirlo siempre y qué guardar?",
+          "solucion": "Porque tarde o temprano alguien querrá entrenar otra versión (mejor dataset, nueva idea, verificar el toolchain, o recrear el modelo ante un borrado accidental). Por eso hay que asumir que TODO modelo se reentrenará y planear en consecuencia: guardar y versionar configs, guardar snapshots, y mantener datos y metadatos versionados.",
+          "explicacion": "Crear como requisito de producción que los modelos se puedan reentrenar deja al sistema casi listo para reentrenamiento periódico o rápido."
+        },
+        {
+          "id": "arrml2-q11",
+          "tipo": "concepto",
+          "enunciado": "'Models will have multiple versions (at the same time!)': ¿por qué y qué infraestructura requiere?",
+          "solucion": "Porque los modelos se desarrollan en cohortes (distintos hiperparámetros) y a menudo querremos servir dos o más versiones de un mismo modelo a la vez para comparar cómo rinden en distintas condiciones —esencialmente A/B testing de modelos. Requiere infraestructura de gestión de modelos que rastree metadatos (familia, nombre, versión, fecha) y un sistema que enrute un subconjunto de consultas a una versión u otra.",
+          "explicacion": "Servir versiones simultáneas es la base tanto del A/B de modelos como del rollback rápido."
+        },
+        {
+          "id": "arrml2-q12",
+          "tipo": "concepto",
+          "enunciado": "'Good models will become bad': ¿cuáles son los dos planes de respaldo y cuál es la trampa del fallback?",
+          "solucion": "Plan 1: una ruta de respaldo no-ML (o 'ML más simple') —una heurística o default que dé funcionalidad básica cuando el modelo no pueda (p.ej. mostrar lo más popular). Plan 2: guardar varias versiones del mismo modelo y poder revertir a una anterior. La trampa del fallback: limita cuán bueno puedes dejar ser al modelo —si el modelo supera con mucho a la heurística, ningún fallback bastará y dependerás del modelo.",
+          "explicacion": "El plan 2 + servir varias versiones + crear variantes rápido es el camino para resolver problemas de calidad cuando 'el mundo cambió' y todas las versiones rinden mal."
+        },
+        {
+          "id": "arrml2-q13",
+          "tipo": "concepto",
+          "enunciado": "'Models can train too fast': ¿cómo ocurre y cómo se mitiga?",
+          "solucion": "En entrenamiento distribuido con un servidor de parámetros, varios learners consultan el estado del modelo, leen datos y encolan actualizaciones a la vez; por race conditions las actualizaciones se apilan y esa parte del modelo se mueve demasiado en una dirección, luego sobre-corrige en la otra, y diverge en lugar de converger. Se mitiga limitando estructuralmente el número de actualizaciones 'en vuelo': mantener el estado del modelo muy sincronizado (en RAM rápida) y limitar la tasa a la que varios procesos lo actualizan.",
+          "explicacion": "Un test práctico: si entrenas el mismo modelo más lento (menos learners) y queda mejor en calidad, quizá lo estabas entrenando demasiado rápido. Los random forests no sufren esto; es típico de gradiente con mucho paralelismo."
+        },
+        {
+          "id": "arrml2-q14",
+          "tipo": "concepto",
+          "enunciado": "Distingue utilización (utilization) de eficiencia (efficiency) y por qué importan en ML.",
+          "solucion": "Utilización = (recursos de cómputo usados)/(recursos pagados): mide cuán bien aprovechas lo que pagas (lo contrario del desperdicio). Eficiencia = (valor producido)/(coste): mide si el esfuerzo de ML vale la pena. Importan porque ML es caro: sin eficiencia puede no tener sentido de negocio; además, más holgura de recursos da resiliencia (recuperarse más rápido de caídas) e innovación (explorar más ideas por presupuesto).",
+          "explicacion": "Alta utilización no implica eficiencia: puedes usar muy bien recursos para producir poco valor; hay que medir el valor, no solo los ciclos de CPU."
+        },
+        {
+          "id": "arrml2-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el training-serving skew y por qué es una causa común de caídas evitables?",
+          "solucion": "Es cualquier diferencia entre cómo se computa una feature (o qué datos hay) en entrenamiento frente a serving —p.ej. distinta cuantización/normalización, o una feature cuyo contenido cambia ('income' que pasa a ser 'zip code'). Es común y difícil de depurar porque el modelo ve en producción algo distinto de lo que aprendió, y suele manifestarse solo como una caída sutil de calidad.",
+          "explicacion": "Se previene manteniendo el pipeline de features lo más consistente posible entre train y serving (idealmente un feature store unificado) y monitoreándolo."
+        }
+      ]
+    },
+    {
+      "id": "arena-rml3",
+      "bloque": "fase-7",
+      "orden": 65,
+      "titulo": "Serving, monitoreo y observabilidad de modelos",
+      "libro": "Reliable Machine Learning (Chen, Murphy, Parisa et al., O'Reilly)",
+      "lectura": "data/teoria/arena-rml3.md",
+      "dosis": 30,
+      "objetivo": "Elegir arquitectura de serving por carga/latencia/contexto/hardware y montar observabilidad de modelos en producción (slices, skew, mentalidad de detección).",
+      "heuristicas": [
+        "elegir-arquitectura-serving",
+        "observabilidad-ml-produccion",
+        "elegir-batch-vs-online"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Carga, latencia, dónde vive y hardware definen la arquitectura de serving",
+        "Cuatro arquetipos: offline/batch, online, MaaS, edge — cada uno con trade-offs",
+        "Observabilidad = métricas etiquetadas/sliceables que explican el porqué",
+        "El cambio de mentalidad: monitorear para DETECTAR en producción, no solo optimizar"
+      ],
+      "banco": [
+        {
+          "id": "arrml3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son las cuatro preguntas clave para diseñar el serving de un modelo?",
+          "solucion": "(1) ¿Cuál será la carga (QPS, queries por segundo)? (2) ¿Cuáles son las necesidades de latencia de predicción? (3) ¿Dónde necesita vivir el modelo (local, servidores propios, nube, on-device)? (4) ¿Qué hardware necesita? Junto con cómo se almacena/versiona/actualiza y cómo es el pipeline de features en serving.",
+          "explicacion": "Latencia y carga juntas definen las necesidades de cómputo; el resto define dónde y sobre qué hardware sirves."
+        },
+        {
+          "id": "arrml3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué estrategias hay ante alta carga (QPS)?",
+          "solucion": "Replicar el modelo en muchas máquinas en paralelo (con escalado en la nube); usar hardware más potente como GPUs/aceleradores (que suelen requerir batching de requests para amortizar I/O); abaratar el propio modelo (menos features, menos capas/parámetros, cuantización/sparsificación); y usar cascadas de modelos (un modelo barato decide los casos fáciles y solo los difíciles van a uno caro).",
+          "explicacion": "Las cascadas y la cuantización reducen coste sin replicar; el batching es clave para exprimir aceleradores."
+        },
+        {
+          "id": "arrml3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué replicar el modelo NO reduce la latencia de una predicción individual, y qué es la tail latency?",
+          "solucion": "Porque el tiempo extremo a extremo de pasar UN ejemplo por el modelo no cambia por tener más réplicas: la paralelización por réplicas aumenta el throughput (más queries a la vez), no la velocidad de una sola. La tail latency es la cola de latencias más largas de la distribución (p.ej. el peor 1–5%); conviene mirarla, no solo la media, para no pasar por alto que una fracción de requests se está cayendo o tardando muchísimo.",
+          "explicacion": "Para bajar la latencia de una predicción hay que usar hardware más potente o abaratar el modelo, no añadir réplicas."
+        },
+        {
+          "id": "arrml3-q4",
+          "tipo": "concepto",
+          "enunciado": "Compara los lugares donde puede 'vivir' un modelo: nube, servidores propios y on-device.",
+          "solucion": "Nube: escala fácil arriba/abajo y ofrece varias opciones de hardware, pero mayor latencia de red y consideraciones de privacidad/jurisdicción (datos cruzando la red). Servidores propios: bueno si hay requisitos estrictos de privacidad/seguridad, latencia hipercrítica o hardware especial, pero limita la flexibilidad de escalar y exige más atención al monitoreo. On-device (edge): mejora latencia, fiabilidad y privacidad (no envía datos), pero con fuertes límites de tamaño/energía y actualizaciones difíciles (push por red; algunos dispositivos nunca se actualizan).",
+          "explicacion": "La ubicación condiciona toda la arquitectura: en edge, testing y verificación pesan más porque arreglar/actualizar es costoso o imposible."
+        },
+        {
+          "id": "arrml3-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las GPUs sirven para modelos deep y las CPUs pueden ser mejores para modelos sparse?",
+          "solucion": "Los modelos deep dependen de multiplicaciones de matrices densas: muchísimas multiplicaciones-sumas que paralelizan muy bien. Una CPU tiene pocos cores/ALUs y rinde mal ahí; una GPU tiene miles de ALUs y destaca en matmul densa. Pero los modelos sparse usan solo unas pocas piezas de un universo grande (p.ej. las palabras presentes en una consulta); las GPUs no aprovechan bien esa dispersión y una CPU puede ser más apropiada.",
+          "explicacion": "Las GPUs suelen estar limitadas por el I/O de datos, no por el cómputo; por eso el batching ayuda tanto. Sparse incluye modelos lineales sparse, random forests o embeddings sparse."
+        },
+        {
+          "id": "arrml3-q6",
+          "tipo": "concepto",
+          "enunciado": "Nombra las cuatro categorías amplias de arquitecturas de serving.",
+          "solucion": "Offline (batch inference), online (online inference), Model-as-a-Service (MaaS) y serving en el edge (on-device). Un sistema real puede combinar varias.",
+          "explicacion": "Cada una se elige según carga, latencia, necesidad de contexto en línea y dónde debe vivir el modelo."
+        },
+        {
+          "id": "arrml3-q7",
+          "tipo": "concepto",
+          "enunciado": "Resume ventajas y desventajas del serving offline (batch inference).",
+          "solucion": "Ventajas: menos complejo (sin infra especial; reusar un store), acceso fácil (lookups clave-valor o SQL), mejor rendimiento (predicciones precomputadas), flexible para roll-out/rollback por tablas, y verificable (puedes revisar TODAS las predicciones antes de usarlas). Desventajas: necesita los datos de antemano (mejoras tardan más; una caída upstream deja modelos rancios), no cubre toda la posible query (imposible conocer cada query de antemano), escala mal con espacios de consulta grandes/cola larga, límites de capacidad/almacenamiento y no usa contexto en línea.",
+          "explicacion": "Convierte la predicción on-demand en un simple lookup de datos estáticos; ideal cuando el espacio de consultas es acotado y conocido."
+        },
+        {
+          "id": "arrml3-q8",
+          "tipo": "concepto",
+          "enunciado": "Resume ventajas y desventajas del serving online.",
+          "solucion": "Ventajas: adaptabilidad (el modelo aprende sobre la marcha y se adapta al concept drift en tiempo de inferencia, no en el de despliegue) y permite modelos suplementarios específicos (por usuario o ubicación). Desventajas: exige presupuesto de latencia (necesita acceso rapidísimo a features, p.ej. un store en memoria como Redis), despliegue complejo, escalabilidad limitada (un modelo cambiante no es horizontalmente escalable sin más) y mayor supervisión/gestión (más monitoreo y rollback, expertise no trivial).",
+          "explicacion": "Probablemente vale la pena solo para aplicaciones críticas de alto impacto monetario; brilla combinado con MaaS."
+        },
+        {
+          "id": "arrml3-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué ventajas aporta el enfoque Model-as-a-Service (MaaS)?",
+          "solucion": "Sirve el modelo como microservicio con APIs bien definidas, aislado de la app principal: aprovechar contexto en tiempo real; separación de concerns (ML ajusta el modelo de forma estable); escalado horizontal (modelos stateless → añadir capacidad = añadir instancias); aislamiento de despliegue (stacks y ciclos independientes: QA, staging, canaries); versionado fácil (varias versiones en el mismo clúster, ideal para A/B, con el id de versión en la respuesta); y monitoreo más sencillo por centralización.",
+          "explicacion": "Es la estrategia más flexible y escalable porque no exige acoplamiento ni interacción in-process."
+        },
+        {
+          "id": "arrml3-q10",
+          "tipo": "concepto",
+          "enunciado": "Para actualizar el modelo en serving sin caídas, ¿qué dos estrategias hay?",
+          "solucion": "(1) Asignar el doble de RAM a los jobs de serving para cargar la versión nueva mientras la vieja sigue sirviendo y hacer un hot-swap cuando esté lista —funciona pero desperdicia RAM la mayor parte del tiempo. (2) Sobre-aprovisionar el número de réplicas un cierto porcentaje y ir tomando una proporción (p.ej. 10%) fuera de línea por turnos para actualizar —más gradual y permite verificación de errores y canarying.",
+          "explicacion": "Si además quieres A/B testing, la arquitectura debe poder servir varias versiones (A y múltiples B) a la vez."
+        },
+        {
+          "id": "arrml3-q11",
+          "tipo": "concepto",
+          "enunciado": "Diferencia monitoreo de observabilidad.",
+          "solucion": "Monitoreo: proporciona datos sobre cómo se desempeña el sistema, almacenables y visualizables (saber SI funciona). Observabilidad: atributo del software por el cual los datos emitidos —extendidos con etiquetas/tags— permiten inferir correctamente el comportamiento del sistema (saber POR QUÉ). En la práctica, en vez de solo requests_total tienes requests_total{lang=es}, pudiendo cortar la métrica en slices muy finos.",
+          "explicacion": "Puedes tener monitoreo sin observabilidad (detección gruesa sin poder inspeccionar el detalle), pero no al revés."
+        },
+        {
+          "id": "arrml3-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el training-serving skew y por qué causa caídas difíciles de depurar?",
+          "solucion": "Es la diferencia de desempeño entre training y serving, típicamente por features definidas distinto, cambios/huecos en los datos, o un feedback loop entre algoritmo y tarea. Es una causa común de caídas EVITABLES en ML porque el modelo ve en producción algo distinto de lo aprendido y suele manifestarse solo como una caída sutil de calidad, no como un error explícito.",
+          "explicacion": "Las técnicas para detectar skew son específicas del modelo; el sistema de monitoreo debe ser flexible y la instrumentación la hacen juntos ingeniería de producción y de ML."
+        },
+        {
+          "id": "arrml3-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es el 'cambio de mentalidad' necesario para monitorear ML, y por qué?",
+          "solucion": "Pasar de usar métricas solo para OPTIMIZAR el modelo antes de desplegar, a usarlas también para DETECTAR problemas DESPUÉS de desplegar. Muchos modelistas piensan en KPIs de modelado pre-despliegue (que ni siquiera están conectados a KPIs de negocio) y olvidan que la inspectabilidad debe aplicar igual en producción —que suele durar más de lo que se cree. El monitoreo debe abarcar todo el ciclo de vida.",
+          "explicacion": "La detección post-despliegue es un caso de uso crucial; las herramientas de desarrollo (TensorBoard, W&B) no se trasladan solas a producción."
+        },
+        {
+          "id": "arrml3-q14",
+          "tipo": "concepto",
+          "enunciado": "¿En qué tres niveles conviene dividir el monitoreo en serving, y qué se vigila del input data?",
+          "solucion": "En modelo, datos y servicio (infraestructura). Del input data, por ejemplo: ¿de qué tamaño es el dataset de entrada frente al esperado? (compáralo con la última vez que entrenaste; si encogió un 50% inesperadamente, mala señal); y ¿comparas datos crudos contra datos de features? (algunos problemas solo emergen al combinar campos en features).",
+          "explicacion": "Dividir en capas permite no tener que cubrir todo detalle en cada nivel, aunque haya cruces entre ellas."
+        },
+        {
+          "id": "arrml3-q15",
+          "tipo": "concepto",
+          "enunciado": "Retraining como 'roll-forward': ¿cuándo se usa y cuándo NO sirve para mitigar una caída?",
+          "solucion": "El rollback de modelo es la táctica más común; el retraining (reentrenar con lo último) es como un 'roll-forward' y se usa cuando el rollback no funcionó o no es posible, o si el roll-forward es más fácil para tu infra. NO sirve para mitigar cuando reentrenarías sobre exactamente los mismos datos (esperarías el mismo comportamiento) o cuando reentrenar tarda tanto que no resuelve la caída a tiempo.",
+          "explicacion": "Por eso a veces conviene reentrenar de forma automática y periódica; y 'apretar el botón' de reentrenar puede empeorar las cosas si construyes un modelo radicalmente distinto."
+        }
+      ]
+    },
+    {
+      "id": "arena-rml4",
+      "bloque": "fase-7",
+      "orden": 66,
+      "titulo": "Respuesta a incidentes en sistemas de ML",
+      "libro": "Reliable Machine Learning (Chen, Murphy, Parisa et al., O'Reilly)",
+      "lectura": "data/teoria/arena-rml4.md",
+      "dosis": 30,
+      "objetivo": "Gestionar incidentes de ML con estado, roles y registro, entendiendo por qué son Public, Fuzzy y Unbounded, y preparar la organización para detectarlos y mitigarlos.",
+      "heuristicas": [
+        "responder-incidente-ml",
+        "monitorear-edad-modelo",
+        "confiabilidad-ml-no-es-ml"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Incidente gestionado = estado claro + roles definidos + registro para el postmortem",
+        "Los incidentes de ML son Public, Fuzzy y Unbounded frente a los no-ML",
+        "La caída silenciosa de calidad suele ser la ÚNICA señal end-to-end de un fallo",
+        "Versionar modelos/datos y tener un fallback es la mejor preparación ante incidentes"
+      ],
+      "banco": [
+        {
+          "id": "arrml4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son los tres conceptos básicos de una gestión de incidentes exitosa y qué es un 'incidente no gestionado'?",
+          "solucion": "Saber el ESTADO en que está el incidente, establecer los ROLES, y REGISTRAR información para el seguimiento. Un incidente no gestionado —el peor tipo— ocurre cuando un ingeniero detecta un problema, lo soluciona en solitario, no evalúa el impacto en usuarios y no comunica el estado; el troubleshooting es desorganizado y otras partes de la organización pueden tomar pasos descoordinados (a veces contraproducentes).",
+          "explicacion": "La clave es tener un proceso bien ensayado y aplicarlo metódicamente solo cuando algo merece llamarse incidente (formalizar tiene coste)."
+        },
+        {
+          "id": "arrml4-q2",
+          "tipo": "concepto",
+          "enunciado": "Enumera las fases de la vida de un incidente.",
+          "solucion": "Pre-incidente (decisiones de arquitectura que sientan las condiciones), trigger (algo provoca el impacto al usuario), inicio de la caída (outage begins), detección (los dueños se enteran, por monitoreo o por quejas), troubleshooting (averiguar qué pasa y cómo arreglarlo), mitigación (pasos más rápidos y menos riesgosos para frenar lo peor), resolución (se arregla la causa y el servicio vuelve a la normalidad) y follow-up (retrospectiva y acciones de mejora).",
+          "explicacion": "Estas fases aplican a casi cualquier caída; lo que cambia en ML es cómo se manifiestan algunas."
+        },
+        {
+          "id": "arrml4-q3",
+          "tipo": "concepto",
+          "enunciado": "Distingue mitigación de resolución.",
+          "solucion": "Mitigación: los pasos más rápidos y de menor riesgo para frenar al menos lo peor del problema (desde poner un aviso de que algo no funciona, hasta desactivar el servicio). Resolución: arreglar la causa subyacente y devolver el servicio a la normalidad. A veces no hay etapa de mitigación obvia y mitigación y resolución ocurren a la vez.",
+          "explicacion": "Mitigar reduce daño ya; resolver elimina la causa. Algunos incidentes de ML no tienen mitigación rápida posible."
+        },
+        {
+          "id": "arrml4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son los cuatro roles mínimos de respuesta a incidentes (marco tipo FEMA/ICS)?",
+          "solucion": "Incident commander (coordina, entiende el incidente a alto nivel, asigna y supervisa los demás roles), communications lead (comunicación entrante y saliente: documentos para usuarios, pedir ayuda a otros equipos, responder a soporte), operations lead (aprueba, agenda y registra todos los cambios de producción del incidente, incluido detener cambios programados no relacionados) y planning lead (rastrea los temas de más largo plazo: work items a arreglar, logs a analizar, agendar la revisión).",
+          "explicacion": "No hace falta una persona por rol: no todas las responsabilidades son igual de urgentes, pero todos los roles deben cubrirse."
+        },
+        {
+          "id": "arrml4-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué aspectos del manejo de un incidente cambian cuando es de ML frente a uno no-ML?",
+          "solucion": "Detección: los sistemas de ML son menos deterministas, así que es más difícil escribir reglas que atrapen todo antes que un humano lo note. Roles y sistemas involucrados: suelen requerir un rango más amplio de personal (producto, negocio, liderazgo) y afectan a múltiples sistemas. Timeline/resolución: muchas caídas de ML afectan métricas de calidad que ya varían por sí solas, lo que vuelve difícil fijar con precisión inicio, fin y resolución.",
+          "explicacion": "Los cuatro roles son invariantes; lo que cambia es la detección, la amplitud de stakeholders y lo difuso del timeline."
+        },
+        {
+          "id": "arrml4-q6",
+          "tipo": "concepto",
+          "enunciado": "Explica los tres principios rectores de los incidentes de ML: Public, Fuzzy y Unbounded.",
+          "solucion": "Public: las caídas de ML las detectan primero los usuarios (o el extremo final del pipeline), porque monitorear la calidad del modelo es difícil. Fuzzy: están poco definidas en impacto Y en tiempo —es difícil fijar inicio/fin y saber si es una caída seria o solo un modelo aún no tan bueno (no hay transición nítida entre 'malo' y 'bueno'). Unbounded: su troubleshooting y resolución involucran un rango amplio de sistemas y de la organización, porque los sistemas de ML abarcan más áreas técnicas, de producto y de negocio.",
+          "explicacion": "Estos tres rasgos resumen por qué un incidente de ML se siente distinto de uno de un sistema distribuido clásico."
+        },
+        {
+          "id": "arrml4-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las caídas de ML suelen detectarse primero por los usuarios ('Public')?",
+          "solucion": "Porque monitorear la calidad (desempeño) del modelo es difícil: algunos tipos de caída de calidad son obvios para el usuario pero no para desarrolladores, decisores o SREs. Un ejemplo típico es cualquier cosa que afecte a un slice pequeño de usuarios el 100% del tiempo: esos usuarios reciben siempre un desempeño pésimo, pero a menos que mires justo ese slice, las métricas agregadas no muestran nada raro.",
+          "explicacion": "Por eso el slicing (observabilidad) es esencial: lo que se diluye en el agregado puede ser una caída total para un subconjunto."
+        },
+        {
+          "id": "arrml4-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un incidente de ML es 'Fuzzy' en tiempo e impacto?",
+          "solucion": "En tiempo: determinar el inicio y fin precisos es difícil; aunque haya un evento originador, establecer una cadena causal definitiva suele ser impráctico. En impacto: cuesta ver si una condición es una caída significativa o solo un modelo aún no tan sofisticado como quisiéramos —cada modelo empieza básico y mejora con el tiempo, y a menudo no hay transición nítida entre 'malo' y 'bueno', solo 'mejor' y 'no tan bueno'. La línea entre 'roto' y 'podría mejorar' no siempre es visible.",
+          "explicacion": "Esta ambigüedad complica declarar el incidente y medir cuándo está realmente resuelto."
+        },
+        {
+          "id": "arrml4-q9",
+          "tipo": "concepto",
+          "enunciado": "En la Historia 1 (búsqueda que no encuentra), ¿cuáles fueron la causa próxima y la causa raíz?",
+          "solucion": "Causa próxima: el modelo de ranking en producción llevaba tres semanas congelado (no se reentrenaba), por eso caía el CTR de los primeros cinco resultados y el golden set era 'sospechosamente estable'. Causa raíz: el sistema de entrenamiento no completaba ningún run porque los procesos 'log-feeders' se quedaban sin memoria y crasheaban en bucle (cada crash reiniciaba el proceso, leía unos bytes y volvía a crashear), de modo que el training nunca terminaba. Se mitigó subiendo de 10 a 20 log-feeders.",
+          "explicacion": "Detectaron el síntoma (calidad) semanas después del inicio real; el trigger fue el simple crecimiento de los datos superando un cuello de botella."
+        },
+        {
+          "id": "arrml4-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la lección clave de detección de la Historia 1 sobre la señal de calidad?",
+          "solucion": "Que en sistemas de ML mal instrumentados los problemas de sistemas a menudo se manifiestan SOLO como problemas de calidad: el sistema simplemente empieza a rendir peor y empeora gradualmente. El cambio de calidad del modelo es con frecuencia la única señal end-to-end de que algo va mal en la infraestructura.",
+          "explicacion": "Por eso conviene monitorear directamente la calidad percibida por el usuario (p.ej. CTR top-5) además de la salud de sistemas."
+        },
+        {
+          "id": "arrml4-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué acciones de seguimiento (follow-up) salieron de la Historia 1?",
+          "solucion": "Monitorear la EDAD del modelo en serving (wall-clock o edad de datos) y alertar si supera un umbral; definir el requisito de frescura y repartir el tiempo disponible entre las subetapas del pipeline; monitorear el golden set y alertar tanto si NO cambia como si cambia demasiado; monitorear la tasa de entrenamiento y alertar si cae por debajo de un umbral que ponga en riesgo la fecha límite; y —lo más importante— monitorear el CTR de los cinco primeros resultados y alertar si baja de cierto umbral (idealmente con granularidad horaria).",
+          "explicacion": "Estas alertas habrían convertido tres semanas de degradación silenciosa en una detección temprana."
+        },
+        {
+          "id": "arrml4-q12",
+          "tipo": "concepto",
+          "enunciado": "Para preparar incidentes, ¿cuál es el paso más importante del data scientist/modelista, y qué más debe hacer?",
+          "solucion": "El paso más importante es organizar y versionar TODOS los modelos y datos: poner los datos de entrenamiento en un feature store versionado, con metadatos claros de procedencia y de qué código/equipo es responsable de cada dato (incluido versionar el código de transformación), guardar artefactos intermedios de los runs y conservar versiones históricas de los modelos en formato listo-para-servir. Además: especificar un fallback aceptable y decidir métricas útiles que detecten cuándo el modelo deja de funcionar, independientes de su implementación.",
+          "explicacion": "Guardar versiones históricas listas para servir es justo lo que permite mitigar rápido una caída inexplicada de calidad."
+        },
+        {
+          "id": "arrml4-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué debe preparar el software engineer para que los incidentes vayan mejor?",
+          "solucion": "Manejo de datos limpio, con procedencia clara y las mínimas copias posibles del mismo dato (varias copias 'actuales' causan errores sutiles vistos solo como caídas de calidad); versionado explícito y descubrible de los datos. Que los rollouts de modelo y de binario sean separados y separables (ambos pueden afectar la calidad sutilmente; acoplarlos complica el troubleshooting). Consistencia de features entre serving y training (evitar training-serving skew). Y desarrollar herramientas de rollout/rollback de modelo y de binario, y para ver las versiones de datos en cada entorno.",
+          "explicacion": "Separar modelo y binario, y versionar datos, reduce el espacio de búsqueda durante una caída."
+        },
+        {
+          "id": "arrml4-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué conviene buscar mitigaciones FUERA del sistema de ML, según la Historia 3?",
+          "solucion": "Porque a veces la única forma de resolver la caída de raíz no está en el modelo (en la Historia 3, había que cambiar lo que querían los usuarios o reponer el inventario). El equipo, enfocado en depurar el modelo, no pensó en mitigaciones no-ML: por ejemplo, mostrar recomendaciones de productos agotados invitando a avisar cuando hubiera stock, lo que habría desplazado parte del ingreso en el tiempo y reducido las recomendaciones raras.",
+          "explicacion": "La claridad sobre una caída a veces viene de mirar más AMPLIAMENTE toda la situación, no más de cerca una sola parte."
+        },
+        {
+          "id": "arrml4-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué dice el 'manifiesto del ingeniero ético de guardia' sobre privacidad y ética durante un incidente?",
+          "solucion": "Que es un error enfocarse en 'hacer que el sistema funcione primero y preocuparse por la privacidad después': la ética y la privacidad no se posponen ni siquiera bajo la presión de un incidente. El personal de datos/modelado, aunque deba hacer análisis a medida o generar variantes del modelo para probar hipótesis, debe estar preparado para RECHAZAR cualquier petición que requiera violar la privacidad del usuario u otros principios éticos.",
+          "explicacion": "La respuesta a incidentes de ML tiene implicaciones serias de ética y privacidad; no son un añadido posterior sino parte del trabajo."
         }
       ]
     }

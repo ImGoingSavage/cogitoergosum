@@ -1861,3 +1861,45 @@ det=−0.316, etc.); recursos sirven 200 por HTTP.
 **Siguiente** — Según orden §10: **Fifty Challenging Problems in Probability**
 (ruta `quant`, cuota 60), luego Blitzstein/DeGroot/Casella, y después ruta
 `maang` (Cracking the Coding → System Design).
+
+## Bitácora 2026-06-14 (Arena tanda 13) — Reliable Machine Learning, 62 preguntas
+
+Procesado `Reliable Machine Learning` (Chen, Murphy, Parisa et al., O'Reilly)
+— libros[13] del ledger, ruta `ml-systems`, cuota 25. Es el ledger.estado
+13º libro en pasar a `completado`. **Valor NUEVO** de confiabilidad/SRE para
+ML que complementa Huyen DMLS (tanda 12) y el MLOps básico de Cracking cds3 sin
+duplicar. 4 unidades nuevas (`fase-7`, órdenes 63-66):
+- **arena-rml1** — ciclo de vida del ML + SLOs (el loop; señales doradas, salud
+  del modelo, métrica de negocio; models-as-code, launch slowly, isolate-at-
+  data-layer, "most failures are not ML failures").
+- **arena-rml2** — datos como pasivo + principios de entrenamiento confiable
+  (data as liability, Sweeney 87%, borrado por cifrado, MCAR/MAR/MNAR, feature
+  store, model management, models-will-be-retrained, multi-versión, good-models-
+  become-bad/fallback, train-too-fast/race conditions, utilization vs efficiency,
+  training-serving skew).
+- **arena-rml3** — serving + observabilidad (QPS/latencia/tail/dónde-vive/GPU-vs-
+  CPU-sparse; 4 arquitecturas offline/online/MaaS/edge; monitoreo vs
+  observabilidad, mentalidad de detección, skew, retraining como roll-forward).
+- **arena-rml4** — respuesta a incidentes (estado+roles+registro; fases;
+  IC/comms/ops/planning; Public/Fuzzy/Unbounded; Historia 1 "búsqueda que no
+  encuentra"; preparación por rol; ética del on-call).
+
+60 preguntas de banco (15/unidad) + 2 ítems de examen (**f7-ex-46** incidente
+ML, **f7-ex-47** SLOs de ML) = 62. 10 heurísticas nuevas (confiabilidad-ml-no-es-
+ml, definir-slo-ml, desplegar-modelo-gradual, datos-como-pasivo, asumir-
+reentrenamiento, vigilar-training-serving-skew, elegir-arquitectura-serving,
+observabilidad-ml-produccion, responder-incidente-ml, monitorear-edad-modelo);
+reúsa elegir-batch-vs-online. Catálogo total: 90 heurísticas. `sw.js` **v41**
+(151 archivos en shell; +4 lecciones `data/teoria/arena-rml{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados (unidades/banco/examen/
+heurísticas); integridad referencial OK (heurísticas existen, lecciones .md
+existen, unidades registradas en bloque `fase-7` → 66); `verificar-shell.py` OK.
+Contenido anclado en el libro (respuestas conceptuales de ML/sistemas, §1.2);
+sin verificación Python por no haber problemas numéricos.
+
+**Siguiente** — orden §10 (ml-systems): **Machine Learning Design Patterns**
+(libros[14], ruta `ml-systems`, cuota 25), luego Site Reliability Engineering,
+Observability Engineering, Rules of ML, Hidden Technical Debt, Interpretable ML,
+ISL. Próxima unidad: órdenes desde 67, `f7-ex-48`+, VERSION v42+, ids de unidad
+`arena-mldp1..` (o el prefijo que decidas; el banco usa `ar<unit>-q<n>`).
