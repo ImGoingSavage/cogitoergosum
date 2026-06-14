@@ -141,11 +141,11 @@
       "archivo": "Arena/Entrevista Ciencia de datos/869870131-Singh-n-Huo-k-Ace-the-Data-Science-Interview-201-Real-Interv.pdf",
       "sector": "A",
       "ruta": "ciencia-datos",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": ["arena-ads1", "arena-ads2", "arena-ads3", "arena-ads4"],
       "cuota_minima": 60,
-      "notas": ""
+      "notas": "2026-06-13 (cuenta A, Opus 4.8): completado. 4 unidades (órdenes 47-50): ads1 probabilidad (Bayes/tasa base, ley total, distribuciones, Markov; 15q), ads2 estadística e inferencia (LLN/CLT, prueba de hipótesis, p-valor, Tipo I/II, IC, MLE/MAP; 15q), ads3 machine learning (sesgo-varianza, regularización L1/L2, precisión/recall/F1/ROC, logística/árboles/ensembles, PCA, descenso de gradiente; 15q), ads4 SQL + product sense (joins/CTE/window, retención; North Star+guardrail, diagnosticar métrica, A/B testing y trampas; 15q) = 60 banco + 2 ítems examen (f7-ex-38 diseno-experimento-ab, f7-ex-39 metrica-clasificacion). 6 heurísticas nuevas (esquema rico): bias-varianza, regularizacion, metrica-clasificacion, diagnosticar-metrica, diseno-experimento-ab, definir-metrica-producto. sw.js v37 (135 archivos). IDs dinámicos sobre la base integrada: orden 46→47, f7-ex-37→38. Siguiente agente: órdenes desde 51, f7-ex-40+, VERSION v38+. Próximo libro §10 (ciencia-datos): Cracking the Data Science Interview (Gonzalez & Stubberfield)."
     },
     {
       "libro": "Cracking the Data Science Interview (Gonzalez & Stubberfield)",
