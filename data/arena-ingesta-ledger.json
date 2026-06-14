@@ -130,11 +130,11 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Entrevista software/System Design Interview An Insider's Guide by Alex Xu (z-lib.org).pdf",
       "sector": "A",
       "ruta": "maang",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": ["arena-sd1", "arena-sd2", "arena-sd3", "arena-sd4"],
       "cuota_minima": 60,
-      "notas": ""
+      "notas": "2026-06-13 (cuenta A, Opus 4.8): completado. 4 unidades (órdenes 43-46): sd1 escalabilidad/estimación/marco 4 pasos (15q), sd2 rate limiter/consistent hashing/CAP/quórum/vector clocks/Snowflake (15q), sd3 URL shortener/web crawler/notificaciones/news feed (15q), sd4 chat WebSocket/autocomplete trie/YouTube CDN/Google Drive delta sync (15q) = 60 banco + 2 ítems examen (f7-ex-36 trade-off-cap, f7-ex-37 descomponer-sistema). 5 heurísticas nuevas (esquema rico): descomponer-sistema, estimacion-capacidad, escalar-horizontal, trade-off-cap, cola-desacoplar. sw.js v36 (131 archivos). IDs calculados dinámicamente sobre la base integrada: orden 42→43, f7-ex-35→36. Siguiente agente: órdenes desde 47, f7-ex-38+, VERSION v37+. Próximo libro §10 (ciencia-datos): Ace the Data Science Interview (Singh & Huo)."
     },
     {
       "libro": "Ace the Data Science Interview (Singh & Huo)",
