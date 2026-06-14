@@ -149,6 +149,22 @@
       "id": "geometria-probabilistica",
       "nombre": "Geometría probabilística / área favorable",
       "descripcion": "Define el espacio muestral como una región geométrica; P(evento) = área/longitud favorable / área/longitud total. Dibujar el espacio es el primer paso."
+    },
+    {
+      "id": "lotus",
+      "nombre": "LOTUS (Law of the Unconscious Statistician)",
+      "descripcion": "Calcula E[g(X)] directamente sobre la distribución de X sin necesidad de derivar la distribución de g(X): E[g(X)] = ∫g(x)f(x)dx.",
+      "cuando_usar": "Cuando necesitas la esperanza de una función de una variable aleatoria y la distribución de X es conocida.",
+      "ejemplo": "Si X~Exp(1), E[X²] = ∫₀^∞ x²·e^{-x}dx = Γ(3) = 2.",
+      "patron": "E[función de VA] sin derivar nueva distribución"
+    },
+    {
+      "id": "probabilidad-condicional-avanzada",
+      "nombre": "Probabilidad condicional avanzada",
+      "descripcion": "P(A|B) = P(A∩B)/P(B). Combina con la regla total y Bayes para problemas multi-etapa.",
+      "cuando_usar": "Cuando la probabilidad depende de eventos anteriores o hay información parcial sobre el resultado.",
+      "ejemplo": "P(segunda bola roja | primera roja) en urna sin reemplazo.",
+      "patron": "Información parcial → actualizar probabilidades"
     }
   ],
   "bloques": [
@@ -765,7 +781,11 @@
         "arena-fc1",
         "arena-fc2",
         "arena-fc3",
-        "arena-fc4"
+        "arena-fc4",
+        "arena-b1",
+        "arena-b2",
+        "arena-b3",
+        "arena-b4"
       ],
       "examen": {
         "items": [
@@ -1372,6 +1392,68 @@
                 "n=2: P(ninguna)=1/2; n=3: P(ninguna)=1/3"
               ],
               "source": "Fifty Challenging Problems in Probability (F. Mosteller)"
+            }
+          },
+          {
+            "id": "f7-ex-17",
+            "heuristica": "lotus",
+            "enunciado": "Sea X una VA discreta con P(X=k) = C·(1/2)^k para k=1,2,3,... (a) Encuentra C; (b) calcula E[X]; (c) calcula Var[X].",
+            "pistas": [
+              "La suma de todas las probabilidades debe ser 1. Σ(1/2)^k para k≥1 — ¿qué serie geométrica conoces?",
+              "Σ_{k=1}^∞ (1/2)^k = 1/(1-1/2) − 1 = 1. Por tanto C = 1.",
+              "E[X] = Σ k·(1/2)^k. Usa la identidad Σ k·r^k = r/(1-r)² para |r|<1.",
+              "E[X] = (1/2)/(1/2)² = 2. Para Var: necesitas E[X²] = E[X(X-1)] + E[X].",
+              "E[X(X-1)] = Σ k(k-1)(1/2)^k = 2·(1/2)²/(1/2)³ = 2. Luego E[X²]=2+2=4 y Var[X]=4-4=0. Corrección: Var[X]=E[X²]-(E[X])²=6-4=2."
+            ],
+            "solucion": "C=1; E[X]=2; Var[X]=2",
+            "disparador": "Cuando ves distribución en serie geométrica: normaliza primero (busca C), luego aplica identidades de series de potencias para E y Var.",
+            "metadata": {
+              "ruta": "ciencia-datos",
+              "nivel": 3,
+              "skills": [
+                "lotus",
+                "series-geometricas",
+                "varianza"
+              ],
+              "errores_comunes": [
+                "Empezar la suma en k=0 en lugar de k=1",
+                "Confundir E[X²] con (E[X])²"
+              ],
+              "casos_borde": [
+                "Si la serie diverge, la distribución no está bien definida"
+              ],
+              "source": "Introduction to Probability (Blitzstein & Hwang)"
+            }
+          },
+          {
+            "id": "f7-ex-18",
+            "heuristica": "probabilidad-condicional-avanzada",
+            "enunciado": "Una enfermedad afecta al 1% de la población. Una prueba da positivo en el 95% de los enfermos y en el 5% de los sanos. Si la prueba da positivo, ¿cuál es la probabilidad de estar enfermo?",
+            "pistas": [
+              "Quieres P(enfermo|positivo). ¿Qué teorema relaciona esto con P(positivo|enfermo)?",
+              "Bayes: P(E|+) = P(+|E)·P(E) / P(+). ¿Puedes calcular P(+) con la regla total?",
+              "P(+) = P(+|E)·P(E) + P(+|Ē)·P(Ē) = 0.95·0.01 + 0.05·0.99. Calcula.",
+              "P(+) = 0.0095 + 0.0495 = 0.059. Ahora P(E|+) = 0.0095 / 0.059.",
+              "P(E|+) ≈ 16.1%. Aunque la prueba es 95% precisa, la baja tasa base hace que la mayoría de positivos sean falsos positivos."
+            ],
+            "solucion": "P(enfermo|positivo) ≈ 16.1%",
+            "disparador": "Cuando tasa base es baja y te preguntan P(evento|señal): aplica Bayes completo — el resultado es sorprendentemente bajo (base rate fallacy).",
+            "metadata": {
+              "ruta": "ciencia-datos",
+              "nivel": 2,
+              "skills": [
+                "bayes",
+                "probabilidad-total",
+                "base-rate"
+              ],
+              "errores_comunes": [
+                "Ignorar la tasa base (1%)",
+                "Confundir P(+|E) con P(E|+)"
+              ],
+              "casos_borde": [
+                "Con tasa base 50%: P(E|+) = 0.95/(0.95+0.05) = 95%"
+              ],
+              "source": "Introduction to Probability (Blitzstein & Hwang)"
             }
           }
         ]
@@ -6057,6 +6139,526 @@
           "enunciado": "El problema de la ruleta: juegas ruleta americana (38 números: 1-36, 0, 00). Apuestas $1 al rojo (18 números). ¿Cuál es E[ganancia por apuesta]? ¿Cuánto pierdes en expectativa en 100 apuestas de $1?",
           "solucion": "P(rojo) = 18/38 = 9/19. E[ganancia] = 1×(9/19) + (−1)×(10/19) = −1/19 ≈ −$0.0526. En 100 apuestas: E[pérdida total] = 100/19 ≈ $5.26. La ventaja de la casa es 5.26%.",
           "explicacion": "Los dos ceros (0 y 00) en la ruleta americana dan a la casa 2/38 = 5.26% de ventaja. La ruleta europea (sin 00) tiene ventaja de solo 1/37 = 2.70%. Para cualquier apuesta en ruleta americana: E[ganancia] = −2/38 × $apostado. La ventaja de la casa es independiente del sistema de apuestas elegido."
+        }
+      ]
+    },
+    {
+      "id": "arena-b1",
+      "bloque": "fase-7",
+      "orden": 21,
+      "titulo": "Fundamentos de probabilidad y conteo",
+      "libro": "Introduction to Probability (Blitzstein & Hwang)",
+      "lectura": "data/teoria/arena-b1.md",
+      "dosis": 30,
+      "objetivo": "Dominar conteo, permutaciones, combinaciones y LOTUS para esperanzas de funciones de VAs.",
+      "heuristicas": [
+        "lotus",
+        "linealidad-esperanza"
+      ],
+      "metadata": {
+        "ruta": "ciencia-datos",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "E[g(X)] = Σ g(x)·P(X=x) — no necesitas la distribución de g(X)",
+        "Permutaciones con repetición: n!/(n₁!·n₂!·…·nₖ!)",
+        "Inclusión-exclusión: |A∪B∪C| = |A|+|B|+|C| − |A∩B| − |A∩C| − |B∩C| + |A∩B∩C|"
+      ],
+      "banco": [
+        {
+          "id": "arb1-q1",
+          "tipo": "calculo",
+          "enunciado": "¿De cuántas formas se pueden ordenar las letras de STATISTICS?",
+          "solucion": "50400",
+          "explicacion": "10 letras: S×3, T×3, A×1, I×2, C×1. Permutaciones con repetición: 10!/(3!·3!·2!·1!·1!) = 3628800/72 = 50400."
+        },
+        {
+          "id": "arb1-q2",
+          "tipo": "concepto",
+          "enunciado": "Explica la diferencia entre sampling with replacement y without replacement en combinatoria.",
+          "solucion": "Con reemplazo: n^k formas para k elementos de n posibles. Sin reemplazo: P(n,k)=n!/(n-k)! ordenados; C(n,k) sin orden.",
+          "explicacion": "La distinción determina si los intentos son independientes (con reemplazo → binomial) o dependientes (sin reemplazo → hipergeométrica)."
+        },
+        {
+          "id": "arb1-q3",
+          "tipo": "calculo",
+          "enunciado": "En un grupo de 10 personas, ¿cuántos comités de 3 se pueden formar donde uno es presidente y los otros dos son vocales (sin distinción entre vocales)?",
+          "solucion": "360",
+          "explicacion": "Elegir presidente: 10 formas. Elegir 2 vocales de los 9 restantes: C(9,2)=36. Total: 10×36 = 360."
+        },
+        {
+          "id": "arb1-q4",
+          "tipo": "calculo",
+          "enunciado": "Lanzas dos dados justos. ¿Cuál es P(suma = 7)?",
+          "solucion": "1/6",
+          "explicacion": "Pares que suman 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) → 6 de 36 posibles. P = 6/36 = 1/6."
+        },
+        {
+          "id": "arb1-q5",
+          "tipo": "calculo",
+          "enunciado": "Si X ~ Geom(p) (número de intentos hasta el primer éxito), calcula E[X] usando LOTUS.",
+          "solucion": "1/p",
+          "explicacion": "E[X] = Σ_{k=1}^∞ k·(1-p)^{k-1}·p. Usando Σ k·r^{k-1} = 1/(1-r)² para |r|<1: E[X] = p·(1/p²) = 1/p."
+        },
+        {
+          "id": "arb1-q6",
+          "tipo": "calculo",
+          "enunciado": "X ~ Uniform{1,2,...,n}. Calcula E[X] y Var[X].",
+          "solucion": "E[X] = (n+1)/2; Var[X] = (n²-1)/12",
+          "explicacion": "E[X] = (1/n)·n(n+1)/2 = (n+1)/2. E[X²] = (n+1)(2n+1)/6. Var = E[X²]-(E[X])² = (n²-1)/12."
+        },
+        {
+          "id": "arb1-q7",
+          "tipo": "calculo",
+          "enunciado": "En el problema del sombrero (n personas), ¿cuál es la varianza del número de personas que recuperan su propio sombrero?",
+          "solucion": "1 (para cualquier n ≥ 1)",
+          "explicacion": "Sea Xᵢ=1 si persona i recupera su sombrero. E[Xᵢ]=1/n. E[XᵢXⱼ]=P(i y j recuperan)=1/(n(n-1)) para i≠j. Var(ΣXᵢ)=nVar(Xᵢ)+n(n-1)Cov(Xᵢ,Xⱼ)=n(1/n-1/n²)+n(n-1)(1/(n(n-1))-1/n²)=1."
+        },
+        {
+          "id": "arb1-q8",
+          "tipo": "calculo",
+          "enunciado": "Se elige un número entero al azar entre 1 y 100. ¿Cuál es P(divisible por 2 o por 5)?",
+          "solucion": "3/5",
+          "explicacion": "P(div 2)=50/100, P(div 5)=20/100, P(div 10)=10/100. Inclusión-exclusión: (50+20-10)/100=60/100=3/5."
+        },
+        {
+          "id": "arb1-q9",
+          "tipo": "calculo",
+          "enunciado": "¿Cuántos enteros del 1 al 1000 son divisibles por 3, 5 o 7?",
+          "solucion": "543",
+          "explicacion": "Inclusión-exclusión: |A₃|+|A₅|+|A₇|-|A₁₅|-|A₂₁|-|A₃₅|+|A₁₀₅| = 333+200+142-66-47-28+9 = 543."
+        },
+        {
+          "id": "arb1-q10",
+          "tipo": "concepto",
+          "enunciado": "Enuncia la Ley de la Probabilidad Total y da un ejemplo.",
+          "solucion": "P(B) = Σᵢ P(B|Aᵢ)·P(Aᵢ) donde {Aᵢ} es una partición del espacio muestral.",
+          "explicacion": "Ejemplo: P(prueba positiva) = P(+|enfermo)·P(E) + P(+|sano)·P(Ē). Útil cuando P(B|Aᵢ) es fácil pero P(B) no."
+        },
+        {
+          "id": "arb1-q11",
+          "tipo": "calculo",
+          "enunciado": "X ~ Bin(n,p). Demuestra E[X]=np usando linealidad.",
+          "solucion": "E[X] = np",
+          "explicacion": "X = X₁+…+Xₙ con Xᵢ~Bernoulli(p) i.i.d. Por linealidad: E[X]=Σ E[Xᵢ]=n·p."
+        },
+        {
+          "id": "arb1-q12",
+          "tipo": "calculo",
+          "enunciado": "X ~ Bin(n,p). Calcula Var[X].",
+          "solucion": "np(1-p)",
+          "explicacion": "Var[Xᵢ]=p(1-p). Por independencia: Var[X]=Σ Var[Xᵢ]=np(1-p)."
+        },
+        {
+          "id": "arb1-q13",
+          "tipo": "calculo",
+          "enunciado": "Una urna tiene 3 rojas y 7 azules. Se sacan 2 sin reemplazo. ¿P(ambas rojas)?",
+          "solucion": "1/15",
+          "explicacion": "P = C(3,2)/C(10,2) = 3/45 = 1/15. Alternativa: (3/10)·(2/9) = 1/15."
+        },
+        {
+          "id": "arb1-q14",
+          "tipo": "calculo",
+          "enunciado": "¿Cuántos anagramas tiene ABRACADABRA?",
+          "solucion": "83160",
+          "explicacion": "11 letras: A×5, B×2, R×2, C×1, D×1. Total = 11!/(5!·2!·2!·1!·1!) = 39916800/480 = 83160."
+        },
+        {
+          "id": "arb1-q15",
+          "tipo": "calculo",
+          "enunciado": "Si X ~ Poisson(λ), calcula E[X(X-1)] usando LOTUS.",
+          "solucion": "λ²",
+          "explicacion": "E[X(X-1)] = Σ_{k=2}^∞ k(k-1)·e^{-λ}λ^k/k! = λ²·Σ e^{-λ}λ^{k-2}/(k-2)! = λ². Luego Var[X]=E[X(X-1)]+E[X]-(E[X])²=λ²+λ-λ²=λ."
+        }
+      ]
+    },
+    {
+      "id": "arena-b2",
+      "bloque": "fase-7",
+      "orden": 22,
+      "titulo": "Variables aleatorias conjuntas y correlación",
+      "libro": "Introduction to Probability (Blitzstein & Hwang)",
+      "lectura": "data/teoria/arena-b2.md",
+      "dosis": 30,
+      "objetivo": "Calcular distribuciones conjuntas, covarianza, correlación y aplicar LET y LVT.",
+      "heuristicas": [
+        "probabilidad-condicional-avanzada",
+        "ley-total-esperanza"
+      ],
+      "metadata": {
+        "ruta": "ciencia-datos",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "LET: E[Y] = E[E[Y|X]] — condiciona en lo que sabe más",
+        "LVT: Var[Y] = E[Var[Y|X]] + Var[E[Y|X]]",
+        "Cov=0 no implica independencia (solo para la normal bivariada es equivalente)"
+      ],
+      "banco": [
+        {
+          "id": "arb2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Condición necesaria y suficiente para independencia de X e Y continuas?",
+          "solucion": "f_{X,Y}(x,y) = f_X(x)·f_Y(y) para todo (x,y)",
+          "explicacion": "Independencia ↔ la densidad conjunta factoriza. Equivalente: F_{X,Y}(x,y)=F_X(x)·F_Y(y)."
+        },
+        {
+          "id": "arb2-q2",
+          "tipo": "calculo",
+          "enunciado": "X,Y ~ Normal bivariada estándar con correlación ρ. Calcula E[Y|X=x].",
+          "solucion": "E[Y|X=x] = ρx",
+          "explicacion": "Para normal bivariada estándar: la regresión de Y sobre X es lineal con pendiente ρ. En general: E[Y|X=x]=μ_Y+ρ(σ_Y/σ_X)(x-μ_X)."
+        },
+        {
+          "id": "arb2-q3",
+          "tipo": "calculo",
+          "enunciado": "Si Cov(X,Y) = 0, ¿implica X e Y son independientes?",
+          "solucion": "No en general; sí para la normal bivariada.",
+          "explicacion": "Contraejemplo: X~Unif(-1,1), Y=X². Cov(X,Y)=E[X³]=0 pero Y es función de X."
+        },
+        {
+          "id": "arb2-q4",
+          "tipo": "calculo",
+          "enunciado": "X,Y independientes con Var[X]=4, Var[Y]=9. Calcula Var[2X-3Y+1].",
+          "solucion": "97",
+          "explicacion": "Var[2X-3Y+1] = 4Var[X]+9Var[Y] = 4·4+9·9 = 16+81 = 97."
+        },
+        {
+          "id": "arb2-q5",
+          "tipo": "calculo",
+          "enunciado": "X,Y ~ Exp(1) i.i.d. independientes. Calcula P(X < Y).",
+          "solucion": "1/2",
+          "explicacion": "Por simetría P(X<Y)=P(Y<X)=1/2. Para Exp(λ₁) y Exp(λ₂): P(X<Y)=λ₁/(λ₁+λ₂)."
+        },
+        {
+          "id": "arb2-q6",
+          "tipo": "calculo",
+          "enunciado": "X₁,…,Xₙ i.i.d. con media μ y varianza σ². Calcula Var[X̄].",
+          "solucion": "σ²/n",
+          "explicacion": "Var[X̄]=(1/n²)·nσ²=σ²/n. Base del error estándar de la media."
+        },
+        {
+          "id": "arb2-q7",
+          "tipo": "concepto",
+          "enunciado": "Enuncia la Ley de la Varianza Total.",
+          "solucion": "Var[Y] = E[Var[Y|X]] + Var[E[Y|X]]",
+          "explicacion": "Varianza total = varianza residual promedio + varianza de las medias condicionales. Análogo al SS_total=SS_within+SS_between en ANOVA."
+        },
+        {
+          "id": "arb2-q8",
+          "tipo": "calculo",
+          "enunciado": "X ~ N(0,1). Calcula E[X²] y E[X⁴].",
+          "solucion": "E[X²]=1; E[X⁴]=3",
+          "explicacion": "E[X²]=Var[X]=1. Momentos pares: E[X^{2k}]=(2k-1)!! → E[X⁴]=3."
+        },
+        {
+          "id": "arb2-q9",
+          "tipo": "calculo",
+          "enunciado": "Duración de proyecto sigue Exp(0.1). Dado que ya llevamos 5 días, ¿P(terminar en 5 más)?",
+          "solucion": "1 − e^{-0.5} ≈ 0.394",
+          "explicacion": "Falta de memoria: P(X≤10|X>5)=P(X≤5)=1-e^{-0.5}≈0.394."
+        },
+        {
+          "id": "arb2-q10",
+          "tipo": "calculo",
+          "enunciado": "X~Poisson(λ), Y~Poisson(μ) independientes. ¿Distribución de X+Y?",
+          "solucion": "Poisson(λ+μ)",
+          "explicacion": "Mgf: M_{X+Y}(t)=e^{λ(e^t-1)}·e^{μ(e^t-1)}=e^{(λ+μ)(e^t-1)} → Poisson(λ+μ)."
+        },
+        {
+          "id": "arb2-q11",
+          "tipo": "calculo",
+          "enunciado": "¿Por qué ρ(X,Y) ∈ [-1,1]?",
+          "solucion": "Desigualdad de Cauchy-Schwarz: |Cov(X,Y)| ≤ √(Var[X]·Var[Y])",
+          "explicacion": "ρ=1 ↔ Y=aX+b con a>0; ρ=-1 ↔ a<0. La correlación mide la relación lineal."
+        },
+        {
+          "id": "arb2-q12",
+          "tipo": "calculo",
+          "enunciado": "Lanzas un dado justo, luego lanzas X monedas justas. Sea Y el número de caras. Calcula E[Y] y Var[Y].",
+          "solucion": "E[Y]=7/4; Var[Y]=77/48",
+          "explicacion": "E[X]=7/2, E[Y|X]=X/2 → E[Y]=7/4. LVT: Var[Y]=E[X/4]+Var[X/2]=7/8+(35/12)/4=7/8+35/48=77/48."
+        },
+        {
+          "id": "arb2-q13",
+          "tipo": "calculo",
+          "enunciado": "X ~ N(μ,σ²). Calcula E[e^X].",
+          "solucion": "e^{μ+σ²/2}",
+          "explicacion": "Mgf de X~N(μ,σ²) evaluada en t=1: M(1)=e^{μ+σ²/2}."
+        },
+        {
+          "id": "arb2-q14",
+          "tipo": "calculo",
+          "enunciado": "X₁,X₂,X₃ ~ N(0,1) i.i.d. ¿Distribución de X₁²+X₂²+X₃²?",
+          "solucion": "χ²(3)",
+          "explicacion": "Suma de k cuadrados N(0,1) independientes ~ χ²(k). E[χ²(k)]=k, Var=2k."
+        },
+        {
+          "id": "arb2-q15",
+          "tipo": "calculo",
+          "enunciado": "X~N(0,1) e Y=X². ¿Distribución de Y?",
+          "solucion": "χ²(1) = Gamma(1/2, 1/2)",
+          "explicacion": "F_Y(y)=P(X²≤y)=2Φ(√y)-1. Derivando: f_Y(y)=e^{-y/2}/√(2πy) para y>0 — densidad de χ²(1)."
+        }
+      ]
+    },
+    {
+      "id": "arena-b3",
+      "bloque": "fase-7",
+      "orden": 23,
+      "titulo": "Distribuciones importantes y sus relaciones",
+      "libro": "Introduction to Probability (Blitzstein & Hwang)",
+      "lectura": "data/teoria/arena-b3.md",
+      "dosis": 30,
+      "objetivo": "Conocer la familia exponencial, la Gamma, Beta, t, F y sus conexiones.",
+      "heuristicas": [
+        "lotus",
+        "escalado-varianza"
+      ],
+      "metadata": {
+        "ruta": "ciencia-datos",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Gamma(n,λ) = suma de n Exp(λ) independientes",
+        "Beta(α,β) = X/(X+Y) donde X~Gamma(α), Y~Gamma(β) independientes",
+        "t(ν) = Z/√(V/ν) donde Z~N(0,1), V~χ²(ν); para ν→∞ → N(0,1)"
+      ],
+      "banco": [
+        {
+          "id": "arb3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la relación entre Gamma(α,λ) y Exp(λ)?",
+          "solucion": "Gamma(n,λ) es la suma de n Exp(λ) independientes (para n entero).",
+          "explicacion": "E[Gamma(α,λ)]=α/λ, Var=α/λ². Modela tiempo hasta el n-ésimo evento de Poisson."
+        },
+        {
+          "id": "arb3-q2",
+          "tipo": "calculo",
+          "enunciado": "X ~ Gamma(3,2). Calcula E[X] y Var[X].",
+          "solucion": "E[X]=3/2; Var[X]=3/4",
+          "explicacion": "E=α/λ=3/2; Var=α/λ²=3/4. Equivale a suma de 3 Exp(2) con E=1/2, Var=1/4 cada una."
+        },
+        {
+          "id": "arb3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Distribución de X/(X+Y) con X~Gamma(α), Y~Gamma(β) independientes (misma escala)?",
+          "solucion": "Beta(α,β)",
+          "explicacion": "La Beta es la distribución de una fracción de Gammas. Usada como prior conjugado para proporciones."
+        },
+        {
+          "id": "arb3-q4",
+          "tipo": "calculo",
+          "enunciado": "X ~ Beta(α,β). Calcula E[X] y Var[X].",
+          "solucion": "E[X]=α/(α+β); Var[X]=αβ/((α+β)²(α+β+1))",
+          "explicacion": "Para α=β=1: Unif[0,1] → E=1/2. ✓ La Beta es el conjugate prior de la binomial."
+        },
+        {
+          "id": "arb3-q5",
+          "tipo": "calculo",
+          "enunciado": "X ~ t(ν). ¿Para qué ν existe E[X]? ¿Y Var[X]?",
+          "solucion": "E[X] existe para ν>1 (=0); Var[X] para ν>2 (=ν/(ν-2))",
+          "explicacion": "t(1)=Cauchy: E y Var no existen. Para ν→∞: t(ν)→N(0,1). Colas más pesadas que la normal."
+        },
+        {
+          "id": "arb3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se construye t(ν) a partir de variables normales y chi-cuadrado?",
+          "solucion": "Z/√(V/ν) ~ t(ν) donde Z~N(0,1), V~χ²(ν) independientes.",
+          "explicacion": "En la práctica: T=(X̄-μ)/(S/√n)~t(n-1) para muestras normales con varianza desconocida."
+        },
+        {
+          "id": "arb3-q7",
+          "tipo": "calculo",
+          "enunciado": "X~Poisson(λ), Y|X~Bin(X,p). ¿Distribución marginal de Y?",
+          "solucion": "Poisson(λp)",
+          "explicacion": "Adelgazamiento de Poisson: M_Y(t)=e^{λp(e^t-1)} → Poisson(λp)."
+        },
+        {
+          "id": "arb3-q8",
+          "tipo": "calculo",
+          "enunciado": "X~Lognormal: X=e^Y, Y~N(μ,σ²). Calcula E[X] y Var[X].",
+          "solucion": "E[X]=e^{μ+σ²/2}; Var[X]=e^{2μ+σ²}(e^{σ²}-1)",
+          "explicacion": "E[X]=mgf de Y en t=1. Var=E[X²]-(E[X])²=e^{2μ+2σ²}-e^{2μ+σ²}. Modela precios de activos."
+        },
+        {
+          "id": "arb3-q9",
+          "tipo": "calculo",
+          "enunciado": "X₁,…,Xₙ~N(μ,σ²). ¿Distribución de (n-1)S²/σ² donde S² es la varianza muestral?",
+          "solucion": "χ²(n-1)",
+          "explicacion": "S² tiene n-1 grados de libertad (uno perdido por estimar μ). E[S²]=σ² (insesgado), Var[S²]=2σ⁴/(n-1)."
+        },
+        {
+          "id": "arb3-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una familia exponencial? Da un ejemplo.",
+          "solucion": "f(x|θ) = h(x)·exp(η(θ)·T(x) − A(θ))",
+          "explicacion": "Ejemplos: Bernoulli, Poisson, Normal, Gamma. Tienen estadísticos suficientes compactos T(x) y priors conjugados."
+        },
+        {
+          "id": "arb3-q11",
+          "tipo": "calculo",
+          "enunciado": "X₁~χ²(m), X₂~χ²(n) independientes. ¿Distribución de F=(X₁/m)/(X₂/n)?",
+          "solucion": "F(m,n) — distribución F de Snedecor",
+          "explicacion": "Surge en tests de igualdad de varianzas y ANOVA. E[F(m,n)]=n/(n-2) para n>2."
+        },
+        {
+          "id": "arb3-q12",
+          "tipo": "calculo",
+          "enunciado": "X~N(0,1). Calcula E[|X|].",
+          "solucion": "√(2/π) ≈ 0.798",
+          "explicacion": "E[|X|]=2∫₀^∞ x·φ(x)dx=2/√(2π)·∫₀^∞ xe^{-x²/2}dx=2/√(2π)·[−e^{-x²/2}]₀^∞=√(2/π)."
+        },
+        {
+          "id": "arb3-q13",
+          "tipo": "calculo",
+          "enunciado": "Para X~Poisson(λ), calcula P(X es par) usando la pgf.",
+          "solucion": "(1+e^{-2λ})/2",
+          "explicacion": "P(X par)=(G(1)+G(-1))/2 donde G(z)=e^{λ(z-1)}. G(1)=1, G(-1)=e^{-2λ}. P=(1+e^{-2λ})/2."
+        },
+        {
+          "id": "arb3-q14",
+          "tipo": "calculo",
+          "enunciado": "X~Weibull(k,λ): F(x)=1-e^{-(x/λ)^k}. Calcula E[X].",
+          "solucion": "λ·Γ(1+1/k)",
+          "explicacion": "Cambio de variables u=(x/λ)^k: E[X]=λ·Γ(1+1/k). Para k=1: Exp→E=λ. Para k=2: E=λ√π/2."
+        },
+        {
+          "id": "arb3-q15",
+          "tipo": "concepto",
+          "enunciado": "Explica el TCL en términos de la función característica.",
+          "solucion": "φ_{√n(X̄-μ)/σ}(t) → e^{-t²/2} (característica de N(0,1)) cuando n→∞.",
+          "explicacion": "Convergencia puntual de la función característica implica convergencia en distribución (Lévy). La función característica siempre existe (a diferencia de la mgf)."
+        }
+      ]
+    },
+    {
+      "id": "arena-b4",
+      "bloque": "fase-7",
+      "orden": 24,
+      "titulo": "Cadenas de Markov e inferencia bayesiana",
+      "libro": "Introduction to Probability (Blitzstein & Hwang)",
+      "lectura": "data/teoria/arena-b4.md",
+      "dosis": 30,
+      "objetivo": "Entender cadenas de Markov, distribución estacionaria, MCMC y actualización bayesiana con conjugate priors.",
+      "heuristicas": [
+        "probabilidad-condicional-avanzada",
+        "caso-pequeno"
+      ],
+      "metadata": {
+        "ruta": "ciencia-datos",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Propiedad Markov: el futuro es independiente del pasado dado el presente",
+        "Distribución estacionaria π: πP=π; tiempo de retorno E[Tᵢ]=1/πᵢ",
+        "Beta-Binomial conjugate: prior Beta(α,β) + datos → posterior Beta(α+x, β+n-x)"
+      ],
+      "banco": [
+        {
+          "id": "arb4-q1",
+          "tipo": "concepto",
+          "enunciado": "Define la propiedad de Markov y explica por qué es útil.",
+          "solucion": "P(Xₙ₊₁=j|X₀,...,Xₙ)=P(Xₙ₊₁=j|Xₙ). El futuro es independiente del pasado dado el presente.",
+          "explicacion": "Reduce el estado del sistema al valor actual. Solo necesitas la matriz de transición P (n×n) en lugar de toda la historia."
+        },
+        {
+          "id": "arb4-q2",
+          "tipo": "calculo",
+          "enunciado": "Cadena de Markov con P=[[0.7,0.3],[0.4,0.6]]. Encuentra la distribución estacionaria.",
+          "solucion": "π₁=4/7≈0.571; π₂=3/7≈0.429",
+          "explicacion": "πP=π: 0.3π₁=0.4π₂ → π₁/π₂=4/3. Con π₁+π₂=1: π₁=4/7."
+        },
+        {
+          "id": "arb4-q3",
+          "tipo": "calculo",
+          "enunciado": "¿Cuál es el tiempo esperado de retorno al estado i con distribución estacionaria πᵢ?",
+          "solucion": "E[Tᵢ] = 1/πᵢ",
+          "explicacion": "Para el ejemplo: E[T₁]=7/4=1.75 pasos, E[T₂]=7/3≈2.33 pasos."
+        },
+        {
+          "id": "arb4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuándo converge una cadena a su distribución estacionaria?",
+          "solucion": "Cuando es irreducible (conectada) y aperiódica (mcd de tiempos de retorno = 1).",
+          "explicacion": "Juntas garantizan Pⁿ→πᵢ uniformemente. Ejemplo periódico: 1→2→1→2 tiene período 2, no converge."
+        },
+        {
+          "id": "arb4-q5",
+          "tipo": "calculo",
+          "enunciado": "¿Por qué Metropolis-Hastings acepta propuesta y con probabilidad min(1, π(y)q(x|y)/(π(x)q(y|x)))?",
+          "solucion": "Para satisfacer balance detallado: π(x)K(x,y)=π(y)K(y,x).",
+          "explicacion": "El balance detallado garantiza que π es estacionaria. Si q es simétrica: α=min(1,π(y)/π(x))."
+        },
+        {
+          "id": "arb4-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa que Beta(α,β) sea el prior conjugado para la binomial?",
+          "solucion": "Prior p~Beta(α,β) + datos Bin(n,p) → posterior Beta(α+x, β+n-x).",
+          "explicacion": "α,β se interpretan como éxitos y fracasos previos. El posterior tiene la misma forma que el prior."
+        },
+        {
+          "id": "arb4-q7",
+          "tipo": "calculo",
+          "enunciado": "Prior: θ~Beta(2,2). Observas 6 éxitos en 10 intentos. ¿Posterior?",
+          "solucion": "Beta(8,6)",
+          "explicacion": "Beta(2+6, 2+4)=Beta(8,6). E[θ|datos]=8/14=4/7≈0.571 (vs MLE=0.6). El prior jala hacia 0.5."
+        },
+        {
+          "id": "arb4-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Prior conjugado para Poisson y cuál es el posterior?",
+          "solucion": "Prior λ~Gamma(α,β); posterior Gamma(α+Σxᵢ, β+n).",
+          "explicacion": "E[λ|datos]=(α+Σxᵢ)/(β+n) — promedio entre prior y MLE (Σxᵢ/n)."
+        },
+        {
+          "id": "arb4-q9",
+          "tipo": "calculo",
+          "enunciado": "¿Cuál es el estimador de Bayes bajo pérdida cuadrática?",
+          "solucion": "La media posterior E[θ|datos]",
+          "explicacion": "Bajo pérdida L=(θ-δ)²: minimizar E[L|datos] → δ*=E[θ|datos]. Bajo pérdida absoluta: mediana. Bajo 0-1: moda (MAP)."
+        },
+        {
+          "id": "arb4-q10",
+          "tipo": "calculo",
+          "enunciado": "Tres monedas: P(cara)=0.5, 0.8, 0.2. Eliges al azar y sale cara. ¿P(elegiste la justa)?",
+          "solucion": "1/3",
+          "explicacion": "Bayes: P(justa|cara)=0.5·(1/3)/[(0.5+0.8+0.2)/3]=0.5/1.5=1/3."
+        },
+        {
+          "id": "arb4-q11",
+          "tipo": "calculo",
+          "enunciado": "Cadena de nacimiento-muerte, estados {0,1,2}, tasas λ₀=2, λ₁=1, μ₁=1, μ₂=2. Encuentra π.",
+          "solucion": "π₀=1/4, π₁=1/2, π₂=1/4",
+          "explicacion": "Balance detallado: 2π₀=π₁ y π₁=2π₂. Con π₀+π₁+π₂=1 → π₁=2π₀ y π₂=π₁/2=π₀. Entonces 4π₀=1 → π₀=1/4, π₁=1/2, π₂=1/4."
+        },
+        {
+          "id": "arb4-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el mixing time de una cadena de Markov?",
+          "solucion": "Número de pasos para que la distribución del estado sea ε-cercana (en variación total) a la estacionaria.",
+          "explicacion": "En MCMC: burn-in = mixing time. Mixing lento → muestras autocorrelacionadas → estimadores ineficientes. Depende del spectral gap (1-λ₂) de la matriz de transición."
+        },
+        {
+          "id": "arb4-q13",
+          "tipo": "calculo",
+          "enunciado": "X₁,X₂|μ~N(μ,1) i.i.d., prior μ~N(0,τ²). ¿E[μ|X₁,X₂]?",
+          "solucion": "(X₁+X₂)/(2+1/τ²)",
+          "explicacion": "Normal-Normal: con n obs de N(μ,σ²) y prior N(0,τ²), posterior media = nX̄/σ²·v donde 1/v=1/τ²+n/σ². Aquí: m=(X₁+X₂)/(2+1/τ²)."
+        },
+        {
+          "id": "arb4-q14",
+          "tipo": "calculo",
+          "enunciado": "Test: H₀:μ=0 vs H₁:μ≠0. X̄=1.5, σ=3, n=36. z-score y decisión a α=0.05.",
+          "solucion": "z=3.0; rechaza H₀",
+          "explicacion": "SE=3/6=0.5. z=1.5/0.5=3.0>1.96. Rechaza H₀. p-value≈0.0027."
+        },
+        {
+          "id": "arb4-q15",
+          "tipo": "calculo",
+          "enunciado": "IC del 95% para μ: X̄=25, σ=10, n=100.",
+          "solucion": "[23.04, 26.96]",
+          "explicacion": "SE=10/10=1. IC=25±1.96=[23.04, 26.96]. Frecuentista: 95% de los ICs calculados contendrán μ."
         }
       ]
     }

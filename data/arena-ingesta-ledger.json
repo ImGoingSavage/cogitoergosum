@@ -69,11 +69,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Probabilidad y estadística/Introduction to Probability by Joseph K. Blitzstein, Jessica Hwang (z-lib.org).pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "en_progreso",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 60,
+      "unidades_creadas": [
+        "arena-b1",
+        "arena-b2",
+        "arena-b3",
+        "arena-b4"
+      ],
       "cuota_minima": 25,
-      "notas": "Iniciado 2026-06-13 (cuenta A). Sector quant. Próximo: arena-b1/b2/b3/b4."
+      "notas": "Completado 2026-06-13 (cuenta A). 4 unidades: fundamentos/conteo, conjuntas/correlación, distribuciones, Markov/Bayes."
     },
     {
       "libro": "Probability and Statistics (DeGroot & Schervish)",
