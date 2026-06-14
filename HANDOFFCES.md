@@ -2157,3 +2157,56 @@ archivos). Contenido anclado en el libro (§1.2).
 (ISLR)** (libros[20]). Después ruta `health-ai-rwe` (What If, Survival Analysis,
 OHDSI, Book of Why, Mixtape) y Sectores D (conductual) / C (problems.json).
 Próxima unidad: órdenes desde 91, `f7-ex-60`+, VERSION v48+.
+
+## Bitácora 2026-06-14 (Arena tanda 20) — Introduction to Statistical Learning (ISLR), 62 preguntas
+
+Procesado `An Introduction to Statistical Learning` (James, Witten, Hastie &
+Tibshirani, 1ª ed.) — libros[20] del ledger, ruta `ml-systems`, cuota 25. 20º
+libro en `completado` y **último de la ruta ml-systems**. Aporta los
+**fundamentos estadísticos** (sesgo-varianza canónico, CV, regularización,
+métodos) que sostienen todo lo visto en ml-systems/ciencia-datos. 4 unidades por
+bloques del libro (`fase-7`, órdenes 91-94):
+- **arena-isl1** — el marco (Cap. 2): Y=f(X)+ε, **predicción vs inferencia**,
+  error **reducible/irreducible**, **paramétrico vs no paramétrico** + trade-off
+  flexibilidad-interpretabilidad, supervisado/no sup., regresión/clasif., MSE
+  train vs test, **descomposición sesgo-varianza**, **clasificador de Bayes**/error
+  de Bayes, **KNN** y el papel de K.
+- **arena-isl2** — regresión y clasificación (Cap. 3-4): mínimos cuadrados, SE/IC,
+  **t** y p-valor, RSE/R², efecto parcial vs marginal (confounding), **F-statistic**
+  global vs t múltiples, dummies, **interacción**+principio jerárquico, problemas
+  potenciales, **colinealidad/VIF**; logística/odds, **LDA** (cov común→lineal),
+  **QDA** (cov por clase→cuadrática), naive Bayes, generativo vs discriminativo,
+  matriz de confusión/sensibilidad/especificidad/**ROC-AUC**.
+- **arena-isl3** — remuestreo + selección + regularización (Cap. 5-6): validation
+  set, **LOOCV vs k-fold** y su propio sesgo-varianza, regla de un SE, **bootstrap**;
+  best/forward/backward subset, **Cp/AIC/BIC/adjR²/CV**, **ridge (L2) vs lasso (L1)**
+  geometría/selección, elegir λ, estandarizar, **PCR vs PLS**, **maldición de la
+  dimensionalidad** (p≳n).
+- **arena-isl4** — no linealidad + árboles + SVM + no sup. (Cap. 7-10): polinomios/
+  escalón/funciones base, **splines** (nudos, natural, suavizante λ), **GAM**;
+  árboles Gini/entropía, **bagging**, **random forest** (decorrelación m=√p, **OOB**,
+  importancia), **boosting** (B/d/λ); **SVM** (margen máximo/support vectors, soft
+  margin **C**, **kernel trick** RBF, one-vs-one/all); **PCA**/PVE, **K-means** (fija
+  K) vs **jerárquico** (dendrograma/linkage).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-60** LOOCV vs k-fold / CV para selección,
+**f7-ex-61** ridge vs lasso geometría/cuándo/λ) = 62. 15 heurísticas nuevas
+(marco-aprendizaje-estadistico, parametrico-vs-no-parametrico, clasificador-bayes-knn,
+f-statistic-significancia-global, detectar-colinealidad-vif, lda-qda-vs-logistica,
+elegir-validacion-cruzada, seleccionar-modelo-subset, reduccion-dimension-pcr-pls,
+maldicion-dimensionalidad, splines-y-gam, random-forest-decorrelacion,
+boosting-secuencial, svm-margen-kernel, clustering-kmeans-jerarquico); reúsa
+bias-varianza, interpretar-coeficientes-regresion, metrica-clasificacion,
+bootstrap-resampling, regularizacion, elegir-ensemble. Catálogo total **165**
+heurísticas. `sw.js` **v48** (+4 lecciones `data/teoria/arena-isl{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (94 unidades en `fase-7`, 61 ítems de examen); `verificar-shell.py` OK (179
+archivos). Contenido anclado en el libro (§1.2).
+
+**Siguiente** — la ruta `ml-systems` queda COMPLETA. Orden §10 pasa a la ruta
+**`health-ai-rwe`**: **What If (Hernán & Robins)** (libros[21]), luego Survival
+Analysis, The Book of OHDSI, The Book of Why (epub), Causal Inference: The Mixtape.
+Después Sectores D (conductual) y C (problems.json). Próxima unidad: convención de
+id de ruta `health-ai-rwe` continúa en `arena-h3,h4…` (ya existen arena-h1,h2);
+órdenes desde 95, `f7-ex-62`+, VERSION v49+.

@@ -332,11 +332,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/Intoduction to Statistical Learning.pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-isl1",
+        "arena-isl2",
+        "arena-isl3",
+        "arena-isl4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. ISLR 1a ed. (10 caps., termina en aprendizaje no supervisado). 4 unidades por bloques del libro, valor NUEVO: los FUNDAMENTOS estadísticos (sesgo-varianza canónico, CV, regularización, métodos) que sostienen todo lo visto en ml-systems/ciencia-datos. isl1 marco (Cap. 2: Y=f(X)+ε, predicción vs inferencia, error reducible/irreducible, paramétrico vs no paramétrico + trade-off flexibilidad-interpretabilidad, supervisado/no sup., regresión/clasif., MSE train vs test, descomposición sesgo-varianza, clasificador de Bayes/error de Bayes, KNN y K). isl2 regresión+clasificación (Cap. 3-4: mínimos cuadrados, SE/IC, t y p-valor, RSE/R², efecto parcial vs marginal/confounding, F-statistic global vs t múltiples, dummies, interacción+principio jerárquico, problemas potenciales, colinealidad/VIF; por qué no regresión lineal para clasif., logística/odds, LDA cov común=lineal, QDA cov por clase=cuadrática, naive Bayes, generativo vs discriminativo, matriz de confusión/sensibilidad/especificidad/ROC/AUC). isl3 remuestreo+selección+regularización (Cap. 5-6: por qué no error de train, validation set, LOOCV vs k-fold y su propio sesgo-varianza, regla de un SE, bootstrap; best/forward/backward subset, Cp/AIC/BIC/adjR²/CV, ridge L2 vs lasso L1 geometría/selección, elegir λ, estandarizar, PCR no sup. vs PLS sup., maldición de la dimensionalidad p≳n). isl4 no linealidad+árboles+SVM+no sup. (Cap. 7-10: polinomios/escalón/funciones base, splines de regresión/nudos/natural, splines suavizantes/λ, GAM aditivo; árboles Gini/entropía, bagging, random forest decorrelación m=√p, OOB, importancia, boosting secuencial B/d/λ; SVM margen máximo/support vectors, soft margin C sesgo-varianza, kernel trick RBF, one-vs-one/all; PCA/PVE, K-means fija K vs jerárquico dendrograma/linkage). 60 banco (15/unidad) + 2 examen (f7-ex-60 LOOCV vs k-fold/CV para selección, f7-ex-61 ridge vs lasso geometría/cuándo/λ). Órdenes 91-94. 15 heurísticas nuevas (marco-aprendizaje-estadistico, parametrico-vs-no-parametrico, clasificador-bayes-knn, f-statistic-significancia-global, detectar-colinealidad-vif, lda-qda-vs-logistica, elegir-validacion-cruzada, seleccionar-modelo-subset, reduccion-dimension-pcr-pls, maldicion-dimensionalidad, splines-y-gam, random-forest-decorrelacion, boosting-secuencial, svm-margen-kernel, clustering-kmeans-jerarquico); reúsa bias-varianza, interpretar-coeficientes-regresion, metrica-clasificacion, bootstrap-resampling, regularizacion, elegir-ensemble. Catálogo total 165 heurísticas. VERSION v48 (179 archivos). Próximo libro §10: termina ml-systems (todos completados) → pasa a ruta health-ai-rwe: What If (Hernán & Robins), libros[21]."
     },
     {
       "libro": "What If (Hernán & Robins)",

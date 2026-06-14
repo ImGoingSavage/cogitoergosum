@@ -1085,6 +1085,126 @@
    "cuando_usar": "Cuando ejemplos concretos explican mejor que estadísticos, o para depurar datos/cobertura.",
    "ejemplo": "Una instancia influyente revela un dato mal etiquetado que dominaba la predicción; un anchor dice 'si país=X e ingreso>Y, siempre se aprueba'.",
    "patron": "prototipos/críticas (MMD-critic) · instancias influyentes (DFBETA/influence) · anchors (reglas de alta precisión)"
+  },
+  {
+   "id": "marco-aprendizaje-estadistico",
+   "nombre": "Marco del aprendizaje estadístico",
+   "descripcion": "Asumimos Y = f(X) + ε, donde f es la información sistemática que X aporta sobre Y y ε es un error aleatorio independiente de X con media 0. Estimamos f̂ por dos razones: PREDICCIÓN (queremos ŷ; f̂ puede ser caja negra) o INFERENCIA (entender CÓMO afecta cada feature a Y; necesitamos f̂ interpretable). El error de predicción se descompone en REDUCIBLE (lo que mejora un mejor f̂) e IRREDUCIBLE (Var(ε): ruido, variables no medidas; cota inferior que ningún modelo supera).",
+   "cuando_usar": "Al encuadrar cualquier problema de modelado: ¿predicción o inferencia? ¿qué error es reducible?",
+   "ejemplo": "Predecir ingresos de un cliente (predicción, caja negra OK) vs entender qué factores suben el riesgo (inferencia, modelo legible).",
+   "patron": "Y=f(X)+ε; predicción vs inferencia; error = reducible + irreducible Var(ε)"
+  },
+  {
+   "id": "parametrico-vs-no-parametrico",
+   "nombre": "Paramétrico vs no paramétrico (flexibilidad-interpretabilidad)",
+   "descripcion": "Métodos PARAMÉTRICOS asumen una FORMA para f (p. ej. lineal) y solo estiman unos parámetros: simples e interpretables pero arriesgan un mal ajuste si la forma es errónea. Métodos NO PARAMÉTRICOS no asumen forma y siguen los datos: muy flexibles pero necesitan MUCHOS datos y son menos interpretables y propensos a overfitting. Existe un trade-off ACCURACY/FLEXIBILIDAD vs INTERPRETABILIDAD: modelos más flexibles (splines, boosting) pueden predecir mejor pero son cajas negras; para inferencia se prefieren los restrictivos (lineal, lasso).",
+   "cuando_usar": "Al elegir clase de modelo según si priorizas interpretar o predecir y cuántos datos tienes.",
+   "ejemplo": "Regresión lineal (paramétrica, interpretable) vs KNN/splines (no paramétricos, flexibles).",
+   "patron": "forma asumida vs libre; flexibilidad↑ ⇒ interpretabilidad↓ y datos↑"
+  },
+  {
+   "id": "clasificador-bayes-knn",
+   "nombre": "Clasificador de Bayes y KNN",
+   "descripcion": "El CLASIFICADOR DE BAYES asigna cada x a la clase MÁS PROBABLE dado x (argmax_j P(Y=j|X=x)); es el clasificador óptimo y su error, la TASA DE ERROR DE BAYES = 1 − E[máx_j P(Y=j|X)], es el análogo al error irreducible (no se puede bajar). No es realizable porque no conocemos P(Y|X). KNN lo APROXIMA: clasifica por voto mayoritario de los K vecinos más cercanos. K controla la FLEXIBILIDAD: K pequeño (=1) ⇒ frontera muy flexible, bajo sesgo y ALTA varianza (overfit); K grande ⇒ frontera más suave, mayor sesgo y baja varianza.",
+   "cuando_usar": "Como baseline no paramétrico de clasificación y para razonar el límite óptimo (Bayes).",
+   "ejemplo": "KNN con K=1 memoriza el ruido; con K=100 sobre-suaviza; el K óptimo está en medio (elígelo por CV).",
+   "patron": "Bayes = argmax P(Y|X) (error irreducible); KNN aproxima; K↓ = flexible/alta varianza"
+  },
+  {
+   "id": "f-statistic-significancia-global",
+   "nombre": "F-statistic: significancia global del modelo",
+   "descripcion": "En regresión múltiple, el F-STATISTIC contrasta H0: TODOS los coeficientes son 0 (el modelo no sirve) vs que al menos uno no lo es. Hace falta ADEMÁS de los t individuales porque, con muchos predictores, por azar ~5% de los t darán p<0.05 aunque ninguno importe (problema de comparaciones múltiples); el F corrige esto evaluando el modelo en conjunto. F≈1 si H0 es cierta; F grande (con p pequeño) indica que el modelo es significativo. Útil sobre todo cuando p es grande respecto a n.",
+   "cuando_usar": "Para decidir si un modelo de regresión múltiple aporta algo antes de mirar coeficientes individuales.",
+   "ejemplo": "Con 100 predictores irrelevantes, ~5 saldrán 'significativos' por azar; el F-statistic global no rechazará H0.",
+   "patron": "F = ¿algún β≠0? corrige el azar de los t múltiples; F≫1 ⇒ modelo útil"
+  },
+  {
+   "id": "detectar-colinealidad-vif",
+   "nombre": "Detectar colinealidad con el VIF",
+   "descripcion": "La COLINEALIDAD (dos o más predictores muy correlacionados) infla los errores estándar de los coeficientes, reduce el poder del test (t pequeños) y hace los pesos INESTABLES y difíciles de interpretar (no se puede separar el efecto de cada uno). La matriz de correlación detecta pares, pero la MULTICOLINEALIDAD (entre 3+ variables) se detecta con el VIF (Variance Inflation Factor) = 1/(1−R²ⱼ), donde R²ⱼ es el R² de regresar xⱼ contra el resto. VIF=1 ideal; VIF>5 o 10 indica colinealidad problemática. Solución: eliminar una variable o combinarlas.",
+   "cuando_usar": "Al interpretar coeficientes de una regresión con predictores posiblemente correlacionados.",
+   "ejemplo": "Incluir 'límite de crédito' y 'saldo' juntos: VIF alto, signos inestables; quita una.",
+   "patron": "VIF=1/(1−R²ⱼ); >5–10 = colinealidad; SE inflados, pesos inestables"
+  },
+  {
+   "id": "lda-qda-vs-logistica",
+   "nombre": "LDA/QDA vs regresión logística (generativo vs discriminativo)",
+   "descripcion": "La regresión logística modela P(Y|X) DIRECTAMENTE (discriminativo). LDA/QDA son GENERATIVOS: modelan la distribución de X en cada clase (Gaussiana) y aplican el teorema de Bayes. LDA asume Gaussianas con MATRIZ DE COVARIANZA COMÚN ⇒ frontera LINEAL; QDA permite covarianza distinta por clase ⇒ frontera CUADRÁTICA (más flexible, más varianza, necesita más datos). Cuándo cada uno: LDA si las clases están bien separadas o n es pequeño y la Gaussiana se cumple (más estable que la logística ahí); logística si se violan los supuestos Gaussianos; QDA si hay muchos datos y las covarianzas difieren. Naive Bayes asume features independientes dentro de cada clase.",
+   "cuando_usar": "Al elegir un clasificador según supuestos distribucionales, separación de clases y tamaño de muestra.",
+   "ejemplo": "Clases muy separadas + n chico: LDA es más estable que la logística (cuyos coeficientes se vuelven inestables).",
+   "patron": "logística=discriminativa; LDA=Gaussiana cov común (lineal); QDA=cov por clase (cuadrática)"
+  },
+  {
+   "id": "elegir-validacion-cruzada",
+   "nombre": "Elegir el esquema de validación cruzada",
+   "descripcion": "El error de ENTRENAMIENTO subestima el de test (baja al añadir flexibilidad aunque haya overfit), así que se estima el error de test por remuestreo. VALIDATION SET (una sola partición): simple pero la estimación es muy VARIABLE y, al entrenar con menos datos, SESGA el error hacia arriba. LOOCV (n folds): casi sin sesgo y sin aleatoriedad, pero CARO (n ajustes; en mínimos cuadrados hay fórmula con leverage) y ALTA VARIANZA (los n modelos están muy correlacionados). k-FOLD (k=5 o 10): el punto dulce del trade-off SESGO-VARIANZA del propio CV — sesgo moderado, varianza menor y barato. Para elegir modelo se usa la regla de UN ERROR ESTÁNDAR (el modelo más simple dentro de 1 SE del mínimo).",
+   "cuando_usar": "Al estimar el error de test y elegir hiperparámetros (λ, K, grados de libertad).",
+   "ejemplo": "Elegir λ del lasso por CV de 10 folds y aplicar la regla de un SE para un modelo más parsimonioso.",
+   "patron": "validation set (variable/sesgado) · LOOCV (sin sesgo, alta varianza, caro) · k=5–10 (punto dulce)"
+  },
+  {
+   "id": "seleccionar-modelo-subset",
+   "nombre": "Selección de subconjuntos y criterios de modelo",
+   "descripcion": "Para elegir QUÉ predictores incluir: BEST SUBSET prueba los 2^p modelos (inviable si p>~40); STEPWISE FORWARD añade el mejor predictor de a uno y BACKWARD quita el peor (greedy, baratos, no garantizan el óptimo; forward sirve incluso si p>n). Para elegir el TAMAÑO del modelo no sirve el RSS/R² de entrenamiento (siempre mejoran con más variables); usa criterios que penalizan la complejidad: Cp, AIC, BIC (BIC penaliza MÁS, con log n ⇒ modelos más pequeños), R² AJUSTADO, o directamente el error por VALIDACIÓN CRUZADA (preferido hoy).",
+   "cuando_usar": "Al decidir cuántos y cuáles predictores incluir en un modelo lineal.",
+   "ejemplo": "Con p=20, forward stepwise + BIC (o CV) para un modelo parsimonioso en vez de best subset.",
+   "patron": "best/forward/backward; tamaño por Cp/AIC/BIC/adjR²/CV (BIC = más estricto)"
+  },
+  {
+   "id": "reduccion-dimension-pcr-pls",
+   "nombre": "Reducción de dimensión: PCR y PLS",
+   "descripcion": "En vez de seleccionar/encoger predictores, se transforman los p predictores en M<p COMBINACIONES LINEALES (componentes) y se regresa sobre ellas. PCR (Principal Components Regression) usa las direcciones de MÁXIMA VARIANZA de X (PCA), de forma NO SUPERVISADA (ignora Y): asume que las direcciones que más varían en X son las que predicen Y; reduce varianza pero no selecciona features. PLS (Partial Least Squares) es SUPERVISADO: elige componentes que explican varianza de X Y se correlacionan con Y. Ambos necesitan ESTANDARIZAR los predictores y elegir M por CV; ayudan cuando hay muchos predictores correlacionados.",
+   "cuando_usar": "Muchos predictores correlacionados; quieres reducir dimensión antes de regresar.",
+   "ejemplo": "Espectros con cientos de bandas correlacionadas: PCR/PLS resumen en pocas componentes.",
+   "patron": "M componentes lineales; PCR no supervisado (varianza de X), PLS supervisado (X e Y)"
+  },
+  {
+   "id": "maldicion-dimensionalidad",
+   "nombre": "Maldición de la dimensionalidad (p grande)",
+   "descripcion": "Cuando el número de features p es comparable o mayor que n (alta dimensión, p>n), pasa lo malo: los mínimos cuadrados están INDETERMINADOS y sobreajustan perfectamente el train con error de test enorme; R², Cp, AIC, BIC dejan de ser fiables; añadir features ruidosas casi siempre EMPEORA el test. Soluciones: métodos que reducen la flexibilidad efectiva — selección de variables, regularización (lasso/ridge) y reducción de dimensión (PCR/PLS). Cuidado al interpretar: en alta dimensión la multicolinealidad es extrema y nunca se puede afirmar que un conjunto de features es 'el' verdadero.",
+   "cuando_usar": "Datos con muchas más columnas que filas (genómica, texto, etc.).",
+   "ejemplo": "p=5000 genes, n=100 pacientes: mínimos cuadrados sobreajustan; usa lasso y reporta con cuidado.",
+   "patron": "p≳n ⇒ overfit, criterios rotos; usa selección/regularización/reducción de dimensión"
+  },
+  {
+   "id": "splines-y-gam",
+   "nombre": "Splines y modelos aditivos (no linealidad)",
+   "descripcion": "Para ir más allá de lo lineal sin perder estructura: regresión POLINÓMICA (potencias de x; se descontrola en los extremos), FUNCIONES ESCALÓN (cortar x en intervalos) y SPLINES DE REGRESIÓN — polinomios a trozos (cúbicos) unidos en NUDOS (knots) con continuidad de la función y sus derivadas; más estables que un polinomio de alto grado y la flexibilidad se controla con el nº de nudos (grados de libertad). Los SPLINES SUAVIZANTES ponen un nudo por dato con una penalización de rugosidad controlada por λ (elegido por CV/LOOCV). Un GAM (Generalized Additive Model) suma una función no lineal por feature fⱼ(xⱼ), capturando no linealidad por variable y conservando la ADITIVIDAD (interpretable); no modela interacciones salvo que se añadan.",
+   "cuando_usar": "Relaciones no lineales feature→respuesta que quieres modelar de forma flexible pero legible.",
+   "ejemplo": "Spline cúbico con 4 nudos para el efecto de la edad; un GAM combina varios de estos efectos.",
+   "patron": "splines = polinomios a trozos en nudos (mejor que polinomio global); GAM = Σ fⱼ(xⱼ) aditivo"
+  },
+  {
+   "id": "random-forest-decorrelacion",
+   "nombre": "Bagging y random forests (decorrelación)",
+   "descripcion": "BAGGING (bootstrap aggregating) entrena muchos árboles sobre muestras bootstrap y promedia: reduce la VARIANZA de los árboles (que individualmente sobreajustan) sin aumentar el sesgo. Problema: si hay un predictor muy fuerte, todos los árboles lo usan primero y quedan CORRELACIONADOS, limitando la reducción de varianza. RANDOM FORESTS lo arregla: en cada split considera solo un subconjunto ALEATORIO de m predictores (≈√p clasificación, p/3 regresión), DECORRELACIONANDO los árboles ⇒ más reducción de varianza. El error se estima sin CV con el OOB (out-of-bag): cada dato se predice con los ~1/3 de árboles que no lo vieron. La importancia de variables se mide por la reducción total de impureza/RSS que aporta cada una.",
+   "cuando_usar": "Cuando quieres alta precisión con poco tuning y una medida de importancia de variables.",
+   "ejemplo": "Con una feature dominante, bagging satura; RF con m=√p decorrelaciona y baja más el error.",
+   "patron": "bagging promedia árboles (↓varianza); RF muestrea m features por split (decorrela); OOB = CV gratis"
+  },
+  {
+   "id": "boosting-secuencial",
+   "nombre": "Boosting (aprendizaje secuencial lento)",
+   "descripcion": "A diferencia del bagging (árboles independientes en paralelo), el BOOSTING crece árboles SECUENCIALMENTE: cada árbol pequeño se ajusta a los RESIDUOS (errores) del conjunto actual, aprendiendo despacio donde el modelo aún falla. Tres hiperparámetros: B = número de árboles (demasiados PUEDEN sobreajustar, al revés que RF; elígelo por CV), d = profundidad/interaction depth de cada árbol (a menudo d=1, 'stumps'), y λ = shrinkage / learning rate (pequeño, p. ej. 0.01–0.001, aprende más lento pero mejor). Suele superar a RF si se afina, a costa de más tuning y riesgo de overfit.",
+   "cuando_usar": "Cuando buscas máxima precisión y puedes afinar hiperparámetros (gradient boosting, XGBoost).",
+   "ejemplo": "Stumps (d=1) con λ=0.01 y B elegido por CV; subir λ exige bajar B.",
+   "patron": "árboles secuenciales sobre residuos; tunear B (puede sobreajustar), d, λ (lento=mejor)"
+  },
+  {
+   "id": "svm-margen-kernel",
+   "nombre": "Máquinas de soporte vectorial (margen y kernel)",
+   "descripcion": "El CLASIFICADOR DE MARGEN MÁXIMO separa dos clases con el hiperplano que maximiza la distancia (margen) a los puntos más cercanos (los SUPPORT VECTORS); falla si no son separables o es muy sensible. El SUPPORT VECTOR CLASSIFIER (soft margin) permite que algunos puntos violen el margen, con un presupuesto/coste C que regula el TRADE-OFF SESGO-VARIANZA: C grande ⇒ margen estrecho, baja sesgo/alta varianza; C pequeño ⇒ margen ancho, más sesgo/menos varianza (más support vectors). La SVM extiende esto a fronteras NO LINEALES con el KERNEL TRICK (kernel polinómico o radial/RBF) sin computar las features expandidas explícitamente. Para >2 clases: one-vs-one o one-vs-all.",
+   "cuando_usar": "Clasificación con fronteras complejas y n moderado; cuando importa el margen y no la probabilidad.",
+   "ejemplo": "SVM con kernel RBF y C ajustado por CV para una frontera no lineal entre dos clases.",
+   "patron": "margen máximo + support vectors; C regula sesgo-varianza; kernel = fronteras no lineales"
+  },
+  {
+   "id": "clustering-kmeans-jerarquico",
+   "nombre": "PCA y clustering (K-means vs jerárquico)",
+   "descripcion": "No supervisado (no hay Y). PCA encuentra las direcciones (componentes principales) de MÁXIMA VARIANZA, ortogonales; resume los datos en pocas dimensiones y la PVE (proportion of variance explained) / scree plot ayuda a elegir cuántas usar (estandariza si las escalas difieren). CLUSTERING: K-MEANS particiona en K grupos (hay que FIJAR K) minimizando la varianza dentro del cluster; depende de la inicialización (corre varias veces) y da clusters esféricos. CLUSTERING JERÁRQUICO no fija K: construye un DENDROGRAMA (bottom-up aglomerativo) que se corta a la altura deseada; depende del LINKAGE (complete/average suelen preferirse a single) y de la medida de distancia. Ambos son sensibles a escala y decisiones; valida la estabilidad.",
+   "cuando_usar": "Explorar estructura sin etiquetas: reducir dimensión (PCA) o agrupar (clustering).",
+   "ejemplo": "PCA para visualizar en 2D + clustering jerárquico con enlace completo para ver subgrupos sin fijar K.",
+   "patron": "PCA = direcciones de máxima varianza (PVE); K-means fija K (esférico); jerárquico = dendrograma + linkage"
   }
  ],
  "bloques": [
@@ -1771,7 +1891,11 @@
     "arena-iml1",
     "arena-iml2",
     "arena-iml3",
-    "arena-iml4"
+    "arena-iml4",
+    "arena-isl1",
+    "arena-isl2",
+    "arena-isl3",
+    "arena-isl4"
    ],
    "examen": {
     "items": [
@@ -3760,6 +3884,79 @@
        ]
       },
       "source": "Interpretable Machine Learning (Molnar) — Shapley/SHAP, LIME, contrafactuales"
+     },
+     {
+      "id": "f7-ex-60",
+      "heuristica": "elegir-validacion-cruzada",
+      "enunciado": "Tienes que (i) estimar el error de test de un modelo y (ii) elegir el grado de un polinomio (o el K de KNN). Un compañero propone usar el error de entrenamiento; otro, partir una sola vez en train/validation. (a) ¿Por qué ninguna de esas dos ideas es buena? (b) Compara LOOCV y k-fold (k=5/10) en términos de sesgo, varianza y coste, y di cuál preferirías y por qué. (c) ¿Cómo usarías el CV para elegir el grado y qué es la regla de un error estándar?",
+      "pistas": [
+       "¿Qué le pasa al error de entrenamiento al subir la flexibilidad?",
+       "Una sola partición: ¿qué tan estable es su estimación?",
+       "LOOCV entrena con n−1: ¿sesgo? Los n modelos, ¿están correlacionados?",
+       "k=5/10 entrena con menos datos pero los folds se solapan menos.",
+       "Elige el modelo más simple dentro de 1 SE del mínimo de CV."
+      ],
+      "solucion": "(a) El error de ENTRENAMIENTO subestima el de test: siempre baja al aumentar la flexibilidad (un polinomio de grado alto o K=1 puede dar error de train casi nulo) aunque el modelo sobreajuste, así que elegiría siempre el modelo más complejo. El VALIDATION SET único tiene dos defectos: la estimación es muy VARIABLE (depende de qué observaciones cayeron en validación) y, al entrenar con la mitad de los datos, SESGA el error hacia arriba (sobreestima el error del modelo entrenado con todos los datos). (b) LOOCV (k=n) entrena con n−1 observaciones ⇒ casi SIN SESGO y es determinista (no depende de una partición aleatoria), pero es CARO (n ajustes, salvo la fórmula con leverages en mínimos cuadrados) y tiene ALTA VARIANZA porque los n modelos están entrenados en conjuntos casi idénticos y sus errores están muy CORRELACIONADOS (promediar cantidades correlacionadas reduce poco la varianza). k-FOLD con k=5/10 entrena con algo menos de datos (un poco MÁS de sesgo) pero los k modelos están MENOS correlacionados ⇒ MENOR varianza, y es mucho más barato: es el punto dulce del trade-off sesgo-varianza del propio CV. Preferiría k=5 o 10. (c) Para elegir el grado, calculo el error de CV para cada grado candidato y trazo la curva de error de CV vs flexibilidad, eligiendo el grado que minimiza ese error; la REGLA DE UN ERROR ESTÁNDAR recomienda elegir el modelo MÁS SIMPLE cuyo error de CV esté dentro de un error estándar del mínimo, favoreciendo la parsimonia y reduciendo el riesgo de overfit a la curva de CV.",
+      "disparador": "Señal: 'estimar error de test / elegir hiperparámetro'. Jugada: nunca uses error de train (subestima) ni una sola partición (variable y sesgada); usa k-fold (k=5/10) por su equilibrio sesgo-varianza frente a LOOCV; elige el grado por el mínimo de CV y aplica la regla de un SE para parsimonia.",
+      "metadata": {
+       "ruta": "ml-systems",
+       "nivel": 3,
+       "skills": [
+        "validación cruzada",
+        "LOOCV",
+        "k-fold",
+        "sesgo-varianza del CV",
+        "regla de un SE",
+        "selección de modelo"
+       ],
+       "errores_comunes": [
+        "Elegir el modelo por el error de entrenamiento",
+        "Confiar en una sola partición train/validation",
+        "Creer que LOOCV siempre es mejor por su bajo sesgo"
+       ],
+       "casos_borde": [
+        "En mínimos cuadrados LOOCV tiene fórmula con leverages (1 ajuste)",
+        "Con datos dependientes (series) hay que respetar el tiempo al partir"
+       ]
+      },
+      "source": "An Introduction to Statistical Learning (James et al.) — Cap. 5"
+     },
+     {
+      "id": "f7-ex-61",
+      "heuristica": "regularizacion",
+      "enunciado": "Ajustas una regresión por mínimos cuadrados con muchos predictores (algunos correlacionados) y el modelo sobreajusta. Consideras ridge y lasso. (a) Escribe qué minimiza cada uno y explica el efecto de λ. (b) ¿Por qué el lasso pone coeficientes EXACTAMENTE en cero y ridge no, y qué implica para la interpretabilidad? (c) ¿Cuándo conviene cada uno, cómo eliges λ y por qué hay que estandarizar?",
+      "pistas": [
+       "Una penaliza Σβ² (L2) y la otra Σ|β| (L1).",
+       "¿Qué le pasa a los coeficientes cuando λ→∞?",
+       "Piensa en la geometría de la restricción L1 (esquinas) vs L2 (círculo).",
+       "¿Pocos predictores relevantes o muchos pequeños?",
+       "La penalización depende de la escala de cada predictor."
+      ],
+      "solucion": "(a) Ridge minimiza RSS + λ·Σβⱼ² (penalización L2) y lasso minimiza RSS + λ·Σ|βⱼ| (penalización L1), en ambos casos sin penalizar el intercepto. λ≥0 controla la fuerza del encogimiento: con λ=0 se recupera mínimos cuadrados; al crecer λ los coeficientes se ENCOGEN hacia cero, bajando la VARIANZA a costa de algo de sesgo (cambian un poco de sesgo por mucha menos varianza, útil con muchos predictores o colinealidad); con λ→∞ tienden al modelo nulo. (b) Por la GEOMETRÍA de la restricción: la región L1 (|β₁|+|β₂|≤s) tiene ESQUINAS sobre los ejes, y la solución (donde los contornos del RSS tocan la región) cae con frecuencia en una esquina, haciendo algún coeficiente EXACTAMENTE cero; la región L2 es un círculo/esfera SIN esquinas, así que encoge pero rara vez anula. Por eso el lasso hace SELECCIÓN DE VARIABLES y da modelos dispersos e INTERPRETABLES, mientras ridge conserva todas las variables. (c) El lasso conviene cuando solo UNOS POCOS predictores son realmente importantes (los demás van a cero); ridge conviene cuando MUCHOS predictores tienen efectos pequeños y parecidos (no hay subconjunto verdadero pequeño). Como no se sabe de antemano, se prueban ambos y se elige λ por VALIDACIÓN CRUZADA (el λ que minimiza el error de CV). Hay que ESTANDARIZAR los predictores antes, porque la penalización depende de la ESCALA: sin estandarizar, una variable con valores grandes sería penalizada distinto solo por sus unidades.",
+      "disparador": "Señal: 'muchos predictores / colinealidad / overfit en mínimos cuadrados'. Jugada: ridge (L2) encoge sin anular; lasso (L1, esquinas) encoge y SELECCIONA → interpretable; lasso si pocos relevantes, ridge si muchos pequeños; elige λ por CV y estandariza siempre.",
+      "metadata": {
+       "ruta": "ml-systems",
+       "nivel": 3,
+       "skills": [
+        "ridge",
+        "lasso",
+        "L1 vs L2",
+        "selección de variables",
+        "sesgo-varianza",
+        "elegir λ por CV",
+        "estandarización"
+       ],
+       "errores_comunes": [
+        "No estandarizar antes de regularizar",
+        "Creer que ridge hace selección de variables",
+        "Fijar λ a ojo en vez de por validación cruzada"
+       ],
+       "casos_borde": [
+        "Elastic net combina L1 y L2 cuando hay grupos de predictores correlacionados",
+        "Con p>n el lasso selecciona a lo sumo n variables"
+       ]
+      },
+      "source": "An Introduction to Statistical Learning (James et al.) — Cap. 6"
      }
     ]
    }
@@ -17311,6 +17508,546 @@
      "enunciado": "¿Qué son los ANCHORS y en qué complementan a LIME?",
      "solucion": "Anchors son reglas IF-THEN locales de alta PRECISIÓN ('anclas'): condiciones que, si se cumplen, FIJAN la predicción con alta probabilidad pase lo que pase con las DEMÁS features. A diferencia de LIME (que da pesos lineales locales sin garantía de cobertura), un anchor especifica explícitamente su PRECISIÓN y COBERTURA, dando una regla clara y verificable de cuándo el modelo decide así.",
      "explicacion": "Mismo autor que LIME (Ribeiro et al.); cambian pesos lineales locales por reglas con cobertura."
+    }
+   ]
+  },
+  {
+   "id": "arena-isl1",
+   "bloque": "fase-7",
+   "orden": 91,
+   "titulo": "Arena Aprendizaje Estadístico · El marco (estimar f, sesgo-varianza, KNN)",
+   "libro": "An Introduction to Statistical Learning (James, Witten, Hastie & Tibshirani)",
+   "lectura": "data/teoria/arena-isl1.md",
+   "dosis": 30,
+   "objetivo": "Dominar el marco del aprendizaje estadístico: estimar f (predicción vs inferencia), error reducible/irreducible, paramétrico vs no paramétrico, el trade-off sesgo-varianza y el clasificador de Bayes/KNN.",
+   "heuristicas": [
+    "marco-aprendizaje-estadistico",
+    "parametrico-vs-no-parametrico",
+    "bias-varianza",
+    "clasificador-bayes-knn"
+   ],
+   "metadata": {
+    "ruta": "ml-systems",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Y=f(X)+ε; estimar f para predecir (caja negra) o inferir (interpretable)",
+    "Error = reducible + irreducible Var(ε) (cota inferior inevitable)",
+    "Flexibilidad↑ ⇒ sesgo↓ y varianza↑; el MSE de test traza una U",
+    "Bayes = argmax P(Y|X), error de Bayes = techo óptimo (irreducible)",
+    "KNN aproxima a Bayes; K pequeño = flexible/alta varianza"
+   ],
+   "banco": [
+    {
+     "id": "arisl1-q1",
+     "tipo": "concepto",
+     "enunciado": "En el marco del aprendizaje estadístico se escribe Y = f(X) + ε. ¿Qué representan f y ε, y qué es 'estimar f'?",
+     "solucion": "f es la información SISTEMÁTICA que X aporta sobre Y (la parte predecible de la relación); ε es un término de error aleatorio, independiente de X y con media cero, que recoge lo no capturado (ruido, variables no medidas). Estimar f es aprender f̂ a partir de los datos para predecir o entender Y. El aprendizaje estadístico es el conjunto de métodos para estimar f.",
+     "explicacion": "f̂ es una aproximación; nunca recuperamos f exacta por culpa de ε."
+    },
+    {
+     "id": "arisl1-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es la diferencia entre estimar f para PREDICCIÓN y para INFERENCIA?",
+     "solucion": "En PREDICCIÓN solo interesa el valor ŷ = f̂(X); f̂ puede ser una CAJA NEGRA con tal de que prediga bien. En INFERENCIA interesa ENTENDER la relación: qué predictores se asocian a Y, el signo/magnitud del efecto de cada uno y si la relación es lineal; ahí f̂ debe ser INTERPRETABLE. Muchos problemas mezclan ambos objetivos, y eso guía la elección del modelo.",
+     "explicacion": "Predicción favorece modelos flexibles; inferencia favorece modelos restrictivos/legibles."
+    },
+    {
+     "id": "arisl1-q3",
+     "tipo": "concepto",
+     "enunciado": "Distingue el error REDUCIBLE del IRREDUCIBLE. ¿Cuál es la cota inferior del error de predicción?",
+     "solucion": "El error reducible proviene de que f̂ no es perfecta y se puede disminuir usando un mejor método/modelo. El irreducible es Var(ε): variabilidad inherente que ningún modelo elimina (ruido, factores no medidos o no medibles). Aunque conociéramos f exacta, seguiríamos errando por ε. Por eso Var(ε) es la COTA INFERIOR del error esperado de predicción.",
+     "explicacion": "El esfuerzo de modelado solo ataca el componente reducible."
+    },
+    {
+     "id": "arisl1-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué diferencia a un método PARAMÉTRICO de uno NO PARAMÉTRICO? Da pros y contras.",
+     "solucion": "Paramétrico: ASUME una forma funcional para f (p. ej. lineal) y reduce el problema a estimar pocos parámetros. Pros: simple, interpretable, necesita menos datos. Contra: si la forma asumida es errónea, ajusta mal. No paramétrico: NO asume forma y sigue de cerca los datos. Pros: muy flexible, capta formas complejas. Contras: necesita MUCHOS datos, menos interpretable y propenso a overfitting.",
+     "explicacion": "Lineal es paramétrico; KNN, splines y árboles son no paramétricos."
+    },
+    {
+     "id": "arisl1-q5",
+     "tipo": "concepto",
+     "enunciado": "Explica el trade-off entre flexibilidad/precisión e interpretabilidad. ¿Por qué a veces se prefiere un modelo MENOS flexible?",
+     "solucion": "Modelos más flexibles pueden ajustar relaciones más complejas (potencial mayor precisión predictiva) pero son menos interpretables (cajas negras) y arriesgan overfitting. Modelos restrictivos (lineal, lasso) son fáciles de interpretar pero pueden tener más sesgo. Se prefiere el menos flexible cuando el objetivo es la INFERENCIA (entender efectos), cuando hay pocos datos, o cuando un modelo flexible sobreajustaría.",
+     "explicacion": "Más flexibilidad no siempre da mejor test error: depende de los datos y del objetivo."
+    },
+    {
+     "id": "arisl1-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué diferencia el aprendizaje SUPERVISADO del NO SUPERVISADO?",
+     "solucion": "Supervisado: para cada observación de predictores xᵢ existe una respuesta asociada yᵢ; el objetivo es predecir/inferir y (regresión, clasificación). No supervisado: hay predictores pero NO respuesta; el objetivo es descubrir estructura (clustering, PCA). Existe también el caso semi-supervisado (algunas observaciones etiquetadas y otras no).",
+     "explicacion": "Sin etiqueta de respuesta no hay forma directa de validar predicciones, por eso lo no supervisado es más subjetivo."
+    },
+    {
+     "id": "arisl1-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué distingue un problema de REGRESIÓN de uno de CLASIFICACIÓN?",
+     "solucion": "Depende del tipo de la respuesta Y: si Y es CUANTITATIVA (numérica/continua), es regresión; si Y es CUALITATIVA (categórica, clases), es clasificación. Los predictores pueden ser de cualquier tipo en ambos casos. Algunos métodos sirven para ambos (KNN, árboles, boosting); otros son específicos (regresión lineal para regresión, logística para clasificación).",
+     "explicacion": "Lo que determina el tipo es la respuesta, no los predictores."
+    },
+    {
+     "id": "arisl1-q8",
+     "tipo": "concepto",
+     "enunciado": "Al medir la calidad del ajuste con el MSE, ¿por qué no basta con el MSE de ENTRENAMIENTO?",
+     "solucion": "Porque el MSE de entrenamiento puede hacerse arbitrariamente pequeño aumentando la flexibilidad, pero eso no significa buen desempeño en datos nuevos: a partir de cierto punto el modelo memoriza el RUIDO (overfitting). Lo que importa es el MSE de TEST (datos no vistos), que típicamente sigue una curva en U: baja, llega a un mínimo y vuelve a subir cuando el modelo sobreajusta. Por eso se estima el error de test (p. ej. con CV).",
+     "explicacion": "Un MSE de train casi nulo con MSE de test alto es la firma del overfitting."
+    },
+    {
+     "id": "arisl1-q9",
+     "tipo": "concepto",
+     "enunciado": "Escribe e interpreta la descomposición sesgo-varianza del error de test esperado.",
+     "solucion": "E[(y₀ − f̂(x₀))²] = Var(f̂(x₀)) + [Bias(f̂(x₀))]² + Var(ε). El error esperado de test en x₀ es la suma de la VARIANZA del estimador, el SESGO al cuadrado y la varianza irreducible Var(ε). Para minimizar el error de test hay que lograr a la vez baja varianza y bajo sesgo; Var(ε) es la cota que no se puede superar.",
+     "explicacion": "Es un valor esperado sobre muchos conjuntos de entrenamiento; los tres términos son no negativos."
+    },
+    {
+     "id": "arisl1-q10",
+     "tipo": "concepto",
+     "enunciado": "Define SESGO y VARIANZA de un método y di cómo cambian con la flexibilidad.",
+     "solucion": "El SESGO es el error por aproximar un problema real (quizá complejo) con un modelo más simple (p. ej. asumir linealidad cuando no la hay). La VARIANZA es cuánto cambiaría f̂ si se entrenara con otro conjunto de datos. Al aumentar la flexibilidad, el sesgo BAJA y la varianza SUBE; al reducirla, al revés. El objetivo es el equilibrio que minimiza su suma (más el irreducible).",
+     "explicacion": "Modelos flexibles: bajo sesgo, alta varianza (overfit); modelos rígidos: alto sesgo, baja varianza (underfit)."
+    },
+    {
+     "id": "arisl1-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la curva del MSE de test en función de la flexibilidad suele tener forma de U?",
+     "solucion": "Porque al inicio aumentar la flexibilidad reduce el SESGO más rápido de lo que sube la VARIANZA, así que el MSE de test baja; pasado el punto óptimo, la varianza crece más rápido que lo que baja el sesgo y el MSE de test vuelve a subir (overfitting). El mínimo de la U es el nivel de flexibilidad óptimo. Mientras tanto, el MSE de TRAIN baja monótonamente.",
+     "explicacion": "La brecha creciente entre train (baja) y test (sube) revela el sobreajuste."
+    },
+    {
+     "id": "arisl1-q12",
+     "tipo": "concepto",
+     "enunciado": "En clasificación, ¿cómo se mide la calidad del ajuste y qué es la tasa de error?",
+     "solucion": "Con la TASA DE ERROR: la fracción de observaciones MAL clasificadas (1 si ŷᵢ≠yᵢ, promediado). Igual que en regresión, importa la tasa de error de TEST, no la de entrenamiento (que se puede minimizar sobreajustando). Un buen clasificador minimiza el error de test.",
+     "explicacion": "El análogo del MSE en clasificación es la proporción de errores de clasificación."
+    },
+    {
+     "id": "arisl1-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el clasificador de Bayes y la tasa de error de Bayes?",
+     "solucion": "El clasificador de Bayes asigna cada observación a la clase MÁS PROBABLE dado su x: argmax_j P(Y=j | X=x). Es el clasificador ÓPTIMO (minimiza la tasa de error de test esperada). Su error, la TASA DE ERROR DE BAYES = 1 − E[máx_j P(Y=j|X)], es el análogo al error irreducible: ninguna regla puede tener un error de test menor. No es realizable porque no conocemos la distribución condicional real de Y dado X.",
+     "explicacion": "Es el techo teórico de desempeño; KNN intenta estimar P(Y|X) para aproximarlo."
+    },
+    {
+     "id": "arisl1-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo funciona KNN para clasificación y qué papel juega K?",
+     "solucion": "KNN, dada una observación x₀, identifica los K puntos de entrenamiento más CERCANOS y estima P(Y=j|x₀) como la fracción de esos vecinos de clase j, asignando la clase con mayor fracción (voto mayoritario). K controla la FLEXIBILIDAD/suavidad de la frontera de decisión: es el hiperparámetro clave del método.",
+     "explicacion": "KNN aproxima el clasificador de Bayes estimando las probabilidades condicionales localmente."
+    },
+    {
+     "id": "arisl1-q15",
+     "tipo": "concepto",
+     "enunciado": "En KNN, ¿qué pasa con K=1 frente a un K muy grande, en términos de sesgo y varianza?",
+     "solucion": "Con K=1 la frontera es muy flexible e irregular: BAJO sesgo pero ALTA varianza (sobreajusta el ruido; cada punto manda en su vecindad). Con K muy grande la frontera se suaviza hacia lineal: ALTO sesgo y BAJA varianza (puede subajustar). El K óptimo está en un punto intermedio y se elige típicamente por validación cruzada.",
+     "explicacion": "1/K actúa como medida de flexibilidad: K pequeño = modelo flexible."
+    }
+   ]
+  },
+  {
+   "id": "arena-isl2",
+   "bloque": "fase-7",
+   "orden": 92,
+   "titulo": "Arena Aprendizaje Estadístico · Regresión lineal y clasificación",
+   "libro": "An Introduction to Statistical Learning (James, Witten, Hastie & Tibshirani)",
+   "lectura": "data/teoria/arena-isl2.md",
+   "dosis": 30,
+   "objetivo": "Inferencia en regresión (t y F, R²/RSE, colinealidad/VIF, interacciones) y clasificación (logística, LDA/QDA, generativo vs discriminativo, ROC/AUC).",
+   "heuristicas": [
+    "interpretar-coeficientes-regresion",
+    "f-statistic-significancia-global",
+    "detectar-colinealidad-vif",
+    "lda-qda-vs-logistica",
+    "metrica-clasificacion"
+   ],
+   "metadata": {
+    "ruta": "ml-systems",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "t de un coeficiente = β̂/SE; el F prueba si ALGÚN β≠0 (corrige el azar múltiple)",
+    "Colinealidad infla SE; detéctala con VIF=1/(1−R²ⱼ) (>5–10 = problema)",
+    "Interacción relaja la aditividad; respeta el principio jerárquico",
+    "LDA (cov común→lineal) y QDA (cov por clase→cuadrática) son generativos; logística es discriminativa",
+    "Matriz de confusión + sensibilidad/especificidad + ROC/AUC para evaluar"
+   ],
+   "banco": [
+    {
+     "id": "arisl2-q1",
+     "tipo": "concepto",
+     "enunciado": "En la regresión lineal simple, ¿cómo se estiman los coeficientes β₀ y β₁?",
+     "solucion": "Por MÍNIMOS CUADRADOS: se eligen β̂₀ y β̂₁ que minimizan la suma de residuos al cuadrado RSS = Σ(yᵢ − ŷᵢ)². La solución cerrada es β̂₁ = Σ(xᵢ−x̄)(yᵢ−ȳ) / Σ(xᵢ−x̄)² y β̂₀ = ȳ − β̂₁x̄. La recta resultante pasa por el punto (x̄, ȳ).",
+     "explicacion": "Mínimos cuadrados es el criterio estándar; β̂₁ es covarianza/varianza muestral."
+    },
+    {
+     "id": "arisl2-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el error estándar de un coeficiente y cómo se usa para un intervalo de confianza?",
+     "solucion": "El error estándar SE(β̂) mide cuánto varía la estimación del coeficiente entre muestras (su precisión); depende de σ² (varianza del error) y de la dispersión de X. Un intervalo de confianza al 95% es aproximadamente β̂ ± 2·SE(β̂): el rango que con 95% de confianza contiene el valor verdadero. Cuanto menor el SE, más precisa la estimación.",
+     "explicacion": "SE más pequeño con más datos y mayor dispersión de los predictores."
+    },
+    {
+     "id": "arisl2-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se contrasta si un predictor tiene relación con la respuesta (test del coeficiente)?",
+     "solucion": "Con la hipótesis nula H0: βⱼ=0 (sin relación) frente a Hₐ: βⱼ≠0. Se calcula el estadístico t = β̂ⱼ / SE(β̂ⱼ), que mide cuántos errores estándar se aleja el coeficiente de cero, y su p-valor (probabilidad de ver un t así de extremo si H0 fuera cierta). Un p-valor pequeño (p. ej. <0.05) lleva a rechazar H0 y concluir que existe asociación.",
+     "explicacion": "El t-statistic es el coeficiente en unidades de su propio error estándar."
+    },
+    {
+     "id": "arisl2-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué miden el RSE y el R² como medidas de ajuste del modelo?",
+     "solucion": "El RSE (Residual Standard Error) estima la desviación típica del error ε en las unidades de Y: cuánto se desvían en promedio las predicciones (medida absoluta de falta de ajuste). El R² es la PROPORCIÓN de la varianza de Y explicada por el modelo (0 a 1, adimensional): R² = 1 − RSS/TSS. R² alto = el modelo explica buena parte de la variabilidad; en regresión simple R² = correlación al cuadrado.",
+     "explicacion": "RSE en unidades de Y; R² es relativo y comparable entre problemas."
+    },
+    {
+     "id": "arisl2-q5",
+     "tipo": "concepto",
+     "enunciado": "En regresión múltiple, ¿por qué el coeficiente de un predictor puede cambiar (incluso de signo) respecto a la regresión simple?",
+     "solucion": "Porque en múltiple cada coeficiente se interpreta MANTENIENDO FIJOS los demás predictores (efecto parcial), mientras que en simple absorbe también el efecto de variables correlacionadas omitidas (confounding). Si un predictor está correlacionado con otro que sí causa Y, en simple puede parecer significativo o tener un signo, y al controlar por el otro en múltiple ese efecto desaparece o se invierte.",
+     "explicacion": "Es el clásico ejemplo de correlación espuria que se desvanece al condicionar; ojo con la colinealidad."
+    },
+    {
+     "id": "arisl2-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Para qué sirve el F-statistic y por qué no basta con mirar los t individuales?",
+     "solucion": "El F-statistic contrasta H0: TODOS los coeficientes son 0 (el modelo no aporta) vs que al menos uno no lo es; evalúa la significancia GLOBAL del modelo. No basta con los t individuales porque, con muchos predictores, por puro azar ~5% darían p<0.05 aunque ninguno importe (comparaciones múltiples); el F corrige eso. F cercano a 1 apoya H0; F grande con p pequeño indica que el modelo es significativo.",
+     "explicacion": "Especialmente importante cuando p (número de predictores) es grande."
+    },
+    {
+     "id": "arisl2-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se incorporan predictores CUALITATIVOS (categóricos) a una regresión lineal?",
+     "solucion": "Creando variables DUMMY (indicadoras): para una variable con L niveles se usan L−1 dummies, dejando un nivel como REFERENCIA (baseline). El coeficiente de cada dummy es la diferencia media en Y entre ese nivel y el de referencia, manteniendo lo demás fijo. La elección de la referencia no cambia el ajuste, solo la interpretación de los coeficientes.",
+     "explicacion": "Con 3 niveles se usan 2 dummies; el nivel omitido es la base de comparación."
+    },
+    {
+     "id": "arisl2-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un término de INTERACCIÓN y qué dice el principio jerárquico (hierarchy)?",
+     "solucion": "Un término de interacción (X₁·X₂) permite que el efecto de un predictor sobre Y DEPENDA del valor de otro, relajando el supuesto aditivo del modelo lineal. El principio jerárquico dice que si se incluye una interacción, se deben incluir TAMBIÉN los efectos principales (X₁ y X₂) aunque sus p-valores individuales no sean significativos, porque la interacción está correlacionada con ellos y omitirlos altera la interpretación.",
+     "explicacion": "Sin interacción, el efecto de cada feature es constante; con ella, varía según la otra."
+    },
+    {
+     "id": "arisl2-q9",
+     "tipo": "concepto",
+     "enunciado": "Enumera los principales problemas potenciales al ajustar una regresión lineal.",
+     "solucion": "(1) NO linealidad de la relación (se ve en el gráfico de residuos vs ajustados). (2) Correlación de los errores (datos temporales/agrupados → SE subestimados). (3) Heterocedasticidad (varianza del error no constante). (4) Outliers (y inusual). (5) Puntos de alto LEVERAGE (x inusual, muy influyentes). (6) Colinealidad entre predictores. Cada uno invalida supuestos y se diagnostica con gráficos de residuos, leverage y el VIF.",
+     "explicacion": "Los residuos y las medidas de leverage/influencia son las herramientas de diagnóstico clave."
+    },
+    {
+     "id": "arisl2-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la colinealidad, por qué es un problema y cómo se detecta con el VIF?",
+     "solucion": "Colinealidad = dos o más predictores muy correlacionados. Problema: infla los errores estándar de los coeficientes, reduce el poder de los tests (t pequeños) y vuelve los pesos INESTABLES y difíciles de separar/interpretar. Se detecta con el VIF (Variance Inflation Factor) = 1/(1−R²ⱼ), donde R²ⱼ es el R² de regresar el predictor j contra los demás; VIF=1 es ideal y VIF>5 o 10 indica colinealidad seria. Solución: quitar una variable correlacionada o combinarlas.",
+     "explicacion": "La matriz de correlación detecta pares; el VIF detecta multicolinealidad entre varias."
+    },
+    {
+     "id": "arisl2-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué NO se usa la regresión lineal directamente para clasificación?",
+     "solucion": "Porque codificar las clases con números impone un ORDEN y una distancia arbitrarios entre categorías que no existen (p. ej. 1=ACV, 2=sobredosis, 3=convulsión), y los resultados dependen de esa codificación. Para clasificación binaria 0/1 la regresión lineal puede producir probabilidades FUERA de [0,1] y no estima bien P(Y|X). Por eso se usa la regresión logística (o LDA), que modela probabilidades válidas.",
+     "explicacion": "Con >2 clases sin orden natural, la codificación numérica no tiene sentido."
+    },
+    {
+     "id": "arisl2-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué modela la regresión logística y por qué es preferible a la lineal para probabilidades?",
+     "solucion": "Modela P(Y=1|X) pasando la combinación lineal por la función LOGÍSTICA, que acota la salida a (0,1), garantizando probabilidades válidas (la lineal podría dar <0 o >1). Se ajusta por máxima verosimilitud. El efecto de un predictor se interpreta vía el ODDS RATIO exp(βⱼ): al subir xⱼ una unidad, los odds se multiplican por exp(βⱼ) (ceteris paribus).",
+     "explicacion": "El peso es lineal sobre los log-odds, no sobre la probabilidad."
+    },
+    {
+     "id": "arisl2-q13",
+     "tipo": "concepto",
+     "enunciado": "Explica el Análisis Discriminante Lineal (LDA): supuestos y forma de la frontera.",
+     "solucion": "LDA es un método GENERATIVO: modela la distribución de los predictores en cada clase como GAUSSIANA y aplica el teorema de Bayes para obtener P(Y=k|X). Asume que todas las clases comparten la MISMA matriz de covarianza, lo que hace que la frontera de decisión sea LINEAL. Estima las medias de clase, la covarianza común y las probabilidades a priori, y asigna a la clase con mayor probabilidad posterior (discriminante).",
+     "explicacion": "LDA ≈ logística en resultados, pero más estable cuando las clases están bien separadas o n es pequeño."
+    },
+    {
+     "id": "arisl2-q14",
+     "tipo": "concepto",
+     "enunciado": "¿En qué se diferencia QDA de LDA y cómo elegir entre ellos?",
+     "solucion": "QDA permite que CADA clase tenga su PROPIA matriz de covarianza, lo que produce una frontera de decisión CUADRÁTICA (más flexible) pero estima muchos más parámetros. Es un trade-off sesgo-varianza: LDA (menos parámetros) tiene menos varianza y conviene con POCOS datos o si la suposición de covarianza común es razonable; QDA conviene con MUCHOS datos o cuando las covarianzas de las clases difieren claramente.",
+     "explicacion": "LDA = frontera lineal/baja varianza; QDA = frontera cuadrática/más flexible."
+    },
+    {
+     "id": "arisl2-q15",
+     "tipo": "concepto",
+     "enunciado": "Al evaluar un clasificador, ¿qué aportan la matriz de confusión, sensibilidad/especificidad y la curva ROC/AUC?",
+     "solucion": "La matriz de confusión cruza predicciones vs realidad (TP, FP, TN, FN) y revela qué TIPO de errores comete (un error global bajo puede esconder mala detección de la clase rara). SENSIBILIDAD = TP/(TP+FN) (verdaderos positivos detectados); ESPECIFICIDAD = TN/(TN+FP). Variar el UMBRAL de decisión cambia ese balance; la curva ROC traza sensibilidad vs (1−especificidad) en todos los umbrales y el AUC (área bajo la curva) resume el desempeño independiente del umbral (1=perfecto, 0.5=azar).",
+     "explicacion": "Bajar el umbral sube la sensibilidad a costa de la especificidad; el AUC compara clasificadores globalmente."
+    }
+   ]
+  },
+  {
+   "id": "arena-isl3",
+   "bloque": "fase-7",
+   "orden": 93,
+   "titulo": "Arena Aprendizaje Estadístico · Remuestreo, selección y regularización",
+   "libro": "An Introduction to Statistical Learning (James, Witten, Hastie & Tibshirani)",
+   "lectura": "data/teoria/arena-isl3.md",
+   "dosis": 30,
+   "objetivo": "Estimar el error de test y elegir modelos: validation set/LOOCV/k-fold (su propio sesgo-varianza), bootstrap, selección de subconjuntos, ridge/lasso, PCR/PLS y alta dimensión.",
+   "heuristicas": [
+    "elegir-validacion-cruzada",
+    "bootstrap-resampling",
+    "seleccionar-modelo-subset",
+    "regularizacion",
+    "reduccion-dimension-pcr-pls",
+    "maldicion-dimensionalidad"
+   ],
+   "metadata": {
+    "ruta": "ml-systems",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "El error de train subestima el de test; estímalo por remuestreo",
+    "LOOCV: sin sesgo pero alta varianza/caro; k=5–10 es el punto dulce",
+    "Tamaño del modelo por Cp/AIC/BIC/adjR²/CV (BIC = más estricto)",
+    "Ridge encoge (no a cero); lasso encoge Y selecciona (geometría L1)",
+    "p≳n: mínimos cuadrados se rompen; usa selección/regularización/PCR-PLS"
+   ],
+   "banco": [
+    {
+     "id": "arisl3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué necesitamos métodos de REMUESTREO en vez de confiar en el error de entrenamiento?",
+     "solucion": "Porque el error de ENTRENAMIENTO subestima sistemáticamente el error de TEST (baja al aumentar la flexibilidad aunque el modelo sobreajuste), así que no sirve para estimar el desempeño en datos nuevos ni para elegir modelos. Los métodos de remuestreo (validación cruzada, bootstrap) reutilizan los datos ajustando el modelo muchas veces sobre submuestras para ESTIMAR el error de test (model assessment) o elegir flexibilidad (model selection) sin un conjunto de test independiente grande.",
+     "explicacion": "Validación cruzada estima el error de test; el bootstrap estima la incertidumbre de una estimación."
+    },
+    {
+     "id": "arisl3-q2",
+     "tipo": "concepto",
+     "enunciado": "Describe el enfoque del VALIDATION SET y sus dos desventajas.",
+     "solucion": "Se divide aleatoriamente los datos en un conjunto de entrenamiento y uno de validación; se ajusta en el primero y se mide el error en el segundo. Desventajas: (1) la estimación del error es muy VARIABLE — depende mucho de qué observaciones cayeron en cada lado; (2) al entrenar solo con una parte de los datos, el modelo es peor y la estimación del error tiende a estar SESGADA hacia arriba (sobreestima el error de test del modelo entrenado con todos los datos).",
+     "explicacion": "Estos defectos motivan LOOCV y k-fold, que usan todos los datos para validar."
+    },
+    {
+     "id": "arisl3-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es LOOCV y cuáles son sus ventajas?",
+     "solucion": "Leave-One-Out CV: se deja FUERA UNA observación, se entrena con las n−1 restantes y se predice la excluida; se repite n veces y se promedian los n errores. Ventajas: usa casi todos los datos para entrenar (poco SESGO) y NO tiene aleatoriedad (siempre da el mismo resultado, no depende de una partición). En regresión por mínimos cuadrados hay una fórmula que lo calcula con UN solo ajuste usando los leverages hᵢ.",
+     "explicacion": "Bajo sesgo y determinista, pero caro en general (n ajustes) y con alta varianza."
+    },
+    {
+     "id": "arisl3-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la validación cruzada de k-fold?",
+     "solucion": "Se divide aleatoriamente el conjunto en k grupos (folds) de tamaño similar; en cada iteración se usa un fold como validación y los k−1 restantes para entrenar, midiendo el error en el fold excluido; se repite k veces (cada fold sirve una vez de validación) y se promedian los k errores. Valores típicos: k=5 o k=10. LOOCV es el caso especial k=n.",
+     "explicacion": "Cada observación se usa exactamente una vez para validar y k−1 veces para entrenar."
+    },
+    {
+     "id": "arisl3-q5",
+     "tipo": "concepto",
+     "enunciado": "Explica el trade-off sesgo-varianza del propio método de validación cruzada. ¿Por qué se prefiere k=5 o 10 sobre LOOCV?",
+     "solucion": "LOOCV entrena con n−1 datos ⇒ casi SIN SESGO, pero los n modelos son casi idénticos (entrenados en conjuntos que se solapan mucho) y sus errores están muy CORRELACIONADOS, lo que da ALTA VARIANZA en la estimación promedio. k-fold (k=5/10) entrena con menos datos ⇒ algo MÁS de sesgo, pero los k modelos están menos correlacionados ⇒ MENOR varianza, y además es mucho más barato (k ajustes). El equilibrio sesgo-varianza hace de k=5/10 el punto dulce.",
+     "explicacion": "Promediar cantidades muy correlacionadas (LOOCV) no reduce tanto la varianza."
+    },
+    {
+     "id": "arisl3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se usa la validación cruzada en problemas de CLASIFICACIÓN?",
+     "solucion": "Igual que en regresión, pero usando la TASA DE ERROR DE CLASIFICACIÓN (fracción de mal clasificados en el fold de validación) en lugar del MSE: se promedian las tasas de error de los k folds. Sirve tanto para estimar el error de test como para elegir hiperparámetros (p. ej. el K de KNN o el grado de un polinomio), eligiendo el valor que minimiza el error de CV.",
+     "explicacion": "El CV produce la curva de error de test estimado vs flexibilidad para elegir el modelo."
+    },
+    {
+     "id": "arisl3-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el bootstrap y qué tipo de cantidad estima?",
+     "solucion": "El bootstrap genera muchos conjuntos de datos REMUESTREANDO con REEMPLAZO de la muestra original (cada bootstrap tiene el mismo n, con repeticiones y omisiones). Calculando la cantidad de interés en cada réplica se obtiene su distribución empírica, de la que se estima sobre todo la INCERTIDUMBRE (error estándar, intervalos de confianza) de un estimador, sin supuestos teóricos. Se usa cuando no hay fórmula cerrada para el SE.",
+     "explicacion": "A diferencia del CV (que estima error de test), el bootstrap cuantifica la variabilidad de una estimación."
+    },
+    {
+     "id": "arisl3-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la BEST SUBSET SELECTION y cuál es su limitación?",
+     "solucion": "Ajustar TODOS los posibles subconjuntos de predictores (2^p modelos), elegir el mejor de cada tamaño k por RSS/R² y luego elegir entre tamaños con un criterio que penalice complejidad (Cp/AIC/BIC/CV). Limitación: el coste computacional es EXPONENCIAL (2^p), inviable más allá de ~p=40, y probar tantos modelos aumenta el riesgo de encontrar uno bueno por azar (overfitting al proceso de selección).",
+     "explicacion": "Por eso se recurre a métodos stepwise, mucho más baratos."
+    },
+    {
+     "id": "arisl3-q9",
+     "tipo": "concepto",
+     "enunciado": "Compara la selección stepwise FORWARD y BACKWARD.",
+     "solucion": "FORWARD: empieza con el modelo nulo y AÑADE en cada paso el predictor que más mejora el ajuste, hasta un criterio de parada; es greedy, barato (≈p²/2 modelos) y funciona INCLUSO si p>n. BACKWARD: empieza con TODOS los predictores y ELIMINA en cada paso el menos útil; requiere n>p (para ajustar el modelo completo inicial). Ninguno garantiza encontrar el mejor subconjunto global (a diferencia de best subset), pero son mucho más eficientes.",
+     "explicacion": "Forward sirve en alta dimensión; backward no, porque necesita ajustar el modelo completo."
+    },
+    {
+     "id": "arisl3-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué no sirve el RSS/R² de entrenamiento para elegir el tamaño del modelo, y qué criterios se usan?",
+     "solucion": "Porque el RSS siempre baja (y el R² siempre sube) al añadir predictores, aunque sean ruido: favorecerían siempre el modelo más grande. Se usan criterios que PENALIZAN la complejidad y estiman el error de test: Cp, AIC, BIC, R² AJUSTADO, o directamente el error por VALIDACIÓN CRUZADA (hoy preferido). El BIC penaliza MÁS fuerte (factor log n) ⇒ tiende a elegir modelos más PEQUEÑOS que Cp/AIC.",
+     "explicacion": "BIC es el más conservador; CV no depende de supuestos sobre el modelo."
+    },
+    {
+     "id": "arisl3-q11",
+     "tipo": "concepto",
+     "enunciado": "Explica la regresión RIDGE: qué penaliza y qué efecto tiene.",
+     "solucion": "Ridge minimiza RSS + λ·Σβⱼ² (penalización L2 sobre los coeficientes, sin incluir el intercepto). Al subir λ ENCOGE los coeficientes hacia cero (pero NUNCA exactamente a cero, así que no hace selección de variables), reduciendo la VARIANZA a costa de algo de sesgo — útil cuando hay muchos predictores o colinealidad. λ se elige por validación cruzada y los predictores deben ESTANDARIZARSE antes, porque la penalización depende de la escala.",
+     "explicacion": "Ridge mantiene todas las variables, solo las regulariza; clave estandarizar."
+    },
+    {
+     "id": "arisl3-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hace el LASSO distinto de ridge y por qué produce modelos dispersos?",
+     "solucion": "El lasso minimiza RSS + λ·Σ|βⱼ| (penalización L1). A diferencia de ridge, la geometría de la restricción L1 (con 'esquinas') hace que, al crecer λ, algunos coeficientes lleguen EXACTAMENTE a cero: el lasso realiza SELECCIÓN DE VARIABLES y produce modelos dispersos e interpretables. λ se elige por CV y también requiere estandarizar.",
+     "explicacion": "Ridge encoge; lasso encoge Y selecciona (pone a cero)."
+    },
+    {
+     "id": "arisl3-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Cuándo conviene ridge y cuándo lasso?",
+     "solucion": "Depende de cuántos predictores sean realmente relevantes. Ridge tiende a funcionar mejor cuando MUCHOS predictores tienen efectos pequeños y parecidos (no hay subconjunto verdadero pequeño). El lasso brilla cuando solo UNOS POCOS predictores son importantes y el resto es irrelevante, porque pone esos a cero y da un modelo interpretable. Como no se sabe a priori, se prueban ambos y se elige por validación cruzada.",
+     "explicacion": "Ambos mejoran sobre mínimos cuadrados al cambiar un poco de sesgo por mucha menos varianza."
+    },
+    {
+     "id": "arisl3-q14",
+     "tipo": "concepto",
+     "enunciado": "Compara la Regresión por Componentes Principales (PCR) con Partial Least Squares (PLS).",
+     "solucion": "Ambas reducen dimensión regresando sobre M<p combinaciones lineales de los predictores. PCR usa las direcciones de MÁXIMA VARIANZA de X (vía PCA), de forma NO SUPERVISADA: ignora Y al construir las componentes, asumiendo que las direcciones que más varían son las que predicen Y (no siempre cierto). PLS es SUPERVISADO: forma componentes que tienen alta varianza en X Y están correlacionadas con Y. Ambas requieren estandarizar y elegir M por CV; en la práctica PLS no suele superar mucho a PCR/ridge.",
+     "explicacion": "PCR no mira Y para elegir direcciones; PLS sí."
+    },
+    {
+     "id": "arisl3-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la 'maldición de la dimensionalidad' y qué hacer cuando p ≳ n?",
+     "solucion": "Cuando el número de predictores p es comparable o mayor que n, los mínimos cuadrados están INDETERMINADOS o sobreajustan perfectamente el entrenamiento (RSS=0) con error de test pésimo; el R²/Cp/AIC/BIC dejan de ser fiables y añadir features ruidosas suele EMPEORAR el test. Soluciones: reducir la flexibilidad efectiva con SELECCIÓN de variables (forward), REGULARIZACIÓN (lasso/ridge) o REDUCCIÓN de dimensión (PCR/PLS). Además hay que interpretar con cautela: la multicolinealidad es extrema y nunca se puede afirmar haber hallado el conjunto 'verdadero' de predictores.",
+     "explicacion": "Más features no es mejor: en alta dimensión, menos flexibilidad gana."
+    }
+   ]
+  },
+  {
+   "id": "arena-isl4",
+   "bloque": "fase-7",
+   "orden": 94,
+   "titulo": "Arena Aprendizaje Estadístico · No linealidad, árboles, SVM y no supervisado",
+   "libro": "An Introduction to Statistical Learning (James, Witten, Hastie & Tibshirani)",
+   "lectura": "data/teoria/arena-isl4.md",
+   "dosis": 30,
+   "objetivo": "Métodos flexibles: splines y GAM, árboles con bagging/random forests (decorrelación, OOB) y boosting, SVM (margen, C, kernel) y aprendizaje no supervisado (PCA, K-means, jerárquico).",
+   "heuristicas": [
+    "splines-y-gam",
+    "random-forest-decorrelacion",
+    "boosting-secuencial",
+    "svm-margen-kernel",
+    "clustering-kmeans-jerarquico"
+   ],
+   "metadata": {
+    "ruta": "ml-systems",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Splines = polinomios a trozos en nudos (mejor que polinomio global); GAM = Σ fⱼ(xⱼ)",
+    "Bagging promedia árboles (↓varianza); RF muestrea m features por split y decorrelaciona",
+    "OOB da una estimación de error gratis; boosting aprende lento (B, d, λ)",
+    "SVM: margen máximo + soft margin (C regula sesgo-varianza) + kernel para no lineal",
+    "No supervisado: PCA (máx. varianza), K-means (fija K) vs jerárquico (dendrograma)"
+   ],
+   "banco": [
+    {
+     "id": "arisl4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son la regresión polinómica, las funciones escalón y las funciones base?",
+     "solucion": "Son formas de extender la regresión lineal a relaciones NO lineales manteniéndola lineal en los parámetros. La regresión POLINÓMICA añade potencias del predictor (x, x², x³…). Las FUNCIONES ESCALÓN cortan el rango de x en intervalos y ajustan una constante por intervalo (convierten una variable continua en categórica ordenada). Ambas son casos de FUNCIONES BASE: aplicar transformaciones fijas bₖ(x) y regresar sobre ellas; el modelo sigue siendo un ajuste por mínimos cuadrados.",
+     "explicacion": "La regresión polinómica de alto grado se vuelve inestable, sobre todo en los extremos."
+    },
+    {
+     "id": "arisl4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un spline de regresión (cúbico) y para qué sirven los nudos (knots)?",
+     "solucion": "Un spline de regresión ajusta polinomios (típicamente cúbicos) por TRAMOS, separados por puntos llamados NUDOS, imponiendo CONTINUIDAD de la función y de sus primeras derivadas en cada nudo para que la curva sea suave. Más nudos (más grados de libertad) = más flexibilidad; los nudos se suelen colocar en cuantiles de x. Un spline NATURAL añade restricciones de linealidad en los extremos para reducir la varianza en las colas.",
+     "explicacion": "Los nudos controlan dónde la curva puede cambiar de forma; su número regula la flexibilidad."
+    },
+    {
+     "id": "arisl4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué suelen preferirse los splines a la regresión polinómica de alto grado?",
+     "solucion": "Porque un polinomio de grado alto impone una forma GLOBAL muy flexible que oscila de forma errática, especialmente en los EXTREMOS del rango (alta varianza en las colas). Los splines logran flexibilidad LOCALMENTE añadiendo nudos en vez de subir el grado, lo que da curvas más estables y suaves con el mismo número de grados de libertad. Por eso producen mejores ajustes y extrapolaciones más razonables.",
+     "explicacion": "Más nudos (no más grado) es la forma estable de añadir flexibilidad."
+    },
+    {
+     "id": "arisl4-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son un spline suavizante y un GAM?",
+     "solucion": "Un SPLINE SUAVIZANTE coloca un nudo en cada observación pero añade una PENALIZACIÓN de rugosidad (∫f''²) controlada por λ, que regula la suavidad (λ→∞ da una recta); λ (y los grados de libertad efectivos) se elige por CV/LOOCV. Un GAM (Generalized Additive Model) extiende el modelo lineal sumando una función no lineal por predictor, y = β₀ + Σ fⱼ(xⱼ), donde cada fⱼ puede ser un spline: captura no linealidad POR variable conservando la ADITIVIDAD (sigue siendo interpretable por feature). No modela interacciones salvo que se añadan explícitamente.",
+     "explicacion": "El GAM da el efecto no lineal de cada feature por separado; suma de splines."
+    },
+    {
+     "id": "arisl4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo construye un árbol de decisión sus predicciones y qué métrica usa al dividir?",
+     "solucion": "Mediante PARTICIÓN BINARIA RECURSIVA: divide el espacio de predictores en regiones rectangulares eligiendo en cada paso la variable y el punto de corte que más reducen el error; la predicción de una región es la MEDIA (regresión) o la clase MAYORITARIA (clasificación) de las observaciones que caen en ella. En regresión minimiza el RSS; en clasificación usa el ÍNDICE DE GINI o la entropía (medidas de impureza del nodo). Se podan (pruning) para evitar overfitting.",
+     "explicacion": "El árbol se lee siguiendo el camino de splits raíz→hoja."
+    },
+    {
+     "id": "arisl4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son las ventajas y desventajas de los árboles frente a los modelos lineales?",
+     "solucion": "Ventajas: muy interpretables y visualizables, manejan predictores cualitativos sin dummies, capturan interacciones de forma natural y reflejan bien la toma de decisiones humana. Desventajas: PRECISIÓN PREDICTIVA menor y, sobre todo, ALTA VARIANZA / inestabilidad (un cambio pequeño en los datos puede dar un árbol muy distinto). Un modelo lineal gana cuando la relación verdadera es aproximadamente lineal; el árbol gana con relaciones muy no lineales y con interacciones complejas.",
+     "explicacion": "La inestabilidad de los árboles motiva los métodos de ensemble (bagging/RF/boosting)."
+    },
+    {
+     "id": "arisl4-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el bagging y por qué mejora a un solo árbol?",
+     "solucion": "Bagging (bootstrap aggregating) entrena MUCHOS árboles, cada uno sobre una muestra BOOTSTRAP de los datos, y combina sus predicciones (promedio en regresión, voto mayoritario en clasificación). Como promediar reduce la VARIANZA, y los árboles individuales tienen baja sesgo pero alta varianza, el conjunto baja el error sin aumentar el sesgo. Los árboles se crecen profundos (sin podar).",
+     "explicacion": "Promediar B estimadores i.i.d. reduce su varianza por un factor ~B."
+    },
+    {
+     "id": "arisl4-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué problema del bagging resuelve un Random Forest y cómo?",
+     "solucion": "En bagging, si existe un predictor MUY fuerte, casi todos los árboles lo eligen para el primer split y resultan muy PARECIDOS (CORRELACIONADOS); promediar árboles correlacionados reduce poco la varianza. El Random Forest los DECORRELACIONA: en CADA split solo considera un subconjunto ALEATORIO de m predictores (≈√p en clasificación, p/3 en regresión), forzando a los árboles a usar variables distintas. Árboles menos correlacionados ⇒ mayor reducción de varianza y mejor desempeño.",
+     "explicacion": "Con m=p, el random forest es exactamente bagging."
+    },
+    {
+     "id": "arisl4-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el error OOB (out-of-bag) y por qué es útil?",
+     "solucion": "Cada árbol bagging/RF se entrena con una muestra bootstrap que omite ~1/3 de las observaciones (las 'out-of-bag'). Para cada observación se predice usando SOLO los árboles que NO la vieron, y se promedia: eso da una estimación del error de test prácticamente GRATIS, sin necesidad de validación cruzada. Es válida porque cada predicción OOB usa árboles que no entrenaron con esa observación.",
+     "explicacion": "El OOB equivale a una validación cruzada incorporada al propio bagging/RF."
+    },
+    {
+     "id": "arisl4-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se mide la importancia de variables en bagging/random forests?",
+     "solucion": "Sumando, sobre todos los árboles, la mejora total que cada predictor aporta al dividir: la reducción de RSS en regresión o de Gini/entropía (impureza) en clasificación atribuida a los splits que usan esa variable, promediada entre árboles. Variables con gran reducción acumulada son importantes. (Alternativamente, mediante permutación OOB: cuánto sube el error OOB al permutar la variable.)",
+     "explicacion": "Recupera interpretabilidad global que se pierde al pasar de un árbol a un ensemble."
+    },
+    {
+     "id": "arisl4-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo funciona el boosting y cuáles son sus hiperparámetros clave?",
+     "solucion": "El boosting crece árboles SECUENCIALMENTE: cada árbol (pequeño) se ajusta a los RESIDUOS del conjunto actual, mejorando despacio donde el modelo aún falla, y se va sumando con un factor de encogimiento. Hiperparámetros: B = número de árboles (a diferencia del RF, demasiados PUEDEN sobreajustar → elegir por CV); d = profundidad/interaction depth (a menudo d=1, stumps); λ = shrinkage/learning rate (pequeño, p. ej. 0.01, aprende más lento pero generaliza mejor).",
+     "explicacion": "Boosting = aprendizaje lento secuencial; RF = árboles independientes en paralelo."
+    },
+    {
+     "id": "arisl4-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el clasificador de margen máximo y qué son los vectores de soporte?",
+     "solucion": "Dada una separación lineal posible, el clasificador de margen máximo es el HIPERPLANO que separa las dos clases dejando la MAYOR distancia (margen) a la observación más cercana de cada clase. Los VECTORES DE SOPORTE son justo esas observaciones que tocan el margen: son las ÚNICAS que determinan el hiperplano (mover otros puntos no lo cambia). Falla si las clases NO son linealmente separables y es muy sensible a puntos individuales.",
+     "explicacion": "El hiperplano depende solo de unos pocos puntos (los de soporte), no de todos los datos."
+    },
+    {
+     "id": "arisl4-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué aporta el support vector classifier (soft margin) y qué papel juega C?",
+     "solucion": "Permite que algunas observaciones VIOLEN el margen (o incluso queden del lado equivocado), a cambio de robustez, mediante un presupuesto/coste C. C regula el TRADE-OFF SESGO-VARIANZA: C pequeño (margen amplio, muchas violaciones permitidas, muchos vectores de soporte) ⇒ más sesgo, MENOS varianza; C grande (margen estrecho, pocas violaciones) ⇒ menos sesgo, MÁS varianza (riesgo de overfit). C se elige por validación cruzada.",
+     "explicacion": "Más vectores de soporte (C pequeño) = clasificador más estable; C es como un parámetro de regularización."
+    },
+    {
+     "id": "arisl4-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo extiende la SVM al caso no lineal con el 'kernel trick' y cómo maneja >2 clases?",
+     "solucion": "La SVM reemplaza el producto interior por un KERNEL (polinómico o radial/RBF), lo que equivale a operar en un espacio de features de mayor dimensión SIN computar explícitamente esa expansión, produciendo fronteras de decisión NO LINEALES de forma eficiente. Para más de dos clases se usan estrategias ONE-VS-ONE (un clasificador por par de clases, voto) o ONE-VS-ALL (un clasificador de cada clase contra el resto).",
+     "explicacion": "El kernel RBF es muy usado; el truco evita el coste de expandir las features."
+    },
+    {
+     "id": "arisl4-q15",
+     "tipo": "concepto",
+     "enunciado": "En aprendizaje NO supervisado, ¿qué hace PCA y en qué se diferencian K-means y el clustering jerárquico?",
+     "solucion": "PCA halla las DIRECCIONES ORTOGONALES de MÁXIMA VARIANZA (componentes principales) para resumir los datos en pocas dimensiones; la proporción de varianza explicada (PVE) / scree plot guía cuántas usar (estandariza si las escalas difieren). K-MEANS particiona en K clusters (hay que FIJAR K de antemano) minimizando la varianza intra-cluster; depende de la inicialización (córrelo varias veces). El CLUSTERING JERÁRQUICO NO fija K: construye un DENDROGRAMA aglomerativo que se corta a la altura deseada, y depende del LINKAGE (complete/average preferibles a single) y de la medida de distancia.",
+     "explicacion": "K-means: número de clusters fijo y esférico; jerárquico: dendrograma flexible sin fijar K."
     }
    ]
   }
