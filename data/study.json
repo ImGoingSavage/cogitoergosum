@@ -909,6 +909,70 @@
       "cuando_usar": "Al combinar varios modelos en Fase III sin sacrificar depurabilidad.",
       "ejemplo": "Un modelo simple que solo toma las salidas de los modelos base como inputs, con restricción de monotonicidad respecto a cada uno.",
       "patron": "base XOR combinador; combinador simple y monótono respecto a cada base"
+    },
+    {
+      "id": "cace-entanglement",
+      "nombre": "CACE: cambiar algo lo cambia todo (entanglement)",
+      "descripcion": "El ML entrelaza señales: aislar mejoras es imposible. Si cambias la distribución de una feature, o añades/quitas una, la importancia/pesos/uso de las demás puede cambiar. Es el principio CACE (Changing Anything Changes Everything), que aplica no solo a inputs sino a hiperparámetros, learning settings, sampling y thresholds de convergencia. El ML vive a nivel de SISTEMA (los datos corrompen las abstracciones), por eso las fronteras de abstracción se erosionan. Mitiga aislando modelos y sirviendo ensembles (cuidado si los errores se correlacionan: mejorar un componente puede empeorar el sistema) y detectando cambios en la predicción (visualización alta-dim, métricas slice-by-slice).",
+      "cuando_usar": "Al razonar por qué un cambio pequeño en un sistema ML tiene efectos impredecibles en todo el modelo.",
+      "ejemplo": "Añadir una feature x_{n+1} cambia los pesos de x_1..x_n; corregir una señal de entrada descalibra el modelo que se había ajustado a ella.",
+      "patron": "CACE: changing anything changes everything; aísla/ensembla y detecta cambios"
+    },
+    {
+      "id": "evitar-erosion-fronteras-ml",
+      "nombre": "Evitar correction cascades y undeclared consumers",
+      "descripcion": "Dos formas en que las fronteras de un sistema ML se erosionan. CORRECTION CASCADES: aprender un modelo m_a' que toma m_a como input para resolver un problema A' casi-igual crea una dependencia que vuelve carísimo mejorar m_a y, si se encadenan, produce un DEADLOCK de mejora (mejorar un componente empeora el sistema); mitiga aprendiendo la corrección dentro del mismo modelo (features que distingan casos) o aceptando un modelo separado. UNDECLARED CONSUMERS: otros sistemas consumen la predicción de m_a sin declararlo (visibility debt), creando un acoplamiento fuerte oculto donde cualquier cambio a m_a (¡aun mejoras!) los rompe y puede crear hidden feedback loops; previene con controles de acceso o SLAs estrictos.",
+      "cuando_usar": "Al diseñar dependencias entre modelos y al exponer predicciones que otros podrían consumir.",
+      "ejemplo": "Parchear m_a' sobre m_a para un problema ligeramente distinto; o un equipo que lee tu output de un log sin avisar y se rompe cuando mejoras el modelo.",
+      "patron": "cascada→deadlock de mejora; consumidor no declarado→acoplamiento oculto; SLAs/access control"
+    },
+    {
+      "id": "gestionar-dependencias-datos",
+      "nombre": "Gestionar dependencias de datos (inestables e infrautilizadas)",
+      "descripcion": "Las dependencias de DATOS cuestan más que las de código porque no hay análisis estático equivalente. INESTABLES: inputs que cambian con el tiempo (otro modelo que se actualiza, tabla TF/IDF, ownership separado); incluso 'mejoras' al input (p.ej. corregir una señal mis-calibrada) dañan al consumidor que se ajustó a ella → mitiga con una COPIA VERSIONADA (frozen) hasta validar la nueva. INFRAUTILIZADAS: inputs de poco beneficio que aumentan la vulnerabilidad; cuatro formas: legacy features (redundantes con el tiempo), bundled features (añadidas en bloque por plazos), ε-features (mejora diminuta a alto coste) y correlated features (ML elige la no-causal → brittleness). Detéctalas con evaluaciones leave-one-feature-out regulares; usa un sistema de gestión de features con anotaciones para migrar/borrar con seguridad.",
+      "cuando_usar": "Al elegir y mantener las features/señales de entrada de un sistema ML en producción.",
+      "ejemplo": "Esquema viejo de numeración de productos que sigue de feature hasta que borran el código que lo poblaba y el modelo se rompe.",
+      "patron": "inestable→copia versionada; infrautilizada (legacy/bundled/ε/correlated)→leave-one-feature-out"
+    },
+    {
+      "id": "romper-feedback-loops",
+      "nombre": "Detectar y romper feedback loops",
+      "descripcion": "Los sistemas ML en vivo influyen en su propio comportamiento al actualizarse (analysis debt), volviendo difícil predecir su conducta antes de lanzar; peor si ocurre gradualmente. DIRECT feedback loop: el modelo influye en la selección de sus propios datos de entrenamiento futuros; la solución teórica (bandits) no escala a espacios de acción reales, así que mitiga con randomización o aislando parte de los datos de la influencia del modelo. HIDDEN feedback loop: dos sistemas se influyen indirectamente a través del mundo (incluso sistemas completamente disjuntos), p.ej. vía el comportamiento del usuario o el mercado.",
+      "cuando_usar": "Al razonar por qué el comportamiento de un modelo es difícil de predecir antes de lanzarlo.",
+      "ejemplo": "Dos sistemas que eligen facetas de una página (productos y reseñas): mejorar uno cambia los clics y afecta al otro; o dos modelos bursátiles que se influyen vía el mercado.",
+      "patron": "directo (elige sus datos)→randomiza/aísla; oculto (vía el mundo)→incluso entre sistemas disjuntos"
+    },
+    {
+      "id": "evitar-glue-code-pipeline-jungles",
+      "nombre": "Evitar glue code, pipeline jungles y dead codepaths",
+      "descripcion": "Solo una fracción diminuta del código ML es learning/prediction; el resto es 'plumbing'. GLUE CODE: masa de código de soporte para meter datos en paquetes genéricos; congela el sistema a un paquete e inhibe mejoras (un sistema maduro puede ser ≤5% ML y ≥95% glue); mitiga envolviendo el black-box en APIs comunes. PIPELINE JUNGLES: glue code en data prep que crece orgánicamente en una jungla de scrapes/joins/sampling; solo se evitan pensando holísticamente y con rediseño clean-slate. DEAD EXPERIMENTAL CODEPATHS: experimentos como ramas if/else en el código principal que aumentan la complejidad ciclomática (Knight Capital perdió $465M en 45 min); arráncalos periódicamente. Raíz común: separación research/engineering; un enfoque híbrido la reduce.",
+      "cuando_usar": "Al integrar paquetes de ML, construir preparación de datos y experimentar dentro del código de producción.",
+      "ejemplo": "95% del sistema es código para entrar/salir de un paquete genérico; o ramas experimentales obsoletas que disparan comportamiento inesperado en producción.",
+      "patron": "glue→API común; pipeline jungle→rediseño holístico; dead codepath→arráncalo (Knight Capital)"
+    },
+    {
+      "id": "deuda-configuracion-ml",
+      "nombre": "Domar la deuda de configuración",
+      "descripcion": "En un sistema ML maduro las líneas de CONFIGURACIÓN pueden superar a las de código, y cada una puede contener un error; suele tratarse como algo secundario, sin verificación ni testing (features mal logueadas en ciertas fechas, sustitutas, restricciones de memoria/latencia entre features). Principios de buena configuración: (1) fácil especificar una config como pequeño CAMBIO sobre otra previa; (2) difícil cometer errores/omisiones manuales; (3) fácil ver visualmente el DIFF entre dos modelos; (4) fácil ASEVERAR/verificar hechos básicos (nº de features, clausura transitiva de dependencias); (5) detectar settings no usados o redundantes; (6) las configs pasan CODE REVIEW y viven en un repositorio.",
+      "cuando_usar": "Al diseñar cómo se configuran y versionan los modelos de un sistema ML.",
+      "ejemplo": "Feature A logueada mal del 9/14 al 9/17; D no está en producción y exige sustitutas D'/D''; Q impide R por latencia.",
+      "patron": "config > código en líneas; diff fácil + verificación automática + code review"
+    },
+    {
+      "id": "monitorear-cambios-mundo-externo",
+      "nombre": "Monitorear el cambio del mundo externo",
+      "descripcion": "El mundo externo rara vez es estable: ese background rate of change crea coste de mantenimiento. Los UMBRALES de decisión fijados a mano se invalidan al reentrenar → apréndelos en datos heldout. Unit/e2e tests no bastan; hace falta monitoreo en vivo en tiempo real con respuesta automatizada. ¿Qué monitorear? PREDICTION BIAS (la distribución de labels predichos debe ≈ la de observados; diagnóstico útil que detecta cambios del mundo; slice por dimensiones), ACTION LIMITS (límites de acción como sanity check en sistemas que actúan, con alerta al alcanzarlos) y UP-STREAM PRODUCERS (monitorearlos, SLAs, propagar alertas up/down-stream). La respuesta debe ser automática porque los cambios externos ocurren en tiempo real.",
+      "cuando_usar": "Al monitorear un sistema ML en producción que interactúa con un mundo cambiante.",
+      "ejemplo": "Un umbral de spam fijo deja de servir tras reentrenar; un cambio en el prediction bias revela que las distribuciones de entrenamiento ya no reflejan la realidad.",
+      "patron": "umbrales aprendidos; monitoreo en vivo: prediction bias + action limits + up-stream SLAs"
+    },
+    {
+      "id": "medir-deuda-tecnica-ml",
+      "nombre": "Medir y pagar la deuda técnica de ML",
+      "descripcion": "La deuda técnica no da una métrica estricta; moverse rápido NO es evidencia de baja deuda (de hecho suele introducirla) — el coste solo aparece con el tiempo. Cinco preguntas para evaluarla: (1) ¿cuán fácil es probar un enfoque nuevo a escala completa?; (2) ¿cuál es la clausura transitiva de todas las dependencias de datos?; (3) ¿cuán precisamente se mide el impacto de un cambio?; (4) ¿mejorar un modelo/señal degrada otros?; (5) ¿cuán rápido se pone al día un nuevo miembro? Una investigación con beneficio diminuto a coste de complejidad masiva rara vez es sabia. Otras deudas: data testing (testea los datos), reproducibility, process management (decenas de modelos, evita pasos manuales) y cultural (premiar borrar/simplificar/monitorear como la accuracy). Pagarla exige un cambio de CULTURA.",
+      "cuando_usar": "Al evaluar la salud de largo plazo de un sistema/equipo de ML y priorizar el pago de deuda.",
+      "ejemplo": "Si un nuevo enfoque tarda meses en probarse a escala y nadie conoce la clausura de dependencias, la deuda es alta aunque el equipo 'vaya rápido'.",
+      "patron": "5 preguntas; rápido≠poca deuda; beneficio diminuto + complejidad masiva = no; pagarla = cultura"
     }
   ],
   "bloques": [
@@ -1587,7 +1651,11 @@
         "arena-rom1",
         "arena-rom2",
         "arena-rom3",
-        "arena-rom4"
+        "arena-rom4",
+        "arena-htd1",
+        "arena-htd2",
+        "arena-htd3",
+        "arena-htd4"
       ],
       "examen": {
         "items": [
@@ -3432,6 +3500,76 @@
                 "Predecir el éxito futuro del producto es AI-complete"
               ],
               "source": "Rules of ML (Zinkevich) — Reglas 38 y 39"
+            }
+          },
+          {
+            "id": "f7-ex-56",
+            "heuristica": "cace-entanglement",
+            "enunciado": "Tu equipo añade una feature a un modelo en producción y, inesperadamente, varias métricas no relacionadas se descalibran; además, otro equipo parcheó un modelo m_a' sobre tu modelo m_a, y un tercero lee tu predicción de un log sin avisar. (a) ¿Qué principio explica la descalibración al añadir una feature y a qué aplica además de los inputs? (b) ¿Qué anti-patrón representa m_a' sobre m_a y por qué es peligroso? (c) ¿Qué riesgo crea el tercer equipo y cómo lo prevendrías?",
+            "pistas": [
+              "Cambiar una feature cambió los pesos de las demás: ¿cómo se llama eso?",
+              "El principio aplica también a hiperparámetros, sampling y thresholds.",
+              "Parchear un modelo sobre otro crea una dependencia que encadena correcciones.",
+              "Leer tu salida sin declararlo = visibility debt.",
+              "Sin barreras, los ingenieros usan la señal más conveniente bajo presión."
+            ],
+            "solucion": "(a) Es el principio CACE: Changing Anything Changes Everything. El ML ENTRELAZA (entanglement) las señales: cambiar la distribución de una feature, o añadir/quitar una, altera la importancia, los pesos o el uso de las demás (ningún input es realmente independiente). CACE aplica no solo a los inputs sino también a los hiperparámetros, las learning settings, los métodos de sampling, los thresholds de convergencia y la selección de datos. Mitigación: aislar modelos y servir ensembles (con cuidado: si los errores se correlacionan, mejorar un componente puede empeorar el sistema) y detectar cambios en la predicción con visualización alta-dim y métricas slice-by-slice. (b) m_a' sobre m_a es una CORRECTION CASCADE: aprender un modelo que toma m_a como input para resolver un problema A' casi-igual. Es peligrosa porque crea una dependencia que vuelve mucho más caro analizar/mejorar m_a en el futuro y, si se encadenan correcciones, produce un DEADLOCK DE MEJORA donde mejorar un componente individual lleva a detrimentos a nivel de sistema. Se mitiga aprendiendo la corrección dentro del mismo modelo (features que distingan los casos) o aceptando el coste de un modelo separado para A'. (c) El tercer equipo es un UNDECLARED CONSUMER (visibility debt): consume tu predicción sin declararlo, creando un acoplamiento fuerte OCULTO de m_a al resto del stack, de modo que cualquier cambio a m_a —¡incluso una mejora!— puede romperlo de forma no intencionada, y puede crear hidden feedback loops. Se previene diseñando barreras: controles de acceso o SLAs estrictos; sin ellas, los ingenieros usan la señal más conveniente bajo presión de plazos.",
+            "disparador": "Señal: 'cambié algo pequeño y se rompió todo / otros dependen de mi modelo sin avisar'. Jugada: CACE (entanglement) explica la propagación; evita correction cascades (deadlock) y undeclared consumers (visibility debt) con SLAs/access control.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "CACE",
+                "entanglement",
+                "correction cascade",
+                "undeclared consumers",
+                "erosión de fronteras"
+              ],
+              "errores_comunes": [
+                "Creer que un cambio de feature es localmente contenible",
+                "Parchear un modelo sobre otro como 'solución rápida'",
+                "Exponer predicciones sin controles de acceso ni SLAs"
+              ],
+              "casos_borde": [
+                "Mejorar un componente del ensemble puede empeorar el sistema si los errores se correlacionan",
+                "Los undeclared consumers pueden crear hidden feedback loops"
+              ],
+              "source": "Hidden Technical Debt in ML Systems (Sculley et al.) — §2"
+            }
+          },
+          {
+            "id": "f7-ex-57",
+            "heuristica": "medir-deuda-tecnica-ml",
+            "enunciado": "Un equipo presume de 'ir muy rápido' y de tener poca deuda técnica, pero: su preparación de datos es una maraña de scrapes y joins con archivos intermedios, hay experimentos como ramas if/else en el código de producción, y nadie sabe qué pasa si mejoran una señal. (a) ¿Por qué 'ir rápido' no demuestra poca deuda? (b) Identifica los dos anti-patrones descritos y di cómo se mitiga cada uno (incluye el caso célebre). (c) ¿Qué preguntas harías para EVALUAR la deuda real del sistema?",
+            "pistas": [
+              "El coste de la deuda solo aparece con el tiempo.",
+              "Maraña de scrapes/joins = ¿qué anti-patrón?",
+              "Ramas experimentales en producción → recuerda Knight Capital.",
+              "Mira la clausura transitiva de dependencias y si mejorar uno degrada otros.",
+              "Pagar la deuda no es solo técnico: ¿qué cambio hace falta?"
+            ],
+            "solucion": "(a) Porque la deuda técnica no ofrece una métrica estricta y su coste total solo se hace aparente con el TIEMPO; que un equipo aún se mueva rápido no es evidencia de baja deuda ni de buenas prácticas, y de hecho moverse rápido suele INTRODUCIR deuda (se compone en silencio). (b) Dos anti-patrones: (1) PIPELINE JUNGLE — la maraña de scrapes/joins/sampling con archivos intermedios que crece orgánicamente en data prep; se mitiga pensando HOLÍSTICAMENTE sobre recolección de datos y features, a menudo con un rediseño CLEAN-SLATE (y su raíz suele ser la separación research/engineering, que se reduce con equipos híbridos). (2) DEAD EXPERIMENTAL CODEPATHS — experimentos como ramas condicionales en el código principal que disparan la complejidad ciclomática y rompen la compatibilidad; el caso célebre es Knight Capital, que perdió 465 millones de dólares en 45 minutos por codepaths experimentales obsoletos; se mitiga reexaminando periódicamente cada rama y ARRANCANDO (rip out) lo que no se use, como los 'dead flags'. (c) Preguntas para evaluar la deuda (las 5 del paper): ¿cuán fácil es probar un enfoque enteramente nuevo a escala completa?; ¿cuál es la clausura transitiva de todas las dependencias de datos?; ¿cuán precisamente se mide el impacto de un cambio?; ¿mejorar un modelo o señal degrada otros?; ¿cuán rápido se ponen al día los nuevos miembros del equipo? Pagar la deuda requiere un cambio de CULTURA que premie borrar features, reducir complejidad y monitorear tanto como la accuracy.",
+            "disparador": "Señal: 'vamos rápido, hay poca deuda' con pipelines enmarañados y ramas experimentales. Jugada: velocidad ≠ baja deuda; nombra el anti-patrón (pipeline jungle→clean-slate; dead codepaths→arráncalos, Knight Capital), evalúa con las 5 preguntas y paga con cultura.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "medir deuda técnica",
+                "pipeline jungle",
+                "dead codepaths",
+                "cultural debt",
+                "clausura de dependencias"
+              ],
+              "errores_comunes": [
+                "Confundir velocidad con baja deuda",
+                "Dejar ramas experimentales en producción",
+                "Tratar el pago de deuda como tarea solo técnica, no cultural"
+              ],
+              "casos_borde": [
+                "Una mejora con beneficio diminuto y complejidad masiva rara vez es sabia",
+                "Una o dos dependencias de datos inocuas pueden frenar el progreso"
+              ],
+              "source": "Hidden Technical Debt in ML Systems (Sculley et al.) — §5 y §9"
             }
           }
         ]
@@ -15920,6 +16058,534 @@
           "enunciado": "¿Qué advertencia general hace el documento sobre toda la sección de Fase III?",
           "solucion": "Que tiene más reglas 'blue-sky' (especulativas) que las secciones anteriores: muchos equipos atraviesan los tiempos felices de las Fases I y II, pero una vez alcanzada la Fase III tienen que encontrar su PROPIO camino. Como en cualquier proyecto de ingeniería, hay que pesar el beneficio de añadir features nuevas contra el coste de la complejidad añadida, y ajustar las expectativas de retorno de inversión.",
           "explicacion": "Fase III no tiene una receta única; las reglas son guía, no garantía."
+        }
+      ]
+    },
+    {
+      "id": "arena-htd1",
+      "bloque": "fase-7",
+      "orden": 83,
+      "titulo": "Arena Deuda Técnica ML · Fundamentos y erosión de fronteras",
+      "libro": "Hidden Technical Debt in Machine Learning Systems (Sculley et al., NIPS 2015, Google)",
+      "lectura": "data/teoria/arena-htd1.md",
+      "dosis": 30,
+      "objetivo": "Entender por qué el ML tiene capacidad especial de deuda (nivel sistema), el principio CACE (entanglement) y cómo las fronteras se erosionan por correction cascades y undeclared consumers.",
+      "heuristicas": [
+        "cace-entanglement",
+        "evitar-erosion-fronteras-ml"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "La deuda de ML vive a nivel de SISTEMA, no de código (los datos corrompen abstracciones)",
+        "CACE: Changing Anything Changes Everything (entanglement)",
+        "Correction cascades: parchear m_a' sobre m_a crea deadlock de mejora",
+        "Undeclared consumers (visibility debt): acoplamiento oculto; usa SLAs/access control",
+        "Mejorar un componente de un ensemble puede empeorar el sistema (errores correlacionados)"
+      ],
+      "banco": [
+        {
+          "id": "arhtd1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'deuda técnica' (Cunningham, 1992) y qué se quiere decir con que 'toda deuda debe servirse'?",
+          "solucion": "Es una metáfora para razonar sobre los costes de largo plazo de moverse rápido en software. No toda deuda es mala (a veces hay razones estratégicas para incurrirla), pero TODA deuda debe servirse: se paga refactorizando código, mejorando tests, borrando código muerto, reduciendo dependencias, ajustando APIs y mejorando documentación. La meta no es añadir funcionalidad sino permitir mejoras futuras, reducir errores y mejorar la mantenibilidad. Diferir esos pagos hace que los costes se compongan.",
+          "explicacion": "La deuda OCULTA es la más peligrosa porque se compone silenciosamente."
+        },
+        {
+          "id": "arhtd1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los sistemas de ML tienen una capacidad ESPECIAL de incurrir deuda técnica?",
+          "solucion": "Porque tienen todos los problemas de mantenimiento del código tradicional MÁS un conjunto de issues ML-específicos. Esta deuda es difícil de detectar porque existe a NIVEL DE SISTEMA, no a nivel de código: las abstracciones y fronteras tradicionales se corrompen sutilmente porque los DATOS influyen en el comportamiento del sistema. Por eso los métodos típicos para pagar deuda a nivel de código (refactor, tests, etc.) no son suficientes para la deuda ML a nivel de sistema.",
+          "explicacion": "La deuda vive en las interacciones entre datos, modelos y el mundo, no en una función concreta."
+        },
+        {
+          "id": "arhtd1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué es difícil imponer fronteras de abstracción fuertes en un sistema de ML?",
+          "solucion": "Porque las fronteras fuertes (encapsulación, diseño modular) exigen prescribir el comportamiento esperado de un componente, pero el ML se usa precisamente cuando el comportamiento deseado NO PUEDE expresarse en lógica de software sin depender de datos externos. El mundo real no encaja en una encapsulación pulcra, así que la erosión de esas fronteras aumenta significativamente la deuda técnica.",
+          "explicacion": "El ML entra justo donde la lógica explícita falla; por eso resiste la encapsulación clásica."
+        },
+        {
+          "id": "arhtd1-q4",
+          "tipo": "concepto",
+          "enunciado": "Enuncia el principio CACE y explica el 'entanglement' que lo causa.",
+          "solucion": "Entanglement: el ML mezcla señales, entrelazándolas, lo que hace imposible aislar mejoras. Si un modelo usa features x_1..x_n y cambias la distribución de x_1, la importancia, los pesos o el uso de las demás n-1 features pueden cambiar (igual al añadir x_{n+1} o quitar cualquier x_j); ningún input es realmente independiente. Esto es el principio CACE: 'Changing Anything Changes Everything' (cambiar cualquier cosa lo cambia todo).",
+          "explicacion": "Ocurre tanto en entrenamiento batch como online; no hay inputs verdaderamente independientes."
+        },
+        {
+          "id": "arhtd1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿A qué cosas, además de las señales de entrada, aplica el principio CACE?",
+          "solucion": "CACE aplica no solo a los input signals, sino también a los hiperparámetros, las learning settings (configuraciones de aprendizaje), los métodos de sampling, los thresholds de convergencia, la selección de datos y esencialmente cualquier otro ajuste posible del sistema.",
+          "explicacion": "Por eso casi ningún cambio en un sistema ML es localmente contenible."
+        },
+        {
+          "id": "arhtd1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo ayuda 'aislar modelos y servir ensembles' contra el entanglement, y cuál es su trampa?",
+          "solucion": "Ayuda cuando los subproblemas se descomponen naturalmente (p.ej. settings multi-clase disjuntos) o cuando los errores de los modelos componentes están NO CORRELACIONADOS, porque combinar modelos cuyos errores son independientes mejora el conjunto. La trampa: en muchos casos los ensembles funcionan justamente porque los errores están no correlacionados, así que confiar en la combinación crea un entanglement fuerte: MEJORAR un modelo individual puede EMPEORAR la precisión del sistema si sus errores restantes quedan más correlacionados con los otros componentes.",
+          "explicacion": "El ensemble no elimina el entanglement; puede reintroducirlo a nivel de combinación."
+        },
+        {
+          "id": "arhtd1-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué segunda estrategia de mitigación se propone para el entanglement, además de los ensembles?",
+          "solucion": "Enfocarse en DETECTAR cambios en el comportamiento de predicción a medida que ocurren. Un método usa una herramienta de visualización de ALTA DIMENSIÓN que permite a los investigadores ver rápidamente efectos a través de muchas dimensiones y slicings. También pueden ser extremadamente útiles las métricas que operan slice-by-slice (por rebanadas de los datos).",
+          "explicacion": "Si no puedes evitar CACE, al menos detecta sus efectos pronto."
+        },
+        {
+          "id": "arhtd1-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una 'correction cascade' y cómo surge?",
+          "solucion": "Surge cuando existe un modelo m_a para el problema A pero se necesita resolver un problema A' ligeramente distinto. Es tentador aprender un modelo m_a' que TOMA m_a COMO INPUT y aprende una pequeña corrección como solución rápida. Si luego aparece A'' y se aprende otro modelo sobre m_a', y así sucesivamente, se forma una cascada de correcciones encadenadas.",
+          "explicacion": "Es una 'solución rápida' que crea una nueva dependencia de sistema."
+        },
+        {
+          "id": "arhtd1-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué es peligrosa una correction cascade y cómo se mitiga?",
+          "solucion": "Porque crea una dependencia nueva de m_a' sobre m_a que vuelve significativamente más caro analizar mejoras a m_a en el futuro, y el coste crece al encadenar correcciones. Una vez instalada, puede crear un DEADLOCK DE MEJORA: mejorar la precisión de cualquier componente individual lleva a detrimentos a nivel de sistema. Mitigación: aumentar m_a para aprender las correcciones DIRECTAMENTE dentro del mismo modelo (añadiendo features que distingan entre los casos), o aceptar el coste de crear un MODELO SEPARADO para A'.",
+          "explicacion": "El deadlock surge porque las correcciones encadenadas atan el sistema a un estado subóptimo."
+        },
+        {
+          "id": "arhtd1-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué son los 'undeclared consumers' y con qué deuda clásica se relacionan?",
+          "solucion": "Cuando la predicción de un modelo m_a se hace ampliamente accesible (en runtime, o escribiéndola a archivos o logs que otros sistemas leen luego), algunos de esos consumidores pueden ser NO DECLARADOS: usan silenciosamente la salida del modelo como input de otro sistema sin acceso controlado ni aviso. En ingeniería de software clásica esto se llama VISIBILITY DEBT (deuda de visibilidad).",
+          "explicacion": "El problema es la falta de barreras: bajo presión de plazos, los ingenieros usan la señal más conveniente a mano."
+        },
+        {
+          "id": "arhtd1-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los undeclared consumers son 'caros en el mejor caso y peligrosos en el peor'?",
+          "solucion": "Porque crean un acoplamiento fuerte OCULTO de m_a al resto del stack: cambios en m_a (incluso mejoras) muy probablemente impactarán a esas otras partes de formas no intencionadas, mal entendidas y detrimentales. En la práctica, este acoplamiento puede aumentar radicalmente el coste y la dificultad de hacer CUALQUIER cambio a m_a, aun si es una mejora. Además, los consumidores no declarados pueden crear hidden feedback loops.",
+          "explicacion": "El acoplamiento oculto convierte cualquier mejora en un riesgo de romper consumidores invisibles."
+        },
+        {
+          "id": "arhtd1-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se previenen los undeclared consumers?",
+          "solucion": "Diseñando específicamente el sistema para protegerse de este caso: con restricciones de acceso (access controls) o acuerdos de nivel de servicio (SLAs) estrictos. En ausencia de esas barreras, los ingenieros usarán naturalmente la señal más conveniente a mano, especialmente bajo presión de plazos.",
+          "explicacion": "Sin barreras técnicas, la conveniencia gana y la deuda de visibilidad se acumula."
+        },
+        {
+          "id": "arhtd1-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué quiere decir que la deuda técnica de ML existe a 'nivel de sistema' y no a 'nivel de código'?",
+          "solucion": "Que no se localiza en una función o módulo concreto que un compilador o un test unitario pueda señalar, sino en las INTERACCIONES entre datos, modelos, señales de entrada y consumidores: las abstracciones tradicionales pueden estar sutilmente corrompidas o invalidadas por el hecho de que los datos influyen en el comportamiento. Por eso refactorizar, añadir tests o limpiar dependencias a nivel de código no basta para pagar la deuda ML.",
+          "explicacion": "El paper se centra justo en las interacciones e interfaces a nivel de sistema."
+        },
+        {
+          "id": "arhtd1-q14",
+          "tipo": "concepto",
+          "enunciado": "Según el paper, ¿qué NO pretende aportar y qué sí busca?",
+          "solucion": "NO pretende ofrecer algoritmos de ML novedosos. Busca aumentar la CONCIENCIA de la comunidad sobre los difíciles trade-offs que deben considerarse en la práctica a largo plazo, enfocándose en las interacciones e interfaces a nivel de sistema como área donde la deuda técnica de ML se acumula (erosión de fronteras, glue code, feedback loops, cambios del mundo externo, dificultad de monitorear).",
+          "explicacion": "Es un paper de ingeniería de sistemas y cultura, no de modelado."
+        },
+        {
+          "id": "arhtd1-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué confiar en la combinación de un ensemble puede ocultar un entanglement fuerte?",
+          "solucion": "Porque los ensembles suelen funcionar bien precisamente cuando los errores de los modelos componentes están NO CORRELACIONADOS. Eso significa que los componentes están implícitamente acoplados a través de la combinación: si mejoras un modelo individual y con ello sus errores restantes se vuelven MÁS correlacionados con los de los otros componentes, la precisión del SISTEMA combinado puede empeorar. Así, la mejora local no garantiza mejora global.",
+          "explicacion": "Es una manifestación de CACE en la capa de combinación del ensemble."
+        }
+      ]
+    },
+    {
+      "id": "arena-htd2",
+      "bloque": "fase-7",
+      "orden": 84,
+      "titulo": "Arena Deuda Técnica ML · Dependencias de datos y feedback loops",
+      "libro": "Hidden Technical Debt in Machine Learning Systems (Sculley et al., NIPS 2015, Google)",
+      "lectura": "data/teoria/arena-htd2.md",
+      "dosis": 30,
+      "objetivo": "Gestionar dependencias de datos inestables (copia versionada) e infrautilizadas (leave-one-feature-out), y reconocer feedback loops directos y ocultos.",
+      "heuristicas": [
+        "gestionar-dependencias-datos",
+        "romper-feedback-loops"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Las dependencias de datos cuestan más que las de código (falta análisis estático)",
+        "Inestable (input que cambia) → copia versionada/frozen",
+        "Infrautilizada: legacy, bundled, ε y correlated features → leave-one-feature-out",
+        "Direct feedback loop: el modelo elige sus datos → randomiza/aísla",
+        "Hidden feedback loop: dos sistemas vía el mundo (incluso disjuntos)"
+      ],
+      "banco": [
+        {
+          "id": "arhtd2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las dependencias de DATOS cuestan más que las de código?",
+          "solucion": "Porque, aunque la dependency debt es un contribuyente clave a la complejidad en software clásico, las dependencias de CÓDIGO se identifican fácilmente con análisis estático (compiladores, linkers). Las dependencias de DATOS tienen la misma capacidad de generar deuda pero NO tienen tooling de análisis estático comparable, así que es demasiado fácil construir grandes cadenas de dependencias de datos difíciles de desenredar y de detectar.",
+          "explicacion": "La ausencia de 'compiladores de datos' es lo que las hace especialmente peligrosas."
+        },
+        {
+          "id": "arhtd2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una dependencia de datos INESTABLE y de qué formas surge?",
+          "solucion": "Es una señal de entrada que cambia su comportamiento con el tiempo, cualitativa o cuantitativamente. Surge IMPLÍCITAMENTE cuando el input viene de otro modelo de ML que se actualiza con el tiempo, o de una tabla dependiente de datos (TF/IDF scores o mapeos semánticos); y EXPLÍCITAMENTE cuando el ownership de ingeniería de la señal de entrada está SEPARADO del ownership del modelo que la consume, de modo que el input puede actualizarse en cualquier momento.",
+          "explicacion": "El ownership separado es una causa frecuente: quien cambia la señal no es quien sufre el efecto."
+        },
+        {
+          "id": "arhtd2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué incluso una 'mejora' a una señal de entrada inestable puede ser peligrosa? Da el ejemplo del paper.",
+          "solucion": "Porque el modelo consumidor pudo haberse AJUSTADO a las propiedades actuales de la señal, así que una actualización —aun bien intencionada— tiene efectos detrimentales y costosos. Ejemplo: una señal de entrada estaba previamente MIS-CALIBRADA; el modelo que la consume probablemente se ajustó a esas mis-calibraciones, de modo que una actualización SILENCIOSA que CORRIGE la señal tendrá ramificaciones súbitas para el modelo.",
+          "explicacion": "El modelo aprende a compensar los defectos del input; corregirlos sin avisar lo rompe."
+        },
+        {
+          "id": "arhtd2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la mitigación estándar para una dependencia de datos inestable y qué cuesta?",
+          "solucion": "Crear una COPIA VERSIONADA de la señal: p.ej. en vez de permitir que un mapeo de palabras a clusters de temas cambie con el tiempo, crear una versión CONGELADA (frozen) de ese mapeo y usarla hasta que una versión actualizada haya sido completamente validada. El coste del versionado: potencial STALENESS (la versión congelada envejece) y el coste de mantener múltiples versiones de la misma señal a lo largo del tiempo.",
+          "explicacion": "Versionar cambia el riesgo de 'cambio sorpresa' por el coste de mantenimiento de versiones."
+        },
+        {
+          "id": "arhtd2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una dependencia de datos INFRAUTILIZADA y por qué importa?",
+          "solucion": "Es una señal de entrada que aporta poco beneficio incremental al modelado (análoga a los paquetes de código mayormente innecesarios). Importa porque hace que el sistema ML sea innecesariamente VULNERABLE al cambio, a veces catastróficamente, aunque podrían eliminarse SIN detrimento. Ejemplo: al migrar de un esquema viejo de numeración de productos a uno nuevo se dejan ambos como features; un año después borran el código que poblaba los números viejos y el sistema se rompe.",
+          "explicacion": "Son riesgo sin recompensa: vulnerabilidad sin beneficio de modelado."
+        },
+        {
+          "id": "arhtd2-q6",
+          "tipo": "concepto",
+          "enunciado": "Nombra y explica las cuatro formas en que una dependencia infrautilizada se cuela en un modelo.",
+          "solucion": "(1) LEGACY FEATURES: una feature F incluida temprano en el desarrollo que con el tiempo queda redundante por features nuevas, sin que nadie lo note (el caso más común). (2) BUNDLED FEATURES: un grupo de features evaluado como beneficioso se añade EN BLOQUE por presión de plazos, incluyendo features que aportan poco o nada. (3) ε-FEATURES: añadir una feature por una mejora DIMINUTA de accuracy aunque el overhead de complejidad sea alto. (4) CORRELATED FEATURES: dos features muy correlacionadas donde una es más directamente CAUSAL, pero muchos métodos no lo detectan y las acreditan por igual (o eligen la no-causal).",
+          "explicacion": "Legacy, bundled, ε y correlated: cuatro caminos hacia features que no ganan su sitio."
+        },
+        {
+          "id": "arhtd2-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las features correlacionadas producen 'brittleness' y cómo se detectan las infrautilizadas?",
+          "solucion": "Brittleness: si dos features están muy correlacionadas pero una es más causal, los métodos que las acreditan por igual (o eligen la no-causal) producen un modelo frágil que se rompe si el comportamiento del mundo cambia luego las correlaciones. Las dependencias infrautilizadas se detectan con evaluaciones EXHAUSTIVAS leave-one-feature-out (quitar una feature a la vez y medir el impacto), que deben correrse REGULARMENTE para identificar y eliminar features innecesarias.",
+          "explicacion": "La feature no-causal funciona solo mientras la correlación se mantenga; el leave-one-out la expone."
+        },
+        {
+          "id": "arhtd2-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué papel juega el análisis estático y un sistema de gestión de features en las dependencias de datos?",
+          "solucion": "El tooling de análisis estático de dependencias de datos es mucho menos común que para código, pero es esencial para error-checking, rastrear consumidores y forzar migración y actualizaciones. Un SISTEMA DE GESTIÓN DE FEATURES automatizado permite ANOTAR fuentes de datos y features; los checks automáticos aseguran que todas las dependencias tengan las anotaciones apropiadas y que los árboles de dependencia se resuelvan por completo, haciendo la migración y el borrado mucho más seguros en la práctica.",
+          "explicacion": "Las anotaciones + checks dan a los datos algo parecido al análisis estático que el código ya tiene."
+        },
+        {
+          "id": "arhtd2-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un 'direct feedback loop' y por qué los bandits no lo resuelven directamente?",
+          "solucion": "Es cuando un modelo influye DIRECTAMENTE en la selección de sus propios datos de entrenamiento FUTUROS. La solución teóricamente correcta sería usar algoritmos de bandits (en vez de aprendizaje supervisado estándar), pero el problema es que los bandits (p.ej. contextual bandits) no escalan bien al tamaño de los espacios de acción típicamente requeridos en problemas reales.",
+          "explicacion": "Por eso se recurre a mitigaciones aproximadas en vez de a bandits puros."
+        },
+        {
+          "id": "arhtd2-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se mitiga un direct feedback loop si los bandits no escalan?",
+          "solucion": "Es posible mitigar estos efectos usando algo de RANDOMIZACIÓN (introducir aleatoriedad en las decisiones para explorar y romper el sesgo de selección), o AISLANDO ciertas partes de los datos de ser influenciadas por un modelo dado (reservar datos que el modelo no haya podido sesgar).",
+          "explicacion": "Randomización y aislamiento son aproximaciones prácticas a la exploración que los bandits harían."
+        },
+        {
+          "id": "arhtd2-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un 'hidden feedback loop' y por qué es más difícil que uno directo?",
+          "solucion": "Es cuando dos sistemas se influyen INDIRECTAMENTE a través del mundo. Es más difícil que un direct feedback loop porque este último, aunque costoso de analizar, al menos plantea un desafío estadístico que los investigadores pueden investigar; los hidden loops son más insidiosos. Ejemplo: dos sistemas que determinan independientemente facetas de una página web (uno elige productos, otro reseñas relacionadas): mejorar uno cambia el comportamiento del usuario (más o menos clics en el otro componente) afectando al segundo.",
+          "explicacion": "Pueden existir incluso entre sistemas completamente disjuntos."
+        },
+        {
+          "id": "arhtd2-q12",
+          "tipo": "concepto",
+          "enunciado": "Da el ejemplo del paper de un hidden feedback loop entre sistemas completamente disjuntos.",
+          "solucion": "Dos modelos de predicción del mercado bursátil de dos empresas de inversión DISTINTAS: mejoras (o, más alarmante, bugs) en uno pueden influir en el comportamiento de bidding y compra del otro a través del mercado, aunque los dos sistemas no se conozcan ni compartan nada. Es un feedback loop oculto mediado por el mundo externo.",
+          "explicacion": "Demuestra que los hidden loops no requieren ninguna conexión técnica entre los sistemas."
+        },
+        {
+          "id": "arhtd2-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los feedback loops se describen como una forma de 'analysis debt'?",
+          "solucion": "Porque los sistemas ML en vivo a menudo terminan influyendo en su propio comportamiento si se actualizan con el tiempo, lo que hace DIFÍCIL PREDECIR el comportamiento de un modelo antes de lanzarlo (esa dificultad de análisis es la deuda). Además, estos loops son aún más difíciles de detectar y abordar si ocurren GRADUALMENTE con el tiempo, como suele pasar cuando los modelos se actualizan con poca frecuencia.",
+          "explicacion": "La deuda es la imposibilidad de razonar sobre el comportamiento futuro del sistema."
+        },
+        {
+          "id": "arhtd2-q14",
+          "tipo": "concepto",
+          "enunciado": "¿En qué se diferencian una dependencia de datos inestable y una infrautilizada?",
+          "solucion": "Una dependencia INESTABLE es una señal que SÍ se usa pero cuyo comportamiento CAMBIA con el tiempo (otro modelo que se actualiza, tabla TF/IDF, ownership separado), creando riesgo de que actualizaciones —aun mejoras— dañen al consumidor; se mitiga versionando. Una dependencia INFRAUTILIZADA es una señal que aporta POCO beneficio de modelado y por tanto añade vulnerabilidad sin recompensa, pudiendo quitarse sin detrimento; se detecta con leave-one-feature-out.",
+          "explicacion": "Inestable = cambia y se usa; infrautilizada = estable quizá, pero inútil y removible."
+        },
+        {
+          "id": "arhtd2-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué dejar 'ambos esquemas' (viejo y nuevo) de numeración de productos ilustra el peligro de las dependencias infrautilizadas?",
+          "solucion": "Porque para facilitar la transición se dejan ambos esquemas como features: los productos nuevos solo tienen número nuevo, pero los viejos tienen ambos y el modelo sigue dependiendo de los números viejos para algunos productos. Un año después, el código que poblaba la base con los números viejos se BORRA, y como el modelo aún dependía de esa señal (que aportaba poco beneficio), 'no será un buen día para los mantenedores del sistema ML': el sistema se vuelve vulnerable por una dependencia que pudo eliminarse sin perjuicio.",
+          "explicacion": "La vulnerabilidad catastrófica viene de una señal que ni siquiera aportaba beneficio."
+        }
+      ]
+    },
+    {
+      "id": "arena-htd3",
+      "bloque": "fase-7",
+      "orden": 85,
+      "titulo": "Arena Deuda Técnica ML · Anti-patrones de sistema y configuración",
+      "libro": "Hidden Technical Debt in Machine Learning Systems (Sculley et al., NIPS 2015, Google)",
+      "lectura": "data/teoria/arena-htd3.md",
+      "dosis": 30,
+      "objetivo": "Reconocer y evitar glue code, pipeline jungles, dead experimental codepaths, abstraction debt y smells, y domar la deuda de configuración con sus principios.",
+      "heuristicas": [
+        "evitar-glue-code-pipeline-jungles",
+        "deuda-configuracion-ml"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Solo una fracción diminuta del código ML es learning; el resto es 'plumbing'",
+        "Glue code (≤5% ML/≥95% glue) → envuelve el black-box en APIs comunes",
+        "Pipeline jungle → rediseño clean-slate; dead codepaths → arráncalos (Knight Capital $465M)",
+        "Map-Reduce es mala abstracción para ML iterativo; smells: plain-data-type, multi-language, prototype",
+        "Configuration debt: las líneas de config pueden superar al código; diff fácil + verificación + review"
+      ],
+      "banco": [
+        {
+          "id": "arhtd3-q1",
+          "tipo": "concepto",
+          "enunciado": "Según la Figura 1 del paper, ¿qué fracción del código de un sistema ML real es realmente aprendizaje/predicción?",
+          "solucion": "Solo una fracción DIMINUTA: en la Figura 1 el código de ML es una cajita negra pequeña en medio, rodeada de una infraestructura vasta y compleja (configuración, recolección de datos, verificación de datos, extracción de features, gestión de recursos, infraestructura de serving, monitoreo, analysis tools, process management tools). En el lenguaje de Lin y Ryaboy, la mayoría del resto puede describirse como 'plumbing' (fontanería).",
+          "explicacion": "La sorpresa para la academia: el modelo es minoría del sistema real."
+        },
+        {
+          "id": "arhtd3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el 'glue code' y por qué es costoso?",
+          "solucion": "Los investigadores ML desarrollan soluciones de propósito general como paquetes auto-contenidos (mloss.org, in-house, cloud). Usar estos paquetes genéricos genera GLUE CODE: una masa enorme de código de soporte para meter y sacar datos de ellos. Es costoso a largo plazo porque tiende a CONGELAR el sistema a las peculiaridades de un paquete específico (testear alternativas se vuelve prohibitivo) e INHIBE mejoras, pues dificulta aprovechar propiedades del dominio o ajustar la función objetivo a una meta específica.",
+          "explicacion": "Un sistema maduro puede ser ≤5% código ML y ≥95% glue code."
+        },
+        {
+          "id": "arhtd3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la mitigación recomendada para el glue code?",
+          "solucion": "Envolver (wrap) los paquetes black-box en APIs COMUNES. Esto permite que la infraestructura de soporte sea más reusable y reduce el coste de cambiar de paquete. A veces incluso puede salir menos costoso crear una solución nativa limpia que reusar un paquete genérico.",
+          "explicacion": "La API común desacopla el sistema del paquete concreto."
+        },
+        {
+          "id": "arhtd3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una 'pipeline jungle' y cómo se evita?",
+          "solucion": "Es un caso especial de glue code que aparece en la PREPARACIÓN DE DATOS: crece orgánicamente al identificar señales nuevas y añadir fuentes de información incrementalmente, hasta convertir el sistema de preparación en una JUNGLA de scrapes, joins y pasos de sampling, a menudo con archivos intermedios. Gestionarla, detectar errores y recuperarse de fallos es difícil, y testearla exige tests de integración end-to-end caros. Solo se evita pensando HOLÍSTICAMENTE sobre la recolección de datos y la extracción de features; a veces requiere un rediseño CLEAN-SLATE (tirar la jungla y rehacer desde cero).",
+          "explicacion": "El rediseño clean-slate es una gran inversión que reduce costes y acelera la innovación."
+        },
+        {
+          "id": "arhtd3-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la raíz organizacional común del glue code y las pipeline jungles, y cómo se reduce?",
+          "solucion": "Son síntomas de problemas de INTEGRACIÓN cuya raíz suele estar en roles de 'research' y 'engineering' EXCESIVAMENTE SEPARADOS: cuando los paquetes ML se desarrollan en un entorno 'ivory-tower', resultan cajas negras para los equipos que los emplean en la práctica. Un enfoque de investigación HÍBRIDO, donde ingenieros e investigadores están integrados en los mismos equipos (y de hecho suelen ser las mismas personas), reduce significativamente esta fuente de fricción.",
+          "explicacion": "La separación research/engineering produce cajas negras y código de pegamento."
+        },
+        {
+          "id": "arhtd3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué son los 'dead experimental codepaths' y por qué se acumulan?",
+          "solucion": "Como consecuencia del glue code o las pipeline jungles, se vuelve atractivo a corto plazo experimentar con métodos alternativos implementando codepaths experimentales como RAMAS CONDICIONALES dentro del código principal. Para cualquier cambio individual el coste es bajo (no hay que rehacer la infraestructura), pero con el tiempo esos codepaths acumulados crean deuda creciente.",
+          "explicacion": "El bajo coste por cambio individual oculta el coste agregado."
+        },
+        {
+          "id": "arhtd3-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué son peligrosos los dead experimental codepaths y qué ejemplo célebre cita el paper?",
+          "solucion": "Porque crean dificultades crecientes de compatibilidad hacia atrás y un aumento EXPONENCIAL de la complejidad ciclomática, volviendo difícil o imposible testear todas las interacciones posibles entre codepaths. El ejemplo célebre: KNIGHT CAPITAL perdió 465 millones de dólares en 45 minutos, aparentemente por comportamiento inesperado de codepaths experimentales OBSOLETOS.",
+          "explicacion": "Es el riesgo de comportamiento inesperado de ramas que se creían inertes."
+        },
+        {
+          "id": "arhtd3-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se mitigan los dead experimental codepaths?",
+          "solucion": "Como con los 'dead flags' del software tradicional, es beneficioso reexaminar PERIÓDICAMENTE cada rama experimental para ver qué puede ARRANCARSE (rip out). A menudo solo se usa realmente un subconjunto pequeño de las ramas posibles; muchas otras pueden haberse probado una vez y luego abandonado.",
+          "explicacion": "La higiene es revisar y eliminar ramas muertas con regularidad."
+        },
+        {
+          "id": "arhtd3-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'abstraction debt' y qué comparación usa el paper?",
+          "solucion": "Es la falta de abstracciones fuertes y ampliamente aceptadas para soportar sistemas ML. El paper compara (vía Zheng) el estado de las abstracciones de ML con el de las bases de datos: nada en la literatura de ML se acerca al éxito de la BASE DE DATOS RELACIONAL como abstracción básica. Quedan preguntas abiertas: ¿cuál es la interfaz correcta para describir un stream de datos, un modelo, o una predicción?",
+          "explicacion": "Sin abstracciones acordadas, es fácil difuminar las líneas entre componentes."
+        },
+        {
+          "id": "arhtd3-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué dice el paper sobre Map-Reduce y el parameter-server como abstracciones para ML?",
+          "solucion": "Que en aprendizaje distribuido sigue faltando una buena abstracción. Podría argumentarse que el uso masivo de MAP-REDUCE en ML fue impulsado por el VACÍO de abstracciones de aprendizaje distribuido fuerte; de hecho, uno de los pocos acuerdos amplios recientes es que MAP-REDUCE es una MALA abstracción para algoritmos ML ITERATIVOS. La abstracción de PARAMETER-SERVER parece mucho más robusta, pero existen múltiples especificaciones que compiten de esa idea básica.",
+          "explicacion": "La falta de un estándar hace fácil difuminar las líneas entre componentes."
+        },
+        {
+          "id": "arhtd3-q11",
+          "tipo": "concepto",
+          "enunciado": "Describe los tres 'common smells' de sistemas ML que identifica el paper.",
+          "solucion": "Son indicadores subjetivos, no reglas duras: (1) PLAIN-OLD-DATA-TYPE SMELL: la información rica que usan/producen los sistemas ML se codifica con tipos de datos planos (floats, ints crudos); en un sistema robusto un parámetro debería saber si es un log-odds multiplier o un decision threshold, y una predicción debería conocer datos del modelo que la produjo. (2) MULTIPLE-LANGUAGE SMELL: escribir partes del sistema en distintos lenguajes aumenta el coste de testing efectivo y dificulta transferir ownership. (3) PROTOTYPE SMELL: depender regularmente de un entorno de prototipo indica que el sistema full-scale es frágil; además, los resultados a pequeña escala rara vez reflejan la realidad a escala completa.",
+          "explicacion": "Los smells son señales subjetivas de un problema subyacente, no diagnósticos definitivos."
+        },
+        {
+          "id": "arhtd3-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la 'configuration debt' es un área sorprendente de deuda?",
+          "solucion": "Porque cualquier sistema grande tiene un rango amplio de opciones configurables (qué features usar, cómo se seleccionan los datos, settings algorítmicos, pre/post-procesamiento, métodos de verificación) y tanto investigadores como ingenieros tratan la configuración como algo SECUNDARIO; la verificación o el testing de configuraciones a menudo ni se ven como importantes. En un sistema maduro en desarrollo activo, el número de LÍNEAS DE CONFIGURACIÓN puede superar con creces al de código tradicional, y cada línea tiene potencial de error.",
+          "explicacion": "Cada línea de config es código que casi nunca se revisa ni se testea."
+        },
+        {
+          "id": "arhtd3-q13",
+          "tipo": "concepto",
+          "enunciado": "Da ejemplos del 'desorden' de configuración que cita el paper.",
+          "solucion": "La feature A se logueó incorrectamente del 9/14 al 9/17; la feature B no está disponible antes del 10/7; el código para computar la feature C cambia para datos antes y después del 11/1 por cambios en el formato de logging; la feature D no está disponible en producción, así que deben usarse sustitutas D' y D'' al consultar el modelo en vivo; si se usa la feature Z, los jobs de entrenamiento necesitan memoria extra (lookup tables) o entrenan ineficientemente; la feature Q impide el uso de la feature R por restricciones de latencia.",
+          "explicacion": "Es exactamente el tipo de detalle que se pierde si la config no se trata como código de primera clase."
+        },
+        {
+          "id": "arhtd3-q14",
+          "tipo": "concepto",
+          "enunciado": "Enuncia los principios de buena configuración según el paper.",
+          "solucion": "(1) Debe ser fácil especificar una configuración como un pequeño CAMBIO respecto a una previa. (2) Debe ser DIFÍCIL cometer errores, omisiones u oversights manuales. (3) Debe ser fácil ver VISUALMENTE la diferencia de configuración entre dos modelos. (4) Debe ser fácil ASEVERAR y verificar automáticamente hechos básicos (nº de features usadas, clausura transitiva de las dependencias de datos). (5) Debe ser posible DETECTAR settings no usados o redundantes. (6) Las configuraciones deben pasar un CODE REVIEW completo y estar checkeadas en un repositorio.",
+          "explicacion": "En esencia: tratar la configuración con el mismo rigor que el código de producción."
+        },
+        {
+          "id": "arhtd3-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué usar un paquete genérico puede 'inhibir mejoras' en un sistema ML?",
+          "solucion": "Porque el glue code que rodea al paquete genérico congela el sistema a las peculiaridades de ESE paquete, lo que dificulta aprovechar propiedades específicas del DOMINIO o ajustar (tweak) la función objetivo para alcanzar una meta específica del dominio. Probar alternativas se vuelve prohibitivamente caro, así que el sistema queda atrapado en las limitaciones del paquete elegido.",
+          "explicacion": "Por eso a veces una solución nativa limpia supera a reusar un paquete genérico."
+        }
+      ]
+    },
+    {
+      "id": "arena-htd4",
+      "bloque": "fase-7",
+      "orden": 86,
+      "titulo": "Arena Deuda Técnica ML · Mundo externo, otras deudas y medición",
+      "libro": "Hidden Technical Debt in Machine Learning Systems (Sculley et al., NIPS 2015, Google)",
+      "lectura": "data/teoria/arena-htd4.md",
+      "dosis": 30,
+      "objetivo": "Lidiar con el cambio del mundo externo (umbrales aprendidos, monitoreo en vivo: prediction bias/action limits/up-stream), conocer otras deudas (data testing, reproducibility, process, cultural) y medir la deuda con las 5 preguntas.",
+      "heuristicas": [
+        "monitorear-cambios-mundo-externo",
+        "medir-deuda-tecnica-ml"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Umbrales fijos se invalidan al reentrenar → apréndelos en heldout",
+        "Monitorea prediction bias, action limits y up-stream producers (con SLAs)",
+        "Otras deudas: data testing, reproducibility, process management, cultural",
+        "Moverse rápido NO es evidencia de baja deuda (suele introducirla)",
+        "5 preguntas para medir deuda; pagarla requiere un cambio de cultura"
+      ],
+      "banco": [
+        {
+          "id": "arhtd4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la interacción con el mundo externo es una fuente de deuda en sistemas ML?",
+          "solucion": "Porque los sistemas ML a menudo interactúan DIRECTAMENTE con el mundo externo, y la experiencia muestra que el mundo externo rara vez es estable: este 'background rate of change' (tasa de cambio de fondo) crea un coste de mantenimiento CONTINUO, ya que las suposiciones del sistema sobre el mundo se invalidan con el tiempo.",
+          "explicacion": "Lo que hace fascinante al ML —tocar el mundo real— es también lo que lo hace caro de mantener."
+        },
+        {
+          "id": "arhtd4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema causan los 'fixed thresholds in dynamic systems'?",
+          "solucion": "Que suele ser necesario elegir un UMBRAL DE DECISIÓN para una acción (predecir true/false, marcar spam o no, mostrar un ad o no), típicamente escogido de un conjunto de umbrales para buenos trade-offs en métricas como precisión/recall. El problema: esos umbrales se fijan a MANO, así que si un modelo se actualiza con datos nuevos, el umbral viejo fijado manualmente puede quedar INVÁLIDO; actualizar muchos umbrales a mano a través de muchos modelos es lento y frágil.",
+          "explicacion": "El umbral manual no 'sabe' que el modelo cambió bajo él."
+        },
+        {
+          "id": "arhtd4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se mitiga el problema de los umbrales fijos en sistemas dinámicos?",
+          "solucion": "Aprendiendo los umbrales: en lugar de fijarlos a mano, los thresholds se obtienen mediante una evaluación simple sobre datos de validación HELD-OUT. Así, cuando el modelo se actualiza, el umbral se recalcula automáticamente y permanece válido.",
+          "explicacion": "Aprender el umbral en heldout lo ata al modelo actual, no a un valor congelado."
+        },
+        {
+          "id": "arhtd4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los unit tests y los tests end-to-end no bastan para un sistema ML, y qué se necesita?",
+          "solucion": "Porque, aunque son valiosos, ante un mundo CAMBIANTE no son suficientes para evidenciar que el sistema funciona como se pretende: pueden pasar mientras el comportamiento real se degrada por cambios externos. Lo que se necesita es un MONITOREO en vivo, exhaustivo y en TIEMPO REAL del comportamiento del sistema, combinado con RESPUESTA AUTOMATIZADA, lo cual es crítico para la fiabilidad de largo plazo.",
+          "explicacion": "La pregunta clave que abre es: ¿qué monitorear?, ya que los invariantes testables no son obvios si el sistema adapta."
+        },
+        {
+          "id": "arhtd4-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el 'prediction bias' y por qué es un diagnóstico útil para monitorear?",
+          "solucion": "En un sistema que funciona como se pretende, suele cumplirse que la DISTRIBUCIÓN de los labels PREDICHOS es igual a la distribución de los labels OBSERVADOS. No es un test exhaustivo (un modelo nulo que predice los valores promedio sin mirar las features también lo cumpliría), pero es un diagnóstico sorprendentemente útil: cambios en esta métrica son a menudo indicativos de un problema que requiere atención (p.ej. el comportamiento del mundo cambió y las distribuciones de entrenamiento ya no reflejan la realidad). Hacer SLICING del bias por dimensiones aísla problemas y permite alertas automáticas.",
+          "explicacion": "El prediction bias detecta cambios del mundo aunque no garantice que el modelo sea bueno."
+        },
+        {
+          "id": "arhtd4-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué son los 'action limits' y para qué sirven?",
+          "solucion": "En sistemas usados para tomar acciones en el mundo real (pujar por items, marcar mensajes como spam), es útil fijar y hacer cumplir LÍMITES DE ACCIÓN como sanity check. Esos límites deben ser lo bastante AMPLIOS para no dispararse espuriamente; si el sistema alcanza un límite para una acción dada, deben dispararse alertas automáticas que provoquen intervención manual o investigación.",
+          "explicacion": "Es un cinturón de seguridad: el sistema no puede actuar más allá de un rango sano sin avisar."
+        },
+        {
+          "id": "arhtd4-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué medidas recomienda el paper respecto a los 'up-stream producers'?",
+          "solucion": "Los datos suelen alimentarse al sistema de aprendizaje desde varios productores up-stream; estos procesos deben ser MONITOREADOS, TESTEADOS a fondo y cumplir rutinariamente un SLA (service level objective) que tenga en cuenta las necesidades del sistema ML down-stream. Además, cualquier alerta de los productores up-stream debe PROPAGARSE al control plane del sistema ML, y cualquier fallo del sistema ML en cumplir sus SLOs debe propagarse DOWN-STREAM a todos los consumidores (y a sus control planes si es posible).",
+          "explicacion": "La fiabilidad se propaga en ambas direcciones de la cadena de datos."
+        },
+        {
+          "id": "arhtd4-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la respuesta al monitoreo debe ser automatizada y en tiempo real?",
+          "solucion": "Porque los cambios externos ocurren en TIEMPO REAL, así que la respuesta también debe ocurrir en tiempo real. Confiar en intervención humana en respuesta a alertas/pages es una estrategia válida, pero puede ser FRÁGIL para issues sensibles al tiempo; por eso, crear sistemas que permitan respuesta AUTOMATIZADA sin intervención humana directa suele valer la inversión.",
+          "explicacion": "Para issues time-sensitive, la latencia humana es demasiado alta."
+        },
+        {
+          "id": "arhtd4-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'data testing debt' y por qué se justifica testear los datos?",
+          "solucion": "El argumento: si en ML los DATOS reemplazan (en parte) al código, y el código debería testearse, entonces algún grado de TESTING DE LOS DATOS DE ENTRADA es crítico para un sistema que funcione bien. La data testing debt es la deuda de no hacerlo. Incluye sanity checks básicos y tests más sofisticados que MONITOREEN cambios en las distribuciones de entrada.",
+          "explicacion": "Si los datos son código, los datos no testeados son código no testeado."
+        },
+        {
+          "id": "arhtd4-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'reproducibility debt'?",
+          "solucion": "Es la deuda derivada de que, aunque como científicos es importante poder RE-CORRER experimentos y obtener resultados similares, diseñar sistemas del mundo real que permitan reproducibilidad ESTRICTA es difícil por: algoritmos randomizados, no-determinismo inherente al aprendizaje PARALELO, dependencia de las condiciones iniciales, e interacciones con el mundo externo.",
+          "explicacion": "La reproducibilidad choca con el rendimiento y el no-determinismo de los sistemas reales."
+        },
+        {
+          "id": "arhtd4-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'process management debt' y qué smell se debe evitar?",
+          "solucion": "Surge porque los sistemas ML maduros pueden tener DECENAS O CIENTOS de modelos corriendo simultáneamente. Incluye: actualizar muchas configuraciones de muchos modelos similares de forma segura y automática, gestionar y asignar recursos entre modelos con prioridades de negocio distintas, visualizar y detectar BLOQUEOS en el flujo de datos de un pipeline de producción, y desarrollar tooling para recuperación de incidentes. Un smell importante a evitar a nivel de sistema: procesos comunes con MUCHOS PASOS MANUALES.",
+          "explicacion": "El coste escala con el número de modelos; los pasos manuales no escalan."
+        },
+        {
+          "id": "arhtd4-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'cultural debt' y cómo se paga?",
+          "solucion": "Es la deuda derivada de la línea dura que a veces existe entre ML research y engineering, contraproducente para la salud del sistema a largo plazo. Se paga creando culturas de equipo que PREMIEN borrar features, reducir complejidad, mejorar reproducibilidad/estabilidad y monitorear AL MISMO NIVEL que premian mejorar la accuracy. Según los autores, esto es más probable en equipos HETEROGÉNEOS con fortalezas tanto en ML research como en engineering.",
+          "explicacion": "Si solo se premia la accuracy, nadie paga la deuda; la cultura debe valorar el mantenimiento."
+        },
+        {
+          "id": "arhtd4-q13",
+          "tipo": "concepto",
+          "enunciado": "Enumera las cinco preguntas útiles que el paper propone para evaluar la deuda técnica de un sistema ML.",
+          "solucion": "(1) ¿Cuán fácil es probar un enfoque algorítmico enteramente NUEVO a escala completa? (2) ¿Cuál es la CLAUSURA TRANSITIVA de todas las dependencias de datos? (3) ¿Cuán PRECISAMENTE se puede medir el impacto de un cambio nuevo en el sistema? (4) ¿Mejorar un modelo o señal DEGRADA otros? (5) ¿Cuán RÁPIDO pueden ponerse al día los nuevos miembros del equipo?",
+          "explicacion": "Son preguntas cualitativas porque la deuda técnica no admite una métrica estricta."
+        },
+        {
+          "id": "arhtd4-q14",
+          "tipo": "concepto",
+          "enunciado": "Según las conclusiones, ¿por qué 'moverse rápido' no es evidencia de baja deuda?",
+          "solucion": "Porque la deuda técnica no ofrece una métrica estricta rastreable, y el COSTE TOTAL de la deuda solo se hace aparente con el TIEMPO. Que un equipo aún pueda moverse rápido no demuestra baja deuda ni buenas prácticas; de hecho, moverse rápido a menudo INTRODUCE deuda técnica. Por eso hay que evaluar la deuda con preguntas cualitativas, no asumir que la velocidad actual indica salud.",
+          "explicacion": "La deuda se compone en silencio: la velocidad de hoy puede ser la parálisis de mañana."
+        },
+        {
+          "id": "arhtd4-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué conclusión central da el paper sobre los trade-offs de complejidad y cómo pagar la deuda?",
+          "solucion": "Que una solución de investigación que aporta un beneficio de accuracy DIMINUTO a costa de aumentos MASIVOS de complejidad del sistema rara vez es sabia; incluso añadir una o dos dependencias de datos aparentemente inocuas puede frenar el progreso. Pagar la deuda técnica de ML requiere un COMPROMISO específico, que solo suele lograrse mediante un CAMBIO en la cultura del equipo: reconocer, priorizar y premiar este esfuerzo es clave para la salud de largo plazo de los equipos de ML exitosos.",
+          "explicacion": "El mensaje final: la deuda es un problema de ingeniería y cultura, no solo de modelado."
         }
       ]
     }

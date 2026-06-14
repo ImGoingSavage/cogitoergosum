@@ -300,11 +300,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/NIPS-2015-hidden-technical-debt-in-machine-learning-systems-Paper.pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-htd1",
+        "arena-htd2",
+        "arena-htd3",
+        "arena-htd4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades por las secciones del paper (valor NUEVO: el marco de deuda técnica a nivel de sistema, complementa best practices/observabilidad/SRE): htd1 fundamentos + erosión de fronteras (§1-2: deuda técnica Cunningham, capacidad especial del ML a nivel sistema, principio CACE/entanglement, correction cascades→deadlock de mejora, undeclared consumers/visibility debt; mitigaciones ensembles aislados y detección de cambios), htd2 dependencias de datos + feedback loops (§3-4: data deps cost more than code deps, inestables→copia versionada, infrautilizadas legacy/bundled/ε/correlated→leave-one-feature-out, análisis estático/feature management, direct vs hidden feedback loops), htd3 anti-patrones de sistema + config (§5-6: plumbing/Figura 1, glue code→APIs comunes, pipeline jungles→clean-slate, dead experimental codepaths/Knight Capital $465M, abstraction debt/Map-Reduce malo para ML iterativo, smells plain-data-type/multi-language/prototype, configuration debt + 6 principios), htd4 mundo externo + otras deudas + medición (§7-9: fixed thresholds→aprender en heldout, monitoreo en vivo prediction bias/action limits/up-stream SLAs, data testing/reproducibility/process management/cultural debt, las 5 preguntas, rápido≠poca deuda, pagar=cultura). 60 banco (15/unidad) + 2 examen (f7-ex-56 CACE/erosión de fronteras, f7-ex-57 medir deuda/pipeline jungle/dead codepaths). Órdenes 83-86. 8 heurísticas nuevas (cace-entanglement, evitar-erosion-fronteras-ml, gestionar-dependencias-datos, romper-feedback-loops, evitar-glue-code-pipeline-jungles, deuda-configuracion-ml, monitorear-cambios-mundo-externo, medir-deuda-tecnica-ml). Catálogo total 136 heurísticas. VERSION v46 (171 archivos). Próximo libro §10 (ml-systems): Interpretable Machine Learning (Molnar)."
     },
     {
       "libro": "Interpretable Machine Learning (Molnar)",

@@ -2064,3 +2064,46 @@ archivos). Contenido anclado en el documento (§1.2).
 (NIPS 2015)** (libros[18]), luego Interpretable ML (Molnar) e ISL. Después ruta
 `health-ai-rwe` y Sectores D/C. Próxima unidad: órdenes desde 83, `f7-ex-56`+,
 VERSION v46+.
+
+## Bitácora 2026-06-14 (Arena tanda 18) — Hidden Technical Debt in ML (Sculley et al.), 62 preguntas
+
+Procesado `Hidden Technical Debt in Machine Learning Systems` (Sculley, Holt,
+Golovin et al., NIPS 2015, Google) — libros[18] del ledger, ruta `ml-systems`,
+cuota 25. 18º libro en `completado`. Aporta el marco canónico de **deuda técnica
+a nivel de sistema** del ML, valor NUEVO frente a best practices/SRE/observability.
+4 unidades por las secciones del paper (`fase-7`, órdenes 83-86):
+- **arena-htd1** — fundamentos + erosión de fronteras (§1-2): deuda técnica
+  (Cunningham), capacidad especial del ML (nivel sistema, no código), principio
+  **CACE**/entanglement, **correction cascades** (deadlock de mejora),
+  **undeclared consumers** (visibility debt); mitigaciones (ensembles aislados,
+  detección de cambios).
+- **arena-htd2** — dependencias de datos + feedback loops (§3-4): data deps cost
+  more than code deps, **inestables**→copia versionada, **infrautilizadas**
+  (legacy/bundled/ε/correlated)→leave-one-feature-out, análisis estático/feature
+  management, feedback loops **directos** vs **ocultos**.
+- **arena-htd3** — anti-patrones de sistema + config (§5-6): plumbing/Figura 1,
+  **glue code**→APIs comunes, **pipeline jungles**→clean-slate, **dead
+  experimental codepaths** (Knight Capital $465M), abstraction debt (Map-Reduce
+  malo para ML iterativo), smells (plain-data-type/multi-language/prototype),
+  **configuration debt** + 6 principios.
+- **arena-htd4** — mundo externo + otras deudas + medición (§7-9): **fixed
+  thresholds**→aprender en heldout, monitoreo en vivo (**prediction bias**,
+  action limits, up-stream SLAs), data testing/reproducibility/process
+  management/**cultural debt**, las **5 preguntas**, rápido≠poca deuda,
+  pagar=cultura.
+
+60 banco (15/unidad) + 2 examen (**f7-ex-56** CACE/erosión de fronteras,
+**f7-ex-57** medir deuda/pipeline jungle/dead codepaths) = 62. 8 heurísticas
+nuevas (cace-entanglement, evitar-erosion-fronteras-ml,
+gestionar-dependencias-datos, romper-feedback-loops,
+evitar-glue-code-pipeline-jungles, deuda-configuracion-ml,
+monitorear-cambios-mundo-externo, medir-deuda-tecnica-ml). Catálogo total **136**
+heurísticas. `sw.js` **v46** (+4 lecciones `data/teoria/arena-htd{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (86 unidades en `fase-7`, 57 ítems de examen); `verificar-shell.py` OK (171
+archivos). Contenido anclado en el paper (§1.2).
+
+**Siguiente** — orden §10 (ml-systems): **Interpretable Machine Learning
+(Molnar)** (libros[19]), luego ISL. Después ruta `health-ai-rwe` y Sectores D/C.
+Próxima unidad: órdenes desde 87, `f7-ex-58`+, VERSION v47+.
