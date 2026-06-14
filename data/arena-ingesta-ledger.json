@@ -108,11 +108,11 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Probabilidad y estadística/Casella_Berger_Statistical_Inference.pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "pendiente",
+      "estado": "en_progreso",
       "preguntas_agregadas": 0,
       "unidades_creadas": [],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-13 (cuenta B, Sonnet 4.6): en_progreso. RANGOS RESERVADOS para esta sesión — órdenes: 35-54 (20 slots); unidades: arena-cb1..arena-cb6; exam items: f7-ex-27..f7-ex-36 (10 slots); sw.js VERSION base: v33 → esta sesión usará v34. El siguiente agente debe empezar desde orden 55, f7-ex-37 y VERSION v35+."
     },
     {
       "libro": "Cracking the Coding Interview (6th ed.)",
