@@ -1940,3 +1940,40 @@ OK. Contenido anclado en el libro (patrones conceptuales de ML, §1.2).
 (libros[15]), luego Observability Engineering, Rules of ML, Hidden Technical
 Debt, Interpretable ML, ISL. Próxima unidad: órdenes desde 71, `f7-ex-50`+,
 VERSION v43+.
+
+## Bitácora 2026-06-14 (Arena tanda 15) — Site Reliability Engineering (Google), 62 preguntas
+
+Procesado `Site Reliability Engineering: How Google Runs Production Systems`
+(Beyer, Jones, Petoff & Murphy, O'Reilly) — libros[15] del ledger, ruta
+`ml-systems`, cuota 25. 15º libro en `completado`. Aporta el **canon SRE** que da
+los fundamentos de fiabilidad bajo los SLOs/incidentes ya vistos en Reliable ML.
+4 unidades (`fase-7`, órdenes 71-74):
+- **arena-sre1** — riesgo, error budgets y SLOs (100% no es el objetivo,
+  error budget = 1−SLO, caso Chubby, SLI/SLO/SLA, percentiles vs media).
+- **arena-sre2** — toil (definición + cap <50%), cuatro señales doradas
+  (latencia/tráfico/errores/saturación), black-box vs white-box, síntomas vs
+  causas, propiedades de una buena página.
+- **arena-sre3** — troubleshooting hipotético-deductivo (caballos no cebras,
+  correlación≠causa), Incident Command System (roles command/ops/comms/planning,
+  historia de Mary), postmortems sin culpa (blameless).
+- **arena-sre4** — release engineering (autoservicio/alta velocidad/herméticos/
+  cherry-pick), simplicidad (esencial vs accidental, líneas negativas, APIs
+  mínimas), prevenir sobrecarga (load shedding, degradación elegante), fallos en
+  cascada (GC death spiral, reintentos amplifican, capacidad N+2).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-50** error budget/SLO, **f7-ex-51**
+fallos en cascada) = 62. 11 heurísticas nuevas (equilibrar-confiabilidad-
+velocidad, definir-sli-slo-sla, eliminar-toil, cuatro-senales-doradas,
+sintomas-vs-causas, troubleshooting-hipotetico-deductivo, postmortem-sin-culpa,
+release-hermetico, preferir-simplicidad, prevenir-sobrecarga,
+evitar-fallos-cascada); reúsa responder-incidente-ml. Catálogo total **112**
+heurísticas. `sw.js` **v43** (159 archivos; +4 lecciones
+`data/teoria/arena-sre{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (74 unidades en `fase-7`, 51 ítems de examen); `verificar-shell.py` OK.
+Contenido anclado en el libro (conceptos SRE, §1.2).
+
+**Siguiente** — orden §10 (ml-systems): **Observability Engineering**
+(libros[16]), luego Rules of ML, Hidden Technical Debt, Interpretable ML, ISL.
+Próxima unidad: órdenes desde 75, `f7-ex-52`+, VERSION v44+.

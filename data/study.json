@@ -693,6 +693,94 @@
       "cuando_usar": "En cualquier modelo cuyas decisiones afecten a personas (crédito, contratación, salud, moderación).",
       "ejemplo": "Modelo de impago 'justo' al quitar la raza pero sesgado vía código postal (proxy); detéctalo midiendo desempeño por subgrupos.",
       "patron": "sesgo natural vs problemático; quitar la feature no basta (proxies); evalúa por slices"
+    },
+    {
+      "id": "equilibrar-confiabilidad-velocidad",
+      "nombre": "Equilibrar confiabilidad y velocidad con un error budget",
+      "descripcion": "100% NUNCA es el objetivo correcto de confiabilidad: el usuario no nota la diferencia entre 99.99% y 99.999% (lo domina su red/dispositivo) y cada nueve extra cuesta ~10x más y frena features. Trata el objetivo de disponibilidad como mínimo Y máximo. El error budget = 1 − SLO: mientras quede presupuesto, el equipo de producto puede lanzar; si se agota, se congelan los lanzamientos y se invierte en fiabilidad. Convierte la tensión Dev↔SRE en una métrica objetiva.",
+      "cuando_usar": "Al decidir cuánta fiabilidad invertir y cómo arbitrar entre velocidad de features y estabilidad.",
+      "ejemplo": "SLO 99.99% trimestral → error budget 0.01%; un fallo que gasta 20% del budget reduce el margen para lanzar; agotado el budget, se frenan los pushes.",
+      "patron": "100% es el objetivo equivocado; error budget = 1−SLO gobierna la velocidad de lanzamiento"
+    },
+    {
+      "id": "definir-sli-slo-sla",
+      "nombre": "Distinguir SLI, SLO y SLA",
+      "descripcion": "SLI = indicador medible de un aspecto del servicio (latencia, tasa de error, disponibilidad como fracción de requests con éxito, throughput, durabilidad). SLO = objetivo/umbral sobre un SLI (p.ej. 'latencia media <100 ms'). SLA = contrato con consecuencias (multa/reembolso) por cumplir o no los SLOs. Test rápido: '¿qué pasa si no se cumple?' — si no hay consecuencia explícita, es un SLO, no un SLA. Elige pocos SLIs (un puñado) que reflejen lo que importa al usuario.",
+      "cuando_usar": "Al definir cómo medir y comprometer el nivel de servicio, y al evitar la confusión común SLA↔SLO.",
+      "ejemplo": "Search no tiene SLA público pero sí SLIs/SLOs; Google for Work sí tiene SLA con penalizaciones. Mídelo como distribución/percentiles, no solo la media.",
+      "patron": "SLI=mides; SLO=objetivo; SLA=contrato con consecuencias"
+    },
+    {
+      "id": "eliminar-toil",
+      "nombre": "Identificar y eliminar el toil",
+      "descripcion": "Toil = trabajo ligado a operar el servicio que es manual, repetitivo, automatizable, táctico (interrupt-driven), sin valor perdurable y que escala O(n) con el servicio. No es 'trabajo que no me gusta' ni overhead (reuniones/HR). SRE limita el toil a <50% del tiempo de cada ingeniero; el otro 50% es ingeniería (mejoras permanentes que reducen toil futuro), para escalar de forma sublineal. Si el toil queda sin control, crece hasta llenar el 100%.",
+      "cuando_usar": "Al evaluar la carga operativa de un equipo y decidir qué automatizar o rediseñar.",
+      "ejemplo": "Ejecutar a mano un script repetitivo cada despliegue es toil; escribir el sistema que lo automatiza es ingeniería. Las interrupciones son la mayor fuente de toil.",
+      "patron": "toil = manual+repetitivo+automatizable+táctico+sin valor+O(n); cap <50%"
+    },
+    {
+      "id": "cuatro-senales-doradas",
+      "nombre": "Las cuatro señales doradas",
+      "descripcion": "Si solo puedes medir cuatro métricas de un sistema de cara al usuario, mide: LATENCIA (tiempo de respuesta; distingue éxito de error —un error lento es peor que uno rápido), TRÁFICO (demanda, p.ej. requests/s), ERRORES (tasa de fallos: explícitos 500, implícitos contenido erróneo, o por política como 'pasar de 1 s'), y SATURACIÓN (cuán 'lleno' está el recurso más limitado; muchos sistemas se degradan antes del 100%, la latencia del p99 es un indicador temprano). Página a un humano cuando una señal está mal (o, en saturación, casi).",
+      "cuando_usar": "Al instrumentar el monitoreo de cualquier servicio de cara al usuario desde cero.",
+      "ejemplo": "Mide latencia por percentiles (no media), QPS, ratio de 500s y uso del recurso cuello de botella con predicción de saturación.",
+      "patron": "latencia + tráfico + errores + saturación"
+    },
+    {
+      "id": "sintomas-vs-causas",
+      "nombre": "Alertar por síntomas, no por causas; black-box vs white-box",
+      "descripcion": "Una buena alerta detecta una condición urgente, accionable y visible (o inminente) para el usuario: prioriza SÍNTOMAS ('el sistema no funciona ahora') sobre causas. Black-box monitoring (orientado a síntomas, problema activo) fuerza la disciplina de molestar a un humano solo ante daño real; white-box (inspecciona logs/métricas internas) detecta problemas inminentes y enmascarados por reintentos. En un sistema multicapa, el síntoma de uno es la causa de otro. Cada página debe ser urgente, accionable y requerir inteligencia.",
+      "cuando_usar": "Al escribir reglas de alerta para evitar falsos positivos y fatiga de pager.",
+      "ejemplo": "Páginar por 'la web devuelve 500 a usuarios' (síntoma, black-box), usar white-box para diagnosticar la BD lenta detrás.",
+      "patron": "alerta por síntomas visibles; black-box detecta, white-box diagnostica"
+    },
+    {
+      "id": "troubleshooting-hipotetico-deductivo",
+      "nombre": "Troubleshooting hipotético-deductivo",
+      "descripcion": "Depurar es aplicar el método hipotético-deductivo: ante un reporte (comportamiento esperado vs real + cómo reproducir), mira telemetría/logs, plantea hipótesis de causa y pruébalas (comparando estado contra la teoría, o cambiando el sistema de forma controlada), iterando hasta la causa raíz. Evita trampas: mirar síntomas irrelevantes, teorías improbables, correlaciones espurias. 'Cuando oigas cascos, piensa en caballos, no en cebras'; prefiere explicaciones simples (Occam). Abre un bug para cada incidencia.",
+      "cuando_usar": "Ante cualquier fallo de un sistema en producción que hay que diagnosticar metódicamente.",
+      "ejemplo": "Síntoma 'sistema lento' → hipótesis (BD, red, CPU) → testear cada una con datos → causa raíz → corregir + postmortem.",
+      "patron": "reporte→observar→hipótesis→testear→iterar→causa raíz; caballos, no cebras"
+    },
+    {
+      "id": "postmortem-sin-culpa",
+      "nombre": "Postmortem sin culpa (blameless)",
+      "descripcion": "Tras un incidente significativo se escribe un postmortem: registro de impacto, acciones, causa(s) raíz y acciones de seguimiento para evitar la recurrencia. Debe ser SIN CULPA: se enfoca en las causas sistémicas asumiendo que todos actuaron con buena intención e información incompleta, sin señalar personas. La cultura de culpa hace que la gente oculte problemas. No se puede 'arreglar' a las personas, pero sí los sistemas y procesos. Escribir un postmortem no es un castigo, es aprendizaje; define los disparadores de antemano.",
+      "cuando_usar": "Tras cualquier evento indeseable significativo (downtime visible, pérdida de datos, intervención de guardia, fallo de monitoreo).",
+      "ejemplo": "En vez de 'hay que reescribir todo el backend (¡otra vez!)', escribe 'esta acción podría prevenir estas páginas; el manual es largo y difícil — nuestros futuros on-callers lo agradecerán'.",
+      "patron": "documenta + causa raíz + acciones; sin culpa: arregla sistemas, no personas"
+    },
+    {
+      "id": "release-hermetico",
+      "nombre": "Releases automáticos, frecuentes y herméticos",
+      "descripcion": "La ingeniería de releases se guía por: autoservicio (los equipos controlan su propio release, automatizado), alta velocidad (lanzar frecuente → menos cambios entre versiones → testing y troubleshooting más fáciles; 'push on green' despliega todo build que pasa los tests), builds HERMÉTICOS (insensibles a lo instalado en la máquina: mismas fuentes+revisión → resultado idéntico, reproducible; versiona también las herramientas) y enforcement de políticas (revisión de código, operaciones con control de acceso). Rama desde mainline + cherry-pick para saber el contenido exacto de cada release.",
+      "cuando_usar": "Al diseñar el pipeline de build y despliegue para que sea reproducible, rápido y auditable.",
+      "ejemplo": "Builds horarios + push-on-green; rebuild de una versión vieja en la misma revisión con cherry-pick del fix, sin arrastrar cambios no relacionados.",
+      "patron": "autoservicio + alta velocidad (push on green) + builds herméticos + políticas"
+    },
+    {
+      "id": "preferir-simplicidad",
+      "nombre": "Preferir la simplicidad ('la virtud de lo aburrido')",
+      "descripcion": "En software, 'aburrido' es bueno: sin sorpresas en producción. Distingue complejidad ESENCIAL (inherente al problema) de la ACCIDENTAL (resoluble con ingeniería) y empuja contra la accidental. Cada línea de código es un pasivo: borra código muerto (no lo comentes ni lo dejes tras un flag desactivado — bomba de tiempo, cf. Knight Capital), valora la métrica de 'líneas negativas'. Diseña APIs mínimas y módulos con bajo acoplamiento (versiona las APIs). Releases simples: es más fácil medir el impacto de un cambio que de 100 a la vez.",
+      "cuando_usar": "Al diseñar o mantener sistemas y al revisar si la complejidad añadida vale la pena.",
+      "ejemplo": "Borrar miles de líneas inútiles; reemplazar un binario 'misc/util' por colaboradores con propósito claro; lanzar en lotes pequeños.",
+      "patron": "aburrido es bueno; ataca la complejidad accidental; menos código, APIs mínimas, releases pequeños"
+    },
+    {
+      "id": "prevenir-sobrecarga",
+      "nombre": "Prevenir la sobrecarga: load shedding y degradación elegante",
+      "descripcion": "Para que un servidor no se caiga al saturarse: prueba de carga hasta el límite y su modo de fallo; sirve resultados degradados; instrumenta el servidor para RECHAZAR pronto y barato cuando esté sobrecargado (load shedding, p.ej. devolver 503 si hay demasiadas requests en vuelo); rate-limiting en proxies/balanceadores; planificación de capacidad (p.ej. N+2). Gestiona la cola pequeña (rechaza pronto) y considera LIFO/CoDel para descartar requests viejas que el usuario ya abandonó. Degradación elegante = reducir la calidad/cantidad de trabajo (caché en memoria, ranking más barato).",
+      "cuando_usar": "Al diseñar servicios que pueden recibir más carga de la que aguantan.",
+      "ejemplo": "Devolver 503 al superar X requests en vuelo; bajo sobrecarga, buscar solo en la caché en memoria con un ranking más barato.",
+      "patron": "rechaza pronto y barato (load shedding) + degrada calidad + cola corta + capacidad N+2"
+    },
+    {
+      "id": "evitar-fallos-cascada",
+      "nombre": "Evitar fallos en cascada",
+      "descripcion": "La causa más común de un fallo en cascada es la SOBRECARGA: si un clúster cae, su tráfico va a los demás y los tumba en serie. El agotamiento de recursos (CPU, memoria con 'GC death spiral') degrada o crashea servidores, y el balanceador propaga el problema. Los REINTENTOS naïf amplifican la carga (limita reintentos, usa backoff exponencial con jitter, presupuestos de reintento, y propaga deadlines de RPC). Diseña para degradar antes que colapsar y prueba el modo de fallo bajo sobrecarga.",
+      "cuando_usar": "Al diseñar sistemas distribuidos con dependencias y balanceo entre réplicas/clústeres.",
+      "ejemplo": "Cluster B cae → A recibe 1.200 QPS, no aguanta, crashea y el éxito cae por debajo de 1.000; un reintento naïf por fallo multiplica las RPC y empeora el colapso.",
+      "patron": "sobrecarga→cascada; limita reintentos (backoff+jitter+deadline) y degrada antes de colapsar"
     }
   ],
   "bloques": [
@@ -1359,7 +1447,11 @@
         "arena-mldp1",
         "arena-mldp2",
         "arena-mldp3",
-        "arena-mldp4"
+        "arena-mldp4",
+        "arena-sre1",
+        "arena-sre2",
+        "arena-sre3",
+        "arena-sre4"
       ],
       "examen": {
         "items": [
@@ -2998,6 +3090,72 @@
                 "Necesitas ≥3-5× el denominador del módulo en valores únicos"
               ],
               "source": "Machine Learning Design Patterns (Lakshmanan et al.) — Cap. 6, Design Pattern 22"
+            }
+          },
+          {
+            "id": "f7-ex-50",
+            "heuristica": "equilibrar-confiabilidad-velocidad",
+            "enunciado": "El equipo de producto quiere lanzar features rápido; SRE se resiste por temor a romper la fiabilidad. (a) ¿Por qué 100% NO es el objetivo correcto de confiabilidad? (b) Define error budget y cómo arbitra esta tensión. (c) Distingue SLI, SLO y SLA con un test de una frase para separar SLO de SLA.",
+            "pistas": [
+              "Piensa en qué nota el usuario y en el coste por cada 'nueve' adicional.",
+              "El error budget se deriva del SLO.",
+              "Mientras quede budget, ¿qué puede hacer producto? ¿y cuando se agota?",
+              "SLI mides, SLO objetivo, SLA contrato.",
+              "El test es: '¿qué pasa si no se cumple?'."
+            ],
+            "solucion": "(a) 100% es el objetivo equivocado porque el usuario no nota la diferencia entre 99.99% y 99.999% (su experiencia la domina la red/dispositivo), cada nueve extra cuesta ~10x más y maximizar la estabilidad frena features; el objetivo de disponibilidad se trata como mínimo Y máximo (excederlo desperdicia oportunidades y crea dependencias ocultas). (b) Error budget = 1 − SLO: la 'no-fiabilidad' permitida en el periodo. Producto define el SLO, el monitoreo (tercero neutral) mide el uptime real y la diferencia es el budget. Mientras quede budget se pueden empujar releases; si se agota (demasiadas violaciones del SLO), se frenan los lanzamientos y se invierte en fiabilidad. Convierte la tensión Dev↔SRE en una métrica objetiva: el equipo de producto se autorregula. (c) SLI = indicador medible (latencia, tasa de error, disponibilidad como fracción de peticiones con éxito); SLO = objetivo/umbral sobre un SLI ('latencia media <100 ms'); SLA = contrato con consecuencias (multa/reembolso) por (in)cumplir los SLOs. Test: '¿qué pasa si no se cumple el SLO?' — si no hay consecuencia explícita, es un SLO, no un SLA.",
+            "disparador": "Señal: 'Dev quiere velocidad, SRE quiere estabilidad'. Jugada: 100% no es el objetivo; usa error budget = 1−SLO para arbitrar lanzamientos de forma objetiva, sobre SLIs/SLOs bien definidos (SLA solo si hay consecuencias).",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "error budget",
+                "SLI/SLO/SLA",
+                "fiabilidad vs velocidad",
+                "riesgo"
+              ],
+              "errores_comunes": [
+                "Perseguir 100% de fiabilidad",
+                "Confundir SLO con SLA"
+              ],
+              "casos_borde": [
+                "Un SLO demasiado alto crea dependencias ocultas (Chubby)",
+                "El QPS no se puede fijar por SLO: lo determinan los usuarios"
+              ],
+              "source": "Site Reliability Engineering (Google) — Caps. 3 y 4"
+            }
+          },
+          {
+            "id": "f7-ex-51",
+            "heuristica": "evitar-fallos-cascada",
+            "enunciado": "Un servicio con dos clústeres (A y B) a 1.000 QPS cada uno empieza a fallar en cascada cuando B cae. (a) Explica cómo la sobrecarga produce el fallo en cascada y cómo se propaga. (b) ¿Cómo amplifican los reintentos naïf el problema y cómo los mitigas? (c) Da tres estrategias para prevenir la sobrecarga (load shedding, degradación elegante, capacidad).",
+            "pistas": [
+              "¿A dónde va el tráfico de B cuando cae?",
+              "Piensa en agotamiento de recursos y en la GC death spiral.",
+              "Un reintento por fallo multiplica las RPC justo cuando ya hay sobrecarga.",
+              "Backoff exponencial + jitter + límite + deadlines de RPC.",
+              "Rechazar pronto y barato; reducir la calidad del trabajo; planificar N+2."
+            ],
+            "solucion": "(a) Al caer B, su tráfico va a A (1.200 QPS); A no aguanta, agota recursos (CPU: colas largas, deadlines de RPC perdidos; memoria: tareas muertas y GC death spiral) y crashea o pierde deadlines, así su tasa de éxito cae por debajo de 1.000 QPS. El balanceador redirige esa carga a otros clústeres, sobrecargándolos también, hasta un fallo de servicio global, y ocurre en minutos porque balanceador y scheduler actúan rápido. (b) Si el frontend reintenta ante cada fallo, multiplica las RPC al backend (una petición lógica genera muchas) añadiendo carga cuando ya hay sobrecarga, retroalimentando el colapso. Mitigación: limitar reintentos por petición, backoff exponencial con jitter, presupuestos de reintento a nivel servidor y propagar deadlines de RPC para no trabajar en peticiones ya abandonadas. (c) Prevenir sobrecarga: (1) load shedding — instrumentar el servidor para rechazar pronto y barato (HTTP 503 si hay demasiadas peticiones en vuelo); (2) degradación elegante — reducir la cantidad/calidad del trabajo (buscar solo en la caché en memoria, ranking más barato); (3) planificación de capacidad con margen (p.ej. N+2) y prueba del modo de fallo bajo sobrecarga. Mantén la cola corta (rechaza pronto) y ejercita el modo degradado regularmente.",
+            "disparador": "Señal: 'un clúster cae y tumba a los demás'. Jugada: la sobrecarga causa la cascada; limita reintentos (backoff+jitter+deadline), rechaza pronto (load shedding), degrada la calidad antes de colapsar y planifica capacidad N+2.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "cascading failures",
+                "load shedding",
+                "graceful degradation",
+                "reintentos/backoff"
+              ],
+              "errores_comunes": [
+                "Reintentar sin límite ni backoff",
+                "No probar el modo de fallo bajo sobrecarga"
+              ],
+              "casos_borde": [
+                "El rate-limiting solo no detiene un fallo ya empezado",
+                "El camino de código de degradación que nunca se usa suele no funcionar"
+              ],
+              "source": "Site Reliability Engineering (Google) — Caps. 21 y 22"
             }
           }
         ]
@@ -13900,6 +14058,534 @@
           "enunciado": "¿Por qué optimizar solo el accuracy global puede ser un problema de equidad?",
           "solucion": "Porque el accuracy global no refleja el desempeño por slices de datos: con datasets inherentemente desbalanceados puede ocultar que el modelo rinde mal o toma decisiones injustas sobre las clases/grupos minoritarios. La función objetivo elegida puede así introducir sesgo durante el entrenamiento.",
           "explicacion": "Por eso la evaluación de equidad mide por subgrupos, no solo la métrica agregada."
+        }
+      ]
+    },
+    {
+      "id": "arena-sre1",
+      "bloque": "fase-7",
+      "orden": 71,
+      "titulo": "Fundamentos SRE: riesgo, error budgets y SLOs",
+      "libro": "Site Reliability Engineering: How Google Runs Production Systems (Beyer, Jones, Petoff & Murphy, O'Reilly)",
+      "lectura": "data/teoria/arena-sre1.md",
+      "dosis": 30,
+      "objetivo": "Gestionar la fiabilidad como riesgo, usar error budgets para arbitrar velocidad vs estabilidad, y distinguir SLI/SLO/SLA.",
+      "heuristicas": [
+        "equilibrar-confiabilidad-velocidad",
+        "definir-sli-slo-sla"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "100% nunca es el objetivo correcto de confiabilidad",
+        "Error budget = 1 − SLO: gobierna cuánto se puede lanzar",
+        "SLI mides, SLO objetivo, SLA contrato con consecuencias",
+        "El objetivo de disponibilidad es a la vez mínimo y máximo"
+      ],
+      "banco": [
+        {
+          "id": "arsre1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué Google NO busca construir servicios 100% fiables?",
+          "solucion": "Porque pasado cierto punto más fiabilidad es PEOR para el servicio: el usuario no nota la diferencia entre 99.99% y 99.999% (su experiencia la domina la red celular o el dispositivo), mientras que maximizar la estabilidad frena el desarrollo de features, encarece el servicio y reduce cuántas funciones puede ofrecer el equipo. SRE busca equilibrar el riesgo de indisponibilidad con la innovación rápida y la operación eficiente.",
+          "explicacion": "Un usuario con un smartphone 99% fiable no distingue 99.99% de 99.999%; el objetivo es ser 'suficientemente fiable', no más."
+        },
+        {
+          "id": "arsre1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el coste de la fiabilidad no crece de forma lineal?",
+          "solucion": "Porque cada incremento de fiabilidad puede costar ~100x más que el anterior. El coste tiene dos dimensiones: el coste de recursos/máquinas redundantes (para mantenimiento, durabilidad) y el coste de OPORTUNIDAD (ingenieros dedicados a reducir riesgo en vez de a features visibles para el usuario). Por eso se hace un análisis coste/beneficio para situar cada servicio en el continuo de riesgo.",
+          "explicacion": "Cada 'nueve' adicional es un orden de magnitud más cerca del 100% y mucho más caro; hay que alinear el riesgo asumido con el que el negocio tolera."
+        },
+        {
+          "id": "arsre1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo mide Google el riesgo/disponibilidad de un servicio y por qué prefiere la tasa de éxito de peticiones al uptime?",
+          "solucion": "Se centra en el downtime no planificado, expresado en 'nueves' de disponibilidad. En vez de disponibilidad basada en tiempo (uptime/(uptime+downtime)), usa una métrica basada en RENDIMIENTO: disponibilidad = peticiones con éxito / peticiones totales, sobre una ventana móvil. Razón: los servicios están distribuidos globalmente (casi siempre 'parcialmente arriba'), y la tasa de éxito de peticiones es una buena aproximación del downtime visto por el usuario y aplica también a sistemas batch/pipeline (unidades de trabajo con éxito/fallo).",
+          "explicacion": "Ej.: 2.5M peticiones/día con objetivo 99.99% permite 250 errores ese día. Funciona para sistemas que no sirven a usuarios directamente."
+        },
+        {
+          "id": "arsre1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un error budget y cómo se calcula?",
+          "solucion": "Es la cantidad de 'no-fiabilidad' que el servicio puede permitirse en un periodo (p.ej. un trimestre): error budget = 1 − SLO. Producto define el SLO (uptime esperado), un tercero neutral (el monitoreo) mide el uptime real, y la diferencia es el presupuesto restante. Mientras quede budget, se pueden empujar nuevos releases.",
+          "explicacion": "Ej.: SLO 99.999% trimestral → budget de fallo 0.001%; un problema que falla el 0.0002% gasta el 20% del budget del trimestre."
+        },
+        {
+          "id": "arsre1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué tensión organizativa resuelve el error budget y cómo?",
+          "solucion": "La tensión entre Desarrollo (evaluado por velocidad de features → quiere lanzar rápido) y SRE (evaluado por fiabilidad → quiere frenar el cambio). El error budget la convierte en una métrica objetiva acordada por ambos: con budget amplio, producto asume más riesgo; cuando casi se agota, los propios desarrolladores piden más testing o frenan los pushes para no agotarlo y estancar su lanzamiento. El equipo se vuelve autorregulado.",
+          "explicacion": "Quita la política de la negociación; 'Hope is not a strategy'. Requiere que SRE tenga autoridad real para frenar lanzamientos si se rompe el SLO."
+        },
+        {
+          "id": "arsre1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el objetivo de disponibilidad se ve como un mínimo Y un máximo?",
+          "solucion": "Porque queremos superar el objetivo, pero no por mucho: exceder demasiado la fiabilidad desperdicia oportunidades de añadir features, limpiar deuda técnica o reducir costes operativos. Ser mucho más fiable de lo prometido también crea dependencias ocultas peligrosas (los clientes asumen que nunca caerá).",
+          "explicacion": "Por eso SRE a veces provoca caídas controladas (Chubby) para que el SLO real, no el observado, sea el contrato."
+        },
+        {
+          "id": "arsre1-q7",
+          "tipo": "concepto",
+          "enunciado": "Explica el caso de la caída planificada de Chubby.",
+          "solucion": "Chubby (servicio de locks de Google) era tan fiable que los equipos empezaron a depender de él asumiendo que NUNCA caería, sin manejar su indisponibilidad. La solución de SRE: asegurarse de que Chubby cumpla su SLO pero no lo EXCEDA demasiado; si en un trimestre no hubo suficientes fallos reales, se provoca una caída controlada intencionada. Así se expulsan las dependencias irrazonables pronto.",
+          "explicacion": "Una fiabilidad excesiva da una falsa sensación de seguridad y genera dependencias que no toleran el fallo."
+        },
+        {
+          "id": "arsre1-q8",
+          "tipo": "concepto",
+          "enunciado": "Define SLI y da ejemplos.",
+          "solucion": "Un SLI (Service Level Indicator) es una medida cuantitativa cuidadosamente definida de algún aspecto del nivel de servicio. Ejemplos comunes: latencia de petición, tasa de error (fracción de peticiones fallidas), throughput (peticiones/s), disponibilidad (fracción de peticiones bien formadas que tienen éxito, el 'yield') y, para almacenamiento, durabilidad.",
+          "explicacion": "A veces solo hay un proxy disponible (latencia en servidor en vez de en cliente); idealmente el SLI mide directamente lo que importa al usuario."
+        },
+        {
+          "id": "arsre1-q9",
+          "tipo": "concepto",
+          "enunciado": "Define SLO y por qué publicarlo es útil.",
+          "solucion": "Un SLO (Service Level Objective) es un valor o rango objetivo para un SLI: SLI ≤ objetivo, o cota_inferior ≤ SLI ≤ cota_superior (p.ej. 'latencia media de búsqueda < 100 ms'). Publicar y elegir SLOs fija expectativas: reduce quejas infundadas y evita tanto la sobre-confianza (los usuarios creen que es más fiable de lo que es) como la infra-confianza (lo creen más frágil).",
+          "explicacion": "No siempre eliges el valor: el QPS lo determinan tus usuarios, no puedes ponerle un SLO; la latencia sí puedes fijarla como objetivo."
+        },
+        {
+          "id": "arsre1-q10",
+          "tipo": "concepto",
+          "enunciado": "Define SLA y cómo distinguirlo de un SLO.",
+          "solucion": "Un SLA (Service Level Agreement) es un contrato explícito o implícito con los usuarios que incluye CONSECUENCIAS de cumplir o incumplir los SLOs que contiene (lo más reconocible: una multa o reembolso). Test rápido: pregunta '¿qué pasa si no se cumple el SLO?' — si no hay consecuencia explícita, es un SLO, no un SLA.",
+          "explicacion": "La gente suele decir 'SLA' cuando quiere decir 'SLO'; una 'violación de SLA' real podría acabar en un juicio por incumplimiento de contrato."
+        },
+        {
+          "id": "arsre1-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué conviene elegir pocos SLIs y qué SLIs importan según el tipo de sistema?",
+          "solucion": "Porque demasiados indicadores dificultan prestar atención a los que importan, y muy pocos dejan comportamientos sin examinar; un puñado representativo basta. Sistemas de cara al usuario: disponibilidad, latencia y throughput. Almacenamiento: latencia, disponibilidad y durabilidad. Big data/pipelines: throughput y latencia de extremo a extremo. Todos: corrección.",
+          "explicacion": "Los SLIs deben reflejar lo que el usuario quiere del sistema, no toda métrica que el monitoreo pueda capturar."
+        },
+        {
+          "id": "arsre1-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un SLI casi siempre debe verse como una distribución y no como una media?",
+          "solucion": "Porque la media oculta la cola: con latencia media de 100 ms a 1.000 req/s, el 1% de las peticiones puede tardar fácilmente 5 s, y si tu página depende de varios backends, el p99 de uno puede volverse la mediana del frontend. Conviene medir percentiles (p99) o histogramas de latencia (cubos), no solo el promedio.",
+          "explicacion": "Promediar también puede ocultar ráfagas: 200 req/s en segundos pares y 0 en impares tiene la misma media que 100 req/s constante pero el doble de carga instantánea."
+        },
+        {
+          "id": "arsre1-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo ayuda el coste a fijar el objetivo de disponibilidad cuando se traduce en ingresos?",
+          "solucion": "Se compara el ingreso incremental de un nueve más contra su coste. Ej.: pasar de 99.9% a 99.99% (mejora 0.09%) sobre un ingreso de 1M$ vale 1M$·0.0009 = 900$; si subir ese nueve cuesta menos de 900$, vale la pena; si cuesta más, no. Cuando no hay traducción simple a ingresos, una referencia útil es el error de fondo de los ISP (entre 0.01% y 1%): bajar el error del servicio por debajo de ese ruido es invisible para el usuario.",
+          "explicacion": "Ads puede hacer esto bien porque éxito/fallo se traducen directamente en ingreso; otros servicios usan la referencia del error de fondo de Internet."
+        },
+        {
+          "id": "arsre1-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué distintos tipos de fallo importan de forma distinta aunque den el mismo número de errores?",
+          "solucion": "Porque el negocio puede tolerar de forma muy distinta una tasa baja y constante de fallos frente a una caída total ocasional. Ej.: que fallen las fotos de perfil intermitentemente es mala experiencia, pero un fallo que muestre los contactos privados de un usuario a otro mina la confianza básica — ahí conviene tirar el servicio entero durante el debug. En otros casos, caídas regulares en ventanas de mantenimiento son downtime planificado aceptable.",
+          "explicacion": "La 'forma' esperada del fallo, no solo su volumen, determina la tolerancia al riesgo del servicio."
+        },
+        {
+          "id": "arsre1-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la tolerancia al riesgo de un servicio de infraestructura difiere de un producto de consumo?",
+          "solucion": "Porque un componente de infraestructura tiene múltiples clientes con necesidades distintas y a menudo en conflicto. Ej.: en Bigtable, el usuario de baja latencia quiere las colas de peticiones casi vacías (procesar al instante), mientras el usuario de análisis offline quiere las colas nunca vacías (maximizar throughput): el éxito de uno es el fallo del otro. Hacer toda la infraestructura ultra-fiable suele ser demasiado caro; mejor particionar/ofrecer distintos niveles.",
+          "explicacion": "Se ofrecen diferentes niveles de servicio (p.ej. por particiones) en vez de un único objetivo ultra-fiable para todos."
+        }
+      ]
+    },
+    {
+      "id": "arena-sre2",
+      "bloque": "fase-7",
+      "orden": 72,
+      "titulo": "Eliminar toil, monitoreo y las cuatro señales doradas",
+      "libro": "Site Reliability Engineering: How Google Runs Production Systems (Beyer, Jones, Petoff & Murphy, O'Reilly)",
+      "lectura": "data/teoria/arena-sre2.md",
+      "dosis": 30,
+      "objetivo": "Distinguir toil de ingeniería y limitarlo, y monitorear con las cuatro señales doradas alertando por síntomas (black-box vs white-box).",
+      "heuristicas": [
+        "eliminar-toil",
+        "cuatro-senales-doradas",
+        "sintomas-vs-causas"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Toil = manual, repetitivo, automatizable, táctico, sin valor, O(n)",
+        "SRE limita el toil a <50% del tiempo; el resto es ingeniería",
+        "Cuatro señales doradas: latencia, tráfico, errores, saturación",
+        "Alerta por síntomas (black-box); white-box para diagnosticar"
+      ],
+      "banco": [
+        {
+          "id": "arsre2-q1",
+          "tipo": "concepto",
+          "enunciado": "Define toil y sus características.",
+          "solucion": "Toil es el trabajo ligado a operar un servicio en producción que tiende a ser: manual, repetitivo, automatizable, táctico (interrupt-driven, reactivo), sin valor perdurable (el servicio queda igual tras hacerlo) y que escala O(n) linealmente con el tamaño del servicio. No todo el toil tiene todas estas propiedades, pero cuantas más cumple, más es toil.",
+          "explicacion": "Toil no es 'trabajo que no me gusta'; algunos disfrutan tareas repetitivas. Tampoco es overhead ni grunt work con valor a largo plazo."
+        },
+        {
+          "id": "arsre2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué NO es toil: overhead y grunt work con valor?",
+          "solucion": "Overhead es trabajo administrativo no ligado directamente a operar el servicio (reuniones, fijar/evaluar objetivos, snippets, papeleo de RR.HH.); no es toil. El grunt work (trabajo pesado) que produce una mejora permanente tampoco es toil: limpiar toda la configuración de alertas y quitar ruido puede ser pesado, pero como deja una mejora duradera, es ingeniería, no toil.",
+          "explicacion": "El criterio clave es si deja valor perdurable y si requiere juicio humano genuino (entonces probablemente no es toil)."
+        },
+        {
+          "id": "arsre2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué SRE limita el toil a menos del 50% y qué pasa si no?",
+          "solucion": "Porque al menos el 50% del tiempo de cada SRE debe ir a ingeniería de proyecto que reduzca toil futuro o añada features de fiabilidad/rendimiento/utilización, lo que permite a la organización escalar de forma SUBLINEAL con el tamaño del servicio. Si el toil queda sin control, tiende a crecer hasta llenar el 100% del tiempo y el equipo SRE degenera en un equipo de Ops puro.",
+          "explicacion": "El promedio real en Google ronda el 33%; la mayor fuente de toil son las interrupciones, seguidas del on-call y los releases."
+        },
+        {
+          "id": "arsre2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cuenta como 'ingeniería' en SRE?",
+          "solucion": "Trabajo novedoso que requiere juicio humano, produce una mejora PERMANENTE y está guiado por una estrategia. Categorías: ingeniería de software (escribir/modificar código: automatización, herramientas, features de escalabilidad/fiabilidad), ingeniería de sistemas (configurar producción con mejoras duraderas: monitoreo, balanceo, tuning, consultoría de arquitectura), frente a toil (operación repetitiva) y overhead (administrativo).",
+          "explicacion": "La ingeniería es lo que permite manejar un servicio mayor con la misma plantilla; el toil es spiky, por eso el 50% se promedia sobre trimestres."
+        },
+        {
+          "id": "arsre2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son las cuatro señales doradas del monitoreo?",
+          "solucion": "Latencia, tráfico, errores y saturación. Si solo puedes medir cuatro métricas de un sistema de cara al usuario, mide estas: cubren respuesta, demanda, fallos y cuán lleno está el sistema. Si las mides y avisas cuando una está mal (o, en saturación, casi mal), tu servicio queda decentemente cubierto.",
+          "explicacion": "Son el estándar SRE de monitoreo; reflejan el comportamiento global con pocas métricas de alto nivel."
+        },
+        {
+          "id": "arsre2-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué mide la señal de Latencia y por qué hay que separar éxito de error?",
+          "solucion": "Mide el tiempo que cuesta servir una petición. Hay que distinguir la latencia de peticiones con éxito de la de fallidas: un error 500 por pérdida de conexión a la BD puede servirse muy rápido, y mezclarlo en la latencia global da cálculos engañosos; pero un error LENTO es aún peor que uno rápido, así que hay que medir la latencia de error en vez de simplemente filtrar los errores.",
+          "explicacion": "Un error rápido y uno lento tienen impactos distintos; ambos importan, por eso se trackea la latencia de error por separado."
+        },
+        {
+          "id": "arsre2-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué miden las señales de Tráfico y Errores?",
+          "solucion": "Tráfico: cuánta demanda recibe el sistema, en una métrica de alto nivel específica (web: HTTP req/s; streaming: I/O de red o sesiones concurrentes; key-value: transacciones/s). Errores: la tasa de peticiones que fallan explícitamente (HTTP 500), implícitamente (un 200 pero con contenido erróneo) o por política (si te comprometiste a 1 s, cualquier petición > 1 s es un error).",
+          "explicacion": "Algunos fallos solo los detectan tests end-to-end (contenido erróneo), no el balanceador (que ve los 500)."
+        },
+        {
+          "id": "arsre2-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué mide la señal de Saturación y por qué importa la cola/latencia como indicador?",
+          "solucion": "Mide cuán 'lleno' está el servicio, enfatizando el recurso más limitado (memoria, I/O, CPU). Muchos sistemas se degradan ANTES de llegar al 100% de utilización, así que es esencial tener un objetivo de utilización por debajo del 100%. La latencia (p.ej. p99 sobre una ventana corta) suele ser un indicador temprano de saturación, y conviene predecir la saturación inminente ('el disco se llenará en 4 horas').",
+          "explicacion": "La saturación se complementa con medidas de carga de más alto nivel: ¿aguantaría el doble de tráfico?"
+        },
+        {
+          "id": "arsre2-q9",
+          "tipo": "concepto",
+          "enunciado": "Diferencia black-box monitoring de white-box monitoring.",
+          "solucion": "Black-box es orientado a SÍNTOMAS y representa problemas ACTIVOS, no predichos: 'el sistema no funciona ahora'. White-box depende de inspeccionar el interior del sistema (logs, endpoints HTTP, instrumentación) y permite detectar problemas INMINENTES y fallos enmascarados por reintentos. Google combina mucho white-box con un uso modesto pero crítico de black-box.",
+          "explicacion": "Para páginar, black-box fuerza la disciplina de molestar a un humano solo ante daño real; para no-aún-pero-inminente es casi inútil."
+        },
+        {
+          "id": "arsre2-q10",
+          "tipo": "concepto",
+          "enunciado": "En un sistema multicapa, ¿por qué el síntoma de uno es la causa de otro?",
+          "solucion": "Porque una misma observación cambia de rol según quién la mire: una BD lenta es un SÍNTOMA para el SRE de la base de datos que la detecta, pero es la CAUSA para el SRE del frontend que observa una web lenta. Por eso el white-box es a veces orientado a síntomas y a veces a causas, según cuán informativo sea.",
+          "explicacion": "Distinguir 'qué' (síntoma) de 'por qué' (causa) es una de las distinciones más importantes para escribir buen monitoreo."
+        },
+        {
+          "id": "arsre2-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cuatro propiedades debe tener una buena página (alerta que despierta a un humano)?",
+          "solucion": "Cada vez que suena el pager debes poder reaccionar con sentido de urgencia (solo puedes hacerlo unas pocas veces al día antes de fatigarte); por tanto: toda página debe ser ACCIONABLE; toda respuesta a una página debe requerir INTELIGENCIA (si basta una respuesta robótica, no debería ser una página); y las páginas deben ser sobre un problema NOVEDOSO o no visto antes.",
+          "explicacion": "Buenas preguntas al crear una alerta: ¿detecta algo urgente, accionable y visible para el usuario? ¿podré ignorarla sabiéndola benigna?"
+        },
+        {
+          "id": "arsre2-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué hay que vigilar la cola (tail), no la media, e instrumentar con histogramas?",
+          "solucion": "Porque la media oculta la cola: a 1.000 req/s con 100 ms de media, el 1% puede tardar 5 s. La forma simple de distinguir una media lenta de una cola lenta es contar peticiones agrupadas por cubos de latencia (histograma: cuántas entre 0-10 ms, 10-30 ms, 30-100 ms…), con fronteras aproximadamente exponenciales, en vez de medir latencias exactas.",
+          "explicacion": "Si la página de un usuario depende de varios backends, el p99 de un backend puede convertirse en la mediana del frontend."
+        },
+        {
+          "id": "arsre2-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo elegir la resolución de las mediciones y por qué importa el coste?",
+          "solucion": "Distintos aspectos requieren distinta granularidad: observar la carga de CPU por minuto no revela picos cortos que disparan colas de latencia; pero sondear un 200 (éxito) más de una o dos veces por minuto para un servicio 99.9% es innecesario. Medir por segundo puede ser caro de recolectar/almacenar/analizar; una estrategia es muestrear internamente en el servidor (incrementar cubos de utilización cada segundo) y agregar externamente cada minuto.",
+          "explicacion": "Así se observan picos breves sin incurrir en el coste alto de recolección y retención de datos por segundo."
+        },
+        {
+          "id": "arsre2-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Qué guía de simplicidad da SRE para el sistema de monitoreo?",
+          "solucion": "Diseña el monitoreo con vistas a la simplicidad: las reglas que capturan incidentes reales más a menudo deben ser lo más simples, predecibles y fiables posible; la configuración de recolección/alerta que casi nunca se ejercita (p.ej. menos de una vez por trimestre) es candidata a eliminarse; y las señales recolectadas pero no expuestas en ningún dashboard ni usadas por ninguna alerta son candidatas a eliminarse.",
+          "explicacion": "Mantén sistemas distintos con puntos de integración simples y poco acoplados (monitoreo separado de profiling, debugging, load testing…)."
+        },
+        {
+          "id": "arsre2-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué es mejor alertar por síntomas que por causas?",
+          "solucion": "Porque conviene gastar mucho más esfuerzo en capturar síntomas (lo que el usuario sufre) que causas; respecto a las causas, solo preocuparse por las muy definidas e inminentes. Alertar por causas genera ruido y páginas que pueden no corresponder a un daño real al usuario; alertar por síntomas garantiza que la página indica un impacto activo y actionable.",
+          "explicacion": "Una página que cumple ser urgente, accionable, inteligente y novedosa sirve venga de monitoreo black-box o white-box."
+        }
+      ]
+    },
+    {
+      "id": "arena-sre3",
+      "bloque": "fase-7",
+      "orden": 73,
+      "titulo": "Troubleshooting, gestión de incidentes y postmortems sin culpa",
+      "libro": "Site Reliability Engineering: How Google Runs Production Systems (Beyer, Jones, Petoff & Murphy, O'Reilly)",
+      "lectura": "data/teoria/arena-sre3.md",
+      "dosis": 30,
+      "objetivo": "Depurar con método hipotético-deductivo, gestionar incidentes con el Incident Command System y cultivar postmortems sin culpa.",
+      "heuristicas": [
+        "troubleshooting-hipotetico-deductivo",
+        "responder-incidente-ml",
+        "postmortem-sin-culpa"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Troubleshooting = método hipotético-deductivo iterativo",
+        "Incident Command System: roles claros y separados",
+        "Postmortems sin culpa: arregla sistemas, no personas",
+        "Caballos, no cebras; correlación no es causa"
+      ],
+      "banco": [
+        {
+          "id": "arsre3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo describe SRE el proceso de troubleshooting?",
+          "solucion": "Como una aplicación del método hipotético-deductivo: dado un reporte de problema, se mira la telemetría y los logs para entender el estado actual; combinado con el conocimiento de cómo está construido el sistema y sus modos de fallo, se plantean posibles causas; se prueban las hipótesis (comparando el estado observado contra la teoría, o cambiando el sistema de forma controlada y observando) y se itera hasta identificar la causa raíz, para luego corregir y escribir un postmortem.",
+          "explicacion": "Arreglar la causa próxima no siempre tiene que esperar al análisis de causa raíz o al postmortem."
+        },
+        {
+          "id": "arsre3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué debe contener un buen reporte de problema y por qué abrir un bug por cada incidencia?",
+          "solucion": "Debe indicar el comportamiento esperado, el comportamiento real y, si es posible, cómo reproducirlo; idealmente con forma consistente y almacenado en un sitio buscable (un bug tracker). Google abre un bug por cada incidencia (incluso las recibidas por email/chat) porque crea un registro de investigación y remediación referenciable en el futuro; reportar directamente a una persona da reportes de peor calidad y añade un paso de transcripción.",
+          "explicacion": "Tener formularios/apps que recojan la info relevante y enruten el bug automáticamente mejora la calidad del reporte."
+        },
+        {
+          "id": "arsre3-q3",
+          "tipo": "concepto",
+          "enunciado": "Menciona trampas comunes del troubleshooting inefectivo.",
+          "solucion": "Mirar síntomas irrelevantes o malinterpretar el significado de las métricas (persecuciones inútiles); no saber cómo cambiar el sistema/entradas/entorno para testear hipótesis de forma segura; plantear teorías muy improbables o aferrarse a causas de problemas pasados ('pasó una vez, debe ser eso otra vez'); y perseguir correlaciones espurias (coincidencias o causas compartidas).",
+          "explicacion": "'Cuando oigas cascos, piensa en caballos, no en cebras'; prefiere explicaciones simples (Occam) y recuerda que correlación no es causa."
+        },
+        {
+          "id": "arsre3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa 'caballos, no cebras' y 'correlación no es causa' en el diagnóstico?",
+          "solucion": "'Caballos, no cebras': no todas las fallas son igual de probables; ante un síntoma, considera primero las causas comunes antes que las exóticas. 'Correlación no es causa': eventos correlacionados pueden compartir una causa común (p.ej. pérdida de paquetes y discos muertos en un clúster, ambos por un corte de energía) sin que uno cause el otro; y al monitorear muchas métricas, habrá correlaciones puramente coincidentes.",
+          "explicacion": "Recuerda también que puede haber varios problemas a la vez: a veces varios fallos comunes de bajo grado explican los síntomas mejor que uno raro único (Hickam vs Occam)."
+        },
+        {
+          "id": "arsre3-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cuatro fallos comunes convierten un incidente en 'no gestionado' (la historia de Mary)?",
+          "solucion": "(1) Foco excesivo en el problema técnico (el on-call resuelve a ciegas sin ver el cuadro general). (2) Mala comunicación (nadie sabe qué hacen los demás; líderes de negocio enfadados y otros ingenieros desaprovechados). (3) Freelancing (un compañero hace cambios bienintencionados sin coordinar y empeora todo). Todos hacían 'su trabajo', y aun así el incidente se descontroló.",
+          "explicacion": "La gestión de incidentes existe para canalizar la energía de individuos entusiastas; sin proceso, la respuesta se va por la borda."
+        },
+        {
+          "id": "arsre3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿En qué se basa el sistema de gestión de incidentes de Google y por qué la separación de responsabilidades da más autonomía?",
+          "solucion": "Se basa en el Incident Command System (ICS), conocido por su claridad y escalabilidad. La separación clara de responsabilidades, contraintuitivamente, da MÁS autonomía: cada persona conoce su rol y no necesita cuestionar el trabajo de sus colegas ni pisarles el terreno. Si un rol se sobrecarga, pide más gente al planning lead y delega (creando subincidentes).",
+          "explicacion": "Roles claros canalizan la energía y evitan el freelancing que descontroló la historia de Mary."
+        },
+        {
+          "id": "arsre3-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son los roles distintos del Incident Command System?",
+          "solucion": "Incident Command (mando del incidente): mantiene el estado de alto nivel, estructura el equipo de respuesta y asigna responsabilidades; ocupa de facto los roles que no haya delegado. Operational Work (líder de operaciones): aplica las herramientas operativas y es el ÚNICO grupo que modifica el sistema durante el incidente, en coordinación con el comandante. Communication (comunicación): cara pública del incidente, emite actualizaciones periódicas a equipo y stakeholders y mantiene el documento del incidente.",
+          "explicacion": "También hay un planning lead que rastrea lo de más largo plazo; que solo Ops modifique el sistema evita el freelancing."
+        },
+        {
+          "id": "arsre3-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un postmortem y cuándo se escribe?",
+          "solucion": "Es un registro escrito de un incidente: su impacto, las acciones tomadas para mitigarlo/resolverlo, la(s) causa(s) raíz y las acciones de seguimiento para evitar que se repita. Se escribe tras cualquier evento indeseable significativo; disparadores comunes (definidos de ANTEMANO): downtime/degradación visible más allá de un umbral, pérdida de datos de cualquier tipo, intervención de un on-call (rollback, rerutar tráfico), tiempo de resolución por encima de un umbral, o un fallo de monitoreo. Cualquier stakeholder puede pedir uno.",
+          "explicacion": "Su objetivo es documentar, entender las causas raíz y, sobre todo, poner acciones preventivas efectivas; no es una formalidad a olvidar."
+        },
+        {
+          "id": "arsre3-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un postmortem 'sin culpa' (blameless) y por qué importa?",
+          "solucion": "Es un postmortem que se enfoca en identificar las causas CONTRIBUYENTES del incidente sin acusar a ninguna persona o equipo de comportamiento 'malo'; asume que todos los involucrados actuaron con buena intención e hicieron lo correcto con la información que tenían. Importa porque una cultura de señalar y avergonzar hace que la gente OCULTE los problemas por miedo al castigo, aumentando el riesgo de la organización.",
+          "explicacion": "Originado en sanidad y aviación (donde los errores pueden ser fatales); no puedes 'arreglar' personas, pero sí sistemas y procesos."
+        },
+        {
+          "id": "arsre3-q10",
+          "tipo": "concepto",
+          "enunciado": "Da un ejemplo de redacción 'señalando con el dedo' vs 'sin culpa' para el mismo problema.",
+          "solucion": "Señalando: '¡Tenemos que reescribir todo el complicado backend! Lleva rompiéndose semanalmente tres trimestres y estoy harto de arreglarlo a parches. En serio, si me vuelven a paginar lo reescribo yo mismo…'. Sin culpa: 'Una acción de reescribir el backend podría prevenir estas páginas molestas; además el manual de mantenimiento es largo y difícil de dominar — seguro que nuestros futuros on-callers nos lo agradecerán'.",
+          "explicacion": "La versión sin culpa señala dónde y cómo mejorar el sistema, sin estigmatizar a personas ni a quien produce muchos postmortems."
+        },
+        {
+          "id": "arsre3-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué no se debe estigmatizar a quien produce muchos postmortems?",
+          "solucion": "Porque quitar la culpa da a la gente la confianza de escalar problemas sin miedo; un ambiente de culpa crea una cultura donde los incidentes se 'barren bajo la alfombra', lo que genera mayor riesgo para la organización. Estigmatizar la producción frecuente de postmortems incentiva ocultar incidentes.",
+          "explicacion": "El postmortem es una oportunidad de aprendizaje para toda la empresa, no un castigo."
+        },
+        {
+          "id": "arsre3-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué prácticas hacen colaborativo el proceso de postmortem?",
+          "solucion": "Colaboración y compartición de conocimiento en cada etapa: documentos con colaboración en tiempo real (recolectar datos e ideas rápido), un sistema abierto de comentarios/anotaciones (crowdsourcing de soluciones), y notificaciones por email para sumar gente. Luego una revisión formal por ingenieros senior (¿se recogieron los datos clave?, ¿el impacto está completo?, ¿la causa raíz es suficientemente profunda?, ¿el plan de acción es adecuado?) antes de publicarlo a la audiencia más amplia que se beneficie.",
+          "explicacion": "Se comparte a la mayor audiencia posible que pueda aprender de las lecciones, sin incluir información que identifique usuarios."
+        },
+        {
+          "id": "arsre3-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué es esencial definir los criterios de postmortem ANTES de que ocurra un incidente?",
+          "solucion": "Para que todos sepan cuándo es necesario un postmortem y no se decida ad hoc bajo presión o emoción. El proceso tiene un coste real de tiempo/esfuerzo, así que se elige deliberadamente cuándo escribirlo; tener disparadores objetivos acordados de antemano evita discusiones sobre si 'esto merece' un postmortem.",
+          "explicacion": "Además de los disparadores objetivos, cualquier stakeholder puede solicitar un postmortem para un evento."
+        },
+        {
+          "id": "arsre3-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se prueban las hipótesis en el troubleshooting, según las dos vías de SRE?",
+          "solucion": "(1) Comparación pasiva: contrastar el estado OBSERVADO del sistema contra las teorías, buscando evidencia que las confirme o las descarte. (2) Tratamiento activo: cambiar el sistema de forma CONTROLADA y observar los resultados, lo que refina la comprensión del estado y de las posibles causas. Se repite con cualquiera de las dos hasta identificar la causa raíz.",
+          "explicacion": "La vía activa es como un experimento; ambas se iteran hasta el root cause, momento en que se toma la acción correctiva."
+        },
+        {
+          "id": "arsre3-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los postmortems son una herramienta esencial para SRE y no solo una formalidad?",
+          "solucion": "Porque a la escala y velocidad de cambio de SRE los incidentes son inevitables; sin un proceso formal de aprender de ellos, RECURREN ad infinitum y pueden multiplicarse en complejidad o incluso cascada, sobrecargando el sistema y a sus operadores. El postmortem se ve como la oportunidad no solo de arreglar una debilidad, sino de hacer toda la organización más resiliente.",
+          "explicacion": "El coste del fallo es educación: cada incidente, bien analizado, fortalece el sistema."
+        }
+      ]
+    },
+    {
+      "id": "arena-sre4",
+      "bloque": "fase-7",
+      "orden": 74,
+      "titulo": "Robustez en producción: releases, simplicidad, sobrecarga y cascada",
+      "libro": "Site Reliability Engineering: How Google Runs Production Systems (Beyer, Jones, Petoff & Murphy, O'Reilly)",
+      "lectura": "data/teoria/arena-sre4.md",
+      "dosis": 30,
+      "objetivo": "Lanzar de forma automática y hermética, perseguir la simplicidad, y prevenir la sobrecarga y los fallos en cascada.",
+      "heuristicas": [
+        "release-hermetico",
+        "preferir-simplicidad",
+        "prevenir-sobrecarga",
+        "evitar-fallos-cascada"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Releases: autoservicio, alta velocidad, builds herméticos, políticas",
+        "Simplicidad: 'aburrido' es bueno; cada línea de código es un pasivo",
+        "Sobrecarga: load shedding y degradación elegante; rechaza pronto",
+        "La causa #1 de fallos en cascada es la sobrecarga; los reintentos amplifican"
+      ],
+      "banco": [
+        {
+          "id": "arsre4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son los cuatro principios de la ingeniería de releases en Google?",
+          "solucion": "Autoservicio (los equipos controlan y ejecutan su propio proceso de release, automatizado, para escalar), alta velocidad (lanzar frecuente), builds herméticos (reproducibles e insensibles al entorno de la máquina) y enforcement de políticas y procedimientos (control de acceso a quién aprueba código, crea releases y despliega).",
+          "explicacion": "Estos principios permiten alta velocidad de release con miles de ingenieros y productos."
+        },
+        {
+          "id": "arsre4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué lanzar frecuentemente ('high velocity', push on green) facilita la operación?",
+          "solucion": "Porque releases frecuentes implican menos cambios entre versiones, lo que hace el testing y el troubleshooting más fáciles (es más fácil aislar qué cambió). Algunos equipos hacen builds horarios y eligen cuál desplegar según tests y features; otros adoptan 'Push on Green': despliegan automáticamente todo build que pasa todos los tests.",
+          "explicacion": "Menos delta por release = impacto más fácil de medir y de revertir."
+        },
+        {
+          "id": "arsre4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un build hermético y por qué importa para la fiabilidad?",
+          "solucion": "Un build hermético es insensible a las librerías y software instalados en la máquina de build: depende de versiones conocidas de herramientas (compiladores) y dependencias (librerías), es autocontenido y no usa servicios externos al entorno de build. Importa porque garantiza consistencia y reproducibilidad: dos personas que construyen el mismo producto en la misma revisión obtienen resultados idénticos.",
+          "explicacion": "Las herramientas de build también se versionan; para arreglar un bug en producción se reconstruye en la misma revisión con cherry-pick."
+        },
+        {
+          "id": "arsre4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el método de rama + cherry-pick y qué problema evita?",
+          "solucion": "Todo el código se integra en la rama principal (mainline), pero los proyectos no liberan directamente de ella: se RAMIFICA desde la mainline en una revisión concreta y nunca se fusiona de vuelta. Los fixes se envían a la mainline y luego se hace cherry-pick a la rama del release. Esto evita arrastrar inadvertidamente cambios no relacionados que se hayan enviado a la mainline desde el build original, sabiendo el contenido exacto de cada release.",
+          "explicacion": "Garantiza saber exactamente qué contiene cada release y rebuilds reproducibles."
+        },
+        {
+          "id": "arsre4-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'aburrido' es una virtud en software (the virtue of boring)?",
+          "solucion": "Porque no queremos que los programas sean espontáneos o interesantes, sino que sigan el guion y cumplan predeciblemente sus objetivos de negocio. Las sorpresas en producción son la némesis de SRE; como dijo un ingeniero de Google, a diferencia de una novela de detectives, la falta de emoción, suspense y enigmas es una propiedad DESEABLE del código fuente.",
+          "explicacion": "La predictibilidad es el objetivo; las sorpresas en producción son riesgo, no virtud."
+        },
+        {
+          "id": "arsre4-q6",
+          "tipo": "concepto",
+          "enunciado": "Distingue complejidad esencial de accidental y qué debe hacer SRE con ellas.",
+          "solucion": "Complejidad esencial: la inherente al problema, que no se puede eliminar de su definición (servir páginas web rápido). Complejidad accidental: más fluida, resoluble con esfuerzo de ingeniería (minimizar el impacto del garbage collection por escribir el servidor en Java). SRE debe empujar contra la complejidad accidental cuando se introduce y esforzarse constantemente por eliminarla en los sistemas que asume.",
+          "explicacion": "Distinción de Fred Brooks ('No Silver Bullet'); la accidental es la que se puede y se debe atacar."
+        },
+        {
+          "id": "arsre4-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'cada línea de código es un pasivo' y qué es la métrica de 'líneas negativas'?",
+          "solucion": "Porque cada línea añadida o cambiada crea potencial para nuevos defectos y bugs; un proyecto más pequeño es más fácil de entender, testear y suele tener menos defectos. Hay que escrutar el código para que todo tenga un propósito esencial, quitar rutinariamente el código muerto y detectar el 'bloat'. La métrica de 'líneas negativas' celebra borrar código inútil: a veces el código más satisfactorio es eliminar miles de líneas.",
+          "explicacion": "No comentes ni dejes código muerto tras un flag desactivado (bomba de tiempo, cf. Knight Capital); el control de versiones ya permite revertir."
+        },
+        {
+          "id": "arsre4-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué son las APIs mínimas y la modularidad como patrones de simplicidad?",
+          "solucion": "API mínima: cuantos menos métodos y argumentos ofrezcas, más fácil de entender y mejor podrás hacer los que sí ofreces ('la perfección se alcanza no cuando no hay nada más que añadir, sino que quitar'). Modularidad: bajo acoplamiento entre binarios, y entre binarios y configuración, permite arreglar y desplegar un componente de forma aislada; versionar las APIs deja usar la versión vieja mientras se migra. Evita binarios 'misc/util' grab-bag.",
+          "explicacion": "Un sistema distribuido bien diseñado son colaboradores con propósito claro y acotado; los formatos de datos también deben ser modulares (protobufs compatibles)."
+        },
+        {
+          "id": "arsre4-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué son mejores los releases simples (en lotes pequeños)?",
+          "solucion": "Porque es mucho más fácil medir y entender el impacto de un solo cambio que de un lote de cambios lanzados a la vez. Si lanzas 100 cambios no relacionados juntos y el rendimiento empeora, averiguar cuáles lo causaron exige un esfuerzo considerable o instrumentación extra; en lotes pequeños se avanza más rápido y con más confianza.",
+          "explicacion": "Lotes pequeños = atribución de impacto clara y rollback más fácil."
+        },
+        {
+          "id": "arsre4-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la causa más común de fallos en cascada y cómo se propaga?",
+          "solucion": "La SOBRECARGA. Ej.: si el clúster A maneja 1.000 QPS y el clúster B falla, su tráfico va a A (1.200 QPS); A no aguanta, se queda sin recursos, crashea o pierde deadlines, y su tasa de éxito cae por debajo de 1.000 QPS. Esa caída se propaga: el balanceador manda la carga a otros clústeres, sobrecargándolos, hasta un fallo de servicio global, y puede ocurrir en minutos.",
+          "explicacion": "El balanceador y el scheduler actúan rápido, así que la cascada por sobrecarga se extiende velozmente."
+        },
+        {
+          "id": "arsre4-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el agotamiento de recursos y la 'GC death spiral'?",
+          "solucion": "Quedarse sin un recurso (CPU, memoria) provoca mayor latencia, más errores o resultados de menor calidad, y puede degradar o crashear el servidor, llevando al balanceador a propagar el problema. La 'GC death spiral' (en Java) es un círculo vicioso: más peticiones en vuelo → más RAM → más garbage collection → más CPU consumida → peticiones más lentas → aún más RAM, hasta colapsar.",
+          "explicacion": "La falta de CPU hace todo más lento (colas largas, deadlines de RPC perdidos, reintentos), y la falta de memoria mata tareas y dispara el GC."
+        },
+        {
+          "id": "arsre4-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo amplifican los reintentos un fallo en cascada y cómo mitigarlo?",
+          "solucion": "Reintentar de forma naïf ante un fallo multiplica las RPC al backend (cada petición lógica puede generar muchas), añadiendo carga justo cuando el sistema ya está sobrecargado, lo que empeora el colapso. Mitigaciones: limitar el número de reintentos por petición, usar backoff exponencial con jitter, presupuestos de reintento a nivel de servidor, y propagar los deadlines de RPC por toda la pila para no trabajar en peticiones ya abandonadas.",
+          "explicacion": "Cuando el servidor se sobrecarga, sus respuestas llegan tarde y exceden deadlines; el trabajo se desperdicia y los clientes reintentan, retroalimentando la sobrecarga."
+        },
+        {
+          "id": "arsre4-q13",
+          "tipo": "concepto",
+          "enunciado": "Enumera estrategias para prevenir la sobrecarga de un servidor (en orden de prioridad).",
+          "solucion": "(1) Probar la capacidad límite del servidor y su modo de fallo bajo sobrecarga (lo más importante). (2) Servir resultados degradados (más baratos de computar). (3) Instrumentar el servidor para RECHAZAR peticiones cuando esté sobrecargado (fallar pronto y barato). (4) Instrumentar sistemas de más alto nivel para rechazar (rate-limiting en proxies/balanceadores). (5) Planificar capacidad. El rate-limiting solo a menudo no para un fallo ya empezado.",
+          "explicacion": "Probar el modo de fallo es clave porque en un entorno realista es difícil predecir qué recurso se agotará primero y cómo."
+        },
+        {
+          "id": "arsre4-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Qué son el load shedding y la degradación elegante (graceful degradation)?",
+          "solucion": "Load shedding: descartar parte de la carga (tráfico) al acercarse a la sobrecarga, para que el servidor no se quede sin RAM ni falle health checks, haciendo el máximo trabajo útil posible (p.ej. devolver HTTP 503 si hay más de X peticiones en vuelo). Degradación elegante: un paso más, reducir la CANTIDAD/calidad del trabajo (buscar solo en la caché en memoria en vez de en el disco, o usar un ranking menos preciso pero más rápido cuando está sobrecargado).",
+          "explicacion": "Cambiar la cola de FIFO a LIFO o CoDel descarta peticiones viejas que el usuario probablemente ya abandonó; propaga deadlines de RPC."
+        },
+        {
+          "id": "arsre4-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué hay que ejercitar regularmente el modo de degradación y mantenerlo simple?",
+          "solucion": "Porque 'el camino de código que nunca usas es el que (a menudo) no funciona': en operación normal la degradación elegante no se usa, así que se tiene poca experiencia operativa con ella y aumenta el riesgo. Conviene ejercitarla regularmente corriendo un pequeño subconjunto de servidores cerca de la sobrecarga, monitorear y alertar cuando demasiados servidores entren en estos modos, y mantenerla simple (un load shedding complejo puede causar problemas por sí mismo o entrar en ciclos de realimentación).",
+          "explicacion": "Diseña una forma de apagar o ajustar rápido la degradación compleja si hace falta; la degradación no debería dispararse a menudo."
         }
       ]
     }

@@ -252,11 +252,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/Site Reliability Engineering_ How Google Runs Production Systems ( PDFDrive ).pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-sre1",
+        "arena-sre2",
+        "arena-sre3",
+        "arena-sre4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades con el canon SRE de Google (valor NUEVO que da los fundamentos de fiabilidad bajo los SLOs/incidentes ya vistos en Reliable ML): sre1 riesgo + error budgets + SLI/SLO/SLA (100% no es el objetivo, error budget=1-SLO, caso Chubby, percentiles vs media), sre2 toil (def + cap 50%) + cuatro señales doradas (latencia/tráfico/errores/saturación) + black-box vs white-box + síntomas vs causas + buena página, sre3 troubleshooting hipotético-deductivo (caballos no cebras, correlación≠causa) + Incident Command System (roles: command/ops/comms/planning; historia de Mary) + postmortems sin culpa, sre4 release engineering (autoservicio/alta velocidad/herméticos/cherry-pick) + simplicidad (esencial vs accidental, líneas negativas, APIs mínimas) + prevenir sobrecarga (load shedding, degradación elegante) + fallos en cascada (GC death spiral, reintentos amplifican, N+2). 60 banco (15/unidad) + 2 examen (f7-ex-50 error budget/SLO, f7-ex-51 fallos en cascada). Órdenes 71-74. 11 heurísticas nuevas (equilibrar-confiabilidad-velocidad, definir-sli-slo-sla, eliminar-toil, cuatro-senales-doradas, sintomas-vs-causas, troubleshooting-hipotetico-deductivo, postmortem-sin-culpa, release-hermetico, preferir-simplicidad, prevenir-sobrecarga, evitar-fallos-cascada); reúsa responder-incidente-ml. Catálogo total 112 heurísticas. VERSION v43. Próximo libro §10 (ml-systems): Observability Engineering."
     },
     {
       "libro": "Observability Engineering",
