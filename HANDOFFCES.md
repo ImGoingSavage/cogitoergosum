@@ -2266,3 +2266,48 @@ archivos). Contenido anclado en el libro (§1.2; TOC verificado: ed. 2025, 23 ca
 abre), Causal Inference: The Mixtape (.txt en Biblioteca/). Después Sectores D
 (conductual) y C (problems.json). Próxima unidad: `arena-h7,h8…`; órdenes desde 99,
 `f7-ex-64`+, VERSION v50+.
+
+## Bitácora 2026-06-14 (Arena tanda 22) — Survival Analysis (Kleinbaum & Klein, 3rd ed.), 62 preguntas
+
+Procesado `Survival Analysis: A Self-Learning Text` (David Kleinbaum & Mitchel
+Klein, 3ª ed., 2012, 9 caps.) — libros[22] del ledger, ruta `health-ai-rwe`, cuota
+25. Es la **mecánica biostadística** de supervivencia, valor NUEVO **distinto** de
+`arena-h6` (supervivencia CAUSAL / g-métodos de Hernán). 4 unidades por bloques del
+libro (`fase-7`, órdenes 99-102):
+- **arena-h7** — fundamentos + KM + log-rank (Cap. 1-2): **S(t)/h(t)/H(t)** y
+  S=exp(−∫h), **censura** (derecha/izq/intervalo + no informativa), **Kaplan-Meier**
+  product-limit (escalones en eventos, mediana), **log-rank** (H0 curvas iguales,
+  observado−esperado, óptimo bajo PH; Wilcoxon/Tarone-Ware/Peto), risk set.
+- **arena-h8** — Cox PH + supuesto PH (Cap. 3-5): **h(t,X)=h₀(t)exp(βX)**
+  semiparamétrico, **HR=exp(β)**, **verosimilitud parcial**, supuesto **PH** (HR
+  constante), evaluar con **log-log / Schoenfeld / variable tiempo-dependiente**,
+  **Cox estratificado** (h₀ por estrato, β compartidos, no-interacción vs
+  interacción por LR), curvas ajustadas.
+- **arena-h9** — Cox extendido + paramétricos/AFT (Cap. 6-7): covariables
+  **tiempo-dependientes** h₀(t)exp[βX+δX(t)] (HR depende de t; cuidado immortal
+  time), paramétricos **exponencial/Weibull/log-logística** por forma del hazard,
+  **AFT** (factor de aceleración estira/encoge el tiempo), **Weibull única PH+AFT**,
+  HR<1↔factor>1, extrapolación.
+- **arena-h10** — eventos recurrentes + riesgos competitivos (Cap. 8-9): recurrentes
+  (correlación intra-sujeto → **varianza robusta**; Andersen-Gill/PWP/WLW);
+  **riesgos competitivos** (hazard **específico de causa**=censura competidores=
+  etiología; **1−KM SOBRESTIMA**; **CIF** correcta; **Fine-Gray** subdistribution
+  hazard = regresión sobre la CIF = predicción/riesgo; prueba de **Gray**; censura
+  vs riesgo competitivo).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-64** evaluar supuesto PH y qué hacer si se
+viola, **f7-ex-65** riesgos competitivos 1−KM/CIF/cause-specific vs Fine-Gray) = 62.
+11 heurísticas nuevas (funcion-supervivencia-hazard, manejar-censura-supervivencia,
+estimador-kaplan-meier, prueba-log-rank, modelo-cox-ph, evaluar-supuesto-ph,
+cox-estratificado, cox-extendido-tiempo-dependiente, modelo-parametrico-aft,
+eventos-recurrentes-supervivencia, riesgos-competitivos-cif). Catálogo total **192**
+heurísticas. `sw.js` **v50** (+4 lecciones `data/teoria/arena-h{7..10}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (102 unidades en `fase-7`, 65 ítems de examen); `verificar-shell.py` OK (187
+archivos). Contenido anclado en el libro (§1.2; TOC verificado: 3ª ed., 9 caps.).
+
+**Siguiente** — orden §10 (health-ai-rwe): **The Book of OHDSI** (libros[23]),
+luego The Book of Why (epub — saltar si Read no abre), Causal Inference: The Mixtape
+(.txt en Biblioteca/). Después Sectores D (conductual) y C (problems.json). Próxima
+unidad: `arena-h11,h12…`; órdenes desde 103, `f7-ex-66`+, VERSION v51+.

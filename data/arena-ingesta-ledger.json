@@ -364,11 +364,16 @@
       "archivo": "Arena/Entrevista health  ai/Survival Analysis- 3rd edition- 2012.pdf",
       "sector": "A",
       "ruta": "health-ai-rwe",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-h7",
+        "arena-h8",
+        "arena-h9",
+        "arena-h10"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. Kleinbaum & Klein 'Survival Analysis: A Self-Learning Text' 3a ed. (2012, 9 caps.). MECÁNICA biostadística de supervivencia, valor NUEVO distinto de arena-h6 (supervivencia CAUSAL / g-métodos de Hernán). 4 unidades por bloques del libro: h7 fundamentos+KM+log-rank (Cap. 1-2: S(t)/h(t)/H(t) y S=exp(-∫h), censura derecha/izq/intervalo + no informativa, Kaplan-Meier product-limit escalonado + mediana, log-rank H0 curvas iguales/observado-esperado/óptimo bajo PH + Wilcoxon-Tarone-Ware-Peto, risk set, por qué no logística/lineal, formas del hazard), h8 Cox PH + supuesto PH (Cap. 3-5: h(t,X)=h0(t)exp(βX) semiparamétrico, HR=exp(β), verosimilitud parcial, supuesto PH=HR constante, evaluar PH con log-log/Schoenfeld GOF/variable tiempo-dependiente, qué hacer si se viola, Cox estratificado h0 por estrato+β compartidos+no-interacción vs interacción por LR test, curvas ajustadas, pruebas LR/Wald/score), h9 Cox extendido + paramétricos/AFT (Cap. 6-7: covariables tiempo-dependientes h0(t)exp[βX+δX(t)], HR depende de t, precaución immortal time/anticipación + formato counting process, paramétricos exponencial/Weibull/log-logística por forma del hazard, AFT factor de aceleración estira/encoge el tiempo, Weibull única PH+AFT, HR<1↔factor>1, extrapolación, elegir estratificado vs extendido), h10 eventos recurrentes + riesgos competitivos (Cap. 8-9: recurrentes correlación intra-sujeto→varianza robusta, Andersen-Gill conteo/PWP condicional por orden/WLW marginal; competing risks evento que impide otro, hazard específico de causa=censura competidores=etiología, por qué 1-KM SOBRESTIMA, CIF/incidencia acumulada correcta, Fine-Gray subdistribution hazard=regresión sobre CIF=predicción/riesgo, prueba de Gray vs log-rank, CPC, censura vs riesgo competitivo). 60 banco (15/unidad) + 2 examen (f7-ex-64 evaluar supuesto PH + qué hacer si se viola, f7-ex-65 riesgos competitivos 1-KM/CIF/cause-specific vs Fine-Gray). Órdenes 99-102. 11 heurísticas nuevas (funcion-supervivencia-hazard, manejar-censura-supervivencia, estimador-kaplan-meier, prueba-log-rank, modelo-cox-ph, evaluar-supuesto-ph, cox-estratificado, cox-extendido-tiempo-dependiente, modelo-parametrico-aft, eventos-recurrentes-supervivencia, riesgos-competitivos-cif). Catálogo total 192 heurísticas. VERSION v50 (187 archivos). Próximo libro §10 (health-ai-rwe): The Book of OHDSI."
     },
     {
       "libro": "The Book of OHDSI",

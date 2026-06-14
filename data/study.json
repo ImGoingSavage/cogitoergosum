@@ -1333,6 +1333,94 @@
    "cuando_usar": "Al diseñar un estudio observacional de RWE que imita un ensayo de una estrategia mantenida.",
    "ejemplo": "Emular 'iniciar y mantener estatina vs no' con new-users alineados en t=0 y per-protocol por IP weighting.",
    "patron": "especifica el ECA objetivo; alinea t=0 (evita immortal time + usuario prevalente); new-user/comparador activo; per-protocol con g-métodos"
+  },
+  {
+   "id": "funcion-supervivencia-hazard",
+   "nombre": "Función de supervivencia y de hazard",
+   "descripcion": "En datos de tiempo-hasta-evento (T) hay dos funciones clave. La FUNCIÓN DE SUPERVIVENCIA S(t)=P(T>t) es la probabilidad de sobrevivir más allá de t: decrece de 1 (en t=0) hacia 0, es no creciente. La FUNCIÓN DE HAZARD h(t) es la TASA INSTANTÁNEA de fallo dado que se ha sobrevivido hasta t (un potencial por unidad de tiempo, no una probabilidad; puede ser >1). Relaciones: h(t) = f(t)/S(t) = −d/dt ln S(t); el HAZARD ACUMULADO H(t)=∫₀ᵗ h(u)du cumple S(t)=exp(−H(t)). Conocer una determina la otra: S(t) describe lo que queda, h(t) describe el riesgo momentáneo.",
+   "cuando_usar": "Al describir o modelar outcomes de tiempo-hasta-evento.",
+   "ejemplo": "Un hazard constante (exponencial) da S(t)=exp(−λt); un hazard creciente acelera la caída de S(t).",
+   "patron": "S(t)=P(T>t) (cae de 1 a 0); h(t)=tasa instantánea; S(t)=exp(−∫h); h=−d ln S/dt"
+  },
+  {
+   "id": "manejar-censura-supervivencia",
+   "nombre": "Manejar la censura en supervivencia",
+   "descripcion": "La CENSURA ocurre cuando no se observa el evento exacto: solo se sabe que ocurrió después (derecha), antes (izquierda) o dentro de un intervalo. La CENSURA POR LA DERECHA es la más común (fin del estudio, pérdida de seguimiento, retiro/competing event). Los métodos de supervivencia existen justamente para usar la información parcial de los censurados (saben que sobrevivieron al menos hasta su tiempo de censura) en vez de descartarlos o tratarlos como eventos. Supuesto crítico: censura NO INFORMATIVA / INDEPENDIENTE — los censurados tienen el mismo pronóstico futuro que los que siguen en riesgo; si la censura se asocia al pronóstico (informativa), los estimadores se sesgan.",
+   "cuando_usar": "Siempre que haya tiempos de seguimiento incompletos (lo normal en cohortes/ensayos).",
+   "ejemplo": "Un paciente vivo al cerrar el estudio se censura en esa fecha: aporta 'sobrevivió ≥ ese tiempo'.",
+   "patron": "derecha/izquierda/intervalo; usa info parcial; supuesto: censura no informativa (independiente del pronóstico)"
+  },
+  {
+   "id": "estimador-kaplan-meier",
+   "nombre": "Estimador de Kaplan-Meier",
+   "descripcion": "El KAPLAN-MEIER (product-limit) estima S(t) de forma NO PARAMÉTRICA sin asumir distribución: Ŝ(t) = ∏ sobre los tiempos de evento ≤ t de (n_j − d_j)/n_j, donde en cada tiempo de evento n_j es el número EN RIESGO justo antes y d_j el número de eventos. La curva es ESCALONADA: baja solo en los tiempos de EVENTO (no en los de censura), y los censurados reducen el conjunto en riesgo de los tiempos posteriores (se suelen marcar con ticks). La mediana de supervivencia es el t donde Ŝ(t)=0.5. Si los últimos tiempos están censurados, la curva no llega a 0 y la media no se estima bien.",
+   "cuando_usar": "Para estimar y graficar la supervivencia de uno o más grupos sin modelar.",
+   "ejemplo": "Comparar visualmente las curvas KM de tratamiento vs control antes de hacer un test o un modelo.",
+   "patron": "Ŝ(t)=∏(n_j−d_j)/n_j; escalones en eventos; censura achica el risk set; mediana en Ŝ=0.5"
+  },
+  {
+   "id": "prueba-log-rank",
+   "nombre": "Prueba de log-rank",
+   "descripcion": "La PRUEBA DE LOG-RANK compara las curvas de supervivencia de dos o más grupos. H0: las curvas (distribuciones de supervivencia) son IGUALES en todos los grupos. Construye, en cada tiempo de evento, los eventos OBSERVADOS vs los ESPERADOS bajo H0 (según el tamaño en riesgo de cada grupo) y los suma para un estadístico chi-cuadrado (gl = nº de grupos − 1). Da MÁS PESO a los tiempos TARDÍOS por igual a cada evento y es la más potente cuando se cumple la proporcionalidad de hazards. Variantes que pesan distinto los tiempos tempranos: Wilcoxon (Breslow), Tarone-Ware, Peto. Es un test, no una medida de magnitud (para eso, el hazard ratio del Cox).",
+   "cuando_usar": "Para contrastar si dos o más grupos difieren en supervivencia.",
+   "ejemplo": "Tras dibujar las curvas KM, un log-rank p<0.05 indica diferencia significativa de supervivencia entre brazos.",
+   "patron": "H0: curvas iguales; Σ(observados−esperados); chi² gl=grupos−1; óptimo bajo PH; Wilcoxon pesa lo temprano"
+  },
+  {
+   "id": "modelo-cox-ph",
+   "nombre": "Modelo de Cox de hazards proporcionales",
+   "descripcion": "El MODELO DE COX es h(t,X)=h₀(t)·exp(β₁X₁+…+βₚXₚ): el hazard de un individuo es un hazard BASE h₀(t) (no especificado) multiplicado por exp(combinación lineal de covariables). Es SEMIPARAMÉTRICO (no asume forma para h₀(t)) y por eso muy popular y robusto. El HAZARD RATIO entre dos individuos = exp(β·Δx); para una covariable binaria, HR=exp(β) (HR>1 mayor riesgo, =1 sin efecto). Se estima por VEROSIMILITUD PARCIAL, que no requiere h₀(t) (solo el orden de los eventos). Asume HAZARDS PROPORCIONALES: el HR es CONSTANTE en el tiempo. Permite obtener curvas de supervivencia AJUSTADAS.",
+   "cuando_usar": "Para estimar el efecto (HR) de covariables sobre el tiempo-hasta-evento, ajustando por otras.",
+   "ejemplo": "HR=2.0 para tratamiento ⇒ el grupo tratado tiene el doble de hazard en todo momento (bajo PH).",
+   "patron": "h(t,X)=h₀(t)exp(βX); HR=exp(β) constante (PH); semiparamétrico; verosimilitud parcial"
+  },
+  {
+   "id": "evaluar-supuesto-ph",
+   "nombre": "Evaluar el supuesto de hazards proporcionales",
+   "descripcion": "El Cox asume que el HR es CONSTANTE en el tiempo (PH). Tres formas de evaluarlo: (1) GRÁFICA — curvas log(−log S(t)) por categoría de la covariable deben ser PARALELAS (o comparar KM observadas vs esperadas por el modelo); (2) PRUEBA DE BONDAD DE AJUSTE basada en RESIDUOS DE SCHOENFELD (correlación de los residuos con el tiempo: si es significativa, se viola PH); (3) VARIABLE DEPENDIENTE DEL TIEMPO — añadir un término de interacción covariable×función-del-tiempo al modelo y testear su significancia (si es significativo, el HR cambia con el tiempo → se viola PH). Si se VIOLA: usar Cox ESTRATIFICADO (para confundidores que no cumplen PH) o Cox EXTENDIDO con variable tiempo-dependiente.",
+   "cuando_usar": "Antes de confiar en un HR del Cox: ¿es constante en el tiempo?",
+   "ejemplo": "Curvas log-log que se cruzan ⇒ se viola PH; estratifica por esa variable o añade interacción con el tiempo.",
+   "patron": "log-log paralelas + GOF Schoenfeld + interacción covariable×tiempo; si se viola → estratificar o Cox extendido"
+  },
+  {
+   "id": "cox-estratificado",
+   "nombre": "Cox estratificado",
+   "descripcion": "El COX ESTRATIFICADO controla una covariable que NO cumple PH (o un factor de ajuste) ESTRATIFICANDO por ella: ajusta un hazard BASE DISTINTO h₀g(t) para cada estrato g, manteniendo los MISMOS coeficientes β para las demás covariables (en el modelo SIN interacción). No produce un HR para la variable de estratificación (su efecto queda absorbido en los baselines). El modelo de NO INTERACCIÓN asume que el efecto de las otras covariables es igual en todos los estratos; el modelo CON INTERACCIÓN permite coeficientes distintos por estrato y se compara con el de no-interacción mediante una prueba de razón de verosimilitud.",
+   "cuando_usar": "Cuando una covariable de control viola PH y no interesa estimar su HR.",
+   "ejemplo": "Si 'sexo' viola PH, estratificar por sexo: cada sexo tiene su h₀(t) pero comparten el HR del tratamiento.",
+   "patron": "h₀ distinto por estrato, β compartidos; sin HR para la variable estratificada; prueba no-interacción vs interacción"
+  },
+  {
+   "id": "cox-extendido-tiempo-dependiente",
+   "nombre": "Cox extendido (covariables tiempo-dependientes)",
+   "descripcion": "El COX EXTENDIDO incorpora COVARIABLES QUE CAMBIAN EN EL TIEMPO: h(t,X(t))=h₀(t)·exp[ΣβᵢXᵢ + ΣδⱼXⱼ(t)]. Dos usos: (1) modelar variables genuinamente tiempo-dependientes (p. ej. estatus de trasplante que cambia, valores de laboratorio repetidos); (2) MODELAR LA NO PROPORCIONALIDAD añadiendo un término de interacción covariable×g(t) (p. ej. X·t o X·ln t): si δ es significativo, el efecto NO es proporcional y el HR depende del tiempo. Con variables tiempo-dependientes el HR YA NO es constante: hay que evaluarlo en un instante. Cuidado: no usar variables tiempo-dependientes 'del futuro' que sean consecuencia del evento (anticipación).",
+   "cuando_usar": "Cuando una covariable cambia durante el seguimiento o cuando se viola PH y se quiere modelar.",
+   "ejemplo": "Añadir tratamiento×ln(t) para capturar que el HR del tratamiento disminuye con el tiempo.",
+   "patron": "h₀(t)exp[ΣβX+ΣδX(t)]; modela variables cambiantes o la no-PH; HR depende del tiempo"
+  },
+  {
+   "id": "modelo-parametrico-aft",
+   "nombre": "Modelos paramétricos y AFT",
+   "descripcion": "Los MODELOS PARAMÉTRICOS asumen una DISTRIBUCIÓN para el tiempo de supervivencia (a diferencia del Cox/KM). EXPONENCIAL: hazard CONSTANTE λ (sin memoria). WEIBULL: hazard MONÓTONO (creciente o decreciente, según el parámetro de forma); es la única que es a la vez PH y AFT. LOG-LOGÍSTICA/LOG-NORMAL: hazard NO monótono (sube y baja), son AFT pero no PH. El marco AFT (ACCELERATED FAILURE TIME) modela el efecto sobre el TIEMPO de supervivencia (no sobre el hazard): un FACTOR DE ACELERACIÓN γ ESTIRA o ENCOGE el eje del tiempo (γ>1 alarga la supervivencia). Ventajas paramétricas: estimación más eficiente si la distribución es correcta, predicción de tiempos/percentiles y supervivencia más allá del seguimiento; desventaja: sesgo si la forma es errónea.",
+   "cuando_usar": "Cuando se justifica una forma del hazard, se quiere predecir tiempos, o el efecto se piensa en escala de tiempo.",
+   "ejemplo": "Un AFT log-logístico con factor de aceleración 2 ⇒ el tratamiento duplica el tiempo típico hasta el evento.",
+   "patron": "distribución asumida (exponencial=hazard cte, Weibull=monótono PH+AFT, log-logística=AFT no-PH); AFT estira el tiempo (γ)"
+  },
+  {
+   "id": "eventos-recurrentes-supervivencia",
+   "nombre": "Análisis de eventos recurrentes",
+   "descripcion": "Cuando un sujeto puede sufrir el MISMO evento VARIAS veces (recaídas, hospitalizaciones, infecciones), los eventos dentro de un sujeto están CORRELACIONADOS y los métodos estándar (que asumen independencia) dan errores estándar mal. Enfoques: (1) PROCESO DE CONTEO (Andersen-Gill): trata todos los eventos por igual con intervalos (start, stop] por sujeto y usa una VARIANZA ROBUSTA para la correlación intra-sujeto; (2) modelos CONDICIONALES estratificados por orden del evento (Prentice-Williams-Peterson, PWP): el sujeto no está 'en riesgo' del k-ésimo evento hasta tener el (k−1); (3) modelo MARGINAL (WLW). La clave práctica: usar VARIANZA ROBUSTA/cluster por sujeto y elegir el formato del riesgo según la pregunta.",
+   "cuando_usar": "Outcomes que se repiten en el mismo individuo durante el seguimiento.",
+   "ejemplo": "Hospitalizaciones repetidas por insuficiencia cardiaca: Andersen-Gill con SE robusto por paciente.",
+   "patron": "eventos repetidos correlacionados; Andersen-Gill (conteo)/PWP (condicional)/WLW (marginal); varianza robusta por sujeto"
+  },
+  {
+   "id": "riesgos-competitivos-cif",
+   "nombre": "Riesgos competitivos y CIF (Fine-Gray)",
+   "descripcion": "Hay RIESGOS COMPETITIVOS cuando pueden ocurrir VARIOS tipos de evento y uno IMPIDE o altera la observación de otro (p. ej. muerte por cáncer vs muerte por otra causa). El HAZARD ESPECÍFICO DE CAUSA trata los eventos competidores como CENSURA, pero entonces el KM (1−KM) SOBRESTIMA la incidencia acumulada de un evento (asume que los que tuvieron el competidor aún podrían tenerlo, e independencia dudosa). La medida correcta es la FUNCIÓN/CURVA DE INCIDENCIA ACUMULADA (CIF/CIC), que reparte el riesgo entre causas. El modelo de FINE-GRAY modela el HAZARD DE SUBDISTRIBUCIÓN y permite regresión sobre la CIF (mantiene en el conjunto de riesgo a quienes tuvieron el evento competidor). Regla: hazard específico de causa para ETIOLOGÍA; subdistribución (Fine-Gray)/CIF para PREDICCIÓN de riesgo.",
+   "cuando_usar": "Cuando hay más de un tipo de evento y la ocurrencia de uno excluye los demás.",
+   "ejemplo": "Estimar la incidencia de recaída cuando muchos pacientes mueren antes: usa la CIF, no 1−KM.",
+   "patron": "competing risks: cause-specific (censura competidores, etiología) vs Fine-Gray/CIF (predicción); 1−KM sobrestima"
   }
  ],
  "bloques": [
@@ -2027,7 +2115,11 @@
     "arena-h3",
     "arena-h4",
     "arena-h5",
-    "arena-h6"
+    "arena-h6",
+    "arena-h7",
+    "arena-h8",
+    "arena-h9",
+    "arena-h10"
    ],
    "examen": {
     "items": [
@@ -4161,6 +4253,77 @@
        ]
       },
       "source": "Causal Inference: What If (Hernán & Robins) — Caps. 2-3, 12-13"
+     },
+     {
+      "id": "f7-ex-64",
+      "heuristica": "evaluar-supuesto-ph",
+      "enunciado": "Ajustas un modelo de Cox para el efecto de un tratamiento sobre la supervivencia y reportas HR=0.7. Un revisor te pide demostrar que el supuesto de hazards proporcionales se cumple. (a) ¿Qué significa exactamente el supuesto PH y por qué importa para interpretar tu HR? (b) Describe TRES formas de evaluarlo. (c) Si descubres que el efecto del tratamiento DISMINUYE con el tiempo (las curvas log-log se cruzan), ¿qué dos estrategias tienes y cuándo elegirías cada una?",
+      "pistas": [
+       "PH se trata de que el HR no cambie en el…",
+       "Una evaluación es gráfica (log-log), otra usa residuos, otra añade un término.",
+       "Residuos de Schoenfeld vs el tiempo.",
+       "Interacción covariable×función del tiempo.",
+       "¿Interesa el efecto del tratamiento o solo controlar la variable?"
+      ],
+      "solucion": "(a) El supuesto PH dice que el HAZARD RATIO entre tratados y no tratados es CONSTANTE a lo largo del tiempo (los hazards son proporcionales; las curvas log(−log S) son paralelas). Importa porque, si se cumple, tu HR=0.7 es un ÚNICO número válido para todo el seguimiento; si NO se cumple, un solo HR es engañoso (promedia efectos que cambian en el tiempo) y puede ocultar que el tratamiento ayuda al inicio y no después (o viceversa). (b) Tres formas: (1) GRÁFICA: curvas log(−log Ŝ(t)) por grupo de tratamiento — deben ser PARALELAS; si se cruzan/divergen, se viola PH (también comparar KM observadas vs esperadas por el modelo). (2) PRUEBA DE BONDAD DE AJUSTE con RESIDUOS DE SCHOENFELD: testear si están correlacionados con el tiempo; correlación significativa ⇒ se viola PH. (3) VARIABLE DEPENDIENTE DEL TIEMPO: añadir al modelo una interacción tratamiento×g(t) (p. ej. tratamiento×ln t) y testear su coeficiente; si es significativo, el HR depende del tiempo ⇒ no-PH. (c) Si el efecto cambia con el tiempo: (1) COX ESTRATIFICADO por tratamiento (cada nivel con su propio hazard base) — pero esto NO da un HR para el tratamiento, así que solo sirve si la variable fuese un factor de CONTROL, no la exposición de interés; (2) COX EXTENDIDO con un término tiempo-dependiente (tratamiento×función del tiempo) para MODELAR cómo cambia el HR y reportarlo a tiempos concretos. Como aquí el tratamiento ES la variable de interés, elegiría el COX EXTENDIDO (o un análisis por intervalos de tiempo); reservaría la estratificación para un confundidor que viole PH y cuyo HR no necesite.",
+      "disparador": "Señal: 'reporto un HR del Cox' → primero valida PH. Jugada: PH = HR constante (log-log paralelas); evalúa con log-log + Schoenfeld + interacción×tiempo; si se viola, Cox extendido (si quieres el efecto) o estratificado (si solo controlas la variable).",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "hazards proporcionales",
+        "residuos de Schoenfeld",
+        "curvas log-log",
+        "variable tiempo-dependiente",
+        "Cox estratificado",
+        "Cox extendido"
+       ],
+       "errores_comunes": [
+        "Reportar un solo HR sin verificar PH",
+        "Estratificar por la variable de interés y perder su HR",
+        "Confundir que log-log se crucen con un buen ajuste"
+       ],
+       "casos_borde": [
+        "Si las curvas KM se cruzan, el HR único es especialmente engañoso",
+        "Para variables continuas hay que categorizar para el gráfico log-log"
+       ]
+      },
+      "source": "Survival Analysis (Kleinbaum & Klein, 3rd ed.) — Caps. 3-6"
+     },
+     {
+      "id": "f7-ex-65",
+      "heuristica": "riesgos-competitivos-cif",
+      "enunciado": "Estudias el tiempo hasta la RECAÍDA de un cáncer, pero muchos pacientes MUEREN (por otras causas) antes de recaer. Un colega estima la incidencia de recaída con 1 − Kaplan-Meier, tratando las muertes como censura. (a) ¿Qué problema tiene su enfoque y por qué? (b) ¿Qué medida deberías usar y qué es el hazard específico de causa vs el de subdistribución (Fine-Gray)? (c) ¿Cuándo usarías cada hazard y cómo compararías la incidencia entre dos grupos?",
+      "pistas": [
+       "¿Pueden recaer los que ya murieron?",
+       "El KM asume que el censurado podría tener el evento luego.",
+       "La medida correcta reparte el riesgo entre causas.",
+       "Una modela la tasa entre libres de evento; otra permite regresar sobre la incidencia.",
+       "¿Etiología o predicción de riesgo? ¿Qué test reemplaza al log-rank?"
+      ],
+      "solucion": "(a) Tratar las muertes como CENSURA en un KM asume censura NO INFORMATIVA, es decir, que esos pacientes PODRÍAN recaer más adelante; pero quien murió ya NUNCA podrá recaer (riesgo competitivo). Al 'devolverlos' al conjunto en riesgo, 1−KM SOBRESTIMA la incidencia acumulada de recaída (y la suma de 1−KM de todas las causas puede exceder 1). (b) La medida correcta es la FUNCIÓN DE INCIDENCIA ACUMULADA (CIF/CIC): la probabilidad de recaer antes de t y antes de cualquier evento competidor; acumula riesgo solo mientras el paciente sigue libre de TODOS los eventos, combinando el hazard específico de causa con la supervivencia global. El HAZARD ESPECÍFICO DE CAUSA es la tasa instantánea de recaída entre los aún libres de evento (se estima con un Cox censurando las muertes); el HAZARD DE SUBDISTRIBUCIÓN de FINE-GRAY mantiene a los que murieron dentro del conjunto de riesgo (con peso decreciente) y permite REGRESAR covariables directamente sobre la CIF. (c) Usaría el hazard ESPECÍFICO DE CAUSA para preguntas ETIOLÓGICAS (¿la covariable cambia la tasa biológica de recaída?) y el de SUBDISTRIBUCIÓN/Fine-Gray para PREDICCIÓN y RIESGO ABSOLUTO de recaída en presencia de muerte competidora; idealmente reporto ambos (una covariable puede afectar la CIF vía su efecto sobre la mortalidad competidora sin cambiar el hazard específico). Para COMPARAR la incidencia entre dos grupos usaría la PRUEBA DE GRAY (análogo del log-rank para CIF) o un subdistribution HR de Fine-Gray, NUNCA el log-rank sobre 1−KM.",
+      "disparador": "Señal: 'evento de interés + competidor que lo impide (muerte)'. Jugada: 1−KM sobrestima → usa la CIF; hazard específico de causa (censura competidores) para etiología, Fine-Gray/subdistribución para riesgo absoluto; compara con la prueba de Gray, no log-rank sobre 1−KM.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "riesgos competitivos",
+        "CIF/incidencia acumulada",
+        "hazard específico de causa",
+        "Fine-Gray/subdistribution hazard",
+        "prueba de Gray"
+       ],
+       "errores_comunes": [
+        "Usar 1−KM con riesgos competitivos",
+        "Tratar un evento competidor terminal como censura para estimar riesgo",
+        "Comparar incidencia con log-rank en vez de la prueba de Gray"
+       ],
+       "casos_borde": [
+        "Una covariable puede subir la CIF de una causa al bajar la mortalidad competidora",
+        "Reportar cause-specific y Fine-Gray juntos da la imagen completa"
+       ]
+      },
+      "source": "Survival Analysis (Kleinbaum & Klein, 3rd ed.) — Cap. 9"
      }
     ]
    }
@@ -18788,6 +18951,538 @@
      "enunciado": "¿Por qué la emulación de target trials se ha vuelto central en la evidencia de mundo real (RWE) y la salud-IA?",
      "solucion": "Porque la mayoría de los datos disponibles (registros, historias clínicas electrónicas, reclamaciones) son OBSERVACIONALES, y emular un target trial provee un marco DISCIPLINADO para extraer inferencias causales de ellos: obliga a definir pregunta, elegibilidad, tiempo cero, estrategias y estimando como en un ECA, exponiendo los sesgos (immortal time, usuario prevalente, selección, confundimiento tiempo-variable) y guiando los g-métodos para corregirlos. Es el 'caballo de batalla' para generar RWE creíble cuando un ECA no es factible o ético.",
      "explicacion": "Convierte datos observacionales masivos en inferencia causal estructurada y auditable."
+    }
+   ]
+  },
+  {
+   "id": "arena-h7",
+   "bloque": "fase-7",
+   "orden": 99,
+   "titulo": "Arena Análisis de Supervivencia · Fundamentos, Kaplan-Meier y log-rank",
+   "libro": "Survival Analysis: A Self-Learning Text (David Kleinbaum & Mitchel Klein, 3rd ed.)",
+   "lectura": "data/teoria/arena-h7.md",
+   "dosis": 30,
+   "objetivo": "Dominar la mecánica básica: tiempo-hasta-evento y censura, funciones de supervivencia y hazard, estimador de Kaplan-Meier y la prueba de log-rank para comparar curvas.",
+   "heuristicas": [
+    "funcion-supervivencia-hazard",
+    "manejar-censura-supervivencia",
+    "estimador-kaplan-meier",
+    "prueba-log-rank"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "S(t)=P(T>t) cae de 1 a 0; h(t)=tasa instantánea; S(t)=exp(−∫h)",
+    "Censura (derecha la común): usa info parcial; supuesto de censura no informativa",
+    "Kaplan-Meier: Ŝ(t)=∏(n_j−d_j)/n_j, escalones en eventos; mediana en Ŝ=0.5",
+    "Log-rank: H0 curvas iguales; observado vs esperado; óptimo bajo PH (Wilcoxon pesa lo temprano)",
+    "Necesitas tiempo + indicador evento/censura por individuo"
+   ],
+   "banco": [
+    {
+     "id": "arh7-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué caracteriza a los datos de SUPERVIVENCIA (tiempo-hasta-evento) y por qué necesitan métodos propios?",
+     "solucion": "El outcome es el TIEMPO hasta que ocurre un evento (muerte, recaída, falla), medido desde un origen bien definido. Dos rasgos los hacen especiales: (1) los tiempos suelen estar SESGADOS (no normales) y positivos; (2) hay CENSURA: para muchos sujetos no se observa el evento (siguen vivos al final, se pierden). Una regresión ordinaria descartaría o trataría mal a los censurados; los métodos de supervivencia usan su información parcial (sobrevivieron al menos hasta cierto tiempo).",
+     "explicacion": "Sin manejar la censura, se sesga la estimación; por eso no basta con una regresión lineal del tiempo."
+    },
+    {
+     "id": "arh7-q2",
+     "tipo": "concepto",
+     "enunciado": "Define la función de SUPERVIVENCIA S(t) y la función de HAZARD h(t).",
+     "solucion": "S(t)=P(T>t) es la probabilidad de sobrevivir (no tener el evento) más allá del tiempo t; vale 1 en t=0 y decrece de forma no creciente hacia 0. h(t) es la TASA INSTANTÁNEA de fallo en t dado que se ha sobrevivido hasta t: el potencial de fallo por unidad de tiempo condicional a estar en riesgo. S(t) describe 'cuánto queda'; h(t) describe el 'riesgo momentáneo'.",
+     "explicacion": "h(t) es una tasa (puede exceder 1), no una probabilidad; S(t) sí es una probabilidad."
+    },
+    {
+     "id": "arh7-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación matemática conecta S(t), h(t) y el hazard acumulado H(t)?",
+     "solucion": "Están unívocamente relacionadas: h(t) = f(t)/S(t) = −d/dt [ln S(t)]; el hazard acumulado H(t)=∫₀ᵗ h(u)du; y S(t)=exp(−H(t)). Conocer cualquiera determina las demás. Por eso modelar el hazard (como en Cox) equivale a determinar la supervivencia.",
+     "explicacion": "S(t)=exp(−H(t)) es la identidad clave: integrar el hazard da el hazard acumulado, y exponenciar lo negativo da la supervivencia."
+    },
+    {
+     "id": "arh7-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la CENSURA y cuáles son sus tipos?",
+     "solucion": "Censura es no observar el tiempo exacto del evento. CENSURA POR LA DERECHA (la más común): solo se sabe que el evento ocurre DESPUÉS del último tiempo observado (fin del estudio, pérdida de seguimiento, retiro). CENSURA POR LA IZQUIERDA: el evento ya había ocurrido antes del primer contacto. CENSURA POR INTERVALO: solo se sabe que ocurrió dentro de un rango entre dos visitas. Los censurados aportan información parcial: sobrevivieron al menos hasta su tiempo de censura.",
+     "explicacion": "La derecha es la típica en cohortes/ensayos; la de intervalo aparece con visitas periódicas."
+    },
+    {
+     "id": "arh7-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el supuesto de censura NO INFORMATIVA y por qué importa?",
+     "solucion": "Es el supuesto de que la censura es INDEPENDIENTE del pronóstico: los individuos censurados en un tiempo tienen el mismo riesgo futuro de evento que los que permanecen en seguimiento (la razón de censura no se relaciona con la probabilidad de sufrir el evento). Importa porque KM, log-rank y Cox lo asumen; si la censura es INFORMATIVA (p. ej. los más graves abandonan), los estimadores se SESGAN. Es la versión de supervivencia del problema de selección/datos faltantes.",
+     "explicacion": "Censura informativa = abandono diferencial según pronóstico; sesga toda la inferencia."
+    },
+    {
+     "id": "arh7-q6",
+     "tipo": "concepto",
+     "enunciado": "Explica cómo se construye el estimador de KAPLAN-MEIER de S(t).",
+     "solucion": "Es el estimador PRODUCT-LIMIT, no paramétrico: se ordenan los tiempos de evento y Ŝ(t) = ∏ sobre los tiempos de evento tⱼ ≤ t de (nⱼ − dⱼ)/nⱼ, donde nⱼ = número EN RIESGO justo antes de tⱼ y dⱼ = número de eventos en tⱼ. En cada tiempo de evento se multiplica la supervivencia previa por la fracción que sobrevive ese instante. No asume ninguna distribución.",
+     "explicacion": "Es un producto acumulado de probabilidades condicionales de sobrevivir cada tiempo de evento."
+    },
+    {
+     "id": "arh7-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la curva de Kaplan-Meier es escalonada y qué papel juega la censura en ella?",
+     "solucion": "Es escalonada porque solo BAJA en los tiempos de EVENTO (no cambia entre eventos ni en los tiempos de censura). La CENSURA no produce un escalón, pero REDUCE el número en riesgo (nⱼ) para los tiempos posteriores, lo que hace que los escalones siguientes sean más grandes. Los tiempos de censura suelen marcarse con 'ticks' sobre la curva. Si los últimos tiempos están censurados, la curva no llega a 0.",
+     "explicacion": "Censurar achica el risk set y agranda los saltos posteriores, pero no baja la curva por sí mismo."
+    },
+    {
+     "id": "arh7-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se obtiene la MEDIANA de supervivencia de una curva KM y por qué a veces la media no se reporta?",
+     "solucion": "La mediana es el menor tiempo t para el cual Ŝ(t) ≤ 0.5: se lee bajando desde 0.5 en el eje vertical hasta la curva y proyectando al eje del tiempo. La MEDIA suele no reportarse porque, si hay censura en los tiempos finales, la curva KM no llega a 0 y la media (área bajo la curva) quedaría subestimada/indeterminada. La mediana es más robusta a la censura de la cola.",
+     "explicacion": "La cola censurada impide estimar bien la media; la mediana es la medida de tendencia estándar."
+    },
+    {
+     "id": "arh7-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué compara la prueba de LOG-RANK y cuál es su hipótesis nula?",
+     "solucion": "Compara las CURVAS DE SUPERVIVENCIA de dos o más grupos. H0: las distribuciones de supervivencia son IGUALES en todos los grupos (ninguna diferencia en supervivencia a lo largo del tiempo). Es un test de significancia global de diferencia entre curvas, no una medida de la magnitud del efecto.",
+     "explicacion": "Rechazar H0 indica que las curvas difieren, pero no cuánto; para magnitud se usa el HR del Cox."
+    },
+    {
+     "id": "arh7-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se construye el estadístico de log-rank?",
+     "solucion": "En cada tiempo de evento se calcula, para cada grupo, el número de eventos OBSERVADOS y los ESPERADOS bajo H0 (proporcionales al tamaño en riesgo de ese grupo en ese instante). Se SUMAN las diferencias observado−esperado a lo largo de todos los tiempos de evento y se combinan en un estadístico CHI-CUADRADO (gl = número de grupos − 1). Un valor grande (p pequeño) indica diferencia entre las curvas.",
+     "explicacion": "Es esencialmente una suma de tablas 2×k en cada tiempo de evento (tipo Mantel-Haenszel)."
+    },
+    {
+     "id": "arh7-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué variantes del log-rank existen y en qué se diferencian?",
+     "solucion": "El log-rank estándar da el MISMO peso a todos los tiempos de evento, por lo que es más sensible a diferencias TARDÍAS y es óptimo bajo hazards proporcionales. Las variantes pesan más los tiempos TEMPRANOS (cuando hay más sujetos en riesgo): WILCOXON de Breslow (pesa por el número en riesgo), TARONE-WARE y PETO. Se elige según dónde se espera la diferencia; si las curvas se cruzan, ningún test simple es ideal.",
+     "explicacion": "Wilcoxon detecta mejor diferencias tempranas; log-rank, las tardías/proporcionales."
+    },
+    {
+     "id": "arh7-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué NO se debe usar una regresión logística o lineal en vez de métodos de supervivencia?",
+     "solucion": "La regresión LOGÍSTICA modela solo si el evento ocurrió (binario) ignorando CUÁNDO y sin manejar la censura (¿qué clase asignar a un censurado?). La regresión LINEAL del tiempo no maneja la censura ni la distribución sesgada del tiempo. Los métodos de supervivencia (KM, log-rank, Cox) usan tanto la ocurrencia como el TIEMPO y la información parcial de los censurados, evitando el sesgo de descartarlos o tratarlos mal.",
+     "explicacion": "Logística pierde el 'cuándo' y la censura; supervivencia los aprovecha."
+    },
+    {
+     "id": "arh7-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa que un sujeto esté 'en riesgo' (risk set) en un tiempo dado?",
+     "solucion": "El conjunto en riesgo (risk set) en un tiempo t son los individuos que, justo antes de t, AÚN no han tenido el evento NI han sido censurados, es decir que todavía podrían experimentar el evento en t. El tamaño del risk set (nⱼ) baja a medida que ocurren eventos y censuras, y es el denominador en KM y en la verosimilitud parcial del Cox. Definirlo bien es la base de todos los estimadores de supervivencia.",
+     "explicacion": "El risk set se va reduciendo con eventos y censuras; es central para KM y Cox."
+    },
+    {
+     "id": "arh7-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué información se necesita por individuo para un análisis de supervivencia básico?",
+     "solucion": "Como mínimo: (1) el TIEMPO de seguimiento (desde el origen hasta el evento o la censura); (2) un INDICADOR DE ESTATUS que diga si en ese tiempo ocurrió el EVENTO (1) o fue CENSURA (0); y (3) las COVARIABLES de interés (tratamiento, edad, etc.). El origen del tiempo (t=0) debe definirse de forma consistente (p. ej. fecha de diagnóstico o de aleatorización) para todos.",
+     "explicacion": "Tiempo + indicador evento/censura es el par mínimo; las covariables se añaden para modelar."
+    },
+    {
+     "id": "arh7-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué describe un hazard CONSTANTE, CRECIENTE y DECRECIENTE en términos prácticos?",
+     "solucion": "Un hazard CONSTANTE (modelo exponencial) significa riesgo instantáneo igual en todo momento (sin memoria; p. ej. fallas puramente aleatorias). Un hazard CRECIENTE indica que el riesgo aumenta con el tiempo (envejecimiento, desgaste). Un hazard DECRECIENTE indica riesgo que baja con el tiempo (p. ej. mortalidad alta tras una cirugía que luego disminuye). La forma del hazard guía la elección de modelo paramétrico (exponencial vs Weibull, etc.).",
+     "explicacion": "La forma del hazard (constante/monótono/no monótono) determina qué distribución paramétrica encaja."
+    }
+   ]
+  },
+  {
+   "id": "arena-h8",
+   "bloque": "fase-7",
+   "orden": 100,
+   "titulo": "Arena Análisis de Supervivencia · Modelo de Cox y supuesto PH",
+   "libro": "Survival Analysis: A Self-Learning Text (David Kleinbaum & Mitchel Klein, 3rd ed.)",
+   "lectura": "data/teoria/arena-h8.md",
+   "dosis": 30,
+   "objetivo": "El modelo de Cox de hazards proporcionales: HR, verosimilitud parcial, semiparametricidad; evaluar el supuesto PH (log-log, Schoenfeld, variable tiempo-dependiente) y el Cox estratificado.",
+   "heuristicas": [
+    "modelo-cox-ph",
+    "evaluar-supuesto-ph",
+    "cox-estratificado"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Cox: h(t,X)=h₀(t)exp(βX); HR=exp(β); semiparamétrico; verosimilitud parcial",
+    "PH = HR constante en el tiempo (curvas log-log paralelas)",
+    "Evaluar PH: log-log + GOF Schoenfeld + interacción covariable×tiempo",
+    "Si se viola PH: Cox estratificado (controlar) o Cox extendido (modelar)",
+    "Cox estratificado: h₀ por estrato, β compartidos, sin HR del estratificador"
+   ],
+   "banco": [
+    {
+     "id": "arh8-q1",
+     "tipo": "concepto",
+     "enunciado": "Escribe el modelo de Cox de hazards proporcionales e interpreta sus componentes.",
+     "solucion": "h(t,X) = h₀(t)·exp(β₁X₁ + β₂X₂ + … + βₚXₚ). h₀(t) es el HAZARD BASE (el hazard cuando todas las X=0), que queda SIN especificar (depende del tiempo). El factor exp(ΣβⱼXⱼ) escala ese baseline según las covariables y NO depende del tiempo. Los βⱼ miden el efecto de cada covariable sobre el log-hazard.",
+     "explicacion": "El modelo separa el tiempo (en h₀(t)) de las covariables (en el exponencial)."
+    },
+    {
+     "id": "arh8-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el modelo de Cox se llama SEMIPARAMÉTRICO y por qué es tan popular?",
+     "solucion": "Semiparamétrico porque tiene una parte PARAMÉTRICA (exp(ΣβⱼXⱼ), con los β a estimar) y una parte NO PARAMÉTRICA: el hazard base h₀(t) NO se asume con ninguna forma funcional. Es popular porque, sin comprometerse con una distribución del tiempo, da estimaciones de HR robustas y cercanas a las de los modelos paramétricos correctos, y permite manejar covariables, estratificación y términos tiempo-dependientes.",
+     "explicacion": "No modelar h₀(t) lo hace flexible y robusto frente a la mala especificación de la distribución."
+    },
+    {
+     "id": "arh8-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se interpreta el HAZARD RATIO en un modelo de Cox?",
+     "solucion": "El HR entre dos individuos con covariables X* y X es exp(Σβⱼ(X*ⱼ − Xⱼ)). Para una covariable binaria (1 vs 0), HR = exp(β): HR>1 indica MAYOR hazard (peor pronóstico) para el grupo expuesto, HR=1 sin efecto, HR<1 protector. Bajo el supuesto PH, ese HR es CONSTANTE a lo largo del tiempo. El h₀(t) se cancela al tomar el cociente, por eso no hace falta conocerlo.",
+     "explicacion": "El HR compara hazards momentáneos; bajo PH es el mismo en todo t."
+    },
+    {
+     "id": "arh8-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la VEROSIMILITUD PARCIAL y por qué es clave para el Cox?",
+     "solucion": "Es la función que el Cox maximiza para estimar los β SIN estimar h₀(t). En cada tiempo de EVENTO, considera la probabilidad de que el individuo que falló sea precisamente ese, entre todos los que estaban EN RIESGO en ese instante (depende solo de las covariables y del ORDEN de los eventos, no de los tiempos exactos ni de h₀). El producto de esas contribuciones es la verosimilitud parcial. Por eso el Cox da HR sin asumir distribución del tiempo.",
+     "explicacion": "Usa solo el orden de los fallos y los risk sets; h₀(t) se cancela."
+    },
+    {
+     "id": "arh8-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es el supuesto central del modelo de Cox?",
+     "solucion": "El supuesto de HAZARDS PROPORCIONALES (PH): el hazard ratio entre dos individuos (con covariables fijas) es CONSTANTE en el tiempo; equivalentemente, los hazards de distintos grupos son proporcionales entre sí (sus curvas log(−log S) son paralelas). Esto se debe a que el efecto de las covariables (exp(ΣβⱼXⱼ)) no depende del tiempo. Si el efecto de una covariable cambia con el tiempo, se viola PH.",
+     "explicacion": "PH = el efecto multiplicativo de las covariables no cambia con el tiempo."
+    },
+    {
+     "id": "arh8-q6",
+     "tipo": "concepto",
+     "enunciado": "Describe el método GRÁFICO para evaluar el supuesto PH con curvas log-log.",
+     "solucion": "Se grafican las curvas de log(−log Ŝ(t)) frente al tiempo (o log-tiempo) para las categorías de la covariable. Si el supuesto PH se cumple, esas curvas deben ser aproximadamente PARALELAS (separadas por una distancia constante = log del HR). Si se CRUZAN o convergen/divergen, se viola PH. Es un chequeo visual; para variables continuas se categoriza.",
+     "explicacion": "log(−log S) paralelas ⇒ PH se sostiene; curvas que se cruzan ⇒ se viola."
+    },
+    {
+     "id": "arh8-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se evalúa PH con una PRUEBA DE BONDAD DE AJUSTE (residuos de Schoenfeld)?",
+     "solucion": "Se calculan los RESIDUOS DE SCHOENFELD (uno por covariable y por tiempo de evento) y se prueba si están CORRELACIONADOS con el tiempo (o con una función del tiempo). Bajo PH, los residuos NO deberían tener tendencia temporal: una correlación significativa (p pequeño) indica que el efecto de la covariable cambia con el tiempo y por tanto se VIOLA PH. Es una prueba objetiva que complementa el método gráfico.",
+     "explicacion": "Residuos de Schoenfeld con tendencia en el tiempo = violación de PH para esa covariable."
+    },
+    {
+     "id": "arh8-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se evalúa PH usando una VARIABLE DEPENDIENTE DEL TIEMPO?",
+     "solucion": "Se AÑADE al modelo un término de INTERACCIÓN entre la covariable y una función del tiempo (p. ej. X·t o X·ln t) y se prueba la significancia de su coeficiente. Si ese coeficiente es SIGNIFICATIVO, el efecto de la covariable depende del tiempo (el HR no es constante) y se VIOLA PH; si no es significativo, no hay evidencia contra PH. Es la base del Cox EXTENDIDO y permite además modelar la no proporcionalidad.",
+     "explicacion": "Interacción covariable×tiempo significativa ⇒ HR cambia con el tiempo ⇒ no-PH."
+    },
+    {
+     "id": "arh8-q9",
+     "tipo": "concepto",
+     "enunciado": "Si se VIOLA el supuesto de hazards proporcionales, ¿qué opciones hay?",
+     "solucion": "(1) COX ESTRATIFICADO: estratificar por la variable que viola PH (cada estrato con su propio hazard base), si no interesa su HR. (2) COX EXTENDIDO con una variable TIEMPO-DEPENDIENTE: incluir la interacción covariable×función-del-tiempo para MODELAR cómo cambia el HR. (3) Analizar por INTERVALOS de tiempo (HR distinto por periodo) o usar un modelo PARAMÉTRICO/AFT adecuado. La elección depende de si interesa estimar el efecto de esa variable o solo controlarlo.",
+     "explicacion": "Estratificar si solo se controla; modelar con tiempo-dependiente si interesa su efecto."
+    },
+    {
+     "id": "arh8-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el COX ESTRATIFICADO y qué limitación tiene?",
+     "solucion": "Es una variante que controla una variable que NO cumple PH ESTRATIFICANDO por sus categorías: cada estrato g recibe su PROPIO hazard base h₀g(t), pero los coeficientes β de las DEMÁS covariables se comparten (modelo sin interacción). Limitación: NO produce un hazard ratio para la variable de estratificación (su efecto se absorbe en los baselines), así que no se puede estimar/testear su efecto directamente.",
+     "explicacion": "Controla la variable problemática sin estimar su HR; ideal para confundidores que violan PH."
+    },
+    {
+     "id": "arh8-q11",
+     "tipo": "concepto",
+     "enunciado": "En el Cox estratificado, ¿qué diferencia hay entre el modelo de NO INTERACCIÓN y el de INTERACCIÓN?",
+     "solucion": "El modelo de NO INTERACCIÓN asume que el efecto (β) de las demás covariables es el MISMO en todos los estratos (solo cambia el hazard base). El modelo de INTERACCIÓN permite coeficientes DISTINTOS por estrato (la covariable de estratificación modifica el efecto de las otras). Se decide entre ambos con una PRUEBA DE RAZÓN DE VEROSIMILITUD: si el de interacción no mejora significativamente, se prefiere el de no interacción (más parsimonioso).",
+     "explicacion": "Prueba de razón de verosimilitud: ¿hace falta permitir efectos distintos por estrato?"
+    },
+    {
+     "id": "arh8-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se obtienen CURVAS DE SUPERVIVENCIA AJUSTADAS a partir de un modelo de Cox?",
+     "solucion": "A partir del hazard base estimado y de los coeficientes, se calcula Ŝ(t,X) = [Ŝ₀(t)]^exp(ΣβⱼXⱼ) para un patrón de covariables X especificado (p. ej. el valor medio de los ajustes, o cada nivel de la variable de interés). Así se obtienen curvas de supervivencia comparables que ya CONTROLAN las demás covariables, a diferencia de las KM crudas que no ajustan.",
+     "explicacion": "Las curvas ajustadas del Cox controlan covariables; las KM no."
+    },
+    {
+     "id": "arh8-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué a veces se prefiere el HR del Cox frente al resultado del log-rank?",
+     "solucion": "Porque el log-rank solo da un test de significancia (¿difieren las curvas?), mientras que el Cox cuantifica la MAGNITUD del efecto con un HAZARD RATIO, su intervalo de confianza, y permite AJUSTAR por otras covariables (confundidores) simultáneamente. De hecho, el log-rank equivale aproximadamente a una prueba de score del Cox con una sola covariable binaria; el Cox generaliza a múltiples covariables y a efectos continuos.",
+     "explicacion": "Cox = magnitud + ajuste multivariable; log-rank = solo test bivariado."
+    },
+    {
+     "id": "arh8-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa un HR cercano a 1 con un intervalo de confianza amplio?",
+     "solucion": "Un HR ≈ 1 sugiere poco o ningún efecto de la covariable sobre el hazard, pero un INTERVALO DE CONFIANZA AMPLIO indica MUCHA INCERTIDUMBRE (pocos eventos o muestra pequeña): no se puede descartar ni un efecto protector ni perjudicial relevante. No es lo mismo 'evidencia de no efecto' que 'falta de evidencia': un IC amplio que cruza 1 es inconcluso, no prueba de ausencia de efecto.",
+     "explicacion": "El número de EVENTOS (no de sujetos) gobierna la precisión en supervivencia."
+    },
+    {
+     "id": "arh8-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se prueba la significancia global y de coeficientes en un modelo de Cox?",
+     "solucion": "Con las tres pruebas habituales basadas en la verosimilitud (parcial): la PRUEBA DE RAZÓN DE VEROSIMILITUD (compara −2logL entre el modelo con y sin la(s) covariable(s); preferida), la prueba de WALD (β̂/SE, para coeficientes individuales) y la prueba de SCORE. Para comparar modelos anidados (p. ej. evaluar un bloque de covariables o el modelo interacción vs no-interacción) se usa la razón de verosimilitud con gl = diferencia en número de parámetros.",
+     "explicacion": "Razón de verosimilitud para bloques/modelos anidados; Wald para coeficientes sueltos."
+    }
+   ]
+  },
+  {
+   "id": "arena-h9",
+   "bloque": "fase-7",
+   "orden": 101,
+   "titulo": "Arena Análisis de Supervivencia · Cox extendido y modelos paramétricos/AFT",
+   "libro": "Survival Analysis: A Self-Learning Text (David Kleinbaum & Mitchel Klein, 3rd ed.)",
+   "lectura": "data/teoria/arena-h9.md",
+   "dosis": 30,
+   "objetivo": "Covariables dependientes del tiempo (Cox extendido) y modelos paramétricos (exponencial/Weibull/log-logística) con el marco de tiempo de falla acelerado (AFT) y el factor de aceleración.",
+   "heuristicas": [
+    "cox-extendido-tiempo-dependiente",
+    "modelo-parametrico-aft",
+    "modelo-cox-ph"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Cox extendido: h₀(t)exp[ΣβX+ΣδX(t)] para variables cambiantes o no-PH; HR depende de t",
+    "Variables tiempo-dependientes: solo info hasta t (evita immortal time bias)",
+    "Paramétricos: exponencial (hazard cte), Weibull (monótono), log-logística (no monótono)",
+    "AFT modela el TIEMPO: factor de aceleración γ estira (>1) o encoge (<1) la supervivencia",
+    "Weibull es la única a la vez PH y AFT; paramétricos permiten extrapolar"
+   ],
+   "banco": [
+    {
+     "id": "arh9-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es una covariable DEPENDIENTE DEL TIEMPO y por qué requiere extender el Cox?",
+     "solucion": "Es una covariable cuyo valor CAMBIA durante el seguimiento (p. ej. estatus de fumador que varía, recibir o no un trasplante en algún momento, un valor de laboratorio repetido). El Cox estándar asume covariables fijas; para usarlas hay que EXTENDER el modelo a h(t,X(t)) que evalúa la covariable en cada tiempo. Con covariables tiempo-dependientes, el efecto y la supervivencia dependen de la trayectoria de la covariable.",
+     "explicacion": "Si X cambia con t, no se puede tratar como fija: hay que usar X(t) en el modelo."
+    },
+    {
+     "id": "arh9-q2",
+     "tipo": "concepto",
+     "enunciado": "Escribe el modelo de Cox EXTENDIDO y sus dos usos principales.",
+     "solucion": "h(t,X(t)) = h₀(t)·exp[Σ βᵢXᵢ + Σ δⱼXⱼ(t)], donde Xⱼ(t) son términos que dependen del tiempo. Usos: (1) modelar covariables genuinamente TIEMPO-DEPENDIENTES (su valor cambia); (2) MODELAR LA NO PROPORCIONALIDAD incluyendo interacciones covariable×función-del-tiempo (p. ej. X·ln t) para capturar un HR que cambia con el tiempo. Con estos términos, el HR ya NO es constante.",
+     "explicacion": "El mismo mecanismo (X·g(t)) sirve para variables cambiantes y para arreglar/diagnosticar la no-PH."
+    },
+    {
+     "id": "arh9-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué con covariables tiempo-dependientes el hazard ratio ya no es constante?",
+     "solucion": "Porque al incluir términos que dependen del tiempo (Xⱼ(t) o X·g(t)), el factor exponencial cambia a lo largo del seguimiento, de modo que el cociente de hazards entre dos individuos varía con t. El supuesto PH ya no aplica; el HR debe interpretarse en un INSTANTE específico (o como función del tiempo), no como un único número para todo el seguimiento.",
+     "explicacion": "El HR pasa a ser una función del tiempo; se reporta a tiempos concretos."
+    },
+    {
+     "id": "arh9-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué precaución hay que tener al definir covariables tiempo-dependientes (anticipación/inmortalidad)?",
+     "solucion": "No usar valores FUTUROS ni variables que sean CONSECUENCIA del evento: la covariable en el tiempo t solo puede usar información disponible HASTA t. Usar el estatus futuro (p. ej. clasificar por algo que ocurre después) crea sesgo de TIEMPO INMORTAL o de anticipación, regalando supervivencia. La covariable tiempo-dependiente debe reflejar lo conocido en cada instante, alineando el riesgo correctamente.",
+     "explicacion": "Solo información pasada/presente en cada t; usar el futuro genera immortal time bias."
+    },
+    {
+     "id": "arh9-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué asumen los modelos PARAMÉTRICOS de supervivencia y en qué se diferencian del Cox?",
+     "solucion": "Asumen una DISTRIBUCIÓN específica para el tiempo de supervivencia (exponencial, Weibull, log-logística, log-normal, etc.), es decir, una forma concreta para h(t)/S(t), y estiman sus parámetros por máxima verosimilitud. A diferencia del Cox (que deja h₀(t) libre), los paramétricos modelan TODO el hazard, lo que permite predecir tiempos y extrapolar más allá del seguimiento, pero se SESGAN si la distribución elegida es incorrecta.",
+     "explicacion": "Paramétrico = forma del hazard especificada (más eficiente si es correcta; sesgado si no)."
+    },
+    {
+     "id": "arh9-q6",
+     "tipo": "concepto",
+     "enunciado": "Compara los hazards de los modelos EXPONENCIAL, WEIBULL y LOG-LOGÍSTICO.",
+     "solucion": "EXPONENCIAL: hazard CONSTANTE h(t)=λ (sin memoria), supervivencia S(t)=exp(−λt). WEIBULL: hazard MONÓTONO, creciente o decreciente según el parámetro de forma p (p>1 crece, p<1 decrece, p=1 → exponencial). LOG-LOGÍSTICO (y log-normal): hazard NO monótono (puede subir y luego bajar). La elección se guía por la forma esperada del riesgo en el tiempo.",
+     "explicacion": "Exponencial=plano, Weibull=monótono, log-logística=joroba; elegir según la dinámica del riesgo."
+    },
+    {
+     "id": "arh9-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el marco de ACCELERATED FAILURE TIME (AFT) y cómo se interpreta?",
+     "solucion": "El AFT modela el efecto de las covariables sobre el TIEMPO de supervivencia (no sobre el hazard): describe cómo una covariable ESTIRA o ENCOGE el eje del tiempo mediante un FACTOR DE ACELERACIÓN γ. Si γ>1, la covariable ALARGA la supervivencia (los eventos ocurren 'más lento', como ver la película en cámara lenta); γ<1 la acorta. Es una interpretación intuitiva en escala de tiempo (p. ej. 'el tratamiento duplica el tiempo mediano hasta el evento').",
+     "explicacion": "AFT: la covariable multiplica el tiempo de supervivencia por el factor de aceleración γ."
+    },
+    {
+     "id": "arh9-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué tiene de especial la distribución WEIBULL respecto a PH y AFT?",
+     "solucion": "La Weibull (y su caso especial exponencial) es la ÚNICA distribución que satisface a la vez la propiedad de HAZARDS PROPORCIONALES (PH) y la de ACCELERATED FAILURE TIME (AFT). Esto significa que un modelo Weibull se puede interpretar tanto con un hazard ratio (PH) como con un factor de aceleración (AFT), y ambos parámetros están relacionados a través del parámetro de forma. Otras distribuciones (log-logística, log-normal) son AFT pero NO PH.",
+     "explicacion": "Weibull = PH y AFT simultáneamente; log-logística/log-normal = AFT pero no PH."
+    },
+    {
+     "id": "arh9-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Cuándo conviene un modelo PARAMÉTRICO frente al Cox?",
+     "solucion": "Cuando: (1) hay base teórica o empírica para una FORMA del hazard (gana eficiencia si es correcta); (2) se quiere PREDECIR tiempos de supervivencia, percentiles o extrapolar MÁS ALLÁ del seguimiento observado (el Cox no extrapola bien el baseline); (3) se prefiere la interpretación AFT (efecto sobre el tiempo). Si no se quiere comprometer una distribución y solo interesa el HR ajustado, el Cox (semiparamétrico) es más seguro.",
+     "explicacion": "Paramétrico para predicción/extrapolación/AFT; Cox para HR robusto sin asumir distribución."
+    },
+    {
+     "id": "arh9-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se elige y valida un modelo paramétrico?",
+     "solucion": "Comparando el AJUSTE de varias distribuciones candidatas: gráficos diagnósticos (p. ej. para Weibull, ln(−ln Ŝ(t)) vs ln t debe ser aproximadamente LINEAL), comparación de la verosimilitud/AIC entre modelos anidados o no anidados, y comparación de la supervivencia ajustada con la KM. Se elige la distribución que ajuste razonablemente y cuya forma de hazard sea plausible para el fenómeno.",
+     "explicacion": "Diagnósticos gráficos + AIC + comparación con KM guían la elección de la distribución."
+    },
+    {
+     "id": "arh9-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se construye una variable tiempo-dependiente para un evento que ocurre en un momento del seguimiento (p. ej. trasplante)?",
+     "solucion": "Se define X(t)=0 mientras el sujeto NO ha recibido el evento intermedio y X(t)=1 a partir del momento en que lo recibe; el tiempo del sujeto se 'parte' en intervalos (formato counting process: start, stop, estatus) para que en cada intervalo la covariable tenga su valor correcto. Así el aporte del sujeto al risk set cambia de grupo en el instante correcto, evitando el sesgo de tiempo inmortal de clasificarlo desde el inicio por algo futuro.",
+     "explicacion": "Partir el tiempo en intervalos (start, stop] con el valor actual de la covariable evita el immortal time bias."
+    },
+    {
+     "id": "arh9-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación hay entre el coeficiente AFT y el factor de aceleración?",
+     "solucion": "En un modelo AFT log-lineal ln T = α + γᵀX + error, el FACTOR DE ACELERACIÓN para una covariable es exp(coeficiente correspondiente): multiplica el tiempo de supervivencia. Un coeficiente positivo (factor >1) alarga el tiempo hasta el evento (efecto protector en términos de tiempo); negativo (factor <1) lo acorta. Es el análogo, en escala de tiempo, de lo que el HR es en escala de hazard.",
+     "explicacion": "Factor de aceleración = exp(coef AFT); >1 alarga la supervivencia, <1 la acorta."
+    },
+    {
+     "id": "arh9-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un hazard ratio y un factor de aceleración pueden apuntar en 'direcciones' opuestas numéricamente pero coincidir en el mensaje?",
+     "solucion": "Porque describen el mismo efecto en escalas inversas: un tratamiento beneficioso tiene HR<1 (REDUCE el hazard) y a la vez factor de aceleración >1 (ALARGA el tiempo de supervivencia). Ambos dicen 'mejor pronóstico', pero uno baja de 1 (riesgo) y el otro sube de 1 (tiempo). En la Weibull están ligados algebraicamente por el parámetro de forma. Hay que leer cada uno en su escala para no confundirse de dirección.",
+     "explicacion": "HR<1 (menos riesgo) ↔ factor de aceleración >1 (más tiempo): mismo beneficio, escalas inversas."
+    },
+    {
+     "id": "arh9-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ventaja práctica tiene poder EXTRAPOLAR de un modelo paramétrico?",
+     "solucion": "Permite estimar la supervivencia o el hazard en tiempos MÁS ALLÁ del seguimiento observado (p. ej. supervivencia a 10 años con datos de 5), calcular la supervivencia MEDIA (área bajo S(t) completa) y percentiles, algo que el KM/Cox no hacen bien porque su estimación se 'corta' donde terminan los datos. Es muy útil en evaluaciones económicas y de costo-efectividad. El precio: la extrapolación depende fuertemente de que la forma asumida sea correcta.",
+     "explicacion": "Extrapolar S(t) y estimar la media: útil pero sensible a la distribución elegida."
+    },
+    {
+     "id": "arh9-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se decide entre un Cox extendido (tiempo-dependiente) y un Cox estratificado ante una violación de PH?",
+     "solucion": "Depende del OBJETIVO con esa variable: si interesa ESTIMAR/CUANTIFICAR cómo cambia su efecto en el tiempo, se usa el COX EXTENDIDO con un término tiempo-dependiente (da un HR función del tiempo). Si la variable es solo un factor de CONTROL (confundidor) cuyo HR no interesa, se usa el COX ESTRATIFICADO (le da su propio baseline y evita el supuesto PH para ella). Extendido = modelar el efecto; estratificado = controlarlo.",
+     "explicacion": "¿Quieres su efecto? extendido. ¿Solo controlarlo? estratificado."
+    }
+   ]
+  },
+  {
+   "id": "arena-h10",
+   "bloque": "fase-7",
+   "orden": 102,
+   "titulo": "Arena Análisis de Supervivencia · Eventos recurrentes y riesgos competitivos",
+   "libro": "Survival Analysis: A Self-Learning Text (David Kleinbaum & Mitchel Klein, 3rd ed.)",
+   "lectura": "data/teoria/arena-h10.md",
+   "dosis": 30,
+   "objetivo": "Eventos recurrentes (proceso de conteo Andersen-Gill, PWP, WLW, varianza robusta) y riesgos competitivos (hazard específico de causa vs subdistribución/Fine-Gray, CIF; por qué 1−KM sobrestima).",
+   "heuristicas": [
+    "eventos-recurrentes-supervivencia",
+    "riesgos-competitivos-cif"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Eventos recurrentes: correlación intra-sujeto → varianza robusta (AG/PWP/WLW)",
+    "Riesgos competitivos: un evento impide otro (muerte por otra causa)",
+    "Hazard específico de causa (censura competidores) → etiología",
+    "1−KM SOBRESTIMA la incidencia; usa la CIF (incidencia acumulada)",
+    "Fine-Gray (subdistribution hazard) regresa sobre la CIF → predicción/riesgo"
+   ],
+   "banco": [
+    {
+     "id": "arh10-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los EVENTOS RECURRENTES y qué problema plantean para el análisis estándar?",
+     "solucion": "Son eventos del MISMO tipo que un sujeto puede experimentar MÁS DE UNA VEZ durante el seguimiento (recaídas, hospitalizaciones, infecciones, fallas de un equipo). El problema es que los múltiples eventos de un mismo sujeto están CORRELACIONADOS (no son independientes), de modo que los métodos estándar que asumen independencia subestiman los errores estándar y dan inferencia inválida. Hay que modelar la recurrencia y la correlación intra-sujeto.",
+     "explicacion": "Repetición dentro del sujeto = correlación; ignorarla da SE demasiado pequeños."
+    },
+    {
+     "id": "arh10-q2",
+     "tipo": "concepto",
+     "enunciado": "Describe el enfoque de PROCESO DE CONTEO (Andersen-Gill) para eventos recurrentes.",
+     "solucion": "El enfoque de counting process (Andersen-Gill) representa a cada sujeto con MÚLTIPLES intervalos (start, stop, estatus) —uno por periodo entre eventos— y trata todos los eventos recurrentes como realizaciones de un mismo proceso, ajustando un Cox sobre esos intervalos. Asume que el sujeto vuelve a estar 'en riesgo' inmediatamente tras cada evento. Para la correlación intra-sujeto usa una VARIANZA ROBUSTA (sandwich) agrupada por sujeto. Es el modelo más simple cuando los eventos son intercambiables.",
+     "explicacion": "Intervalos (start, stop] por sujeto + Cox + varianza robusta por cluster."
+    },
+    {
+     "id": "arh10-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué distingue a los modelos CONDICIONALES (PWP) y MARGINALES (WLW) en eventos recurrentes?",
+     "solucion": "Los modelos CONDICIONALES de Prentice-Williams-Peterson (PWP) ESTRATIFICAN por el ORDEN del evento: un sujeto no está en riesgo del k-ésimo evento hasta haber tenido el (k−1)-ésimo (riesgo condicional al historial). El modelo MARGINAL de Wei-Lin-Weissfeld (WLW) considera cada orden de evento como un proceso separado donde todos están en riesgo de cada evento desde el inicio. Ambos usan varianza robusta. La elección depende de si el riesgo del siguiente evento depende del número de eventos previos.",
+     "explicacion": "PWP = riesgo condicional al evento previo (estratos por orden); WLW = procesos marginales paralelos."
+    },
+    {
+     "id": "arh10-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué es indispensable la VARIANZA ROBUSTA en eventos recurrentes?",
+     "solucion": "Porque los eventos de un mismo sujeto están correlacionados, y la varianza basada en verosimilitud estándar (que asume independencia) subestima la verdadera variabilidad, produciendo errores estándar demasiado pequeños, intervalos de confianza estrechos y p-valores falsamente significativos. La VARIANZA ROBUSTA (sandwich) agrupada por sujeto corrige esto, dando inferencia válida pese a la dependencia intra-sujeto.",
+     "explicacion": "Sin varianza robusta, los SE quedan subestimados por la correlación dentro del sujeto."
+    },
+    {
+     "id": "arh10-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los RIESGOS COMPETITIVOS?",
+     "solucion": "Son situaciones en que un individuo puede experimentar UNO de VARIOS tipos de evento mutuamente excluyentes, y la ocurrencia de uno IMPIDE o altera la observación de los otros. El ejemplo clásico: muerte por cáncer vs muerte por enfermedad cardiovascular vs muerte por otras causas; quien muere de una causa ya no puede morir de otra. El evento de interés 'compite' con los demás por ocurrir primero.",
+     "explicacion": "Eventos mutuamente excluyentes que se 'roban' la oportunidad: uno impide los otros."
+    },
+    {
+     "id": "arh10-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el HAZARD ESPECÍFICO DE CAUSA y cómo se estima de forma estándar?",
+     "solucion": "El hazard específico de causa para un evento es la tasa instantánea de ESE evento entre los que aún no han tenido NINGÚN evento. Se estima con un Cox (o KM) en el que los eventos COMPETIDORES se tratan como CENSURA. Es la medida apropiada para preguntas ETIOLÓGICAS (¿afecta la covariable a la tasa biológica de esta causa?), pero NO da directamente la probabilidad acumulada de la causa en presencia de competidores.",
+     "explicacion": "Hazard específico de causa: competidores como censura; bueno para etiología, no para riesgo absoluto."
+    },
+    {
+     "id": "arh10-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué (1 − Kaplan-Meier) SOBRESTIMA la incidencia acumulada cuando hay riesgos competitivos?",
+     "solucion": "Porque el KM trata los eventos competidores como CENSURA NO INFORMATIVA, asumiendo que esos sujetos PODRÍAN aún tener el evento de interés en el futuro; pero en realidad, al haber sufrido el evento competidor (p. ej. muerte por otra causa), YA NO pueden tenerlo. Al 'devolverlos' al riesgo, el KM infla la probabilidad estimada del evento. Por eso 1−KM da una incidencia acumulada demasiado alta; la suma de los 1−KM de todas las causas puede superar 1.",
+     "explicacion": "El KM finge que los que murieron por otra causa siguen en riesgo; eso infla la incidencia."
+    },
+    {
+     "id": "arh10-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la FUNCIÓN/CURVA DE INCIDENCIA ACUMULADA (CIF/CIC) y por qué es la medida correcta?",
+     "solucion": "La CIF (cumulative incidence function / CIC) es la probabilidad de haber sufrido el evento de interés ANTES de t Y antes que cualquier evento competidor. Se calcula combinando el hazard específico de causa del evento con la supervivencia GLOBAL (a todas las causas), de modo que solo acumula riesgo mientras el sujeto sigue libre de TODOS los eventos. Es la medida correcta del riesgo ABSOLUTO en presencia de competidores, y las CIF de todas las causas suman la incidencia total (≤1).",
+     "explicacion": "La CIF acumula riesgo solo entre los libres de todo evento; respeta los competidores."
+    },
+    {
+     "id": "arh10-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué modela el método de FINE-GRAY y en qué se diferencia del Cox de causa específica?",
+     "solucion": "Fine-Gray modela el HAZARD DE SUBDISTRIBUCIÓN, que permite hacer REGRESIÓN directamente sobre la CIF (relacionar covariables con la incidencia acumulada de una causa). Su truco: mantiene a los sujetos que sufrieron el evento COMPETIDOR DENTRO del conjunto de riesgo (con peso decreciente), en vez de censurarlos. A diferencia del Cox de hazard específico de causa (que los censura y modela la tasa instantánea), Fine-Gray cuantifica el efecto de las covariables sobre la PROBABILIDAD ACUMULADA del evento.",
+     "explicacion": "Cause-specific modela la tasa (etiología); Fine-Gray modela la CIF/riesgo absoluto (predicción)."
+    },
+    {
+     "id": "arh10-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Cuándo usar el hazard ESPECÍFICO DE CAUSA y cuándo el de SUBDISTRIBUCIÓN (Fine-Gray)?",
+     "solucion": "Usar el HAZARD ESPECÍFICO DE CAUSA para preguntas ETIOLÓGICAS/biológicas: ¿la covariable afecta la tasa instantánea de esta causa entre los aún libres de evento? Usar el SUBDISTRIBUTION HAZARD (Fine-Gray)/CIF para preguntas de PREDICCIÓN y RIESGO ABSOLUTO: ¿cómo afecta la covariable la probabilidad acumulada de sufrir esta causa en presencia de competidores? Es buena práctica reportar AMBOS, porque una covariable puede afectar el riesgo absoluto vía su efecto sobre los eventos competidores aunque no cambie el hazard específico.",
+     "explicacion": "Etiología → causa específica; pronóstico/riesgo → Fine-Gray/CIF; idealmente, reportar ambos."
+    },
+    {
+     "id": "arh10-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la CURVA DE PROBABILIDAD CONDICIONAL (CPC) derivada de la CIF?",
+     "solucion": "La CPC (conditional probability curve) es la probabilidad de haber tenido el evento de interés antes de t CONDICIONADO a no haber tenido ningún evento COMPETIDOR: CPCc = CIFc / (1 − CIF de los eventos competidores). Reescala la incidencia acumulada de una causa respecto a los que 'siguen disponibles' (no han sufrido un competidor), dando otra perspectiva del riesgo de esa causa en presencia de competencia.",
+     "explicacion": "CPC = CIF de la causa dividida por (1 − CIF de las otras causas)."
+    },
+    {
+     "id": "arh10-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué tratar un evento competidor simplemente como 'censura' puede ser engañoso?",
+     "solucion": "Porque la censura estándar asume que el sujeto censurado PODRÍA tener el evento más adelante (censura no informativa), lo cual es FALSO para un evento competidor terminal (quien murió por otra causa nunca tendrá el evento de interés). Tratarlo como censura es válido para estimar el HAZARD ESPECÍFICO DE CAUSA, pero NO para estimar el RIESGO ABSOLUTO (ahí sobrestima con 1−KM). La distinción clave es qué cantidad se quiere: tasa instantánea (censurar está bien) vs probabilidad acumulada (usar CIF).",
+     "explicacion": "Censurar un competidor está bien para el hazard de causa, mal para la incidencia acumulada."
+    },
+    {
+     "id": "arh10-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se compara la incidencia acumulada de un evento entre grupos con riesgos competitivos?",
+     "solucion": "Estimando la CIF de cada grupo y comparándolas con la prueba de GRAY (el análogo del log-rank para incidencia acumulada en presencia de competidores), o ajustando un modelo de FINE-GRAY que da un subdistribution hazard ratio. NO se debe usar el log-rank sobre 1−KM, porque ese estimador está sesgado al alza por los competidores. La prueba de Gray respeta la estructura de riesgos competitivos.",
+     "explicacion": "Prueba de Gray para comparar CIFs; Fine-Gray para el efecto ajustado; evitar log-rank sobre 1−KM."
+    },
+    {
+     "id": "arh10-q14",
+     "tipo": "concepto",
+     "enunciado": "En eventos recurrentes, ¿cómo elegir entre el enfoque de Andersen-Gill, PWP y WLW?",
+     "solucion": "Según la pregunta y la estructura del riesgo: ANDERSEN-GILL (counting process) si los eventos son intercambiables y el riesgo no depende del número previo (efecto total de la recurrencia). PWP (condicional, estratificado por orden) si el riesgo de un evento depende de haber tenido los anteriores (p. ej. cada recaída cambia el pronóstico). WLW (marginal) si interesa el efecto sobre cada evento por separado tratándolos como procesos paralelos. Todos requieren varianza robusta por sujeto.",
+     "explicacion": "AG: proceso único; PWP: depende del orden/historial; WLW: marginal por evento."
+    },
+    {
+     "id": "arh10-q15",
+     "tipo": "concepto",
+     "enunciado": "Resume la diferencia conceptual entre CENSURA y RIESGO COMPETITIVO.",
+     "solucion": "La CENSURA es la pérdida de observación de un sujeto que TODAVÍA PODRÍA tener el evento de interés (fin del estudio, abandono): se asume censura no informativa. Un RIESGO COMPETITIVO es un evento que IMPIDE definitivamente el evento de interés (p. ej. muerte por otra causa): el sujeto ya NO está 'en riesgo'. Confundirlos lleva a sobrestimar la incidencia (tratar el competidor como censura en un KM). La estructura de riesgos competitivos exige CIF/Fine-Gray en lugar de 1−KM.",
+     "explicacion": "Censura = podría tener el evento luego; competidor = ya no podrá. Tratarlos igual sesga."
     }
    ]
   }
