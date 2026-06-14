@@ -2210,3 +2210,59 @@ Analysis, The Book of OHDSI, The Book of Why (epub), Causal Inference: The Mixta
 Después Sectores D (conductual) y C (problems.json). Próxima unidad: convención de
 id de ruta `health-ai-rwe` continúa en `arena-h3,h4…` (ya existen arena-h1,h2);
 órdenes desde 95, `f7-ex-62`+, VERSION v49+.
+
+## Bitácora 2026-06-14 (Arena tanda 21) — Causal Inference: What If (Hernán & Robins), 62 preguntas
+
+Procesado `Causal Inference: What If` (Miguel Hernán & James Robins, ed. 2025, 23
+caps. en 3 partes) — libros[21] del ledger, ruta `health-ai-rwe`, cuota 25. Primer
+libro de la ruta **health-ai-rwe** vía libro dedicado. **DIFERENCIADO** de las
+unidades ligeras preexistentes `arena-h1` (DAGs básicos confundidor/mediador/
+collider, 4q) y `arena-h2` (target trial/immortal time, 4q): estas 4 unidades dan
+la BREADTH+DEPTH del libro sin duplicar. 4 unidades (`fase-7`, órdenes 95-98):
+- **arena-h3** — fundamentos sin modelos (Cap. 1-5): resultados potenciales
+  (efecto individual inobservable vs **promedio**), **asociación≠causación**,
+  aleatorización→**intercambiabilidad**, las **3 condiciones de identificación**
+  (intercambiabilidad|L + positividad + consistencia; solo positividad verificable),
+  medidas de efecto marginales, **modificación de efecto** (depende de escala) vs
+  **interacción**, causal=missing data.
+- **arena-h4** — estructura de los sesgos (Cap. 6-10): confundimiento + **criterio
+  backdoor**, **d-separación** (condicionar cierra cadenas/bifurcaciones, ABRE
+  colliders), no ajustar mediador (sesga el total) ni collider, **sesgo de
+  selección/censura** informativa→IPCW, **sesgo de medición** (no diferencial
+  atenúa vs diferencial), confundidor mal medido=residual, identificación vs
+  estimación, **M-bias/Z-bias**, SWIGs.
+- **arena-h5** — modelos (Cap. 11-16,18): por qué modelar, **IP weighting + MSM +
+  pesos estabilizados**, **estandarización/g-fórmula** (cara complementaria),
+  **propensity score** (balancing score), **doble robustez** (consistente si UNO de
+  los dos modelos; AIPW/TMLE + ML + cross-fitting), **variable instrumental** (3
+  condiciones + monotonicidad→**LATE** en compliers; instrumentos débiles).
+- **arena-h6** — longitudinal + supervivencia + target trial (Cap. 17,19-22):
+  **hazard ratio** problemático (selección incorporada)→riesgo/supervivencia a
+  tiempo fijo, censura=tratamiento tiempo-variable→**IPCW**, intercambiabilidad
+  **secuencial**, **feedback tratamiento-confundidor** (L confundidor+mediador →
+  métodos tradicionales fallan y no se arreglan → **g-métodos**), **ITT vs
+  per-protocol** (naïve sesgado), **emular target trial** sostenido (alinear t=0 →
+  immortal time; new-user → usuario prevalente; comparador activo; per-protocol con
+  g-métodos), caballo de batalla de la **RWE**.
+
+60 banco (15/unidad) + 2 examen (**f7-ex-62** confundimiento/backdoor/mediador/
+collider/selección, **f7-ex-63** las 3 condiciones de identificación +
+estandarización vs IP weighting) = 62. 16 heurísticas nuevas
+(definir-efecto-causal-contrafactual, condiciones-identificacion-causal,
+exchangeability-aleatorizacion, modificacion-efecto-vs-interaccion,
+confundimiento-backdoor, sesgo-de-seleccion-censura,
+sesgo-de-medicion-misclasificacion, ip-weighting-msm, estandarizacion-g-formula,
+propensity-score, doble-robustez, variable-instrumental,
+analisis-supervivencia-hazard-vs-riesgo, confounding-tiempo-variable-gmetodos,
+itt-vs-per-protocol-estimando, emular-target-trial-sostenido). Catálogo total
+**181** heurísticas. `sw.js` **v49** (+4 lecciones `data/teoria/arena-h{3..6}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (98 unidades en `fase-7`, 63 ítems de examen); `verificar-shell.py` OK (183
+archivos). Contenido anclado en el libro (§1.2; TOC verificado: ed. 2025, 23 caps.).
+
+**Siguiente** — orden §10 (health-ai-rwe): **Survival Analysis (3rd ed.)**
+(libros[22]), luego The Book of OHDSI, The Book of Why (epub — saltar si Read no
+abre), Causal Inference: The Mixtape (.txt en Biblioteca/). Después Sectores D
+(conductual) y C (problems.json). Próxima unidad: `arena-h7,h8…`; órdenes desde 99,
+`f7-ex-64`+, VERSION v50+.

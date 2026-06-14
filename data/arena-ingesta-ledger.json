@@ -348,11 +348,16 @@
       "archivo": "Arena/Entrevista health  ai/hernanrobins_WhatIf_2jan25.pdf",
       "sector": "A",
       "ruta": "health-ai-rwe",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-h3",
+        "arena-h4",
+        "arena-h5",
+        "arena-h6"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. Primer libro de la ruta health-ai-rwe vía libro dedicado (ed. 2025, 23 caps. en 3 partes). DIFERENCIADO de arena-h1 (DAGs básicos confundidor/mediador/collider, 4q) y arena-h2 (target trial/immortal time, 4q) que ya existían: estas 4 unidades dan la BREADTH+DEPTH del libro sin duplicar. h3 fundamentos sin modelos (Cap. 1-5): resultados potenciales (efecto individual inobservable vs promedio), asociación≠causación, aleatorización→intercambiabilidad, las 3 condiciones de identificación (intercambiabilidad|L + positividad + consistencia; solo positividad verificable), medidas de efecto (RD/RR/OR marginales), modificación de efecto (depende de escala) vs interacción (2 tratamientos), causal=missing data, intuición estandarización/IP weighting. h4 estructura de sesgos (Cap. 6-10): confundimiento+criterio backdoor, d-separación (condicionar cierra cadenas/bifurcaciones, abre colliders), no ajustar mediador (sesga total) ni collider, sesgo de selección/censura informativa→IPCW, sesgo de medición (no diferencial atenúa vs diferencial), confundidor mal medido=residual, identificación vs estimación, maldición de dimensionalidad, M-bias/Z-bias, SWIGs, diagramas no causales. h5 modelos (Cap. 11-16,18): por qué modelar, IP weighting+MSM+pesos estabilizados, estandarización/g-fórmula (cara complementaria), propensity score (balancing score: estratificar/emparejar/ponderar/regresión), doble robustez (consistente si UNO de los dos modelos; AIPW/TMLE+ML+cross-fitting), variable instrumental (3 condiciones+monotonicidad→LATE en compliers, instrumentos débiles), qué covariables incluir. h6 longitudinal+supervivencia+target trial (Cap. 17,19-22): hazard ratio problemático (selección incorporada por depleción)→riesgo/supervivencia a tiempo fijo, censura=tratamiento tiempo-variable→IPCW, intercambiabilidad secuencial, feedback tratamiento-confundidor (L confundidor+mediador→métodos tradicionales fallan y no se arreglan→g-métodos), ITT (diluye con no adherencia) vs per-protocol (necesita g-métodos, naïve sesgado), emular target trial sostenido (alinear t=0→evita immortal time, new-user→evita usuario prevalente, comparador activo, per-protocol con g-métodos), por qué es el caballo de batalla de RWE. 60 banco (15/unidad) + 2 examen (f7-ex-62 confundimiento/backdoor/mediador/collider/selección, f7-ex-63 las 3 condiciones de identificación + estandarización vs IP weighting). Órdenes 95-98. 16 heurísticas nuevas (definir-efecto-causal-contrafactual, condiciones-identificacion-causal, exchangeability-aleatorizacion, modificacion-efecto-vs-interaccion, confundimiento-backdoor, sesgo-de-seleccion-censura, sesgo-de-medicion-misclasificacion, ip-weighting-msm, estandarizacion-g-formula, propensity-score, doble-robustez, variable-instrumental, analisis-supervivencia-hazard-vs-riesgo, confounding-tiempo-variable-gmetodos, itt-vs-per-protocol-estimando, emular-target-trial-sostenido). Catálogo total 181 heurísticas. VERSION v49 (183 archivos). Próximo libro §10 (health-ai-rwe): Survival Analysis (3rd ed.)."
     },
     {
       "libro": "Survival Analysis (3rd ed.)",

@@ -1205,6 +1205,134 @@
    "cuando_usar": "Explorar estructura sin etiquetas: reducir dimensión (PCA) o agrupar (clustering).",
    "ejemplo": "PCA para visualizar en 2D + clustering jerárquico con enlace completo para ver subgrupos sin fijar K.",
    "patron": "PCA = direcciones de máxima varianza (PVE); K-means fija K (esférico); jerárquico = dendrograma + linkage"
+  },
+  {
+   "id": "definir-efecto-causal-contrafactual",
+   "nombre": "Definir el efecto causal con contrafactuales",
+   "descripcion": "Cada individuo tiene resultados POTENCIALES (contrafactuales): Y^{a=1} bajo tratamiento y Y^{a=0} sin él. Hay EFECTO CAUSAL INDIVIDUAL si Y^{a=1}≠Y^{a=0}, pero es inobservable (solo vemos uno de los dos: el problema fundamental). Lo identificable es el EFECTO CAUSAL PROMEDIO en la población: E[Y^{a=1}]≠E[Y^{a=0}] (p. ej. P(Y^{a=1}=1)≠P(Y^{a=0}=1)). Eso NO es lo mismo que ASOCIACIÓN E[Y|A=1]≠E[Y|A=0]: la causación compara TODA la población bajo cada tratamiento (contrafactual), la asociación compara DOS subpoblaciones distintas (observado). 'La asociación no es causación' es justamente esta diferencia.",
+   "cuando_usar": "Al plantear cualquier pregunta causal: define el contraste contrafactual antes de tocar datos.",
+   "ejemplo": "Efecto de un trasplante: comparar el riesgo de muerte si TODOS recibieran trasplante vs si NADIE lo recibiera, no los trasplantados vs no trasplantados observados.",
+   "patron": "Y^{a}; efecto = E[Y^{a=1}]−E[Y^{a=0}] (toda la población) ≠ asociación E[Y|A=1]−E[Y|A=0]"
+  },
+  {
+   "id": "condiciones-identificacion-causal",
+   "nombre": "Las 3 condiciones de identificación causal",
+   "descripcion": "Para estimar un efecto causal desde datos observacionales (sin aleatorización) se necesitan tres supuestos NO verificables del todo: (1) INTERCAMBIABILIDAD (exchangeability) condicional: dentro de cada estrato de los confundidores L, los tratados y no tratados son comparables, Y^a ⊥ A | L (no hay confundimiento no medido); (2) POSITIVIDAD: en todo estrato de L con individuos hay probabilidad >0 de recibir CADA nivel de tratamiento (0<P(A=a|L=l)<1); (3) CONSISTENCIA: el tratamiento está bien definido (intervenciones bien especificadas) y, si A=a, entonces Y^a=Y. Si las tres se cumplen, el efecto se identifica y se estima con estandarización o IP weighting. La aleatorización garantiza (1) por diseño.",
+   "cuando_usar": "Antes de afirmar causalidad desde datos observacionales: ¿se cumplen las 3?",
+   "ejemplo": "Si nadie con cierto valor de L recibe el tratamiento, se viola la positividad y no se puede comparar ahí.",
+   "patron": "intercambiabilidad (Y^a⊥A|L) + positividad (0<P(A|L)<1) + consistencia (intervención bien definida)"
+  },
+  {
+   "id": "exchangeability-aleatorizacion",
+   "nombre": "Aleatorización e intercambiabilidad",
+   "descripcion": "En un experimento ALEATORIZADO, el azar asigna el tratamiento independientemente de los resultados potenciales ⇒ INTERCAMBIABILIDAD marginal (Y^a ⊥ A): los grupos son comparables, así que la asociación SÍ es causación (E[Y|A=a]=E[Y^a]). Por eso el ECA es el patrón oro. En estudios OBSERVACIONALES no hay intercambiabilidad marginal (quien se trata difiere de quien no), y solo se aspira a intercambiabilidad CONDICIONAL ajustando por los confundidores medidos L; el riesgo es el confundimiento por variables NO medidas. Aun aleatorizando, la intercambiabilidad puede romperse por pérdidas de seguimiento (selección).",
+   "cuando_usar": "Para razonar por qué un ECA identifica el efecto y un estudio observacional necesita supuestos extra.",
+   "ejemplo": "En un ECA, comparar tratados vs no tratados estima el efecto; en una cohorte, hay que ajustar por L y rezar por no tener confundidores ocultos.",
+   "patron": "aleatorizar ⇒ Y^a⊥A (causación=asociación); observacional ⇒ solo Y^a⊥A|L (confundimiento oculto)"
+  },
+  {
+   "id": "modificacion-efecto-vs-interaccion",
+   "nombre": "Modificación de efecto vs interacción",
+   "descripcion": "MODIFICACIÓN DE EFECTO: el efecto causal de A sobre Y DIFIERE según los estratos de una variable V (p. ej. el efecto es mayor en mujeres que en hombres); solo se interviene sobre A y V es un marcador. Puede ser ADITIVA (la diferencia de riesgos cambia) o MULTIPLICATIVA (el cociente de riesgos cambia) y pueden no coincidir. INTERACCIÓN: efecto causal CONJUNTO de DOS tratamientos A y E, ambos intervenidos; se estudia con resultados contrafactuales a dos índices Y^{a,e} y con el marco de causas suficientes (sinergismo/antagonismo). Diferencia clave: la modificación es sobre un marcador V que no necesariamente se interviene; la interacción exige intervenir sobre ambos factores.",
+   "cuando_usar": "Al reportar efectos por subgrupos (modificación) o evaluar dos exposiciones combinadas (interacción).",
+   "ejemplo": "El efecto del fármaco difiere por edad (modificación); el efecto combinado de fármaco + dieta (interacción).",
+   "patron": "modificación = efecto de A varía por V (marcador); interacción = efecto conjunto de A y E (ambos intervenidos)"
+  },
+  {
+   "id": "confundimiento-backdoor",
+   "nombre": "Confundimiento y criterio de la puerta trasera",
+   "descripcion": "El CONFUNDIMIENTO surge cuando A e Y comparten una CAUSA COMÚN, abriendo un CAMINO TRASERO (backdoor) A ← C → Y que crea asociación no causal. El CRITERIO DE LA PUERTA TRASERA: un conjunto L es suficiente para identificar el efecto si (i) BLOQUEA todos los caminos traseros entre A e Y y (ii) NO contiene descendientes de A. Reglas de d-separación: condicionar un no-collider en un camino lo BLOQUEA; un collider está bloqueado salvo que se condicione sobre él (o un descendiente). OJO: NO se ajusta por un MEDIADOR (A→M→Y, bloquearía parte del efecto) ni por un COLLIDER/instrumento (abre sesgo o amplifica). Cumplido el criterio, se ajusta por L con estandarización o IP weighting.",
+   "cuando_usar": "Para elegir QUÉ variables ajustar en un análisis causal a partir del DAG.",
+   "ejemplo": "A ← edad → Y: ajustar por edad cierra el backdoor; pero NO ajustar por un mediador ni por un efecto común de A e Y.",
+   "patron": "backdoor A←C→Y; ajusta L que bloquee todo camino trasero y no sea descendiente de A; nunca mediador ni collider"
+  },
+  {
+   "id": "sesgo-de-seleccion-censura",
+   "nombre": "Sesgo de selección y censura (colliders)",
+   "descripcion": "El SESGO DE SELECCIÓN aparece al CONDICIONAR (restringir, estratificar o seleccionar la muestra) sobre un efecto COMÚN (collider) del tratamiento A (o una causa de A) y del outcome Y (o una causa de Y): abre una asociación espuria. Casos: selección al entrar al estudio, supervivencia, y sobre todo la PÉRDIDA DE SEGUIMIENTO/CENSURA informativa (condicionar en 'permanecer no censurado' C=0, que es efecto de A y predictor de Y). Se distingue del confundimiento (causa común, anterior) porque el collider es POSTERIOR. Corrección: IP weighting por probabilidad de no ser censurado/seleccionado (IPC weights) o ajustar adecuadamente, no con simple restricción.",
+   "cuando_usar": "Cuando la muestra se restringe por una variable afectada por A e Y, o hay abandono diferencial.",
+   "ejemplo": "Analizar solo a quienes completaron el seguimiento, cuando abandonar depende del tratamiento y del pronóstico, sesga el efecto.",
+   "patron": "condicionar un collider (efecto común de A e Y) = sesgo; censura informativa → IP weighting (IPCW)"
+  },
+  {
+   "id": "sesgo-de-medicion-misclasificacion",
+   "nombre": "Sesgo de medición y misclasificación",
+   "descripcion": "El SESGO DE MEDICIÓN (information bias) viene de medir con error A, Y o L. La MISCLASIFICACIÓN es NO DIFERENCIAL cuando el error en una variable es independiente del valor de la otra (típicamente sesga el efecto HACIA EL NULO, atenúa) y DIFERENCIAL cuando depende (p. ej. recall bias: enfermos recuerdan exposiciones distinto que sanos; puede sesgar en cualquier dirección). Además los errores pueden ser INDEPENDIENTES o DEPENDIENTES entre variables. Un confundidor MAL MEDIDO deja confundimiento residual (no se ajusta del todo). Se representa con diagramas causales que incluyen las variables medidas (con error) y sus nodos de error.",
+   "cuando_usar": "Al evaluar la validez de un estudio cuando exposición, outcome o confundidores se miden con error.",
+   "ejemplo": "Outcome autorreportado con error no diferencial atenúa el efecto; recall diferencial en casos-controles lo distorsiona.",
+   "patron": "no diferencial → atenúa al nulo; diferencial → cualquier dirección; confundidor mal medido → confundimiento residual"
+  },
+  {
+   "id": "ip-weighting-msm",
+   "nombre": "IP weighting y modelos estructurales marginales",
+   "descripcion": "El IP WEIGHTING (ponderación por la inversa de la probabilidad) crea una PSEUDO-POBLACIÓN donde cada individuo se pondera por 1/P(A=a|L): los tratados se 'clonan' para representar a sus pares no tratados y viceversa, eliminando la asociación A-L (el confundimiento). En la pseudo-población la asociación estima el efecto causal. Se modela P(A|L) (el modelo del TRATAMIENTO/propensión) y se ajusta un MODELO ESTRUCTURAL MARGINAL (MSM) para E[Y^a]. Los PESOS ESTABILIZADOS SW = P(A=a)/P(A=a|L) son menos variables (menos influencia de pesos enormes) y se prefieren; requieren positividad (pesos explotan si P(A|L)≈0).",
+   "cuando_usar": "Para estimar efectos marginales ajustando confundidores (y censura) modelando el tratamiento.",
+   "ejemplo": "Ponderar por 1/P(tratamiento|L) y regresar Y sobre A en la pseudo-población para el riesgo bajo cada estrategia.",
+   "patron": "peso 1/P(A|L) → pseudo-población sin confundimiento; MSM para E[Y^a]; usa pesos estabilizados"
+  },
+  {
+   "id": "estandarizacion-g-formula",
+   "nombre": "Estandarización y g-fórmula paramétrica",
+   "descripcion": "La ESTANDARIZACIÓN identifica E[Y^a] = Σ_l E[Y | A=a, L=l]·P(L=l): se estima el outcome dentro de cada estrato de confundidores y se PROMEDIA sobre la distribución de L en la población. La G-FÓRMULA PARAMÉTRICA es su versión con modelos (regresión del OUTCOME) cuando L es de alta dimensión: se ajusta E[Y|A,L], se predice para cada individuo bajo a=1 y a=0, y se promedia (sustitución/standardization). Es la cara complementaria del IP weighting: estandarización modela el OUTCOME, IP weighting modela el TRATAMIENTO; bajo modelos correctos dan lo mismo. Es la base de la g-fórmula para tratamientos tiempo-variables.",
+   "cuando_usar": "Para estimar efectos modelando el outcome (y como alternativa/complemento al IP weighting).",
+   "ejemplo": "Ajustar un modelo de Y sobre A y L, predecir el riesgo de cada persona bajo tratar y no tratar, y promediar la diferencia.",
+   "patron": "E[Y^a]=Σ_l E[Y|a,l]P(l); modela el OUTCOME; complemento del IP weighting (que modela el tratamiento)"
+  },
+  {
+   "id": "propensity-score",
+   "nombre": "Propensity score (puntaje de propensión)",
+   "descripcion": "El PROPENSITY SCORE π(L)=P(A=1|L) es la probabilidad de recibir el tratamiento dados los confundidores. Es un BALANCING SCORE: condicionar en π(L) equilibra L entre tratados y no tratados (resume todos los confundidores en una dimensión). Usos: ESTRATIFICACIÓN por quintiles de PS, EMPAREJAMIENTO (matching) de tratados con no tratados de PS similar, ponderación (= IP weighting) o regresión ajustando por el PS. Requiere las mismas 3 condiciones de identificación; solo controla confundidores MEDIDOS incluidos en el modelo. La falta de solapamiento de los PS (común support) señala violaciones de positividad.",
+   "cuando_usar": "Para ajustar confundidores resumiéndolos en una sola dimensión (alternativa a la regresión de outcome).",
+   "ejemplo": "Emparejar cada tratado con un no tratado de propensión similar y comparar outcomes.",
+   "patron": "π(L)=P(A=1|L); balancing score; estratificar/emparejar/ponderar; solo confundidores medidos"
+  },
+  {
+   "id": "doble-robustez",
+   "nombre": "Estimadores doblemente robustos",
+   "descripcion": "Un estimador DOBLEMENTE ROBUSTO combina un modelo del TRATAMIENTO (propensión, como en IP weighting) y un modelo del OUTCOME (como en estandarización) de modo que es CONSISTENTE si AL MENOS UNO de los dos modelos está bien especificado (dos oportunidades de acertar). Da protección frente a la mala especificación que no tiene un método de un solo modelo. Es la base de los estimadores modernos (AIPW/TMLE) y de la inferencia causal con machine learning: permite usar ML flexible para ambos modelos manteniendo inferencia válida (double/debiased ML).",
+   "cuando_usar": "Cuando no estás seguro de qué modelo (tratamiento u outcome) está bien especificado; con ML.",
+   "ejemplo": "AIPW: aunque el modelo de outcome esté mal, si el de propensión es correcto el efecto sigue siendo consistente.",
+   "patron": "combina propensión + outcome; consistente si UNO de los dos es correcto; base de causal ML (AIPW/TMLE)"
+  },
+  {
+   "id": "variable-instrumental",
+   "nombre": "Estimación con variable instrumental",
+   "descripcion": "Una VARIABLE INSTRUMENTAL Z permite estimar el efecto aun con confundimiento NO medido, si cumple 3 condiciones: (i) RELEVANCIA: Z se asocia con el tratamiento A; (ii) RESTRICCIÓN DE EXCLUSIÓN: Z afecta a Y SOLO a través de A; (iii) Z e Y no comparten causas (Z no confundido con Y). El estimando IV usual = (E[Y|Z=1]−E[Y|Z=0]) / (E[A|Z=1]−E[A|Z=0]). Pero esas 3 NO bastan para un efecto puntual: hace falta una 4ª condición — HOMOGENEIDAD (efecto constante) o MONOTONICIDAD (no hay 'defiers'), bajo la cual IV estima el LATE (efecto local en los CUMPLIDORES/compliers), no el ATE. Instrumentos DÉBILES (relevancia baja) dan estimaciones muy inestables y sesgadas.",
+   "cuando_usar": "Cuando se sospecha confundimiento no medido y existe un instrumento creíble (aleatorización natural, distancia, etc.).",
+   "ejemplo": "Usar la asignación aleatoria (Z) como instrumento del tratamiento realmente tomado (A) ante no adherencia.",
+   "patron": "Z: relevancia + exclusión + sin confundir Z-Y; +monotonicidad ⇒ LATE en compliers; cuidado instrumentos débiles"
+  },
+  {
+   "id": "analisis-supervivencia-hazard-vs-riesgo",
+   "nombre": "Supervivencia causal: hazard vs riesgo",
+   "descripcion": "En análisis de supervivencia causal, el RIESGO (incidencia acumulada) y la SUPERVIVENCIA son contrastes contrafactuales claros, pero el HAZARD RATIO es problemático: tiene un SESGO DE SELECCIÓN INCORPORADO porque, a medida que pasa el tiempo, condiciona en haber sobrevivido (depleción de susceptibles), de modo que el hazard ratio en tiempos tardíos compara grupos ya no intercambiables aunque hubiera aleatorización. Por eso se prefieren contrastes de RIESGO/SUPERVIVENCIA a un tiempo fijo (diferencia o cociente de riesgos) o curvas ajustadas. La CENSURA es un tratamiento tiempo-variable: se maneja con IP weighting de censura (IPCW) bajo intercambiabilidad para la censura.",
+   "cuando_usar": "Al estimar efectos sobre outcomes de tiempo-hasta-evento desde ECA u observacional.",
+   "ejemplo": "Reportar la diferencia de supervivencia a 5 años (ajustada) en vez de un único hazard ratio.",
+   "patron": "prefiere riesgo/supervivencia a tiempo fijo; el HR arrastra selección por depleción; censura = IPCW"
+  },
+  {
+   "id": "confounding-tiempo-variable-gmetodos",
+   "nombre": "Confundimiento tiempo-variable y g-métodos",
+   "descripcion": "Con tratamientos TIEMPO-VARIABLES, la identificación requiere INTERCAMBIABILIDAD SECUENCIAL (en cada tiempo, dados el pasado de tratamiento y covariables). El problema duro es el FEEDBACK TRATAMIENTO-CONFUNDIDOR: una covariable L es a la vez CONFUNDIDOR del tratamiento futuro Y MEDIADOR del tratamiento pasado (A_{t-1}→L_t→Y y L_t→A_t). Los métodos tradicionales FALLAN y NO se pueden arreglar: ajustar por L bloquea parte del efecto (es mediador) e induce sesgo de collider; NO ajustar deja confundimiento. La solución son los G-MÉTODOS (g-fórmula, IP weighting de MSM, g-estimación), que ajustan por la historia de confundidores sin bloquear el efecto vía el mediador.",
+   "cuando_usar": "Datos longitudinales donde el tratamiento cambia en el tiempo y depende de covariables que él mismo afecta.",
+   "ejemplo": "CD4 guía iniciar antirretroviral (confundidor) pero también es afectado por el tratamiento previo (mediador): usa g-métodos.",
+   "patron": "feedback L confundidor+mediador ⇒ regresión tradicional falla; usa g-métodos (g-fórmula/IP/g-estimación)"
+  },
+  {
+   "id": "itt-vs-per-protocol-estimando",
+   "nombre": "ITT vs per-protocol (estimandos)",
+   "descripcion": "En un ensayo (o su emulación), el efecto de INTENCIÓN DE TRATAR (ITT) es el de ser ASIGNADO a una estrategia, sin importar la adherencia: preserva la aleatorización y es insesgado para 'asignar', pero ante NO ADHERENCIA subestima el efecto de tratar realmente y puede ser engañoso para decisiones clínicas. El efecto PER-PROTOCOL es el de SEGUIR la estrategia como se especificó; responde la pregunta clínica relevante, pero la adherencia no está aleatorizada, así que hay CONFUNDIMIENTO POST-ALEATORIZACIÓN (tiempo-variable) que debe ajustarse con G-MÉTODOS (no basta una comparación naïve de adherentes vs no). Reportar solo ITT o un per-protocol naïve son errores comunes.",
+   "cuando_usar": "Al definir el estimando de un ensayo con no adherencia, o al emular un target trial.",
+   "ejemplo": "Si la adherencia es baja, el ITT diluye el efecto; el per-protocol ajustado por g-métodos da el efecto de tratar de verdad.",
+   "patron": "ITT = efecto de asignar (preserva aleatorización, diluye con no adherencia); per-protocol = efecto de seguir (necesita g-métodos)"
+  },
+  {
+   "id": "emular-target-trial-sostenido",
+   "nombre": "Emular un target trial con estrategias sostenidas",
+   "descripcion": "Para responder una pregunta causal con datos observacionales se especifica el TARGET TRIAL (el ECA hipotético que emularíamos) con sus componentes y se emula cada uno. Para estrategias SOSTENIDAS en el tiempo (p. ej. 'tomar el fármaco continuamente'), claves: alinear el TIEMPO CERO (elegibilidad, asignación a estrategia e inicio del seguimiento en el MISMO instante) para evitar IMMORTAL TIME BIAS y SESGO DE USUARIO PREVALENTE (incluir solo NUEVOS usuarios / new-user design); usar un COMPARADOR ACTIVO cuando aplique; permitir grace periods; y estimar el efecto PER-PROTOCOL con G-MÉTODOS porque la adherencia a una estrategia sostenida genera confundimiento tiempo-variable. Enunciar el target trial explícitamente fuerza a detectar estos sesgos.",
+   "cuando_usar": "Al diseñar un estudio observacional de RWE que imita un ensayo de una estrategia mantenida.",
+   "ejemplo": "Emular 'iniciar y mantener estatina vs no' con new-users alineados en t=0 y per-protocol por IP weighting.",
+   "patron": "especifica el ECA objetivo; alinea t=0 (evita immortal time + usuario prevalente); new-user/comparador activo; per-protocol con g-métodos"
   }
  ],
  "bloques": [
@@ -1895,7 +2023,11 @@
     "arena-isl1",
     "arena-isl2",
     "arena-isl3",
-    "arena-isl4"
+    "arena-isl4",
+    "arena-h3",
+    "arena-h4",
+    "arena-h5",
+    "arena-h6"
    ],
    "examen": {
     "items": [
@@ -3957,6 +4089,78 @@
        ]
       },
       "source": "An Introduction to Statistical Learning (James et al.) — Cap. 6"
+     },
+     {
+      "id": "f7-ex-62",
+      "heuristica": "confundimiento-backdoor",
+      "enunciado": "Tienes datos observacionales para estimar el efecto de un fármaco A sobre la mortalidad Y. El DAG incluye: edad/gravedad C (causa de A y de Y), un biomarcador M en el camino A→M→Y, y una variable S = 'completó el seguimiento', efecto tanto de A como de la gravedad. Un colega quiere 'ajustar por todas las variables disponibles, incluidas M y S'. (a) ¿Qué variables forman el confundimiento y cómo lo identificas? (b) ¿Por qué NO debes ajustar por M ni por S, y qué sesgo introduce cada una? (c) ¿Qué conjunto de ajuste usarías y qué condiciones extra necesitas para interpretar el resultado como causal?",
+      "pistas": [
+       "Busca causas comunes de A e Y (caminos traseros).",
+       "M está en el camino causal A→M→Y: ¿qué pasa si lo bloqueas?",
+       "S es un efecto común de A y de la gravedad: ¿collider?",
+       "El criterio backdoor prohíbe descendientes de A.",
+       "Identificación necesita 3 condiciones; ¿cuáles?"
+      ],
+      "solucion": "(a) El confundimiento lo crea C (edad/gravedad), una CAUSA COMÚN de A e Y que abre un CAMINO TRASERO A ← C → Y; se identifica con el CRITERIO DE LA PUERTA TRASERA: hay que bloquear todos los caminos traseros entre A e Y condicionando sobre un conjunto que NO contenga descendientes de A. Aquí basta ajustar por C. (b) NO se ajusta por M porque es un MEDIADOR (A→M→Y): condicionarlo BLOQUEA parte del efecto y sesga el efecto TOTAL hacia el nulo (estimaría solo el directo); además, si M comparte causas con Y, condicionarlo abre sesgo de collider. NO se ajusta por S porque es un COLLIDER / efecto común de A y de la gravedad (y la gravedad causa Y): restringir o condicionar en 'completó el seguimiento' es SESGO DE SELECCIÓN: abre una asociación espuria A-Y (censura informativa). 'Ajustar por todo' es un error: la decisión se basa en la ESTRUCTURA (DAG), no en la disponibilidad. (c) Usaría el conjunto de ajuste {C} (los confundidores que bloquean el backdoor sin ser descendientes de A); opcionalmente añadiría predictores puros del outcome para ganar precisión, pero NUNCA M, S ni instrumentos. Para leerlo como causal necesito las 3 condiciones de identificación: INTERCAMBIABILIDAD condicional dado C (no hay confundimiento no medido), POSITIVIDAD (0<P(A|C)<1 en todo estrato) y CONSISTENCIA (intervención bien definida). Si hay censura informativa por S, la trato con IP weighting de censura en vez de restringir.",
+      "disparador": "Señal: '¿qué ajusto?' con mediadores/colliders en juego. Jugada: ajusta solo confundidores (causas comunes que bloquean el backdoor, sin descendientes de A); NUNCA mediadores (sesgan el total) ni colliders/selección (abren sesgo); censura informativa → IPCW; valida con intercambiabilidad+positividad+consistencia.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "confundimiento",
+        "criterio backdoor",
+        "d-separación",
+        "mediador",
+        "collider/sesgo de selección",
+        "condiciones de identificación"
+       ],
+       "errores_comunes": [
+        "Ajustar por todas las variables disponibles",
+        "Ajustar por un mediador y reportarlo como efecto total",
+        "Restringir a quienes completaron el seguimiento (collider)"
+       ],
+       "casos_borde": [
+        "Predictores puros del outcome mejoran precisión sin sesgar",
+        "Ajustar un instrumento amplifica el confundimiento residual (Z-bias)"
+       ]
+      },
+      "source": "Causal Inference: What If (Hernán & Robins) — Caps. 6-8"
+     },
+     {
+      "id": "f7-ex-63",
+      "heuristica": "condiciones-identificacion-causal",
+      "enunciado": "Quieres estimar el efecto causal de iniciar un tratamiento sobre un outcome usando una base observacional, comparando 'tratar a todos' vs 'no tratar a nadie'. (a) Enuncia las tres condiciones que deben cumplirse para identificar el efecto y explica qué significa cada una. (b) ¿Cuál es solo verificable en los datos y cuáles son supuestos? (c) Si se cumplen, describe DOS formas de estimar el efecto y en qué se diferencian.",
+      "pistas": [
+       "Una habla de comparabilidad dentro de estratos de confundidores.",
+       "Otra exige que en cada estrato haya tratados y no tratados.",
+       "La tercera, que la intervención esté bien definida.",
+       "Solo una se puede chequear empíricamente.",
+       "Una modela el tratamiento; la otra, el outcome."
+      ],
+      "solucion": "(a) (1) INTERCAMBIABILIDAD condicional: dentro de cada estrato de los confundidores medidos L, tratados y no tratados son comparables, Y^a ⊥ A | L — equivale a que no haya confundimiento NO medido. (2) POSITIVIDAD: en todo estrato de L que ocurre en la población hay probabilidad positiva de recibir cada nivel del tratamiento, 0 < P(A=a|L=l) < 1 (hay tratados y no tratados en cada estrato). (3) CONSISTENCIA: el tratamiento está BIEN DEFINIDO (intervención precisa, sin múltiples versiones con efectos distintos) y, si A=a, entonces Y^a = Y (el contrafactual bajo el tratamiento recibido es el outcome observado). (b) Solo la POSITIVIDAD es (parcialmente) verificable en los datos: se puede inspeccionar si hay tratados y no tratados en cada estrato de L (o si los pesos de IP weighting explotan). La INTERCAMBIABILIDAD condicional y la CONSISTENCIA son SUPUESTOS no verificables que se justifican con conocimiento del dominio (qué confundidores existen, cómo se define la intervención). (c) Bajo las tres condiciones: (i) ESTANDARIZACIÓN / g-fórmula: modelar el OUTCOME E[Y|A,L], predecir para cada individuo bajo a=1 y a=0 y promediar sobre la distribución de L → E[Y^a]=Σ_l E[Y|a,l]P(l). (ii) IP WEIGHTING: modelar el TRATAMIENTO P(A|L), ponderar por 1/P(A=a|L) (mejor estabilizado) para crear una pseudo-población sin confundimiento y ajustar un MSM para E[Y^a]. Diferencia: una modela el outcome y la otra el tratamiento; bajo modelos correctos coinciden, y combinarlas da un estimador DOBLEMENTE ROBUSTO (consistente si uno de los dos es correcto).",
+      "disparador": "Señal: 'efecto causal desde datos observacionales'. Jugada: primero IDENTIFICA con intercambiabilidad|L + positividad + consistencia (solo la positividad es chequeable); luego ESTIMA con estandarización (modela outcome) o IP weighting (modela tratamiento), o doble robustez para protegerte de la mala especificación.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "intercambiabilidad",
+        "positividad",
+        "consistencia",
+        "identificación vs estimación",
+        "estandarización/g-fórmula",
+        "IP weighting"
+       ],
+       "errores_comunes": [
+        "Olvidar la positividad (estratos sin tratados o sin controles)",
+        "Tratar la consistencia como trivial con intervenciones mal definidas",
+        "Creer que la intercambiabilidad se puede 'probar' con los datos"
+       ],
+       "casos_borde": [
+        "Casi-violaciones de positividad inflan los pesos de IP weighting",
+        "Combinar ambos métodos da un estimador doblemente robusto"
+       ]
+      },
+      "source": "Causal Inference: What If (Hernán & Robins) — Caps. 2-3, 12-13"
      }
     ]
    }
@@ -18048,6 +18252,542 @@
      "enunciado": "En aprendizaje NO supervisado, ¿qué hace PCA y en qué se diferencian K-means y el clustering jerárquico?",
      "solucion": "PCA halla las DIRECCIONES ORTOGONALES de MÁXIMA VARIANZA (componentes principales) para resumir los datos en pocas dimensiones; la proporción de varianza explicada (PVE) / scree plot guía cuántas usar (estandariza si las escalas difieren). K-MEANS particiona en K clusters (hay que FIJAR K de antemano) minimizando la varianza intra-cluster; depende de la inicialización (córrelo varias veces). El CLUSTERING JERÁRQUICO NO fija K: construye un DENDROGRAMA aglomerativo que se corta a la altura deseada, y depende del LINKAGE (complete/average preferibles a single) y de la medida de distancia.",
      "explicacion": "K-means: número de clusters fijo y esférico; jerárquico: dendrograma flexible sin fijar K."
+    }
+   ]
+  },
+  {
+   "id": "arena-h3",
+   "bloque": "fase-7",
+   "orden": 95,
+   "titulo": "Arena Inferencia Causal · Contrafactuales, experimentos e identificación",
+   "libro": "Causal Inference: What If (Miguel A. Hernán & James M. Robins)",
+   "lectura": "data/teoria/arena-h3.md",
+   "dosis": 30,
+   "objetivo": "Dominar los fundamentos: resultados potenciales (individual vs promedio), asociación≠causación, aleatorización e intercambiabilidad, las 3 condiciones de identificación (intercambiabilidad/positividad/consistencia), medidas de efecto y modificación vs interacción.",
+   "heuristicas": [
+    "definir-efecto-causal-contrafactual",
+    "condiciones-identificacion-causal",
+    "exchangeability-aleatorizacion",
+    "modificacion-efecto-vs-interaccion"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Efecto = E[Y^{a=1}]−E[Y^{a=0}] (toda la población) ≠ asociación E[Y|A=1]−E[Y|A=0]",
+    "Aleatorizar ⇒ intercambiabilidad (Y^a⊥A): la asociación SÍ es causación",
+    "Identificación observacional: intercambiabilidad|L + positividad + consistencia",
+    "Medidas marginales: diferencia/razón de riesgos, odds ratio (según escala)",
+    "Modificación = efecto de A varía por V; interacción = efecto conjunto de A y E"
+   ],
+   "banco": [
+    {
+     "id": "arh3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los resultados POTENCIALES (contrafactuales) y qué es el efecto causal INDIVIDUAL?",
+     "solucion": "Para cada individuo se definen los resultados que tendría bajo cada tratamiento: Y^{a=1} si recibiera el tratamiento y Y^{a=0} si no. Hay efecto causal individual si Y^{a=1} ≠ Y^{a=0}. El PROBLEMA FUNDAMENTAL es que solo observamos UNO de los dos (el correspondiente al tratamiento que de hecho recibió), así que el efecto individual es, en general, INOBSERVABLE.",
+     "explicacion": "Por eso la inferencia causal se centra en efectos promedio de poblaciones, no individuales."
+    },
+    {
+     "id": "arh3-q2",
+     "tipo": "concepto",
+     "enunciado": "Define el efecto causal PROMEDIO en una población y por qué es identificable cuando el individual no lo es.",
+     "solucion": "Hay efecto causal promedio si E[Y^{a=1}] ≠ E[Y^{a=0}] (con outcomes binarios, P(Y^{a=1}=1) ≠ P(Y^{a=0}=1)): el resultado medio si TODA la población recibiera el tratamiento vs si NADIE lo recibiera. Aunque no observemos ambos contrafactuales por individuo, sí podemos estimar las MEDIAS poblacionales bajo cada tratamiento (con aleatorización o con las condiciones de identificación), porque promediar no requiere ver los dos valores de la misma persona.",
+     "explicacion": "El efecto promedio nulo no implica ausencia de efectos individuales (pueden cancelarse)."
+    },
+    {
+     "id": "arh3-q3",
+     "tipo": "concepto",
+     "enunciado": "Explica por qué 'la asociación no es causación' en términos contrafactuales.",
+     "solucion": "La ASOCIACIÓN compara el outcome entre dos SUBPOBLACIONES distintas realmente observadas: E[Y|A=1] vs E[Y|A=0] (los tratados vs los no tratados). La CAUSACIÓN compara la MISMA población entera bajo dos intervenciones: E[Y^{a=1}] vs E[Y^{a=0}]. Coinciden solo si los grupos son intercambiables (p. ej. por aleatorización). En observacional, tratados y no tratados difieren en otras cosas (confundidores), así que la asociación incluye esas diferencias y no es el efecto causal.",
+     "explicacion": "Asociación = condicionar en A observado; causación = intervenir A en toda la población."
+    },
+    {
+     "id": "arh3-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué garantiza un experimento aleatorizado y cómo se llama esa propiedad?",
+     "solucion": "La aleatorización asigna el tratamiento por azar, independientemente de los resultados potenciales, lo que produce INTERCAMBIABILIDAD (exchangeability) marginal: Y^a ⊥ A. Los grupos de tratamiento son comparables en todo (medido y no medido), de modo que E[Y|A=a] = E[Y^a] y la asociación observada SÍ estima el efecto causal. Por eso el ECA es el patrón de referencia.",
+     "explicacion": "Intercambiabilidad: el grupo no tratado representa lo que les habría pasado a los tratados sin tratamiento."
+    },
+    {
+     "id": "arh3-q5",
+     "tipo": "concepto",
+     "enunciado": "Enuncia las TRES condiciones para identificar un efecto causal en un estudio observacional.",
+     "solucion": "(1) INTERCAMBIABILIDAD condicional: dentro de cada estrato de los confundidores medidos L, tratados y no tratados son comparables (Y^a ⊥ A | L), es decir, no hay confundimiento no medido. (2) POSITIVIDAD: en cada estrato de L presente en la población hay probabilidad positiva de recibir cada nivel de tratamiento (0 < P(A=a|L=l) < 1). (3) CONSISTENCIA: el tratamiento está bien definido (intervenciones precisas) y, si A=a, entonces Y^a = Y. Con las tres, el efecto se identifica y se estima por estandarización o IP weighting.",
+     "explicacion": "Solo la positividad es parcialmente verificable en los datos; las otras dos son supuestos."
+    },
+    {
+     "id": "arh3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la condición de POSITIVIDAD y qué la viola?",
+     "solucion": "Positividad: para cada combinación de confundidores L=l que ocurre en la población, debe haber individuos que reciban CADA nivel del tratamiento, es decir 0 < P(A=a | L=l) < 1. Se viola (positividad ESTRUCTURAL) cuando, por la naturaleza del problema, cierto tipo de persona NUNCA recibe (o siempre recibe) el tratamiento; o por azar (positividad aleatoria) en estratos pequeños. Sin positividad no hay con quién comparar en ese estrato y el efecto no se identifica ahí (o requiere extrapolar con modelos).",
+     "explicacion": "Los pesos de IP weighting explotan cuando P(A|L) se acerca a 0, señal de problemas de positividad."
+    },
+    {
+     "id": "arh3-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la condición de CONSISTENCIA y por qué exige 'intervenciones bien definidas'?",
+     "solucion": "Consistencia significa que el resultado potencial bajo el tratamiento que la persona efectivamente recibió coincide con el observado: si A=a entonces Y^a=Y. Exige que el tratamiento esté BIEN DEFINIDO (intervenciones precisas y sin múltiples versiones con efectos distintos); si 'obesidad' o 'ejercicio' admiten muchas versiones (dieta vs cirugía), el contrafactual Y^a es ambiguo y la consistencia se vuelve dudosa. 'No causation without manipulation': definir bien la intervención es parte del planteamiento causal.",
+     "explicacion": "Por eso se prefieren preguntas sobre intervenciones concretas (un fármaco a una dosis) y no sobre atributos vagos."
+    },
+    {
+     "id": "arh3-q8",
+     "tipo": "concepto",
+     "enunciado": "Define las medidas de efecto causal: diferencia de riesgos, razón de riesgos y razón de momios (odds ratio).",
+     "solucion": "Sobre los riesgos contrafactuales marginales: la DIFERENCIA DE RIESGOS causal = P(Y^{a=1}=1) − P(Y^{a=0}=1) (escala aditiva, 0 = sin efecto); la RAZÓN DE RIESGOS causal = P(Y^{a=1}=1) / P(Y^{a=0}=1) (multiplicativa, 1 = nulo); la RAZÓN DE MOMIOS causal = odds(Y^{a=1}) / odds(Y^{a=0}). Todas son MARGINALES (en toda la población bajo cada tratamiento) y miden lo mismo (presencia de efecto) pero en escalas distintas; la magnitud y la modificación de efecto dependen de la escala elegida.",
+     "explicacion": "Diferencia de riesgos para impacto absoluto/salud pública; razones para magnitud relativa."
+    },
+    {
+     "id": "arh3-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la MODIFICACIÓN DE EFECTO y por qué depende de la escala?",
+     "solucion": "Hay modificación de efecto por una variable V si el efecto causal de A sobre Y DIFIERE entre los estratos de V (p. ej. el efecto es mayor en mujeres). V es típicamente un marcador sobre el que no se interviene. Depende de la ESCALA porque un efecto puede ser constante en la escala aditiva (misma diferencia de riesgos en ambos estratos) pero variable en la multiplicativa (distinta razón de riesgos), o viceversa: puede haber modificación aditiva sin multiplicativa. Por eso hay que especificar la escala al hablar de modificación.",
+     "explicacion": "Reportar subgrupos sin decir la escala es ambiguo; siempre indicar aditiva o multiplicativa."
+    },
+    {
+     "id": "arh3-q10",
+     "tipo": "concepto",
+     "enunciado": "¿En qué se diferencia la INTERACCIÓN de la modificación de efecto?",
+     "solucion": "La interacción se refiere al efecto causal CONJUNTO de DOS tratamientos A y E sobre los que se INTERVIENE a ambos; se formaliza con contrafactuales a dos índices Y^{a,e} y se analiza con el marco de causas suficientes (sinergismo/antagonismo). La modificación de efecto, en cambio, describe cómo varía el efecto de UN tratamiento A según los estratos de una variable V que es solo un MARCADOR (no necesariamente intervenible y posiblemente sin efecto causal propio). Diferencia clave: la interacción requiere intervenir sobre ambos factores; la modificación, no.",
+     "explicacion": "Una variable puede modificar el efecto sin interactuar causalmente (p. ej. por ser proxy de otra)."
+    },
+    {
+     "id": "arh3-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el riesgo de confundimiento en estudios observacionales frente a los aleatorizados?",
+     "solucion": "En un ECA la aleatorización da intercambiabilidad marginal, así que no hay confundimiento. En observacional, quienes reciben el tratamiento difieren sistemáticamente de quienes no (por indicación, gravedad, hábitos), de modo que solo se puede aspirar a intercambiabilidad CONDICIONAL ajustando por los confundidores MEDIDOS L. El riesgo central es el CONFUNDIMIENTO NO MEDIDO (o residual): variables que causan A e Y que no observamos o medimos mal, y que invalidan la comparación aunque ajustemos por lo que tenemos.",
+     "explicacion": "Por eso un estudio observacional siempre carga el supuesto, no verificable, de no confundimiento residual."
+    },
+    {
+     "id": "arh3-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el efecto causal promedio puede ser nulo aunque haya efectos en individuos?",
+     "solucion": "Porque el efecto promedio compara medias poblacionales: si en algunos individuos el tratamiento ayuda (Y^{a=1}<Y^{a=0}) y en otros perjudica en igual medida, los efectos individuales se CANCELAN y E[Y^{a=1}]=E[Y^{a=0}]. La ausencia de efecto promedio (sharp null se viola pero el average null se cumple) no implica que el tratamiento no haga nada a nadie. Distinguir el null 'agudo' (ningún efecto individual) del null promedio es importante.",
+     "explicacion": "Efecto promedio = 0 no equivale a 'sin efecto individual'; pueden compensarse."
+    },
+    {
+     "id": "arh3-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa estimar un efecto causal por ESTANDARIZACIÓN, a nivel intuitivo?",
+     "solucion": "Estandarizar es calcular el outcome medio dentro de cada estrato de confundidores L y luego PROMEDIARLO usando la distribución de L de toda la población (no la de cada grupo de tratamiento). Así se comparan tratados y no tratados como si tuvieran la MISMA mezcla de confundidores, neutralizando el confundimiento: E[Y^a] = Σ_l E[Y|A=a,L=l]·P(L=l). Es una de las dos formas estándar de usar la intercambiabilidad condicional.",
+     "explicacion": "Es el complemento del IP weighting; ambas requieren las 3 condiciones de identificación."
+    },
+    {
+     "id": "arh3-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el IP weighting a nivel intuitivo y qué problema resuelve?",
+     "solucion": "El IP weighting pondera a cada individuo por la INVERSA de la probabilidad de haber recibido el tratamiento que recibió, dado L (1/P(A=a|L)). Esto crea una PSEUDO-POBLACIÓN en la que el tratamiento ya no depende de los confundidores (se rompe la asociación A-L), de modo que la asociación en la pseudo-población estima el efecto causal. Resuelve el confundimiento por L sin modelar el outcome: en su lugar modela la probabilidad del tratamiento.",
+     "explicacion": "Sobre-representa a los individuos 'raros' en su grupo para reconstruir el contraste contrafactual."
+    },
+    {
+     "id": "arh3-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué a veces se dice que la inferencia causal es 'un problema de datos faltantes'?",
+     "solucion": "Porque para cada individuo falta uno de los dos resultados potenciales (el del tratamiento que NO recibió): observamos Y^{a} solo para el a que ocurrió y el otro es un dato faltante. Estimar el efecto causal equivale a 'imputar' (en promedio) esos contrafactuales faltantes, lo que requiere supuestos (intercambiabilidad, positividad, consistencia) análogos a los de los datos faltantes (p. ej. MAR). Esta lente conecta la inferencia causal con la teoría de missing data.",
+     "explicacion": "Los contrafactuales no observados son los 'valores faltantes' que las condiciones permiten recuperar en promedio."
+    }
+   ]
+  },
+  {
+   "id": "arena-h4",
+   "bloque": "fase-7",
+   "orden": 96,
+   "titulo": "Arena Inferencia Causal · Confundimiento, selección y sesgo de medición",
+   "libro": "Causal Inference: What If (Miguel A. Hernán & James M. Robins)",
+   "lectura": "data/teoria/arena-h4.md",
+   "dosis": 30,
+   "objetivo": "El enfoque ESTRUCTURAL de los sesgos: confundimiento y criterio backdoor, d-separación, sesgo de selección/censura (colliders), sesgo de medición (misclasificación diferencial), identificación vs estimación y qué variables NO ajustar.",
+   "heuristicas": [
+    "confundimiento-backdoor",
+    "sesgo-de-seleccion-censura",
+    "sesgo-de-medicion-misclasificacion"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Confundimiento = causa común (camino trasero A←C→Y); ciérralo con el backdoor",
+    "d-separación: condicionar cierra cadenas/bifurcaciones pero ABRE colliders",
+    "Sesgo de selección = condicionar un efecto común (collider); censura informativa → IPCW",
+    "Misclasificación no diferencial atenúa al nulo; diferencial, cualquier dirección",
+    "No ajustes mediadores, colliders ni instrumentos (M-bias/Z-bias); decide con el DAG"
+   ],
+   "banco": [
+    {
+     "id": "arh4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el CONFUNDIMIENTO en términos estructurales y qué es un camino trasero (backdoor)?",
+     "solucion": "El confundimiento existe cuando el tratamiento A y el outcome Y comparten una CAUSA COMÚN, lo que crea un CAMINO TRASERO (backdoor) entre ellos: una ruta que sale de A 'hacia atrás' (A ← … ) y llega a Y, p. ej. A ← C → Y. Ese camino transmite asociación NO causal entre A e Y, sesgando la comparación. La inferencia causal requiere BLOQUEAR todos los caminos traseros dejando abiertos solo los causales (A → Y).",
+     "explicacion": "El confundidor es la causa común; el sesgo viaja por el camino trasero que abre."
+    },
+    {
+     "id": "arh4-q2",
+     "tipo": "concepto",
+     "enunciado": "Enuncia el CRITERIO DE LA PUERTA TRASERA (backdoor) para elegir el conjunto de ajuste.",
+     "solucion": "Un conjunto de variables L es suficiente para identificar el efecto de A sobre Y si: (i) BLOQUEA todos los caminos traseros entre A e Y (cierra las rutas no causales), y (ii) NO contiene ningún DESCENDIENTE de A (para no abrir sesgos ni ajustar por mediadores/efectos del tratamiento). Si existe tal L y se cumplen positividad y consistencia, el efecto se identifica ajustando por L.",
+     "explicacion": "Cumplir el backdoor equivale a lograr intercambiabilidad condicional dado L."
+    },
+    {
+     "id": "arh4-q3",
+     "tipo": "concepto",
+     "enunciado": "Explica las reglas de d-separación: ¿cuándo un camino está bloqueado?",
+     "solucion": "Un camino (secuencia de flechas) está BLOQUEADO si: (a) contiene un NO-COLLIDER (cadena A→B→C o bifurcación A←B→C) sobre el que SÍ se condiciona; o (b) contiene un COLLIDER (A→B←C) sobre el que NO se condiciona (ni sobre sus descendientes). A la inversa, condicionar un no-collider BLOQUEA el camino, pero condicionar un collider lo ABRE (induce asociación). Dos variables están d-separadas (independientes) si TODOS los caminos entre ellas están bloqueados.",
+     "explicacion": "Regla mnemónica: condicionar 'cierra' cadenas/bifurcaciones pero 'abre' colliders."
+    },
+    {
+     "id": "arh4-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué NO se debe ajustar por un MEDIADOR si se busca el efecto TOTAL?",
+     "solucion": "Un mediador M está en el camino causal A → M → Y. Ajustar (condicionar) por M BLOQUEA esa parte del efecto, dejando solo el efecto directo y por tanto SESGANDO el efecto TOTAL hacia el nulo. Además, si M tiene causas comunes con Y, condicionar en M (un collider respecto a esas causas) puede ABRIR sesgo de selección. Por eso, para el efecto total, el conjunto de ajuste no debe incluir mediadores ni descendientes de A (regla del criterio backdoor).",
+     "explicacion": "Ajustar por el mediador responde otra pregunta (efecto directo), no el efecto total."
+    },
+    {
+     "id": "arh4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el SESGO DE SELECCIÓN en términos estructurales y en qué se diferencia del confundimiento?",
+     "solucion": "El sesgo de selección surge al CONDICIONAR (restringir la muestra, estratificar o seleccionar) sobre un efecto COMÚN (un COLLIDER) del tratamiento A (o de una causa de A) y del outcome Y (o de una causa de Y): condicionar el collider abre una asociación espuria A-Y. Se diferencia del confundimiento en la estructura: el confundimiento es por una CAUSA COMÚN anterior (camino trasero), mientras que el sesgo de selección es por condicionar un EFECTO COMÚN posterior. Por eso 'no medir' arregla al collider pero 'medir/ajustar' arregla al confundidor.",
+     "explicacion": "Confundimiento = causa común (no condicionar resuelve el collider); selección = efecto común condicionado."
+    },
+    {
+     "id": "arh4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo genera la CENSURA / pérdida de seguimiento un sesgo de selección y cómo se corrige?",
+     "solucion": "Si permanecer no censurado (C=0) es un EFECTO del tratamiento A y además está asociado al pronóstico (causas de Y), entonces analizar solo a los no censurados condiciona en un COLLIDER y crea asociación espuria entre A e Y: sesgo de selección por censura informativa (dependent censoring). Se corrige con IP weighting de censura (IPCW): ponderar a los no censurados por la inversa de su probabilidad de seguir no censurados dado el pasado, reconstruyendo la población original; requiere intercambiabilidad para la censura y positividad.",
+     "explicacion": "El abandono diferencial según tratamiento y pronóstico es la forma típica de este sesgo en cohortes."
+    },
+    {
+     "id": "arh4-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el sesgo de medición y qué es la misclasificación NO DIFERENCIAL vs DIFERENCIAL?",
+     "solucion": "El sesgo de medición (information bias) proviene de medir con error el tratamiento, el outcome o los confundidores. La misclasificación es NO DIFERENCIAL cuando el error en una variable es INDEPENDIENTE del valor de la otra (p. ej. error en la exposición igual en enfermos y sanos): típicamente ATENÚA el efecto hacia el nulo. Es DIFERENCIAL cuando el error DEPENDE de la otra variable (p. ej. recall bias: los casos recuerdan su exposición distinto que los controles): puede sesgar en CUALQUIER dirección, incluso exagerar el efecto.",
+     "explicacion": "No diferencial suele subestimar; diferencial es impredecible y más peligrosa."
+    },
+    {
+     "id": "arh4-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué problema causa un CONFUNDIDOR medido con error?",
+     "solucion": "Si un confundidor se mide con error, ajustar por su versión imperfecta NO elimina del todo el confundimiento: queda CONFUNDIMIENTO RESIDUAL. El efecto estimado sigue sesgado en la dirección del confundidor original, aunque 'controlemos' por el proxy. Cuanto peor la medición del confundidor, mayor el residuo. Por eso medir bien los confundidores (o usar varios indicadores) importa tanto como incluirlos.",
+     "explicacion": "Controlar un proxy ruidoso del confundidor deja una parte del sesgo sin corregir."
+    },
+    {
+     "id": "arh4-q9",
+     "tipo": "concepto",
+     "enunciado": "Distingue IDENTIFICACIÓN de ESTIMACIÓN en inferencia causal.",
+     "solucion": "La IDENTIFICACIÓN es la pregunta de si, con datos INFINITOS y bajo los supuestos (intercambiabilidad, positividad, consistencia), el efecto causal puede expresarse como una función de la distribución de los datos observados (un tema de SUPUESTOS, no de tamaño muestral). La ESTIMACIÓN es cómo, con datos FINITOS, calculamos ese efecto identificado lidiando con la variabilidad aleatoria (modelos, intervalos de confianza). Conviene separarlas: primero identificar (¿es estimable bajo mis supuestos?), luego estimar.",
+     "explicacion": "Sin identificación, más datos no ayudan; con identificación, la estimación maneja el ruido."
+    },
+    {
+     "id": "arh4-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la 'maldición de la dimensionalidad' al ajustar por muchos confundidores y cómo se enfrenta?",
+     "solucion": "Si hay muchos confundidores L (alta dimensión), la estandarización/IP weighting NO PARAMÉTRICOS fallan: muchos estratos quedan vacíos o con un solo tratamiento (se viola la positividad empírica) y no se pueden estimar las medias condicionales. La solución es usar MODELOS (paramétricos o de machine learning) que SUAVIZAN entre estratos: g-fórmula paramétrica (modelo de outcome) o IP weighting modelando P(A|L). Es la razón de 'por qué modelar' en la Parte II del libro.",
+     "explicacion": "Con L de alta dimensión no hay estratos suficientes; los modelos interpolan/suavizan para estimar."
+    },
+    {
+     "id": "arh4-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo distingue un DAG el confundimiento del sesgo de selección al mirar los caminos?",
+     "solucion": "Un DAG muestra confundimiento cuando existe un camino trasero ABIERTO por una causa común no bloqueada (A ← C → Y): se cierra CONDICIONANDO sobre C. Muestra sesgo de selección cuando un COLLIDER (efecto común) ha sido condicionado (por diseño o análisis), abriendo un camino que estaba cerrado: se evita NO condicionando ese collider. Así, el mismo lenguaje de caminos/d-separación diagnostica ambos: ¿el sesgo viene de un camino trasero por causa común, o de condicionar un efecto común?",
+     "explicacion": "Mirar el DAG dice qué ajustar (confundidores) y qué NO ajustar (colliders/mediadores)."
+    },
+    {
+     "id": "arh4-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un 'noncausal diagram' y por qué los diagramas de medición incluyen flechas no causales?",
+     "solucion": "Para representar el error de medición, el DAG incluye las variables REALES (A, Y, L) y sus versiones MEDIDAS (A*, Y*, L*) con flechas desde la real (y desde nodos de error U) hacia la medida: A→A*←U_A. Esas flechas modelan cómo se genera el dato observado. Permiten razonar estructuralmente el sesgo de medición: dónde está el collider/causa común que introduce el error y si la misclasificación es diferencial (cuando, p. ej., Y influye en A*).",
+     "explicacion": "Modelar explícitamente la variable medida vs la real revela el mecanismo del sesgo de información."
+    },
+    {
+     "id": "arh4-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué condicionar (ajustar) por una variable NO siempre reduce el sesgo?",
+     "solucion": "Porque ajustar por la variable equivocada puede INTRODUCIR sesgo: condicionar un COLLIDER abre asociación espuria (sesgo de selección/M-bias); ajustar un MEDIADOR bloquea parte del efecto; ajustar un INSTRUMENTO o variable que solo causa A (no Y) puede AMPLIFICAR el confundimiento residual (Z-bias) y la varianza. 'Ajustar por todo lo disponible' es un error: la decisión de qué ajustar debe basarse en la ESTRUCTURA causal (el DAG), no en criterios estadísticos como cambios en el coeficiente.",
+     "explicacion": "Más covariables no es mejor; el DAG, no la significancia, decide el conjunto de ajuste."
+    },
+    {
+     "id": "arh4-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el sesgo en M (M-bias) y por qué advierte contra ajustar 'por si acaso'?",
+     "solucion": "El M-bias ocurre con una estructura en forma de M: una variable Z es un COLLIDER de dos causas no medidas (U1→Z←U2), donde U1 causa A y U2 causa Y. Z NO es un confundidor (no es causa común de A e Y), pero AJUSTAR por Z condiciona el collider y ABRE un camino U1→...→U2 que crea asociación espuria A-Y. Es un ejemplo de que incluir una covariable pretratamiento 'por precaución' puede CREAR sesgo donde no lo había.",
+     "explicacion": "Pretratamiento no implica seguro para ajustar; un collider pretratamiento puede inducir sesgo."
+    },
+    {
+     "id": "arh4-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los Single-World Intervention Graphs (SWIGs) y para qué sirven?",
+     "solucion": "Los SWIGs son DAGs que incorporan explícitamente el TRATAMIENTO INTERVENIDO escindiendo el nodo de tratamiento en su valor natural y su valor fijado por intervención (a), de modo que aparecen los nodos contrafactuales Y^a en el propio grafo. Sirven para LEER la intercambiabilidad condicional (Y^a ⊥ A | L) directamente como d-separación en el grafo intervenido, unificando el lenguaje de contrafactuales con el de diagramas causales y verificando con qué conjunto L se identifica el efecto.",
+     "explicacion": "Permiten chequear gráficamente la intercambiabilidad: ¿está Y^a d-separado de A dado L en el SWIG?"
+    }
+   ]
+  },
+  {
+   "id": "arena-h5",
+   "bloque": "fase-7",
+   "orden": 97,
+   "titulo": "Arena Inferencia Causal · Modelos: IP weighting, g-fórmula, PS, IV",
+   "libro": "Causal Inference: What If (Miguel A. Hernán & James M. Robins)",
+   "lectura": "data/teoria/arena-h5.md",
+   "dosis": 30,
+   "objetivo": "Estimar efectos con modelos: por qué modelar, IP weighting y MSM (pesos estabilizados), estandarización/g-fórmula, propensity scores, doble robustez (causal ML) y variable instrumental (3 condiciones, LATE).",
+   "heuristicas": [
+    "ip-weighting-msm",
+    "estandarizacion-g-formula",
+    "propensity-score",
+    "doble-robustez",
+    "variable-instrumental"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "IP weighting modela el TRATAMIENTO (pseudo-población); estandarización el OUTCOME",
+    "Pesos estabilizados SW=P(A)/P(A|L) son más estables; cuida la positividad",
+    "Propensity score π(L)=P(A=1|L): balancing score (estratificar/emparejar/ponderar)",
+    "Doblemente robusto: consistente si UNO de los dos modelos es correcto (AIPW/TMLE)",
+    "IV (relevancia+exclusión+no confundir Z-Y) +monotonicidad ⇒ LATE en compliers"
+   ],
+   "banco": [
+    {
+     "id": "arh5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué hace falta MODELAR en inferencia causal (Parte II) si en la Parte I se estimaba sin modelos?",
+     "solucion": "Porque los estimadores no paramétricos (estandarización/IP weighting calculados por estratos) solo funcionan con POCOS confundidores discretos: con muchos confundidores o continuos, los estratos quedan vacíos (maldición de la dimensionalidad) y no se pueden estimar las medias condicionales. Los modelos (paramétricos o ML) SUAVIZAN/interpolan entre estratos para estimar E[Y|A,L] o P(A|L), a costa del supuesto de especificación correcta. Es el trade-off sesgo-varianza aplicado a inferencia causal.",
+     "explicacion": "Modelar permite ajustar por confundidores de alta dimensión que el enfoque por estratos no maneja."
+    },
+    {
+     "id": "arh5-q2",
+     "tipo": "concepto",
+     "enunciado": "Explica el IP weighting: qué se modela y qué es la pseudo-población.",
+     "solucion": "Se modela la PROBABILIDAD DEL TRATAMIENTO dado los confundidores, P(A=a|L) (modelo de propensión), y se pondera a cada individuo por 1/P(A=a|L). Esto genera una PSEUDO-POBLACIÓN en la que el tratamiento es independiente de L (se elimina el confundimiento): los individuos se 'replican' según su peso para representar a sus contrafactuales. En esa pseudo-población, la asociación entre A e Y estima el efecto causal (se ajusta un modelo estructural marginal sobre ella).",
+     "explicacion": "IP weighting modela el tratamiento; la estandarización modela el outcome."
+    },
+    {
+     "id": "arh5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un Modelo Estructural Marginal (MSM)?",
+     "solucion": "Un MSM es un modelo para la MEDIA de los resultados CONTRAFACTUALES marginales como función del tratamiento, p. ej. E[Y^a] = β0 + β1·a (o logit P(Y^a=1)=β0+β1·a). Es 'marginal' porque modela E[Y^a] en toda la población (no condicional a L) y 'estructural' porque es sobre contrafactuales. Se estima ajustando ese modelo en la PSEUDO-POBLACIÓN creada por IP weighting; β1 es el efecto causal (diferencia o log-razón según el enlace).",
+     "explicacion": "El MSM da el parámetro causal de interés; IP weighting es la herramienta para ajustarlo."
+    },
+    {
+     "id": "arh5-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los PESOS ESTABILIZADOS y por qué se prefieren a los no estabilizados?",
+     "solucion": "El peso no estabilizado es 1/P(A=a|L); el ESTABILIZADO es SW = P(A=a)/P(A=a|L), donde el numerador es la probabilidad marginal del tratamiento. Los estabilizados tienen MENOR VARIABILIDAD (rango más estrecho, no inflan tanto a individuos con P(A|L) pequeña), lo que da estimaciones más eficientes y estables y mitiga (sin eliminar) los problemas de casi-violación de positividad. Por eso se recomiendan por defecto. Ambos requieren positividad.",
+     "explicacion": "El numerador marginal 'recorta' los pesos extremos sin cambiar la estimación esperada."
+    },
+    {
+     "id": "arh5-q5",
+     "tipo": "concepto",
+     "enunciado": "Explica la ESTANDARIZACIÓN / g-fórmula y su relación con el IP weighting.",
+     "solucion": "La estandarización estima E[Y^a] = Σ_l E[Y|A=a,L=l]·P(L=l): se ajusta un modelo del OUTCOME E[Y|A,L], se predice para cada individuo bajo a=1 y a=0 y se promedia sobre la distribución de L (g-fórmula paramétrica). Modela el OUTCOME, mientras que el IP weighting modela el TRATAMIENTO. Son DOS CARAS de la misma identificación: bajo modelos correctos y las 3 condiciones, dan el mismo efecto. La elección depende de cuál modelo se especifique mejor.",
+     "explicacion": "Estandarización = predecir y promediar (outcome); IP weighting = ponderar (tratamiento)."
+    },
+    {
+     "id": "arh5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el PROPENSITY SCORE y por qué es un 'balancing score'?",
+     "solucion": "El propensity score es π(L)=P(A=1|L), la probabilidad de recibir el tratamiento dados los confundidores. Es un BALANCING SCORE porque, condicionando solo en π(L), la distribución de L queda EQUILIBRADA entre tratados y no tratados: resume todos los confundidores medidos en UNA dimensión. Bajo intercambiabilidad dado L, también hay intercambiabilidad dado π(L), así que ajustar por el PS basta para controlar el confundimiento medido.",
+     "explicacion": "Reduce un problema multivariado de confundidores a uno unidimensional."
+    },
+    {
+     "id": "arh5-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se usa el propensity score en la práctica (4 formas)?",
+     "solucion": "(1) ESTRATIFICACIÓN: dividir en quintiles del PS y combinar efectos estrato-específicos. (2) EMPAREJAMIENTO (matching): aparear tratados y no tratados con PS similar y comparar. (3) PONDERACIÓN: usar 1/P(A=a|L) (equivale al IP weighting). (4) REGRESIÓN/ajuste: incluir el PS como covariable en el modelo del outcome. Todas requieren las 3 condiciones de identificación y solo controlan los confundidores MEDIDOS incluidos en el modelo del PS; la falta de SOLAPAMIENTO (common support) revela problemas de positividad.",
+     "explicacion": "Matching descarta no-solapados (mejora positividad pero cambia la población objetivo)."
+    },
+    {
+     "id": "arh5-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un estimador DOBLEMENTE ROBUSTO y por qué es valioso?",
+     "solucion": "Es un estimador que combina un modelo del TRATAMIENTO (propensión) y uno del OUTCOME, de forma que es CONSISTENTE si AL MENOS UNO de los dos está correctamente especificado (dos oportunidades de acertar). Es valioso porque protege contra la mala especificación: un método de un solo modelo se sesga si ese modelo falla, mientras que el doblemente robusto sobrevive si el otro es correcto. Es la base de AIPW/TMLE y del causal machine learning.",
+     "explicacion": "Aun con un modelo equivocado, basta que el otro acierte para obtener un efecto válido."
+    },
+    {
+     "id": "arh5-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo combina la inferencia causal moderna el MACHINE LEARNING con la doble robustez?",
+     "solucion": "Usando ML flexible (random forests, boosting, etc.) para estimar AMBOS modelos —el de propensión P(A|L) y el de outcome E[Y|A,L]— dentro de un estimador DOBLEMENTE ROBUSTO (AIPW/TMLE) y con CROSS-FITTING para evitar sesgo por overfitting. Esto (double/debiased machine learning) permite ajustar por confundidores de alta dimensión sin imponer una forma paramétrica, manteniendo estimaciones e intervalos de confianza válidos para el efecto causal. El ML predice; la estructura doblemente robusta da la inferencia causal.",
+     "explicacion": "El ML maneja la alta dimensión de L; la doble robustez + cross-fitting preservan la validez inferencial."
+    },
+    {
+     "id": "arh5-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué no basta con poner muchas covariables en una regresión del outcome para 'controlar confundimiento'?",
+     "solucion": "Porque la regresión de outcome solo estima bien el efecto si el modelo está CORRECTAMENTE especificado (forma funcional, interacciones) y si las covariables son los confundidores CORRECTOS (no mediadores ni colliders). Incluir variables equivocadas introduce sesgo (M-bias, sobre-ajuste por mediadores) y un modelo mal especificado sesga aunque las variables sean las correctas. Además, el coeficiente de A en una regresión con interacciones no es un efecto marginal interpretable; por eso se prefieren estandarización/IP weighting/doble robustez, que separan identificación de estimación.",
+     "explicacion": "‘Meter todo’ en una regresión no es inferencia causal: la estructura (DAG) y la especificación importan."
+    },
+    {
+     "id": "arh5-q11",
+     "tipo": "concepto",
+     "enunciado": "Enuncia las TRES condiciones que debe cumplir una VARIABLE INSTRUMENTAL.",
+     "solucion": "(i) RELEVANCIA: el instrumento Z está asociado con (causa) el tratamiento A. (ii) RESTRICCIÓN DE EXCLUSIÓN: Z afecta al outcome Y SOLO a través de A (no hay efecto directo de Z sobre Y ni por otras vías). (iii) Z e Y NO comparten causas (Z no está confundido con Y). Si se cumplen, Z permite estimar el efecto incluso con confundimiento NO medido entre A e Y.",
+     "explicacion": "Las condiciones (ii) y (iii) no son verificables con los datos; se argumentan por conocimiento del problema."
+    },
+    {
+     "id": "arh5-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es el estimando IV usual y por qué las 3 condiciones no bastan para un efecto puntual?",
+     "solucion": "El estimando IV estándar es (E[Y|Z=1]−E[Y|Z=0]) / (E[A|Z=1]−E[A|Z=0]): la asociación Z-Y dividida por la asociación Z-A. Pero las 3 condiciones solo identifican LÍMITES (bounds) del efecto, no un valor puntual; para un punto se necesita una CUARTA condición: HOMOGENEIDAD (el efecto es constante entre individuos) o MONOTONICIDAD (no existen 'defiers'). Sin alguna de ellas, el cociente IV no equivale a un efecto causal interpretable.",
+     "explicacion": "El numerador y denominador se estiman de los datos; la 4ª condición da significado causal al cociente."
+    },
+    {
+     "id": "arh5-q13",
+     "tipo": "concepto",
+     "enunciado": "Bajo MONOTONICIDAD, ¿qué estima la variable instrumental (LATE) y qué limita su interpretación?",
+     "solucion": "Bajo monotonicidad (el instrumento nunca DESALIENTA el tratamiento en nadie: no hay defiers), el estimador IV identifica el LATE (Local Average Treatment Effect): el efecto causal promedio SOLO en los CUMPLIDORES (compliers), es decir, quienes toman el tratamiento si y solo si el instrumento los empuja a hacerlo. No es el ATE de toda la población; su interpretación se limita a un subgrupo no identificable individualmente, que puede no ser el de interés clínico.",
+     "explicacion": "El LATE depende del instrumento (distintos instrumentos → distintos compliers)."
+    },
+    {
+     "id": "arh5-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un INSTRUMENTO DÉBIL y por qué es peligroso?",
+     "solucion": "Un instrumento débil es aquel con relevancia BAJA: poca asociación con el tratamiento (denominador E[A|Z=1]−E[A|Z=0] cercano a 0). Es peligroso porque dividir por un número casi nulo AMPLIFICA enormemente la varianza y cualquier pequeña violación de las otras condiciones (exclusión, no confundimiento Z-Y), produciendo estimaciones muy INESTABLES y SESGADAS. Por eso se exige un instrumento fuertemente asociado al tratamiento (p. ej. F-statistic alto en la primera etapa).",
+     "explicacion": "Con relevancia baja, el sesgo por violaciones menores se magnifica y los IC explotan."
+    },
+    {
+     "id": "arh5-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué variables conviene y NO conviene incluir al seleccionar covariables para inferencia causal?",
+     "solucion": "SÍ: confundidores (causas comunes de A e Y) para cerrar caminos traseros, y predictores fuertes del OUTCOME (mejoran la precisión sin sesgar). NO: mediadores (bloquean parte del efecto total), colliders/efectos comunes (abren sesgo de selección), e INSTRUMENTOS o variables que solo causan A (no Y): incluirlas no reduce sesgo y AMPLIFICA el confundimiento residual y la varianza (Z-bias/bias amplification). La selección debe guiarse por la ESTRUCTURA causal (DAG), no por criterios estadísticos como 'cambia el coeficiente' o significancia.",
+     "explicacion": "Predictores del outcome ayudan; predictores solo del tratamiento (instrumentos) perjudican."
+    }
+   ]
+  },
+  {
+   "id": "arena-h6",
+   "bloque": "fase-7",
+   "orden": 98,
+   "titulo": "Arena Inferencia Causal · Longitudinal, supervivencia y target trial",
+   "libro": "Causal Inference: What If (Miguel A. Hernán & James M. Robins)",
+   "lectura": "data/teoria/arena-h6.md",
+   "dosis": 30,
+   "objetivo": "Tratamientos tiempo-variables: supervivencia causal (hazard vs riesgo), intercambiabilidad secuencial y feedback tratamiento-confundidor, g-métodos, ITT vs per-protocol y emulación de target trials (immortal time, usuario prevalente).",
+   "heuristicas": [
+    "analisis-supervivencia-hazard-vs-riesgo",
+    "confounding-tiempo-variable-gmetodos",
+    "itt-vs-per-protocol-estimando",
+    "emular-target-trial-sostenido"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "HR arrastra selección por depleción; prefiere riesgo/supervivencia a tiempo fijo",
+    "Feedback: L_t es confundidor y mediador ⇒ la regresión tradicional falla → g-métodos",
+    "Censura = tratamiento tiempo-variable → IP weighting de censura (IPCW)",
+    "ITT = efecto de asignar (diluye con no adherencia); per-protocol necesita g-métodos",
+    "Target trial: alinea t=0 (evita immortal time + usuario prevalente); new-user/comparador activo"
+   ],
+   "banco": [
+    {
+     "id": "arh6-q1",
+     "tipo": "concepto",
+     "enunciado": "En análisis de supervivencia causal, ¿por qué el HAZARD RATIO es problemático como medida de efecto?",
+     "solucion": "Porque el hazard en un tiempo t se calcula CONDICIONANDO en haber sobrevivido hasta t, y los sobrevivientes de cada grupo dejan de ser intercambiables aunque hubiera aleatorización inicial: el tratamiento 'deplecionó' a los susceptibles de forma distinta en cada brazo (built-in selection bias). Así, el hazard ratio en tiempos tardíos mezcla el efecto con esa selección y un HR constante rara vez es realista. Se prefieren contrastes de RIESGO o SUPERVIVENCIA a un tiempo fijo.",
+     "explicacion": "Sobrevivir es un efecto del tratamiento; condicionar en ello introduce selección con el tiempo."
+    },
+    {
+     "id": "arh6-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué medidas de efecto se prefieren en supervivencia causal en lugar del hazard ratio?",
+     "solucion": "Contrastes basados en el RIESGO (incidencia acumulada) o la SUPERVIVENCIA a tiempos fijos: la DIFERENCIA o la RAZÓN de riesgos de supervivencia a, por ejemplo, 1 o 5 años, o curvas de supervivencia/riesgo contrafactuales AJUSTADAS (estandarizadas o por IP weighting). Estas son contrastes contrafactuales bien definidos para toda la población y no arrastran el sesgo de selección incorporado del hazard ratio. También se usa la supervivencia media restringida.",
+     "explicacion": "Comparar curvas de riesgo contrafactuales evita el problema del HR dependiente del tiempo."
+    },
+    {
+     "id": "arh6-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la CENSURA se trata como un 'tratamiento tiempo-variable' y cómo se ajusta?",
+     "solucion": "Porque permanecer en el estudio (no ser censurado) es una condición que puede DEPENDER del tratamiento y del pronóstico a lo largo del tiempo, igual que una intervención repetida; restringir a los no censurados condiciona un collider y sesga. Se ajusta con IP WEIGHTING DE CENSURA (IPCW): ponderar a cada individuo no censurado por la inversa de su probabilidad de seguir no censurado dado su pasado, reconstruyendo la cohorte original. Requiere intercambiabilidad para la censura (condicional al pasado) y positividad.",
+     "explicacion": "Igual que IP weighting para el tratamiento, pero aplicado a la 'no censura' a lo largo del tiempo."
+    },
+    {
+     "id": "arh6-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la INTERCAMBIABILIDAD SECUENCIAL y por qué se necesita con tratamientos tiempo-variables?",
+     "solucion": "Con un tratamiento que se da repetidamente en el tiempo, la identificación requiere que, en CADA momento, los que continúan/inician el tratamiento sean comparables a los que no, DADA toda la historia previa de tratamiento y covariables: Y^ā ⊥ A_t | Ā_{t-1}, L̄_t para cada t. Es la versión longitudinal de la intercambiabilidad condicional; sin ella (confundimiento tiempo-variable no medido) el efecto de la estrategia completa ā no se identifica.",
+     "explicacion": "Hay que controlar el confundimiento en cada tiempo, condicionando en el pasado de tratamiento y covariables."
+    },
+    {
+     "id": "arh6-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el FEEDBACK TRATAMIENTO-CONFUNDIDOR y por qué hace fallar a los métodos tradicionales?",
+     "solucion": "Ocurre cuando una covariable tiempo-variable L_t es a la vez CONFUNDIDOR del tratamiento futuro A_t (L_t → A_t y L_t → Y) y está AFECTADA por el tratamiento pasado (A_{t-1} → L_t), o sea también es un MEDIADOR. Los métodos tradicionales (regresión ajustando por L_t) fallan porque: si AJUSTAS por L_t bloqueas parte del efecto (es mediador) y puedes abrir sesgo de collider; si NO ajustas, queda confundimiento. No hay forma de ajustar correctamente con regresión estándar.",
+     "explicacion": "L_t es confundidor y mediador a la vez: condicionar o no condicionar, ambas sesgan."
+    },
+    {
+     "id": "arh6-q6",
+     "tipo": "concepto",
+     "enunciado": "Si los métodos tradicionales 'no se pueden arreglar' ante el feedback, ¿cuál es la solución?",
+     "solucion": "Los G-MÉTODOS: la g-fórmula (estandarización secuencial sobre la historia de covariables), el IP weighting de modelos estructurales marginales (ponderando por la probabilidad del tratamiento en cada tiempo dado el pasado) y la g-estimación de modelos estructurales anidados. Estos ajustan por la historia de confundidores SIN bloquear el efecto que pasa por el mediador, porque tratan a L_t como confundidor del futuro pero no condicionan de forma que corten el efecto del pasado.",
+     "explicacion": "Solo los g-métodos manejan correctamente el confundimiento tiempo-variable con feedback."
+    },
+    {
+     "id": "arh6-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hace el IP weighting en el caso de tratamientos tiempo-variables (MSM longitudinal)?",
+     "solucion": "Calcula, para cada individuo, el PRODUCTO de los pesos en cada tiempo: la inversa de la probabilidad de haber recibido su secuencia de tratamiento dado el pasado de covariables (con pesos estabilizados). Eso crea una pseudo-población donde el tratamiento en cada tiempo es independiente de los confundidores pasados, eliminando el confundimiento tiempo-variable, y permite ajustar un MSM para E[Y^ā] como función de la estrategia ā. Maneja el feedback porque no condiciona en L_t, lo pondera.",
+     "explicacion": "Pondera (no condiciona) por la historia de confundidores, evitando bloquear el efecto vía el mediador."
+    },
+    {
+     "id": "arh6-q8",
+     "tipo": "concepto",
+     "enunciado": "Diferencia el efecto de INTENCIÓN DE TRATAR (ITT) del efecto PER-PROTOCOL.",
+     "solucion": "El ITT es el efecto de ser ASIGNADO a una estrategia, sin importar si el sujeto la siguió: respeta la aleatorización (insesgado para 'asignar') pero, con NO ADHERENCIA, subestima el efecto de tratar de verdad y puede ser engañoso para decidir tratamientos. El PER-PROTOCOL es el efecto de SEGUIR la estrategia como se especificó: responde la pregunta clínica relevante, pero la adherencia no está aleatorizada, así que sufre confundimiento post-aleatorización que debe ajustarse.",
+     "explicacion": "ITT mide la política de asignación; per-protocol mide el efecto biológico/clínico de cumplir."
+    },
+    {
+     "id": "arh6-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un análisis PER-PROTOCOL ingenuo (comparar adherentes vs no adherentes) está sesgado?",
+     "solucion": "Porque la adherencia NO está aleatorizada: quienes siguen la estrategia difieren de quienes no en factores (gravedad, hábitos, efectos secundarios) que también afectan el outcome — confundimiento POST-ALEATORIZACIÓN, típicamente TIEMPO-VARIABLE y con feedback (la salud influye en seguir adherido y es afectada por el tratamiento). Comparar crudamente adherentes vs no adherentes reintroduce el confundimiento que la aleatorización había eliminado. La estimación correcta del per-protocol requiere G-MÉTODOS.",
+     "explicacion": "La adherencia rompe la aleatorización; ajustar bien exige g-métodos, no una comparación simple."
+    },
+    {
+     "id": "arh6-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el TARGET TRIAL y qué se gana al especificarlo explícitamente?",
+     "solucion": "El target trial es el ensayo aleatorizado HIPOTÉTICO (pero realizable en principio) que respondería exactamente la pregunta causal; con datos observacionales se EMULAN sus componentes (criterios de elegibilidad, estrategias de tratamiento, asignación, inicio del seguimiento/tiempo cero, outcome, fin del seguimiento, estimando). Al especificarlo explícitamente se FUERZA a tomar las mismas decisiones de diseño que en un ECA, lo que revela y previene sesgos comunes (immortal time, usuario prevalente, selección) que aparecen cuando esas decisiones quedan implícitas.",
+     "explicacion": "Emular un ensayo concreto disciplina el análisis observacional y hace explícitos los supuestos."
+    },
+    {
+     "id": "arh6-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el IMMORTAL TIME BIAS y cómo lo evita la emulación del target trial?",
+     "solucion": "Es el sesgo por un periodo de 'tiempo inmortal': un lapso entre el inicio del seguimiento y la clasificación del tratamiento durante el cual, por construcción, el sujeto NO pudo tener el evento (si lo hubiera tenido, no habría sido clasificado en ese grupo). Clasificar según un tratamiento futuro regala supervivencia a ese brazo. Se evita ALINEANDO EL TIEMPO CERO: elegibilidad, asignación a la estrategia e inicio del seguimiento deben coincidir en el MISMO instante (como en un ECA), de modo que el tiempo de riesgo cuente desde la asignación.",
+     "explicacion": "Definir el grupo con información futura crea tiempo inmortal; alinear t=0 lo elimina."
+    },
+    {
+     "id": "arh6-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el SESGO DE USUARIO PREVALENTE y cómo se corrige con un new-user design?",
+     "solucion": "Ocurre al incluir usuarios PREVALENTES (que ya venían tomando el tratamiento) en vez de NUEVOS usuarios: los prevalentes son SOBREVIVIENTES que toleraron el fármaco (selección de los sanos/tolerantes) y se ha perdido información de los primeros eventos y de los confundidores al inicio real. Se corrige con un NEW-USER (incident user) DESIGN: incluir solo a quienes INICIAN el tratamiento, con tiempo cero en el inicio, replicando cómo un ECA enrola a personas que empiezan la intervención.",
+     "explicacion": "Los usuarios prevalentes están preseleccionados por tolerancia/supervivencia; el new-user design lo evita."
+    },
+    {
+     "id": "arh6-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué se recomienda un COMPARADOR ACTIVO en la emulación de un target trial?",
+     "solucion": "Porque comparar 'tratado vs no tratado' suele mezclar a personas muy distintas (quien recibe el fármaco vs quien no recibe nada por razones clínicas o de acceso), introduciendo confundimiento por indicación y violaciones de positividad. Un COMPARADOR ACTIVO (otro tratamiento para la misma indicación) hace los grupos más comparables (ambos tienen la condición y buscan tratarla), reduce el confundimiento por indicación y se alinea con cómo se diseñaría un ECA pragmático.",
+     "explicacion": "Comparar contra un tratamiento alternativo equilibra la indicación mejor que contra 'nada'."
+    },
+    {
+     "id": "arh6-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se estima el efecto PER-PROTOCOL al emular un target trial de una estrategia SOSTENIDA?",
+     "solucion": "Definiendo la estrategia sostenida (p. ej. 'iniciar y continuar el tratamiento, quizá con un grace period'), censurando a quienes se DESVÍAN de la estrategia, y ajustando el confundimiento TIEMPO-VARIABLE que esa censura/desviación induce mediante G-MÉTODOS — típicamente IP weighting de censura por desviación (IPCW) más IP weighting/ g-fórmula para los confundidores en cada tiempo. Así se estima E[Y^ā] bajo seguir la estrategia, no bajo solo asignarla.",
+     "explicacion": "Censurar por desviación + ponderar/estandarizar por la historia de confundidores = per-protocol válido."
+    },
+    {
+     "id": "arh6-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la emulación de target trials se ha vuelto central en la evidencia de mundo real (RWE) y la salud-IA?",
+     "solucion": "Porque la mayoría de los datos disponibles (registros, historias clínicas electrónicas, reclamaciones) son OBSERVACIONALES, y emular un target trial provee un marco DISCIPLINADO para extraer inferencias causales de ellos: obliga a definir pregunta, elegibilidad, tiempo cero, estrategias y estimando como en un ECA, exponiendo los sesgos (immortal time, usuario prevalente, selección, confundimiento tiempo-variable) y guiando los g-métodos para corregirlos. Es el 'caballo de batalla' para generar RWE creíble cuando un ECA no es factible o ético.",
+     "explicacion": "Convierte datos observacionales masivos en inferencia causal estructurada y auditable."
     }
    ]
   }
