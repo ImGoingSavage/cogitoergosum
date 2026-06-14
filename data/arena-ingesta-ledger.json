@@ -112,11 +112,11 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Entrevista software/Cracking-the-Coding-Interview-6th-Edition-189-Programming-Questions-and-Solutions.pdf",
       "sector": "A",
       "ruta": "maang",
-      "estado": "pendiente",
+      "estado": "en_progreso",
       "preguntas_agregadas": 0,
       "unidades_creadas": [],
       "cuota_minima": 60,
-      "notas": ""
+      "notas": "Iniciado 2026-06-13 (cuenta A). Sector maang. Próximo: arena-cc1/cc2/cc3/cc4. Slots reservados: sw v34, f7-ex-23..24. Estudio en curso; study.json se aplica DESPUÉS de que Casella (cuenta B) pushee."
     },
     {
       "libro": "System Design Interview (Alex Xu)",
