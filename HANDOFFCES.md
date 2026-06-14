@@ -1977,3 +1977,46 @@ Contenido anclado en el libro (conceptos SRE, §1.2).
 **Siguiente** — orden §10 (ml-systems): **Observability Engineering**
 (libros[16]), luego Rules of ML, Hidden Technical Debt, Interpretable ML, ISL.
 Próxima unidad: órdenes desde 75, `f7-ex-52`+, VERSION v44+.
+
+## Bitácora 2026-06-14 (Arena tanda 16) — Observability Engineering, 62 preguntas
+
+Procesado `Observability Engineering: Achieving Production Excellence` (Majors,
+Fong-Jones & Miranda, O'Reilly 2022) — libros[16] del ledger, ruta `ml-systems`,
+cuota 25. 16º libro en `completado`. Aporta el enfoque **eventos-anchos + Core
+Analysis Loop** de Honeycomb, valor NUEVO frente a SRE/Reliable ML. 4 unidades
+organizadas por las 5 partes del libro (`fase-7`, órdenes 75-78):
+- **arena-obs1** — ¿qué es observabilidad? (def. de Kálmán/teoría de control,
+  prueba de fuego, monitoreo=known-unknowns vs observabilidad=unknown-unknowns,
+  cardinalidad/dimensionalidad, eventos anchos, sistema vs software, crítica a
+  los "3 pilares", explorabilidad).
+- **arena-obs2** — pilares (evento estructurado ancho como bloque base, logs
+  estructurados, trazas distribuidas + 5 campos del span + propagación W3C/B3,
+  OpenTelemetry, depurar desde primeros principios, runbooks desperdiciados,
+  Core Analysis Loop 4 pasos, BubbleUp/automatizar fuerza bruta, AIOps no es
+  bala de plata).
+- **arena-obs3** — SLOs (fatiga de alertas/normalización de la desviación, 2
+  criterios de buena alerta, umbral estático=known-unknowns, desacoplar qué del
+  por qué, user experience North Star, SLO/SLI tiempo vs eventos, error
+  budget=1−SLO, ventana deslizante vs fija, 30 días, burn alert umbral vs
+  predictiva, lookahead/baseline window, short-term vs context-aware).
+- **arena-obs4** — escala (por qué TSDB explota cardinalidad, NoSQL ingress vs
+  egress, row vs column vs híbrido, particionar por tiempo en segmentos,
+  columnar+compresión, tiering/paralelismo+impaciencia/Kafka, rápido>perfecto,
+  muestreo constante/dinámico/por clave/target rate, head vs tail, muestreo
+  consistente, grabar sample rate, OMM 5 capacidades).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-52** error budget/burn alert con ejemplo
+numérico 43.800u/SLO 99%, **f7-ex-53** estrategia de muestreo head/tail) = 62.
+9 heurísticas nuevas (distinguir-observabilidad-monitoreo, usar-alta-cardinalidad,
+instrumentar-eventos-anchos, trazas-distribuidas-spans, depurar-core-analysis-loop,
+alertar-por-sintoma, error-budget-burn-alert, almacen-columnar-observabilidad,
+muestreo-head-vs-tail); obs3 reúsa definir-sli-slo-sla. Catálogo total **121**
+heurísticas. `sw.js` **v44** (+4 lecciones `data/teoria/arena-obs{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (78 unidades en `fase-7`, 53 ítems de examen); `verificar-shell.py` OK (163
+archivos). Contenido anclado en el libro (§1.2).
+
+**Siguiente** — orden §10 (ml-systems): **Rules of ML (Google)** (libros[17]),
+luego Hidden Technical Debt, Interpretable ML, ISL. Después ruta `health-ai-rwe`
+y Sectores D/C. Próxima unidad: órdenes desde 79, `f7-ex-54`+, VERSION v45+.

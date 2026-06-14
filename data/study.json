@@ -781,6 +781,78 @@
       "cuando_usar": "Al diseñar sistemas distribuidos con dependencias y balanceo entre réplicas/clústeres.",
       "ejemplo": "Cluster B cae → A recibe 1.200 QPS, no aguanta, crashea y el éxito cae por debajo de 1.000; un reintento naïf por fallo multiplica las RPC y empeora el colapso.",
       "patron": "sobrecarga→cascada; limita reintentos (backoff+jitter+deadline) y degrada antes de colapsar"
+    },
+    {
+      "id": "distinguir-observabilidad-monitoreo",
+      "nombre": "Distinguir observabilidad de monitoreo",
+      "descripcion": "Observabilidad = entender y explicar CUALQUIER estado nuevo o extraño SIN desplegar código nuevo, troceando datos de alta cardinalidad/dimensionalidad de forma iterativa. El monitoreo (métricas+umbrales+dashboards) es reactivo: solo cubre modos de fallo que ya predijiste (known-unknowns). La observabilidad persigue los unknown-unknowns de los sistemas distribuidos modernos. Regla: monitoreo para la salud del sistema/infra (predecible), observabilidad para tu software (cambia a diario, lo que viven los clientes).",
+      "cuando_usar": "Al decidir cómo entender un sistema de producción o al evaluar si una herramienta da observabilidad real.",
+      "ejemplo": "Si para responder '¿qué tienen en común los usuarios con timeouts?' tienes que crear un monitor primero, no tienes observabilidad.",
+      "patron": "known-unknowns→monitoreo; unknown-unknowns→observabilidad; explicar sin desplegar código"
+    },
+    {
+      "id": "usar-alta-cardinalidad",
+      "nombre": "Aprovechar alta cardinalidad y dimensionalidad",
+      "descripcion": "Cardinalidad = nº de valores únicos de un campo; dimensionalidad = nº de claves por evento. La ALTA cardinalidad (IDs únicos: user_id, request_id, UUID) es casi siempre lo más útil para depurar (hallar la aguja en el pajar), y la alta dimensionalidad (eventos anchos de cientos de claves) revela correlaciones ocultas. Las métricas preagregadas solo manejan baja cardinalidad a escala razonable, así que para depurar de verdad necesitas eventos con muchas dimensiones de alta cardinalidad.",
+      "cuando_usar": "Al diseñar instrumentación o al investigar un fallo que afecta a un subconjunto concreto de usuarios/peticiones.",
+      "ejemplo": "Filtrar 'usuarios canadienses, iOS 11.0.4, firmware 1.4.101, shard3, us-west-1' — cada restricción es una dimensión de alta cardinalidad.",
+      "patron": "alta cardinalidad = aguja en el pajar; eventos anchos > métricas preagregadas"
+    },
+    {
+      "id": "instrumentar-eventos-anchos",
+      "nombre": "Instrumentar con eventos estructurados anchos",
+      "descripcion": "El bloque de construcción de la observabilidad NO es la métrica ni el log, sino el evento estructurado arbitrariamente ancho: un registro de TODO lo que ocurrió mientras una petición (una unidad de trabajo) interactuó con el servicio. Se inicializa un mapa vacío al entrar, se le añaden IDs/tiempos/parámetros/llamadas, y al salir/errar se emite como pares clave-valor. Una instrumentación madura tiene 300-400 dimensiones por evento. Las métricas (preagregadas) y los logs sueltos no sirven como bloque base.",
+      "cuando_usar": "Al instrumentar un servicio para observabilidad desde cero o al migrar logs/métricas.",
+      "ejemplo": "Plegar 5 líneas de log de una conexión en UN evento JSON con duration_ms, status, trace.trace_id, user, path, etc.",
+      "patron": "un evento ancho por unidad de trabajo; clave-valor, arbitrariamente ancho"
+    },
+    {
+      "id": "trazas-distribuidas-spans",
+      "nombre": "Trazar peticiones con spans distribuidos",
+      "descripcion": "Una traza distribuida es una serie de eventos enlazados que sigue UNA petición a través de servicios. Se visualiza en cascada (waterfall) de spans con relación padre-hijo. Los 5 campos imprescindibles de un span: Trace ID (lo crea el root y se PROPAGA), Span ID, Parent ID (ausente = root), Timestamp y Duration. El contexto se propaga entre servicios por cabeceras HTTP (W3C o B3: X-B3-TraceId, X-B3-ParentSpanId). OpenTelemetry permite instrumentar una sola vez y enviar a múltiples backends.",
+      "cuando_usar": "Al depurar latencia que se acumula a través de capas o al diseñar instrumentación de tracing.",
+      "ejemplo": "Span A (root, sin Parent ID) llama a B (su padre es A) que llama a C; la latencia 3 capas arriba se aísla en el waterfall.",
+      "patron": "Trace/Span/Parent ID + timestamp + duration; propaga por cabecera; OTel = instrumenta una vez"
+    },
+    {
+      "id": "depurar-core-analysis-loop",
+      "nombre": "Depurar con el Core Analysis Loop",
+      "descripcion": "Depurar desde primeros principios (método científico, sin asumir nada) en vez de intuición/scar tissue, porque la intuición no escala con la complejidad. El Core Analysis Loop: (1) ¿qué intentas entender? (2) visualiza la telemetría para ver la anomalía (cambio en una curva), (3) busca dimensiones comunes en la zona anómala (muestra filas, GROUP BY, filtra), (4) ¿ya sabes qué pasa? si no, aísla esa zona y vuelve al paso 3. Una herramienta debe automatizar la fuerza bruta: comparar la distribución de cada dimensión dentro del área anómala vs el baseline y ordenar por mayor diferencia (BubbleUp).",
+      "cuando_usar": "Cuando no sabes ni por dónde empezar a depurar un problema nuevo y multicausal.",
+      "ejemplo": "BubbleUp surfacea 'availability_zone=us-east-1a aparece en 98% del área anómala pero solo 17% del baseline' → la AZ del proveedor es el culpable.",
+      "patron": "anomalía → GROUP BY/filtrar dimensiones → aislar → repetir; automatiza el baseline vs anomalía"
+    },
+    {
+      "id": "alertar-por-sintoma",
+      "nombre": "Alertar por síntoma de usuario, no por causa",
+      "descripcion": "Las alertas de causa potencial (CPU alta, nº de hilos) dan muchos falsos positivos y producen fatiga de alertas (normalización de la desviación). Una buena alerta debe ser fiable indicador de impacto al usuario Y accionable; si no cumple ambas, bórrala. El umbral estático solo cubre known-unknowns: en sistemas distribuidos el rendimiento varía y el fallo es inevitable. Desacopla el 'qué' (síntoma de dolor del usuario, vía SLO) del 'por qué' (lo investigas con observabilidad). Las fallas auto-remediadas no deberían despertar a nadie.",
+      "cuando_usar": "Al diseñar/podar alertas y al combatir la fatiga del on-call.",
+      "ejemplo": "En vez de alertar 'CPU > 90%', alerta 'usuarios no cargan /home en < 100 ms' (síntoma) y depura la causa después.",
+      "patron": "síntoma de usuario (SLO) + accionable; borra lo demás; desacopla qué de por qué"
+    },
+    {
+      "id": "error-budget-burn-alert",
+      "nombre": "Gobernar con error budget y burn alerts",
+      "descripcion": "error budget = 1 − SLO = máxima indisponibilidad tolerada; cada evento 'malo' lo quema, y agotarlo frena releases. Mide el SLO con SLI basados en EVENTOS (más granular que por tiempo) sobre una ventana DESLIZANTE de ~30 días (no fija de calendario: el cliente no se resetea el día 1). Para actuar antes de agotarlo usa burn alerts predictivas: definen un lookahead window (cuán lejos proyectas) y un baseline/lookback window del mismo orden de magnitud (~predice 4× adelante). Short-term (solo baseline reciente, barato) vs context-aware (toda la ventana del SLO, más caro; mejor cuando importa cuánto budget queda).",
+      "cuando_usar": "Al definir SLOs y alertas de fiabilidad, y al decidir cuándo frenar features por estabilidad.",
+      "ejemplo": "SLO 99% sobre 30 días, 43.800 unidades/mes → budget 438 fallos. En 6 h fallaron 5 → a ese ritmo 20 en 24 h: no se agota.",
+      "patron": "budget=1−SLO; SLI por eventos; ventana deslizante 30d; burn predictiva (lookahead+baseline)"
+    },
+    {
+      "id": "almacen-columnar-observabilidad",
+      "nombre": "Almacenar observabilidad en columnar particionado por tiempo",
+      "descripcion": "El almacén de observabilidad debe permitir consultar CUALQUIER campo sin preagregar, sin índice privilegiado, con datos frescos en segundos y durable. Una TSDB sufre EXPLOSIÓN DE CARDINALIDAD (cada evento único crea una serie nueva). El row-based (Bigtable) recupera trazas rápido pero penaliza el análisis de campos arbitrarios. La solución es un columnar HÍBRIDO particionado por tiempo en segmentos (metadata de timestamp para leer solo segmentos que solapan la ventana), almacenado por columna (append-only, compresión diccionario/RLE/LZ4), con tiering (SSD→S3) y paralelismo serverless con 'impaciencia'. Para observabilidad: rápido > perfecto.",
+      "cuando_usar": "Al diseñar o elegir el backend de telemetría a escala.",
+      "ejemplo": "Indexar user_id en una TSDB multiplica las series de tiempo sin control; un store columnar lee solo las columnas de la consulta.",
+      "patron": "TSDB explota cardinalidad; columnar híbrido por tiempo; rápido > perfecto"
+    },
+    {
+      "id": "muestreo-head-vs-tail",
+      "nombre": "Muestrear head vs tail (consistente)",
+      "descripcion": "Como muchos eventos son casi idénticos, transmitir el 100% derrocha; el muestreo envía eventos representativos + metadata y CONSERVA la cardinalidad completa (a diferencia de la métrica preagregada). La probabilidad constante (1 de N) falla si importan los errores raros o ante picos; mejor muestreo dinámico/por clave (errores > éxitos, pago > free). Head-based: decides al INICIAR la traza (datos conocidos: endpoint/cliente), barato, propagas la decisión. Tail-based: decides al FINAL (status/latencia ya conocidos: quédate con errores/lentos), pero exige bufferizar (caro). Muestreo CONSISTENTE: trace ID propagado para conservar la traza entera o nada. Graba siempre la sample rate en el evento.",
+      "cuando_usar": "Al controlar coste/volumen de telemetría sin perder visibilidad de lo que importa.",
+      "ejemplo": "Muestrear errores 1:1 y éxitos 1:1000, propagando un sampling-ID para que ningún hijo quede huérfano de su padre.",
+      "patron": "representativos+sample rate; clave/tail > constante; consistente = traza entera o nada"
     }
   ],
   "bloques": [
@@ -1451,7 +1523,11 @@
         "arena-sre1",
         "arena-sre2",
         "arena-sre3",
-        "arena-sre4"
+        "arena-sre4",
+        "arena-obs1",
+        "arena-obs2",
+        "arena-obs3",
+        "arena-obs4"
       ],
       "examen": {
         "items": [
@@ -3156,6 +3232,76 @@
                 "El camino de código de degradación que nunca se usa suele no funcionar"
               ],
               "source": "Site Reliability Engineering (Google) — Caps. 21 y 22"
+            }
+          },
+          {
+            "id": "f7-ex-52",
+            "heuristica": "error-budget-burn-alert",
+            "enunciado": "Un servicio tiene un SLO de 99% de peticiones exitosas sobre una ventana DESLIZANTE de 30 días, y recibe ~43.800 peticiones/mes. (a) ¿Cuál es el error budget en peticiones y por qué se usa ventana deslizante y no fija de calendario? (b) En las últimas 6 h llegaron 360 peticiones y fallaron 5. Con una burn alert short-term (ahistórica), ¿agotarás el budget en las próximas 24 h? (c) Explica lookahead vs baseline window y cuándo preferirías una burn alert context-aware sobre una short-term.",
+            "pistas": [
+              "error budget = 1 − SLO; aplícalo al total de peticiones del mes.",
+              "Las emociones/memoria del cliente no se resetean el día 1 del mes.",
+              "Extrapola: si en 6 h fallaron 5, ¿cuántas fallarían en 24 h al mismo ritmo? Compara con el budget.",
+              "El baseline debe ser del mismo orden de magnitud que el lookahead (~4× adelante).",
+              "Context-aware mira toda la ventana del SLO; importa cuánto budget queda (10% vs 90%)."
+            ],
+            "solucion": "(a) error budget = 1 − SLO = 1% de 43.800 = 438 peticiones que pueden fallar en la ventana. Se usa ventana DESLIZANTE (trailing 30 días) y no fija de calendario porque el SLO mide satisfacción del cliente, no una restricción legal: la memoria y el sesgo de recencia del usuario no se 'resetean' el día 1 del mes; con ventana fija el budget se reinicia de golpe y un cliente que sufrió una caída el día 31 no se vuelve tolerante el día 2. La deslizante quema y restaura el budget poco a poco, pareciéndose al comportamiento humano. (b) Short-term: en 6 h se quemaron 5 unidades, así que al mismo ritmo en 24 h se quemarían ~20 (4×5). Como 20 ≪ 438, la proyección dice que NO agotarás el budget en 24 h. (c) El lookahead window es cuán lejos al futuro proyectas (días → no urge, esperar al día hábil; minutos/horas → paginar al on-call); el baseline/lookback window es cuántos datos recientes usas para predecir, y debe ser del MISMO orden de magnitud que el lookahead (un baseline predice linealmente hasta ~4× adelante sin compensar estacionalidad). Preferirías context-aware (usa todos los eventos buenos/malos de la ventana completa del SLO, más caro) sobre short-term (solo baseline reciente, barato) cuando importa cuánto budget queda: resolver un error con solo 10% de budget restante urge más que con 90%.",
+            "disparador": "Señal: 'avísame antes de agotar el error budget'. Jugada: budget = 1 − SLO sobre ventana deslizante 30d; burn alert predictiva con lookahead + baseline del mismo orden; context-aware cuando queda poco budget.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "error budget",
+                "burn alert",
+                "SLO/SLI",
+                "ventana deslizante",
+                "forecasting"
+              ],
+              "errores_comunes": [
+                "Calcular el SLO sobre mes fijo de calendario",
+                "Olvidar que budget = 1 − SLO en nº de peticiones",
+                "Usar un baseline corto para un lookahead largo (alertas flappy)"
+              ],
+              "casos_borde": [
+                "Las burn alerts predictivas funcionan mejor para SLOs ≤ 99.95%",
+                "Un baseline demasiado largo tarda en reaccionar a un error nuevo y repentino"
+              ],
+              "source": "Observability Engineering (Majors, Fong-Jones & Miranda) — Caps. 12 y 13"
+            }
+          },
+          {
+            "id": "f7-ex-53",
+            "heuristica": "muestreo-head-vs-tail",
+            "enunciado": "Un servicio de alto volumen genera millones de eventos casi idénticos por hora; transmitir el 100% es carísimo, pero los ERRORES (raros) son lo que más importa depurar, y las trazas cruzan varios servicios. Diseña una estrategia de muestreo: (a) ¿por qué la probabilidad constante (1 de N) es mala aquí y qué conserva el muestreo frente a una métrica preagregada? (b) ¿Cómo muestrearías para no perder los errores y reconstruir conteos correctos? (c) ¿Cuándo decides head vs tail, y cómo evitas trazas rotas?",
+            "pistas": [
+              "Con 1 de N, ¿qué pasa con un error que ocurre 1 vez entre millones?",
+              "El muestreo manda eventos representativos + metadata y conserva la cardinalidad completa.",
+              "Asigna tasas por clave (status code) y graba la sample rate en cada evento; pondera al contar.",
+              "¿El status/latencia se conocen al INICIAR o solo al FINAL de la petición?",
+              "Propaga un trace/sampling ID central para conservar la traza entera o nada."
+            ],
+            "solucion": "(a) La probabilidad constante (1 de N) es mala porque te importan los errores raros: un error que ocurre 1 vez entre millones probablemente no caería en la muestra; además no protege contra picos de tráfico ni da buena visibilidad a clientes de bajo volumen. Frente a una métrica preagregada (que colapsa todo en un número grueso), el muestreo manda eventos REPRESENTATIVOS + metadata y CONSERVA la cardinalidad completa en cada dimensión, así sigues pudiendo trocear por user_id, endpoint, etc. (b) Muestreo dinámico por CLAVE/contenido: define la clave por código de respuesta (o status/latencia) y asigna tasas distintas — p.ej. errores 1:1 (quédate con todos) y éxitos 1:1.000. GRABA la sample rate dentro de cada evento; para reconstruir conteos suma los eventos REPRESENTADOS (cada evento ponderado por su sample rate), no los recogidos, y para mediana/p99 expande cada evento a los que representa. Opcional: target rate sampling para un volumen estable. (c) El head-based decide al INICIAR la traza con datos conocidos al inicio (endpoint, customer ID) y propaga la decisión aguas abajo: barato pero no conoce el resultado. El tail-based decide al FINAL, cuando ya conoces status y latencia (te quedas con errores/lentos), pero exige bufferizar todos los spans en un colector externo (caro). Como aquí importan los errores —conocidos solo al final— conviene tail-based (o head + re-muestreo cuando una heurística tail detecta error). Para evitar trazas rotas usa muestreo CONSISTENTE: un sampling/trace ID central propagado a todos los hijos, de modo que la traza se conserve entera o se descarte entera (nunca un hijo huérfano sin su padre).",
+            "disparador": "Señal: 'reducir coste de telemetría sin perder los errores raros'. Jugada: muestreo por clave (errores 1:1, éxitos 1:N) grabando la sample rate; tail-based para ver el resultado; consistente (trace ID propagado) para no romper trazas.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "sampling",
+                "head vs tail",
+                "muestreo consistente",
+                "reconstrucción ponderada",
+                "trazas"
+              ],
+              "errores_comunes": [
+                "Usar probabilidad constante cuando importan los errores raros",
+                "No grabar la sample rate y reportar conteos erróneos",
+                "Muestrear cada servicio por su cuenta y crear trazas rotas"
+              ],
+              "casos_borde": [
+                "El tail-based necesita un colector externo que bufferice (caro)",
+                "Un hijo conservado sin su padre = traza rota: exige muestreo consistente"
+              ],
+              "source": "Observability Engineering (Majors, Fong-Jones & Miranda) — Cap. 17"
             }
           }
         ]
@@ -14586,6 +14732,536 @@
           "enunciado": "¿Por qué hay que ejercitar regularmente el modo de degradación y mantenerlo simple?",
           "solucion": "Porque 'el camino de código que nunca usas es el que (a menudo) no funciona': en operación normal la degradación elegante no se usa, así que se tiene poca experiencia operativa con ella y aumenta el riesgo. Conviene ejercitarla regularmente corriendo un pequeño subconjunto de servidores cerca de la sobrecarga, monitorear y alertar cuando demasiados servidores entren en estos modos, y mantenerla simple (un load shedding complejo puede causar problemas por sí mismo o entrar en ciclos de realimentación).",
           "explicacion": "Diseña una forma de apagar o ajustar rápido la degradación compleja si hace falta; la degradación no debería dispararse a menudo."
+        }
+      ]
+    },
+    {
+      "id": "arena-obs1",
+      "bloque": "fase-7",
+      "orden": 75,
+      "titulo": "Arena Observabilidad · ¿Qué es? Monitoreo vs. observabilidad",
+      "libro": "Observability Engineering: Achieving Production Excellence (Majors, Fong-Jones & Miranda, O'Reilly)",
+      "lectura": "data/teoria/arena-obs1.md",
+      "dosis": 30,
+      "objetivo": "Definir observabilidad (entender cualquier estado sin desplegar código), distinguirla del monitoreo (known-unknowns vs unknown-unknowns) y entender por qué cardinalidad y dimensionalidad hunden a las métricas.",
+      "heuristicas": [
+        "distinguir-observabilidad-monitoreo",
+        "usar-alta-cardinalidad"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Observabilidad = explicar cualquier estado nuevo SIN desplegar código nuevo",
+        "Monitoreo = known-unknowns (reactivo); observabilidad = unknown-unknowns",
+        "Alta cardinalidad (IDs únicos) es lo más útil para depurar",
+        "Dimensionalidad = nº de claves; los eventos observables son arbitrariamente anchos",
+        "Sistema/infra → monitoreo; tu software/cliente → observabilidad"
+      ],
+      "banco": [
+        {
+          "id": "arobs1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿De dónde viene el término 'observabilidad' y cómo se define en teoría de control?",
+          "solucion": "Lo acuñó el ingeniero Rudolf E. Kálmán en 1960. En teoría de control, observabilidad es una medida de qué tan bien se pueden INFERIR los estados internos de un sistema a partir del conocimiento de sus salidas externas.",
+          "explicacion": "Esa raíz de control (con duales sensores/controlabilidad y álgebra lineal) se adapta al software de forma menos matemática y más práctica."
+        },
+        {
+          "id": "arobs1-q2",
+          "tipo": "concepto",
+          "enunciado": "Define observabilidad para sistemas de software en una frase.",
+          "solucion": "Es una medida de qué tan bien puedes entender y explicar CUALQUIER estado en que pueda caer tu sistema —por nuevo o extraño que sea— pudiendo depurar comparativamente ese estado a través de todas las dimensiones y combinaciones de dimensiones, en una investigación ad hoc e iterativa, SIN necesidad de desplegar código nuevo para explicarlo.",
+          "explicacion": "La clave es 'sin enviar código nuevo': si necesitas conocimiento previo para explicar el estado, no era observable."
+        },
+        {
+          "id": "arobs1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la 'prueba de fuego' para saber si un sistema es observable?",
+          "solucion": "Que puedas responder preguntas abiertas e iterativas sobre el funcionamiento interno sin haber PREDICHO de antemano que necesitarías esa medición, y obtener respuestas en segundos para encadenar pregunta tras pregunta. Ej.: ¿qué experimenta un usuario concreto ahora?, ¿qué atributos comparten los usuarios con comportamiento anómalo?, si el p99/p99.9 se ve rápido pero hay quejas de timeouts, ¿dónde están los timeouts ocultos?",
+          "explicacion": "Si para responder hay que configurar un monitor o desplegar código primero, no hay observabilidad."
+        },
+        {
+          "id": "arobs1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué diferencia clave hay entre lo que detectan el monitoreo y la observabilidad respecto a lo 'conocido'?",
+          "solucion": "El monitoreo está optimizado para detectar known-unknowns: problemas que SABES que podrían ocurrir pero no sabes si están pasando ahora (modos de fallo predecibles). La observabilidad está hecha para los unknown-unknowns: modos de fallo nuevos, nunca vistos ni predichos, típicos de los sistemas distribuidos.",
+          "explicacion": "'Monitoring is for the known-unknowns, but observability is for the unknown-unknowns.'"
+        },
+        {
+          "id": "arobs1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué se dice que el monitoreo tradicional es 'fundamentalmente reactivo'?",
+          "solucion": "Porque comprueba condiciones contra umbrales que un humano predefinió como 'bueno/malo'. Solo puede atrapar condiciones que ya anticipaste: para cada cosa que no sabes que debes vigilar, tienes que verla fallar primero, sufrirla, diagnosticarla varias veces y recién entonces crear un check. Incentiva perversamente a temer desplegar código nuevo.",
+          "explicacion": "Funcionaba cuando los sistemas eran simples y los fallos eran variaciones de pocos temas predecibles."
+        },
+        {
+          "id": "arobs1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué una métrica es demasiado limitada para ser el bloque base de la observabilidad?",
+          "solucion": "Porque es un valor PREAGREGADO sobre una ventana de tiempo fija: al reportarse, esa agregación se vuelve el nivel mínimo de granularidad y oculta lo que le pasó a una petición individual. Una petición puede tener parte en cientos de métricas inconexas, sin el tejido para reconstruir cuáles pertenecen a la misma petición. Su granularidad es muy gruesa y su forma muy rígida.",
+          "explicacion": "Ej.: un page_load_time promedio de 5 s no te deja subdividir por user_id; con eventos sí."
+        },
+        {
+          "id": "arobs1-q7",
+          "tipo": "concepto",
+          "enunciado": "Define cardinalidad y da ejemplos de campos de alta y baja cardinalidad.",
+          "solucion": "Cardinalidad es el número de valores ÚNICOS en un conjunto. Alta cardinalidad = muchos valores únicos (UUID, user_id, request_id, nombre+apellido tienen cardinalidad muy alta; un ID único es la más alta posible). Baja cardinalidad = muchos duplicados (especie='humano' para usuarios humanos es la más baja posible; un único valor).",
+          "explicacion": "Siempre puedes hacer downsampling de alta a baja cardinalidad (agrupar apellidos por prefijo), pero nunca al revés."
+        },
+        {
+          "id": "arobs1-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué importa la alta cardinalidad para depurar?",
+          "solucion": "Porque la información de alta cardinalidad es casi siempre la MÁS útil para identificar datos al depurar: poder ordenar/filtrar por IDs únicos (user ID, carrito, request ID, build number, span) es la mejor forma de localizar la 'aguja' concreta en el pajar. Las herramientas basadas en métricas solo manejan baja cardinalidad a escala razonable, lo que restringe artificialmente qué preguntas puedes hacer.",
+          "explicacion": "Con métricas, ni siquiera podrías usar el hostname como tag sin reventar el espacio de claves de cardinalidad."
+        },
+        {
+          "id": "arobs1-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la dimensionalidad y en qué se diferencia de la cardinalidad?",
+          "solucion": "La cardinalidad se refiere a la unicidad de los VALORES dentro de un campo; la dimensionalidad se refiere al NÚMERO de claves (dimensiones) dentro del dato. Los eventos observables son 'arbitrariamente anchos': pueden y deben contener cientos o miles de pares clave-valor. Cuanto más ancho el evento, más rico el contexto y más patrones ocultos puedes descubrir al correlacionar combinaciones de dimensiones.",
+          "explicacion": "Con 6 dimensiones haces consultas útiles; con cientos descubres correlaciones que ningún esquema humano contendría."
+        },
+        {
+          "id": "arobs1-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa que un evento sea 'ancho' (wide) y por qué conviene?",
+          "solucion": "Que contiene una gran cantidad de dimensiones (idealmente cientos o miles de pares clave-valor) capturadas durante una petición. Conviene porque a más dimensiones, más probable es hallar patrones elusivos u ocultos en el comportamiento; en sistemas modernos donde las permutaciones de fallo son casi ilimitadas, capturar pocas dimensiones básicas es insuficiente.",
+          "explicacion": "Hay que recoger detalle riquísimo en la intersección de usuarios, código y sistemas."
+        },
+        {
+          "id": "arobs1-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las herramientas basadas en métricas obligan a 'predecir por adelantado'?",
+          "solucion": "Porque para cada pregunta que quieras hacerle a tus datos debes decidir —ANTES de que ocurra el bug— qué medir para que su valor quede registrado. Si a mitad de investigación necesitas una dimensión nueva, no puedes obtenerla retroactivamente: hay que montar la métrica y esperar a que el problema vuelva. Además, cada nueva forma de interrogar suele costar más dinero al proveedor (coste lineal).",
+          "explicacion": "Esto convierte la curiosidad en un coste y deja al investigador en callejones sin salida."
+        },
+        {
+          "id": "arobs1-q12",
+          "tipo": "concepto",
+          "enunciado": "Como regla práctica, ¿cuándo conviene monitoreo y cuándo observabilidad?",
+          "solucion": "El monitoreo es mejor para entender problemas a nivel de SISTEMA/infraestructura (cambia poco, es predecible: CPU, memoria, disco → capacity planning y autoescalado). La observabilidad es mejor para problemas a nivel de SOFTWARE/aplicación (cambia a diario, impredecible, es lo que viven tus clientes). No son excluyentes: coexisten según cuánta operación de infra hayas externalizado.",
+          "explicacion": "Excepción: métricas de infra de alto orden (CPU/mem/disco) que avisan de impacto del código sí valen junto a la observabilidad."
+        },
+        {
+          "id": "arobs1-q13",
+          "tipo": "concepto",
+          "enunciado": "Los autores no son fans del modelo de los 'tres pilares' (métricas, logs, trazas). ¿Por qué?",
+          "solucion": "Porque ese modelo (promovido por vendedores) reduce la observabilidad a tres tipos de datos siloizados que ya venden, tratándola como sinónimo de 'telemetría'. Para los autores la observabilidad no es un tipo de dato sino una capacidad: si hubiera tres pilares, deberían ser que la herramienta soporte alta CARDINALIDAD, alta DIMENSIONALIDAD y EXPLORABILIDAD, no recolectar tres formatos por separado.",
+          "explicacion": "Es un error categorial: confunde el formato de los datos con la capacidad de explorarlos."
+        },
+        {
+          "id": "arobs1-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'explorabilidad' (explorability) de un sistema?",
+          "solucion": "La medida de qué tan bien puedes hacer CUALQUIER pregunta e inspeccionar el estado interno correspondiente: investigar iterativamente y entender cualquier estado al que el sistema haya llegado —aunque nunca lo hayas visto— sin tener que predecir esos estados de antemano. Es una función clave de los sistemas observables.",
+          "explicacion": "La explorabilidad es lo que permite encadenar pregunta tras pregunta hasta hallar la aguja en el pajar."
+        },
+        {
+          "id": "arobs1-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la observabilidad importa especialmente AHORA, con sistemas distribuidos modernos?",
+          "solucion": "Porque microservicios, contenedores, orquestación, polyglot persistence, serverless y mallas de servicios hacen que una petición dé 20-30 saltos de red, y que el reto ya no sea entender CÓMO corre el código sino DÓNDE vive el problema. Los modos de fallo nuevos e impredecibles ocurren tan a menudo que superan la capacidad de cualquier equipo de montar dashboards relevantes por adelantado.",
+          "explicacion": "En sistemas distribuidos 'cuando algo se pone lento, TODO se pone lento'; localizar el cuello de botella es lo difícil."
+        }
+      ]
+    },
+    {
+      "id": "arena-obs2",
+      "bloque": "fase-7",
+      "orden": 76,
+      "titulo": "Arena Observabilidad · Eventos, trazas y Core Analysis Loop",
+      "libro": "Observability Engineering: Achieving Production Excellence (Majors, Fong-Jones & Miranda, O'Reilly)",
+      "lectura": "data/teoria/arena-obs2.md",
+      "dosis": 30,
+      "objetivo": "Entender el evento estructurado ancho como bloque base, ensamblar trazas (5 campos del span, propagación, OTel) y depurar desde primeros principios con el Core Analysis Loop.",
+      "heuristicas": [
+        "instrumentar-eventos-anchos",
+        "trazas-distribuidas-spans",
+        "depurar-core-analysis-loop"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "El bloque base es el evento estructurado ancho (una unidad de trabajo)",
+        "5 campos del span: Trace ID, Span ID, Parent ID, Timestamp, Duration",
+        "El contexto se propaga por cabeceras (W3C/B3); OTel instrumenta una vez",
+        "Core Analysis Loop: anomalía → GROUP BY/filtrar dimensiones → aislar → repetir",
+        "AIOps no es bala de plata: la máquina cruje, el humano da significado"
+      ],
+      "banco": [
+        {
+          "id": "arobs2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un 'evento estructurado' y cómo se construye?",
+          "solucion": "Es un registro de TODO lo que ocurrió mientras una petición interactuó con tu servicio (una unidad de trabajo). Se construye inicializando un mapa vacío cuando la petición entra; durante su vida se le añaden IDs únicos, valores de variables, headers, parámetros, tiempos de ejecución, llamadas remotas y su duración, y cualquier contexto útil; al salir o errar, ese mapa se emite como datos organizados en pares clave-valor fácilmente buscables (a menudo JSON).",
+          "explicacion": "Es el bloque de construcción fundamental de la observabilidad."
+        },
+        {
+          "id": "arobs2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las métricas no sirven como bloque de construcción de la observabilidad?",
+          "solucion": "Porque agregan el estado del sistema sobre un periodo de tiempo predefinido en un solo número descomponible con tags. Esa preagregación es el nivel mínimo de granularidad: oculta muchos problemas, no puede reconstruir qué métricas pertenecen a la misma petición, y su forma es demasiado rígida para presentar el estado en vistas alternativas. Son una vista estrecha de una sola propiedad del sistema.",
+          "explicacion": "Aunque tuvieras una métrica por petición, no podrías coserlas a la ruta de ejecución; no escalan a esa granularidad."
+        },
+        {
+          "id": "arobs2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la diferencia entre logs no estructurados y estructurados, y cuál sirve para observabilidad?",
+          "solucion": "Los logs no estructurados son grandes bloques de texto legibles por humanos pero difíciles de procesar por máquina (separan los detalles de un evento en varias líneas de narrativa). Los logs estructurados son datos clave=valor diseñados para ser parseables por máquina. Solo los estructurados sirven para observabilidad, y mejor aún si se pliegan en un evento único por unidad de trabajo.",
+          "explicacion": "Un log estructurado plegado en un evento se parece a: time=... msg='Served HTTP request' duration_ms=123 status=200 trace.trace_id=eafdf3123 user=foo."
+        },
+        {
+          "id": "arobs2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una 'unidad de trabajo' y por qué define el alcance de un evento?",
+          "solucion": "Es la tarea que un servicio realiza y que el evento debe capturar por completo. Puede ser relativa: descargar y parsear un archivo, o aceptar una petición HTTP y hacer todo lo necesario para responder. Idealmente el evento estructurado se delimita para contener TODO lo que costó esa unidad de trabajo: la entrada, los atributos computados/resueltos/descubiertos, las condiciones del servicio y el resultado.",
+          "explicacion": "En servicios distribuidos, una petición HTTP es aproximadamente el alcance correcto de una unidad de trabajo."
+        },
+        {
+          "id": "arobs2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Cuántas dimensiones suele tener un evento con instrumentación madura?",
+          "solucion": "Es común que los eventos generados con instrumentación madura contengan de 300 a 400 dimensiones por evento. No debe haber límite práctico al detalle que adjuntas, porque los datos que necesitarás para depurar pueden abarcar un número significativo de campos no conocidos de antemano.",
+          "explicacion": "Esa anchura es la que habilita correlacionar a través de combinaciones de dimensiones."
+        },
+        {
+          "id": "arobs2-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una traza distribuida?",
+          "solucion": "Es un método para seguir la progresión de una sola petición —llamada traza— a medida que es atendida por varios servicios. Es 'distribuida' porque la petición cruza fronteras de proceso, máquina y red. En un sistema observable, una traza es simplemente una serie de eventos interconectados; ayuda a entender interdependencias y a localizar dónde ocurren fallos o cuellos de botella.",
+          "explicacion": "Ganó tracción tras el paper Dapper de Google (2010); proyectos: Zipkin (2012), Jaeger (2017)."
+        },
+        {
+          "id": "arobs2-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un 'span' y qué relación padre-hijo existe en una traza?",
+          "solucion": "Cada trozo de la cascada (waterfall) de una traza es un span. Dentro de una traza, los spans son el root span (el de nivel superior, sin padre) o están anidados dentro de otros. Si el servicio A llama a B que llama a C, entonces para esa traza el span A es el padre de B, que a su vez es el padre de C (relación padre-hijo). Un servicio puede aparecer varias veces como spans separados.",
+          "explicacion": "La visualización en cascada muestra cada etapa en relación con el tiempo de inicio y la duración de la petición."
+        },
+        {
+          "id": "arobs2-q8",
+          "tipo": "concepto",
+          "enunciado": "Nombra los cinco campos imprescindibles para ensamblar un span.",
+          "solucion": "(1) Trace ID: identificador único de la traza, creado por el root span y propagado por toda la petición. (2) Span ID: identificador único de cada span. (3) Parent ID: define el anidamiento; está AUSENTE en el root span (así se sabe que es el root). (4) Timestamp: cuándo empezó el trabajo del span. (5) Duration: cuánto tardó en terminar. Campos útiles extra: service_name, span_name, y tags como hostname o user_name.",
+          "explicacion": "Esos cinco bastan para reconstruir la estructura del waterfall; el resto son tags enriquecedores."
+        },
+        {
+          "id": "arobs2-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se propaga el contexto de traza entre servicios?",
+          "solucion": "Lo más común es ponerlo en cabeceras HTTP de las peticiones salientes. Los servicios receptores leen esas cabeceras y las usan para generar su propio trace_id y parent_id. Se siguen estándares como W3C o B3; con B3 se envían X-B3-TraceId (el ID de toda la traza) y X-B3-ParentSpanId (el span actual, que será el parent del hijo) para que los spans hijos construyan y envíen los suyos correctamente.",
+          "explicacion": "Cada servicio reenvía esas cabeceras y manda su span al backend, donde se cosen en la cascada."
+        },
+        {
+          "id": "arobs2-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve OpenTelemetry?",
+          "solucion": "Que las librerías de tracing propietarias atan tu código a un proveedor concreto: cambiar de solución obliga a reinstrumentar todo. OpenTelemetry (OTel) es el estándar abierto de instrumentación: permite instrumentar UNA sola vez (instrumentación automática + custom) y enviar esos datos a una amplia variedad de backends/soluciones.",
+          "explicacion": "Reduce el lock-in y el coste de migrar entre herramientas de observabilidad."
+        },
+        {
+          "id": "arobs2-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa 'depurar desde primeros principios' y por qué es central en observabilidad?",
+          "solucion": "Un primer principio es una suposición básica no deducida de otra. Depurar desde primeros principios es una metodología CIENTÍFICA: no asumir nada, partir de lo probado, formar una hipótesis y validarla/invalidarla con observaciones del sistema. Es central porque, a medida que sube la complejidad, saltar a la respuesta por intuición se vuelve impráctico y no escala (no todos pueden ser magos del sistema), mientras que el método metódico y repetible sí.",
+          "explicacion": "Reemplaza el 'salto de brillantez familiar' o el scar tissue por un proceso verificable que cualquiera puede seguir."
+        },
+        {
+          "id": "arobs2-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los autores consideran los runbooks 'trabajo en gran parte desperdiciado'?",
+          "solucion": "Porque intentan documentar la solución a cada 'causa raíz' posible, pero los sistemas modernos rara vez fallan exactamente igual dos veces; mantener un documento vivo con todos los errores posibles es fútil y peligroso, porque se vuelve obsoleto (y la documentación equivocada es peor que ninguna). Es mejor la instrumentación misma como documentación, que combina intención (qué dimensiones decidió recoger un ingeniero) con el estado real y en vivo de producción.",
+          "explicacion": "Sí vale una doc mínima de orientación (dueños, escalado, enlaces a queries), no un catálogo de causas."
+        },
+        {
+          "id": "arobs2-q13",
+          "tipo": "concepto",
+          "enunciado": "Describe los cuatro pasos del Core Analysis Loop.",
+          "solucion": "(1) Empieza con la vista general de lo que disparó tu investigación: ¿qué te dijo el cliente o la alerta? (2) Verifica si hay un cambio notable de rendimiento en el sistema (las visualizaciones ayudan a ver el cambio en una curva). (3) Busca dimensiones que puedan explicar el cambio: examina filas de muestra de la zona anómala, trocea por dimensiones (prueba un GROUP BY en campos como status_code) y filtra valores para exponer outliers. (4) ¿Ya sabes lo suficiente? Si sí, terminaste; si no, filtra para aislar esa zona como nuevo punto de partida y vuelve al paso 3.",
+          "explicacion": "Es un método de fuerza bruta para cribar todas las dimensiones sin conocimiento previo del sistema."
+        },
+        {
+          "id": "arobs2-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo automatiza una herramienta la parte de fuerza bruta del Core Analysis Loop?",
+          "solucion": "Tras aislar el área de rendimiento que te importa, en vez de buscar a mano patrones, recupera los valores de TODAS las dimensiones tanto dentro del área anómala como fuera (el baseline del sistema), los compara (diff) y los ordena por la mayor diferencia. Así, de un vistazo, ves la lista de lo que distingue tu zona de interés del resto (p.ej. BubbleUp de Honeycomb computa todas las dimensiones dentro y fuera de la caja que dibujas y las ordena por % de diferencia).",
+          "explicacion": "Ejemplo: 'availability_zone=us-east-1a' aparece en 98% del área anómala pero solo 17% del baseline → apunta a la AZ del proveedor."
+        },
+        {
+          "id": "arobs2-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué AIOps no es la bala de plata para depurar, y cuál es el enfoque correcto?",
+          "solucion": "Porque la IA solo ayuda si existen patrones DISCERNIBLES y estables que pueda aprender; en entornos competitivos que despliegan seguido, cada cambio de rendimiento es una anomalía, así que la 'caja' del baseline cambia constantemente y la IA la dibuja demasiado pequeña (marca normal como anomalía) o demasiado grande (ignora anomalías) → ruido o silencio. El enfoque correcto es fusionar humano y máquina: la máquina cruje los números y surfacea patrones potencialmente interesantes; el humano les da significado (¿fue bueno o malo, intencional o no?).",
+          "explicacion": "'Cualquier computadora detecta un pico, pero solo un humano puede atribuirle significado.' Automatizar el Core Analysis Loop materializa esa fusión."
+        }
+      ]
+    },
+    {
+      "id": "arena-obs3",
+      "bloque": "fase-7",
+      "orden": 77,
+      "titulo": "Arena Observabilidad · SLOs, alertas por síntoma y burn alerts",
+      "libro": "Observability Engineering: Achieving Production Excellence (Majors, Fong-Jones & Miranda, O'Reilly)",
+      "lectura": "data/teoria/arena-obs3.md",
+      "dosis": 30,
+      "objetivo": "Combatir la fatiga de alertas alertando por síntoma de usuario vía SLOs con SLI por eventos, y gobernar releases con error budget y burn alerts predictivas (ventana deslizante, lookahead/baseline).",
+      "heuristicas": [
+        "alertar-por-sintoma",
+        "error-budget-burn-alert",
+        "definir-sli-slo-sla"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Fatiga de alertas = normalización de la desviación; alerta solo lo fiable y accionable",
+        "Umbral estático = known-unknowns; alerta por síntoma de dolor del usuario",
+        "SLI por eventos > por tiempo (menos falsos positivos/negativos)",
+        "error budget = 1 − SLO; agotarlo frena releases",
+        "Burn alert predictiva: ventana deslizante 30d + lookahead/baseline del mismo orden"
+      ],
+      "banco": [
+        {
+          "id": "arobs3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la fatiga de alertas y con qué concepto del desastre del Challenger se relaciona?",
+          "solucion": "Es la desensibilización ante alertas por su mala relación señal/ruido: tantas son falsas alarmas, no accionables o inútiles que los ingenieros aprenden a silenciarlas, suprimirlas o ignorarlas. Se relaciona con la 'normalización de la desviación' (término acuñado en la investigación del Challenger): cuando la gente apaga alarmas o no actúa repetidamente, deja de sentirse mal hacerlo y los fallos 'normales' se vuelven ruido de fondo, llevando a omisiones desastrosas.",
+          "explicacion": "Los post-mortems suelen generar MÁS alertas, agravando el círculo vicioso."
+        },
+        {
+          "id": "arobs3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué dos criterios debe cumplir una alerta para considerarse útil?",
+          "solucion": "Según el libro SRE de Google, una buena alerta refleja impacto urgente al usuario, es accionable, es novedosa y requiere investigación (no acción rutinaria). El libro lo resume en dos: (1) debe ser un indicador FIABLE de que la experiencia del usuario está degradada, y (2) debe ser ACCIONABLE: tiene que existir una forma sistemática de responder que no exija adivinar. Si una alerta no cumple ambas, ya no sirve a su propósito y debe BORRARSE.",
+          "explicacion": "Decoupling: una buena alerta dice 'qué' (hay dolor) y deja el 'por qué' a la investigación."
+        },
+        {
+          "id": "arobs3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué se dice que el 'umbral estático es solo para known-unknowns'?",
+          "solucion": "Porque anticipar modos de fallo es fácil en sistemas simples, pero los distribuidos crean una explosión combinatoria de fallos: mantener cientos o miles de checks de estado preciso es insostenible, el conocimiento no es transferible y el comportamiento pasado no predice fallos futuros. Esos checks solo te avisan de problemas que ya conoces (known-unknowns) y dan una falsa sensación de seguridad porque no preparan para fallos nuevos y emergentes (unknown-unknowns).",
+          "explicacion": "Necesitas DATOS para todo (observabilidad), no ALERTAS para todo: tener alertas para todo no es viable."
+        },
+        {
+          "id": "arobs3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué es importante 'desacoplar el qué del por qué' al alertar?",
+          "solucion": "Porque las alertas de causa potencial fusionan el 'qué' y el 'por qué' (p.ej. CPU alta) intentando señalar dónde empezar a investigar, pero hay muchas más razones para el dolor del usuario que los estados conocidos arriba/abajo/lento, y los fallos emergentes impactan al usuario antes de que las sondas sintéticas avisen. Alertar solo por el SÍNTOMA (el 'qué': el usuario sufre) y dejar el 'por qué' a la investigación con observabilidad da máxima señal y mínimo ruido.",
+          "explicacion": "'Decoupling what from why is one of the most important distinctions in writing good monitoring with maximum signal and minimum noise.'"
+        },
+        {
+          "id": "arobs3-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Deberían las fallas auto-remediadas disparar alertas que despierten a alguien?",
+          "solucion": "No. Las fallas que se remedian automáticamente (autoscaling, balanceo, failover, promover pasivo a activo) NO deberían disparar alarmas, porque alertar de fallos transitorios ya resueltos solo crea ruido y lleva al burnout. Sí debes depurar esas fallas, pero durante horario laboral. El propósito de una alerta es traer atención a una emergencia que no puede esperar.",
+          "explicacion": "Despertar a un ingeniero de madrugada por algo ya remediado erosiona la atención a las alertas que sí importan."
+        },
+        {
+          "id": "arobs3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa que 'la experiencia del usuario es el North Star' del alerting?",
+          "solucion": "Que debes alertar por SÍNTOMAS de dolor del usuario, no por causas potenciales: las alertas de causa potencial tienen mala correlación con problemas reales, mientras que las de 'dolor del usuario' permiten entender el impacto y el estado del sistema tal como lo vive el cliente. Como el rendimiento varía mucho durante el día (zonas horarias, picos), los umbrales estáticos no captan bien ese dolor; por eso se usan SLOs.",
+          "explicacion": "Ej.: '10 usuarios con carga lenta' significa cosas distintas en hora valle vs hora pico."
+        },
+        {
+          "id": "arobs3-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un SLO (Service-Level Objective)?",
+          "solucion": "Es una meta interna acordada para medir la salud del servicio, basada en los journeys críticos del usuario más que en métricas de sistema. Popularizado por el libro SRE de Google, suele ser MÁS estricto que el SLA externo (el acuerdo con consecuencias frente al cliente), de modo que actúa como red de seguridad para detectar y remediar problemas antes de que la experiencia del usuario llegue a niveles inaceptables.",
+          "explicacion": "Para que los SLO-based alerts sean accionables, tus sistemas deben ser depurables (observabilidad)."
+        },
+        {
+          "id": "arobs3-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un SLI y por qué se prefieren los SLI basados en eventos sobre los basados en tiempo?",
+          "solucion": "Un SLI (Service-Level Indicator) categoriza el estado del sistema como bueno o malo y mide el SLO. Hay dos tipos: basado en TIEMPO ('el p99 de latencia < 300 ms en cada ventana de 5 min') y basado en EVENTOS ('proporción de eventos que tardaron < 300 ms en la ventana móvil'). Se prefieren los basados en eventos porque dan una forma más granular y FIABLE de cuantificar el estado: las medidas por tiempo preagregan por bucket y producen altas tasas de falsos positivos y falsos negativos.",
+          "explicacion": "Una ventana de 5 min se marca entera buena/mala aunque el problema fuera puntual: granularidad insuficiente."
+        },
+        {
+          "id": "arobs3-q9",
+          "tipo": "concepto",
+          "enunciado": "Da un ejemplo de un SLI basado en eventos bien definido.",
+          "solucion": "Define la buena experiencia como 'un usuario debe poder cargar la home y ver un resultado rápido'. El SLI: (1) busca cualquier evento con request path = /home; (2) filtra los eventos que califican por la condición duration < 100 ms; (3) si duration < 100 ms Y se sirvió con éxito, cuenta como OK; (4) si duration > 100 ms, cuéntalo como ERROR aunque haya devuelto código de éxito. Cada evento que sea error gasta parte del error budget.",
+          "explicacion": "El SLI define qué eventos califican y cuáles cumplen la condición; lo demás no cuenta."
+        },
+        {
+          "id": "arobs3-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el error budget y cómo se calcula?",
+          "solucion": "El error budget representa la máxima cantidad de indisponibilidad/no-fiabilidad que el negocio está dispuesto a tolerar. Se calcula como error budget = 1 − SLO. Como las metas de disponibilidad son porcentajes, el budget en una ventana es el nº de peticiones que pueden fallar; restando las peticiones fallidas (burned) del total tolerado obtienes el budget restante. El sistema está fuera de cumplimiento del SLO cuando se gasta todo el budget.",
+          "explicacion": "SLO 99.9% ≈ 8 h 45 min al año de downtime tolerado (o 43 min 50 s/mes) en cálculo por tiempo."
+        },
+        {
+          "id": "arobs3-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué pasa (y qué debe hacer el equipo) cuando se agota el error budget?",
+          "solucion": "Cuando se pasa de un budget positivo a negativo, la práctica necesaria es DESPLAZAR el trabajo: dejar de priorizar features nuevas y enfocarse en la estabilidad del servicio (a menudo periodos de feature-freeze). El modelo de SLO crea incentivos para minimizar acciones que pongan en riesgo la estabilidad una vez agotado el budget; el objetivo del equipo debería ser PREVENIR que se agote.",
+          "explicacion": "El error budget convierte la tensión velocidad↔estabilidad en una métrica objetiva que el equipo se autorregula."
+        },
+        {
+          "id": "arobs3-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué calcular el SLO sobre una ventana DESLIZANTE y no fija de calendario?",
+          "solucion": "Porque los SLO miden experiencia y satisfacción del cliente, no restricciones legales, y las emociones, memorias y el sesgo de recencia humanos NO se resetean el día 1 del mes. Con ventana fija, el budget se va consumiendo y de golpe se reinicia, pero un cliente que sufrió una mala caída el día 31 no se vuelve tolerante mágicamente el día 2 del mes siguiente. La ventana deslizante (trailing) ofrece una experiencia más suave que se parece al comportamiento humano: el budget se quema y se restaura poco a poco.",
+          "explicacion": "Es el primer y correcto paso: enmarcar el tiempo como ventana deslizante; si no, no hay datos suficientes tras un reset."
+        },
+        {
+          "id": "arobs3-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 30 días es la ventana más pragmática para la mayoría de SLOs?",
+          "solucion": "Porque ventanas más cortas (7 o 14 días) no se alinean con la memoria de fiabilidad del cliente ni con los ciclos de planificación de producto, mientras que 90 días tiende a ser demasiado largo: podrías quemar el 90% del budget en un solo día y aún cumplir técnicamente el SLO (aunque tus clientes no estén de acuerdo), y los incidentes tardan mucho en 'salir' de la ventana.",
+          "explicacion": "30 días equilibra la memoria del cliente, los ciclos de producto y la rapidez con que un incidente sale de la ventana."
+        },
+        {
+          "id": "arobs3-q14",
+          "tipo": "concepto",
+          "enunciado": "Compara los dos modelos para disparar una burn alert por encima del nivel cero.",
+          "solucion": "(1) Umbral no-cero: alertar cuando el budget restante cae bajo un valor fijo (p.ej. < 30%). Es simple, pero solo 'mueve el poste': tras cruzar el umbral el equipo actúa como si el budget estuviera agotado, sacrificando tiempo de features y quedándose en feature-freeze hasta que el budget vuelva a subir. (2) Burn alert PREDICTIVA (forecast): pronostica si las condiciones actuales agotarán todo el budget en el futuro y alerta según la trayectoria de quema, no según un umbral arbitrario.",
+          "explicacion": "Las burn alerts predictivas funcionan mejor para SLOs ≤ 99.95%."
+        },
+        {
+          "id": "arobs3-q15",
+          "tipo": "concepto",
+          "enunciado": "En una burn alert predictiva, ¿qué son el lookahead window y el baseline window, y qué relación deben guardar?",
+          "solucion": "El lookahead window es cuán lejos en el futuro modelas el pronóstico (días → no urge, puede esperar al día hábil; minutos/horas → paginar al on-call). El baseline (lookback) window es cuántos datos recientes usas para hacer la predicción. Deben ser del MISMO orden de magnitud: un baseline dado puede predecir linealmente hasta ~4× hacia adelante sin compensar estacionalidad. Short-term (ahistórico) usa solo el baseline reciente (barato); context-aware usa todos los eventos buenos/malos de la ventana completa del SLO (más caro, pero mejor cuando importa cuánto budget queda).",
+          "explicacion": "Un baseline demasiado corto para un lookahead largo se vuelve 'flappy'; esperar un día entero de datos para predecir los próximos minutos es igual de peligroso."
+        }
+      ]
+    },
+    {
+      "id": "arena-obs4",
+      "bloque": "fase-7",
+      "orden": 78,
+      "titulo": "Arena Observabilidad · Escala: almacenamiento, muestreo y madurez",
+      "libro": "Observability Engineering: Achieving Production Excellence (Majors, Fong-Jones & Miranda, O'Reilly)",
+      "lectura": "data/teoria/arena-obs4.md",
+      "dosis": 30,
+      "objetivo": "Entender por qué la TSDB explota y se usa un columnar híbrido por tiempo, dominar las estrategias de muestreo (constante/dinámico, head vs tail, consistente) y conocer las 5 capacidades del OMM.",
+      "heuristicas": [
+        "almacen-columnar-observabilidad",
+        "muestreo-head-vs-tail"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "La TSDB sufre explosión de cardinalidad; usa columnar híbrido por tiempo",
+        "Para observabilidad: rápido > perfecto (tiering, paralelismo, impaciencia)",
+        "Muestreo conserva la cardinalidad (vs métrica preagregada); graba la sample rate",
+        "Head (al inicio, barato) vs tail (al final, ve errores/lentos, caro); consistente = traza entera o nada",
+        "OMM: resiliencia, calidad de código, deuda, cadencia de release, comportamiento de usuario"
+      ],
+      "banco": [
+        {
+          "id": "arobs4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son los requisitos funcionales del almacén de datos de observabilidad?",
+          "solucion": "Como cualquier campo de cualquier evento debe ser consultable sin preagregar (no sabes de antemano qué dimensión importará): (1) TODO debe estar indexado o ningún dato debe tener recuperación privilegiada sobre otro (todas las dimensiones igual de rápidas); típicamente solo el tiempo es la excepción indexada. (2) Datos FRESCOS: no más de segundos entre que se reciben y se pueden consultar (datos viejos llevan a conclusiones falsas). (3) DURABLE y tolerante a fallos: no puede caerse ni demorar tus investigaciones críticas justo cuando depuras una caída.",
+          "explicacion": "Datos rancios hacen perder tiempo en 'red herrings'; por eso la frescura en segundos es funcional, no un lujo."
+        },
+        {
+          "id": "arobs4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué una TSDB es inadecuada para almacenar eventos de observabilidad?",
+          "solucion": "Porque una TSDB amortiza el coste asumiendo que nuevas combinaciones de tags son raras (crear una serie cuesta, pero anexar un número a una serie existente es barato). Si conviertes cada dimensión en un tag y cada valor en su valor, con alta cardinalidad (p.ej. añadir userid) creas una serie de tiempo NUEVA por cada combinación única → EXPLOSIÓN DE CARDINALIDAD: el coste de crear filas se vuelve lineal con el nº de eventos, porque cada evento estructurado suele ser único.",
+          "explicacion": "El coste de una serie solo se amortiza a 0 si reusas los mismos tags muchas veces; los eventos únicos rompen eso."
+        },
+        {
+          "id": "arobs4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué una base NoSQL de propósito general tampoco resuelve el problema?",
+          "solucion": "Porque aunque la INGESTA (ingress) de eventos clave-valor encaja bien, los patrones de CONSULTA (egress) son dramáticamente distintos: el análisis iterativo exige consultar por dimensionalidad y cardinalidad arbitrarias. Un NoSQL será lento salvo que la consulta use campos ya indexados, y preindexar no permite trocear arbitrariamente (te limita a una dimensión a la vez); si cada valor es único, el índice ocupa tanto como los datos originales.",
+          "explicacion": "Tunear un NoSQL para hacer rápido un subconjunto de consultas no sirve cuando necesitas TODAS las consultas posibles."
+        },
+        {
+          "id": "arobs4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué ventaja y qué desventaja tiene el almacenamiento por filas (row-based, p.ej. Bigtable) para observabilidad?",
+          "solucion": "Ventaja: recuperar trazas y spans individuales es rápido porque los datos están serializados y la clave primaria está indexada (p.ej. por tiempo), leyendo un solo conjunto de archivos (un tablet). Desventaja: como almacén mutable, mantiene un log de mutaciones + archivos apilados que periódicamente hay que COMPACTAR (reescribir), un proceso caro en I/O; para observabilidad (write-once, read-many, consultable en segundos) la compactación tendría que correr constantemente, y analizar campos arbitrarios obliga a leer todas las columnas de la fila.",
+          "explicacion": "El sistema de tracing Dapper se construyó originalmente sobre Bigtable."
+        },
+        {
+          "id": "arobs4-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué gana y qué cuesta el almacenamiento por columnas (column-based) para observabilidad?",
+          "solucion": "Gana: puedes examinar rápidamente solo el SUBCONJUNTO de columnas que pide la consulta (los datos entrantes se particionan en columnas, cada archivo de columna con un mapeo desde una clave primaria), así consultas y accedes dimensiones de forma independiente. Cuesta: no garantiza que los datos de una fila estén en un orden concreto; para acceder a una fila puedes tener que escanear hasta toda la tabla, salvo que se añada un índice de timestamp y un nº de secuencia por fila para reconstruirla.",
+          "explicacion": "Un escaneo de fila completa obliga a tirar de cada archivo de columna; por eso conviene un híbrido."
+        },
+        {
+          "id": "arobs4-q6",
+          "tipo": "concepto",
+          "enunciado": "¿En qué consiste la estrategia híbrida de particionar datos por tiempo en segmentos?",
+          "solucion": "En agrupar los eventos entrantes en SEGMENTOS append-only, registrando como metadata el timestamp más viejo y el más nuevo de cada segmento. Como el tiempo es la dimensión por la que casi siempre se filtra, en tiempo de consulta usas esa metadata para leer SOLO los segmentos cuya ventana de timestamps solapa la ventana de la consulta, descartando el resto. Los eventos no necesitan ordenarse estrictamente dentro del segmento si llegan con un retraso consistente.",
+          "explicacion": "Los segmentos se finalizan al cumplir un umbral (1 h, 250.000 registros o 1 GB) y se vuelven read-only."
+        },
+        {
+          "id": "arobs4-q7",
+          "tipo": "concepto",
+          "enunciado": "Dentro de un segmento, ¿cómo se almacena por columna y cómo se reduce el espacio?",
+          "solucion": "Se descompone cada evento en sus campos y se guarda el contenido de cada campo junto con el mismo campo de otros eventos: un archivo append-only por campo por segmento, más un archivo especial de timestamp (todo evento tiene timestamp) y un nº de secuencia por fila para reconstruir. Como las columnas tienden a ser nulas o a repetir valores, se aplica compresión por DICCIONARIO, codificación dispersa (sparse/bitmask de presencia) y/o run-length encoding, y luego se comprime el segmento con un algoritmo estándar (LZ4) al archivarlo.",
+          "explicacion": "Es performante crear columnas con valores recurrentes, pero NO columnas de un solo uso (una fila con valor no nulo)."
+        },
+        {
+          "id": "arobs4-q8",
+          "tipo": "concepto",
+          "enunciado": "Menciona tres técnicas que hacen el almacén columnar asequible, rápido y durable a escala.",
+          "solucion": "(1) TIERING: los minutos recientes viven en SSD local del nodo de consulta; los segmentos cerrados y más viejos se compactan y suben a un almacén durable y elástico (p.ej. Amazon S3 o GCS). (2) PARALELISMO estilo map-reduce con funciones serverless (cada Lambda mapea uno o más segmentos y un reduce central fusiona), con IMPACIENCIA: cuando el 90% de las subconsultas terminó, se re-piden el 10% lento para no quedar bloqueado en colas de S3. (3) Durabilidad/orden con un buffer de streaming tipo Apache Kafka, resiliente a reinicios de productores/consumidores/brokers.",
+          "explicacion": "Retriever de Honeycomb separa ingesta y consulta: un fallo de serialización solo retrasa el ingreso, no bloquea consultar datos viejos."
+        },
+        {
+          "id": "arobs4-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa que para observabilidad 'es más importante que el resultado llegue rápido que que sea perfecto'?",
+          "solucion": "Que los flujos de observabilidad exigen resultados en segundos para sostener la investigación iterativa, aunque escanees 30 minutos o un año de datos. Por eso se prioriza la velocidad de retorno sobre la exactitud total: técnicas como la 'impaciencia' (reintentar el 10% más lento de subconsultas, incluso si cuesta 10% más) devuelven resultados a tiempo en lugar de quedarse colgados esperando una consulta atascada en S3 o en I/O de red.",
+          "explicacion": "Comparar el estado actual con baselines históricos en segundos es lo que da la sensación de exploración fluida."
+        },
+        {
+          "id": "arobs4-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el muestreo (sampling) y qué conserva que la métrica preagregada no?",
+          "solucion": "Es enviar al backend solo eventos REPRESENTATIVOS (no el 100%) junto con metadata para reconstruir fielmente la forma original de los datos, reduciendo el coste de transmisión. A diferencia de la métrica preagregada (que colapsa todos los eventos en una representación gruesa de un periodo), el muestreo CONSERVA la cardinalidad completa en cada dimensión del evento muestreado, permitiendo decidir qué eventos son útiles y seguir teniendo visibilidad granular del estado.",
+          "explicacion": "Muchos eventos son casi idénticos; transmitir el 100% es derrochador, y la métrica preagregada impide profundizar."
+        },
+        {
+          "id": "arobs4-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Cuándo NO es efectivo el muestreo de probabilidad constante (1 de cada N)?",
+          "solucion": "Cuando: (1) te importan mucho los casos de ERROR y poco los de éxito (los errores raros podrían no salir en la muestra); (2) algunos clientes envían órdenes de magnitud más tráfico que otros y quieres buena experiencia para todos; (3) quieres asegurar que un pico grande de tráfico no desborde tu backend de analítica. Con probabilidad constante, la idea es que 'si hay volumen suficiente, un error que importa volverá a aparecer', pero a volumen moderado no se sostiene esa garantía.",
+          "explicacion": "Para reconstruir con tasa constante basta multiplicar cada evento por la sample rate; p99/mediana no se distorsionan."
+        },
+        {
+          "id": "arobs4-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el muestreo dinámico por contenido/clave y cómo reconstruyes los conteos?",
+          "solucion": "Es ajustar la tasa de muestreo según el payload del evento: eliges una o más claves (p.ej. código de respuesta HTTP) y asignas tasas distintas a cada combinación (errores > éxitos; pedidos nuevos > consultas de estado; clientes de pago > free tier). Como la tasa varía, debes usar un algoritmo PONDERADO: para contar, sumas los eventos REPRESENTADOS (cada evento expandido por su sample rate), no los recogidos; para mediana/p99, expandes cada evento a los que representa antes de calcular.",
+          "explicacion": "Ej.: valores con sample rates [{1,5},{3,2},{7,9}] dan mediana 7 al expandir, no 3."
+        },
+        {
+          "id": "arobs4-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el target rate sampling y qué resuelve?",
+          "solucion": "Es automatizar el cálculo de la tasa de muestreo para apuntar a un número objetivo de eventos por segundo, en vez de ajustar flags a mano cada vez que el tráfico sube o baja. El sistema rastrea la tasa de peticiones entrantes (p.ej. del minuto previo) y deriva la sample rate del siguiente intervalo, de modo que el volumen muestreado total se mantenga estable aunque el tráfico fluctúe.",
+          "explicacion": "Da una experiencia predecible en coste; combinado con tasas por clave evita que las fuentes de alto volumen ahoguen a las de bajo volumen."
+        },
+        {
+          "id": "arobs4-q14",
+          "tipo": "concepto",
+          "enunciado": "Diferencia muestreo head-based de tail-based y explica el muestreo consistente.",
+          "solucion": "Head-based (up-front): la decisión de muestrear se toma al INICIAR la traza, con propiedades conocidas al inicio (endpoint, customer ID), y se propaga aguas abajo (un bit 'require sampling') para capturar toda la traza; es barato pero no conoce el resultado. Tail-based: la decisión se toma al FINAL, con campos conocidos solo en retrospectiva (status, latencia), permitiendo quedarse con errores/lentos; requiere BUFFERIZAR todos los spans en un colector externo, lo que es caro. Muestreo CONSISTENTE: usar un sampling/trace ID central propagado para que una traza se conserve entera o se descarte entera, evitando trazas rotas (un hijo conservado sin su padre).",
+          "explicacion": "Graba siempre la sample rate dentro del evento: así reconstruyes bien aunque la tasa cambie dinámicamente."
+        },
+        {
+          "id": "arobs4-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cinco capacidades mide el Observability Maturity Model (OMM) y qué naturaleza tiene?",
+          "solucion": "El OMM es socio-técnico (herramienta + cultura) y NO es lineal ni universal: sirve como punto de partida para que un equipo modele sus metas. Las cinco capacidades de los equipos de alto desempeño: (1) responder a fallos del sistema con RESILIENCIA (MTTR, alertas accionables, on-call sostenible); (2) entregar CÓDIGO de alta calidad (depurar igual en 1 máquina que en 10.000); (3) gestionar COMPLEJIDAD y deuda técnica (evitar el 'haunted graveyard'); (4) liberar con CADENCIA predecible (deploy/rollback rápidos, feature flags); (5) entender el COMPORTAMIENTO del usuario (KPIs de cliente accesibles).",
+          "explicacion": "Los equipos que adoptan observabilidad reportan 3× más confianza en la calidad en producción y menos tiempo en toil."
         }
       ]
     }
