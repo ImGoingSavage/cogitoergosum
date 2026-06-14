@@ -110,7 +110,12 @@
       "ruta": "quant",
       "estado": "completado",
       "preguntas_agregadas": 28,
-      "unidades_creadas": ["arena-cb1", "arena-cb2", "arena-cb3", "arena-cb4"],
+      "unidades_creadas": [
+        "arena-cb1",
+        "arena-cb2",
+        "arena-cb3",
+        "arena-cb4"
+      ],
       "cuota_minima": 25,
       "notas": "2026-06-13 (cuenta B, Sonnet 4.6): completado. 4 unidades (órdenes 35-38): cb1 suficiencia/completitud (7q), cb2 MLE/CR/UMVUE (7q), cb3 NP/LRT/UMP (7q), cb4 CIs/delta method (7q). 7 ítems examen: f7-ex-27..f7-ex-33. 4 heurísticas nuevas: factorizacion-suficiente, rao-blackwell, neyman-pearson, delta-method. sw.js v34 (123 archivos). Siguiente agente: órdenes desde 55, f7-ex-37+, VERSION v35+."
     },
@@ -121,7 +126,12 @@
       "ruta": "maang",
       "estado": "completado",
       "preguntas_agregadas": 62,
-      "unidades_creadas": ["arena-cc1", "arena-cc2", "arena-cc3", "arena-cc4"],
+      "unidades_creadas": [
+        "arena-cc1",
+        "arena-cc2",
+        "arena-cc3",
+        "arena-cc4"
+      ],
       "cuota_minima": 60,
       "notas": "2026-06-13 (cuenta A, Sonnet 4.6): completado. 4 unidades (órdenes 39-42): cc1 arrays/hash (15q), cc2 árboles/grafos (15q), cc3 recursión/DP (15q), cc4 ordenamiento/binaria/bits (15q) = 60 banco + 2 ítems examen (f7-ex-34 prog-dinámica, f7-ex-35 divide-y-vencerás). 2 heurísticas nuevas: divide-y-venceras, programacion-dinamica. sw.js v35 (127 archivos). IDs reales calculados dinámicamente sobre la base ya integrada (Joshi+Casella): orden 38→39, f7-ex-33→34. Siguiente agente: órdenes desde 43, f7-ex-36+, VERSION v36+."
     },
@@ -132,7 +142,12 @@
       "ruta": "maang",
       "estado": "completado",
       "preguntas_agregadas": 62,
-      "unidades_creadas": ["arena-sd1", "arena-sd2", "arena-sd3", "arena-sd4"],
+      "unidades_creadas": [
+        "arena-sd1",
+        "arena-sd2",
+        "arena-sd3",
+        "arena-sd4"
+      ],
       "cuota_minima": 60,
       "notas": "2026-06-13 (cuenta A, Opus 4.8): completado. 4 unidades (órdenes 43-46): sd1 escalabilidad/estimación/marco 4 pasos (15q), sd2 rate limiter/consistent hashing/CAP/quórum/vector clocks/Snowflake (15q), sd3 URL shortener/web crawler/notificaciones/news feed (15q), sd4 chat WebSocket/autocomplete trie/YouTube CDN/Google Drive delta sync (15q) = 60 banco + 2 ítems examen (f7-ex-36 trade-off-cap, f7-ex-37 descomponer-sistema). 5 heurísticas nuevas (esquema rico): descomponer-sistema, estimacion-capacidad, escalar-horizontal, trade-off-cap, cola-desacoplar. sw.js v36 (131 archivos). IDs calculados dinámicamente sobre la base integrada: orden 42→43, f7-ex-35→36. Siguiente agente: órdenes desde 47, f7-ex-38+, VERSION v37+. Próximo libro §10 (ciencia-datos): Ace the Data Science Interview (Singh & Huo)."
     },
@@ -143,7 +158,12 @@
       "ruta": "ciencia-datos",
       "estado": "completado",
       "preguntas_agregadas": 62,
-      "unidades_creadas": ["arena-ads1", "arena-ads2", "arena-ads3", "arena-ads4"],
+      "unidades_creadas": [
+        "arena-ads1",
+        "arena-ads2",
+        "arena-ads3",
+        "arena-ads4"
+      ],
       "cuota_minima": 60,
       "notas": "2026-06-13 (cuenta A, Opus 4.8): completado. 4 unidades (órdenes 47-50): ads1 probabilidad (Bayes/tasa base, ley total, distribuciones, Markov; 15q), ads2 estadística e inferencia (LLN/CLT, prueba de hipótesis, p-valor, Tipo I/II, IC, MLE/MAP; 15q), ads3 machine learning (sesgo-varianza, regularización L1/L2, precisión/recall/F1/ROC, logística/árboles/ensembles, PCA, descenso de gradiente; 15q), ads4 SQL + product sense (joins/CTE/window, retención; North Star+guardrail, diagnosticar métrica, A/B testing y trampas; 15q) = 60 banco + 2 ítems examen (f7-ex-38 diseno-experimento-ab, f7-ex-39 metrica-clasificacion). 6 heurísticas nuevas (esquema rico): bias-varianza, regularizacion, metrica-clasificacion, diagnosticar-metrica, diseno-experimento-ab, definir-metrica-producto. sw.js v37 (135 archivos). IDs dinámicos sobre la base integrada: orden 46→47, f7-ex-37→38. Siguiente agente: órdenes desde 51, f7-ex-40+, VERSION v38+. Próximo libro §10 (ciencia-datos): Cracking the Data Science Interview (Gonzalez & Stubberfield)."
     },
@@ -152,11 +172,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Cracking the Data Science Interview Unlock insider tips from industry experts to master the data science field (Leondra R. Gonzalez, Aaren Stubberfield) (Z-Library).pdf",
       "sector": "A",
       "ruta": "ciencia-datos",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-cds1",
+        "arena-cds2",
+        "arena-cds3",
+        "arena-cds4"
+      ],
       "cuota_minima": 60,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades de valor NUEVO que complementan Ace DS (no duplican): cds1 feature engineering/preparación de datos, cds2 deep learning, cds3 MLOps/despliegue, cds4 toolkit (viz/storytelling/Git/Bash). 60 banco + 2 examen (f7-ex-40 data leakage, f7-ex-41 data drift). Órdenes 51-54. 9 heurísticas nuevas (evitar-data-leakage, imputar-faltantes, escalar-features, red-neuronal-activacion, gradiente-desvanecido, containerizar-modelo, detectar-data-drift, elegir-grafico, data-storytelling); reúsa bias-varianza. VERSION v38. Próximo libro §10 (ciencia-datos): Practical Statistics for Data Scientists."
     },
     {
       "libro": "Practical Statistics for Data Scientists",
