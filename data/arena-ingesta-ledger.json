@@ -85,11 +85,11 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Probabilidad y estadística/Probability and Statistics by Morris H. DeGroot and Mark J. Schervish.pdf",
       "sector": "A",
       "ruta": "quant",
-      "estado": "pendiente",
+      "estado": "en_progreso",
       "preguntas_agregadas": 0,
       "unidades_creadas": [],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "Iniciado 2026-06-13 (cuenta A). Sector quant. Próximo: arena-dg1/dg2/dg3/dg4."
     },
     {
       "libro": "Statistical Inference (Casella & Berger)",
