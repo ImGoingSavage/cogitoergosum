@@ -188,11 +188,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/Probabilidad y estadística/Practical Statistics for Data Scientists.pdf",
       "sector": "A",
       "ruta": "ciencia-datos",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-pst1",
+        "arena-pst2",
+        "arena-pst3",
+        "arena-pst4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades de valor NUEVO con el enfoque practitioner/resampling-first de Bruce & Bruce (no duplican Ace ni Cracking): pst1 EDA/estimadores robustos, pst2 distribuciones muestrales y bootstrap, pst3 experimentos estadísticos/tests de permutación, pst4 regresión: interpretación y diagnóstico. 60 banco + 2 examen (f7-ex-42 test de permutación, f7-ex-43 confounding/interpretar coeficientes). Órdenes 55-58. 7 heurísticas nuevas (estimador-robusto, bootstrap-resampling, test-permutacion, vigilar-multiplicidad, interpretar-coeficientes-regresion, intervalo-prediccion-vs-confianza, diagnostico-residuales); reúsa intervalos-tests y diseno-experimento-ab. VERSION v39. Próximo libro §10 (ml-systems): Designing Machine Learning Systems (Huyen)."
     },
     {
       "libro": "Designing Machine Learning Systems (Huyen)",
