@@ -605,6 +605,94 @@
       "cuando_usar": "Al diseñar el monitoreo de un sistema de entrenamiento+serving continuo para detectar antes que el usuario.",
       "ejemplo": "Historia de YarnIt: un modelo de búsqueda quedó congelado 3 semanas (log-feeders sin memoria); un golden set 'sospechosamente estable' lo delató.",
       "patron": "alerta por edad del modelo; golden set (cambia demasiado o nada); tasa de training; CTR"
+    },
+    {
+      "id": "usar-hashed-feature",
+      "nombre": "Hashed Feature para categóricas problemáticas",
+      "descripcion": "Para una categórica de alta cardinalidad, con vocabulario incompleto o cold-start (hospital_id, aeropuerto), no hagas one-hot: aplica un hash de huella (FarmHash, determinista y portable, NO criptográfico) y toma el módulo del número de buckets. Acepta colisiones a cambio de manejar valores fuera de vocabulario, tamaño de modelo y cold-start. Regla: ~5 entradas por bucket; trata num_buckets como hiperparámetro.",
+      "cuando_usar": "Categórica con miles/millones de valores, vocabulario que crece o no se conoce de antemano.",
+      "ejemplo": "347 aeropuertos → ABS(MOD(FARM_FINGERPRINT(iata), 70)); un aeropuerto nuevo cae en un bucket y 'hereda' el rango de sus vecinos sin que el modelo falle.",
+      "patron": "alta cardinalidad/cold-start → hash de huella + módulo de buckets (acepta colisiones)"
+    },
+    {
+      "id": "usar-embeddings",
+      "nombre": "Embeddings: representación densa aprendida",
+      "descripcion": "En vez de one-hot (disperso, sin noción de similitud), mapea datos de alta cardinalidad (categóricas, texto, imágenes) a un espacio de menor dimensión y APRENDIDO, donde la cercanía codifica similitud relevante para la tarea. Reduce dimensionalidad preservando relaciones; el tamaño del embedding es un hiperparámetro (compromiso entre compresión y poder de representación).",
+      "cuando_usar": "Categóricas de alta cardinalidad o datos no estructurados donde importa la similitud entre ítems.",
+      "ejemplo": "Representar productos o palabras como vectores de 20-100 dims aprendidos; ítems parecidos quedan cerca, mejorando el aprendizaje de patrones.",
+      "patron": "alta cardinalidad + similitud importa → embedding denso y aprendido"
+    },
+    {
+      "id": "reformular-regresion-clasificacion",
+      "nombre": "Reformular: regresión ↔ clasificación",
+      "descripcion": "Cambia la representación de la SALIDA del problema. Reformula una regresión como clasificación multiclase sobre buckets cuando la salida es probabilística/bimodal o quieres una PDF en vez de un solo número (predicción de lluvia/peso). O reformula clasificación como regresión cuando el objetivo real es continuo (recomendar por tiempo visto, no por click, para evitar clickbait). Cuida el sesgo de etiqueta al cambiar el objetivo.",
+      "cuando_usar": "Cuando la salida real es incierta/multimodal, o cuando el objetivo de entrenamiento no se alinea con el objetivo de negocio.",
+      "ejemplo": "Lluvia: en vez de regresión a un valor, clasificación 512-way sobre rangos para capturar la distribución; recomendación: regresión a 'fracción de vídeo vista' en vez de clasificar 'click'.",
+      "patron": "salida incierta/desalineada → cambia la representación de la salida (buckets o continuo)"
+    },
+    {
+      "id": "elegir-ensemble",
+      "nombre": "Elegir el ensemble según sesgo o varianza",
+      "descripcion": "Combina modelos para bajar el error reducible. BAGGING (bootstrap + promediar/votar, p.ej. random forest) reduce VARIANZA y necesita diversidad/errores poco correlacionados. BOOSTING (modelos secuenciales que corrigen los residuos del anterior, p.ej. XGBoost) reduce SESGO construyendo un modelo de más capacidad. STACKING entrena un meta-modelo sobre las salidas de modelos base. Coste: más tiempo de diseño/entrenamiento y menos interpretabilidad.",
+      "cuando_usar": "Problemas de escala pequeña/media donde un solo modelo sufre de alto sesgo o alta varianza.",
+      "ejemplo": "Modelo que sobreajusta (alta varianza) → bagging; modelo que subajusta (alto sesgo) → boosting; quieres combinar tipos distintos → stacking.",
+      "patron": "alta varianza→bagging; alto sesgo→boosting; combinar salidas→stacking"
+    },
+    {
+      "id": "usar-cascada-ml",
+      "nombre": "Cascada de modelos para casos usuales y raros",
+      "descripcion": "Cuando un problema mezcla actividad usual y rara (con valores anómalos), un solo modelo ignora lo raro. Divídelo en una cascada: (1) un clasificador que detecta la circunstancia, (2) un modelo para el caso típico, (3) otro para el inusual, (4) un modelo que combina las salidas. Cuidado: en inferencia el modelo 1 comete errores, así que 2 y 3 verán datos que no vieron en entrenamiento; diseña el experimento con cuidado (no es solo un ensemble).",
+      "cuando_usar": "Un valor a predecir bajo condiciones usuales E inusuales con comportamientos muy distintos (revendedor vs comprador, viaje normal vs larguísimo).",
+      "ejemplo": "Devoluciones: clasificar comprador vs revendedor, un modelo de devolución por cada uno, y combinar; entrena cada submodelo en su segmento.",
+      "patron": "usual+raro con valores distintos → clasificar circunstancia + modelo por segmento + combinar"
+    },
+    {
+      "id": "transfer-learning-bottleneck",
+      "nombre": "Transfer learning con capa cuello de botella",
+      "descripcion": "Para datos no estructurados con pocos ejemplos propios, toma un modelo preentrenado en la MISMA modalidad y tarea similar (p.ej. clasificación de imágenes), quita su capa de salida, CONGELA los pesos restantes (la penúltima capa es el 'bottleneck', representación de baja dimensión del input) y entrena una nueva cabeza con tus datos. Funciona porque las primeras capas ya aprendieron a interpretar píxeles/edges/semántica.",
+      "cuando_usar": "Tarea especializada (rayos X, histología) con cientos —no millones— de ejemplos etiquetados.",
+      "ejemplo": "VGG/ResNet preentrenado en ImageNet → quitar top, congelar, entrenar cabeza con 400 imágenes de rayos X (roto/no roto).",
+      "patron": "pocos datos + modalidad conocida → reusar preentrenado, congelar hasta el bottleneck, reentrenar la cabeza"
+    },
+    {
+      "id": "tunear-hiperparametros",
+      "nombre": "Tunear hiperparámetros de forma escalable",
+      "descripcion": "Los parámetros (pesos) los aprende el modelo; los hiperparámetros (learning rate, profundidad, nº de capas) los fijas tú. Ajustar a mano o por grid search no escala (explosión combinatoria y no aprende de los intentos); random search es más rápido pero puede perderse el óptimo. La solución escalable es la optimización bayesiana (p.ej. keras-tuner), que aprende de los trials previos para elegir el siguiente.",
+      "cuando_usar": "Modelos costosos de entrenar con varios hiperparámetros que quieres optimizar sin malgastar cómputo.",
+      "ejemplo": "keras-tuner con optimización bayesiana sobre nº de neuronas y learning rate, en vez de probar todas las combinaciones de un grid.",
+      "patron": "params=aprendidos; hiperparams=tú; grid no escala → optimización bayesiana"
+    },
+    {
+      "id": "servir-modelo-resiliente",
+      "nombre": "Patrones de serving resiliente",
+      "descripcion": "Exporta el modelo como una FUNCIÓN SIN ESTADO (salida determinada solo por la entrada) para escalar a miles de QPS. Elige la arquitectura por latencia/volumen: serving online (síncrono, baja latencia) vs BATCH SERVING (inferencia asíncrona masiva sobre infraestructura distribuida tipo BigQuery/Spark, problema embarazosamente paralelo). Para edge sin buena conexión, usa PREDICCIONES EN DOS FASES (modelo simple on-device + modelo complejo en la nube). Para lotes distribuidos, usa PREDICCIONES CON CLAVE (el cliente manda una clave que el modelo devuelve junto a la predicción) para casar entradas y salidas desordenadas.",
+      "cuando_usar": "Al diseñar cómo exponer un modelo en producción según QPS, latencia, conectividad y si la inferencia es online o masiva.",
+      "ejemplo": "Stateless function para escalar; batch serving para puntuar millones de quejas a la vez; dos fases para 'OK Google' (wake word on-device + consulta en la nube); keyed predictions para reordenar resultados de un job distribuido.",
+      "patron": "stateless + (online | batch) + (dos fases en edge) + (keyed para lotes)"
+    },
+    {
+      "id": "separar-input-feature-transform",
+      "nombre": "Separar inputs, features y transformaciones",
+      "descripcion": "El patrón Transform combate el training-serving skew capturando explícitamente las transformaciones que convierten inputs crudos en features, y guardándolas en el grafo del modelo (o en un feature store) para que se apliquen IDÉNTICAS en entrenamiento y serving. En inferencia mandas solo los inputs crudos (estación, timestamp) y el modelo aplica la transformación. No mezcles inputs con features.",
+      "cuando_usar": "Siempre que las features se deriven de los inputs (extraer hora/día de una fecha, escalar, embeddings) y vayas a producción.",
+      "ejemplo": "BigQuery ML con cláusula TRANSFORM: predices mandando 'Kings Cross' + CURRENT_TIMESTAMP() y el modelo recalcula dayofweek/hourofday como en el entrenamiento.",
+      "patron": "inputs crudos ≠ features; guarda la transformación en el grafo → mismo cálculo train/serving"
+    },
+    {
+      "id": "division-reproducible",
+      "nombre": "División reproducible de datos por hash",
+      "descripcion": "No dividas train/val/test con un random sin semilla: no es repetible y, si las filas están correlacionadas (vuelos del mismo día), filtra información entre splits (data leakage). Elige una columna que capture la correlación (date), NO usada como input, con suficientes valores y etiqueta bien distribuida, y divide por el módulo de un hash determinista (FarmHash) de esa columna. Así todas las filas correlacionadas caen en el mismo split, repetible en cualquier lenguaje.",
+      "cuando_usar": "Al crear splits de datos donde las filas no son independientes y necesitas comparar modelos sobre el mismo test.",
+      "ejemplo": "ABS(MOD(FARM_FINGERPRINT(date),10))<8 para train; =8 val; =9 test → todos los vuelos de una fecha en el mismo split.",
+      "patron": "hash determinista de una columna correlacionada (no-input) + módulo → split repetible y sin fuga"
+    },
+    {
+      "id": "lente-de-equidad",
+      "nombre": "Evaluar con una lente de equidad",
+      "descripcion": "Los datos los crean humanos, así que arrastran sesgo. Distingue sesgo natural (refleja propiedades estadísticas, p.ej. fraude raro) del sesgo PROBLEMÁTICO (afecta distinto a grupos de personas): distribución de datos, representación/reporting, etiquetado (experimenter bias). Quitar la feature sensible (raza/género) NO basta: queda implícita en proxies (código postal, ingreso). Evalúa todo el flujo —datos→entrenamiento→despliegue— por slices, no solo con accuracy global, y usa pre/postprocesamiento para corregir.",
+      "cuando_usar": "En cualquier modelo cuyas decisiones afecten a personas (crédito, contratación, salud, moderación).",
+      "ejemplo": "Modelo de impago 'justo' al quitar la raza pero sesgado vía código postal (proxy); detéctalo midiendo desempeño por subgrupos.",
+      "patron": "sesgo natural vs problemático; quitar la feature no basta (proxies); evalúa por slices"
     }
   ],
   "bloques": [
@@ -1267,7 +1355,11 @@
         "arena-rml1",
         "arena-rml2",
         "arena-rml3",
-        "arena-rml4"
+        "arena-rml4",
+        "arena-mldp1",
+        "arena-mldp2",
+        "arena-mldp3",
+        "arena-mldp4"
       ],
       "examen": {
         "items": [
@@ -2839,6 +2931,73 @@
                 "Aleatorizar el acceso al modelo para el A/B es estadísticamente delicado"
               ],
               "source": "Reliable Machine Learning (Chen et al.) — Cap. 1"
+            }
+          },
+          {
+            "id": "f7-ex-48",
+            "heuristica": "elegir-ensemble",
+            "enunciado": "Tienes un modelo cuyo error en test es alto. (a) Descompón el error de un modelo de ML en sus tres partes. (b) Si el modelo subajusta (alto sesgo) ¿qué ensemble usas y por qué funciona? (c) Si sobreajusta (alta varianza) ¿qué ensemble usas, qué condición necesitan sus miembros y por qué bagging ayuda poco a un modelo lineal?",
+            "pistas": [
+              "Tres partes: una no se puede reducir; las otras dos sí.",
+              "Sesgo = underfit (no aprende la relación); varianza = no generaliza.",
+              "Boosting construye secuencialmente sobre los residuos → más capacidad.",
+              "Bagging promedia modelos; para que ayude, sus errores deben estar poco correlacionados.",
+              "Modelos estables (lineal, kNN, naive Bayes) cambian poco con el bootstrap, que además reduce el set efectivo."
+            ],
+            "solucion": "(a) Error = irreducible (ruido inherente del dato/encuadre, no reducible) + sesgo (el modelo no aprende la relación features↔label, underfit) + varianza (no generaliza a datos nuevos, overfit). Sesgo+varianza = error reducible. (b) Alto sesgo → BOOSTING: construye iterativamente weak learners donde cada uno modela los residuos del anterior; el ensemble acumula más capacidad que cualquier miembro y se enfoca en los ejemplos difíciles, reduciendo el sesgo (AdaBoost, Gradient Boosting, XGBoost). (c) Alta varianza → BAGGING: entrena k modelos sobre muestras bootstrap y promedia/vota; si sus errores están poco correlacionados (cov≈0), al promediar se cancelan y el error cuadrático baja hacia var/k. Necesita DIVERSIDAD de modelos. Ayuda poco a un modelo lineal (o kNN/naive Bayes/SVM) porque son aprendices estables: el bootstrap apenas cambia su solución y encima reduce el tamaño efectivo del set, así que sus errores quedan muy correlacionados.",
+            "disparador": "Señal: '¿cómo mejoro un modelo con error alto combinando modelos?'. Jugada: descompón en sesgo/varianza; alto sesgo→boosting (capacidad), alta varianza→bagging (promediar errores poco correlacionados); el stacking aprende a combinar.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "bias-varianza",
+                "ensembles",
+                "bagging",
+                "boosting",
+                "stacking"
+              ],
+              "errores_comunes": [
+                "Usar bagging contra alto sesgo o boosting contra alta varianza",
+                "Esperar que bagging baje la varianza con miembros de errores correlacionados"
+              ],
+              "casos_borde": [
+                "Combinar modelos con errores muy correlacionados no baja la varianza",
+                "El dropout aproxima bagging pero comparte parámetros"
+              ],
+              "source": "Machine Learning Design Patterns (Lakshmanan et al.) — Cap. 3, Design Pattern 7"
+            }
+          },
+          {
+            "id": "f7-ex-49",
+            "heuristica": "division-reproducible",
+            "enunciado": "Vas a dividir un dataset de vuelos en train/validation/test. (a) ¿Qué dos problemas tiene usar np.random.rand() sin semilla? (b) Describe la solución de división reproducible por hash. (c) ¿Qué cuatro propiedades debe cumplir la columna por la que divides, y por qué NO puede ser un input del modelo?",
+            "pistas": [
+              "Piensa en repetibilidad entre ejecuciones y en correlación entre filas.",
+              "Vuelos del mismo día están correlacionados: ¿qué pasa si unos van a train y otros a test?",
+              "Usa un hash determinista (FarmHash) y el módulo sobre una columna.",
+              "La columna necesita: correlación, no ser input, suficientes valores únicos y etiqueta bien distribuida.",
+              "Si divides por un input, el modelo no vería parte de los valores posibles de ese input."
+            ],
+            "solucion": "(a) (1) No es repetible: cada ejecución reordena y da otro 80%, así no puedes comparar modelos sobre el mismo test. (2) Fuga de datos (leakage): si las filas están correlacionadas (vuelos del mismo día), poner unas en train y otras en test filtra información entre conjuntos. (b) Identifica una columna que capture la correlación (date) y divide por el módulo de un hash determinista: ABS(MOD(FARM_FINGERPRINT(date),10)) <8 → train, =8 → validation, =9 → test. Como FarmHash devuelve el mismo valor para una fecha dada, el split es repetible en cualquier lenguaje y todas las filas de una fecha caen en el mismo conjunto. (c) La columna debe: (1) tener filas correlacionadas con el mismo valor; (2) NO ser un input del modelo; (3) tener suficientes valores únicos (3-5× el denominador del módulo); (4) tener la etiqueta bien distribuida entre sus valores. No puede ser input porque, al reservar el 20% para val/test, el modelo entrenado nunca vería el 20% de los valores posibles de ese input, sesgando el aprendizaje.",
+            "disparador": "Señal: 'tengo que dividir datos con filas correlacionadas y poder comparar modelos'. Jugada: divide por el módulo de un hash determinista de una columna correlacionada que NO sea input, con suficientes valores y etiqueta bien repartida.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "repeatable splitting",
+                "data leakage",
+                "hashing determinista",
+                "train/val/test"
+              ],
+              "errores_comunes": [
+                "Dividir por una columna que es input del modelo",
+                "random sin semilla → splits no repetibles y con fuga"
+              ],
+              "casos_borde": [
+                "Verificar distribución de la etiqueta por split con el test de Kolmogorov-Smirnov",
+                "Necesitas ≥3-5× el denominador del módulo en valores únicos"
+              ],
+              "source": "Machine Learning Design Patterns (Lakshmanan et al.) — Cap. 6, Design Pattern 22"
             }
           }
         ]
@@ -13213,6 +13372,534 @@
           "enunciado": "¿Qué dice el 'manifiesto del ingeniero ético de guardia' sobre privacidad y ética durante un incidente?",
           "solucion": "Que es un error enfocarse en 'hacer que el sistema funcione primero y preocuparse por la privacidad después': la ética y la privacidad no se posponen ni siquiera bajo la presión de un incidente. El personal de datos/modelado, aunque deba hacer análisis a medida o generar variantes del modelo para probar hipótesis, debe estar preparado para RECHAZAR cualquier petición que requiera violar la privacidad del usuario u otros principios éticos.",
           "explicacion": "La respuesta a incidentes de ML tiene implicaciones serias de ética y privacidad; no son un añadido posterior sino parte del trabajo."
+        }
+      ]
+    },
+    {
+      "id": "arena-mldp1",
+      "bloque": "fase-7",
+      "orden": 67,
+      "titulo": "Patrones de representación de datos y de problemas",
+      "libro": "Machine Learning Design Patterns (Lakshmanan, Robinson & Munn, O'Reilly)",
+      "lectura": "data/teoria/arena-mldp1.md",
+      "dosis": 30,
+      "objetivo": "Representar entradas (hashed feature, embeddings, feature cross, multimodal) y reencuadrar la salida (reframing, multilabel) con los patrones de diseño de ML.",
+      "heuristicas": [
+        "usar-hashed-feature",
+        "usar-embeddings",
+        "reformular-regresion-clasificacion"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Hashed Feature: hash de huella + módulo para categóricas de alta cardinalidad/cold-start",
+        "Embeddings: representación densa y aprendida que preserva similitud",
+        "Reframing: cambiar la representación de la salida (regresión↔clasificación)",
+        "Multilabel: sigmoid + multi-hot, distinto de multiclase (softmax)"
+      ],
+      "banco": [
+        {
+          "id": "armldp1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué tres problemas de las variables categóricas resuelve el patrón Hashed Feature?",
+          "solucion": "Vocabulario incompleto (el muestreo de entrenamiento puede no contener todas las categorías), alta cardinalidad (vectores enormes → muchos pesos, modelo grande, difícil de desplegar) y cold-start (categorías nuevas tras el despliegue). Lo hace agrupando las categorías en buckets vía un hash, aceptando el trade-off de colisiones.",
+          "explicacion": "Es una codificación con pérdida: a cambio de robustez ante valores nuevos y de tamaño acotado, se sacrifica precisión."
+        },
+        {
+          "id": "armldp1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué hay que usar un hash de huella (fingerprint) determinista y NO uno criptográfico como MD5 en Hashed Feature?",
+          "solucion": "Porque la transformación debe dar el MISMO valor en entrenamiento y en serving: necesita ser determinista. Las funciones de huella (FarmHash) son deterministas y bien distribuidas; los hashes criptográficos (MD5/SHA1) producen salida uniforme pero NO son deterministas (se les añade 'salt') y se diseñan para ser caros computacionalmente, lo que no sirve en feature engineering.",
+          "explicacion": "El requisito clave de una transformación de features es reproducibilidad train↔serving; además se hace módulo del nº de buckets (operación con pérdida)."
+        },
+        {
+          "id": "armldp1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se elige el número de buckets en Hashed Feature y qué pasa si es muy alto o muy bajo?",
+          "solucion": "Regla práctica: elegir num_buckets para que cada bucket reciba ~5 entradas, y tratarlo como hiperparámetro a tunear dentro de un rango sensato de la cardinalidad. Muy pocos buckets → demasiadas colisiones y pérdida de precisión (sesgo si la distribución es muy desbalanceada, p.ej. ORD mezclado con un aeropuerto pequeño). Muy altos no eliminan colisiones (con 347 aeropuertos y 100.000 buckets aún hay 45% de probabilidad de colisión) y desperdician.",
+          "explicacion": "El skew de la categórica agrava la pérdida; conviene añadir una feature agregada (p.ej. probabilidad de a-tiempo por aeropuerto) para no perder la info individual."
+        },
+        {
+          "id": "armldp1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un embedding y qué ventaja tiene sobre one-hot encoding?",
+          "solucion": "Es una representación de datos APRENDIDA que mapea datos de alta cardinalidad (categóricas, texto, imágenes) a un espacio de menor dimensión preservando la información relevante para la tarea. Frente a one-hot (disperso y sin noción de similitud), el embedding es denso y coloca ítems similares cerca, mejorando la capacidad del modelo de aprender patrones.",
+          "explicacion": "El tamaño del embedding es un hiperparámetro: compromiso entre compresión y poder de representación."
+        },
+        {
+          "id": "armldp1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un Feature Cross y por qué puede ayudar a un modelo simple?",
+          "solucion": "Es una feature de ingeniería formada combinando (cruzando) dos o más features categóricas para crear una nueva que representa su conjunción. Permite que un modelo lineal (simple) aprenda relaciones no lineales entre features, dándole más poder expresivo sin cambiar de arquitectura.",
+          "explicacion": "Los cruces de alta cardinalidad suelen combinarse con Hashed Feature o Embeddings para acotar el tamaño."
+        },
+        {
+          "id": "armldp1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema aborda el patrón Multimodal Input?",
+          "solucion": "Cómo representar y combinar datos de distintas modalidades (p.ej. texto + imagen, o datos tabulares + texto libre) como entrada de un mismo modelo, concatenando sus representaciones para que el modelo aproveche todas las fuentes. También cubre representar un mismo dato de varias formas a la vez.",
+          "explicacion": "Permite que el modelo use información complementaria que ninguna modalidad sola captura."
+        },
+        {
+          "id": "armldp1-q7",
+          "tipo": "concepto",
+          "enunciado": "En qué consiste el patrón Reframing y da un ejemplo de regresión reformulada como clasificación.",
+          "solucion": "Reframing cambia la representación de la SALIDA del problema. Un caso: predecir lluvia es intuitivamente regresión, pero como la lluvia es probabilística (para los mismos features a veces llueve 0.3 cm y otras 0.5 cm), se reformula como clasificación multiclase sobre rangos (p.ej. distribución 512-way), capturando toda la distribución de probabilidad en vez de un solo número.",
+          "explicacion": "Se pierde algo de precisión por el bucketing pero se gana la expresividad de una PDF; útil con salidas bimodales o de gran varianza."
+        },
+        {
+          "id": "armldp1-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Cuándo conviene reformular una clasificación como regresión?",
+          "solucion": "Cuando el objetivo de entrenamiento no se alinea con el objetivo real. Ejemplo: un recomendador de vídeos planteado como clasificación de 'probabilidad de click' tiende a promover clickbait; reformularlo como regresión de 'fracción del vídeo que se verá' (o tiempo de visionado) alinea mejor el modelo con el valor para el usuario.",
+          "explicacion": "Cambiar la etiqueta puede introducir 'label bias'; hay que considerar el problema de forma holística al reformular."
+        },
+        {
+          "id": "armldp1-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Multilabel y en qué se diferencia de la clasificación multiclase?",
+          "solucion": "Multilabel asigna MÁS DE UNA etiqueta a un mismo ejemplo (una pregunta etiquetada 'Python', 'pandas' y 'visualización'; una imagen con un gato y un perro). Se diferencia de la multiclase, donde cada ejemplo recibe EXACTAMENTE una de N clases. Aplica a imágenes, texto y datos tabulares.",
+          "explicacion": "También se le llama 'multilabel, multiclass classification'; requiere etiquetas multi-hot."
+        },
+        {
+          "id": "armldp1-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué función de activación se usa en la capa de salida para multilabel y por qué, frente a multiclase?",
+          "solucion": "Para multilabel se usa SIGMOID en la capa de salida: cada valor es un float independiente entre 0 y 1, así varias clases pueden estar activas a la vez (p.ej. [.92, .85, .11]). En multiclase se usa SOFTMAX, que produce un array que SUMA 1 (las clases compiten), y se toma el argmax. La etiqueta multilabel se codifica multi-hot.",
+          "explicacion": "Softmax fuerza una distribución que suma 1 (exclusión mutua); sigmoid trata cada etiqueta de forma independiente."
+        },
+        {
+          "id": "armldp1-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se parsea la salida de un modelo multilabel para tomar decisiones?",
+          "solucion": "Como cada salida sigmoid es una confianza independiente entre 0 y 1, se aplica un UMBRAL por clase (p.ej. 0.5) y se asignan todas las etiquetas cuya probabilidad lo supere. El umbral puede ajustarse por clase según el coste de falsos positivos/negativos.",
+          "explicacion": "A diferencia del argmax de softmax, aquí pueden salir cero, una o varias etiquetas según los umbrales."
+        },
+        {
+          "id": "armldp1-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué pasa con un valor fuera de vocabulario o un valor nuevo (cold-start) en Hashed Feature en serving?",
+          "solucion": "No rompe el modelo: el valor desconocido se hashea a un bucket del rango [0, num_buckets) y 'hereda' las predicciones de las demás categorías de ese bucket; la predicción no será exacta (no se puede esperar exactitud para entradas desconocidas) pero estará en el rango correcto. Para cold-start, al reentrenar periódicamente el modelo, la categoría nueva irá reflejándose.",
+          "explicacion": "Por eso conviene reservar también el valor todo-ceros para fuera-de-vocabulario incluso con one-hot."
+        },
+        {
+          "id": "armldp1-q13",
+          "tipo": "concepto",
+          "enunciado": "En Reframing, ¿cómo afecta el ancho de los buckets a la precisión al reformular regresión como clasificación?",
+          "solucion": "El ancho de los bins de la etiqueta gobierna la precisión: bins más estrechos (más clases, p.ej. 10-way vs 4-way) dan una PDF más fina y precisa, a costa de más clases que aprender. Si la PDF es muy 'afilada' (poca varianza), conviene quedarse con la regresión; si es ancha/multimodal, la clasificación captura mejor la incertidumbre.",
+          "explicacion": "Hay un compromiso entre número de clases (precisión) y datos necesarios; la nitidez de la PDF indica la precisión inherente del problema."
+        },
+        {
+          "id": "armldp1-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué es ventajoso modelar una distribución (PDF) en vez de un solo número en Reframing?",
+          "solucion": "Porque una regresión solo puede predecir un valor (la media), perdiendo la forma de la distribución; reformular como clasificación devuelve una PDF discreta que captura incertidumbre y estructuras como la bimodalidad. Esto da información más matizada (probabilidad de cada rango) y suele ser más fácil de aprender para targets complejos.",
+          "explicacion": "Cuidado: los modelos de clasificación pueden quedar mal calibrados (confiados y equivocados)."
+        },
+        {
+          "id": "armldp1-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Para qué sirve el multitask learning como alternativa al Reframing?",
+          "solucion": "En vez de elegir entre regresión o clasificación, se hacen ambas: un modelo con varias 'cabezas' (heads) y más de una función de pérdida. Con hard parameter sharing (capas ocultas compartidas) o soft parameter sharing (redes separadas con regularización que las acerca), las tareas se aprenden a la vez y los gradientes de ambas pérdidas informan un modelo más generalizable.",
+          "explicacion": "Ejemplo: una cabeza de clasificación (softmax) y otra de regresión (bounding box) entrenadas juntas superan a entrenarlas por separado."
+        }
+      ]
+    },
+    {
+      "id": "arena-mldp2",
+      "bloque": "fase-7",
+      "orden": 68,
+      "titulo": "Ensembles, cascada, clase neutra y rebalanceo",
+      "libro": "Machine Learning Design Patterns (Lakshmanan, Robinson & Munn, O'Reilly)",
+      "lectura": "data/teoria/arena-mldp2.md",
+      "dosis": 30,
+      "objetivo": "Combinar modelos (bagging/boosting/stacking), encadenarlos (cascade), añadir una clase neutra y manejar datasets desbalanceados.",
+      "heuristicas": [
+        "elegir-ensemble",
+        "usar-cascada-ml",
+        "manejar-desbalance-clases"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "El error se descompone en irreducible + sesgo + varianza",
+        "Bagging baja varianza; boosting baja sesgo; stacking aprende a combinar",
+        "Cascade: clasificar la circunstancia + un modelo por segmento + combinar",
+        "Desbalance: no te fíes del accuracy; downsampling/weighting + precision/recall/F1"
+      ],
+      "banco": [
+        {
+          "id": "armldp2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿En qué tres partes se descompone el error de un modelo de ML y cuál se puede influir?",
+          "solucion": "Error irreducible (ruido inherente del dataset, mal encuadre o ejemplos malos; no se puede reducir), error por SESGO (incapacidad del modelo de aprender la relación features↔label → underfit) y error por VARIANZA (incapacidad de generalizar a datos nuevos → overfit). Sesgo y varianza son el 'error reducible' y es donde se puede mejorar.",
+          "explicacion": "El trade-off sesgo-varianza: subir la complejidad baja sesgo pero sube varianza, y viceversa."
+        },
+        {
+          "id": "armldp2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es bagging, qué tipo de error reduce y por qué funciona?",
+          "solucion": "Bagging (bootstrap aggregating) es un ensemble PARALELO: entrena k submodelos, cada uno sobre un dataset muestreado con reemplazo del original, y agrega sus salidas (promedio en regresión, voto mayoritario en clasificación). Reduce la VARIANZA: si los errores de los modelos están poco correlacionados, al promediarlos se cancelan (cov=0 → el error cuadrático baja a var/k). La clave es la diversidad de modelos.",
+          "explicacion": "El random forest es el ejemplo canónico. Bagging ayuda poco con modelos estables (kNN, naive Bayes, lineales) porque el bootstrap reduce el set efectivo."
+        },
+        {
+          "id": "armldp2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es boosting, qué tipo de error reduce y cómo funciona?",
+          "solucion": "Boosting es un ensemble SECUENCIAL: construye iterativamente modelos donde cada uno se centra en los ejemplos que el anterior falló, modelando los residuos; el resultado es un promedio ponderado de weak learners que da un strong learner. Reduce el SESGO porque el ensemble acumula más capacidad que cualquier miembro, enfocándose en los casos difíciles.",
+          "explicacion": "AdaBoost, Gradient Boosting y XGBoost son ejemplos; el modelo resultante es más complejo (más capacidad) que sus miembros."
+        },
+        {
+          "id": "armldp2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es stacking y en qué se diferencia del simple promediado de modelos?",
+          "solucion": "En stacking se entrenan k modelos base (normalmente de tipos distintos) hasta completar sobre todo el dataset, y luego un meta-modelo secundario se entrena usando las SALIDAS de los modelos base como features, aprendiendo a combinarlas mejor para reducir el error. Frente al promediado simple (o ponderado), el meta-modelo aprende la combinación óptima en vez de usar pesos fijos.",
+          "explicacion": "Combina lo mejor de bagging (menos varianza) y de aprender pesos; los modelos base suelen congelarse al entrenar el meta-modelo."
+        },
+        {
+          "id": "armldp2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué ensemble eliges para alto sesgo y cuál para alta varianza?",
+          "solucion": "Alto sesgo (underfitting) → BOOSTING, que aumenta la capacidad enfocándose en ejemplos difíciles. Alta varianza (overfitting) → BAGGING, que promedia modelos para cancelar errores. Usar el ensemble equivocado no mejora y solo añade sobrecarga; además combinar modelos con errores muy correlacionados no baja la varianza.",
+          "explicacion": "Tabla del libro: high bias→boosting, high variance→bagging."
+        },
+        {
+          "id": "armldp2-q6",
+          "tipo": "concepto",
+          "enunciado": "Menciona dos desventajas de los métodos de ensemble.",
+          "solucion": "(1) Mayor tiempo de diseño y entrenamiento: en vez de un modelo se desarrollan y mantienen k, con más complejidad de inferencia y uso de recursos en producción. (2) Menor interpretabilidad: un árbol de decisión es fácil de explicar, pero un random forest (ensemble de árboles) pierde esa interpretabilidad local.",
+          "explicacion": "Conviene comparar accuracy y recursos contra un modelo lineal o DNN; destilar un ensemble (Useful Overfitting) puede reducir la complejidad."
+        },
+        {
+          "id": "armldp2-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se relaciona dropout con bagging?",
+          "solucion": "El dropout (apagar neuronas al azar por mini-batch) puede entenderse como una aproximación a bagging: evalúa un ensemble de exponencialmente muchas redes. Pero no es idéntico: en bagging los modelos son independientes y se entrenan hasta converger; con dropout comparten parámetros y cada 'miembro' se entrena solo un paso (porque cada iteración apaga nodos distintos).",
+          "explicacion": "Por eso el dropout es a la vez regularización y una forma barata de ensembling implícito."
+        },
+        {
+          "id": "armldp2-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema aborda el patrón Cascade y cómo se descompone?",
+          "solucion": "Aborda predecir un valor cuando hay actividad usual e inusual con comportamientos muy distintos: un solo modelo ignora lo raro (y sobreponderarlo degrada el caso común). Se descompone en cuatro: (1) un clasificador que identifica la circunstancia, (2) un modelo entrenado para lo típico, (3) otro para lo inusual, y (4) un modelo que combina las salidas (combinación probabilística).",
+          "explicacion": "Ejemplos: devoluciones de comprador vs revendedor; distancia de viaje en bici normal vs >4h."
+        },
+        {
+          "id": "armldp2-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es el riesgo central al entrenar una Cascade y por qué no es solo un Ensemble?",
+          "solucion": "En inferencia no hay etiquetas reales: el modelo se elige según la SALIDA del primer clasificador, que comete errores. Así, los modelos 2 y 3 deben predecir sobre datos que quizá nunca vieron en entrenamiento (p.ej. un comprador mal clasificado como revendedor cae en un modelo cuyo vocabulario no incluye su barrio). Por ese diseño experimental especial se trata aparte del Ensemble.",
+          "explicacion": "La cadena de entrenamiento debe reflejar que los inputs de los modelos posteriores son predicciones, no verdad de campo."
+        },
+        {
+          "id": "armldp2-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Neutral Class y qué problema resuelve?",
+          "solucion": "En vez de un clasificador binario (Sí/No), se entrena uno de tres clases con probabilidades disjuntas: Sí, No y 'Maybe' (la clase neutra). Resuelve el problema de los casos esencialmente arbitrarios o ambiguos: forzar al modelo a acertarlos como Sí o No degrada su precisión; meterlos en una clase neutra evita ese castigo.",
+          "explicacion": "Requiere DISEÑAR la recolección de datos para capturar la neutralidad; no se puede fabricar la clase neutra después."
+        },
+        {
+          "id": "armldp2-q11",
+          "tipo": "concepto",
+          "enunciado": "Da dos situaciones donde una clase neutra es útil.",
+          "solucion": "(1) Cuando los expertos humanos discrepan: la clase neutra captura los casos sin consenso, más aceptable para los expertos que un modelo erróneamente confiado, y evita que modelos posteriores (cascade) sean hipersensibles. (2) Satisfacción del cliente: con encuestas 1-10, agrupar 1-4 'malo', 8-10 'bueno' y 5-7 'neutro' evita que el modelo malgaste esfuerzo en respuestas intermedias. (También: mejorar embeddings y reformular trading por call/put/neutro.)",
+          "explicacion": "La clase neutra desambigua 'el modelo duda por falta de datos' de 'los humanos genuinamente discrepan'."
+        },
+        {
+          "id": "armldp2-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el accuracy es engañoso en datasets desbalanceados y qué métricas usar?",
+          "solucion": "Porque con 5% de positivos un modelo puede llegar al 95% de accuracy simplemente prediciendo siempre la clase mayoritaria, sin aprender nada de la minoritaria. Conviene mirar la matriz de confusión por clase y usar precision, recall y F-measure (2·P·R/(P+R)). Para todos los umbrales, la precision-recall promedio es más informativa que el AUC en datos desbalanceados.",
+          "explicacion": "El test set debe mantener el desbalance original (sin remuestrear) para evaluar de forma representativa."
+        },
+        {
+          "id": "armldp2-q13",
+          "tipo": "concepto",
+          "enunciado": "Explica downsampling y class weighting como soluciones al desbalance.",
+          "solucion": "Downsampling: reducir ejemplos de la clase mayoritaria (p.ej. tomar todos los fraudes y una muestra aleatoria de no-fraudes) para equilibrar el dataset de entrenamiento; suele combinarse con Ensemble (varios submodelos sobre distintas submuestras de la mayoritaria). Class weighting: indicar al modelo que dé más peso a la clase minoritaria durante el entrenamiento (p.ej. class_weights en Keras), proporcional al desbalance (dividido entre 2 por clase para que el peso medio sea ~1).",
+          "explicacion": "Downsampling cambia el dataset; weighting cambia cómo el modelo trata cada clase. El upsampling duplica/aumenta la minoritaria."
+        },
+        {
+          "id": "armldp2-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué precision y recall suelen estar en tensión y qué los distingue en el denominador?",
+          "solucion": "Precision = TP / (TP + FP): de todas las predicciones positivas del modelo, cuántas eran correctas (denominador = positivos predichos). Recall = TP / (TP + FN): de todos los positivos reales, cuántos identificó (denominador = positivos reales). Subir el umbral para ser más estricto suele subir precision y bajar recall (y viceversa); por eso rara vez ambos son 1.0 a la vez.",
+          "explicacion": "El F-measure combina ambos en un solo número; al optimizar P/R el accuracy puede bajar, y está bien."
+        },
+        {
+          "id": "armldp2-q15",
+          "tipo": "concepto",
+          "enunciado": "Al reframe el desbalance como detección de anomalías o clustering, ¿qué idea se aplica?",
+          "solucion": "Cuando la clase minoritaria es muy rara, se puede reencuadrar el problema: en vez de clasificación supervisada, tratarlo como detección de anomalías/outliers (la minoría son los valores atípicos respecto a la mayoría), o analizar el error de reconstrucción por ejemplo, o usar clustering. Así el modelo aprende qué es 'normal' y marca lo que se desvía.",
+          "explicacion": "Es una alternativa del patrón Rebalancing cuando incluso con remuestreo hay poquísimos ejemplos de la clase rara."
+        }
+      ]
+    },
+    {
+      "id": "arena-mldp3",
+      "bloque": "fase-7",
+      "orden": 69,
+      "titulo": "Patrones de entrenamiento y de serving resiliente",
+      "libro": "Machine Learning Design Patterns (Lakshmanan, Robinson & Munn, O'Reilly)",
+      "lectura": "data/teoria/arena-mldp3.md",
+      "dosis": 30,
+      "objetivo": "Entrenar mejor (useful overfitting, checkpoints, transfer learning, distribution strategy, hyperparameter tuning) y servir con resiliencia (stateless, batch, two-phase, keyed).",
+      "heuristicas": [
+        "transfer-learning-bottleneck",
+        "tunear-hiperparametros",
+        "servir-modelo-resiliente"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Useful Overfitting: sobreajustar a propósito cuando no hay datos no vistos (PDEs, lookup)",
+        "Checkpoints: guardar el estado completo → resiliencia, early stopping, fine-tuning",
+        "Transfer learning: congelar capas preentrenadas hasta el bottleneck",
+        "Serving: stateless function + (online | batch) + dos fases en edge + keyed"
+      ],
+      "banco": [
+        {
+          "id": "armldp3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Useful Overfitting y cuándo es válido sobreajustar a propósito?",
+          "solucion": "Es renunciar a los mecanismos de generalización (regularización, dropout, validación para early stopping) para sobreajustar deliberadamente. Es válido cuando: (1) no hay ruido (las etiquetas son exactas para toda instancia) y (2) se tiene el dataset COMPLETO (todas las entradas posibles). Caso típico: aproximar la solución de un sistema dinámico/PDE donde toda la entrada se puede tabular y cada entrada tiene una salida calculable única.",
+          "explicacion": "Sin datos 'no vistos', sobreajustar = interpolar el dataset; el modelo aproxima un lookup table demasiado grande para usarse directamente."
+        },
+        {
+          "id": "armldp3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es 'overfitting a un batch' y para qué se usa?",
+          "solucion": "Es entrenar el modelo sobre un único batch pequeño (con etiquetas verificadas) hasta lograr pérdida casi cero. Es un sanity check del código del modelo y del pipeline de entrada: un modelo suficientemente complejo DEBE poder sobreajustar un batch pequeño si todo está bien configurado; si no lo logra, hay un bug en el código, el pipeline o la función de pérdida.",
+          "explicacion": "Consejo holístico: el mejor modelo es uno grande bien regularizado; si tu red no puede sobreajustar el training, usa una más grande y luego regulariza."
+        },
+        {
+          "id": "armldp3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Checkpoints y por qué guardar el estado COMPLETO, no solo el modelo exportado?",
+          "solucion": "Checkpointing guarda periódicamente (típicamente al final de cada epoch) el estado completo del modelo para poder reanudar el entrenamiento tras un fallo. El modelo EXPORTADO solo tiene lo necesario para predecir (pesos, arquitectura), pero no el epoch/batch actual, el estado del learning rate (que decae por schedule), la aleatoriedad (dropout) ni el historial (RNN). El estado completo puede ser varias veces el tamaño del exportado.",
+          "explicacion": "Sin el estado completo no se puede continuar el entrenamiento de forma consistente; por eso el checkpoint ≠ modelo exportado."
+        },
+        {
+          "id": "armldp3-q4",
+          "tipo": "concepto",
+          "enunciado": "Además de resiliencia, ¿qué dos capacidades habilitan los checkpoints?",
+          "solucion": "Early stopping / checkpoint selection (elegir el checkpoint con menor error de validación, ya que la validación puede subir y volver a bajar por 'double descent', conviene entrenar de más y seleccionar) y fine-tuning (reanudar desde un checkpoint anterior —del inicio de la fase 2— y entrenar pocas epochs solo con datos frescos, aprovechando que el learning rate ya es bajo).",
+          "explicacion": "Los modelos parcialmente entrenados suelen generalizar mejor (aprendieron la organización de alto nivel sin meterse en el detalle/ruido)."
+        },
+        {
+          "id": "armldp3-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué usar regularización puede ser mejor que early stopping?",
+          "solucion": "Porque la regularización (p.ej. L2) permite usar TODO el dataset para ajustar los pesos y que tanto la pérdida de entrenamiento como el error de validación lleguen a una meseta (training loop 'bien comportado'), mientras que el early stopping obliga a reservar 10-20% de los datos solo para decidir cuándo parar. Además, dado que el double descent es común, conviene entrenar más en vez de parar pronto.",
+          "explicacion": "Compromiso: early stopping controla coste; checkpoint selection prioriza precisión; la regularización aprovecha más datos."
+        },
+        {
+          "id": "armldp3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Transfer Learning y cómo se implementa con la capa cuello de botella?",
+          "solucion": "Toma un modelo preentrenado en la misma modalidad y una tarea similar, le quita la capa de salida (top), CONGELA los pesos restantes y entrena una nueva cabeza con tus datos especializados. La penúltima capa (antes de la salida) es el 'bottleneck': representa el input en su espacio de menor dimensionalidad. Funciona porque las capas iniciales ya aprendieron a interpretar píxeles/edges/semántica.",
+          "explicacion": "Permite construir un modelo de alta precisión con cientos de ejemplos (no millones); ideal cuando el preentrenamiento es en imágenes/datos similares."
+        },
+        {
+          "id": "armldp3-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Distribution Strategy y cuáles son sus dos enfoques?",
+          "solucion": "Acelera el entrenamiento de redes grandes (millones de parámetros, datos masivos) distribuyéndolo en varias máquinas. Dos enfoques: DATA PARALLELISM (cada worker entrena sobre un subconjunto distinto de los datos con una copia del modelo) y MODEL PARALLELISM (el modelo se parte y cada worker computa una parte del modelo).",
+          "explicacion": "El entrenamiento largo se traduce literalmente en dinero y en menos iteraciones de ideas; distribuir lo reduce."
+        },
+        {
+          "id": "armldp3-q8",
+          "tipo": "concepto",
+          "enunciado": "En data parallelism, ¿qué diferencia hay entre entrenamiento síncrono y asíncrono?",
+          "solucion": "Síncrono: los workers entrenan sobre distintos trozos del mini-batch en paralelo y los gradientes se AGREGAN al final de cada paso (all-reduce); un servidor central mantiene la copia más reciente de los parámetros y aplica el paso. Asíncrono: los workers computan y aplican actualizaciones sin esperarse (suele usar un parameter server), tolerando workers lentos pero arriesgando actualizaciones obsoletas (stale gradients).",
+          "explicacion": "tf.distribute.MirroredStrategy implementa el síncrono multi-GPU con all-reduce; la elección depende de la topología y velocidad de comunicación CPU↔GPU."
+        },
+        {
+          "id": "armldp3-q9",
+          "tipo": "concepto",
+          "enunciado": "Distingue parámetros de hiperparámetros y di por qué grid search no escala.",
+          "solucion": "Parámetros: los pesos/sesgos (árboles: breakpoints; SVM: support vectors) que el modelo APRENDE; no se fijan a mano. Hiperparámetros: los que controla el modelador (learning rate, profundidad, nº de capas/epochs). Grid search prueba todas las combinaciones de valores: sufre explosión combinatoria al añadir hiperparámetros y NO aprende de los trials previos (es fuerza bruta).",
+          "explicacion": "Random search es más rápido pero puede perderse el óptimo; la solución escalable es la optimización bayesiana."
+        },
+        {
+          "id": "armldp3-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo funciona la optimización bayesiana para hiperparámetros y qué la diferencia del grid/random search?",
+          "solucion": "Inserta el bucle de entrenamiento dentro de un método de optimización que APRENDE de los trials anteriores: construye un modelo sustituto (surrogate) de la relación hiperparámetros→métrica y elige el siguiente conjunto de hiperparámetros más prometedor, en vez de probar a ciegas. Así converge al óptimo con menos trials (p.ej. keras-tuner).",
+          "explicacion": "Grid/random no usan la información de los intentos previos; la bayesiana sí, por eso es más eficiente en cómputo."
+        },
+        {
+          "id": "armldp3-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Stateless Serving Function y por qué escala?",
+          "solucion": "Diseña el sistema de producción alrededor de una FUNCIÓN SIN ESTADO que captura arquitectura y pesos del modelo entrenado: su salida depende solo de la entrada (no de variables como epoch o learning rate, que se descartan al exportar). Como no tiene estado, muchos clientes pueden compartir instancias desde un pool, lo que la hace altamente escalable (miles-millones de QPS).",
+          "explicacion": "Los componentes con estado son caros y difíciles de gestionar; exportar como función sin estado simplifica el servidor (aunque a veces complica al cliente, p.ej. modelos de secuencia)."
+        },
+        {
+          "id": "armldp3-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es Batch Serving y cuándo conviene frente al serving online?",
+          "solucion": "Batch Serving usa infraestructura de procesamiento distribuido (MapReduce, Spark, BigQuery, Beam) para hacer inferencia ASÍNCRONA sobre un gran número de instancias a la vez. Conviene cuando las predicciones no son sensibles a la latencia y hay que puntuar millones de ítems periódicamente (reordenar SKUs por hora, playlists diarias), porque es un problema embarazosamente paralelo.",
+          "explicacion": "Usar el endpoint de baja latencia (stateless function) para millones de ítems sería caro y lo sobrecargaría; el batch reparte el trabajo."
+        },
+        {
+          "id": "armldp3-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Two-Phase Predictions y para qué sirve?",
+          "solucion": "Divide el problema en dos fases para servir modelos en edge con conexión poco fiable: una primera fase con un modelo pequeño y barato en el dispositivo (tarea simple, alta precisión) y una segunda fase con un modelo complejo en la nube, activado solo cuando hace falta. Ejemplo: 'OK Google' (wake word on-device, clasificación binaria que corre siempre) y luego la consulta compleja en la nube.",
+          "explicacion": "Equilibra el tamaño/latencia reducidos del edge contra la sofisticación/precisión de la nube; el edge suele requerir cuantización."
+        },
+        {
+          "id": "armldp3-q14",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Keyed Predictions?",
+          "solucion": "Cuando el modelo procesa un archivo con millones de inputs repartidos en un sistema distribuido, las salidas vuelven desordenadas y exigir orden 1:1 no escala (procesamiento serial, hot spots). La solución: que el cliente envíe una CLAVE única con cada input (k, a, b, c) y el modelo la devuelva junto a la predicción (k, d), para que el cliente case cada salida con su entrada aunque lleguen desordenadas.",
+          "explicacion": "Es prerrequisito para escalar batch serving y para evitar hot spots en online serving; se implementa con una serving signature que pasa la clave."
+        },
+        {
+          "id": "armldp3-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la cuantización (quantization) y qué rol juega al servir en el edge?",
+          "solucion": "Es convertir el modelo a un formato donde los pesos se representan con menos bytes (p.ej. TensorFlow Lite), reduciendo significativamente tamaño y latencia de predicción para que quepa en las restricciones de memoria/procesador del dispositivo. El coste es una posible pérdida de precisión.",
+          "explicacion": "Por eso encaja con Two-Phase Predictions: el modelo pequeño cuantizado va al edge y el complejo a la nube."
+        }
+      ]
+    },
+    {
+      "id": "arena-mldp4",
+      "bloque": "fase-7",
+      "orden": 70,
+      "titulo": "Patrones de reproducibilidad e IA responsable",
+      "libro": "Machine Learning Design Patterns (Lakshmanan, Robinson & Munn, O'Reilly)",
+      "lectura": "data/teoria/arena-mldp4.md",
+      "dosis": 30,
+      "objetivo": "Reproducibilidad (transform, repeatable splitting, bridged schema, windowed inference, workflow pipeline, model versioning, continued evaluation) e IA responsable (heuristic benchmark, explainability, fairness).",
+      "heuristicas": [
+        "separar-input-feature-transform",
+        "division-reproducible",
+        "lente-de-equidad"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Transform: guarda la transformación input→feature en el grafo para evitar skew",
+        "Repeatable Splitting: hash de una columna correlacionada para splits sin fuga",
+        "Model Versioning: versiones como endpoints REST distintos (compatibilidad)",
+        "Fairness Lens: quitar la feature sensible no basta (proxies); evalúa por slices"
+      ],
+      "banco": [
+        {
+          "id": "armldp4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Transform y cómo?",
+          "solucion": "Resuelve el training-serving skew que surge porque los INPUTS del modelo no son las FEATURES que usa (las features se derivan de los inputs). Si no se rastrean las transformaciones, en serving hay que reproducirlas a mano y es fácil equivocarse. El patrón captura explícitamente las transformaciones input→feature y las guarda en el grafo del modelo (p.ej. cláusula TRANSFORM de BigQuery ML) para aplicarlas idénticas en predicción.",
+          "explicacion": "Así en inferencia mandas solo inputs crudos (estación, timestamp) y el modelo recalcula las features (dayofweek, hourofday); separa claramente inputs de features."
+        },
+        {
+          "id": "armldp4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué dividir datos con un random sin semilla es problemático y qué propone Repeatable Splitting?",
+          "solucion": "Problemas: (1) no es repetible (cada ejecución da otro 80%), impidiendo comparar modelos sobre el mismo test; (2) si las filas están correlacionadas (vuelos del mismo día), hay FUGA de información entre train y test. Repeatable Splitting divide por el módulo de un hash determinista (FarmHash) de una columna que captura la correlación, así todas las filas correlacionadas caen en el mismo split, de forma repetible en cualquier lenguaje.",
+          "explicacion": "Ej.: ABS(MOD(FARM_FINGERPRINT(date),10))<8 train, =8 val, =9 test."
+        },
+        {
+          "id": "armldp4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué características debe tener la columna por la que se divide en Repeatable Splitting?",
+          "solucion": "(1) Las filas con el mismo valor deben estar correlacionadas (razón de agruparlas en el mismo split). (2) NO debe ser un input del modelo (si lo fuera, el modelo no vería el 20% de sus valores en entrenamiento). (3) Suficientes valores únicos (regla: 3-5× el denominador del módulo, p.ej. ~40 fechas para módulo 10). (4) La etiqueta debe estar bien distribuida entre sus valores (si no, los splits quedan sesgados).",
+          "explicacion": "Se puede verificar la similitud de distribución de la etiqueta entre splits con el test de Kolmogorov-Smirnov."
+        },
+        {
+          "id": "armldp4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Bridged Schema?",
+          "solucion": "Cuando un proveedor de datos mejora su esquema (p.ej. 'card' pasa a detallarse en gift/debit/credit), al principio hay pocos datos nuevos para entrenar un modelo solo con ellos. Bridged Schema adapta los datos ANTIGUOS al esquema nuevo para usar todo lo nuevo disponible AUMENTADO con lo viejo, mejorando la precisión mientras se acumula data del esquema nuevo.",
+          "explicacion": "Aprovecha la información valiosa del esquema nuevo (ya disponible en producción) sin esperar a tener suficiente volumen."
+        },
+        {
+          "id": "armldp4-q5",
+          "tipo": "concepto",
+          "enunciado": "En Bridged Schema, ¿qué es el método estático y por qué se prefiere al probabilístico?",
+          "solucion": "El método estático codifica cada ejemplo antiguo de categoría 'card' con las probabilidades a priori de las nuevas clases estimadas del dataset nuevo: p.ej. [0, 0.1, 0.3, 0.6] (cash, gift, debit, credit). El probabilístico, en cambio, asignaría aleatoriamente una subcategoría por epoch según esas frecuencias. Se prefiere el estático porque es lo que el probabilístico produce 'en promedio' si se entrena lo suficiente, y es más simple (una línea), determinista y barato.",
+          "explicacion": "Los datos nuevos usan one-hot real (p.ej. [0,0,1,0] para débito conocido); los viejos usan el vector de probabilidades a priori."
+        },
+        {
+          "id": "armldp4-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Windowed Inference?",
+          "solucion": "Modelos que necesitan una SECUENCIA de instancias (no una sola) para inferir, o features calculadas como agregados sobre ventanas temporales. Ej.: decidir si un retraso de vuelo es anómalo depende de los retrasos de las últimas 2 horas. En producción llegan los vuelos uno a uno, así que no se puede inferir con un solo registro: hay que externalizar el estado a un pipeline de stream que mantenga la ventana.",
+          "explicacion": "Evita el training-serving skew en features de agregado temporal, asegurando el mismo cálculo en train y serving."
+        },
+        {
+          "id": "armldp4-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo funciona la solución de Windowed Inference?",
+          "solucion": "Procesamiento de stream con ESTADO: se aplica una ventana deslizante (p.ej. 2h, cerrada cada 10 min); el estado interno (la lista de vuelos) se actualiza con cada llegada; cuando la ventana se cierra se calculan los parámetros del modelo de series (p.ej. media y varianza, o coeficientes ARIMA/LSTM) y se externalizan a una variable de estado; al llegar un nuevo vuelo, su retraso se clasifica como anómalo o no usando ese estado, sin necesitar toda la lista.",
+          "explicacion": "Externalizar el estado al pipeline garantiza que el cálculo dinámico se repita igual entre entrenamiento y serving."
+        },
+        {
+          "id": "armldp4-q8",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Workflow Pipeline y cómo?",
+          "solucion": "Cuando una persona corre todo el flujo (preproceso, entrenamiento, despliegue) en un solo script/notebook, no escala al crecer cada paso ni al colaborar varias personas. Workflow Pipeline crea un pipeline reproducible de extremo a extremo CONTENERIZANDO cada paso como un servicio aislado y orquestándolos; se ejecuta entero con una llamada (REST) y permite trabajar/depurar pasos de forma independiente.",
+          "explicacion": "Análogo a monolito→microservicios; los contenedores garantizan consistencia de dependencias entre entornos (laptop, on-prem, nube) y permiten reentrenar o disparar por eventos."
+        },
+        {
+          "id": "armldp4-q9",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Model Versioning y qué beneficios da?",
+          "solucion": "Desplegar cada versión cambiada del modelo como un microservicio con un endpoint REST DISTINTO. Beneficios: compatibilidad hacia atrás (quienes dependen de versiones viejas siguen funcionando), monitoreo y analítica finos por versión, A/B testing con un subconjunto de usuarios, y desacoplar los cambios del modelo del frontend (los desarrolladores solo cambian el nombre del endpoint).",
+          "explicacion": "Es prerrequisito de varios patrones; permite retirar versiones comparando accuracy y uso, y servir versiones distintas a grupos distintos."
+        },
+        {
+          "id": "armldp4-q10",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es Continued Model Evaluation y qué dos causas de degradación atiende?",
+          "solucion": "Detecta y actúa cuando un modelo desplegado deja de ser apto, monitoreando continuamente su desempeño con las mismas métricas del desarrollo (combinando predicciones guardadas con la verdad de campo cuando llega). Atiende el CONCEPT DRIFT (cambia la relación inputs↔target, p.ej. fraude adaptándose) y el DATA DRIFT (cambian los datos de entrada vs los de entrenamiento: esquema, distribución o significado).",
+          "explicacion": "El despliegue no es el final del ciclo; la verdad de campo a veces tarda (churn, finanzas), retrasando la evaluación."
+        },
+        {
+          "id": "armldp4-q11",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Heuristic Benchmark y para qué sirve?",
+          "solucion": "Comparar el modelo de ML contra una heurística simple y fácil de entender, para explicar su desempeño a los decisores de negocio (que preguntan '¿un MAE de 1.200 s es bueno o malo?'). Un buen benchmark heurístico es intuitivo y trivial de calcular: constantes, reglas de oro o estadísticos (media, mediana, moda), o una tabla de lookup sobre 1-2 features clave.",
+          "explicacion": "Si ya hay una práctica operativa en producción, compárate con ELLA en vez de inventar una heurística; evita usar incluso una regresión simple como benchmark (poco intuitiva)."
+        },
+        {
+          "id": "armldp4-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Qué problema resuelve el patrón Explainable Predictions?",
+          "solucion": "Que métricas como accuracy/precision no dicen POR QUÉ el modelo predice lo que predice, y los usuarios (médicos, reguladores, los propios ingenieros) desconfían o no pueden auditar/mejorar sin esa comprensión. Aumenta la confianza explicando cómo y por qué el modelo decide, p.ej. con atribuciones de features (qué features/regiones influyeron).",
+          "explicacion": "Ej.: un modelo de retinopatía con 95% de confianza podría basarse en anotaciones del médico en la imagen, no en la enfermedad; la explicabilidad lo revela. Árboles son interpretables por diseño; las redes profundas no."
+        },
+        {
+          "id": "armldp4-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el patrón Fairness Lens y por qué quitar la feature sensible no basta?",
+          "solucion": "Evaluar todo el flujo (datos→entrenamiento→despliegue) con una lente de equidad usando pre/postprocesamiento para que las predicciones sean justas entre grupos. Quitar la feature sensible (raza/género) NO basta porque, por sesgo sistémico, queda reflejada IMPLÍCITAMENTE en proxies como código postal o ingreso (sesgo implícito/proxy); peor aún, quitarla dificulta detectar y corregir el sesgo.",
+          "explicacion": "Hay que distinguir sesgo natural (estadístico, p.ej. fraude raro) del problemático (afecta distinto a grupos de personas)."
+        },
+        {
+          "id": "armldp4-q14",
+          "tipo": "concepto",
+          "enunciado": "Nombra tres fuentes de sesgo problemático que cita el patrón Fairness Lens.",
+          "solucion": "(1) Sesgo de distribución de datos: los datos recogidos no reflejan a toda la población (el ejemplo del 'zapato' = sandalia que no reconoce tacones). (2) Sesgo de representación/reporting: aun con grupos balanceados, su representación está sesgada (reseñas de marisquerías mayormente positivas vs vegetarianas negativas). (3) Sesgo del experimentador/etiquetado: etiquetadores subjetivos introducen su cultura/criterio (sentimiento 1-5).",
+          "explicacion": "También el objetivo de entrenamiento puede sesgar: optimizar solo accuracy global oculta el bajo desempeño en clases minoritarias."
+        },
+        {
+          "id": "armldp4-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué optimizar solo el accuracy global puede ser un problema de equidad?",
+          "solucion": "Porque el accuracy global no refleja el desempeño por slices de datos: con datasets inherentemente desbalanceados puede ocultar que el modelo rinde mal o toma decisiones injustas sobre las clases/grupos minoritarios. La función objetivo elegida puede así introducir sesgo durante el entrenamiento.",
+          "explicacion": "Por eso la evaluación de equidad mide por subgrupos, no solo la métrica agregada."
         }
       ]
     }

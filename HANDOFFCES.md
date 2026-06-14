@@ -1903,3 +1903,40 @@ sin verificación Python por no haber problemas numéricos.
 Observability Engineering, Rules of ML, Hidden Technical Debt, Interpretable ML,
 ISL. Próxima unidad: órdenes desde 67, `f7-ex-48`+, VERSION v42+, ids de unidad
 `arena-mldp1..` (o el prefijo que decidas; el banco usa `ar<unit>-q<n>`).
+
+## Bitácora 2026-06-14 (Arena tanda 14) — Machine Learning Design Patterns, 62 preguntas
+
+Procesado `Machine Learning Design Patterns` (Lakshmanan, Robinson & Munn,
+O'Reilly) — libros[14] del ledger, ruta `ml-systems`, cuota 25. 14º libro en
+`completado`. Organizado por los **30 design patterns** del libro
+(problema→solución→trade-offs), valor NUEVO frente a Huyen DMLS, Reliable ML y
+Cracking DS. 4 unidades (`fase-7`, órdenes 67-70):
+- **arena-mldp1** — representación de datos y de problemas (Hashed Feature,
+  Embeddings, Feature Cross, Multimodal Input, Reframing, Multilabel).
+- **arena-mldp2** — ensembles, cascada, clase neutra y rebalanceo (Ensembles
+  bagging/boosting/stacking, Cascade, Neutral Class, Rebalancing).
+- **arena-mldp3** — entrenamiento + serving resiliente (Useful Overfitting,
+  Checkpoints, Transfer Learning, Distribution Strategy, Hyperparameter Tuning,
+  Stateless Serving, Batch Serving, Two-Phase Predictions, Keyed Predictions).
+- **arena-mldp4** — reproducibilidad + IA responsable (Transform, Repeatable
+  Splitting, Bridged Schema, Windowed Inference, Workflow Pipeline, Model
+  Versioning, Continued Model Evaluation, Heuristic Benchmark, Explainable
+  Predictions, Fairness Lens).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-48** ensembles/bias-varianza,
+**f7-ex-49** repeatable splitting) = 62. 11 heurísticas nuevas
+(usar-hashed-feature, usar-embeddings, reformular-regresion-clasificacion,
+elegir-ensemble, usar-cascada-ml, transfer-learning-bottleneck,
+tunear-hiperparametros, servir-modelo-resiliente,
+separar-input-feature-transform, division-reproducible, lente-de-equidad);
+reúsa manejar-desbalance-clases. Catálogo total **101** heurísticas. `sw.js`
+**v42** (155 archivos; +4 lecciones `data/teoria/arena-mldp{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad
+referencial OK (70 unidades en `fase-7`, 49 ítems de examen); `verificar-shell.py`
+OK. Contenido anclado en el libro (patrones conceptuales de ML, §1.2).
+
+**Siguiente** — orden §10 (ml-systems): **Site Reliability Engineering (Google)**
+(libros[15]), luego Observability Engineering, Rules of ML, Hidden Technical
+Debt, Interpretable ML, ISL. Próxima unidad: órdenes desde 71, `f7-ex-50`+,
+VERSION v43+.

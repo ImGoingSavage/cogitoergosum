@@ -236,11 +236,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/machine-learning-design-patterns-solutions-to-common-challenges-in-data-preparation-model-building-and-mlops-1098115783-9781098115784_compress.pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-mldp1",
+        "arena-mldp2",
+        "arena-mldp3",
+        "arena-mldp4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades organizadas por los 30 design patterns del libro (problema→solución→trade-offs), valor NUEVO frente a Huyen/Reliable ML/Cracking: mldp1 representación de datos y problemas (Hashed Feature, Embeddings, Feature Cross, Multimodal, Reframing, Multilabel), mldp2 representación de problemas (Ensembles bagging/boosting/stacking, Cascade, Neutral Class, Rebalancing), mldp3 entrenamiento + serving resiliente (Useful Overfitting, Checkpoints, Transfer Learning, Distribution Strategy, Hyperparameter Tuning, Stateless Serving, Batch Serving, Two-Phase, Keyed Predictions), mldp4 reproducibilidad + IA responsable (Transform, Repeatable Splitting, Bridged Schema, Windowed Inference, Workflow Pipeline, Model Versioning, Continued Model Evaluation, Heuristic Benchmark, Explainable Predictions, Fairness Lens). 60 banco (15/unidad) + 2 examen (f7-ex-48 ensembles/bias-varianza, f7-ex-49 repeatable splitting). Órdenes 67-70. 11 heurísticas nuevas (usar-hashed-feature, usar-embeddings, reformular-regresion-clasificacion, elegir-ensemble, usar-cascada-ml, transfer-learning-bottleneck, tunear-hiperparametros, servir-modelo-resiliente, separar-input-feature-transform, division-reproducible, lente-de-equidad); reúsa manejar-desbalance-clases. Catálogo total 101 heurísticas. VERSION v42. Próximo libro §10 (ml-systems): Site Reliability Engineering (Google)."
     },
     {
       "libro": "Site Reliability Engineering (Google)",
