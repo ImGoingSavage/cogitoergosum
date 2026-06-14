@@ -2020,3 +2020,47 @@ archivos). Contenido anclado en el libro (§1.2).
 **Siguiente** — orden §10 (ml-systems): **Rules of ML (Google)** (libros[17]),
 luego Hidden Technical Debt, Interpretable ML, ISL. Después ruta `health-ai-rwe`
 y Sectores D/C. Próxima unidad: órdenes desde 79, `f7-ex-54`+, VERSION v45+.
+
+## Bitácora 2026-06-14 (Arena tanda 17) — Rules of ML (Zinkevich, Google), 62 preguntas
+
+Procesado `Rules of Machine Learning: Best Practices for ML Engineering`
+(Martin Zinkevich, Google) — libros[17] del ledger, ruta `ml-systems`, cuota 25.
+17º libro en `completado`. Aporta las **43 reglas** de best practices de
+ingeniería de ML ('haz ML como el ingeniero que eres, no como el experto en ML
+que no eres'), valor NUEVO frente a Huyen/Reliable ML/SRE/Observability. 4
+unidades por las fases del documento (`fase-7`, órdenes 79-82):
+- **arena-rom1** — antes del ML + primer pipeline (R1-11): lanzar sin
+  ML/heurística simple, métricas primero, ML>heurística compleja; modelo simple
+  + infra correcta y testeada aparte, datos descartados al copiar pipelines,
+  heurísticas→features; monitoreo (frescura, detectar antes de exportar, fallos
+  silenciosos, dueños de feature columns).
+- **arena-rom2** — objetivo + feature engineering (R12-22): objetivo simple,
+  observable y atribuible (proxy del verdadero), modelo interpretable/calibrado,
+  policy layer spam vs calidad; features observadas>aprendidas, específicas,
+  discretización/cruces, pesos∝datos, limpiar features no usadas.
+- **arena-rom3** — análisis humano + training-serving skew (R23-37): no eres
+  usuario típico, medir delta, utilitario>predictivo, features desde errores,
+  mide-primero-optimiza-después; skew (logear features en serving, reusar
+  código, importance weight, testear en datos posteriores, feedback loops
+  posicionales, medir skew en 3 componentes).
+- **arena-rom4** — Fase III (R38-43): objetivos desalineados, decisiones de
+  lanzamiento multi-métrica (proxy de metas largas, ejemplo DAU vs revenue),
+  ensembles simples y monotónicos, fuentes nuevas ante plateau,
+  popularidad vs diversidad/personalización, amigos transfieren e intereses no.
+
+60 banco (15/unidad) + 2 examen (**f7-ex-54** training-serving skew, **f7-ex-55**
+decisión de lanzamiento multi-métrica) = 62. 7 heurísticas nuevas
+(lanzar-sin-ml-primero, pipeline-simple-infra-correcta, objetivo-simple-observable,
+features-observadas-vs-aprendidas, analizar-modelo-como-humano,
+decidir-lanzamiento-multimetrica, mantener-ensembles-simples); rom3 reúsa
+vigilar-training-serving-skew. Catálogo total **128** heurísticas. `sw.js` **v45**
+(+4 lecciones `data/teoria/arena-rom{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (82 unidades en `fase-7`, 55 ítems de examen); `verificar-shell.py` OK (167
+archivos). Contenido anclado en el documento (§1.2).
+
+**Siguiente** — orden §10 (ml-systems): **Hidden Technical Debt in ML Systems
+(NIPS 2015)** (libros[18]), luego Interpretable ML (Molnar) e ISL. Después ruta
+`health-ai-rwe` y Sectores D/C. Próxima unidad: órdenes desde 83, `f7-ex-56`+,
+VERSION v46+.

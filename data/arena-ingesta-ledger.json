@@ -284,11 +284,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/ML Systems/rules_of_ml.pdf",
       "sector": "A",
       "ruta": "ml-systems",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-rom1",
+        "arena-rom2",
+        "arena-rom3",
+        "arena-rom4"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. 4 unidades organizadas por las 43 reglas de Zinkevich (valor NUEVO: best practices de ingeniería de ML, complementa el diseño de sistemas de Huyen/Reliable ML/SRE/Observability): rom1 antes del ML + primer pipeline (R1-11: lanzar sin ML/heurística simple, métricas primero, ML>heurística compleja; modelo simple+infra correcta, testear infra aparte, datos descartados al copiar pipelines, heurísticas→features; monitoreo: frescura, detectar antes de exportar, fallos silenciosos, dueños de feature columns), rom2 objetivo + feature engineering (R12-22: no sobrepensar objetivo, métrica simple/observable/atribuible, modelo interpretable/calibrado, policy layer spam vs calidad; planear iterar, features observadas>aprendidas, generalizar entre contextos, features específicas, discretización/cruces, pesos∝datos, limpiar features), rom3 análisis humano + training-serving skew (R23-37: no eres usuario típico, medir delta, utilitario>predictivo, patrones en errores, mide-primero-optimiza-después, corto≠largo plazo; skew: logear features en serving, importance weight no descartar, tablas cambiantes, reusar código, testear en datos posteriores, datos limpios para filtrado, skew de ranking, feedback loops posicionales, medir skew en 3 componentes), rom4 Fase III (R38-43: objetivos desalineados, decisiones de lanzamiento multi-métrica/proxy de metas largas con ejemplo DAU vs revenue, ensembles simples y monotónicos, fuentes nuevas ante plateau, popularidad vs diversidad/personalización, amigos transfieren intereses no). 60 banco (15/unidad) + 2 examen (f7-ex-54 training-serving skew, f7-ex-55 decisión de lanzamiento multi-métrica). Órdenes 79-82. 7 heurísticas nuevas (lanzar-sin-ml-primero, pipeline-simple-infra-correcta, objetivo-simple-observable, features-observadas-vs-aprendidas, analizar-modelo-como-humano, decidir-lanzamiento-multimetrica, mantener-ensembles-simples); rom3 reúsa vigilar-training-serving-skew. Catálogo total 128 heurísticas. VERSION v45 (167 archivos). Próximo libro §10 (ml-systems): Hidden Technical Debt in ML Systems (NIPS 2015)."
     },
     {
       "libro": "Hidden Technical Debt in Machine Learning Systems (NIPS 2015)",

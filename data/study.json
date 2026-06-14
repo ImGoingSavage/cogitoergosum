@@ -853,6 +853,62 @@
       "cuando_usar": "Al controlar coste/volumen de telemetría sin perder visibilidad de lo que importa.",
       "ejemplo": "Muestrear errores 1:1 y éxitos 1:1000, propagando un sampling-ID para que ningún hijo quede huérfano de su padre.",
       "patron": "representativos+sample rate; clave/tail > constante; consistente = traza entera o nada"
+    },
+    {
+      "id": "lanzar-sin-ml-primero",
+      "nombre": "Lanzar sin ML primero (heurística antes que modelo)",
+      "descripcion": "'Haz ML como el ingeniero que eres, no como el experto en ML que no eres': la mayoría de las ganancias vienen de buenas features, no de algoritmos sofisticados. Si no tienes datos, una heurística simple te lleva ~50% del camino (R1); no uses ML hasta tenerlos. Diseña e implementa MÉTRICAS y un framework de experimentos ANTES de formalizar el ML (R2). Una heurística compleja es inmantenible: con datos, pasa a un modelo que es más fácil de actualizar (R3).",
+      "cuando_usar": "Al arrancar un producto o feature nueva y al decidir si introducir ML.",
+      "ejemplo": "Para rankear apps usa la tasa de instalación; para spam, una lista negra; recién con datos pasa a ML.",
+      "patron": "sin datos→heurística simple; métricas primero; heurística compleja→ML"
+    },
+    {
+      "id": "pipeline-simple-infra-correcta",
+      "nombre": "Primer pipeline: modelo simple, infra correcta",
+      "descripcion": "El primer modelo da el mayor empujón, así que no necesita ser sofisticado; tendrás más problemas de infraestructura de los que esperas (R4). Features simples → llegan bien al algoritmo, el modelo aprende pesos razonables y llegan bien al servidor. Prueba la INFRAESTRUCTURA independientemente del ML (que entren los datos y salga el modelo con el mismo score que en serving) (R5). Cuidado con datos descartados al COPIAR pipelines (R6). Mina las heurísticas existentes convirtiéndolas en features o preprocesando (R7).",
+      "cuando_usar": "Al construir el primer pipeline de ML de punta a punta.",
+      "ejemplo": "Un lanzamiento 'neutral' que de-prioriza las ganancias de ML para validar primero la infra y el baseline.",
+      "patron": "1er modelo simple + infra testeada aparte; no arrastres drops al copiar pipelines"
+    },
+    {
+      "id": "objetivo-simple-observable",
+      "nombre": "Objetivo ML simple, observable y atribuible",
+      "descripcion": "El objetivo de ML debe ser fácil de medir y un PROXY del objetivo 'verdadero' (R13). Modela comportamiento directamente observado y atribuible a una acción (¿se clicó/descargó/calificó?); evita al inicio efectos indirectos (¿volvió mañana?, DAU: buenos para A/B, malos como objetivo directo) y no pidas al ML que adivine si el usuario es feliz. No sobrepienses qué métrica optimizar: al inicio muchas suben juntas (R12). Empieza con un modelo INTERPRETABLE/calibrado (lineal/logística/Poisson) para depurar (R14). Separa spam (guerra) de ranking de calidad en una policy layer (R15).",
+      "cuando_usar": "Al definir el objetivo de optimización del primer modelo y al elegir su tipo.",
+      "ejemplo": "Entrena 'probabilidad de clic' (observable) en vez de 'satisfacción del usuario' (no observable); rankea con una policy layer encima.",
+      "patron": "objetivo = proxy simple, observable, atribuible; modelo interpretable; spam aparte"
+    },
+    {
+      "id": "features-observadas-vs-aprendidas",
+      "nombre": "Features observadas primero; escálalas a los datos",
+      "descripcion": "Empieza con features directamente observadas/reportadas, NO aprendidas (R17): una feature aprendida (clustering externo o deep/factorizado) tiene su propio objetivo, puede quedar obsoleta y los modelos no convexos dan mínimos locales distintos por iteración; consigue un baseline sin deep features primero. Usa features ESPECÍFICAS cuando puedas (millones de features simples > pocas complejas, cobertura >90%) (R19) y combínalas de forma humano-entendible por DISCRETIZACIÓN (cuantiles) y CRUCES de feature columns (R20). El nº de pesos que puedes aprender en un modelo lineal es ~proporcional a la cantidad de datos (R21). Limpia las features sin uso: son deuda técnica (R22).",
+      "cuando_usar": "Durante la fase de feature engineering (Fase II) del ciclo de vida del ML.",
+      "ejemplo": "Discretiza 'edad' por cuantiles y cruza {male,female}×{US,Canada} → (male,Canada); con 1.000 ejemplos usa una docena de features, no un millón.",
+      "patron": "observadas>aprendidas; específicas+cobertura>90%; discretizar/cruzar; pesos∝datos; limpia lo no usado"
+    },
+    {
+      "id": "analizar-modelo-como-humano",
+      "nombre": "Analizar el modelo como humano (mide primero, optimiza después)",
+      "descripcion": "Mirar un modelo y mejorarlo es más arte que ciencia. No eres un usuario típico: usa raters/UX, no solo dogfooding (R23). MIDE el delta entre el modelo nuevo y producción antes de experimentar (diferencia simétrica; comparado consigo mismo debe ser ~0) (R24). El rendimiento UTILITARIO (qué haces con la predicción: ranking/precisión) gana a la potencia predictiva (log loss) (R25). Crea features desde los ERRORES que el modelo sabe que cometió (R26). Cuantifica el comportamiento indeseable: 'mide primero, optimiza después' (R27). Comportamiento idéntico a corto plazo NO implica idéntico a largo plazo (R28).",
+      "cuando_usar": "Al evaluar, depurar y mejorar un modelo ya en producción.",
+      "ejemplo": "Si el log loss baja pero el ranking empeora, busca otra feature; si el modelo demota posts largos, añade 'longitud del post'.",
+      "patron": "no eres usuario típico; mide delta; utilitario>predictivo; features desde errores; mide antes de optimizar"
+    },
+    {
+      "id": "decidir-lanzamiento-multimetrica",
+      "nombre": "Decidir lanzamientos con múltiples métricas",
+      "descripcion": "Las decisiones de lanzamiento son un PROXY de las metas de producto a largo plazo y dependen de MÚLTIPLES criterios, solo algunos optimizables por ML (R39). No hay 'hit points' del producto: engagement, DAU, revenue, ROI son proxies de metas largas (satisfacer usuarios/partners, crecer, beneficio). Los lanzamientos fáciles son cuando TODAS las métricas mejoran (o no empeoran); no hay ranking explícito de combinaciones de métricas, y cada una cubre un riesgo distinto. Si el problema son objetivos DESALINEADOS, cambia el objetivo o las metas, no añadas features (R38).",
+      "cuando_usar": "En reviews de lanzamiento y cuando aparecen trade-offs entre métricas (Fase III).",
+      "ejemplo": "Con A=(1M DAU, $4M/día) y B=(2M DAU, $2M/día) ningún equipo cambia al otro: cada métrica cubre un riesgo y predecir el cambio es arriesgado.",
+      "patron": "lanzar = decisión multi-métrica; métricas = proxies de metas largas; objetivos desalineados→cambia el objetivo"
+    },
+    {
+      "id": "mantener-ensembles-simples",
+      "nombre": "Mantener los ensembles simples y monotónicos",
+      "descripcion": "Modelos unificados que toman features crudas y rankean son los más fáciles de depurar, pero un ensemble (modelo que combina scores de otros) puede ir mejor (R40). Para que siga simple, cada modelo debe ser O BIEN un ensemble que solo toma el input de otros modelos, O BIEN un modelo base que toma muchas features, pero NO ambos. El combinador debe ser simple y cumplir propiedades: que SUBIR el score de un clasificador base NO baje el score del ensemble (monotonicidad), y que los modelos entrantes sean interpretables/calibrados.",
+      "cuando_usar": "Al combinar varios modelos en Fase III sin sacrificar depurabilidad.",
+      "ejemplo": "Un modelo simple que solo toma las salidas de los modelos base como inputs, con restricción de monotonicidad respecto a cada uno.",
+      "patron": "base XOR combinador; combinador simple y monótono respecto a cada base"
     }
   ],
   "bloques": [
@@ -1527,7 +1583,11 @@
         "arena-obs1",
         "arena-obs2",
         "arena-obs3",
-        "arena-obs4"
+        "arena-obs4",
+        "arena-rom1",
+        "arena-rom2",
+        "arena-rom3",
+        "arena-rom4"
       ],
       "examen": {
         "items": [
@@ -3302,6 +3362,76 @@
                 "Un hijo conservado sin su padre = traza rota: exige muestreo consistente"
               ],
               "source": "Observability Engineering (Majors, Fong-Jones & Miranda) — Cap. 17"
+            }
+          },
+          {
+            "id": "f7-ex-54",
+            "heuristica": "vigilar-training-serving-skew",
+            "enunciado": "Un modelo de ranking funciona muy bien en evaluación offline pero rinde peor en producción. (a) Define el training-serving skew y sus tres causas posibles. (b) Joineas una tabla de features (nº de comentarios por documento) tanto en entrenamiento como en serving: explica por qué esto genera skew y da la mejor solución y una alternativa. (c) ¿En qué tres componentes descompondrías la medición del skew (Regla 37) y qué indica una discrepancia en el tercero?",
+            "pistas": [
+              "Skew = diferencia de rendimiento entre entrenamiento y serving.",
+              "Tres causas: pipelines distintos, datos que cambian, feedback loop.",
+              "Los valores de la tabla pueden cambiar entre cuando entrenas y cuando sirves.",
+              "La mejor solución es logear las features tal como se usaron en serving (R29/R32).",
+              "Train/holdout, holdout/next-day, next-day/live; el mismo ejemplo debe dar el mismo score (R5)."
+            ],
+            "solucion": "(a) El training-serving skew es una diferencia entre el rendimiento durante el ENTRENAMIENTO y durante el SERVING. Tres causas posibles: (1) una discrepancia en cómo se manejan los datos en los pipelines de entrenamiento y de serving; (2) un cambio en los datos entre cuando se entrena y cuando se sirve; (3) un feedback loop entre el modelo y el algoritmo. La mejor práctica es monitorearlo explícitamente. (b) Joinear esa tabla genera skew del tipo 'cambio en los datos' (R31): el nº de comentarios de un documento puede CAMBIAR entre el momento de entrenar y el de servir, así que la predicción para el mismo documento difiere entre train y serving. La mejor solución es LOGEAR las features tal como se usaron en tiempo de serving y piparlas para entrenar (R29), reusando el mismo código de construcción de features en ambos pipelines (R32) para no introducir discrepancias. Alternativa: si la tabla cambia lento, snapshotearla por hora/día para obtener datos razonablemente cercanos (no resuelve del todo el problema). (c) Componentes (R37): (1) rendimiento train vs HOLDOUT — siempre existe, no siempre es malo (overfitting); (2) holdout vs NEXT-DAY — siempre existe; tunea la regularización para maximizar el next-day, y una caída grande señala features time-sensitive que degradan el modelo; (3) next-day vs LIVE — como el mismo ejemplo debe dar el mismo score en train y serving (R5), una discrepancia aquí indica un ERROR DE INGENIERÍA en el pipeline.",
+            "disparador": "Señal: 'va bien offline pero mal en producción'. Jugada: es training-serving skew; logea las features de serving y reusa código (R29/R32); mide el skew en train/holdout, holdout/next-day y next-day/live, donde el tercero = bug de ingeniería.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "training-serving skew",
+                "logging de features",
+                "reuso de código",
+                "medición de skew",
+                "tablas cambiantes"
+              ],
+              "errores_comunes": [
+                "Asumir que el rendimiento offline predice el de producción",
+                "Reconstruir features con código distinto en train y serving",
+                "Joinear tablas mutables sin snapshot ni logging"
+              ],
+              "casos_borde": [
+                "Snapshotear la tabla mitiga pero no resuelve del todo el cambio de datos",
+                "Una discrepancia next-day vs live es un bug de ingeniería, no del modelo"
+              ],
+              "source": "Rules of ML (Zinkevich) — Reglas 29, 31, 32, 37"
+            }
+          },
+          {
+            "id": "f7-ex-55",
+            "heuristica": "decidir-lanzamiento-multimetrica",
+            "enunciado": "Alice mejora un modelo: baja el log loss y, en experimento en vivo, sube la tasa de instalación; pero los DAU caen 5%. (a) ¿Debería lanzarse automáticamente? Explica por qué las decisiones de lanzamiento son un proxy de las metas a largo plazo (Regla 39). (b) Con dos sistemas posibles A=(1M DAU, $4M/día) y B=(2M DAU, $2M/día), ¿por qué un equipo en A no cambiaría a B ni uno en B a A? (c) Distingue este caso de uno donde la solución sería 'no malgastes tiempo en features nuevas' (Regla 38).",
+            "pistas": [
+              "Una sola métrica subiendo no basta: ¿qué otras se mueven?",
+              "Las métricas medibles (DAU, revenue) son proxies de metas a largo plazo.",
+              "No hay un ranking explícito de todas las combinaciones de métricas; cada una cubre un riesgo.",
+              "Predecir cómo cambiará una métrica conlleva riesgo en cualquier dirección.",
+              "R38: si el objetivo no captura las metas de producto, cambia el objetivo/metas, no añadas features."
+            ],
+            "solucion": "(a) No debería lanzarse automáticamente. Las decisiones de lanzamiento dependen de MÚLTIPLES criterios, solo algunos optimizables por ML: aunque el log loss baje y la instalación suba, la caída de 5% en DAU es señal de que el cambio puede dañar metas más amplias. Las métricas medibles en A/B (instalación, DAU, 30-DAU, revenue, ROI) son a su vez PROXIES de metas de producto a largo plazo (satisfacer usuarios y partners, crecer, beneficio, y en última instancia un producto de calidad y una empresa próspera en 5 años); no existen 'hit points' que midan la salud del producto, así que se requiere juicio humano. Los lanzamientos fáciles son cuando TODAS las métricas mejoran (o al menos no empeoran); aquí no es el caso. (b) Porque no hay un ranking explícito de todas las combinaciones de valores de métricas: si el sistema actual es A no se cambiaría a B, y si es B no se cambiaría a A. Las predicciones de cómo cambiarán las métricas pueden no cumplirse, así que hay un gran RIESGO en cualquier cambio, y cada métrica (DAU vs revenue) cubre un riesgo distinto que al equipo le preocupa; además ninguna métrica captura la pregunta última ('¿dónde estará el producto en 5 años?'). (c) Este caso (R39) es un trade-off entre métricas en la decisión de lanzamiento, que se resuelve con juicio multi-métrica. El de la R38 es distinto: el problema sería que el OBJETIVO del modelo no captura las metas de producto (objetivos desalineados); ahí no se añaden features ni se afina el modelo, sino que se cambia el objetivo o las metas de producto. Diagnóstico: ¿el objetivo apunta a la meta correcta pero las métricas chocan (R39) o el objetivo mismo está desalineado (R38)?",
+            "disparador": "Señal: 'mi métrica subió, ¿lanzo?' con otra métrica bajando. Jugada: decisión multi-métrica (R39), las métricas son proxies de metas largas sin ranking único; si el objetivo mismo no captura la meta, cámbialo (R38) en vez de añadir features.",
+            "metadata": {
+              "ruta": "ml-systems",
+              "nivel": 3,
+              "skills": [
+                "decisión de lanzamiento",
+                "métricas como proxy",
+                "trade-offs multi-métrica",
+                "objetivos desalineados",
+                "juicio humano"
+              ],
+              "errores_comunes": [
+                "Lanzar porque una sola métrica mejoró",
+                "Confundir el objetivo de ML con la salud última del sistema",
+                "Añadir features cuando el problema es un objetivo desalineado"
+              ],
+              "casos_borde": [
+                "No hay ranking explícito de combinaciones de métricas; cada una cubre un riesgo",
+                "Predecir el éxito futuro del producto es AI-complete"
+              ],
+              "source": "Rules of ML (Zinkevich) — Reglas 38 y 39"
             }
           }
         ]
@@ -15262,6 +15392,534 @@
           "enunciado": "¿Qué cinco capacidades mide el Observability Maturity Model (OMM) y qué naturaleza tiene?",
           "solucion": "El OMM es socio-técnico (herramienta + cultura) y NO es lineal ni universal: sirve como punto de partida para que un equipo modele sus metas. Las cinco capacidades de los equipos de alto desempeño: (1) responder a fallos del sistema con RESILIENCIA (MTTR, alertas accionables, on-call sostenible); (2) entregar CÓDIGO de alta calidad (depurar igual en 1 máquina que en 10.000); (3) gestionar COMPLEJIDAD y deuda técnica (evitar el 'haunted graveyard'); (4) liberar con CADENCIA predecible (deploy/rollback rápidos, feature flags); (5) entender el COMPORTAMIENTO del usuario (KPIs de cliente accesibles).",
           "explicacion": "Los equipos que adoptan observabilidad reportan 3× más confianza en la calidad en producción y menos tiempo en toil."
+        }
+      ]
+    },
+    {
+      "id": "arena-rom1",
+      "bloque": "fase-7",
+      "orden": 79,
+      "titulo": "Arena Reglas de ML · Antes del ML y tu primer pipeline",
+      "libro": "Rules of Machine Learning: Best Practices for ML Engineering (Martin Zinkevich, Google)",
+      "lectura": "data/teoria/arena-rom1.md",
+      "dosis": 30,
+      "objetivo": "Hacer ML 'como ingeniero': lanzar con heurísticas y métricas primero, montar un primer pipeline simple con la infra correcta y testeada, y monitorear frescura, fallos silenciosos y dueños de features (Reglas 1-11).",
+      "heuristicas": [
+        "lanzar-sin-ml-primero",
+        "pipeline-simple-infra-correcta"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Casi todas las ganancias vienen de buenas features, no de algoritmos sofisticados",
+        "Lanza sin ML con una heurística simple mientras no haya datos (R1)",
+        "Diseña métricas y framework de experimentos ANTES del ML (R2)",
+        "Primer modelo simple + infra correcta y testeada aparte (R4-5)",
+        "Vigila fallos silenciosos: el sistema se ajusta y decae sin avisar (R10)"
+      ],
+      "banco": [
+        {
+          "id": "arrom1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué quiere decir la consigna 'haz ML como el gran ingeniero que eres, no como el gran experto en ML que no eres'?",
+          "solucion": "Que la mayoría de los problemas que enfrentarás son de INGENIERÍA, no de algoritmos: incluso con todos los recursos de un experto en ML, casi todas las ganancias vienen de buenas FEATURES, no de algoritmos sofisticados. El enfoque básico es: (1) pipeline sólido de punta a punta, (2) objetivo razonable, (3) features de sentido común de forma simple, (4) mantener el pipeline sólido. Solo diverges cuando se agotan los trucos simples, porque añadir complejidad frena los lanzamientos futuros.",
+          "explicacion": "Es el marco de todo el documento: ingeniería primero, ML sofisticado solo en la Fase III."
+        },
+        {
+          "id": "arrom1-q2",
+          "tipo": "concepto",
+          "enunciado": "Regla 1: ¿por qué no temer lanzar un producto sin machine learning?",
+          "solucion": "Porque el ML requiere DATOS. Si tomas datos de un problema distinto y tuneas el modelo para uno nuevo, probablemente rendirá peor que una heurística básica. Una heurística simple te lleva ~50% del camino (si crees que el ML daría un 100% de boost, la heurística da el 50%). Si el ML no es absolutamente necesario para tu producto, no lo uses hasta tener datos.",
+          "explicacion": "Ej.: rankear apps por tasa/nº de instalaciones, filtrar spam por lista negra, ordenar contactos por uso reciente o alfabéticamente."
+        },
+        {
+          "id": "arrom1-q3",
+          "tipo": "concepto",
+          "enunciado": "Regla 2: ¿por qué diseñar e implementar métricas ANTES de formalizar el sistema de ML?",
+          "solucion": "Porque: (1) es más fácil obtener permiso de los usuarios pronto; (2) si algo podría ser una preocupación futura, mejor tener datos históricos ya; (3) diseñar con instrumentación en mente evita acabar grepeando strings en logs; (4) notas qué cambia y qué permanece (manipulaciones que no mueven una métrica). Sé liberal recogiendo métricas y un framework de experimentos (buckets de usuarios, stats por experimento) para una imagen más amplia del sistema.",
+          "explicacion": "'¿Notas un problema? Añade una métrica. ¿Te emociona un cambio? Añade una métrica para rastrearlo.'"
+        },
+        {
+          "id": "arrom1-q4",
+          "tipo": "concepto",
+          "enunciado": "Regla 3: ¿cuándo conviene pasar de una heurística a machine learning?",
+          "solucion": "Una heurística SIMPLE saca el producto por la puerta, pero una heurística COMPLEJA es inmantenible. Una vez que tienes datos y una idea básica de lo que intentas lograr, pasa a ML: como en casi toda la ingeniería de software querrás actualizar tu enfoque constantemente, y un modelo aprendido es más fácil de actualizar y mantener que una maraña de reglas.",
+          "explicacion": "La heurística compleja es deuda; el modelo aprendido escala mejor con la iteración (ver R16)."
+        },
+        {
+          "id": "arrom1-q5",
+          "tipo": "concepto",
+          "enunciado": "Regla 4: ¿por qué el primer modelo debe ser simple y el foco estar en la infraestructura?",
+          "solucion": "Porque el primer modelo da el mayor empujón al producto, así que no necesita ser sofisticado, y porque tendrás muchos más problemas de infraestructura de los que esperas. Antes de que alguien use tu sistema fancy debes resolver: cómo llegan los ejemplos al algoritmo, qué significa 'bueno/malo', y cómo integrar el modelo (aplicarlo en vivo o precomputarlo en una tabla). Features simples facilitan que lleguen bien al algoritmo, que el modelo aprenda pesos razonables y que lleguen bien al servidor.",
+          "explicacion": "El modelo simple da métricas y comportamiento baseline para testear modelos más complejos; algunos equipos buscan un lanzamiento 'neutral'."
+        },
+        {
+          "id": "arrom1-q6",
+          "tipo": "concepto",
+          "enunciado": "Regla 5: ¿qué significa probar la infraestructura independientemente del machine learning?",
+          "solucion": "Que la infraestructura sea testeable y las partes de aprendizaje estén encapsuladas para poder testear todo alrededor: (1) probar que los datos ENTRAN al algoritmo (feature columns pobladas, inspeccionar el input, comparar estadísticas con otra fuente); (2) probar que los modelos SALEN del entrenamiento (que el modelo dé el mismo score en el entorno de entrenamiento y en el de serving, R37). El ML es impredecible, así que ten tests del código que crea ejemplos en train y serving.",
+          "explicacion": "Encapsular el ML permite cargar un modelo fijo durante serving y testear el resto del sistema."
+        },
+        {
+          "id": "arrom1-q7",
+          "tipo": "concepto",
+          "enunciado": "Regla 6: ¿qué peligro hay al copiar un pipeline existente para crear uno nuevo?",
+          "solucion": "Que el pipeline viejo descarte datos que el nuevo SÍ necesita ('cargo cult programming'). Ej.: un pipeline para What's Hot dropea posts viejos (quiere rankear frescos), pero al copiarlo para Stream —donde los posts viejos siguen siendo relevantes— seguía dropeándolos. Otro patrón: logear solo lo que el usuario VIO, lo que vuelve esos datos inútiles para modelar por qué un post NO se mostró (se descartaron todos los ejemplos negativos).",
+          "explicacion": "Revisa siempre qué filtra el pipeline origen antes de reutilizarlo."
+        },
+        {
+          "id": "arrom1-q8",
+          "tipo": "concepto",
+          "enunciado": "Regla 7: ¿cuáles son las cuatro formas de aprovechar una heurística existente en un sistema de ML?",
+          "solucion": "Las heurísticas contienen intuición valiosa y suavizan la transición a ML, así que mínalas: (1) PREPROCESAR con la heurística (si la feature es buenísima; p.ej. en spam, bloquear directo a quien ya está en lista negra); (2) CREAR UNA FEATURE con su valor (incluir el score de relevancia como feature); (3) MINAR LOS INPUTS CRUDOS de la heurística (si combina nº de instalaciones, longitud y día de la semana, sepáralos y aliméntalos por separado); (4) MODIFICAR EL LABEL (si la heurística captura info no contenida en el label).",
+          "explicacion": "Sé consciente de la complejidad añadida; a veces hay una forma más simple de lograr el mismo efecto."
+        },
+        {
+          "id": "arrom1-q9",
+          "tipo": "concepto",
+          "enunciado": "Regla 8: ¿por qué importa conocer los requisitos de FRESCURA del sistema?",
+          "solucion": "Porque cuánto se degrada el rendimiento con un modelo de 1 día / 1 semana / 1 trimestre de antigüedad fija las prioridades del monitoreo y la frecuencia de reentrenamiento. Si pierdes 10% de ingresos con un modelo no actualizado un día, conviene un ingeniero vigilándolo continuamente. Modelos de anuncios suelen reentrenar a diario; modelos sin post-identifier pueden exportarse con menos frecuencia. La frescura también cambia al añadir/quitar feature columns.",
+          "explicacion": "Conocer la frescura evita sobre-monitorear lo estable e infra-monitorear lo volátil."
+        },
+        {
+          "id": "arrom1-q10",
+          "tipo": "concepto",
+          "enunciado": "Regla 9: ¿por qué detectar problemas ANTES de exportar el modelo, y cómo se alerta según el caso?",
+          "solucion": "Porque un problema en un modelo YA exportado es un problema USER-FACING; si lo detectas antes de exportar, es solo un problema de entrenamiento y los usuarios no lo notan. Haz sanity checks justo antes de exportar (rendimiento razonable en datos held-out, AUC/ROC). Regla de alerta: problemas en modelos que NO han sido exportados requieren una ALERTA POR EMAIL, pero problemas en un modelo user-facing pueden requerir un PAGE. Mejor esperar y estar seguro antes de impactar a los usuarios.",
+          "explicacion": "Distingue la severidad: pre-export (email) vs en producción (page)."
+        },
+        {
+          "id": "arrom1-q11",
+          "tipo": "concepto",
+          "enunciado": "Regla 10: ¿qué son los 'fallos silenciosos' y por qué son propios del ML?",
+          "solucion": "Son degradaciones que NO se notan porque el sistema de ML se ajusta solo. Si una tabla joinada deja de actualizarse, el modelo seguirá comportándose razonablemente bien mientras decae gradualmente. Se han hallado tablas con meses de antigüedad cuyo simple refresco mejoró el rendimiento más que cualquier otro lanzamiento del trimestre (una tabla stale 6 meses dio +2% de instalación al refrescarse). Se reducen rastreando estadísticas de los datos e inspeccionándolos manualmente de vez en cuando.",
+          "explicacion": "El sistema 'absorbe' el problema, por eso hay que vigilar las estadísticas de los datos, no solo el modelo."
+        },
+        {
+          "id": "arrom1-q12",
+          "tipo": "concepto",
+          "enunciado": "Regla 11: ¿por qué dar dueños y documentación a las feature columns?",
+          "solucion": "Porque en un sistema grande con muchas feature columns conviene saber quién creó o mantiene cada una; si quien la entiende se va, alguien debe heredar el conocimiento. Aunque muchas tengan nombres descriptivos, es bueno una descripción más detallada de qué es la feature, de dónde viene y cómo se espera que ayude.",
+          "explicacion": "Es higiene organizacional que evita perder conocimiento crítico del sistema."
+        },
+        {
+          "id": "arrom1-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué tres cosas debes determinar antes de que alguien pueda usar tu primer sistema de ML (Regla 4)?",
+          "solucion": "(1) Cómo conseguir EJEMPLOS para el algoritmo de aprendizaje. (2) Un primer corte de qué significan 'bueno' y 'malo' para tu sistema. (3) Cómo INTEGRAR el modelo en tu aplicación: aplicarlo en vivo, o precomputarlo offline sobre ejemplos y guardar resultados en una tabla (p.ej. preclasificar páginas web en una tabla, pero clasificar mensajes de chat en vivo).",
+          "explicacion": "Son los cimientos de infra; resolverlos de forma fiable es 'la mayor parte del trabajo'."
+        },
+        {
+          "id": "arrom1-q14",
+          "tipo": "concepto",
+          "enunciado": "Según el documento, ¿cuál es el enfoque básico de cuatro pasos para hacer buenos productos con ML?",
+          "solucion": "(1) Asegúrate de que tu pipeline esté sólido de punta a punta; (2) empieza con un objetivo razonable; (3) añade features de sentido común de forma simple; (4) asegúrate de que tu pipeline siga sólido. Este enfoque genera dinero y/o felicidad por mucho tiempo; diverge de él solo cuando no haya más trucos simples que te lleven más lejos, porque añadir complejidad frena los lanzamientos futuros.",
+          "explicacion": "Resume las Fases I y II; el ML de vanguardia es para después (Fase III)."
+        },
+        {
+          "id": "arrom1-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué distingue 'instance', 'label', 'feature' y 'objective' en la terminología del documento?",
+          "solucion": "Instance: la cosa sobre la que quieres predecir (p.ej. una página web a clasificar). Label: la respuesta de una tarea de predicción, sea la que produce el sistema o la verdad en los datos de entrenamiento (p.ej. 'sobre gatos'). Feature: una propiedad de una instancia usada en la predicción (p.ej. 'contiene la palabra gato'). Objective: una métrica que tu algoritmo INTENTA optimizar (a diferencia de una métrica cualquiera, que el sistema reporta pero puede no optimizar).",
+          "explicacion": "La distinción objetivo vs métrica es clave para las Reglas 12-13 y 39."
+        }
+      ]
+    },
+    {
+      "id": "arena-rom2",
+      "bloque": "fase-7",
+      "orden": 80,
+      "titulo": "Arena Reglas de ML · Tu primer objetivo y feature engineering",
+      "libro": "Rules of Machine Learning: Best Practices for ML Engineering (Martin Zinkevich, Google)",
+      "lectura": "data/teoria/arena-rom2.md",
+      "dosis": 30,
+      "objetivo": "Elegir un objetivo simple, observable y atribuible con un modelo interpretable, y hacer feature engineering efectivo (observadas vs aprendidas, específicas, discretización/cruces, pesos∝datos, limpieza) (Reglas 12-22).",
+      "heuristicas": [
+        "objetivo-simple-observable",
+        "features-observadas-vs-aprendidas"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "El objetivo de ML debe ser simple, observable, atribuible y un proxy del verdadero (R13)",
+        "Empieza con un modelo interpretable/calibrado para depurar (R14)",
+        "Features observadas antes que aprendidas; baseline sin deep (R17)",
+        "Discretización (cuantiles) y cruces de feature columns (R20)",
+        "Nº de pesos en un modelo lineal ~proporcional a la cantidad de datos (R21)"
+      ],
+      "banco": [
+        {
+          "id": "arrom2-q1",
+          "tipo": "concepto",
+          "enunciado": "Regla 12: ¿por qué no sobrepensar qué objetivo optimizar directamente al inicio?",
+          "solucion": "Porque te importan muchas métricas y deberías medirlas todas, pero al inicio del proceso de ML notarás que TODAS suben juntas, incluso las que no optimizas directamente (si optimizas clicks, probablemente suba el tiempo en sitio). Así que mantenlo simple y no te esfuerces en balancear métricas mientras puedas subirlas todas a la vez. Pero no lo lleves al extremo: no confundas tu objetivo con la salud última del sistema (R39), y si subes la métrica optimizada pero decides NO lanzar, toca revisar el objetivo.",
+          "explicacion": "Distingue objetivo (lo que el algoritmo optimiza) de métrica (lo que el sistema reporta)."
+        },
+        {
+          "id": "arrom2-q2",
+          "tipo": "concepto",
+          "enunciado": "Regla 13: ¿qué hace que una métrica sea un buen primer objetivo de ML?",
+          "solucion": "Que sea SIMPLE, OBSERVABLE y ATRIBUIBLE, y un PROXY del objetivo 'verdadero' (que a menudo no conoces con certeza). Modela comportamiento directamente observado y atribuible a una acción del sistema: ¿se clicó / descargó / reenvió / calificó / marcó como spam el objeto rankeado? Entrena en ese objetivo simple y considera una 'policy layer' encima para la lógica final del ranking.",
+          "explicacion": "El objetivo verdadero es escurridizo y los miembros del equipo no se ponen de acuerdo; por eso se usa un proxy observable."
+        },
+        {
+          "id": "arrom2-q3",
+          "tipo": "concepto",
+          "enunciado": "Regla 13: ¿qué tipos de objetivo conviene EVITAR modelar directamente al inicio?",
+          "solucion": "Evita modelar al inicio efectos INDIRECTOS: ¿el usuario visitó al día siguiente?, ¿cuánto tiempo visitó el sitio?, ¿cuáles fueron los DAU? Son grandes métricas para A/B testing y decisiones de lanzamiento, pero malos objetivos directos. Y NO intentes que el ML averigüe si el usuario es feliz, si está satisfecho, o si el producto mejora su bienestar: son importantes pero increíblemente difíciles; usa proxies (si es feliz, se queda más; si está satisfecho, vuelve mañana). El bienestar y la salud de la empresa requieren JUICIO HUMANO para conectarlos con el objetivo aprendido.",
+          "explicacion": "Los efectos indirectos y el 'bienestar' son casi AI-complete; modelarlos directamente al inicio descarrila el sistema."
+        },
+        {
+          "id": "arrom2-q4",
+          "tipo": "concepto",
+          "enunciado": "Regla 14: ¿por qué empezar con un modelo interpretable facilita el debugging?",
+          "solucion": "Porque regresión lineal, logística y de Poisson están directamente motivadas por un modelo probabilístico: cada predicción es interpretable como una probabilidad o un valor esperado, lo que las hace más fáciles de depurar que modelos con objetivos zero-one, hinge, etc. que optimizan accuracy o ranking directamente. Si las probabilidades en entrenamiento se desvían de las predichas en side-by-sides o en producción, esa desviación revela un problema.",
+          "explicacion": "Recuerda: al elegir qué modelo usar, la DECISIÓN importa más que la verosimilitud de los datos dado el modelo (R25)."
+        },
+        {
+          "id": "arrom2-q5",
+          "tipo": "concepto",
+          "enunciado": "Regla 14: ¿qué significa que un modelo de regresión esté 'calibrado'?",
+          "solucion": "Que existen subconjuntos de los datos donde la EXPECTATIVA media predicha = el LABEL medio (calibración de 1 momento). En regresión lineal/logística/Poisson, si tienes una feature que vale 1 o 0 por ejemplo, el conjunto de ejemplos donde esa feature es 1 está calibrado; y si una feature vale 1 para todos, el conjunto entero está calibrado. (Cierto asumiendo sin regularización y algoritmo convergido; aproximadamente cierto en general.)",
+          "explicacion": "La calibración hace que las predicciones se puedan leer como probabilidades reales y facilita detectar desviaciones."
+        },
+        {
+          "id": "arrom2-q6",
+          "tipo": "concepto",
+          "enunciado": "Regla 15: ¿por qué separar el filtrado de spam del ranking de calidad en una policy layer?",
+          "solucion": "Porque el ranking de calidad es un arte (rankear contenido posteado de buena fe), pero el spam es una GUERRA: las señales de calidad se vuelven obvias para los usuarios, que ajustan sus posts. Si no separas, el learner de calidad termina lidiando con adversarios. El spam se filtra aparte (a menudo más agresivo; cualquier modelo aprendido debe actualizarse a diario o más), y la reputación del creador juega un gran rol. Al final se integran las salidas, pero filtrar spam en search debería ser más agresivo que en email.",
+          "explicacion": "También es práctica estándar quitar el spam de los datos de entrenamiento del clasificador de calidad."
+        },
+        {
+          "id": "arrom2-q7",
+          "tipo": "concepto",
+          "enunciado": "Regla 16: ¿qué significa 'planear lanzar e iterar' y por qué importa la complejidad añadida?",
+          "solucion": "Que no esperes que el modelo actual sea el último que lanzarás (muchos equipos lanzan un modelo por trimestre durante años). Hay tres razones para lanzar modelos nuevos: (1) nuevas features, (2) tunear regularización y combinar features viejas de formas nuevas, (3) tunear el objetivo. Por eso, al construir el modelo, considera cuán fácil es añadir/quitar/recombinar features y crear una copia fresca del pipeline verificada; no te obsesiones con si la feature 16 de 35 entra en esta versión (entrará el próximo trimestre).",
+          "explicacion": "La complejidad que añades hoy frena los lanzamientos de mañana: pésalo."
+        },
+        {
+          "id": "arrom2-q8",
+          "tipo": "concepto",
+          "enunciado": "Regla 17: ¿por qué empezar con features observadas/reportadas en lugar de aprendidas?",
+          "solucion": "Una feature APRENDIDA es la generada por un sistema externo (clustering no supervisado) o por el propio learner (modelo factorizado o deep). Evítalas en el primer modelo porque: (1) un sistema externo tiene su propio objetivo, débilmente correlacionado con el tuyo, y puede quedar obsoleto o cambiar de significado; (2) los modelos factorizados/deep son NO CONVEXOS, así que no hay garantía de hallar el óptimo y los mínimos locales varían por iteración, dificultando juzgar si un cambio es significativo o aleatorio. Un modelo sin deep features da un baseline excelente sobre el cual probar enfoques esotéricos.",
+          "explicacion": "Features observadas = baseline estable y depurable; las aprendidas requieren mucho cuidado."
+        },
+        {
+          "id": "arrom2-q9",
+          "tipo": "concepto",
+          "enunciado": "Regla 19: ¿por qué usar features muy específicas cuando se puede?",
+          "solucion": "Porque con muchos datos es más simple aprender MILLONES de features simples que pocas complejas. Identificadores de documentos recuperados y queries canonicalizadas no generalizan mucho, pero alinean tu ranking con los labels en las head queries. No temas grupos de features donde cada una aplica a una fracción ínfima de los datos si la cobertura TOTAL supera el 90%; usa regularización para eliminar las que aplican a muy pocos ejemplos.",
+          "explicacion": "Features específicas + regularización capturan señal granular que las features genéricas pierden."
+        },
+        {
+          "id": "arrom2-q10",
+          "tipo": "concepto",
+          "enunciado": "Regla 20: explica discretización y cruces como formas de crear features.",
+          "solucion": "DISCRETIZACIÓN: tomar una feature CONTINUA (p.ej. edad) y crear muchas features discretas a partir de ella (1 si edad<18, otra si 18≤edad<35, etc.); no sobrepienses los cortes, los cuantiles básicos dan casi todo el impacto. CRUCES: combinar dos o más feature columns (conjuntos de features homogéneas); p.ej. {male,female}×{US,Canada,Mexico} crea una nueva columna con la feature (male, Canada). Cruces de 3-4+ columnas exigen muchísimos datos y pueden sobreajustar.",
+          "explicacion": "Discretizar y cruzar son las dos transformaciones estándar (p.ej. en TensorFlow) para enriquecer features de forma humano-entendible."
+        },
+        {
+          "id": "arrom2-q11",
+          "tipo": "concepto",
+          "enunciado": "Regla 21: ¿qué relación hay entre la cantidad de datos y el número de pesos en un modelo lineal?",
+          "solucion": "El número de feature weights que puedes aprender en un modelo lineal es APROXIMADAMENTE PROPORCIONAL a la cantidad de datos. Escala el aprendizaje al tamaño de los datos: con 1.000 ejemplos, usa un dot product (TF-IDF) y media docena de features humanas (≈una docena de features); con 1M, intersecta columnas con regularización/feature selection (cientos de miles de features); con miles de millones, cruza las feature columns con tokens (≈10M features).",
+          "explicacion": "La teoría de aprendizaje estadístico rara vez da cotas ajustadas, pero guía el punto de partida; usa R28 para decidir."
+        },
+        {
+          "id": "arrom2-q12",
+          "tipo": "concepto",
+          "enunciado": "Regla 22: ¿por qué limpiar las features que ya no usas y qué papel juega la cobertura?",
+          "solucion": "Porque las features sin uso crean DEUDA TÉCNICA: si una feature no se usa y combinarla con otras no funciona, quítala de la infraestructura para mantenerla limpia y poder probar las features más prometedoras lo más rápido posible (siempre se puede readir). La COBERTURA importa: una feature de personalización que solo cubre el 8% de los usuarios no será muy efectiva; pero una que cubre solo el 1% de los datos donde el 90% de esos ejemplos son positivos puede ser una gran feature a añadir.",
+          "explicacion": "Higiene de features = velocidad de experimentación; la cobertura decide cuánto aporta una feature."
+        },
+        {
+          "id": "arrom2-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la diferencia entre un 'objetivo' y una 'métrica' según el documento, y por qué importa?",
+          "solucion": "Una MÉTRICA es cualquier número que tu sistema reporta, que puede importar o no. Un OBJETIVO es la métrica que tu algoritmo INTENTA optimizar. Importa porque te importan muchas métricas (debes medirlas todas, R2), pero el algoritmo suele requerir un único objetivo; no confundas el objetivo de optimización con la salud última del sistema (esa se evalúa con muchas métricas en las decisiones de lanzamiento, R39).",
+          "explicacion": "Esta distinción sostiene las Reglas 12-13 (elegir objetivo) y 39 (decidir lanzamientos con muchas métricas)."
+        },
+        {
+          "id": "arrom2-q14",
+          "tipo": "concepto",
+          "enunciado": "Según la Regla 13, ¿qué ejemplos de comportamiento 'directamente observado y atribuible' conviene modelar?",
+          "solucion": "Lo más fácil de modelar es una acción del usuario directamente observada y atribuible al sistema: ¿se clicó el link rankeado?, ¿se descargó el objeto rankeado?, ¿se reenvió/respondió/emaileó?, ¿se calificó?, ¿se marcó como spam/pornografía/ofensivo el objeto mostrado? Estos son objetivos directos buenos; los efectos indirectos (¿volvió mañana?) se reservan para A/B y decisiones de lanzamiento, no como objetivo directo inicial.",
+          "explicacion": "Observable + atribuible = label fiable y de baja latencia para entrenar el primer modelo."
+        },
+        {
+          "id": "arrom2-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un cruce de muchas feature columns con texto puede sobreajustar, y qué alternativas hay (Regla 20)?",
+          "solucion": "Porque un cruce de una columna con palabras de la query y otra con palabras del documento genera muchísimas features (R21), que con datos insuficientes sobreajustan. Alternativas al trabajar con texto: (1) la más draconiana es un DOT PRODUCT, que cuenta las palabras comunes entre query y documento (y luego se discretiza); (2) una INTERSECCIÓN: una feature presente si y solo si la palabra 'pony' está en documento Y query, otra para 'the', etc.",
+          "explicacion": "El dot product y la intersección reducen la dimensionalidad explosiva del cruce texto×texto."
+        }
+      ]
+    },
+    {
+      "id": "arena-rom3",
+      "bloque": "fase-7",
+      "orden": 81,
+      "titulo": "Arena Reglas de ML · Análisis humano y training-serving skew",
+      "libro": "Rules of Machine Learning: Best Practices for ML Engineering (Martin Zinkevich, Google)",
+      "lectura": "data/teoria/arena-rom3.md",
+      "dosis": 30,
+      "objetivo": "Analizar y mejorar un modelo como humano (no eres usuario típico, mide el delta, utilitario>predictivo, mide antes de optimizar) y combatir el training-serving skew logeando features en serving y reusando código (Reglas 23-37).",
+      "heuristicas": [
+        "analizar-modelo-como-humano",
+        "vigilar-training-serving-skew"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "No eres un usuario típico: usa raters y UX (R23)",
+        "Mide el delta entre modelos antes de experimentar (R24)",
+        "El rendimiento utilitario gana a la potencia predictiva (R25)",
+        "Logea las features de serving y reusa código para evitar skew (R29, R32)",
+        "Mide el skew en 3 componentes: train/holdout, holdout/next-day, next-day/live (R37)"
+      ],
+      "banco": [
+        {
+          "id": "arrom3-q1",
+          "tipo": "concepto",
+          "enunciado": "Regla 23: ¿por qué 'no eres un usuario típico' y qué hacer en su lugar?",
+          "solucion": "Porque, aunque el fishfooding (usar el prototipo en tu equipo) y dogfooding (en tu empresa) ayudan, estás demasiado CERCA del código (sesgo de confirmación, buscas un aspecto particular) y tu TIEMPO es muy valioso (9 ingenieros 1 hora en reunión = muchas etiquetas en crowdsourcing). En su lugar usa metodologías de UX: crea user personas (incluso una hipotética distinta a ti, p.ej. una mujer de 35 si tu equipo es masculino) y haz usability testing con gente real (paga laypeople en crowdsourcing o haz experimentos en vivo).",
+          "explicacion": "Cualquier cambio obviamente malo se descarta; lo razonablemente cercano a producción se testea con usuarios reales."
+        },
+        {
+          "id": "arrom3-q2",
+          "tipo": "concepto",
+          "enunciado": "Regla 24: ¿cómo y por qué medir el 'delta' entre modelos?",
+          "solucion": "Antes de que ningún usuario vea el nuevo modelo, calcula cuán DIFERENTES son sus resultados de los de producción. En ranking, corre ambos modelos sobre una muestra de queries y mide el tamaño de la diferencia simétrica de los resultados (ponderada por posición). Si la diferencia es muy pequeña, sabes sin experimentar que habrá poco cambio; si es muy grande, asegúrate de que el cambio es bueno (mirar las queries de mayor diferencia ayuda a entenderlo cualitativamente). Verifica que el sistema sea estable: un modelo comparado consigo mismo debe dar diferencia ~0.",
+          "explicacion": "El delta es una medición barata y útil ANTES de gastar un experimento con usuarios."
+        },
+        {
+          "id": "arrom3-q3",
+          "tipo": "concepto",
+          "enunciado": "Regla 25: ¿qué significa que 'el rendimiento utilitario gana a la potencia predictiva'?",
+          "solucion": "Que aunque tu modelo prediga, por ejemplo, el CTR, lo que importa al final es QUÉ HACES con esa predicción: si la usas para rankear documentos, la calidad del ranking final importa más que la predicción en sí; si predices probabilidad de spam y aplicas un cutoff, importa más la precisión de lo permitido. La mayoría de las veces ambas coinciden, pero si un cambio mejora el log loss y DEGRADA el rendimiento del sistema, busca otra feature; cuando eso empieza a pasar seguido, es hora de revisar el objetivo del modelo.",
+          "explicacion": "Optimizar la métrica del modelo (log loss) no es el fin; el fin es la utilidad del sistema."
+        },
+        {
+          "id": "arrom3-q4",
+          "tipo": "concepto",
+          "enunciado": "Regla 26: ¿cómo se usan los errores medidos para crear nuevas features?",
+          "solucion": "Un ejemplo que el modelo SABE que erró (un falso positivo/negativo en clasificación, o un par mal ordenado en ranking) es uno que arreglaría si pudiera: si le das una feature que le permita corregir ese error, la usará. Pero una feature basada en algo que el sistema NO ve como error será ignorada. Busca tendencias en los errores fuera de tu feature set actual (si demota posts largos, añade 'longitud del post') y no seas muy específico: añade una docena de features y deja que el modelo decida qué hacer (R21).",
+          "explicacion": "Ej.: la feature 'gag apps' no ayuda si la gente instala gag apps al buscar 'free games' (no es un error para el sistema)."
+        },
+        {
+          "id": "arrom3-q5",
+          "tipo": "concepto",
+          "enunciado": "Regla 27: ¿qué significa 'mide primero, optimiza después'?",
+          "solucion": "Que cuando algún miembro del equipo se frustra con una propiedad del sistema que no captura la loss function, lo primero es CUANTIFICARLA, convertir las quejas en números sólidos (p.ej. raters humanos identifican 'gag apps' —factible porque pocas queries concentran mucho tráfico). Una vez que el problema es medible, puedes empezar a usarlo como feature, objetivo o métrica. La regla general es 'measure first, optimize second'.",
+          "explicacion": "Sin una medición, la 'mejora' es subjetiva e inoptimizable."
+        },
+        {
+          "id": "arrom3-q6",
+          "tipo": "concepto",
+          "enunciado": "Regla 28: ¿por qué comportamiento idéntico a corto plazo no implica idéntico a largo plazo?",
+          "solucion": "Porque un sistema puede verse casi idéntico al actual en side-by-sides y A/B testing a corto plazo, pero diverger a largo plazo. Ej.: un sistema que mira (doc_id, exact_query) y predice clic se ve igual al actual, pero NO muestra apps nuevas: como solo decide en base al historial de esa query, no hay forma de aprender que un doc nuevo debería mostrarse. La única forma de entender el comportamiento a largo plazo es entrenar SOLO con datos adquiridos mientras el modelo estaba en vivo, lo cual es muy difícil.",
+          "explicacion": "El feedback loop del propio sistema oculta efectos que solo emergen a largo plazo."
+        },
+        {
+          "id": "arrom3-q7",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el training-serving skew y cuáles son sus tres causas?",
+          "solucion": "Es una DIFERENCIA entre el rendimiento durante el entrenamiento y durante el serving. Sus tres causas posibles: (a) una discrepancia en cómo manejas los datos en los pipelines de entrenamiento y de serving; (b) un cambio en los datos entre cuando entrenas y cuando sirves; (c) un feedback loop entre tu modelo y tu algoritmo. La mejor solución es MONITOREARLO explícitamente para que cambios de sistema y datos no introduzcan skew sin notarse.",
+          "explicacion": "Google ha observado skew que impacta negativamente el rendimiento en producción; por eso se mide (R37)."
+        },
+        {
+          "id": "arrom3-q8",
+          "tipo": "concepto",
+          "enunciado": "Regla 29: ¿cuál es la mejor forma de asegurar que entrenas como sirves?",
+          "solucion": "Guardar el conjunto de features usadas en tiempo de SERVING y piparlas a un log para usarlas en tiempo de ENTRENAMIENTO. Aunque no puedas hacerlo para cada ejemplo, hazlo para una fracción pequeña para verificar la consistencia entre serving y training (R37). Equipos en Google (p.ej. YouTube home) que cambiaron a logear features en serving vieron mejoras de calidad significativas y reducción de complejidad de código.",
+          "explicacion": "Logear las features reales de serving elimina la discrepancia de pipelines de raíz."
+        },
+        {
+          "id": "arrom3-q9",
+          "tipo": "concepto",
+          "enunciado": "Regla 30: ¿por qué ponderar por importancia los datos muestreados en vez de descartarlos?",
+          "solucion": "Porque descartar datos en entrenamiento ha causado problemas a varios equipos (tomar archivos 1-12 e ignorar 13-99 es un error). Datos que nunca se mostraron al usuario sí se pueden dropear, pero para el resto usa importance weighting: si decides muestrear el ejemplo X con probabilidad 30%, dale un peso de 10/3. Con importance weighting se preservan todas las propiedades de calibración discutidas en R14.",
+          "explicacion": "Ponderar mantiene la representatividad estadística que el descarte arbitrario rompe."
+        },
+        {
+          "id": "arrom3-q10",
+          "tipo": "concepto",
+          "enunciado": "Regla 31: ¿qué riesgo hay al joinear datos de una tabla en entrenamiento y serving?",
+          "solucion": "Que los datos de la tabla CAMBIEN entre el momento de entrenar y el de servir. Si joineas doc_ids con una tabla de features (nº de comentarios o clicks), esos valores pueden modificarse, y la predicción del modelo para el mismo documento diferirá entre train y serving. La forma más fácil de evitarlo es logear features en tiempo de serving (R32); si la tabla cambia lento, también puedes snapshotearla por hora o día para datos razonablemente cercanos (aunque no resuelve del todo el problema).",
+          "explicacion": "Es una fuente clásica de training-serving skew por 'cambio en los datos'."
+        },
+        {
+          "id": "arrom3-q11",
+          "tipo": "concepto",
+          "enunciado": "Regla 32: ¿cómo ayuda reusar código entre los pipelines de entrenamiento y serving?",
+          "solucion": "Serving es procesamiento ONLINE (manejas cada request al llegar, un lookup por query) y entrenamiento es BATCH (puedes combinar tareas, hacer joins), pero puedes reusar código: crea un objeto particular a tu sistema donde el resultado de queries/joins se guarde de forma muy legible y testeable, y luego, tanto en serving como en training, corre un método común que convierte ese objeto legible al formato que el ML espera. Esto ELIMINA una fuente de training-serving skew. Corolario: no uses dos lenguajes distintos entre training y serving, pues hace casi imposible compartir código.",
+          "explicacion": "El código compartido garantiza que las features se construyan idénticas en ambos lados."
+        },
+        {
+          "id": "arrom3-q12",
+          "tipo": "concepto",
+          "enunciado": "Regla 33: ¿por qué testear un modelo con datos POSTERIORES a los de entrenamiento?",
+          "solucion": "Porque el rendimiento sobre datos recogidos DESPUÉS de los datos de entrenamiento refleja mejor lo que el sistema hará en producción. Si entrenas con datos hasta el 5 de enero, testea con datos del 6 en adelante. Esperarás un rendimiento algo peor sobre los datos nuevos, pero no radicalmente peor; como puede haber efectos diarios, quizá no predigas bien la tasa media de clic/conversión, pero el AUC (probabilidad de dar a un positivo mayor score que a un negativo) debería quedar razonablemente cerca.",
+          "explicacion": "Testear 'hacia el futuro' evita el optimismo de evaluar sobre el mismo periodo del entrenamiento."
+        },
+        {
+          "id": "arrom3-q13",
+          "tipo": "concepto",
+          "enunciado": "Regla 34: ¿cómo obtener datos limpios en una tarea de filtrado (spam) sin sesgo de muestreo?",
+          "solucion": "En filtrado, los ejemplos marcados como negativos NO se muestran al usuario. Si tu filtro bloquea el 75% de los negativos en serving y solo aprendes de lo que el usuario ve, introduces sesgo de muestreo. Solución: durante el serving etiqueta el 1% de TODO el tráfico como 'held out' y muéstralo al usuario; así tu filtro sigue bloqueando ≥74% de los negativos y esos ejemplos held-out (sin sesgo) se vuelven tus datos de entrenamiento. Es un pequeño sacrificio de rendimiento a corto plazo por datos muy limpios.",
+          "explicacion": "Si el filtro bloquea ≥95% es menos viable; para solo medir rendimiento basta una muestra ínfima (0.1%, ~10.000 ejemplos)."
+        },
+        {
+          "id": "arrom3-q14",
+          "tipo": "concepto",
+          "enunciado": "Regla 36: ¿cómo se evitan los feedback loops con features posicionales?",
+          "solucion": "La POSICIÓN afecta dramáticamente la probabilidad de clic: si pones un item en 1ª posición se clicará más, creando un loop. Solución: añade FEATURES POSICIONALES (el modelo aprende a pesar mucho 'posición=1'), de modo que da menos peso a otros factores en esos ejemplos. En SERVING NO le des la feature posicional (o dásela constante), porque rankeas los candidatos ANTES de decidir el orden. Mantén las features posicionales SEPARADAS del resto del modelo (el modelo ideal es la suma de una función de las posicionales y una función del resto; no cruces posicionales con features de documento).",
+          "explicacion": "La asimetría train/serving exige aislar la feature posicional para que no contamine el resto."
+        },
+        {
+          "id": "arrom3-q15",
+          "tipo": "concepto",
+          "enunciado": "Regla 37: ¿en qué tres componentes se divide la medición del training-serving skew?",
+          "solucion": "(1) La diferencia entre el rendimiento sobre los datos de ENTRENAMIENTO y los de HOLDOUT: siempre existe y no siempre es mala. (2) La diferencia entre el rendimiento sobre HOLDOUT y los datos del 'NEXT-DAY' (día siguiente): siempre existe; debes tunear la regularización para MAXIMIZAR el rendimiento next-day, y caídas grandes aquí indican features time-sensitive que quizá degradan el modelo. (3) La diferencia entre 'next-day' y los datos LIVE: si un modelo da resultados distintos para el mismo ejemplo en training y en serving (R5), una discrepancia aquí indica un ERROR DE INGENIERÍA.",
+          "explicacion": "Descomponer el skew localiza la causa: overfitting, features temporales o bug de pipeline."
+        }
+      ]
+    },
+    {
+      "id": "arena-rom4",
+      "bloque": "fase-7",
+      "orden": 82,
+      "titulo": "Arena Reglas de ML · Fase III: modelos complejos y trade-offs",
+      "libro": "Rules of Machine Learning: Best Practices for ML Engineering (Martin Zinkevich, Google)",
+      "lectura": "data/teoria/arena-rom4.md",
+      "dosis": 30,
+      "objetivo": "Navegar la Fase III: decidir lanzamientos con múltiples métricas (proxies de metas largas), mantener ensembles simples y monotónicos, buscar fuentes de información nuevas ante un plateau y entender los límites de popularidad/transferencia (Reglas 38-43).",
+      "heuristicas": [
+        "decidir-lanzamiento-multimetrica",
+        "mantener-ensembles-simples"
+      ],
+      "metadata": {
+        "ruta": "ml-systems",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Si los objetivos están desalineados, cambia el objetivo/metas, no añadas features (R38)",
+        "Las decisiones de lanzamiento son multi-métrica y proxies de metas largas (R39)",
+        "Ensemble simple: base XOR combinador, y monotónico (R40)",
+        "Ante un plateau, busca info cualitativamente nueva, no refines lo viejo (R41)",
+        "Medir clicks mide popularidad; amigos transfieren entre productos, intereses no (R42-43)"
+      ],
+      "banco": [
+        {
+          "id": "arrom4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué señales indican que la Fase II del ciclo de ML se está cerrando y empieza la Fase III?",
+          "solucion": "Que las ganancias MENSUALES empiezan a disminuir y aparecen TRADE-OFFS entre métricas: en algunos experimentos unas suben y otras bajan. Aquí se pone interesante: como las ganancias son más difíciles de lograr, el machine learning tiene que volverse más sofisticado. Es una sección con más reglas 'blue-sky'; tras la Fase III cada equipo encuentra su propio camino.",
+          "explicacion": "Fase I: pipeline e infra; Fase II: feature engineering con métricas subiendo; Fase III: optimización sofisticada con trade-offs."
+        },
+        {
+          "id": "arrom4-q2",
+          "tipo": "concepto",
+          "enunciado": "Regla 38: ¿qué hacer si el problema son objetivos desalineados, no la falta de features?",
+          "solucion": "No malgastar tiempo en features nuevas. Cuando las mediciones se estancan, el equipo mira problemas fuera del alcance del objetivo actual del ML; si las metas de PRODUCTO no las cubre el objetivo algorítmico existente, necesitas cambiar O EL OBJETIVO O LAS METAS de producto, no añadir features. Por ejemplo, puedes optimizar clicks, plus-ones o descargas, pero tomar las decisiones de lanzamiento basándote en parte en raters humanos.",
+          "explicacion": "Añadir features no arregla un objetivo que apunta al lugar equivocado."
+        },
+        {
+          "id": "arrom4-q3",
+          "tipo": "concepto",
+          "enunciado": "Regla 39: ¿por qué las decisiones de lanzamiento son un proxy de las metas de producto a largo plazo?",
+          "solucion": "Porque dependen de MÚLTIPLES criterios, solo algunos optimizables por ML. Alice baja el log loss y sube la tasa de instalación en vivo, pero como los DAU caen 5%, el equipo NO lanza: las métricas medibles en A/B (engagement, DAU, 30-DAU, revenue, ROI del anunciante) son a su vez PROXIES de metas a largo plazo (satisfacer usuarios y partners, crecer, beneficio), que son proxies de tener un producto de calidad y una empresa próspera en 5 años. No hay 'hit points' que midan la salud del producto; se requiere juicio humano.",
+          "explicacion": "Los lanzamientos fáciles son cuando TODAS las métricas mejoran (o no empeoran)."
+        },
+        {
+          "id": "arrom4-q4",
+          "tipo": "concepto",
+          "enunciado": "Regla 39: con A=(1M DAU, $4M/día) y B=(2M DAU, $2M/día), ¿por qué ningún equipo cambia al otro escenario?",
+          "solucion": "Porque NO hay un ranking explícito de todas las combinaciones de valores de métricas. Si el sistema actual es A, el equipo no cambiaría a B; si es B, no cambiaría a A. Parece irracional, pero las predicciones de cómo cambiarán las métricas pueden o no cumplirse, así que hay un gran RIESGO en cualquier cambio, y cada métrica (DAU, revenue) cubre un riesgo distinto que al equipo le preocupa. Además, ninguna métrica cubre la preocupación última: '¿dónde estará mi producto en cinco años?'.",
+          "explicacion": "Ilustra que las decisiones multi-métrica no se reducen a una sola función de utilidad."
+        },
+        {
+          "id": "arrom4-q5",
+          "tipo": "concepto",
+          "enunciado": "Regla 39: ¿por qué los individuos tienden a favorecer un único objetivo y qué ofrece el ML multi-objetivo?",
+          "solucion": "Porque la mayoría de las herramientas de ML favorecen un solo objetivo, y un ingeniero produciendo features obtiene un flujo constante de lanzamientos en ese entorno. El ML MULTI-OBJETIVO empieza a abordar esto: puedes formular un problema de satisfacción de restricciones con cotas inferiores en cada métrica y optimizar una combinación lineal de métricas. Aun así, no todas las métricas se enmarcan fácilmente como objetivos de ML: predecir por qué un usuario visita tu sitio, o el éxito futuro del sitio, es AI-complete (tan difícil como visión por computador o NLP).",
+          "explicacion": "El multi-objetivo ayuda con el conflicto individuo↔equipo, pero no resuelve las metas AI-complete."
+        },
+        {
+          "id": "arrom4-q6",
+          "tipo": "concepto",
+          "enunciado": "Regla 40: ¿cómo se mantiene un ensemble simple?",
+          "solucion": "Modelos unificados que toman features crudas y rankean son los más fáciles de depurar, pero un ENSEMBLE (un modelo que combina los scores de otros) puede ir mejor. Para mantenerlo simple, cada modelo debe ser O BIEN un ensemble que SOLO toma el input de otros modelos, O BIEN un modelo base que toma muchas features, pero NO ambos. Usa un combinador simple que solo toma las salidas de los modelos base como inputs, e impón propiedades.",
+          "explicacion": "Mezclar 'base + ensemble' en un mismo modelo y apilar modelos entrenados aparte produce comportamiento difícil de depurar."
+        },
+        {
+          "id": "arrom4-q7",
+          "tipo": "concepto",
+          "enunciado": "Regla 40: ¿qué propiedad de monotonicidad debe cumplir un ensemble?",
+          "solucion": "Que un AUMENTO en el score producido por un modelo base NO DISMINUYA el score del ensemble; equivalentemente, que un aumento en la probabilidad predicha de un clasificador subyacente no disminuya la probabilidad predicha del ensemble. También conviene que los modelos entrantes sean semánticamente interpretables/calibrados, para que cambios en los modelos subyacentes no confundan al modelo de ensemble.",
+          "explicacion": "La monotonicidad mantiene el ensemble interpretable y predecible ante cambios de los modelos base."
+        },
+        {
+          "id": "arrom4-q8",
+          "tipo": "concepto",
+          "enunciado": "Regla 41: cuando el rendimiento se estanca, ¿qué tipo de información buscar?",
+          "solucion": "Fuentes de información CUALITATIVAMENTE NUEVAS, en lugar de refinar las señales existentes. Si ya añadiste demografía, palabras del documento, exploraste templates y tuneaste la regularización, y no ves un lanzamiento con >1% de mejora en tus métricas clave en varios trimestres, es hora de construir infraestructura para features radicalmente distintas: el historial de documentos que el usuario accedió en el último día/semana/año, datos de otra property, entidades de wikidata o un knowledge graph interno, o deep learning. Ajusta tus expectativas de ROI y pesa el beneficio contra el coste de la complejidad añadida.",
+          "explicacion": "Refinar señales que ya plateauearon da rendimientos decrecientes; lo nuevo abre headroom."
+        },
+        {
+          "id": "arrom4-q9",
+          "tipo": "concepto",
+          "enunciado": "Regla 42: ¿por qué diversidad, personalización y relevancia no están tan correlacionadas con la popularidad como se cree?",
+          "solucion": "Porque las tres se DEFINEN como distintas de lo ordinario (diversidad de fuente, resultados propios por usuario, resultados más apropiados para una query), y 'lo ordinario es difícil de batir'. Si tu sistema mide clicks, tiempo, watches, +1s o reshares, estás midiendo POPULARIDAD, y las features de personalización/diversidad reciben menos peso (o a veces signo distinto) del esperado. No significa que no valgan: usa post-procesamiento para inyectarlas, y si los objetivos a largo plazo suben, decláralas valiosas (o modifica el objetivo).",
+          "explicacion": "Medir engagement = medir popularidad; la personalización compite contra 'lo ordinario', que ya es fuerte."
+        },
+        {
+          "id": "arrom4-q10",
+          "tipo": "concepto",
+          "enunciado": "Regla 43: ¿qué transfiere bien entre productos y qué no?",
+          "solucion": "Los AMIGOS tienden a ser los mismos entre productos distintos, pero los INTERESES no. Google ha tenido tracción tomando un modelo que predice la cercanía de una conexión en un producto y aplicándolo bien en otro ('tus amigos son quienes son'). En cambio, varios equipos han luchado con features de personalización de intereses a través de divisiones de producto: parece que debería funcionar, pero no lo hace. Aun así, saber que un usuario tiene historial en otra property puede ayudar (la mera presencia de actividad en dos productos es indicativa).",
+          "explicacion": "La estructura social transfiere; el gusto/interés es específico de cada contexto."
+        },
+        {
+          "id": "arrom4-q11",
+          "tipo": "concepto",
+          "enunciado": "Regla 38 vs Regla 41: ¿cómo distingues 'objetivos desalineados' de 'rendimiento estancado por falta de señales nuevas'?",
+          "solucion": "En la R38 el problema es que las metas de producto NO las captura el objetivo algorítmico actual: aunque mejores el modelo, optimizas la cosa equivocada, así que la solución es cambiar el objetivo o las metas, no añadir features. En la R41 el objetivo es el correcto pero el rendimiento PLATEAUEÓ porque exprimiste las señales existentes: la solución es traer fuentes de información cualitativamente nuevas. Diagnóstico: ¿el objetivo apunta a la meta correcta? Si no → R38; si sí pero no mejora → R41.",
+          "explicacion": "Una es un problema de alineación del objetivo; la otra, de agotamiento de las features actuales."
+        },
+        {
+          "id": "arrom4-q12",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué predecir 'la salud última del producto' es considerado AI-complete en la Regla 39?",
+          "solucion": "Porque, aunque modelar acciones observables (un clic, una instalación) es factible —ocurren porque el contenido se mostró—, es mucho más difícil averiguar POR QUÉ un usuario visita tu sitio o predecir su satisfacción y bienestar; y predecir el éxito futuro de un sitio como un todo requiere comprensión a nivel humano. Por eso se considera AI-complete: tan difícil como la visión por computador o el procesamiento de lenguaje natural, y se necesita juicio humano para conectar cualquier objetivo aprendido con la naturaleza del producto.",
+          "explicacion": "La salud a 5 años no es una métrica observable y atribuible (contraste con R13)."
+        },
+        {
+          "id": "arrom4-q13",
+          "tipo": "concepto",
+          "enunciado": "¿Qué riesgo introduce apilar modelos entrenados por separado, y cómo lo previene la Regla 40?",
+          "solucion": "Que combinar modelos que se entrenaron separadamente puede producir mal comportamiento, difícil de depurar. La R40 lo previene exigiendo que cada modelo sea o un base (muchas features) o un combinador (solo inputs de otros modelos), nunca ambos; que el combinador sea simple; que cumpla monotonicidad (subir un base no baja el ensemble); y que los modelos entrantes sean interpretables/calibrados para que sus cambios no confundan al ensemble.",
+          "explicacion": "La disciplina 'base XOR combinador' + monotonicidad mantiene depurable un sistema de varios modelos."
+        },
+        {
+          "id": "arrom4-q14",
+          "tipo": "concepto",
+          "enunciado": "Según la Regla 42, ¿cómo se debe incorporar diversidad/personalización/relevancia si se mide popularidad?",
+          "solucion": "Mediante POST-PROCESAMIENTO: como tus métricas (clicks, watches, +1s) miden popularidad y las features de diversidad/personalización reciben poco peso al entrenar directamente, aplica post-procesamiento para aumentar diversidad o relevancia sobre la salida del modelo. Luego, si observas que los objetivos a LARGO PLAZO suben, puedes declarar que diversidad/relevancia son valiosas y, o bien seguir usando el post-procesamiento, o modificar directamente el objetivo basándote en diversidad/relevancia.",
+          "explicacion": "Primero inyectas la propiedad por fuera y validas con métricas largas antes de cambiar el objetivo."
+        },
+        {
+          "id": "arrom4-q15",
+          "tipo": "concepto",
+          "enunciado": "¿Qué advertencia general hace el documento sobre toda la sección de Fase III?",
+          "solucion": "Que tiene más reglas 'blue-sky' (especulativas) que las secciones anteriores: muchos equipos atraviesan los tiempos felices de las Fases I y II, pero una vez alcanzada la Fase III tienen que encontrar su PROPIO camino. Como en cualquier proyecto de ingeniería, hay que pesar el beneficio de añadir features nuevas contra el coste de la complejidad añadida, y ajustar las expectativas de retorno de inversión.",
+          "explicacion": "Fase III no tiene una receta única; las reglas son guía, no garantía."
         }
       ]
     }
