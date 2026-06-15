@@ -153,6 +153,40 @@ Propiedad: E[T(X)] = dA/dη. La familia exponencial tiene **estadístico suficie
 
 ---
 
+## Mini-ejemplo trabajado: la Gamma es solo exponenciales apiladas
+
+¿Cuánto esperas hasta el 3.er autobús si llegan como Poisson a tasa λ=2/hora? Cada espera entre autobuses es Exp(2) con media 1/2 h. El tiempo hasta el 3.º es la **suma de 3 exponenciales independientes** = Gamma(3, 2):
+
+> E[X] = α/λ = 3/2 = **1.5 h**, Var[X] = α/λ² = 3/4
+
+No hay que integrar la densidad Gamma: "tiempo hasta el n-ésimo evento de Poisson" *es* Gamma(n, λ) por construcción, igual que Gamma(1,λ)=Exp(λ) y Gamma(n/2,1/2)=χ²(n). Las distribuciones no son fichas sueltas: son la misma familia mirada desde ángulos distintos.
+
+**Predicción antes de seguir:** si en vez del tiempo absoluto preguntas "¿qué fracción del tiempo total a los 5 autobuses transcurrió antes del 3.º?", ¿qué distribución aparece? Respuesta: una **Beta**. X/(X+Y) con X~Gamma(3), Y~Gamma(2) es Beta(3,2): la Beta es una Gamma *normalizada*, una proporción acotada en (0,1). Por eso la Beta es el prior natural de una probabilidad.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "tiempo hasta el n-ésimo evento" → Gamma; "una proporción / probabilidad desconocida" → Beta; "cociente de varianzas" → F.
+- **Contraejemplo (t no tiene siempre varianza):** la t(ν) parece "casi normal", pero t(1)=Cauchy no tiene media ni varianza, y Var existe solo para ν>2. Tratar toda t como de cola ligera es el error.
+- **Caso borde (lognormal):** E[X]=e^{μ+σ²/2} > mediana=e^μ siempre. El borde recuerda que en distribuciones sesgadas a la derecha la media supera a la mediana — confundirlas distorsiona precios e ingresos.
+
+## Errores típicos
+
+- **Conceptual:** ver las distribuciones como una lista que memorizar en vez de una red de relaciones (Exp⊂Gamma, χ²⊂Gamma, Beta=Gamma normalizada, t=Z/√(χ²/ν)).
+- **Técnico:** usar la media e^{μ+σ²/2} cuando se quería la mediana e^μ de una lognormal (o viceversa).
+- **De supuestos:** aplicar el adelgazamiento de Poisson sin que las retenciones sean independientes entre eventos.
+
+## Transferencia isomorfa
+
+- **Beta conjugada ↔ actualización bayesiana de una proporción:** Beta(α,β) + Bin(n,x) → Beta(α+x, β+n−x); α,β son éxitos/fracasos previos (pseudo-conteos), el motor de toda inferencia de tasas (conecta con [[arena-b4]]).
+- **Gamma (tiempo al n-ésimo evento) ↔ procesos de llegada:** colas, fallos de servidores y eventos de tráfico se modelan con el mismo proceso de Poisson↔Gamma (conecta con [[arena-sre4]], donde las cascadas y tiempos entre fallos importan).
+- **Weibull (tasa de fallo k) ↔ análisis de supervivencia:** k<1, =1, >1 son hazard decreciente/constante/creciente, exactamente la forma del hazard que estudia Cox (conecta con [[arena-h8]]).
+- **t-Student de cola pesada ↔ Cauchy y varianza infinita:** ν pequeño = colas gordas que rompen la intuición normal (conecta con [[arena-q11]]).
+- **Lognormal ↔ precios de activos:** ln(X) normal modela precios, ingresos y tamaños multiplicativos (conecta con [[arena-q7]]).
+
+Moraleja de la arista: *no memorices distribuciones; memoriza sus parentescos — la Gamma apila exponenciales, la Beta normaliza Gammas, y la mgf convierte cada relación en álgebra.*
+
+---
+
 ## Dispersadores clave
 
 | Señal | Jugada |

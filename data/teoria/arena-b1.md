@@ -119,6 +119,39 @@ C(n,k) = C(n−1,k−1) + C(n−1,k) — identidad de Pascal
 
 ---
 
+## Mini-ejemplo trabajado: el problema de los sombreros sin tocar la independencia
+
+n personas dejan su sombrero; se los devuelven al azar. ¿Cuántas esperan recuperar el suyo? La tentación es modelar la permutación completa (¡n! casos, dependencias horribles). En vez de eso, define indicadores: Xᵢ = 1 si la persona i recupera su sombrero. Por simetría P(Xᵢ=1) = 1/n, así que E[Xᵢ] = 1/n. Por **linealidad de la esperanza**:
+
+> E[X₁+…+Xₙ] = Σ E[Xᵢ] = n · (1/n) = **1**
+
+En promedio, exactamente **una** persona recupera su sombrero, *para cualquier n* —2 personas o un millón.
+
+**Predicción antes de seguir:** los eventos Xᵢ no son independientes (si n−1 personas tienen su sombrero, la última también). ¿Eso rompe el cálculo? Respuesta: **no**. La linealidad de la esperanza no pide independencia; sumar esperanzas funciona aunque los sumandos estén correlacionados. Esa es justo su superpotencia: descompone un problema enredado en piezas triviales.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (complemento):** "P(al menos un éxito)" casi siempre es más fácil como 1 − P(ninguno); p. ej. P(al menos dos cumpleaños iguales) = 1 − (365·364·…)/365ⁿ.
+- **Contraejemplo (Bayes invertido):** P(+|enfermo) ≠ P(enfermo|+). Con prevalencia 2% y test al 95%, la mayoría de positivos son falsos. Leer la verosimilitud como posterior es el error clásico.
+- **Caso borde (orden sí/no importa):** "k de n con reemplazo sin orden" no es nᵏ ni C(n,k) sino C(n+k−1, k) (stars and bars). El borde fuerza a declarar si el orden y el reemplazo cuentan antes de elegir fórmula.
+
+## Errores típicos
+
+- **Conceptual:** exigir independencia para sumar esperanzas de indicadores (no hace falta).
+- **Técnico:** olvidar dividir por las multiplicidades en anagramas (n!/(n₁!…)) y sobrecontar permutaciones de letras repetidas.
+- **De interpretación:** confundir "con/sin reemplazo" o "ordenado/no ordenado", que cambian por completo la fórmula de conteo.
+
+## Transferencia isomorfa
+
+- **Linealidad de la esperanza ↔ conteo de eventos en sistemas:** "número esperado de coincidencias / colisiones / patrones" se resuelve con indicadores sin pelear con la dependencia, idéntico al conteo de patrones en una secuencia (conecta con [[arena-q9]]).
+- **Bayes con tasa base ↔ VPP de un clasificador:** prior×verosimilitud/evidencia es exactamente el valor predictivo positivo; sin prevalencia no inviertes el condicional (conecta con [[arena-q2]]).
+- **LOTUS ↔ valorar g(X) sin su distribución:** E[g(X)] = Σ g(x)P(x) evita derivar la distribución de g(X), como valorar un payoff f(S) integrando contra la densidad de S (conecta con [[arena-q5]]).
+- **Inclusión-exclusión ↔ deduplicado por uniones:** sumar–restar solapamientos es el mismo principio que contar elementos únicos en uniones de conjuntos.
+
+Moraleja de la arista: *para contar lo enredado, suma indicadores (la dependencia no estorba a la esperanza); para "al menos uno", usa el complemento; y nunca confundas la verosimilitud con el posterior.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

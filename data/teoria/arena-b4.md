@@ -156,6 +156,40 @@ Algoritmos:
 
 ---
 
+## Mini-ejemplo trabajado: distribución estacionaria de una cadena 2×2
+
+Dos estados (soleado=1, lluvioso=2) con P = [[0.6, 0.4], [0.2, 0.8]]. La estacionaria π=(π₁,π₂) cumple πP=π. La forma más rápida es el **balance detallado** (vale para 2 estados): π₁·P₁₂ = π₂·P₂₁ → π₁·0.4 = π₂·0.2 → π₁ = ½·π₂. Con π₁+π₂=1:
+
+> π₂ = 2/3, π₁ = 1/3 → **π = (1/3, 2/3)**
+
+A largo plazo el sistema pasa 1/3 del tiempo soleado y 2/3 lluvioso, **sin importar el clima inicial** (la cadena es irreducible y aperiódica). Y el tiempo medio de retorno a "soleado" es 1/π₁ = **3 días**.
+
+**Predicción antes de seguir:** si arrancas 100% seguro de que hoy está soleado, ¿la distribución a 50 pasos depende de ese arranque? Respuesta: **prácticamente no** — converge a (1/3, 2/3). El estado inicial se "olvida" tras el mixing time; esa amnesia es la propiedad de Markov llevada al límite. (Excepción: si la cadena fuera periódica o reducible, el olvido no ocurriría.)
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** sistema cuyo futuro depende solo del estado actual → cadena de Markov; busca π con πP=π (o balance detallado).
+- **Contraejemplo (no toda π viene de balance detallado):** balance detallado ⟹ estacionariedad, pero no al revés; una cadena con flujo circular (1→2→3→1) puede tener π estacionaria sin ser reversible. Asumir reversibilidad siempre es el error.
+- **Caso borde (periódica):** una cadena que alterna 1→2→1→2 tiene π=(½,½) pero Pⁿ **no converge** (oscila); el teorema de convergencia exige aperiodicidad. El borde revela qué hipótesis sostiene "se olvida el inicio".
+
+## Errores típicos
+
+- **Conceptual:** confundir la distribución estacionaria (equilibrio de largo plazo) con la distribución inicial, o creer que toda cadena converge (hace falta irreducible + aperiódica).
+- **Técnico:** en Metropolis-Hastings, olvidar el cociente de propuestas q(x|y)/q(y|x) cuando q no es simétrica, rompiendo el balance detallado.
+- **De supuestos:** reportar el posterior como si el prior no importara con pocos datos; el prior domina hasta que n crece.
+
+## Transferencia isomorfa
+
+- **Balance detallado de MCMC ↔ estacionariedad por construcción:** la tasa de aceptación de Metropolis está *diseñada* para que π satisfaga balance detallado; muestrear de π difícil = construir una cadena cuyo equilibrio es π.
+- **Beta-Binomial conjugado ↔ familia de distribuciones:** el posterior Beta(α+x, β+n−x) es la misma Beta=Gamma-normalizada de antes; conjugación es cerrar la familia bajo actualización (conecta con [[arena-b3]]).
+- **Posterior ∝ verosimilitud × prior ↔ Bayes con tasa base:** actualizar creencias sobre θ es el mismo gesto que actualizar odds de enfermedad con un test (conecta con [[arena-q2]]).
+- **Propiedad de Markov (estado suficiente) ↔ estado mínimo en sistemas/RL:** "el futuro depende solo del presente" es la definición de un estado bien diseñado en control y en diseño de features (conecta con [[arena-q11]], procesos como el OU, que son markovianos).
+- **HMM (estados latentes que evolucionan) ↔ secuencias con estructura oculta:** etiquetado de secuencias y series temporales con régimen oculto comparten el forward-backward.
+
+Moraleja de la arista: *una cadena de Markov olvida su inicio si es irreducible y aperiódica; el equilibrio es π con πP=π; y la inferencia bayesiana es exactamente "actualizar π" con verosimilitud × prior.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

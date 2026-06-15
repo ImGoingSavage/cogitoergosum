@@ -146,6 +146,43 @@ Jensen implica: E[X²] ≥ (E[X])², E[e^X] ≥ e^{E[X]}, E[1/X] ≥ 1/E[X] (par
 
 ---
 
+## Mini-ejemplo trabajado: dado que decide cuántas monedas (LET + LVT)
+
+Tiras un dado justo (X∈{1..6}) y luego lanzas X monedas; Y = número de caras. Calcular E[Y] y Var[Y] directamente es engorroso, pero **condicionar en X** lo vuelve mecánico.
+
+- **LET:** dado X=x, Y~Bin(x, ½), así que E[Y|X]=X/2. Entonces E[Y] = E[X/2] = (7/2)/2 = **7/4**.
+- **LVT:** Var[Y|X] = X·¼, y E[Y|X]=X/2.
+  - Componente intra: E[Var[Y|X]] = E[X]/4 = (7/2)/4 = 7/8.
+  - Componente entre: Var[E[Y|X]] = Var[X/2] = Var[X]/4 = (35/12)/4 = 35/48.
+  - Var[Y] = 7/8 + 35/48 = 42/48 + 35/48 = **77/48**.
+
+La moraleja operativa: *condiciona en la variable que más reduce la incertidumbre y luego promedia.*
+
+**Predicción antes de seguir:** ¿qué representa el término Var[E[Y|X]] = 35/48? Respuesta: la varianza de Y que **el dado explica** (la parte "between"); E[Var[Y|X]] = 7/8 es el ruido de las monedas que el dado *no* explica (la parte "within"). Es exactamente la partición de ANOVA y la descomposición sesgo–varianza.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** Y depende de una X aleatoria → LET para la media, LVT para la varianza ("condiciona y promedia").
+- **Contraejemplo (Cov=0 ≠ independencia):** X~Unif(−1,1), Y=X². Cov(X,Y)=E[X³]=0, pero Y es función determinista de X. Cov=0 solo descarta dependencia *lineal* — salvo en la normal bivariada, donde sí equivale a independencia.
+- **Caso borde (Jensen):** para f convexa, E[f(X)] ≥ f(E[X]); por eso E[e^X] = e^{μ+σ²/2} > e^{E[X]} = e^μ. El "extra" σ²/2 no es error: es la convexidad.
+
+## Errores típicos
+
+- **Conceptual:** leer Cov=0 como independencia fuera de la normal bivariada.
+- **Técnico:** en LVT, olvidar el término Var[E[Y|X]] y reportar solo el ruido intra-grupo, subestimando Var[Y].
+- **De supuestos:** aplicar M_{X+Y}=M_X·M_Y sin que X,Y sean independientes (la factorización de la mgf exige independencia).
+
+## Transferencia isomorfa
+
+- **LET ↔ torre de la esperanza:** E[Y]=E[E[Y|X]] es la misma ley que resuelve la geométrica y la parada óptima condicionando en el primer paso (conecta con [[arena-q6]]).
+- **LVT ↔ descomposición sesgo-varianza:** within + between es error irreducible + varianza explicada en ML (conecta con [[arena-iml4]]).
+- **mgf gaussiana e^{μt+σ²t²/2} ↔ valoración lognormal:** evaluarla en t=1 da E[e^X], el puente directo al precio lognormal y a la prima de Jensen (conecta con [[arena-q7]]).
+- **Estadísticos de orden E[X₍ₖ₎]=k/(n+1) ↔ cuantiles muestrales:** los n puntos parten [0,1] en n+1 huecos iguales en esperanza, la base de los plots cuantil-cuantil.
+
+Moraleja de la arista: *para variables anidadas, condiciona y promedia; la varianza total siempre se parte en "lo que la condición explica" más "lo que deja como ruido".*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
