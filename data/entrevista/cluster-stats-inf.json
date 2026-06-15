@@ -1,0 +1,61 @@
+{
+  "rol": "Entrevistador de estadística/inferencia. Busca que distingas estimación de prueba, y que no recites fórmulas sin entender el supuesto.",
+  "duracion": "30 min (ronda de estadística)",
+  "preguntas": [
+    {
+      "q": "Estimas la varianza de una normal con n=5 datos. ¿Prefieres el estimador insesgado (÷ n−1) o el MLE (÷ n)? Razónalo.",
+      "rubrica": [
+        "Usa MSE = Var + Bias²: un poco de sesgo a cambio de mucha menos varianza puede ganar.",
+        "Reconoce que insesgado no implica menor error en una muestra concreta.",
+        "Conecta con el trade-off sesgo-varianza de todo ML (regularización)."
+      ],
+      "errores": [
+        "Elegir el insesgado por reflejo, sin mirar el MSE.",
+        "Creer que el MLE es siempre insesgado.",
+        "No mencionar la varianza, solo el sesgo."
+      ],
+      "seguimiento": "¿Por qué el estimador de mínimo MSE de σ² divide por n+1, aún más sesgado que el MLE?"
+    },
+    {
+      "q": "Un colega dice: 'p = 0.03, hay 97% de probabilidad de que el efecto sea real'. ¿Lo corriges?",
+      "rubrica": [
+        "El p-valor es P(datos tan extremos | H₀), NO P(H₀ falsa | datos).",
+        "Invertir el condicional requiere un prior (Bayes); es el mismo error que sensibilidad vs VPP.",
+        "Menciona que con n enorme todo es 'significativo': mira el tamaño del efecto."
+      ],
+      "errores": [
+        "Aceptar la interpretación o dudar sin corregir.",
+        "Confundir significancia estadística con relevancia práctica.",
+        "No conectar p-valor con el condicional invertido de la tasa base."
+      ]
+    },
+    {
+      "q": "En una regresión de precios de casas, el coeficiente de 'número de recámaras' sale negativo. ¿Qué pasó y qué haces?",
+      "rubrica": [
+        "Sospecha confounding por variable omitida (p.ej. ubicación): las casas grandes están en zonas baratas.",
+        "Distingue confounding (omisión → sesga el signo) de multicolinealidad (comisión → infla la varianza).",
+        "Propón añadir el predictor faltante; el coeficiente no estaba mal calculado, respondía a otra pregunta."
+      ],
+      "errores": [
+        "Concluir que 'más recámaras baja el precio' literalmente.",
+        "Confundir confounding con multicolinealidad.",
+        "Interpretar un beta observacional como causal sin cerrar confundidores."
+      ],
+      "seguimiento": "¿Cómo distingues, viendo solo los coeficientes, si el problema es de omisión o de comisión?"
+    },
+    {
+      "q": "Tienes 100 predictores y pocos datos; el modelo sobreajusta. ¿Ridge o lasso, y por qué?",
+      "rubrica": [
+        "Lasso (L1) si crees que pocos predictores importan: anula coeficientes (selección), por la geometría del rombo.",
+        "Ridge (L2) si hay muchos efectos pequeños: encoge sin anular, reparte la señal.",
+        "Conecta el shrinkage con James-Stein / un prior bayesiano hacia 0; λ por validación cruzada; estandarizar siempre."
+      ],
+      "errores": [
+        "Decir 'lasso porque da sparsity' sin condicionarlo a la estructura del problema.",
+        "Olvidar estandarizar antes de penalizar.",
+        "Elegir λ mirando el error de entrenamiento en vez de CV."
+      ]
+    }
+  ],
+  "cierre": "Estimar no es probar: el MSE manda sobre el insesgamiento, el p-valor mide sorpresa bajo H₀ (no la verdad de H₀), un signo absurdo grita 'falta un predictor', y regularizar es cambiar sesgo por varianza."
+}

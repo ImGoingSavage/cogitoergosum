@@ -1,0 +1,48 @@
+{
+  "rol": "Entrevistador de system design (MAANG). Quiere requisitos primero, estimación de capacidad, y trade-offs explícitos — no una sopa de tecnologías.",
+  "duracion": "45 min (ronda de diseño)",
+  "preguntas": [
+    {
+      "q": "Diseña un acortador de URLs (tipo bit.ly). Empieza por donde creas que hay que empezar.",
+      "rubrica": [
+        "Empieza por requisitos y escala: QPS de lectura vs escritura, ratio lectura/escritura, longitud del código, retención.",
+        "Estima capacidad (almacenamiento, ancho de banda) con números redondos antes de elegir tecnología.",
+        "Diseña la generación de la clave (hash/base62/contador) y discute colisiones.",
+        "Lectura >> escritura → caché y CDN; describe el camino de lectura."
+      ],
+      "errores": [
+        "Saltar a 'uso Redis y Cassandra' sin requisitos ni estimación.",
+        "Ignorar el desbalance lectura/escritura.",
+        "No mencionar colisiones de la clave."
+      ],
+      "seguimiento": "¿Cómo evitas dos URLs distintas con el mismo código corto bajo alta concurrencia?"
+    },
+    {
+      "q": "El servicio crece y una sola base de datos no aguanta. ¿Cómo particionas?",
+      "rubrica": [
+        "Sharding por clave; explica por qué el módulo simple (hash % N) re-mapea casi todo al añadir un nodo.",
+        "Propón consistent hashing (anillo + nodos virtuales) para minimizar el re-mapeo.",
+        "Discute hot keys / desbalance y cómo los nodos virtuales lo suavizan."
+      ],
+      "errores": [
+        "Usar hash % N sin ver el costo de re-sharding al escalar.",
+        "No mencionar réplicas ni el factor de balanceo.",
+        "Confundir particionado (escala de escritura) con réplica (escala de lectura/HA)."
+      ]
+    },
+    {
+      "q": "¿Qué garantías de consistencia ofreces y qué sacrificas? Sé concreto.",
+      "rubrica": [
+        "Nombra el trade-off (CAP/PACELC): bajo partición eliges consistencia o disponibilidad.",
+        "Para un acortador, la lectura tolera consistencia eventual (caché); justifica la elección por el caso de uso.",
+        "Conecta la decisión con la métrica de negocio (latencia vs frescura)."
+      ],
+      "errores": [
+        "Prometer 'fuerte consistencia y alta disponibilidad' sin reconocer el trade-off.",
+        "Elegir el modelo de consistencia sin atarlo al caso de uso.",
+        "No mencionar el costo de la caché (invalidación/stale)."
+      ]
+    }
+  ],
+  "cierre": "Requisitos y números antes que tecnología; el particionado se decide por cómo crece el re-mapeo (consistent hashing), y toda garantía de consistencia es un trade-off que debes nombrar y atar al caso de uso."
+}

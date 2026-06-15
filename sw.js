@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v78';
+const VERSION = 'cogitoergosum-v79';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -50,11 +50,16 @@ const SHELL = [
   'data/quotes.json',
   'data/badges.json',
   'data/avatar.json',
-  // Simulación de entrevista (Nivel E): manifiesto + guiones por unidad.
-  'data/entrevista/_index.json',
-  'data/entrevista/arena-q2.json',
-  'data/entrevista/arena-cc3.json',
-  'data/entrevista/arena-h17.json',
+  // Simulación de entrevista (Nivel E): taxonomía + un guion por ronda/cluster.
+  'data/entrevista/_taxonomia.json',
+  'data/entrevista/cluster-quant-prob.json',
+  'data/entrevista/cluster-stats-inf.json',
+  'data/entrevista/cluster-dsa.json',
+  'data/entrevista/cluster-system-design.json',
+  'data/entrevista/cluster-ds-applied.json',
+  'data/entrevista/cluster-ml-systems.json',
+  'data/entrevista/cluster-causal-health.json',
+  'data/entrevista/cluster-conductual.json',
   // Lecciones de teoría del Modo Estudio (una por unidad): texto plano
   // pequeño — precachearlas garantiza estudiar sin red desde el iPad.
   'data/teoria/polya-cuatro-pasos.md',

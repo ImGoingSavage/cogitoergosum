@@ -1,0 +1,48 @@
+{
+  "rol": "Entrevistador conductual. No busca héroes sin errores: busca autoconciencia, ownership y comunicación clara bajo presión. Responde con STAR.",
+  "duracion": "30 min (ronda conductual)",
+  "preguntas": [
+    {
+      "q": "Cuéntame de un conflicto con un compañero de equipo y cómo lo resolviste.",
+      "rubrica": [
+        "Estructura STAR: el grueso (60-70%) en la Acción y el Resultado.",
+        "Describe el desacuerdo sin culpar, con empatía; busca entender la otra postura.",
+        "Resuelve con datos/objetivos comunes y cierra preservando la relación.",
+        "Habla en primera persona ('hice', no 'hicimos')."
+      ],
+      "errores": [
+        "Pintar al otro como el villano.",
+        "Quedarse en Situación/Tarea sin llegar a la Acción.",
+        "Resultado vago, sin desenlace ni aprendizaje."
+      ],
+      "seguimiento": "¿Y si el desacuerdo hubiera sido con tu manager y aun así tuvieras que ejecutar su decisión?"
+    },
+    {
+      "q": "Cuéntame de un proyecto que fracasó.",
+      "rubrica": [
+        "Elige un caso real con consecuencias (ni trivial ni imprudente).",
+        "Asume la responsabilidad sin culpar; narra brevemente la causa raíz.",
+        "Dedica el grueso al APRENDIZAJE y al cambio de proceso concreto que aplicaste después."
+      ],
+      "errores": [
+        "El falso defecto ('soy demasiado perfeccionista').",
+        "Echar la culpa al equipo o a las circunstancias.",
+        "Un fracaso sin lección ni cambio de proceso."
+      ]
+    },
+    {
+      "q": "Tuviste que convencer a alguien sin autoridad sobre él. ¿Cómo lo hiciste?",
+      "rubrica": [
+        "Credibilidad + datos + un prototipo + alinear intereses (mapear stakeholders).",
+        "Adapta el argumento a lo que le importa a esa persona, no a lo que te importa a ti.",
+        "Resultado con impacto, repartiendo el crédito con justicia."
+      ],
+      "errores": [
+        "Imponer por jerarquía o repetir el mismo argumento más fuerte.",
+        "Hablar en jerga a una audiencia no técnica.",
+        "Acaparar el crédito (o diluirlo en 'el equipo')."
+      ]
+    }
+  ],
+  "cierre": "Lo conductual premia ownership y claridad, no perfección: STAR como tu deconstrucción, el error como aprendizaje aplicado, y los datos —no la jerarquía— como tu forma de influir."
+}

@@ -1,0 +1,62 @@
+{
+  "rol": "Entrevistador de mesa quant. Rápido y cuantitativo: quiere ver tu razonamiento en voz alta, no solo el número final.",
+  "duracion": "30 min (ronda de probabilidad)",
+  "preguntas": [
+    {
+      "q": "Un modelo de fraude tiene 99% de sensibilidad y 99% de especificidad. La tasa de fraude real es 0.5%. Una transacción da positivo: ¿probabilidad de que sea fraude? Razónalo en voz alta.",
+      "rubrica": [
+        "Plantea Bayes o una tabla de contingencia, no adivina.",
+        "Nombra la prevalencia (0.5%) como el dato que domina: ~200 legítimas por fraude.",
+        "Calcula VPP ≈ 0.99·0.005 / (0.99·0.005 + 0.01·0.995) ≈ 33%.",
+        "Concluye que ~2 de cada 3 alertas son falsas pese al test 'excelente'."
+      ],
+      "errores": [
+        "Soltar '99%' confundiendo sensibilidad P(+|fraude) con VPP P(fraude|+).",
+        "Calcular sin nombrar la tasa base.",
+        "Dar el número sin verbalizar el camino."
+      ],
+      "seguimiento": "¿Qué sube más el VPP: el test a 99.9% o aplicarlo a un segmento con 10% de fraude?"
+    },
+    {
+      "q": "n personas dejan su sombrero y se los devuelven al azar. ¿Cuántas esperan recuperar el suyo? Y si te pido la varianza, ¿cambia algo?",
+      "rubrica": [
+        "Define un indicador por persona, E[Iₖ]=1/n, y suma por linealidad → E=1 para todo n.",
+        "Subraya que la linealidad NO exige independencia (los indicadores están correlacionados).",
+        "Para la varianza SÍ importa la dependencia (covarianza de los indicadores)."
+      ],
+      "errores": [
+        "Decir 'no puedo, no son independientes' — la media no lo necesita.",
+        "Intentar la distribución conjunta en vez de indicadores.",
+        "Confundir lo que afecta la media con lo que afecta la varianza."
+      ]
+    },
+    {
+      "q": "Tiras un dado hasta 3 veces; en cada tiro te quedas con el número o vuelves a tirar. ¿Cuál es tu ganancia esperada con la estrategia óptima?",
+      "rubrica": [
+        "Resuelve hacia atrás: último tiro E=3.5; dos tiros 4.25; tres tiros ≈4.667.",
+        "Regla de parada: quédate si el valor inmediato supera la esperanza de continuar.",
+        "Reconoce que es valorar una opción americana en miniatura."
+      ],
+      "errores": [
+        "Resolver hacia adelante en vez de hacia atrás.",
+        "Promediar los tiros sin la regla de parada.",
+        "No nombrar el umbral de continuación."
+      ],
+      "seguimiento": "Con 10 tiros disponibles, ¿el umbral para quedarte sube o baja? ¿Por qué?"
+    },
+    {
+      "q": "Dos traders, uno alcista y uno bajista, ¿le ponen precios distintos a una call europea? Justifícalo.",
+      "rubrica": [
+        "No: el portafolio delta-hedgeado no tiene riesgo en dt → rinde r por no-arbitraje.",
+        "Al derivar la EDP de Black-Scholes, el drift μ se cancela; el precio depende de σ, no del optimismo.",
+        "El precio refleja exposición a la magnitud (volatilidad), no a la dirección."
+      ],
+      "errores": [
+        "Creer que mayor retorno esperado encarece la opción.",
+        "Confundir Δ=N(d₁) con la probabilidad de acabar ITM (N(d₂)).",
+        "No conectar con la idea de replicación / no-arbitraje."
+      ]
+    }
+  ],
+  "cierre": "En la mesa quant: el número viene con su razonamiento. La tasa base manda en Bayes, la linealidad descompone lo enredado, la parada óptima se resuelve hacia atrás, y el no-arbitraje borra la dirección dejando solo el precio de la incertidumbre."
+}

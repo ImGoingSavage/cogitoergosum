@@ -1,0 +1,48 @@
+{
+  "rol": "Entrevistador de coding (MAANG). Quiere ver cómo aclaras la pregunta, eliges el patrón, y comunicas complejidad antes de escribir código.",
+  "duracion": "45 min (ronda de coding)",
+  "preguntas": [
+    {
+      "q": "Monedas [1, 2, 5], objetivo 11. Resuélvelo en voz alta, empezando por aclararme qué variante resuelves.",
+      "rubrica": [
+        "Aclara la variante ANTES de codificar: mínimo de monedas vs número de combinaciones.",
+        "Nombra el estado: dp[i] = mínimo de monedas (o nº de formas) para sumar i; caso base dp[0].",
+        "Da la recurrencia y, para contar combinaciones, monedas en el bucle externo (evita permutaciones).",
+        "Complejidad O(n·objetivo) tiempo, O(objetivo) espacio, sin que se la pidan."
+      ],
+      "errores": [
+        "Codificar sin aclarar la variante ni nombrar el estado.",
+        "Iterar objetivo por fuera y monedas por dentro al contar combinaciones (cuenta permutaciones).",
+        "Decir 'O(n)' omitiendo el factor objetivo."
+      ],
+      "seguimiento": "¿Por qué el orden de los bucles cambia entre combinaciones y permutaciones? Usa 1+2 vs 2+1."
+    },
+    {
+      "q": "Te dan un array y un objetivo; encuentra dos índices que sumen el objetivo. ¿Cómo lo piensas?",
+      "rubrica": [
+        "Reconoce el patrón: hashing como memoria → un solo paso, O(n).",
+        "Guarda en un mapa 'valor → índice' y busca el complemento objetivo−x al recorrer.",
+        "Compara con la fuerza bruta O(n²) y justifica el trade-off memoria↔tiempo."
+      ],
+      "errores": [
+        "Ir directo a los dos bucles anidados sin mencionar el enfoque con hash.",
+        "No manejar duplicados o el caso x = objetivo−x.",
+        "No declarar la complejidad ni el costo de memoria."
+      ]
+    },
+    {
+      "q": "Sube la presión: '¿y si el array está ordenado, o si no cabe en memoria?' ¿Qué cambia?",
+      "rubrica": [
+        "Ordenado → dos punteros (sin memoria extra), O(n) tras el orden.",
+        "No cabe en memoria → procesamiento por streaming / external sort / sketch, según la garantía pedida.",
+        "Razona los límites del modelo en voz alta en vez de forzar la misma receta."
+      ],
+      "errores": [
+        "Insistir en el hash map aunque el array sea enorme y ordenado.",
+        "No ver que 'ordenado' habilita dos punteros sin memoria.",
+        "Quedarse en silencio ante la repregunta."
+      ]
+    }
+  ],
+  "cierre": "Aclara la variante, nombra el patrón (DP, hashing, dos punteros), y comunica la complejidad sin que te la pidan. Pensar hacia atrás (DP) es la misma estructura que la parada óptima."
+}

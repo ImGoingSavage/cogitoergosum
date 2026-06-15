@@ -1698,6 +1698,37 @@ button.secundario.peligro:hover:not(:disabled) {
   font-style: italic;
 }
 
+/* Lista de rondas (clusters de la taxonomía) */
+.entrevista-clusters { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+.entrevista-cluster-item { margin: 0; }
+.entrevista-cluster-boton {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "nombre chip" "n n" "desc desc";
+  gap: 4px 10px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  color: var(--texto);
+  cursor: pointer;
+  transition: border-color var(--transicion), background var(--transicion);
+}
+.entrevista-cluster-boton:hover,
+.entrevista-cluster-boton:focus-visible {
+  border-color: var(--acento);
+  background: var(--bg-elevado);
+  outline: none;
+}
+.entrevista-cluster-nombre { grid-area: nombre; font-weight: 600; font-size: 1.02rem; align-self: center; }
+.entrevista-cluster-boton .ruta-chip { grid-area: chip; align-self: center; }
+.entrevista-cluster-n { grid-area: n; color: var(--texto-tenue); font-size: 0.78rem; }
+.entrevista-cluster-desc { grid-area: desc; color: var(--texto-suave); font-size: 0.88rem; line-height: 1.45; }
+.entrevista-sim-titulo { margin: 0 0 12px; color: var(--acento); font-size: 1.05rem; }
+#entrevista-sim { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--borde); border-left: none; padding-left: 0; }
+
 .leccion hr {
   border: none;
   border-top: 1px solid var(--borde);

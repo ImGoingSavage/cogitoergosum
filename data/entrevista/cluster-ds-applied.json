@@ -1,0 +1,62 @@
+{
+  "rol": "Entrevistador de DS de producto. Busca orientación al negocio, traducción técnica honesta y cuidado con las trampas de la experimentación.",
+  "duracion": "40 min (ronda de DS aplicada)",
+  "preguntas": [
+    {
+      "q": "Quieres lanzar una feature social nueva. Diséñame el A/B test y dime qué trampas evitarías.",
+      "rubrica": [
+        "H₀ de 'sin efecto', métrica primaria + guardrails, randomización, tamaño/duración por potencia.",
+        "Identifica efectos de red: el tratamiento 'contamina' al control vía amigos → subestima el efecto.",
+        "Mitiga con aleatorización por clusters (particionar el grafo).",
+        "Significancia ≠ enviar: mira el tamaño del efecto y los guardrails."
+      ],
+      "errores": [
+        "Randomizar a nivel usuario sin ver la interferencia (SUTVA).",
+        "Decidir solo por el p-valor con millones de usuarios.",
+        "No proponer guardrails junto a la métrica primaria."
+      ],
+      "seguimiento": "¿El efecto de red infla o desinfla la diferencia medida? ¿Por qué?"
+    },
+    {
+      "q": "Te piden definir la métrica de éxito de un producto. ¿Cómo la eliges?",
+      "rubrica": [
+        "North Star alineada al valor real del producto, ubicada en el funnel (AARRR).",
+        "Propón guardrails/counter-metrics que no deben empeorar al perseguir la principal.",
+        "Evita métricas vanidosas o 'gameables'."
+      ],
+      "errores": [
+        "Elegir una métrica fácil de inflar (p.ej. notificaciones → clics, hunde retención).",
+        "No proponer guardrails.",
+        "Métrica desconectada de la misión/valor del producto."
+      ]
+    },
+    {
+      "q": "Tu modelo iba bien en evaluación pero falla en producción. ¿Cómo lo diagnosticas?",
+      "rubrica": [
+        "Audita training-serving skew: ¿las features se calculan igual offline y online? ¿Entrenas sobre features loggeadas?",
+        "Revisa leakage temporal en el split (¿el modelo 'vio' el futuro?).",
+        "Distingue data drift (cambia P(X), se ve sin labels con PSI/KS) de concept drift (cambia P(Y|X)).",
+        "Recuerda: en producción el modelo es la pieza más pequeña; falla el contorno."
+      ],
+      "errores": [
+        "Culpar al modelo y reentrenar sin auditar el pipeline de features.",
+        "Esperar labels para detectar un problema que el data drift muestra sin ellos.",
+        "No tener baseline ni plan de rollback."
+      ]
+    },
+    {
+      "q": "Antes de modelar, escalas e imputas todo el dataset y el test sale buenísimo. ¿Algún problema?",
+      "rubrica": [
+        "Data leakage: ajustaste la transformación con datos de test → métrica optimista que se desploma.",
+        "Regla: separa primero, ajusta solo con train (fit), aplica a test (transform).",
+        "El leakage no mejora el modelo, daña tu confianza en la métrica."
+      ],
+      "errores": [
+        "No ver el leakage del preprocesamiento sobre todo el dataset.",
+        "Re-ajustar la transformación sobre el test.",
+        "Imputar sin considerar el mecanismo de missingness."
+      ]
+    }
+  ],
+  "cierre": "DS de producto se mide por valor de negocio, no por AUC: randomizar vuelve comparables los grupos (cuida los efectos de red), la métrica necesita guardrails, y el leakage —temporal o de preprocesamiento— engaña a la métrica, no al modelo."
+}

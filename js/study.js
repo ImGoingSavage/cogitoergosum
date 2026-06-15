@@ -34,12 +34,14 @@ const NOMBRES_TIPO = {
 
 let datos = null; // contenido de data/study.json (null si no cargó)
 
-// Simulación de entrevista (Nivel E). El contenido vive en data/entrevista/<id>.json
-// (artefacto paralelo a data/teoria/, sin tocar el esquema de study.json). El
-// manifiesto _index.json lista qué unidades tienen simulación, para mostrar el
-// botón solo donde existe.
-let entrevistasDisponibles = new Set();
-const entrevistasCache = {}; // unidadId → objeto del JSON (null si no se pudo cargar)
+// Simulación de entrevista (Nivel E), organizada sobre la TAXONOMÍA semántica
+// de la Fase 7 (auditoria.md Fase 3). El contenido vive en data/entrevista/
+// (artefacto paralelo a data/teoria/, sin tocar el esquema de study.json):
+// _taxonomia.json define los clusters (rondas de entrevista) y sus unidades;
+// cada cluster.sim apunta a su guion cluster-<id>.json. Cada ronda se simula
+// por área, no por unidad suelta.
+let taxonomia = []; // [{ id, titulo, track, descripcion, sim, unidades[] }]
+const simClusterCache = {}; // clusterId → objeto del guion (null si no cargó)
 
 /* ============================ Arranque ================================ */
 
@@ -51,10 +53,10 @@ export async function init() {
     datos = null;
   }
   try {
-    const r = await fetch('data/entrevista/_index.json');
-    entrevistasDisponibles = new Set(r.ok ? await r.json() : []);
+    const r = await fetch('data/entrevista/_taxonomia.json');
+    taxonomia = r.ok ? (await r.json()).clusters ?? [] : [];
   } catch {
-    entrevistasDisponibles = new Set();
+    taxonomia = [];
   }
   actualizarRachaEstudio();
   actualizarHeaderRachas();
@@ -276,6 +278,9 @@ export function renderizar() {
     ? 'Reintentar examen del bloque'
     : 'Presentar examen del bloque';
 
+  // Simulación de entrevista por área (Nivel E): solo en el bloque Arena (fase-7).
+  renderEntrevistaTaxonomia();
+
   // Paneles: retomar lo que estaba en curso
   $('estudio-unidad').hidden = true;
   $('estudio-examen').hidden = true;
@@ -346,38 +351,88 @@ function cablearEnlacesLeccion(cont) {
 
 /* ===================== Simulación de entrevista (Nivel E) ============= */
 
-// Abre/cierra la simulación de entrevista de una unidad. Espeja a alternarLeccion
-// pero el contenido es JSON estructurado (rol + preguntas con rúbrica y errores),
-// renderizado como un guion interactivo: cada pregunta se responde en voz alta
-// ANTES de revelar la rúbrica (forcejeo antes de la solución, Nivel E sin IA).
-async function alternarEntrevista(u) {
-  const btn = $('btn-unidad-entrevista');
-  const cont = $('unidad-entrevista');
-  if (!cont.hidden) {
-    cont.hidden = true;
-    btn.textContent = '🎤 Simular entrevista';
+const ETIQUETA_TRACK = {
+  quant: 'quant',
+  maang: 'maang',
+  health: 'health ai',
+  ds: 'ciencia de datos',
+  conductual: 'conductual',
+};
+
+// Pinta la taxonomía de la Fase 7 como rondas de entrevista: una tarjeta-botón por
+// cluster (área), con su track y cuántas unidades lo componen. Click → abre la
+// simulación de esa ronda. Se invoca desde renderizar() solo en el bloque fase-7.
+function renderEntrevistaTaxonomia() {
+  const card = $('estudio-entrevista');
+  if (!card) return;
+  const esArena = bloqueVisibleObj().id === 'fase-7' && taxonomia.length > 0;
+  card.hidden = !esArena;
+  if (!esArena) return;
+
+  const lista = $('entrevista-clusters');
+  lista.innerHTML = '';
+  taxonomia.forEach((c) => {
+    const li = document.createElement('li');
+    li.className = 'entrevista-cluster-item';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'entrevista-cluster-boton';
+    const chip = ETIQUETA_TRACK[c.track]
+      ? `<span class="ruta-chip ruta-${c.track === 'health' ? 'health-ai-rwe' : c.track === 'ds' ? 'ciencia-datos' : c.track}">${ETIQUETA_TRACK[c.track]}</span>`
+      : '';
+    btn.innerHTML = `<span class="entrevista-cluster-nombre"></span>${chip}<span class="entrevista-cluster-n"></span><span class="entrevista-cluster-desc"></span>`;
+    btn.querySelector('.entrevista-cluster-nombre').textContent = c.titulo;
+    btn.querySelector('.entrevista-cluster-n').textContent = `${c.unidades?.length ?? 0} unidades`;
+    btn.querySelector('.entrevista-cluster-desc').textContent = c.descripcion ?? '';
+    btn.addEventListener('click', () => abrirSimCluster(c.id, btn));
+    li.appendChild(btn);
+    lista.appendChild(li);
+  });
+  $('entrevista-sim').hidden = true;
+  $('entrevista-sim').innerHTML = '';
+}
+
+// Abre (o cierra si ya estaba) la simulación de un cluster: carga su guion
+// cluster-<id>.json y lo renderiza como ronda interactiva (forcejeo antes de la
+// rúbrica). El contenido es JSON estructurado, sin tocar el esquema de study.json.
+async function abrirSimCluster(clusterId, btn) {
+  const panel = $('entrevista-sim');
+  const cluster = taxonomia.find((c) => c.id === clusterId);
+  if (!cluster) return;
+
+  // Segundo click en el mismo cluster → cerrar.
+  if (!panel.hidden && panel.dataset.cluster === clusterId) {
+    panel.hidden = true;
+    panel.dataset.cluster = '';
     return;
   }
-  if (!(u.id in entrevistasCache)) {
-    btn.disabled = true;
+
+  if (!(clusterId in simClusterCache)) {
+    if (btn) btn.disabled = true;
     try {
-      const res = await fetch(`data/entrevista/${u.id}.json`);
-      entrevistasCache[u.id] = res.ok ? await res.json() : null;
+      const res = await fetch(`data/entrevista/${cluster.sim}`);
+      simClusterCache[clusterId] = res.ok ? await res.json() : null;
     } catch {
-      entrevistasCache[u.id] = null;
+      simClusterCache[clusterId] = null;
     }
-    btn.disabled = false;
+    if (btn) btn.disabled = false;
   }
-  cont.innerHTML = '';
-  const sim = entrevistasCache[u.id];
+
+  panel.innerHTML = '';
+  const sim = simClusterCache[clusterId];
   if (!sim) {
-    cont.innerHTML =
+    panel.innerHTML =
       '<p class="leccion-error">La simulación no está disponible ahora mismo — revisa la conexión e inténtalo de nuevo (una vez cargada queda guardada para practicar sin red).</p>';
   } else {
-    cont.appendChild(construirEntrevista(sim));
+    const titulo = document.createElement('h3');
+    titulo.className = 'entrevista-sim-titulo';
+    titulo.textContent = `Ronda: ${cluster.titulo}`;
+    panel.appendChild(titulo);
+    panel.appendChild(construirEntrevista(sim));
   }
-  cont.hidden = false;
-  btn.textContent = 'Cerrar la simulación';
+  panel.dataset.cluster = clusterId;
+  panel.hidden = false;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Construye el DOM de una simulación (sin innerHTML de datos: todo con textContent,
@@ -525,22 +580,6 @@ function abrirUnidad(unidadId) {
   $('unidad-leccion').hidden = true;
   $('unidad-leccion').innerHTML = '';
   btnLeccion.onclick = () => alternarLeccion(u);
-
-  // Simulación de entrevista (Nivel E): el botón solo aparece si la unidad
-  // tiene un guion en data/entrevista/<id>.json (según el manifiesto).
-  const btnEntrevista = $('btn-unidad-entrevista');
-  const contEntrevista = $('unidad-entrevista');
-  if (entrevistasDisponibles.has(u.id)) {
-    btnEntrevista.hidden = false;
-    btnEntrevista.disabled = false;
-    btnEntrevista.textContent = '🎤 Simular entrevista';
-    btnEntrevista.onclick = () => alternarEntrevista(u);
-  } else {
-    btnEntrevista.hidden = true;
-    btnEntrevista.onclick = null;
-  }
-  contEntrevista.hidden = true;
-  contEntrevista.innerHTML = '';
 
   const e = load('estudio');
   const enCurso = e.quizEnCurso?.unidadId === u.id;

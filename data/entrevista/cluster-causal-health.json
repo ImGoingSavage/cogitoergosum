@@ -1,0 +1,61 @@
+{
+  "rol": "Entrevistador de Health AI / Real-World Evidence. Busca rigor causal, claridad sobre los supuestos y honestidad cuando un efecto no es identificable.",
+  "duracion": "40 min (ronda causal)",
+  "preguntas": [
+    {
+      "q": "Datos observacionales: un fármaco D y la recuperación Y, con la edad como posible confundidor. ¿Cómo estimas el efecto causal de D sobre Y?",
+      "rubrica": [
+        "Distingue P(Y|D) (observar) de P(Y|do(D)) (intervenir).",
+        "Nombra el DAG: edad→D y edad→Y abre un camino trasero.",
+        "Aplica back-door: estandariza Σ_z P(Y|D,z)·P(z), ponderando por la población.",
+        "Explicita el supuesto: no hay confundidores no medidos (ignorabilidad)."
+      ],
+      "errores": [
+        "Leer la asociación cruda como efecto causal.",
+        "'Ajusto por todas las variables disponibles' — ajustar collider/mediador sesga.",
+        "No nombrar el supuesto de no-confundidores-ocultos."
+      ],
+      "seguimiento": "¿Qué variable NO ajustarías aunque esté en los datos, y por qué?"
+    },
+    {
+      "q": "Tu colega quiere meter al modelo una variable medida DESPUÉS del tratamiento. ¿Qué le dices?",
+      "rubrica": [
+        "Pregunta su papel: ¿mediador (D→M→Y) o collider?",
+        "Si es mediador, ajustarlo borra parte del efecto total; solo se ajusta para el efecto directo.",
+        "Decide por el grafo y la pregunta causal, no por el R²."
+      ],
+      "errores": [
+        "Aceptar la variable porque 'mejora el ajuste'.",
+        "No preguntar qué efecto (total vs directo) se busca.",
+        "Tratar una variable post-tratamiento como un confundidor más."
+      ]
+    },
+    {
+      "q": "El confundidor clave no está medido. ¿Qué opciones te quedan?",
+      "rubrica": [
+        "Front-door si hay un mediador que capta todo el efecto.",
+        "Variable instrumental válida (afecta D, solo influye en Y vía D).",
+        "Honestidad: si no es identificable, ningún volumen de datos basta — propón un experimento."
+      ],
+      "errores": [
+        "Prometer un estimado causal sin reconocer la no-identificabilidad.",
+        "Confundir un instrumento con un confundidor.",
+        "Creer que 'más datos' resuelve un problema de identificación."
+      ]
+    },
+    {
+      "q": "Un estudio compara a los pacientes que completaron 12 semanas de tratamiento con los que no. ¿Ves algún sesgo?",
+      "rubrica": [
+        "Immortal time bias: para 'completar' hay que sobrevivir esas 12 semanas, sesgando el grupo hacia supervivientes.",
+        "Rediseño: t=0 igual para todos, alineado con la asignación (o clonar+censurar+ponderar / sequential trials).",
+        "Conecta con el leakage temporal en ML (un split que mira el futuro)."
+      ],
+      "errores": [
+        "No ver el período inmortal que infla el beneficio del tratamiento.",
+        "Empezar el seguimiento en un evento distinto de la asignación.",
+        "Analizar sin escribir antes los componentes del target trial."
+      ]
+    }
+  ],
+  "cierre": "Separa ver de hacer (do-operator), deja que el grafo decida qué ajustar, sé honesto cuando el efecto no es identificable, y alinea el tiempo cero con la asignación. 'Ajustar por todo' no es rigor: es una forma de sesgo."
+}

@@ -1,0 +1,63 @@
+{
+  "rol": "Entrevistador de ML Systems. Quiere diseño end-to-end: encuadre del problema, datos, despliegue y monitoreo — no solo el modelo.",
+  "duracion": "45 min (ronda de ML systems)",
+  "preguntas": [
+    {
+      "q": "Diseña un sistema de recomendación de feed. Empieza por el encuadre, no por el modelo.",
+      "rubrica": [
+        "Encuadra el objetivo de negocio y tradúcelo a un objetivo de ML medible (qué optimizas y por qué).",
+        "Decide la métrica alineada al costo real; distingue métrica online (negocio) de offline (proxy).",
+        "Esboza componentes: ingesta, features, entrenamiento, serving, monitoreo, rollback — el modelo es uno de muchos.",
+        "Nombra riesgos y trade-offs explícitos antes de elegir arquitectura."
+      ],
+      "errores": [
+        "Saltar al modelo (¡'usemos un transformer!') sin objetivo ni métrica.",
+        "Optimizar AUC global cuando el producto depende del top-k visible.",
+        "Olvidar el monitoreo y el plan de rollback."
+      ],
+      "seguimiento": "¿Por qué un AUC offline mejor puede empeorar el CTR en producción?"
+    },
+    {
+      "q": "Hablemos de los datos de entrenamiento. ¿Qué decisiones tomas sobre muestreo, etiquetas y desbalance?",
+      "rubrica": [
+        "Muestreo representativo del tráfico real de serving (no solo usuarios activos históricos).",
+        "Calidad/coste de etiquetas; etiquetas naturales vs humanas; latencia de las etiquetas.",
+        "Desbalance: re-muestreo o pesos en la pérdida; evalúa con precisión/recall, no accuracy.",
+        "Evita leakage: ninguna feature posterior al outcome."
+      ],
+      "errores": [
+        "Entrenar con una distribución que no representa producción (skew de origen).",
+        "Usar accuracy con clases desbalanceadas.",
+        "Incluir una feature que filtra el futuro (leakage = collider disfrazado)."
+      ]
+    },
+    {
+      "q": "El modelo lleva tres meses desplegado y empeora. ¿Cómo lo detectas y qué haces?",
+      "rubrica": [
+        "Data drift: compara la entrada con un baseline (PSI/KS) — se ve SIN labels.",
+        "Concept drift: cae la performance con labels (a veces retrasadas) o proxies tempranos.",
+        "Son alarmas distintas: monitoréalas por separado; el pipeline automatizado facilita el reentrenamiento.",
+        "Ten guardrails que disparen rollback automático."
+      ],
+      "errores": [
+        "Confundir data drift (P(X)) con concept drift (P(Y|X)).",
+        "Esperar a las labels para detectar un problema de entrada.",
+        "Desplegar sin baseline ni rollback definido antes."
+      ]
+    },
+    {
+      "q": "Una feature 'promedio de los últimos 7 días' va perfecta en evaluación y mal en producción. ¿Qué sospechas?",
+      "rubrica": [
+        "Training-serving skew: la feature se calcula distinto offline (histórico completo) y online (ventana real con NULLs/defaults).",
+        "Solución: definición única de features (feature store / código compartido) y loggear features TAL COMO se sirvieron.",
+        "Entrena sobre lo que el modelo verá en inferencia, no sobre el cálculo idealizado."
+      ],
+      "errores": [
+        "Buscar el bug en el modelo en vez de en el pipeline de features.",
+        "No loggear las features servidas para reentrenar.",
+        "Asumir que offline = online sin verificarlo."
+      ]
+    }
+  ],
+  "cierre": "En ML Systems el modelo es la pieza más pequeña: encuadra el objetivo, cuida que las features se calculen igual offline y online, alinea la métrica al costo real, y monitorea data drift y concept drift como alarmas separadas con rollback listo."
+}

@@ -325,11 +325,6 @@
              El puntero al libro se conserva para quien quiera profundizar. -->
         <button id="btn-unidad-leccion" class="secundario" hidden>📖 Leer la lección aquí</button>
         <div id="unidad-leccion" class="leccion" hidden></div>
-        <!-- Simulación de entrevista (Nivel E, sin IA): guion del entrevistador
-             + rúbrica + errores de comunicación, desde data/entrevista/<id>.json.
-             El botón solo se muestra en unidades que tienen guion (manifiesto). -->
-        <button id="btn-unidad-entrevista" class="secundario" hidden>🎤 Simular entrevista</button>
-        <div id="unidad-entrevista" class="entrevista" hidden></div>
         <button id="btn-quiz-iniciar" class="primario" hidden>Ya leí — evalúame</button>
         <div id="unidad-quiz" hidden></div>
         <div id="unidad-cierre" hidden></div>
@@ -343,6 +338,21 @@
           Se aprueba reconociendo jugadas, no resolviéndolo todo.
         </p>
         <div id="examen-contenido"></div>
+      </article>
+
+      <!-- Simulación de entrevista (Nivel E, sin IA), organizada sobre la
+           taxonomía semántica de la Fase 7 (auditoria.md Fase 3): una ronda por
+           área. Solo visible en el bloque Arena (fase-7). Datos en
+           data/entrevista/_taxonomia.json + cluster-<id>.json. -->
+      <article class="tarjeta" id="estudio-entrevista" hidden>
+        <h2>🎤 Simulación de entrevista por área</h2>
+        <p class="piso-instruccion">
+          Elige una ronda. El entrevistador hace su pregunta; tú respondes en voz
+          alta (o por escrito) <strong>antes</strong> de revelar la rúbrica y las
+          trampas de comunicación. La nota la pones tú: ¿cubriste los puntos?
+        </p>
+        <ul id="entrevista-clusters" class="entrevista-clusters"></ul>
+        <div id="entrevista-sim" class="entrevista" hidden></div>
       </article>
 
     </section>
