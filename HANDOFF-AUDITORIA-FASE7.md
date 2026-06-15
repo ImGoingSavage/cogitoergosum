@@ -65,7 +65,7 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**74 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**78 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
@@ -73,9 +73,10 @@ ponla en una sola línea `$$...$$`.
 | **ML Systems** | rom1-4, rml1-4, dmls1-4, htd1-4, sre1-4, mldp1-4, obs1-4, iml1-4 (32) |
 | **MAANG** | cc1-4, sd1-4, m1, m2 (10) |
 | **Quant núcleo (lotes 11-12)** | q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q13 (11) |
+| **Blitzstein (lote 13)** | b1, b2, b3, b4 (4) |
 | Muestra Oleada 1 | q12 (+cc1, h17 ya contados arriba) |
 
-### FALTAN (44 lecciones) — esto es lo que debes hacer
+### FALTAN (40 lecciones) — esto es lo que debes hacer
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
@@ -89,7 +90,7 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
 - `arena-p1, p2, p3, p4` (A Practical Guide to Quantitative Finance — acertijos,
   combinatoria, brownian, álgebra lineal). **Son MUY largas (200+ líneas)**.
 - `arena-fc1, fc2, fc3, fc4` (Fifty Challenging Problems in Probability)
-- `arena-b1, b2, b3, b4` (Blitzstein & Hwang — Introduction to Probability)
+- ~~`arena-b1, b2, b3, b4` (Blitzstein & Hwang)~~ **HECHAS (lote 13)**.
 
 **Estadística / inferencia (route: estadistica/quant):**
 - `arena-dg1, dg2, dg3, dg4` (DeGroot & Schervish)
