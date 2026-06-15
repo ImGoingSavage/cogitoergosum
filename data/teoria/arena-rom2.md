@@ -21,6 +21,40 @@ Un **objetivo** es el número que tu algoritmo intenta optimizar; una **métrica
 
 ---
 
+## Mini-ejemplo trabajado: escala las features al tamaño de los datos (R21)
+
+El nº de pesos que un modelo lineal aprende sin sobreajustar es ~proporcional a los datos. Concretamente:
+
+- **1 000 ejemplos** → ~una docena de features (un dot product simple, TF-IDF + un puñado de features humanas). Si metes 10 000 features con 1 000 ejemplos, **memorizas ruido**.
+- **1 millón** → cientos de miles de features con regularización.
+- **Miles de millones** → cruces masivos (~10M features).
+
+Y la discretización+cruce (R20) crea features humano-entendibles: de `edad` (continua) sacas cubetas por cuantiles, y cruzas `{male,female} × {US,Canada,Mexico}` → la feature `(male, Canada)`. Pero cruzar 3+ columnas multiplica la dimensionalidad y exige *muchísimos* datos.
+
+**Predicción antes de seguir:** tienes 800 ejemplos y quieres usar un embedding profundo de 256 dimensiones. ¿Buena idea de arranque? No (R17+R21): empieza con features **observadas** y un baseline lineal; con 800 ejemplos el embedding aprendido sobreajusta y, además, tiene su propio objetivo débilmente correlacionado.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (buen primer objetivo):** "¿el usuario clicó/descargó este ítem?" — simple, observable y atribuible a la acción rankeada.
+- **Contraejemplo (objetivo inobservable):** pedirle al ML que prediga "¿es feliz el usuario?" o "¿volverá mañana?" como objetivo *directo* → inobservable/indirecto; sirve para A/B y decisiones de lanzamiento, no como target.
+- **Caso borde (feature de baja cobertura):** una feature presente en el 1% de los datos pero positiva el 90% de las veces puede ser oro — la cobertura baja no la descalifica.
+
+## Errores típicos
+
+- **Conceptual:** confundir **objetivo** (lo que el modelo optimiza) con **métrica** (lo que reportas); no todo lo que importa debe ser el objetivo.
+- **Técnico:** usar features **aprendidas** (deep/factorizadas) antes de un baseline con features observadas → mínimos locales que cambian por iteración y vuelven indecidible si un cambio ayuda.
+- **De mantenimiento:** dejar features muertas en la infra → deuda que frena probar features nuevas.
+
+## Transferencia isomorfa
+
+- **Modelo calibrado (R14) ↔ probabilidades bien escaladas:** que "la media predicha = label media en cada subconjunto" es exactamente la calibración que evalúas en un clasificador clínico/PLP (conecta con [[arena-h13]]).
+- **Discretizar + cruzar ↔ feature cross / no linealidad para modelos lineales:** es el mismo patrón Feature Cross de los design patterns (conecta con [[arena-mldp1]]).
+- **Pesos ∝ datos (R21) ↔ capacidad vs muestra (sesgo-varianza):** más parámetros que datos = sobreajuste, la ley fundamental del aprendizaje estadístico (conecta con [[arena-isl1]]).
+
+Moraleja de la arista: *objetivo simple y observable + features observadas + capacidad escalada a los datos; lo aprendido y lo profundo llegan después, no antes del baseline.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

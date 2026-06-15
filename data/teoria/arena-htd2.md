@@ -28,6 +28,38 @@ Los sistemas ML en vivo a menudo **influyen en su propio comportamiento** al act
 
 ---
 
+## Mini-ejemplo trabajado: cuando "corregir" la entrada rompe tu modelo
+
+Tu modelo de ranking consume una señal `score_calidad` que viene de **otro equipo**. Resulta que esa señal está **mis-calibrada**: sistemáticamente devuelve valores ~0.2 más altos de lo que debería. Tu modelo, al entrenarse, **aprendió a compensarlo** (le restó importancia justo en ese rango).
+
+Un día el otro equipo "mejora" su señal y **corrige** el sesgo de +0.2. Para ellos es un avance; para ti es un **desastre silencioso**: tu modelo seguía descontando un sesgo que ya no existe, y sus predicciones se descalibran de golpe. Ni siquiera fue un bug: fue una *mejora* del upstream.
+
+La mitigación: usa una **copia versionada (frozen)** de la señal y valida cada versión nueva antes de adoptarla. Coste: **staleness** y mantener varias versiones — deuda que eliges conscientemente.
+
+**Predicción antes de seguir:** corres un **leave-one-feature-out** y descubres dos features casi idénticas; quitar la "feature A" no cambia nada pero quitar "B" sí. ¿Cuál conservar? La más **causal/estable**: si el mundo cambia la correlación entre ambas, la no-causal te vuelve frágil (el mismo problema de elegir el predictor causal frente al espurio, [[arena-h4]]).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (dependencia gestionada):** input externo congelado y versionado + leave-one-feature-out periódico → cambias sin sorpresas.
+- **Contraejemplo (ε-feature):** añadir una feature por una mejora *diminuta* de accuracy con overhead de complejidad alto → deuda que no compensa.
+- **Caso borde (feedback loop directo):** el modelo elige qué ítems mostrar → solo recoge datos de lo que mostró → se refuerza; la cura teórica (bandits) no escala, así que randomizas o aíslas una fracción de datos.
+
+## Errores típicos
+
+- **Conceptual:** asumir que "mejorar el input siempre ayuda al consumidor" — una corrección puede romper a un modelo ajustado al sesgo viejo.
+- **De detección:** confiar en que las dependencias de datos se ven con análisis estático como las de código (no hay tooling equivalente sin un sistema de gestión de features).
+- **De diseño:** dejar features legacy/bundled/correlated acumulándose sin leave-one-feature-out → brittleness.
+
+## Transferencia isomorfa
+
+- **Dependencia de datos inestable ↔ dependencia de API sin contrato:** consumir una señal cuyo dueño la cambia sin avisar es el mismo riesgo que depender de un endpoint sin versionar; la cura (frozen + SLA) es versionado de contrato (conecta con [[arena-htd1]], undeclared consumers).
+- **Direct feedback loop ↔ off-policy / bandits:** el modelo que elige sus propios datos futuros es el problema de exploración-explotación; randomizar es la mini-versión de un bandit (conecta con [[arena-h19]]).
+- **Correlated features no causales ↔ confundimiento:** acreditar a la feature equivocada porque correlaciona es el riesgo de tomar el predictor espurio por el causal (conecta con [[arena-h4]]).
+
+Moraleja de la arista: *los datos son una dependencia tan real como el código, pero invisible; congélalos, versiona y corre leave-one-feature-out, porque hasta una "mejora" del input puede romperte.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

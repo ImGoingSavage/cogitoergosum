@@ -27,6 +27,41 @@ El **training-serving skew** es la diferencia de rendimiento entre entrenamiento
 
 ---
 
+## Mini-ejemplo trabajado: el loop de la feature posicional (R36)
+
+Tu modelo aprende que "estar en 1ª posición" predice fuertemente el clic. Tiene sentido: la gente clica lo de arriba. Pero si dejas esa señal en producción, nace un loop venenoso:
+
+1. El modelo pone el ítem A arriba (por otras razones).
+2. A recibe muchos clics **por estar arriba**.
+3. Esos clics entran al entrenamiento como "A es bueno".
+4. El modelo sube aún más a A… que recibe más clics por posición… y se refuerza solo.
+
+La señal de clic está **contaminada por la posición**, no por la calidad. La jugada: añade una **feature posicional** durante el entrenamiento (para que el modelo *aísle* y absorba el efecto de posición), y en **serving dásela constante o nula** —rankeas *antes* de decidir el orden, así que la posición real no se conoce aún—. Mantenla **separada**, sin cruzarla con features de documento.
+
+**Predicción antes de seguir:** entrenas con datos hasta el 5 de enero y el AUC sale 0.85. Testeas con datos del 6 en adelante (R33) y cae a 0.70. ¿Bug o esperado? Una caída *pequeña* es esperada (el futuro es más difícil); una caída *grande* señala features **time-sensitive** o training-serving skew — investiga R37.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (sin skew):** logear en serving las features exactas que vio el modelo y entrenar con ese log (R29) → train y serving ven lo mismo.
+- **Contraejemplo (skew silencioso):** una tabla joinada (nº de comentarios) cambia entre entrenar y servir → la misma fila produce predicciones distintas, sin error visible.
+- **Caso borde ("a mí me funciona"):** el ingeniero como usuario de prueba (R23) — sesgo de confirmación; usa raters/UX, no tu propio juicio.
+
+## Errores típicos
+
+- **Conceptual:** elegir el modelo por **potencia predictiva** (log loss) en vez de **rendimiento utilitario** (calidad del ranking final) — R25.
+- **Técnico:** usar dos lenguajes/dos códigos entre training y serving → fuente clásica de skew; reusa código (R32).
+- **De datos:** descartar datos arbitrariamente en vez de **ponderar por importancia** (R30), rompiendo la calibración.
+
+## Transferencia isomorfa
+
+- **Training-serving skew ↔ paridad train/inference & data drift:** que el pipeline de features sea idéntico en entrenamiento y producción es el problema de [[arena-dmls4]] (shift) y de la regla "separa entrenamiento e inferencia".
+- **Feature posicional / exposure bias ↔ sesgo de selección:** los clics dependen de lo que mostraste, igual que un outcome depende del tratamiento asignado — corregirlo es el espíritu del causal (conecta con [[arena-h19]]).
+- **"No eres usuario típico" ↔ muestra no representativa:** tu propio uso es una muestra sesgada, como evaluar sobre datos no aleatorios.
+
+Moraleja de la arista: *entrena como sirves (mismo código, features logeadas) y aísla la posición; el clic que premia "estar arriba" es sesgo de exposición disfrazado de calidad.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

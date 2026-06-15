@@ -13,6 +13,39 @@ Señales de que la Fase II se acaba: las ganancias mensuales disminuyen y aparec
 
 ---
 
+## Mini-ejemplo trabajado: por qué no hay "mejor" lanzamiento (R39)
+
+Dos estados posibles del producto:
+
+- **A = (1M DAU, $4M/día)** — menos usuarios, más ingreso por usuario.
+- **B = (2M DAU, $2M/día)** — el doble de usuarios, la mitad de ingreso.
+
+¿Cuál es mejor? **No hay respuesta objetiva.** Un equipo que está en A no se movería a B (perdería ingreso) y uno en B no se movería a A (perdería usuarios). Cada métrica cubre un **riesgo distinto** (crecer vs monetizar) y no existe un *ranking* explícito de combinaciones. Por eso una decisión de lanzamiento es **multi-métrica**: Alice baja el log loss y sube la instalación en vivo, pero si los DAU caen 5%, **no se lanza**. Predecir el éxito futuro de un sitio es, literalmente, **AI-complete**.
+
+**Predicción antes de seguir:** llevas 3 trimestres sin pasar del 1% de mejora retocando regularización y features de texto. ¿Sigues refinando? No (R41): busca una **fuente de información cualitativamente nueva** (historial del usuario, datos de otra property, knowledge graph), no más ajuste de lo que ya tienes.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (lanzamiento fácil):** todas las métricas mejoran o ninguna empeora → decisión trivial.
+- **Contraejemplo (objetivos desalineados, R38):** el rendimiento se estanca y echas features nuevas, pero el problema real es que el **objetivo no cubre las metas de producto** (optimizas clicks pero lanzas según raters) → cambia el objetivo, no añadas features.
+- **Caso borde (personalización que rinde poco, R42):** mides clics/tiempo → mides **popularidad**; diversidad y personalización se *definen* como lo no-ordinario, y "lo ordinario es difícil de batir", así que reciben menos peso del esperado.
+
+## Errores típicos
+
+- **Conceptual:** buscar un único número que decida el lanzamiento; las métricas de producto son **proxies** de metas a largo plazo, sin "hit points".
+- **De diseño:** apilar modelos sobre modelos entrenados aparte sin estructura → ensemble frágil; manténlo simple (base XOR combinador, monotónico, R40).
+- **De transferencia:** reusar el modelo de **intereses** de un producto en otro (R43) — los amigos transfieren, los intereses no.
+
+## Transferencia isomorfa
+
+- **Lanzamiento multi-métrica ↔ frontera de Pareto / sin objetivo único:** A vs B es un par no dominado; elegir entre ellos es el problema multiobjetivo de cualquier sistema con trade-offs (conecta con [[arena-dmls1]], desacoplar objetivos).
+- **"Medir clicks = medir popularidad" ↔ proxy desalineado:** optimizar un proxy fácil y creer que mides lo que quieres es el mismo riesgo de las métricas en quant o en evals de ML (conecta con [[arena-rml1]]).
+- **Ensemble monotónico (R40) ↔ stacking con restricciones:** combinar scores de modelos base con un meta-modelo simple y monótono es stacking disciplinado (conecta con [[arena-mldp2]]).
+
+Moraleja de la arista: *en la madurez no hay un número que mande; las decisiones son multi-métrica (Pareto), mides popularidad cuando crees medir calidad, y las ganancias vienen de información nueva, no de refinar la vieja.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

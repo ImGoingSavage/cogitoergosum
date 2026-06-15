@@ -25,6 +25,36 @@ Otra área sorprendente de deuda. En un sistema maduro, las **líneas de configu
 
 ---
 
+## Mini-ejemplo trabajado: la Figura 1 y el costo de la fontanería
+
+La imagen mental del paper: dibuja la caja "ML code". Ahora dibuja, alrededor, las cajas de *configuración, recolección de datos, extracción de features, verificación de datos, gestión de máquinas, infraestructura de serving, monitoreo, análisis de procesos…* La caja de ML es **diminuta** en el centro; el resto —**≥95%**— es **plumbing**. Internalizar esto reordena prioridades: el algoritmo no es donde está la deuda.
+
+Caso concreto del peligro de un anti-patrón: **Knight Capital perdió $465M en 45 minutos** porque un *dead experimental codepath* obsoleto se reactivó inesperadamente en producción. El costo de una rama experimental individual es bajo; la deuda **acumulada** de no arrancarlas es catastrófica.
+
+**Predicción antes de seguir:** tu sistema es 95% glue code envolviendo un paquete genérico de ML. ¿Reusar el paquete fue la decisión barata? A menudo no: el glue code **congela** el sistema a las peculiaridades del paquete y a veces sale más barato una **solución nativa limpia**. La cura intermedia: envolver el black-box en una **API común**.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (config sana):** una config es un *diff* pequeño sobre la anterior, pasa code review, vive en el repo y se verifica automáticamente (nº de features, cierre de dependencias).
+- **Contraejemplo (Map-Reduce para ML iterativo):** usar Map-Reduce porque "es la abstracción que hay" cuando el algoritmo es iterativo → mala abstracción nacida del vacío (parameter-server encaja mejor).
+- **Caso borde (prototype smell):** depender regularmente del entorno de prototipo para obtener resultados → fragilidad; lo que funciona a pequeña escala rara vez refleja el full scale.
+
+## Errores típicos
+
+- **Conceptual:** creer que el sistema "es el modelo"; es mayormente fontanería, y ahí vive la deuda.
+- **Técnico:** experimentar con ramas `if/else` en el código principal → complejidad ciclomática exponencial e imposibilidad de testear interacciones (Knight Capital).
+- **De gobernanza:** tratar la configuración como secundaria (sin review ni verificación) cuando tiene más líneas que el código.
+
+## Transferencia isomorfa
+
+- **Glue code ↔ patrón Adapter / anti-corruption layer:** envolver un paquete black-box en una API común es exactamente el adapter que aísla tu dominio de una librería externa.
+- **Configuration debt ↔ infraestructura como código:** config que es diff pequeño, revisado y verificado es IaC aplicado al ML (conecta con [[arena-sre4]], releases y simplicidad).
+- **Abstraction debt ↔ la base de datos relacional como abstracción de oro:** "¿cuál es la interfaz correcta para un modelo/stream/predicción?" es la búsqueda de una abstracción tan limpia como SQL (conecta con [[arena-sd3]]).
+
+Moraleja de la arista: *el ML es 5% modelo y 95% fontanería; la deuda vive en el glue code, las junglas de pipelines, las ramas muertas y la config — trátalos con APIs, rediseño holístico y code review.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

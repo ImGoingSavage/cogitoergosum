@@ -31,6 +31,38 @@ Una investigación que da un beneficio de accuracy **diminuto** a costa de aumen
 
 ---
 
+## Mini-ejemplo trabajado: prediction bias como detector de "el mundo cambió"
+
+Un clasificador de spam predice, en promedio histórico, "spam" el **8%** de las veces, y observas que efectivamente ~8% del correo era spam. **Invariante sano:** distribución de labels predichos ≈ distribución de labels observados.
+
+Un lunes, el modelo empieza a predecir "spam" el **20%** mientras el spam real sigue en ~8%. No hace falta saber *qué* falló: el **prediction bias** se disparó → el mundo (o un input) cambió y la distribución de entrenamiento ya no refleja la realidad. **Slicing** el bias por dimensión (idioma, dominio, región) aísla el subgrupo culpable y dispara una alerta.
+
+No es un test exhaustivo (un modelo que siempre predice la media base también lo cumpliría), pero es **sorprendentemente útil** y barato como centinela de drift.
+
+**Predicción antes de seguir:** reentrenas el modelo con datos frescos y tu umbral de decisión fijado a mano (0.5) deja de dar el trade-off precisión/recall de antes. ¿Por qué? Porque el umbral se calibró para el *modelo viejo*; al reentrenar se **invalida**. La cura: **aprender el umbral** en datos held-out, no clavarlo a mano.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (monitoreo vivo):** prediction bias + action limits + SLAs upstream con respuesta automática → detectas cambios del mundo en tiempo real.
+- **Contraejemplo ("tenemos unit tests, basta"):** los tests pasan pero el mundo cambió; sin monitoreo en vivo el sistema "funciona" y decae.
+- **Caso borde (umbral fijo en sistema dinámico):** un threshold a mano que era óptimo hace 6 meses ahora marca de más o de menos tras varios reentrenamientos.
+
+## Errores típicos
+
+- **Conceptual:** creer que "moverse rápido" prueba poca deuda — suele *introducirla*; el costo aparece con el tiempo.
+- **De monitoreo:** no testear los **datos de entrada** (data testing debt) cuando los datos reemplazan al código.
+- **De diseño:** depender de intervención humana ante pages para issues sensibles al tiempo, en vez de respuesta automatizada.
+
+## Transferencia isomorfa
+
+- **Prediction bias ↔ monitoreo de data/label drift:** comparar la distribución predicha vs observada es exactamente el chequeo de shift en producción (conecta con [[arena-dmls4]]).
+- **Umbral fijo invalidado ↔ recalibración:** un threshold que caduca al reentrenar es el mismo problema que recalibrar probabilidades cuando cambia la prevalencia (conecta con [[arena-h13]]).
+- **"Moverse rápido ≠ poca deuda" ↔ interés compuesto:** la deuda se acumula en silencio como un préstamo, principio universal de ingeniería sostenible (conecta con [[arena-htd1]]).
+
+Moraleja de la arista: *el mundo cambia bajo tus pies; aprende umbrales en held-out, vigila el prediction bias como centinela de drift, y recuerda que ir rápido no es señal de poca deuda sino a menudo su causa.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
