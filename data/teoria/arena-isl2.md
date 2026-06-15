@@ -31,6 +31,37 @@ Contrasta H0: **todos** los β=0. Hace falta además de los t porque, con muchos
 
 ---
 
+## Mini-ejemplo trabajado: por qué F además de los t
+
+Ajustas una regresión con **100 predictores irrelevantes** (ninguno asociado a Y). Cada test t individual rechaza H0: βⱼ=0 con prob 0.05 por azar, así que esperas **~5 coeficientes "significativos"** aunque el modelo no valga nada. Si solo miras los t, declararás hallazgos falsos.
+
+El **F-statistic global** contrasta H0: *todos* los β=0 a la vez y, bajo esa nula, vale ≈1 sin importar cuántos predictores haya — corrige el problema de comparaciones múltiples que los t no ven. F grande con p pequeño dice "el modelo, en conjunto, explica algo".
+
+**Predicción antes de seguir:** con p=100 predictores y n=1000, ¿bastaría con reportar el predictor de menor p-valor? Respuesta: **no**. Con 100 tests, el mínimo p-valor está sesgado a ser pequeño por puro azar (vast search). El F protege el conjunto; para predictores individuales necesitas corrección (Bonferroni/FDR) o validación fuera de muestra. Es exactamente la multiplicidad de los A/B tests.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (clasificación):** binaria con clases bien separadas y n chico → LDA (genera X|clase gaussiano, covarianza común) es más estable que la logística.
+- **Contraejemplo (regresión lineal para clasificar):** codificar 3 clases como 1,2,3 impone orden y distancias falsos y da probabilidades fuera de [0,1]; parece funcionar pero está mal planteado.
+- **Caso borde (error global engañoso):** con 99% de clase mayoritaria, un modelo que predice "siempre mayoría" tiene 99% de acierto y 0% de sensibilidad. El borde obliga a mirar la matriz de confusión, no el accuracy.
+
+## Errores típicos
+
+- **Conceptual:** leer un coeficiente parcial (ceteris paribus) como efecto marginal; con confounding puede hasta cambiar de signo.
+- **Técnico:** ignorar la colinealidad (SE inflados, pesos inestables) — revisa VIF>5–10.
+- **De interpretación:** resumir un clasificador por accuracy cuando hay desbalance, en vez de sensibilidad/especificidad/AUC.
+
+## Transferencia isomorfa
+
+- **t y F ↔ LRT y tests clásicos:** el t de un coeficiente y el F global son casos del test de razón de verosimilitudes; el F corrige multiplicidad igual que en experimentos (conecta con [[arena-dg3]] y [[arena-cb3]]).
+- **Odds ratio e^β de la logística ↔ hazard ratio de Cox:** ambos son efectos multiplicativos sobre un log-link (conecta con [[arena-h8]]).
+- **VIF / colinealidad ↔ confounding y leakage:** redundancia entre predictores infla la varianza, omitir un predictor sesga el signo (conecta con [[arena-dg4]] y [[arena-pst4]]).
+- **ROC/AUC, sensibilidad, especificidad ↔ tasa base y VPP:** el umbral mueve el balance FP/FN y, con prevalencia baja, el AUC alto no garantiza precisión (conecta con [[arena-q2]] y [[arena-htd4]]).
+
+Moraleja de la arista: *el t prueba un coeficiente, el F el modelo entero (y corrige el azar de los muchos t); en clasificación, nunca confíes en el accuracy global sin la matriz de confusión.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

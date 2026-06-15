@@ -35,6 +35,39 @@ $$E[(y_0 - \hat f(x_0))^2] = \mathrm{Var}(\hat f(x_0)) + [\mathrm{Bias}(\hat f(x
 
 ---
 
+## Mini-ejemplo trabajado: KNN con K=1 vs K=n y la U del MSE
+
+Datos en una recta ruidosa Y=f(X)+ε. Ajusta KNN:
+- **K=1:** cada predicción copia al vecino más cercano. El MSE de **entrenamiento es 0** (cada punto se predice a sí mismo), pero la frontera es dentada y cambia por completo con otro dataset → **varianza altísima, sesgo casi nulo**.
+- **K=n:** cada predicción es la media global, ignorando X. Estable entre datasets (**varianza baja**) pero ciega a la señal → **sesgo alto**.
+
+El MSE de **test** dibuja una **U**: baja al pasar de K=n hacia K moderado (cae el sesgo), toca un mínimo, y vuelve a subir hacia K=1 (explota la varianza). El óptimo está en medio, no en los extremos.
+
+**Predicción antes de seguir:** un modelo con MSE de entrenamiento 0, ¿es el mejor? Respuesta: **casi nunca** — K=1 logra train=0 y es de los peores en test. El error de entrenamiento siempre baja con la flexibilidad, así que premiar "ajuste perfecto" selecciona overfit. Solo el error de *test* (o CV) tiene forma de U y revela el óptimo.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** elegir flexibilidad → minimiza el MSE de test (la U), equilibrando Var↑ contra Bias↓.
+- **Contraejemplo (train engaña):** train MSE monótono decreciente sugiere "más flexible siempre mejor"; es falso, ignora la varianza fuera de muestra.
+- **Caso borde (error de Bayes):** ni el clasificador perfecto baja de la tasa de error de Bayes = 1−E[máx P(Y=j|X)]; es el piso irreducible. El borde recuerda que parte del error no es culpa del modelo.
+
+## Errores típicos
+
+- **Conceptual:** confundir error reducible (mejora con mejor f̂) con irreducible Var(ε) (ruido y variables no medidas).
+- **Técnico:** seleccionar el modelo por error de entrenamiento en vez de CV/test.
+- **De interpretación:** perseguir flexibilidad cuando el objetivo es inferencia (entender el efecto de cada feature pide un modelo legible).
+
+## Transferencia isomorfa
+
+- **Sesgo-varianza ↔ MSE = Var + Bias²:** la descomposición de ISL es idéntica a la de teoría de estimación; un estimador sesgado de menor varianza puede ganar (conecta con [[arena-dg1]]).
+- **Error irreducible Var(ε) ↔ ley de varianza total:** el piso de error es la varianza que X no explica, el término E[Var(Y|X)] (conecta con [[arena-b2]]).
+- **Clasificador de Bayes ↔ regla óptima de Neyman-Pearson:** asignar a argmax P(Y|X) es la decisión que minimiza el error, primo del test más potente (conecta con [[arena-cb3]]).
+- **KNN en alta dimensión ↔ maldición de la dimensionalidad:** "vecinos cercanos" deja de tener sentido cuando p≳n (conecta con [[arena-isl3]]).
+
+Moraleja de la arista: *la flexibilidad baja el sesgo y sube la varianza; el mínimo de la U vive en medio, y el error de entrenamiento nunca te lleva ahí.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

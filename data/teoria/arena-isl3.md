@@ -34,6 +34,39 @@ Remuestrea **con reemplazo** (mismo n, con repeticiones/omisiones); calcula el e
 
 ---
 
+## Mini-ejemplo trabajado: por qué la geometría del lasso anula coeficientes
+
+Dos coeficientes (β₁,β₂). Minimizas RSS sujeto a un presupuesto de penalización. Las curvas de nivel del RSS son **elipses**; la región factible es:
+- **Ridge (L2):** un **círculo** β₁²+β₂² ≤ t — borde liso. La elipse toca el círculo casi siempre en un punto con *ambos* coeficientes ≠ 0: encoge pero no anula.
+- **Lasso (L1):** un **rombo** |β₁|+|β₂| ≤ t — con **esquinas** sobre los ejes. La elipse tiende a tocar el rombo en una **esquina**, donde un coeficiente es exactamente 0: selecciona variables.
+
+La sparsity del lasso no es un truco numérico: nace de que las esquinas del rombo viven sobre los ejes.
+
+**Predicción antes de seguir:** si tienes muchos predictores con efectos pequeños y parecidos, ¿ridge o lasso? Respuesta: **ridge** — reparte el encogimiento entre todos y conserva la señal difusa; el lasso, forzado a elegir esquinas, descartaría arbitrariamente unos y quedaría inestable. Lasso brilla cuando *pocos* predictores importan de verdad.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** estimar error de test → k-fold (5/10), el punto dulce entre sesgo y varianza del propio CV.
+- **Contraejemplo (LOOCV no es "lo mejor"):** LOOCV no tiene sesgo pero sus n modelos están casi idénticos → promediar reduce poco la varianza, y es caro. k=5/10 suele ganar.
+- **Caso borde (p ≳ n):** mínimos cuadrados sobreajustan perfecto (train error 0), y Cp/AIC/BIC/R² dejan de ser fiables; hay que regularizar y no afirmar haber hallado el conjunto "verdadero".
+
+## Errores típicos
+
+- **Conceptual:** confundir lo que estima el CV (error de test) con lo que estima el bootstrap (incertidumbre/SE de un estimador).
+- **Técnico:** no estandarizar antes de ridge/lasso (la penalización depende de la escala de cada feature).
+- **De supuestos:** elegir λ o el tamaño del modelo mirando el error de entrenamiento en vez de CV.
+
+## Transferencia isomorfa
+
+- **Validación cruzada / holdout ↔ control de multiplicidad:** evaluar fuera de muestra es el antídoto del DS contra "probar mucho hasta que algo salga" (conecta con [[arena-pst3]]).
+- **Bootstrap ↔ remuestreo con reemplazo:** misma maquinaria para SE/IC sin fórmula que en estadística aplicada (conecta con [[arena-pst2]]).
+- **Ridge / lasso ↔ shrinkage de James-Stein y priors:** encoger hacia 0 cambia sesgo por varianza, exactamente como Stein y un prior bayesiano (conecta con [[arena-dg4]]).
+- **Cp/AIC/BIC ↔ LRT y selección por verosimilitud:** penalizar complejidad para predecir bien es la misma lógica que comparar modelos por razón de verosimilitudes (conecta con [[arena-dg2]]).
+
+Moraleja de la arista: *el error de train engaña; estima el de test con k-fold; y la esquina del rombo L1 es la razón geométrica de que el lasso seleccione donde el ridge solo encoge.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

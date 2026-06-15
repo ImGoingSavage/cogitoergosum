@@ -32,6 +32,39 @@ Extensiones lineales **en los parámetros** vía **funciones base**:
 
 ---
 
+## Mini-ejemplo trabajado: por qué un Random Forest decorrelaciona
+
+Un solo árbol es de **alta varianza**: cambia mucho con otro dataset. Bagging promedia B árboles bootstrap; si fueran independientes, la varianza del promedio caería a σ²/B. Pero hay un problema: si existe **un predictor dominante**, casi todos los árboles lo eligen para el primer corte y quedan **parecidos** (correlación ρ alta). La varianza del promedio de B variables con correlación ρ es:
+
+> ρσ² + (1−ρ)σ²/B
+
+El segundo término se desvanece con B, pero el primero, **ρσ², no baja** por más árboles que sumes. El Random Forest ataca justo ρ: en cada split solo considera **m≈√p predictores al azar**, así que muchos árboles *no pueden* usar el predictor dominante → se **decorrelacionan** → ρ baja → la varianza del bosque cae más.
+
+**Predicción antes de seguir:** ¿qué pasa si pones m=p en un Random Forest? Respuesta: vuelve a ser **bagging** (todos los árboles ven todos los predictores, se recorrelacionan). El parámetro m es exactamente la perilla de decorrelación; m pequeño decorrelaciona más pero arriesga ignorar señales útiles. Y el **OOB error** sale gratis: cada dato se evalúa con el ~⅓ de árboles que no lo vieron.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** árbol inestable → bagging baja varianza → Random Forest la baja más decorrelacionando (m=√p), con OOB como test gratis.
+- **Contraejemplo (boosting ≠ bagging):** el boosting NO promedia modelos independientes; ajusta árboles **secuenciales a los residuos**, aprende lento y *puede* sobreajustar si B crece sin CV. Reduce sesgo, no solo varianza.
+- **Caso borde (polinomio global):** subir el grado de un polinomio se descontrola en los extremos; un spline natural (lineal en las colas) da flexibilidad local estable. El borde motiva splines sobre polinomios.
+
+## Errores típicos
+
+- **Conceptual:** creer que añadir árboles a un RF puede sobreajustar; promediar no sobreajusta (a diferencia del boosting con B grande).
+- **Técnico:** no estandarizar antes de PCA/SVM-RBF/K-means (todos dependen de la escala/distancia).
+- **De interpretación:** leer un dendrograma asumiendo un K fijo, o K-means como si hallara clusters no esféricos.
+
+## Transferencia isomorfa
+
+- **Bagging ↔ bootstrap:** los árboles se entrenan sobre muestras con reemplazo; es el bootstrap de estadística aplicada puesto a reducir varianza (conecta con [[arena-pst2]]).
+- **Decorrelación del RF ↔ reducir varianza promediando:** bajar ρ para que el promedio concentre es el principio que Rao-Blackwell formaliza (conecta con [[arena-dg1]]).
+- **C de la SVM ↔ regularización sesgo-varianza:** C pequeño = margen ancho, más sesgo/menos varianza, la misma perilla que λ en ridge/lasso (conecta con [[arena-isl1]] y [[arena-isl3]]).
+- **PCA (máxima varianza) ↔ matriz de covarianza PSD:** las componentes son los ejes de la covarianza, que es semidefinida positiva porque toda varianza aᵀΣa≥0 (conecta con [[arena-q9]]).
+
+Moraleja de la arista: *promediar baja la varianza solo si los modelos están decorrelacionados; el RF lo logra escondiendo predictores (m=√p), y el OOB te regala el error de test.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
