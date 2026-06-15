@@ -5,6 +5,11 @@
  *
  * Soportado: #/##/### encabezados, párrafos, **negrita**, *cursiva*,
  * `código`, listas - y 1., > citas, --- separador y tablas con pipes.
+ * Además: matemáticas $…$ (en línea) y $$…$$ (bloque), y enlaces de
+ * concepto [[slug]] (chips no navegables; el resolver llegará en otra
+ * oleada). El render de matemáticas es un traductor ligero LaTeX→Unicode
+ * (sin librerías, convención del proyecto): legible, no tipográficamente
+ * perfecto.
  * Todo el texto se escapa ANTES de transformar: una lección jamás puede
  * inyectar HTML.
  */
@@ -17,17 +22,102 @@ function escapar(texto) {
     .replaceAll('"', '&quot;');
 }
 
-/** Transforma negrita/cursiva/código de una línea ya escapada. */
+/* Símbolos LaTeX → Unicode usados por las lecciones (quant/estadística). */
+const SIMBOLOS_TEX = {
+  '\\cdot': '·', '\\times': '×', '\\div': '÷', '\\ast': '∗', '\\star': '⋆',
+  '\\pm': '±', '\\mp': '∓', '\\leq': '≤', '\\le': '≤', '\\geq': '≥', '\\ge': '≥',
+  '\\neq': '≠', '\\ne': '≠', '\\approx': '≈', '\\equiv': '≡', '\\cong': '≅',
+  '\\sim': '∼', '\\propto': '∝', '\\infty': '∞', '\\to': '→', '\\rightarrow': '→',
+  '\\leftarrow': '←', '\\Rightarrow': '⇒', '\\Leftarrow': '⇐', '\\Leftrightarrow': '⇔',
+  '\\implies': '⟹', '\\iff': '⟺', '\\mapsto': '↦', '\\in': '∈', '\\notin': '∉',
+  '\\ni': '∋', '\\subset': '⊂', '\\subseteq': '⊆', '\\supset': '⊃', '\\supseteq': '⊇',
+  '\\cup': '∪', '\\cap': '∩', '\\setminus': '∖', '\\emptyset': '∅', '\\varnothing': '∅',
+  '\\forall': '∀', '\\exists': '∃', '\\nexists': '∄', '\\neg': '¬', '\\land': '∧',
+  '\\lor': '∨', '\\perp': '⊥', '\\parallel': '∥', '\\angle': '∠', '\\mid': '∣',
+  '\\sum': '∑', '\\prod': '∏', '\\coprod': '∐', '\\int': '∫', '\\iint': '∬',
+  '\\oint': '∮', '\\partial': '∂', '\\nabla': '∇', '\\Delta': 'Δ', '\\nabla': '∇',
+  '\\cdots': '⋯', '\\ldots': '…', '\\dots': '…', '\\vdots': '⋮', '\\ddots': '⋱',
+  '\\langle': '⟨', '\\rangle': '⟩', '\\lfloor': '⌊', '\\rfloor': '⌋',
+  '\\lceil': '⌈', '\\rceil': '⌉', '\\prime': '′', '\\circ': '∘', '\\bullet': '•',
+  '\\oplus': '⊕', '\\otimes': '⊗', '\\wedge': '∧', '\\vee': '∨', '\\top': '⊤', '\\bot': '⊥',
+  // Letras griegas
+  '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\epsilon': 'ε',
+  '\\varepsilon': 'ε', '\\zeta': 'ζ', '\\eta': 'η', '\\theta': 'θ', '\\vartheta': 'ϑ',
+  '\\iota': 'ι', '\\kappa': 'κ', '\\lambda': 'λ', '\\mu': 'μ', '\\nu': 'ν', '\\xi': 'ξ',
+  '\\pi': 'π', '\\varpi': 'ϖ', '\\rho': 'ρ', '\\varrho': 'ϱ', '\\sigma': 'σ',
+  '\\varsigma': 'ς', '\\tau': 'τ', '\\upsilon': 'υ', '\\phi': 'φ', '\\varphi': 'φ',
+  '\\chi': 'χ', '\\psi': 'ψ', '\\omega': 'ω',
+  '\\Gamma': 'Γ', '\\Theta': 'Θ', '\\Lambda': 'Λ', '\\Xi': 'Ξ', '\\Pi': 'Π',
+  '\\Sigma': 'Σ', '\\Upsilon': 'Υ', '\\Phi': 'Φ', '\\Psi': 'Ψ', '\\Omega': 'Ω',
+  // Espacios y adornos que se descartan
+  '\\quad': ' ', '\\qquad': '  ', '\\,': ' ', '\\;': ' ', '\\:': ' ', '\\!': '',
+};
+
+/**
+ * Traduce un fragmento LaTeX (ya escapado como HTML) a Unicode legible.
+ * No pretende ser tipográficamente exacto: prioriza que la idea se lea sin
+ * un libro al lado. El texto entra ya escapado, así que < > & son entidades
+ * y se dejan intactas (se muestran correctamente).
+ */
+function texAUnicode(tex) {
+  let r = tex;
+  // Estructuras con argumentos {…} primero
+  r = r.replace(/\\(?:text|mathrm|mathbf|mathbb|mathcal|operatorname|textbf|textit)\s*\{([^{}]*)\}/g, '$1');
+  r = r.replace(/\\(?:hat|bar|overline|vec|tilde|widehat)\s*\{([^{}]*)\}/g, '$1');
+  r = r.replace(/\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, '($1)/($2)');
+  r = r.replace(/\\sqrt\s*\{([^{}]*)\}/g, '√($1)');
+  r = r.replace(/\\binom\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, 'C($1,$2)');
+  r = r.replace(/\\left|\\right/g, '');
+  // cases / matrices: quita solo los envoltorios, conserva el cuerpo.
+  // \\ separa filas (→ ";"), & alinea (escapado como &amp; → espacio).
+  r = r.replace(/\\begin\{array\}\s*\{[^{}]*\}/g, '');
+  r = r.replace(/\\begin\{(?:cases|aligned|matrix|pmatrix|bmatrix|smallmatrix)\}/g, '');
+  r = r.replace(/\\end\{(?:cases|array|aligned|matrix|pmatrix|bmatrix|smallmatrix)\}/g, '');
+  r = r.replace(/\\\\/g, ';  ');
+  r = r.replace(/&amp;/g, ' ');
+  // Símbolos con nombre (más largos primero para evitar prefijos)
+  Object.keys(SIMBOLOS_TEX)
+    .sort((a, b) => b.length - a.length)
+    .forEach((cmd) => { r = r.split(cmd).join(SIMBOLOS_TEX[cmd]); });
+  // Superíndices y subíndices
+  r = r.replace(/\^\{([^{}]*)\}/g, (_, g) => `<sup>${g}</sup>`);
+  r = r.replace(/\^([A-Za-z0-9])/g, (_, g) => `<sup>${g}</sup>`);
+  r = r.replace(/_\{([^{}]*)\}/g, (_, g) => `<sub>${g}</sub>`);
+  r = r.replace(/_([A-Za-z0-9])/g, (_, g) => `<sub>${g}</sub>`);
+  // Comandos restantes desconocidos: quita la barra, conserva el nombre
+  r = r.replace(/\\([A-Za-z]+)/g, '$1');
+  // Llaves sueltas de agrupación
+  r = r.replace(/[{}]/g, '');
+  return r;
+}
+
+/** Transforma negrita/cursiva/código/matemáticas/enlaces de una línea ya escapada. */
 function inline(texto) {
-  // Los spans de código se protegen primero para que * y _ internos no se toquen
-  const codigos = [];
-  let s = texto.replace(/`([^`]+)`/g, (_, c) => {
-    codigos.push(c);
-    return `\u0000${codigos.length - 1}\u0000`;
-  });
+  // Spans de código y matemáticas se protegen primero (token  i ) para que
+  // sus * _ \ {} internos no los toque la negrita/cursiva. El token guarda el
+  // HTML ya formado y se restaura verbatim al final.
+  const tokens = [];
+  const proteger = (html) => {
+    tokens.push(html);
+    return ` ${tokens.length - 1} `;
+  };
+
+  let s = texto.replace(/`([^`]+)`/g, (_, c) => proteger(`<code>${c}</code>`));
+  // Matemáticas en bloque dentro de una línea: $$ … $$
+  s = s.replace(/\$\$([^$]+)\$\$/g, (_, m) => proteger(`<span class="matematica">${texAUnicode(m)}</span>`));
+  // Matemáticas en línea: $ … $ — el lookahead (?![0-9\s]) evita capturar
+  // cantidades en dólares ($4M, $100), que el corpus usa con frecuencia.
+  s = s.replace(/\$(?![0-9\s])([^$\n]+?)\$/g, (_, m) => proteger(`<span class="matematica">${texAUnicode(m)}</span>`));
+
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  s = s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codigos[Number(i)]}</code>`);
+  // Enlaces de concepto [[slug]] o [[slug|etiqueta]] → chip (aún sin navegación)
+  s = s.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, slug, etq) => {
+    const label = (etq ?? slug).trim().replace(/-/g, ' ');
+    return `<span class="enlace-concepto" data-concepto="${slug.trim()}">${label}</span>`;
+  });
+
+  s = s.replace(/ (\d+) /g, (_, i) => tokens[Number(i)]);
   return s;
 }
 
@@ -105,6 +195,15 @@ export function renderMarkdown(md) {
       cerrarLista();
       cerrarCita();
       html.push('<hr />');
+      continue;
+    }
+
+    // Ecuación en bloque: una línea que es solo $$ … $$ → centrada, sin <p>
+    const eq = /^\$\$(.+)\$\$$/.exec(t);
+    if (eq) {
+      cerrarLista();
+      cerrarCita();
+      html.push(`<div class="ecuacion">${texAUnicode(eq[1])}</div>`);
       continue;
     }
 

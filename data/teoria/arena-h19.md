@@ -20,6 +20,49 @@ Un tratamiento es **endógeno** si su asignación se relaciona con el outcome (s
 
 ---
 
+## Mini-ejemplo trabajado: ver el sesgo de selección con 4 pacientes
+
+Tabla con *ambos* potenciales (en la vida real solo ves uno; aquí los inventamos para entender):
+
+| Paciente | Y⁰ (sin tto) | Y¹ (con tto) | δ = Y¹−Y⁰ | Recibe tto (D) |
+|---|---|---|---|---|
+| Grave 1 | 20 | 30 | +10 | sí |
+| Grave 2 | 30 | 40 | +10 | sí |
+| Leve 1 | 70 | 80 | +10 | no |
+| Leve 2 | 80 | 90 | +10 | no |
+
+El **efecto real es +10 para todos** (homogéneo → ATE=ATT=+10). Pero la diferencia naïve que un analista calcularía es:
+
+media(tratados observados Y¹) − media(controles observados Y⁰) = (30+40)/2 − (70+80)/2 = 35 − 75 = **−40**.
+
+¡El tratamiento parece **dañino** (−40) cuando en verdad ayuda (+10)! Todo el hueco es **sesgo de selección**: E[Y⁰|tratados] − E[Y⁰|controles] = 25 − 75 = −50. Los graves (peor base) recibieron el tratamiento. Suma: −50 (selección) + 10 (efecto) = −40. La aleatorización habría igualado el Y⁰ base de ambos grupos y devuelto +10.
+
+**Predicción antes de seguir:** si en vez de tratar a los graves hubieras aleatorizado, ¿qué diferencia de medias esperarías? +10, porque E[Y⁰|D=1]=E[Y⁰|D=0] y el sesgo se anula.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (sin sesgo):** ensayo aleatorizado. D ⊥ (Y⁰,Y¹) → diferencia de medias = ATE.
+- **Contraejemplo (parece causal, no lo es):** "los que tomaron el suplemento viven más". Si los sanos tienden a tomarlo, el Y⁰ base difiere → sesgo de selección disfrazado de efecto.
+- **Caso borde (SUTVA):** una vacuna con inmunidad de rebaño viola "no interferencia" — el tratamiento de unos cambia el Y⁰ de otros, y ni la aleatorización salva el contraste ingenuo.
+
+## Errores típicos
+
+- **Conceptual:** confundir ATT con ATE cuando el efecto es heterogéneo (el efecto *sobre los tratados* no es el de la población).
+- **De interpretación:** leer "los tratados resultan peor" como "el tratamiento daña", sin preguntar cómo estaban *de base*.
+- **De supuestos:** asumir SUTVA en redes sociales/epidemias donde hay interferencia evidente.
+
+## Transferencia isomorfa
+
+La switching equation y el sesgo de selección reaparecen fuera de la epidemiología:
+
+- **Off-policy en recomendadores ↔ datos faltantes:** solo observas la recompensa del ítem que *mostraste* (el Y de la acción tomada); estimar qué habría pasado con otro ítem es exactamente el problema del contrafactual no observado (conecta con [[arena-dmls1]]).
+- **Uplift / marketing ↔ ATT vs ATE:** "¿a quién mover con el cupón?" es el efecto sobre los tratados, no el promedio poblacional.
+- **Survivorship bias en Quant ↔ sesgo de selección:** comparar fondos vivos vs muertos sin igualar su riesgo base es el mismo E[Y⁰|D=1]≠E[Y⁰|D=0].
+
+Moraleja de la arista: *toda inferencia causal observacional es un combate contra una sola cosa —el sesgo de selección— y "aleatorizar" significa "igualar el Y⁰ base de los grupos".*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

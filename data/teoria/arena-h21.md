@@ -26,6 +26,41 @@ Ejemplos: **Medicare a los 65** (Card et al.), **regla de Maimónides** para tam
 
 ---
 
+## Mini-ejemplo trabajado: el estimador de Wald a mano
+
+Un email aleatorio Z anima a usar una app de ahorro (tratamiento D); quieres el efecto de *usar la app* sobre el saldo Y, pero quién la usa es endógeno (los ahorradores la usan más). Datos:
+
+- **Forma reducida** (efecto del email sobre Y): E[Y|Z=1] − E[Y|Z=0] = $120 − $100 = **+$20**.
+- **Primera etapa** (efecto del email sobre el uso): E[D|Z=1] − E[D|Z=0] = 0.50 − 0.10 = **+0.40**.
+
+**IV (Wald)** = 20 / 0.40 = **+$50**. El email subió el saldo $20 *en promedio*, pero solo el 40% extra empezó a usar la app por el email; el efecto **sobre esos compliers** es 20/0.40 = $50. No es el ATE: es el LATE de quienes el email movió.
+
+**Predicción antes de seguir:** si la primera etapa fuera floja (0.50 − 0.45 = 0.05, instrumento débil), ¿qué pasa con el IV? 20/0.05 = $400, y un error mínimo en el numerador se amplifica ×20 → estimación inestable. Por eso se exige **F>10**.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (RDD sharp):** un umbral que *determina* el tratamiento (Medicare a los 65) → el salto en Y en el cutoff es el efecto, sin necesitar CIA.
+- **Contraejemplo (exclusión violada):** un "instrumento" que afecta Y por otra vía — el email también recuerda al usuario revisar gastos (efecto directo sobre el saldo). Deja de ser válido aunque la primera etapa sea fuerte.
+- **Caso borde (RDD con manipulación):** si la gente puede colocarse justo encima del corte (amontonamiento), la comparación local se rompe → el test de **McCrary** lo detecta.
+
+## Errores típicos
+
+- **Conceptual:** reportar el IV/RDD-fuzzy como ATE cuando es un **LATE** (compliers / efecto local al umbral).
+- **Técnico:** ignorar la fuerza del instrumento (F<10) o ajustar la RDD con polinomios globales de alto grado en vez de locales.
+- **De supuestos:** no chequear exclusión (IV) ni no-manipulación/continuidad (RDD).
+
+## Transferencia isomorfa
+
+IV y RDD son experimentos naturales que reaparecen en producto y finanzas:
+
+- **Encouragement design ↔ IV:** un empujón aleatorio (notificación que sube la adopción) es un instrumento; el análisis intent-to-treat / complier es 2SLS aplicado a un experimento (conecta con [[arena-ads4]], A/B testing).
+- **RDD ↔ umbrales de producto:** "envío gratis por compras > $50" o "tier premium a partir de X puntos" crean un corte que funciona como experimento natural sobre el comportamiento.
+- **Instrumento débil ↔ experimento sin potencia:** una primera etapa floja es el gemelo de un A/B con efecto diminuto y mucho ruido — los IC se vuelven inútiles.
+
+Moraleja de la arista: *IV y RDD compran causalidad sin medir los confundidores, a cambio de un efecto local (compliers/umbral) y de instrumentos que deben ser fuertes y limpios.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

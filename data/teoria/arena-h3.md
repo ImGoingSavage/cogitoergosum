@@ -32,6 +32,43 @@ Con las tres, el efecto se identifica y se estima por **estandarización** (E[Y^
 
 ---
 
+## Mini-ejemplo trabajado: estandarizar a mano (y cuándo se rompe)
+
+Un confundidor binario L (estado de salud base). Riesgo de muerte observado, por estrato:
+
+| L | P(L) | P(Y=1\|A=1,L) | P(Y=1\|A=0,L) |
+|---|---|---|---|
+| sano (L=0) | 0.5 | 0.10 | 0.08 |
+| frágil (L=1) | 0.5 | 0.40 | 0.30 |
+
+**Estandarización:** E[Y^{a=1}] = Σ_l P(Y=1|a=1,l)P(l) = 0.10·0.5 + 0.40·0.5 = **0.25**; E[Y^{a=0}] = 0.08·0.5 + 0.30·0.5 = **0.19**. Diferencia de riesgos causal = **+0.06**. Fíjate que *promediamos los estratos con el peso de la población* P(l), no con el de los tratados — eso es lo que vuelve causal al número (la misma idea que IP weighting, visto desde el outcome).
+
+**Predicción antes de seguir:** ¿qué pasa si en el estrato "frágil" *nadie* recibió A=0 (todos los frágiles se trataron)? Entonces P(Y=1|A=0,L=1) no existe en los datos → **violación de positividad**: la fórmula pide una casilla vacía y el efecto es inidentificable ahí, no cero.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** ECA. La aleatorización da intercambiabilidad marginal → E[Y|A=a]=E[Y^a] sin ajustar.
+- **Contraejemplo (consistencia mal definida):** "¿efecto de la obesidad sobre la mortalidad?" El "tratamiento" no es una intervención bien definida (¿dieta? ¿cirugía? ¿genética?) → distintos Y^a, contraste ambiguo. Falla la consistencia antes que ninguna otra cosa.
+- **Caso borde (positividad determinista):** un estrato donde el protocolo *obliga* a tratar (P(A=1|L)=1) rompe positividad; ningún método lo arregla, solo cambiar la pregunta o el diseño.
+
+## Errores típicos
+
+- **Conceptual:** confundir E[Y|A=1] (subpoblación observada) con E[Y^{a=1}] (toda la población intervenida) — son iguales **solo** bajo intercambiabilidad.
+- **De supuestos:** verificar solo intercambiabilidad y olvidar positividad y consistencia (las tres son necesarias).
+- **De interpretación:** reportar una razón de riesgos como si la "modificación de efecto" fuera la misma en escala aditiva y multiplicativa.
+
+## Transferencia isomorfa
+
+Las tres condiciones tienen gemelos exactos en ML/experimentación:
+
+- **Consistencia ↔ "tratamiento bien definido" en producto:** medir "el efecto de mostrar el banner" exige que *mostrar el banner* signifique una sola cosa; si hay 5 variantes mezcladas, el estimando es ambiguo igual que "el efecto de la obesidad".
+- **Positividad ↔ overlap / soporte común:** un segmento al que la política *siempre* asigna A no permite estimar su contrafactual — el mismo requisito que en covariate shift y en evaluación off-policy (conecta con [[arena-h20]]).
+- **Estandarización ↔ métrica ponderada por segmento:** promediar una métrica de A/B por la *composición poblacional* (no por la del brazo) es exactamente la g-fórmula aplicada a un experimento.
+
+Moraleja de la arista: *identificar es preguntar "¿tengo intercambiabilidad, positividad y consistencia?"; estimar viene después — sin las tres, más datos no compran causalidad.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

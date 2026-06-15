@@ -29,6 +29,38 @@ Es el **caballo de batalla de la RWE**: convierte datos observacionales masivos 
 
 ---
 
+## Mini-ejemplo trabajado: cómo el immortal time infla al tratado
+
+Defines "tratado" = quien recibió el fármaco *en algún momento* del seguimiento. Pero para recibirlo hay que **seguir vivo** hasta la receta. Toma a un paciente que muere el día 10 sin alcanzar la receta: queda en el grupo "no tratado". Otro que sobrevive hasta el día 30 y entonces se trata aporta sus 30 días al grupo "tratado" — **incluidos los días 1–30 en que aún no tomaba nada**. Ese tramo "inmortal" (no podías morir tratado porque aún no lo estabas) se cuenta como tiempo-tratado-sin-eventos → la supervivencia del grupo tratado sale **artificialmente alta**. Con números: si repartes mal 20 días-persona inmortales por paciente, el "beneficio" puede ser puro artefacto.
+
+**La corrección:** alinea el **tiempo cero** (elegibilidad, asignación a estrategia e inicio del seguimiento en el mismo instante) o clasifica el person-time como tratado *solo desde* que empieza el tratamiento. Es el mismo error que mirar el futuro al construir una feature.
+
+**Predicción antes de seguir:** si en vez de "alguna vez tratado" usaras un **new-user design** (clasificas al inicio, t=0 alineado), ¿desaparece el sesgo? Sí: nadie acumula tiempo inmortal porque el reloj arranca con la decisión.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (g-métodos):** tratamiento que cambia en el tiempo con feedback L_t → ponderas por la historia (IP weighting de un MSM) en vez de condicionar.
+- **Contraejemplo (per-protocol ingenuo):** comparar "adherentes vs no adherentes" parece la pregunta clínica, pero la adherencia no está aleatorizada → confundimiento post-aleatorización; sesgado salvo con g-métodos.
+- **Caso borde (hazard ratio tardío):** un HR que cruza 1 con el tiempo suele ser **depleción de susceptibles** (los frágiles ya murieron), no un efecto que cambia — por eso se prefiere riesgo a tiempo fijo.
+
+## Errores típicos
+
+- **Conceptual:** ajustar por un confundidor tiempo-variable L_t con regresión estándar cuando L_t también es mediador del tratamiento pasado → sesga el efecto total y abre collider a la vez (no se arregla condicionando).
+- **De diseño:** usuario prevalente (incluir a quienes ya llevaban años con el fármaco) → seleccionas sobrevivientes/tolerantes.
+- **De interpretación:** leer el ITT diluido como "el fármaco no sirve" cuando lo que hubo fue baja adherencia.
+
+## Transferencia isomorfa
+
+La inferencia longitudinal tiene gemelos directos en ML systems:
+
+- **Feedback tratamiento-confundidor ↔ feedback loops del modelo:** un recomendador cuyas predicciones moldean los clics que luego lo entrenan es exactamente A_{t-1}→L_t→Y_t; ignorarlo sesga como el confounding tiempo-variable (conecta con [[arena-htd2]], feedback loops).
+- **Immortal time ↔ data leakage temporal / look-ahead:** contar person-time que "no podía tener el evento" es la versión clínica de usar información del futuro al construir una feature (conecta con [[arena-dmls1]]).
+- **Target trial ↔ diseñar una eval offline fiel a la política online:** especificar el ensayo hipotético y emularlo es como definir el experimento que tu evaluación offline pretende imitar.
+
+Moraleja de la arista: *cuando el tiempo entra, "ajustar" puede sesgar; pondera por la historia (g-métodos) y alinea siempre el t=0 — el immortal time es leakage con bata blanca.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

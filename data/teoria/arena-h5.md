@@ -26,6 +26,41 @@ Un instrumento Z permite estimar el efecto **con confundimiento no medido** si: 
 
 ---
 
+## Mini-ejemplo trabajado: la pseudo-población del IP weighting
+
+Confundidor L (frágil/sano) que empuja a tratar a los frágiles. Supón estas propensiones P(A=1|L):
+
+- **Sanos:** P(tratar)=0.2. Un sano tratado pesa 1/0.2 = **5**; un sano no tratado pesa 1/0.8 = **1.25**.
+- **Frágiles:** P(tratar)=0.8. Un frágil tratado pesa 1/0.8 = **1.25**; un frágil no tratado pesa 1/0.2 = **5**.
+
+Cada persona "vale" por varias en la **pseudo-población**: los pocos sanos tratados (raros) se clonan ×5; los muchos frágiles tratados (comunes) apenas ×1.25. Tras reponderar, tratamiento y L quedan **independientes** (A⊥L), como si hubieras aleatorizado — y sobre esa pseudo-población un MSM estima E[Y^a] sin confundimiento. La g-fórmula llega al mismo sitio modelando el *outcome* en vez del *tratamiento*: dos caras de la misma identificación.
+
+**Predicción antes de seguir:** ¿qué pasa con el peso de un frágil no tratado si casi ningún frágil queda sin tratar (P(A=0|frágil)=0.02)? Peso = 1/0.02 = 50: una sola observación domina la estimación → **casi-violación de positividad**, varianza explosiva. Por eso existen los **pesos estabilizados**.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (doble robustez):** modelas tratamiento *y* outcome; basta que **uno** esté bien especificado (AIPW/TMLE) → red de seguridad contra mala especificación.
+- **Contraejemplo (IV inválida):** un "instrumento" que afecta Y por otra vía (viola exclusión) — p. ej. la distancia al hospital también refleja nivel socioeconómico. Parece IV, sesga como confundidor.
+- **Caso borde (instrumento débil):** relevancia minúscula (F<10) → el denominador (E[A|Z=1]−E[A|Z=0]) ≈ 0 hace estallar la estimación; un poco de sesgo en exclusión se amplifica enormemente.
+
+## Errores típicos
+
+- **Conceptual:** creer que IV o PS arreglan confundidores **no medidos** por la vía del ajuste — solo IV los ataca, y a cambio estima un **LATE**, no el ATE.
+- **Técnico:** pesos sin estabilizar ante propensiones extremas → varianza enorme.
+- **De interpretación:** reportar el LATE (compliers) como si fuera el efecto poblacional.
+
+## Transferencia isomorfa
+
+El reponderar por probabilidad inversa es maquinaria compartida:
+
+- **IP weighting ↔ importance sampling / off-policy (IPS):** evaluar una política nueva reponderando logs por 1/propensión de la vieja es *literalmente* el mismo estimador (conecta con [[arena-dmls1]]).
+- **Doble robustez ↔ ensamble de dos modelos:** "consistente si uno de los dos acierta" es la intuición de combinar un modelo de propensión y uno de outcome, como un blending con garantía.
+- **Instrumento ↔ encouragement design:** en experimentos, un empujón aleatorio (email que sube la adopción) es un instrumento que da el LATE sobre quienes responden.
+
+Moraleja de la arista: *modelar el tratamiento (pesos) y modelar el outcome (g-fórmula) son duales; combinarlos compra robustez, y un instrumento cambia "confundimiento no medido" por "efecto solo en compliers".*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

@@ -151,6 +151,34 @@ Ilustra el principio: "la cantidad de agua depende del mínimo de las dos parede
 
 ---
 
+## Intuición: la tabla hash es *memoria comprada*
+
+Antes de la fórmula, la idea profunda: una tabla hash **cambia tiempo por espacio**. En lugar de re-escanear el array (O(n) por consulta), pagas memoria una vez para poder *recordar* lo que ya viste y responder en O(1). La analogía: es la diferencia entre buscar un nombre releyendo toda la guía telefónica cada vez (array) y tener un índice que te lleva directo a la página (hash). Cada vez que un problema dice "¿ya vi esto antes?", "¿cuántas veces aparece?", "¿existe su pareja?", la respuesta casi siempre es *guarda lo visto en un mapa*.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (hash brilla):** Two Sum. Necesitas, para cada `x`, saber si `target − x` ya apareció. Memoria comprada = O(1) por consulta.
+- **Contraejemplo (hash *no* conviene):** "el k-ésimo elemento más pequeño" o "pares en array **ordenado**". Aquí el orden ya es estructura gratis: two pointers o búsqueda binaria resuelven en O(1) espacio. Meter un hash desperdicia la información del orden — señal de que elegiste mal la herramienta.
+- **Caso borde:** duplicados y colisiones de clave. En Two Sum con `[3,3]` y target 6, si insertas *antes* de consultar te emparejas contigo mismo; si hay claves repetidas y guardas solo el último índice, pierdes pares. El borde revela la condición oculta: **consulta antes de insertar**.
+
+## Errores típicos
+
+- **Conceptual:** asumir O(1) *garantizado*. Es O(1) **amortizado**; con un adversario que fuerza colisiones, degrada a O(n) por operación. En entrevista, dilo: "O(1) promedio, O(n) peor caso".
+- **Técnico:** insertar el elemento en el mapa antes de buscar su complemento → falsos positivos consigo mismo.
+- **De interpretación:** usar hash cuando el enunciado dice "**contiguo**" (eso es ventana deslizante) o "**ordenado**" (eso es two pointers). La palabra del enunciado es la señal; el hash es para "¿existe / cuántos?".
+
+## Transferencia isomorfa
+
+La estructura "recordar lo visto para responder en O(1)" reaparece fuera de los arrays:
+
+- **Eventos clínicos:** deduplicar diagnósticos por `patient_id` es exactamente un *hash set* de claves vistas; contar visitas por paciente es el *hash contador* de frecuencias.
+- **Two Sum ↔ emparejar exposición-control:** "¿existe para este paciente expuesto uno de control con el mismo propensity score?" es buscar el *complemento* en un índice — el mismo patrón del complemento `target − x`, ahora sobre cohortes (conecta con [[propensity-score]] de Health AI).
+- **Rolling hash ↔ ventana temporal:** el hash deslizante de Rabin-Karp es isomorfo a una ventana temporal de exposición clínica que se actualiza incrementalmente en lugar de recalcularse.
+
+Moraleja de la arista: *el array es solo el disfraz; la estructura profunda es "memoria indexada para consulta O(1)", y esa estructura es la misma en SQL, en cohortes y en streams.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

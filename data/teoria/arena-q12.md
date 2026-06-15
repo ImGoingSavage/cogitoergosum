@@ -31,6 +31,30 @@ Los acertijos de entrevista premian encontrar **la cantidad que no cambia** o **
 - **Una vuelta a 30 mph; ¿a qué velocidad la segunda para promediar 60 mph en las dos?** Trampa del promedio aritmético. 2 millas a 60 mph = 2 min; pero 1 milla a 30 mph ya consume 2 min → no queda tiempo → **imposible** (necesitarías velocidad infinita). La velocidad media es la *media armónica*, no la aritmética.
 - **La nieve empieza antes del mediodía; un quitanieves arranca a las 12 con velocidad inversa al tiempo desde que nevó; recorre el doble de 12-1 que de 1-2. ¿Cuándo empezó?** Integrando α/t: x = ½(√5 − 1) horas antes del mediodía.
 
+## Prototipo, contraejemplo y caso borde del *invariante*
+
+El hilo que une casi todo el capítulo es **buscar la cantidad que no cambia**. Para no confundir "invariante real" con "patrón aparente":
+
+- **Prototipo:** las roturas de chocolate. Cada operación cambia el conteo de piezas en exactamente +1 → el total de roturas (n−1) no depende del camino. Invariante limpio.
+- **Contraejemplo (parece invariante, no lo es):** "promediar 30 mph y X mph da 60 mph". La tentación es promediar como si el invariante fuera la *velocidad*; el invariante real es el **tiempo** (distancia/velocidad), y por eso sale media armónica, no aritmética. Cuando el "promedio obvio" choca con la conservación correcta, gana la conservación.
+- **Caso borde:** el problema de las pesas. Con 5 pesas binarias cubres 2⁵=32 < 40 → falla por *uno*. El borde (¿alcanza justo?) revela que la cota es exacta, no aproximada.
+
+## Errores típicos
+
+- **Conceptual:** intentar resolver con álgebra/ecuaciones un problema que pide *mirada*. Si te ves planteando sistemas, probablemente no viste el invariante.
+- **De interpretación:** promediar velocidades aritméticamente (es media armónica), o confundir "desplaza por peso" con "desplaza por volumen" (ancla en el bote).
+- **Técnico:** en recurrencias tipo escalones/dominó, equivocar los casos base (p(1)=1, p(2)=2) y desfasar el índice de Fibonacci.
+
+## Transferencia isomorfa
+
+La maquinaria del brainteaser no es exclusiva del acertijo de copa de vino:
+
+- **Invariante "cada operación cambia el conteo en 1" ↔ DS&A:** contar componentes conexas en un grafo (cada arista que une dos componentes baja el conteo en 1) es el mismo invariante que las roturas de chocolate (conecta con [[arena-cc2]], grafos).
+- **Media armónica ↔ sistemas:** el throughput de un pipeline con etapas de distinta velocidad se promedia como media armónica, no aritmética — el mismo error de "promediar velocidades" reaparece al calcular latencia/QPS (conecta con ML Systems).
+- **Fibonacci "la última pieza es de dos tipos" ↔ conteo de caminos:** la recurrencia p(n)=p(n−1)+p(n−2) es isomorfa a contar secuencias binarias sin dos ceros seguidos, que aparece en codificación y en programación dinámica.
+
+Moraleja de la arista: *un invariante es una ley de conservación disfrazada; encontrar "qué se conserva" colapsa el acertijo igual que la energía colapsa un problema de física.*
+
 ## Disparadores
 
 | Señal | Jugada |

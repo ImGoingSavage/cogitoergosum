@@ -1548,6 +1548,40 @@ button.secundario.peligro:hover:not(:disabled) {
   padding: 1px 6px;
 }
 
+/* Matemáticas: traductor ligero LaTeX→Unicode (markdown.js). No es KaTeX;
+   prioriza legibilidad sin librerías. Inline va en cursiva serif; el bloque
+   se centra y respira. */
+.leccion .matematica {
+  font-family: "EB Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
+  font-style: italic;
+}
+.leccion .matematica sub,
+.leccion .matematica sup,
+.leccion .ecuacion sub,
+.leccion .ecuacion sup { font-style: normal; font-size: 0.72em; }
+
+.leccion .ecuacion {
+  font-family: "EB Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
+  font-style: italic;
+  text-align: center;
+  font-size: 1.08em;
+  margin: 16px 0;
+  padding: 8px 4px;
+  color: var(--texto);
+  overflow-x: auto;
+}
+
+/* Enlace de concepto [[slug]]: aún no navegable (el resolver llega en otra
+   oleada), pero se distingue como arista conceptual en vez de texto crudo. */
+.leccion .enlace-concepto {
+  color: var(--acento);
+  background: var(--acento-suave);
+  border-radius: 5px;
+  padding: 0 5px;
+  font-style: normal;
+  white-space: nowrap;
+}
+
 .leccion hr {
   border: none;
   border-top: 1px solid var(--borde);

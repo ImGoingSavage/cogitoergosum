@@ -28,6 +28,42 @@ Estimables combinando datos **experimentales + observacionales** bajo supuestos.
 
 ---
 
+## Mini-ejemplo trabajado: descomponer un efecto en directo e indirecto
+
+Un programa de ejercicio X baja la presión Y, en parte directamente y en parte porque hace **perder peso** M. SCM lineal sencillo: M = 2·X (cada unidad de ejercicio quita 2 de peso), Y = −1·X − 0.5·M (el ejercicio baja Y directo, y el peso también).
+
+- **Efecto indirecto (NIE)** X→M→Y: mueves M como respondería a X (2 por unidad), con X fijo: −0.5 · 2 = **−1**.
+- **Efecto directo (NDE)** X→Y con M congelado: el coeficiente directo = **−1**.
+- **Efecto total** = NDE + NIE = −1 + (−1) = **−2** por unidad de X.
+
+La mitad del beneficio viaja por el peso, la mitad es directo. Eso es *mecanismo*, no solo magnitud — y Baron-Kenny (producto de coeficientes) coincide aquí **solo** porque no hay interacción; en cuanto el efecto del peso dependa del nivel de ejercicio, hay que usar NDE/NIE.
+
+**Predicción antes de seguir:** si una pastilla bloqueara la pérdida de peso (congela M en su valor sin tratamiento), ¿cuánto bajaría Y? Solo el NDE = −1: matas el canal indirecto.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (contrafactual individual):** abducción (¿qué tipo de caso es, dados sus U?) → acción (impón el antecedente con do) → predicción. Da el "¿habría…?" de un individuo.
+- **Contraejemplo (Baron-Kenny con interacción):** si X y M interactúan, el producto de coeficientes da una descomposición errónea; parece mediación clásica pero no lo es.
+- **Caso borde (mediación con confundidor de M-Y afectado por X):** ni siquiera NDE/NIE se identifican sin supuestos extra — el caso que marca el límite del método.
+
+## Errores típicos
+
+- **Conceptual:** creer que un experimento (peldaño 2) responde un contrafactual individual (peldaño 3) — el RCT da promedios, no el "para este caso".
+- **De supuestos:** estimar mediación sin desconfundir también la relación **M→Y**.
+- **De interpretación:** confundir PN ('but-for', ¿sin X no habría pasado?) con PS (¿X basta para causarlo?) — la justicia usa PN, la prevención usa PS.
+
+## Transferencia isomorfa
+
+Contrafactuales y mediación son herramientas de ML interpretable y producto:
+
+- **PN / 'but-for' ↔ explicación contrafactual:** "¿cuál es el cambio mínimo en las features que habría volteado la decisión del modelo?" es exactamente una pregunta but-for sobre el clasificador (conecta con [[arena-iml4]], métodos tipo SHAP/contrafactuales).
+- **NDE/NIE ↔ atribución por caminos:** descomponer una predicción en la contribución *directa* de una feature vs la que pasa por features derivadas es el análogo de directo/indirecto.
+- **Abducción→acción→predicción ↔ simulación what-if:** los gemelos digitales y los simuladores de política hacen el mismo bucle: inferir el estado latente, intervenir, repredecir.
+
+Moraleja de la arista: *un contrafactual es "imaginar este caso en otro mundo"; mediación dice por qué canal viaja el efecto, y PN/PS separan culpar de prevenir.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

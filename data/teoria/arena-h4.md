@@ -35,6 +35,36 @@ Se modela con **diagramas no causales** (variable real → variable medida ← n
 
 ---
 
+## Mini-ejemplo trabajado: el error no diferencial atenúa hacia el nulo
+
+Verdad: el tratamiento dobla el riesgo. Entre expuestos reales el riesgo es 0.40; entre no expuestos, 0.20 → **razón de riesgos = 2.0**. Ahora mide la *exposición* con un sensor que se equivoca el 20% de las veces **en ambos sentidos por igual** (error no diferencial). El grupo "medido como expuesto" se contamina con verdaderos no-expuestos (riesgo 0.20) y viceversa, así que las tasas observadas se acercan: el expuesto-medido baja de 0.40 y el no-expuesto-medido sube de 0.20 → la RR observada cae hacia **~1.5**, nunca por debajo de 1. La señal **se diluye hacia el nulo**, no se invierte.
+
+**Predicción antes de seguir:** ¿y si el error fuera *diferencial* (los enfermos recuerdan mejor su exposición, recall bias)? Entonces el sesgo puede ir en **cualquier** dirección, incluso inflar la RR por encima de 2 — por eso el tipo de error importa más que su tamaño.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (confundimiento):** A←C→Y con C medido → cierras el backdoor ajustando por C.
+- **Contraejemplo (ajuste que **abre** sesgo):** condicionar un collider pretratamiento (M-bias) o un mediador "porque mejora el ajuste". El criterio es la d-separación, no el R².
+- **Caso borde (censura informativa):** abandonar el estudio (C=0) es efecto del tratamiento y predictor del outcome → analizar solo a los no censurados condiciona un collider; se corrige con **IPCW**, no eliminando filas.
+
+## Errores típicos
+
+- **Conceptual:** tratar todo sesgo como "confundimiento"; selección y medición son estructuras distintas (efecto común condicionado vs error de medida).
+- **Técnico:** "ajustar por todo lo disponible" → mete mediadores, colliders o instrumentos y empeora la estimación.
+- **De interpretación:** asumir que un error de medición siempre atenúa — solo el **no diferencial** lo hace.
+
+## Transferencia isomorfa
+
+Estos sesgos estructurales reaparecen en datos y ML:
+
+- **Error no diferencial ↔ ruido de etiquetas:** etiquetas con ruido aleatorio atenúan la señal aprendida hacia el azar, igual que la misclasificación atenúa la RR (conecta con [[arena-dmls2]]).
+- **Censura informativa / IPCW ↔ sesgo de supervivencia en churn:** analizar solo usuarios que siguen activos condiciona un collider; reponderar por probabilidad de seguir es el IPCW del producto.
+- **Z-bias del instrumento ↔ feature casi-colineal con el tratamiento:** meter una variable que solo predice la asignación amplifica varianza sin reducir sesgo.
+
+Moraleja de la arista: *cada sesgo es un camino en el DAG; "qué ajustar" lo decide la d-separación, y el ruido de medida casi nunca es neutral.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

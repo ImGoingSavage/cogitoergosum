@@ -22,6 +22,39 @@ Regla: condicionar un **mediador o confundidor cierra** el flujo; condicionar un
 
 ---
 
+## Mini-ejemplo trabajado: un collider fabrica correlación de la nada
+
+Dos rasgos **independientes** entre sí: *talento* y *suerte*, cada uno 0 o 1 con probabilidad ½, sin ninguna relación. A un actor lo **admiten** si talento + suerte ≥ 1 (tiene al menos uno). Mira solo a los admitidos:
+
+- (talento=1, suerte=1), (1,0), (0,1) entran; (0,0) queda fuera.
+- Entre los admitidos, si ves talento=0, entonces forzosamente suerte=1. Si ves talento=1, la suerte puede ser 0 o 1.
+
+Acabas de crear una **correlación negativa** talento–suerte *dentro de la muestra admitida*, aunque en la población eran independientes. No tocaste los datos; **condicionaste un collider** (la admisión, efecto común de ambos). Esa es la maquinaria de Berkson y de "los actores guapos actúan peor" — la selección, no el mundo, generó la asociación.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (ajustar es correcto):** fork A←B→C. B (edad) confunde fármaco y recuperación → ajustar por B cierra el camino trasero. Aquí *más control = menos sesgo*.
+- **Contraejemplo (ajustar **mete** sesgo):** collider A→B←C. "Controlar por todo lo que mejora el R²" te lleva a meter un collider y *abrir* una asociación espuria. El R² sube y la estimación empeora — el ajuste que parecía prudente fue el error.
+- **Caso borde (mediador):** cadena A→B→C. Ajustar por el mediador B *borra* justo el efecto que querías medir (el efecto indirecto desaparece). Revela que "controlar variables" no es neutro: depende del rol causal.
+
+## Errores típicos
+
+- **Conceptual:** tratar el DAG como una red de correlaciones (red bayesiana) en vez de causas — las flechas afirman causa directa.
+- **De supuestos:** justificar un ajuste porque "cambia el coeficiente". El criterio es la **estructura** (¿fork, mediador o collider?), no el número.
+- **Técnico:** condicionar sin querer un collider al **filtrar la muestra** (p. ej. "solo casos hospitalizados") — el filtro *es* un ajuste.
+
+## Transferencia isomorfa
+
+El collider no es una curiosidad epidemiológica; es el mismo sesgo en otros dominios:
+
+- **Sesgo de selección en ML ↔ collider:** entrenar solo con "usuarios que convirtieron" condiciona en un efecto común (la conversión) y rompe la relación feature→outcome (conecta con [[arena-dmls2]], muestreo y etiquetas).
+- **Survivorship bias en Quant ↔ Berkson:** evaluar una estrategia solo sobre fondos que sobrevivieron es muestrear por un efecto común (sobrevivir) → rendimiento espurio.
+- **Monty Hall ↔ test diagnóstico:** "abrir una puerta" = recibir un dato que *depende* del estado oculto; actualizar como Bayes es el mismo gesto que reponderar la probabilidad de enfermedad ante un síntoma (conecta con la tasa base, [[arena-q2]]).
+
+Moraleja de la arista: *casi todo "sesgo raro" famoso —Berkson, Simpson, survivorship, Monty Hall— es la misma estructura: condicionar (o seleccionar) sobre un efecto común.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

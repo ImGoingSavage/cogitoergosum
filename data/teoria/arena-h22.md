@@ -20,6 +20,43 @@ Para **una** unidad tratada agregada: el contrafactual es una **combinación pon
 
 ---
 
+## Mini-ejemplo trabajado: DiD 2×2 con números
+
+Empleo medio (en miles) antes y después de subir el salario mínimo, tratado (NJ) vs control (PA):
+
+| | Pre | Post | Δ (post−pre) |
+|---|---|---|---|
+| **Tratado (NJ)** | 20 | 21 | +1 |
+| **Control (PA)** | 22 | 25 | +3 |
+
+La 1ª diferencia quita el nivel fijo de cada estado; la 2ª quita la tendencia común. **ATT = (+1) − (+3) = −2**: sin la política, NJ "debería" haber subido +3 como PA; subió solo +1 → el salario mínimo costó 2 mil empleos *relativos a la tendencia*. Nota que el empleo de NJ **subió** en términos absolutos (+1): mirar solo "antes/después del tratado" (+1) daría el signo equivocado. La tendencia paralela (PA) es la que revela el efecto.
+
+**Predicción antes de seguir:** si PA hubiera estado plano (Δ=0), ¿cuál sería el ATT? +1 − 0 = +1. El control *es* el contrafactual; cambia el control y cambia la conclusión — por eso el supuesto de tendencias paralelas es todo.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** dos grupos, un shock que cae sobre uno, tendencias pre paralelas → DiD limpio.
+- **Contraejemplo (TWFE escalonado):** con adopción en distintos momentos y efectos heterogéneos, el TWFE ingenuo usa a los *ya tratados* como controles → sesgo de Goodman-Bacon. Parece DiD, pero el "control" ya está contaminado.
+- **Caso borde (una sola unidad tratada):** un estado, un país → no hay grupo control natural; el control sintético construye uno ponderando el donor pool.
+
+## Errores típicos
+
+- **Conceptual:** confundir tendencias **paralelas** (trayectorias) con niveles iguales — DiD no exige que los grupos arranquen igual, solo que evolucionen igual sin tratamiento.
+- **De supuestos:** no testear pre-tendencias (event study) ni correr placebos.
+- **Técnico:** aplicar TWFE a adopción escalonada sin estimadores robustos (Callaway-Sant'Anna).
+
+## Transferencia isomorfa
+
+La doble diferencia y los efectos fijos no son solo de econometría:
+
+- **DiD ↔ experimentación con control:** un A/B donde mides el *cambio* en tratamiento menos el *cambio* en control (en vez de niveles) es DiD; absorbe estacionalidad común igual que PA absorbe la tendencia (conecta con [[arena-ads4]]).
+- **Efectos fijos ↔ demeaning por usuario:** restar la media de cada usuario antes de modelar elimina su sesgo estable no observado — es el estimador within aplicado a features de recomendación.
+- **Control sintético ↔ causal impact / forecasting contrafactual:** predecir "qué habría pasado sin el cambio" con un modelo ajustado al periodo pre es la misma idea que el gemelo sintético, ahora con series de tiempo.
+
+Moraleja de la arista: *casi todo diseño cuasi-experimental cambia el supuesto incómodo (CIA, "medí los confundidores") por otro más defendible (tendencias paralelas, efectos estables) — elegir bien el contrafactual es el oficio.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

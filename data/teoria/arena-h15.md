@@ -26,6 +26,42 @@ Tesis central (**"mind over data"**): los **datos no contienen causalidad** — 
 
 ---
 
+## Mini-ejemplo trabajado: una tabla, tres mundos causales
+
+Observas que helados y ahogamientos suben juntos: P(ahogamiento | ves helados altos) es alta. Esa **única** tabla de asociación (peldaño 1) es compatible con tres modelos causales distintos:
+
+1. Helado → ahogamiento (el azúcar te marea).
+2. Ahogamiento → helado (improbable, pero los datos no lo prohíben).
+3. Calor → helado y Calor → ahogamiento (fork: el **verano** causa ambos).
+
+Los números son **idénticos** en los tres mundos; ninguna estadística los distingue. Solo un **modelo** (sé que el calor confunde) te deja subir al peldaño 2 y predecir: *si prohíbo los helados (do), ¿bajan los ahogamientos?* → no, porque la flecha era espuria. Esa es la tesis "mind over data": la causa no está en los datos, está en el supuesto que traes.
+
+**Predicción antes de seguir:** un modelo con AUC 0.99 que predice ahogamientos a partir de ventas de helado, ¿sabe que prohibir helados no salva vidas? No: vive en el peldaño 1; jamás respondió una pregunta de *do()*.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (peldaño 2):** un RCT —borrar las flechas hacia X aleatorizando— responde "¿qué pasa si hago X?" sin necesitar el modelo completo.
+- **Contraejemplo (peldaño 1 disfrazado de 3):** un modelo predictivo enorme presentado como "entiende causas". Predecir ≠ intervenir; es el error de marketing más común en IA.
+- **Caso borde (contrafactual, peldaño 3):** "¿este paciente *habría* mejorado sin el fármaco?" no lo responde ni un RCT (da promedios), solo un SCM sobre el individuo (ver [[arena-h18]]).
+
+## Errores típicos
+
+- **Conceptual:** "dejemos que los datos hablen" para una pregunta causal — los datos solo hablan del peldaño 1.
+- **De interpretación:** tratar buen desempeño predictivo como evidencia de mecanismo.
+- **De nivel:** intentar responder un contrafactual (peldaño 3) con un experimento (peldaño 2), que solo da efectos promedio.
+
+## Transferencia isomorfa
+
+La escalera ordena tareas de datos, no solo de epidemiología:
+
+- **Peldaño 1 ↔ todo el ML supervisado:** clasificación/regresión ajustan P(Y|X); brillan prediciendo y son **ciegos** a intervenciones (conecta con [[arena-isl1]], estimar f).
+- **Peldaño 2 ↔ A/B testing:** aleatorizar una feature es el do-operator del producto; por eso el experimento, no el modelo offline, decide causalidad.
+- **Peldaño 3 ↔ explicaciones contrafactuales:** "¿qué cambio mínimo habría volteado esta decisión del modelo?" es una pregunta de peldaño 3 sobre el clasificador.
+
+Moraleja de la arista: *predecir, intervenir e imaginar son tres preguntas distintas; subir de una a otra exige un modelo, no más datos.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
