@@ -428,11 +428,16 @@
       "archivo": "Arena/Entrevista Ciencia de datos/pdfcoffee.com_build-a-career-in-data-science-by-emily-robinson-jacqueline-nolis-z-liborg-pdf-free.pdf",
       "sector": "D",
       "ruta": "conductual",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-c1",
+        "arena-c2",
+        "arena-c3",
+        "arena-c4"
+      ],
       "cuota_minima": 40,
-      "notas": "Fuente principal para preguntas STAR. Complementar con capítulos conductuales de Cracking the Coding Interview y System Design Interview."
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. SECTOR D conductual/STAR. Ruta 'conductual' YA cableada (chip en js/study.js y CSS .ruta-conductual existían de sesión previa; sin cambios de código salvo sw.js). TOC verificado (cap. 7 behavioral interview, cap. 13 project fails). REGLA §SECTOR D respetada: tipo='conductual', solucion=andamiaje STAR para ESA pregunta + señales de respuesta fuerte; explicacion=errores comunes + esqueleto STAR genérico; JAMÁS se inventó una historia personal del usuario. 4 unidades: c1 conflicto/colaboración/comunicación (conflicto sin culpar, desacuerdo con manager/disagree-and-commit, explicar a no técnicos, influir sin autoridad, feedback, malas noticias, mentoría, remoto), c2 fracaso/errores/ambigüedad/feedback (proyecto que fracasó, mayor error, crítica dura, ambigüedad, plazo incumplido, qué harías distinto, análisis equivocado, estrés, coste hundido, 'no sé'), c3 liderazgo/iniciativa/impacto/priorización (liderar, iniciativa no pedida, priorizar con criterio, ir más allá, decisión con info incompleta, motivar equipo, decisión impopular, mejora de proceso, mayor logro, calidad vs plazo, influir sin autoridad, delegar), c4 DS aplicada/stakeholders/carrera (proyecto end-to-end con impacto de NEGOCIO, resultado negativo, modelo que falló en producción, datos sucios, stakeholder escéptico, definir métrica, ética/privacidad, por qué DS/este puesto, cuéntame de ti, cambio de alcance, recomendación ignorada, simple vs complejo, Fermi, aprendizaje continuo, metas). 60 banco (15/unidad, cuota 40 superada) + 2 examen (f7-ex-72 conflicto, f7-ex-73 fracaso; ambos heuristica narrativa-star, pistas[5] que guían S→T→A→R, metadata ruta conductual). Órdenes 115-118. 5 heurísticas nuevas (narrativa-star, responder-conflicto-star, responder-fracaso-star, responder-liderazgo-impacto-star, comunicar-resultado-ds-star). Catálogo total 231 heurísticas. VERSION v54 (203 archivos). Próximo §10: Sector C (problems.json ids 101+ y fase-0) con la carpeta 'Problem solving y olimpiadas' (Engel, Zeitz, Pólya, Putnam, Bóna, Kevin Houston, serie AoPS)."
     },
     {
       "libro": "A Mind for Numbers (Barbara Oakley)",

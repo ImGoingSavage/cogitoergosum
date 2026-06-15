@@ -2450,3 +2450,47 @@ revisar CSS `.ruta-conductual`). Ver §SECTOR D del PROMPT-MAESTRO (esquema STAR
 `solucion`=andamiaje STAR + señales, NUNCA historia inventada). Después Sector C
 (problems.json + fase-0). Próxima unidad: ids `arena-c1,c2…`; órdenes desde 115,
 `f7-ex-72`+, VERSION v54+.
+
+## Bitácora 2026-06-14 (Arena tanda 26) — SECTOR D conductual/STAR (Build a Career in DS), 62 preguntas
+
+Procesado el **SECTOR D (conductual/STAR)** con `Build a Career in Data Science`
+(Robinson & Nolis) — libros[26], ruta `conductual`, cuota 40 (superada con 60). La
+ruta `conductual` **ya estaba cableada** (chip en `js/study.js` y CSS
+`.ruta-conductual` de una sesión previa) → **sin cambios de código salvo sw.js**.
+**REGLA §SECTOR D respetada:** `tipo:"conductual"`; `solucion` = andamiaje STAR para
+ESA pregunta + señales de respuesta fuerte; `explicacion` = errores comunes +
+esqueleto STAR genérico; **JAMÁS se inventó una historia personal del usuario**. 4
+unidades (`fase-7`, órdenes 115-118):
+- **arena-c1** — conflicto, colaboración y comunicación (conflicto sin culpar,
+  desacuerdo con manager/'disagree and commit', explicar a no técnicos, influir sin
+  autoridad, dar/recibir feedback, malas noticias, mentoría, remoto).
+- **arena-c2** — fracaso, errores, ambigüedad y feedback (proyecto que fracasó,
+  mayor error, crítica dura, ambigüedad, plazo incumplido, análisis equivocado,
+  estrés, coste hundido, "no sé").
+- **arena-c3** — liderazgo, iniciativa, impacto y priorización (liderar, iniciativa
+  no pedida, priorizar con criterio, decisión con info incompleta, decisión
+  impopular, mejora de proceso, mayor logro, calidad vs plazo, delegar).
+- **arena-c4** — DS aplicada, stakeholders y carrera (proyecto end-to-end con
+  impacto de **negocio**, resultado negativo, modelo que falló en producción, datos
+  sucios, stakeholder escéptico, definir métrica, ética/privacidad, "por qué este
+  puesto", "cuéntame de ti", Fermi, aprendizaje continuo, metas).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-72** conflicto, **f7-ex-73** fracaso; ambos
+`heuristica: narrativa-star`, `pistas[5]` que guían S→T→A→R, `metadata.ruta:
+conductual`) = 62. 5 heurísticas nuevas (**narrativa-star**, responder-conflicto-star,
+responder-fracaso-star, responder-liderazgo-impacto-star, comunicar-resultado-ds-star).
+Catálogo total **231** heurísticas. `sw.js` **v54** (+4 lecciones
+`data/teoria/arena-c{1..4}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (118 unidades en `fase-7`, 73 ítems de examen); `verificar-shell.py` OK (203
+archivos). Contenido anclado en el libro (§1.2; las conductuales no se 'verifican':
+su solución es el andamiaje STAR).
+
+**Siguiente** — el **Sector A (todas las rutas de entrevista) y el Sector D quedan
+COMPLETOS**. Orden §10 pasa al **Sector C**: `data/problems.json` (problemas nuevos,
+ids numéricos **101+**, sin huecos; campo `estrategia` ∈ {inversion, optimizacion,
+invariantes, patrones}, `dificultad` 1-5, `hints[5]` socráticos, solución
+**verificada con Python** para mates) **y** bloque `fase-0`. Fuente: carpeta
+`Arena/Problem solving y olimpiadas/` (Engel, Zeitz, Pólya, Putnam, Bóna, Kevin
+Houston, serie AoPS). OJO: esquema distinto (§4.1, no fase-7). VERSION v55+.

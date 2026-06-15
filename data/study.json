@@ -1693,6 +1693,46 @@
    "cuando_usar": "Estudios de caso con una (o pocas) unidad tratada agregada y muchos controles, con historia pre-tratamiento.",
    "ejemplo": "Abadie: efecto del control de tabaco en California construyendo una 'California sintética' con otros estados.",
    "patron": "contrafactual = combinación ponderada del donor pool que iguala el pre-tratamiento; efecto = brecha; inferencia por placebo/permutación"
+  },
+  {
+   "id": "narrativa-star",
+   "nombre": "Narrativa STAR",
+   "descripcion": "Estructura una respuesta conductual en cuatro partes: SITUACIÓN (contexto breve: dónde, cuándo, qué estaba en juego), TAREA (tu responsabilidad concreta o el problema que debías resolver), ACCIÓN (qué hiciste TÚ específicamente —en primera persona, decisiones y pasos, no 'el equipo'—) y RESULTADO (el desenlace, idealmente CUANTIFICADO, más qué aprendiste). El 60-70% de la respuesta debe ser ACCIÓN y RESULTADO. Una buena respuesta es específica (un caso real concreto, no generalidades), concisa (1-2 min), honesta y demuestra propiedad e impacto. NO es memorizar una historia: es practicar la ESTRUCTURA para contar tus experiencias reales con claridad.",
+   "cuando_usar": "En cualquier pregunta conductual ('Cuéntame de una vez que…', 'Háblame de un proyecto…').",
+   "ejemplo": "S: un plazo se adelantó; T: yo lideraba el análisis; A: prioricé, automaticé X, negocié alcance; R: entregamos a tiempo, +15% de precisión, aprendí a…",
+   "patron": "Situación → Tarea → Acción (tú, en detalle) → Resultado (medible + aprendizaje); 60-70% en A+R"
+  },
+  {
+   "id": "responder-conflicto-star",
+   "nombre": "Responder preguntas de conflicto/colaboración (STAR)",
+   "descripcion": "Para preguntas de conflicto, desacuerdo o trabajo en equipo: usa STAR pero con foco en MADUREZ profesional. Describe el desacuerdo de forma OBJETIVA y EMPÁTICA (sin culpar ni hablar mal del otro), céntrate en cómo BUSCASTE ENTENDER la otra postura (escucha, datos, intereses comunes) y en las ACCIONES concretas para RESOLVERLO, y cierra con un RESULTADO positivo (acuerdo, mejor relación, mejor decisión) y lo aprendido sobre colaboración. Señales de respuesta fuerte: tomas perspectiva del otro, te apoyas en datos/objetivos compartidos, mantienes la relación, y el equipo/producto sale beneficiado. Evita: pintar al otro como villano, 'ganar' la discusión, o conflictos triviales o personales.",
+   "cuando_usar": "Conflicto con compañero/manager, desacuerdo con un stakeholder, equipo difícil.",
+   "ejemplo": "Andamiaje: 'desacuerdo sobre el enfoque → escuché su preocupación → propuse un experimento/datos para decidir → llegamos a una solución mejor que ambas iniciales'.",
+   "patron": "sin culpar + empatía/perspectiva + resolver con datos/intereses comunes + resultado que preserva la relación"
+  },
+  {
+   "id": "responder-fracaso-star",
+   "nombre": "Responder preguntas de fracaso/error (STAR)",
+   "descripcion": "Para 'un proyecto que fracasó', 'un error que cometiste' o 'una crítica que recibiste': elige un caso REAL y con consecuencias suficientes (no trivial ni catastrófico-imprudente), ASUME LA RESPONSABILIDAD sin echar culpas, narra brevemente qué salió mal y POR QUÉ, y dedica la mayor parte a lo que HICISTE para mitigarlo y, sobre todo, al APRENDIZAJE y al CAMBIO concreto de comportamiento posterior (cómo evitas que se repita). Señales de respuesta fuerte: honestidad, ownership, reflexión metacognitiva, y evidencia de que aplicaste la lección después. Evita: 'mi mayor defecto es ser perfeccionista', culpar a otros/al contexto, un fracaso sin aprendizaje, o uno que revele mal juicio grave.",
+   "cuando_usar": "Proyecto que falló, mayor error, recibir feedback negativo, qué harías distinto.",
+   "ejemplo": "Andamiaje: 'asumí un supuesto sin validar → el modelo falló en producción → lo detecté/corregí → ahora siempre valido X; desde entonces no ha vuelto a pasar'.",
+   "patron": "caso real + ownership (sin culpar) + qué salió mal + APRENDIZAJE y cambio aplicado después"
+  },
+  {
+   "id": "responder-liderazgo-impacto-star",
+   "nombre": "Responder preguntas de liderazgo/iniciativa/impacto (STAR)",
+   "descripcion": "Para liderazgo, iniciativa, propiedad o priorización: usa STAR demostrando AGENCIA e IMPACTO. En la Acción muestra que TÚ tomaste la iniciativa o guiaste (no esperaste instrucciones), cómo INFLUISTE sin necesariamente tener autoridad (persuadir con datos, alinear a la gente) y cómo PRIORIZASTE bajo restricciones. En el Resultado, CUANTIFICA el impacto en el negocio/equipo (métricas, tiempo ahorrado, decisión tomada) y atribúyete tu parte con honestidad (reconociendo al equipo sin diluir tu rol). Señales fuertes: ownership, impacto medible y de negocio, influencia, juicio para priorizar. Evita: vaguedad ('ayudé'), atribuirte todo el mérito, o impacto no cuantificado.",
+   "cuando_usar": "Lideraste un proyecto, tomaste iniciativa, priorizaste, fuiste más allá de tu rol, mentoría.",
+   "ejemplo": "Andamiaje: 'detecté una oportunidad nadie estaba atacando → convencí con un prototipo → coordiné a 3 áreas → resultó en +X de ingreso/-Y de tiempo'.",
+   "patron": "iniciativa propia + influencia (datos/alineación) + priorización + RESULTADO de negocio cuantificado"
+  },
+  {
+   "id": "comunicar-resultado-ds-star",
+   "nombre": "Comunicar resultados de data science a stakeholders (STAR)",
+   "descripcion": "Para preguntas específicas de DS (explicar algo técnico a no técnicos, comunicar un resultado negativo o nulo, lidiar con stakeholders que no entienden o piden lo imposible, un modelo que falló en producción): demuestra TRADUCCIÓN y ORIENTACIÓN AL NEGOCIO. En la Acción, muestra cómo simplificaste el mensaje al lenguaje del decisor (analogías, foco en la decisión, no en el método), cómo manejaste expectativas y cómo conectaste el análisis con el IMPACTO en el negocio. Para resultados negativos: comunícalos con honestidad y enmárcalos como aprendizaje accionable (qué NO hacer ahorra recursos). Señales fuertes: empatía con la audiencia, claridad, foco en la decisión/valor, honestidad sobre incertidumbre. Evita: jerga, defender el método por encima de la decisión, ocultar malos resultados.",
+   "cuando_usar": "Explicar a no técnicos, comunicar un resultado negativo, stakeholder difícil, modelo que falló.",
+   "ejemplo": "Andamiaje: 'el experimento no mostró efecto → en vez de esconderlo, lo presenté como ahorro de no invertir en X y propuse la siguiente hipótesis → el equipo redirigió recursos'.",
+   "patron": "traducir al lenguaje del negocio + manejar expectativas + foco en la decisión/impacto + honestidad sobre lo negativo"
   }
  ],
  "bloques": [
@@ -2403,7 +2443,11 @@
     "arena-h19",
     "arena-h20",
     "arena-h21",
-    "arena-h22"
+    "arena-h22",
+    "arena-c1",
+    "arena-c2",
+    "arena-c3",
+    "arena-c4"
    ],
    "examen": {
     "items": [
@@ -4823,6 +4867,78 @@
        ]
       },
       "source": "Causal Inference: The Mixtape (Cunningham) — Regression discontinuity"
+     },
+     {
+      "id": "f7-ex-72",
+      "heuristica": "narrativa-star",
+      "enunciado": "Cuéntame de una vez que tuviste un conflicto serio con un compañero de trabajo y cómo lo manejaste.",
+      "pistas": [
+       "¿Cuál es la SITUACIÓN en una frase? (el desacuerdo, sin culpar a nadie)",
+       "¿Cuál era tu TAREA/responsabilidad en esa situación?",
+       "ACCIÓN: ¿qué hiciste TÚ para entender su postura y resolverlo? (escuchar, datos, objetivos comunes)",
+       "¿Qué acción demuestra madurez en vez de 'ganar' la discusión?",
+       "¿Cuál fue el RESULTADO (relación/decisión) y qué aprendiste sobre colaborar?"
+      ],
+      "solucion": "No hay una 'respuesta correcta' única: es práctica de ESTRUCTURA con una experiencia real tuya. Andamiaje STAR para esta pregunta: SITUACIÓN — describe el conflicto de forma breve y OBJETIVA (un desacuerdo técnico o de prioridades), sin pintar al otro como villano. TAREA — tu responsabilidad de llegar a una solución que sirviera al equipo/producto. ACCIÓN (el grueso) — cómo buscaste ENTENDER su punto de vista (escuchar, preguntar el porqué), cómo propusiste decidir con criterios OBJETIVOS (datos, un experimento, los objetivos del proyecto) y cómo mantuviste el respeto. RESULTADO — el acuerdo/solución (idealmente mejor que ambas posturas iniciales), la relación preservada, y la lección sobre colaborar. SEÑALES DE UNA RESPUESTA FUERTE: tomas la perspectiva del otro, te apoyas en datos/objetivos compartidos, te enfocas en RESOLVER (no en ganar), mantienes la relación y el equipo/producto sale beneficiado; idealmente cuantificas el resultado. EVITA: culpar o hablar mal del compañero, presentarlo como una pelea que ganaste, elegir un conflicto trivial o puramente personal, o no contar la resolución.",
+      "disparador": "Pregunta de conflicto → STAR con madurez: situación objetiva (sin culpar) → tu tarea → acción para ENTENDER y resolver con datos/objetivos comunes → resultado que preserva la relación + aprendizaje.",
+      "metadata": {
+       "ruta": "conductual",
+       "nivel": 2,
+       "skills": [
+        "narrativa STAR",
+        "manejo de conflicto",
+        "empatía/toma de perspectiva",
+        "resolución con datos",
+        "comunicación"
+       ],
+       "errores_comunes": [
+        "Culpar o desprestigiar al compañero",
+        "Enmarcarlo como una discusión que 'ganaste'",
+        "Elegir un conflicto trivial o personal",
+        "No contar la resolución ni el aprendizaje"
+       ],
+       "casos_borde": [
+        "Si el conflicto era con un manager, muestra 'disagree and commit'",
+        "Si no se resolvió del todo, enfócate en lo que aprendiste y harías distinto"
+       ]
+      },
+      "source": "Build a Career in Data Science (Robinson & Nolis) — cap. 7 (behavioral interview); método STAR"
+     },
+     {
+      "id": "f7-ex-73",
+      "heuristica": "narrativa-star",
+      "enunciado": "Háblame de un proyecto que fracasó o de un error importante que cometiste. ¿Qué aprendiste?",
+      "pistas": [
+       "SITUACIÓN: ¿cuál era el proyecto/contexto, en una frase?",
+       "TAREA: ¿cuál era tu responsabilidad concreta?",
+       "ACCIÓN: ¿qué salió mal, POR QUÉ, y qué hiciste al detectarlo? (asume tu parte, sin culpar)",
+       "¿Qué demuestra ownership en lugar de echar culpas?",
+       "RESULTADO: ¿cuál fue el desenlace y, sobre todo, qué APRENDISTE y cambiaste después?"
+      ],
+      "solucion": "No hay respuesta única: practica la ESTRUCTURA con un fracaso/error REAL tuyo (con consecuencias suficientes, ni trivial ni imprudente). Andamiaje STAR: SITUACIÓN — el proyecto y su objetivo, breve. TAREA — tu rol/responsabilidad. ACCIÓN — qué salió mal y POR QUÉ (un supuesto no validado, datos insuficientes, mala comunicación con el negocio), asumiendo TU parte sin culpar a otros, y qué hiciste al detectarlo (mitigar, comunicar). RESULTADO — el desenlace honesto y, lo más importante, el APRENDIZAJE y el CAMBIO CONCRETO de comportamiento/proceso que aplicaste después (cómo evitas que se repita; evidencia de que la lección 'pegó'). SEÑALES DE UNA RESPUESTA FUERTE: honestidad, OWNERSHIP, análisis de causa raíz, reflexión metacognitiva y evidencia de aplicar la lección después. EVITA: el falso fracaso ('soy demasiado perfeccionista'), culpar a otros o al contexto, un fracaso sin aprendizaje, o uno que revele un fallo de juicio grave/irresponsable.",
+      "disparador": "Pregunta de fracaso/error → STAR con foco en aprendizaje: caso real con consecuencias → ownership (sin culpar) → qué salió mal y por qué → APRENDIZAJE y cambio aplicado después.",
+      "metadata": {
+       "ruta": "conductual",
+       "nivel": 2,
+       "skills": [
+        "narrativa STAR",
+        "responsabilidad/ownership",
+        "aprendizaje del fracaso",
+        "análisis de causa raíz",
+        "honestidad"
+       ],
+       "errores_comunes": [
+        "El falso defecto ('perfeccionista')",
+        "Culpar a otros o al contexto",
+        "Un fracaso sin lección clara",
+        "Un error que cuestione tu juicio"
+       ],
+       "casos_borde": [
+        "Si el fracaso fue del equipo, deja claro TU rol y tu aprendizaje",
+        "Equilibra: un caso con impacto real pero que no te haga ver imprudente"
+       ]
+      },
+      "source": "Build a Career in Data Science (Robinson & Nolis) — cap. 13 (When your data science project fails); método STAR"
      }
     ]
    }
@@ -21579,6 +21695,534 @@
      "enunciado": "¿Por qué ningún método cuasi-experimental es universalmente superior?",
      "solucion": "Porque cada uno IDENTIFICA bajo un supuesto distinto, NO verificable del todo, y suele estimar un efecto distinto (a menudo LOCAL): IV/RDD fuzzy dan un LATE en compliers/umbral; RDD un efecto en el cutoff; DiD el ATT bajo tendencias paralelas; matching el ATE/ATT bajo CIA. La elección depende de qué supuesto es CREÍBLE para el problema y la fuente de variación disponible, no de una jerarquía fija. La buena práctica es triangular varios diseños y reportar diagnósticos/placebos de cada uno.",
      "explicacion": "Cada diseño cambia un supuesto por otro y estima un efecto distinto; se elige por credibilidad, se triangula."
+    }
+   ]
+  },
+  {
+   "id": "arena-c1",
+   "bloque": "fase-7",
+   "orden": 115,
+   "titulo": "Arena Conductual · Conflicto, colaboración y comunicación (STAR)",
+   "libro": "Build a Career in Data Science (Emily Robinson & Jacqueline Nolis) + capítulos conductuales (Cracking the Coding / System Design)",
+   "lectura": "data/teoria/arena-c1.md",
+   "dosis": 30,
+   "objetivo": "Practicar la estructura STAR en preguntas de conflicto, desacuerdo, trabajo en equipo, influencia y comunicación: respuestas específicas, sin culpar, centradas en resolver y con resultado positivo.",
+   "heuristicas": [
+    "narrativa-star",
+    "responder-conflicto-star"
+   ],
+   "metadata": {
+    "ruta": "conductual",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "STAR: Situación → Tarea → Acción (tú) → Resultado (medible + aprendizaje)",
+    "Conflicto: sin culpar, con empatía, resolver con datos/objetivos comunes",
+    "Desacuerdo con manager: argumenta con evidencia y luego 'disagree and commit'",
+    "A no técnicos: traduce método→implicación, foco en la decisión",
+    "Influir sin autoridad: datos, prototipo, alinear intereses"
+   ],
+   "banco": [
+    {
+     "id": "arc1-q1",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste un conflicto con un compañero de equipo. ¿Cómo lo resolviste?",
+     "solucion": "Estructura STAR centrada en madurez. SITUACIÓN: describe brevemente el desacuerdo (técnico o de prioridades) de forma OBJETIVA, sin culpar al otro. TAREA: tu responsabilidad de llegar a una solución que sirviera al equipo/producto. ACCIÓN: cómo buscaste ENTENDER su postura (escuchar, preguntar el porqué), qué propusiste para decidir con criterios objetivos (datos, un experimento, los objetivos del proyecto) y cómo mantuviste el respeto. RESULTADO: el acuerdo o solución alcanzada, idealmente mejor que las posturas iniciales, y la relación preservada; qué aprendiste sobre colaborar. Señales de respuesta fuerte: empatía/toma de perspectiva, foco en resolver (no en ganar), uso de datos/objetivos compartidos y un desenlace positivo para el equipo.",
+     "explicacion": "Errores comunes: pintar al otro como villano, presentarlo como una pelea que 'ganaste', elegir un conflicto trivial o personal, o no contar la resolución. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q2",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una ocasión en que estuviste en desacuerdo con tu manager. ¿Qué hiciste?",
+     "solucion": "STAR con foco en saber 'disentir y comprometerse'. SITUACIÓN: el punto en que diferías (una decisión técnica o de alcance). TAREA: aportar tu criterio sin minar la relación jerárquica. ACCIÓN: cómo expusiste tu posición con DATOS/argumentos y en privado, escuchaste su contexto (quizá tenía información que tú no), y propusiste una vía (p. ej. una prueba pequeña). Importante: muestra que, si tras escuchar la decisión seguía siendo la suya, te comprometiste y la ejecutaste bien ('disagree and commit'). RESULTADO: la decisión final y qué aprendiste; si tu punto era válido, cómo se reconoció. Señales fuertes: respeto, argumentar con evidencia, humildad para aceptar otra decisión y profesionalismo al ejecutarla.",
+     "explicacion": "Errores comunes: mostrarte insubordinado o resentido, no aportar evidencia, o no demostrar que sabes comprometerte tras un 'no'. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q3",
+     "tipo": "conductual",
+     "enunciado": "Describe una situación en la que tuviste que explicar un concepto técnico complejo a una audiencia no técnica.",
+     "solucion": "STAR orientada a comunicación. SITUACIÓN: a quién (ejecutivos, ventas, clínicos) y qué necesitaban decidir. TAREA: que entendieran lo suficiente para actuar, sin perderlos en tecnicismos. ACCIÓN: cómo SIMPLIFICASTE (analogías, evitar jerga, foco en el 'qué significa para ti' y no en el método), qué apoyos visuales usaste y cómo verificaste que se entendió. RESULTADO: la decisión que se tomó gracias a tu explicación y el feedback recibido; qué aprendiste sobre adaptar el mensaje a la audiencia. Señales fuertes: empatía con la audiencia, claridad, traducir método→implicación de negocio, y un resultado accionable.",
+     "explicacion": "Errores comunes: usar jerga, explicar el algoritmo en vez de su implicación, no centrarse en la decisión del oyente. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q4",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que trabajar con alguien difícil o con un estilo muy distinto al tuyo.",
+     "solucion": "STAR con foco en adaptabilidad. SITUACIÓN: la diferencia de estilo (ritmo, comunicación, expectativas) sin descalificar a la persona. TAREA: colaborar eficazmente pese a ello. ACCIÓN: cómo ADAPTASTE tu forma de trabajar (ajustar canal/frecuencia de comunicación, clarificar expectativas, buscar lo que valoraba), y cómo construiste una relación funcional. RESULTADO: el trabajo entregado y la mejora en la colaboración; qué aprendiste sobre trabajar con personas distintas. Señales fuertes: flexibilidad, ausencia de juicio personal, proactividad para encontrar terreno común, resultado profesional.",
+     "explicacion": "Errores comunes: convertir a la persona en el 'problema', no mostrar qué cambiaste tú, o sugerir que evitaste a la persona en vez de colaborar. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q5",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que convencer a otros de adoptar tu idea o enfoque.",
+     "solucion": "STAR sobre influencia sin autoridad. SITUACIÓN: la idea/propuesta y quiénes debían apoyarla. TAREA: lograr su adopción sin poder imponerla. ACCIÓN: cómo construiste el caso (datos, un prototipo/prueba de concepto, anticipar objeciones), a quién alineaste primero, y cómo adaptaste el argumento a los intereses de cada parte. RESULTADO: la adopción (o adopción parcial) y su impacto; qué aprendiste sobre persuadir. Señales fuertes: persuadir con evidencia y prototipos, empatía con los intereses de otros, persistencia, e impacto medible de la idea.",
+     "explicacion": "Errores comunes: 'convencer' por insistencia sin datos, no mencionar el impacto, o no reconocer las preocupaciones legítimas de los demás. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q6",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que recibiste feedback crítico sobre tu comunicación o tu trabajo en equipo.",
+     "solucion": "STAR centrada en receptividad. SITUACIÓN: el feedback concreto y de quién. TAREA: procesarlo y mejorar. ACCIÓN: cómo lo RECIBISTE sin ponerte a la defensiva, pediste ejemplos para entenderlo, y los CAMBIOS concretos que implementaste. RESULTADO: la mejora observable después (y, si aplica, reconocimiento de quien dio el feedback); qué aprendiste. Señales fuertes: humildad, accionar el feedback, y evidencia de cambio sostenido. El foco es demostrar que conviertes la crítica en mejora.",
+     "explicacion": "Errores comunes: elegir un feedback trivial, ponerse a la defensiva en el relato, o no mostrar el cambio posterior. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q7",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de un proyecto que requirió colaborar con equipos de otras áreas (ingeniería, producto, negocio).",
+     "solucion": "STAR sobre trabajo interfuncional. SITUACIÓN: el proyecto y las áreas involucradas. TAREA: tu rol y la necesidad de coordinar intereses distintos. ACCIÓN: cómo alineaste objetivos, tradujiste entre lenguajes (técnico↔negocio), gestionaste dependencias y comunicaste avances. RESULTADO: la entrega conjunta y su impacto; qué aprendiste sobre colaboración interfuncional. Señales fuertes: capacidad de puente entre áreas, claridad en dependencias, orientación al objetivo común, e impacto de negocio.",
+     "explicacion": "Errores comunes: hablar solo de tu parte técnica, no mostrar la coordinación, o ignorar los intereses de las otras áreas. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q8",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que un stakeholder pidió algo que considerabas una mala idea o inviable.",
+     "solucion": "STAR sobre manejo de stakeholders. SITUACIÓN: la petición y por qué era problemática (técnica o de negocio). TAREA: responder sin simplemente decir 'no'. ACCIÓN: cómo entendiste el OBJETIVO real detrás de la petición, presentaste los riesgos/limitaciones con datos, y propusiste una ALTERNATIVA que sirviera a su objetivo. RESULTADO: el acuerdo alcanzado y el impacto de la alternativa; qué aprendiste. Señales fuertes: enfocarse en el objetivo subyacente, comunicar trade-offs con datos, ofrecer soluciones (no solo objeciones), preservar la relación.",
+     "explicacion": "Errores comunes: ceder sin más a una mala idea, negarte en seco sin alternativa, o no indagar el objetivo real. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q9",
+     "tipo": "conductual",
+     "enunciado": "Describe una situación en la que tu comunicación evitó (o causó) un malentendido importante.",
+     "solucion": "STAR sobre claridad y proactividad. SITUACIÓN: el contexto donde un malentendido era probable o ya estaba ocurriendo. TAREA: alinear el entendimiento. ACCIÓN: cómo clarificaste supuestos por adelantado, documentaste, confirmaste el entendimiento ('¿esto es lo que necesitas?'), o corregiste a tiempo. RESULTADO: el malentendido evitado/resuelto y sus consecuencias; qué aprendiste sobre comunicación proactiva. Señales fuertes: anticipación, confirmar entendimiento, documentación, y aprendizaje sobre alinear expectativas.",
+     "explicacion": "Errores comunes: no asumir tu parte si causaste el malentendido, o contar algo sin consecuencias claras. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q10",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que ayudaste a un compañero con dificultades o mentorizaste a alguien junior.",
+     "solucion": "STAR sobre generosidad y desarrollo de otros. SITUACIÓN: la dificultad del compañero/junior. TAREA: apoyarlo sin hacer su trabajo por él. ACCIÓN: cómo enseñaste (explicar, hacer pair-programming, dar feedback, equilibrar ayuda y autonomía) sin descuidar tus responsabilidades. RESULTADO: la mejora de la persona y el impacto en el equipo; qué aprendiste sobre mentoría. Señales fuertes: empatía, paciencia, empoderar (no resolver por ellos), y un resultado en el crecimiento del otro.",
+     "explicacion": "Errores comunes: presentarte como salvador, hacerle el trabajo, o no mostrar el resultado en la persona ayudada. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q11",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que dar feedback difícil a un compañero o reporte.",
+     "solucion": "STAR sobre comunicación honesta y empática. SITUACIÓN: el problema de desempeño/comportamiento a abordar. TAREA: darlo de forma constructiva. ACCIÓN: cómo elegiste el momento/lugar privado, fuiste ESPECÍFICO y centrado en hechos/comportamientos (no en la persona), ofreciste apoyo/camino de mejora y escuchaste su lado. RESULTADO: la mejora o el acuerdo posterior; qué aprendiste sobre dar feedback. Señales fuertes: claridad y respeto, foco en comportamientos concretos, orientación a la mejora, seguimiento.",
+     "explicacion": "Errores comunes: feedback vago, hacerlo en público, atacar a la persona, o no dar seguimiento. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q12",
+     "tipo": "conductual",
+     "enunciado": "Describe cómo manejaste una situación con expectativas poco claras o instrucciones ambiguas de un cliente/jefe.",
+     "solucion": "STAR sobre proactividad ante la ambigüedad. SITUACIÓN: la falta de claridad y el riesgo de avanzar mal. TAREA: obtener claridad o avanzar de forma sensata. ACCIÓN: cómo hiciste PREGUNTAS para acotar el alcance, propusiste supuestos explícitos para validar, o entregaste un primer borrador pequeño para alinear. RESULTADO: el alineamiento logrado y la entrega correcta; qué aprendiste. Señales fuertes: tomar la iniciativa de clarificar, no quedarse paralizado, comunicar supuestos, e iterar.",
+     "explicacion": "Errores comunes: esperar pasivamente, avanzar a ciegas y entregar lo equivocado, o quejarte de la ambigüedad sin actuar. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q13",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que comunicar malas noticias (un retraso, un problema) a tu equipo o jefe.",
+     "solucion": "STAR sobre honestidad y responsabilidad. SITUACIÓN: el problema y su impacto. TAREA: comunicarlo a tiempo y con un plan. ACCIÓN: cómo lo comunicaste PRONTO (no lo ocultaste), con transparencia sobre causas, y SIEMPRE acompañado de opciones/plan de mitigación. RESULTADO: cómo se gestionó el problema gracias a avisar a tiempo; qué aprendiste. Señales fuertes: transparencia, comunicar temprano, traer soluciones junto al problema, ownership.",
+     "explicacion": "Errores comunes: ocultar o retrasar la mala noticia, culpar a otros, o comunicar el problema sin un plan. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q14",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una decisión de equipo con la que no estabas de acuerdo pero tuviste que apoyar.",
+     "solucion": "STAR sobre 'disagree and commit'. SITUACIÓN: la decisión y tu reserva. TAREA: aportar tu opinión y luego apoyar la decisión colectiva. ACCIÓN: cómo expresaste tu desacuerdo de forma constructiva en el momento adecuado y, una vez tomada la decisión, la apoyaste PLENAMENTE y la ejecutaste bien. RESULTADO: el desenlace y tu profesionalismo; qué aprendiste sobre equilibrar voz y compromiso. Señales fuertes: aportar criterio, madurez para comprometerte, no sabotear ni decir 'te lo dije'.",
+     "explicacion": "Errores comunes: mostrar resentimiento, ejecutar a medias para 'demostrar' que estabas en lo cierto, o no haber expresado tu opinión a tiempo. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc1-q15",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que tuviste que colaborar en remoto o con un equipo en otra zona horaria/cultura.",
+     "solucion": "STAR sobre colaboración distribuida. SITUACIÓN: el contexto remoto/multicultural y sus retos. TAREA: colaborar eficazmente pese a la distancia. ACCIÓN: cómo adaptaste la comunicación (asíncrona, documentación clara, solapamiento de horarios, sensibilidad cultural), y cómo mantuviste la alineación. RESULTADO: la entrega y la calidad de la colaboración; qué aprendiste. Señales fuertes: comunicación asíncrona efectiva, documentación, empatía cultural, proactividad.",
+     "explicacion": "Errores comunes: atribuir los problemas a 'la distancia' sin mostrar qué hiciste, o no dar un resultado concreto. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    }
+   ]
+  },
+  {
+   "id": "arena-c2",
+   "bloque": "fase-7",
+   "orden": 116,
+   "titulo": "Arena Conductual · Fracaso, errores, ambigüedad y feedback (STAR)",
+   "libro": "Build a Career in Data Science (Emily Robinson & Jacqueline Nolis) + capítulos conductuales (Cracking the Coding / System Design)",
+   "lectura": "data/teoria/arena-c2.md",
+   "dosis": 30,
+   "objetivo": "Responder preguntas de fracaso, errores, plazos incumplidos, ambigüedad y crítica: asumir responsabilidad sin culpar y centrarse en el aprendizaje y el cambio aplicado.",
+   "heuristicas": [
+    "narrativa-star",
+    "responder-fracaso-star"
+   ],
+   "metadata": {
+    "ruta": "conductual",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "Fracaso/error: caso real + ownership (sin culpar) + APRENDIZAJE aplicado",
+    "Plazo incumplido: avisar temprano + mitigar + mejorar la planeación",
+    "Ambigüedad: descomponer, supuestos explícitos, empezar pequeño, comunicar",
+    "Feedback duro: escuchar sin defenderte, accionar, mostrar cambio sostenido",
+    "'No sé': admítelo con integridad y di cómo lo averiguarías"
+   ],
+   "banco": [
+    {
+     "id": "arc2-q1",
+     "tipo": "conductual",
+     "enunciado": "Háblame de un proyecto que fracasó. ¿Qué pasó y qué aprendiste?",
+     "solucion": "STAR con foco en aprendizaje (ver cap. 13 del libro, 'When your data science project fails'). SITUACIÓN: el proyecto y el objetivo. TAREA: tu rol. ACCIÓN: qué salió mal y POR QUÉ (un supuesto erróneo, datos insuficientes, mala comunicación con el negocio), y qué hiciste al detectarlo. RESULTADO: el desenlace honesto y, sobre todo, el APRENDIZAJE y el cambio concreto que aplicaste después para que no se repita. Señales de respuesta fuerte: honestidad, ownership, análisis de la causa raíz, y evidencia de que la lección cambió tu forma de trabajar. Elige un fracaso real con consecuencias, no trivial ni imprudente.",
+     "explicacion": "Errores comunes: elegir un 'fracaso' falso, culpar a otros/al contexto, un fracaso sin aprendizaje, o uno que revele mal juicio grave. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q2",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame del mayor error que has cometido en el trabajo.",
+     "solucion": "STAR sobre responsabilidad. SITUACIÓN: el contexto del error. TAREA: lo que debías hacer. ACCIÓN: ASUME el error con claridad (sin culpar), explica cómo lo DETECTASTE y qué hiciste de inmediato para mitigarlo y comunicarlo. RESULTADO: cómo se contuvo el daño y, clave, el APRENDIZAJE y el proceso/hábito que cambiaste para prevenirlo. Señales fuertes: honestidad, ownership inmediato, foco en la solución y el aprendizaje, sin minimizar ni dramatizar.",
+     "explicacion": "Errores comunes: el clásico 'mi error es trabajar demasiado', culpar a otros, o un error tan grave/imprudente que genera dudas sobre tu juicio. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q3",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que recibiste una crítica dura sobre tu trabajo. ¿Cómo reaccionaste?",
+     "solucion": "STAR sobre receptividad al feedback. SITUACIÓN: la crítica y de quién. TAREA: procesarla con madurez. ACCIÓN: cómo escuchaste sin defenderte, pediste especificidad/ejemplos, separaste la emoción del contenido, y los cambios que implementaste. RESULTADO: la mejora posterior; qué aprendiste sobre recibir feedback. Señales fuertes: madurez emocional, convertir la crítica en acción, y mejora sostenida.",
+     "explicacion": "Errores comunes: mostrarte a la defensiva, racionalizar por qué la crítica era injusta, o no demostrar cambio. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q4",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que trabajar con un alto grado de ambigüedad o sin un camino claro.",
+     "solucion": "STAR sobre navegar la incertidumbre. SITUACIÓN: el problema mal definido. TAREA: avanzar pese a la falta de claridad. ACCIÓN: cómo descompusiste el problema, hiciste supuestos explícitos, empezaste por un análisis exploratorio pequeño para reducir incertidumbre, y comunicaste hallazgos para ir alineando. RESULTADO: el progreso logrado y la claridad que generaste; qué aprendiste. Señales fuertes: tolerancia a la ambigüedad, estructurar lo difuso, iterar y comunicar, sesgo a la acción razonada.",
+     "explicacion": "Errores comunes: paralizarte por falta de instrucciones, o avanzar sin validar supuestos y entregar algo inútil. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q5",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que no cumpliste un plazo. ¿Qué pasó?",
+     "solucion": "STAR sobre gestión y honestidad. SITUACIÓN: el plazo y por qué se complicó. TAREA: entregar o gestionar la situación. ACCIÓN: cuándo detectaste el riesgo, cómo lo COMUNICASTE a tiempo, qué hiciste para mitigar (re-priorizar, pedir ayuda, recortar alcance) y cómo renegociaste expectativas. RESULTADO: el desenlace y, sobre todo, qué CAMBIASTE después en tu estimación/planeación. Señales fuertes: avisar temprano, ownership, mitigación activa, y aprendizaje sobre estimar/planear.",
+     "explicacion": "Errores comunes: ocultar el retraso hasta el final, culpar a otros, o no mostrar qué mejoraste en tu forma de planear. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q6",
+     "tipo": "conductual",
+     "enunciado": "Describe una decisión que tomaste y que, en retrospectiva, harías diferente.",
+     "solucion": "STAR sobre reflexión. SITUACIÓN: la decisión y el contexto/información que tenías entonces. TAREA: lo que buscabas lograr. ACCIÓN: por qué decidiste así con la información disponible (juicio razonable, no imprudente) y qué harías distinto HOY. RESULTADO: lo que pasó y la lección concreta; cómo informa tus decisiones ahora. Señales fuertes: capacidad de autocrítica, distinguir decisión-proceso de resultado, y aprendizaje aplicado.",
+     "explicacion": "Errores comunes: elegir algo trivial, no asumir la decisión como propia, o no extraer una lección clara. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q7",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tu análisis o modelo resultó estar equivocado.",
+     "solucion": "STAR sobre rigor e integridad técnica. SITUACIÓN: el análisis/modelo y dónde falló (un bug, un supuesto, data leakage, mala validación). TAREA: tu responsabilidad sobre la corrección. ACCIÓN: cómo lo DESCUBRISTE (o quién lo señaló), cómo investigaste la causa raíz, lo corregiste y comunicaste el impacto con transparencia. RESULTADO: la corrección y el aprendizaje técnico/de proceso (p. ej. añadir validación, code review, tests de datos). Señales fuertes: rigor, honestidad técnica, causa raíz, y mejora del proceso.",
+     "explicacion": "Errores comunes: minimizar el error, no comunicar su impacto a quienes usaban el resultado, o no mostrar la mejora de proceso. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q8",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que te sentiste abrumado por la carga de trabajo o el estrés. ¿Cómo lo manejaste?",
+     "solucion": "STAR sobre autogestión. SITUACIÓN: la sobrecarga y su causa. TAREA: mantener el desempeño y el bienestar. ACCIÓN: cómo PRIORIZASTE, comunicaste capacidad a tu manager, delegaste/pediste ayuda, y aplicaste hábitos para gestionarlo. RESULTADO: cómo saliste de la situación y qué aprendiste sobre tus límites/priorización. Señales fuertes: autoconciencia, priorización, comunicación proactiva de la capacidad, y no llegar al colapso silencioso.",
+     "explicacion": "Errores comunes: presumir de 'aguantar todo' sin gestionar, o presentar el estrés sin mostrar qué hiciste al respecto. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q9",
+     "tipo": "conductual",
+     "enunciado": "Describe un riesgo que tomaste que no salió como esperabas.",
+     "solucion": "STAR sobre toma de riesgos calculada. SITUACIÓN: el riesgo y por qué valía la pena intentarlo. TAREA: el objetivo. ACCIÓN: cómo evaluaste el riesgo (no fue imprudente), qué hiciste, y cómo reaccionaste cuando no funcionó. RESULTADO: el desenlace y el aprendizaje; cómo equilibras riesgo y recompensa ahora. Señales fuertes: juicio para tomar riesgos razonados, resiliencia ante el fracaso, y aprendizaje.",
+     "explicacion": "Errores comunes: un riesgo imprudente que cuestione tu juicio, o no asumir tu papel en el resultado. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q10",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que aprender una herramienta o tema nuevo muy rápido.",
+     "solucion": "STAR sobre aprendizaje ágil. SITUACIÓN: la necesidad y el plazo. TAREA: dominar lo suficiente para el trabajo. ACCIÓN: cómo estructuraste el aprendizaje (recursos, práctica, pedir ayuda a expertos, aprender haciendo) y cómo aplicaste lo nuevo bajo presión. RESULTADO: lo entregado y la competencia adquirida; qué aprendiste sobre cómo aprendes. Señales fuertes: autonomía de aprendizaje, eficiencia, aplicar rápido, humildad para pedir ayuda.",
+     "explicacion": "Errores comunes: sonar a que 'lo sabías todo ya', o no mostrar el resultado del aprendizaje aplicado. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q11",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que abandonar un enfoque en el que ya habías invertido tiempo.",
+     "solucion": "STAR sobre superar el coste hundido. SITUACIÓN: el enfoque y por qué dejó de ser viable. TAREA: decidir seguir o pivotar. ACCIÓN: cómo reconociste las señales de que no funcionaba, evaluaste objetivamente (sin aferrarte por lo ya invertido) y pivotaste a una alternativa mejor. RESULTADO: el resultado del cambio y qué aprendiste sobre el coste hundido/cuándo parar. Señales fuertes: objetividad, no caer en la falacia del coste hundido, agilidad para pivotar, foco en el objetivo.",
+     "explicacion": "Errores comunes: presentar el cambio como impuesto sin tu juicio, o no reconocer la dificultad de soltar lo invertido. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q12",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez en que cometiste un error que afectó a otros (compañeros, clientes, usuarios).",
+     "solucion": "STAR sobre responsabilidad e impacto en otros. SITUACIÓN: el error y a quién afectó. TAREA: corregir y reparar. ACCIÓN: cómo lo asumiste ante los afectados, qué hiciste para reparar el daño y restaurar la confianza, y la comunicación honesta. RESULTADO: la reparación y el aprendizaje/proceso que cambiaste. Señales fuertes: ownership ante terceros, foco en reparar y comunicar, integridad, y mejora preventiva.",
+     "explicacion": "Errores comunes: minimizar el impacto en otros, no mostrar la reparación, o culpar al sistema/a otros. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q13",
+     "tipo": "conductual",
+     "enunciado": "Háblame de un feedback de desempeño (review) que te sorprendió.",
+     "solucion": "STAR sobre autoconciencia. SITUACIÓN: el feedback inesperado y el contexto. TAREA: entenderlo e integrarlo. ACCIÓN: cómo reaccionaste (curiosidad en vez de defensa), buscaste ejemplos/datos para entender la brecha entre tu autopercepción y la percepción ajena, y el plan de mejora. RESULTADO: los cambios y la evolución posterior; qué aprendiste sobre tu punto ciego. Señales fuertes: humildad, cerrar la brecha de autopercepción, plan accionable.",
+     "explicacion": "Errores comunes: rechazar el feedback como injusto, o no mostrar acciones concretas tras la sorpresa. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q14",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste éxito a pesar de un obstáculo importante.",
+     "solucion": "STAR sobre resiliencia. SITUACIÓN: el objetivo y el obstáculo (recursos, datos, tiempo, oposición). TAREA: lograrlo pese a ello. ACCIÓN: cómo superaste el obstáculo (creatividad, persistencia, pedir ayuda, replantear el enfoque). RESULTADO: el éxito CUANTIFICADO y qué aprendiste sobre tu capacidad de superar dificultades. Señales fuertes: resiliencia, recursividad, foco en el objetivo, e impacto medible.",
+     "explicacion": "Errores comunes: un 'obstáculo' trivial, atribuir el éxito solo a la suerte, o no cuantificar el resultado. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc2-q15",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que tuviste que decir 'no sé' o admitir que no tenías la respuesta.",
+     "solucion": "STAR sobre honestidad intelectual. SITUACIÓN: la pregunta/situación donde no sabías. TAREA: responder con integridad. ACCIÓN: cómo admitiste no saber sin perder credibilidad, y qué hiciste a continuación (investigar, consultar a un experto, proponer cómo averiguarlo). RESULTADO: cómo conseguiste la respuesta/avance y la confianza que generó tu honestidad. Señales fuertes: humildad intelectual, no inventar, orientación a encontrar la respuesta. (Consejo del libro: ante una pregunta cuya respuesta no sabes, está bien decirlo y explicar cómo lo averiguarías.)",
+     "explicacion": "Errores comunes: fingir que sabías, inventar una respuesta, o admitir ignorancia sin un plan para resolverla. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    }
+   ]
+  },
+  {
+   "id": "arena-c3",
+   "bloque": "fase-7",
+   "orden": 117,
+   "titulo": "Arena Conductual · Liderazgo, iniciativa, impacto y priorización (STAR)",
+   "libro": "Build a Career in Data Science (Emily Robinson & Jacqueline Nolis) + capítulos conductuales (Cracking the Coding / System Design)",
+   "lectura": "data/teoria/arena-c3.md",
+   "dosis": 30,
+   "objetivo": "Demostrar agencia e impacto: liderar proyectos, tomar iniciativa, influir sin autoridad, priorizar bajo restricciones y cuantificar el impacto de negocio.",
+   "heuristicas": [
+    "narrativa-star",
+    "responder-liderazgo-impacto-star"
+   ],
+   "metadata": {
+    "ruta": "conductual",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "Liderazgo: dirección clara + alinear + impacto de negocio CUANTIFICADO",
+    "Iniciativa: detectar la oportunidad, validar, conseguir apoyo, ejecutar",
+    "Priorizar: criterio explícito (impacto/esfuerzo/dependencias) + comunicar trade-offs",
+    "Influir sin autoridad: credibilidad + datos + mapeo de stakeholders",
+    "Crédito justo: tu rol específico sin diluir ni acaparar el del equipo"
+   ],
+   "banco": [
+    {
+     "id": "arc3-q1",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que lideraste un proyecto o iniciativa.",
+     "solucion": "STAR con foco en liderazgo e impacto. SITUACIÓN: el proyecto y por qué importaba. TAREA: tu rol de liderazgo y los retos. ACCIÓN: cómo definiste el objetivo, organizaste/alineaste a la gente, tomaste decisiones, desbloqueaste obstáculos y comunicaste avances (lideraste con o sin autoridad formal). RESULTADO: el impacto de negocio CUANTIFICADO y el reconocimiento al equipo sin diluir tu rol; qué aprendiste sobre liderar. Señales fuertes: ownership, dirección clara, influir/alinear, impacto medible, crédito justo.",
+     "explicacion": "Errores comunes: vaguedad ('ayudé a…'), atribuirte todo el mérito, o no cuantificar el impacto. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q2",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tomaste la iniciativa para resolver un problema que nadie te pidió resolver.",
+     "solucion": "STAR sobre proactividad/ownership. SITUACIÓN: el problema que detectaste y por qué nadie lo abordaba. TAREA: lo que decidiste hacer por propia iniciativa. ACCIÓN: cómo validaste que valía la pena, construiste un caso (prototipo/datos), conseguiste apoyo y lo ejecutaste sin que te lo asignaran. RESULTADO: el impacto CUANTIFICADO de tu iniciativa; qué aprendiste. Señales fuertes: detectar oportunidades, sesgo a la acción, influir para conseguir apoyo, impacto medible.",
+     "explicacion": "Errores comunes: 'iniciativa' que era en realidad tu trabajo asignado, no mostrar el impacto, o actuar sin alinear y generar fricción. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q3",
+     "tipo": "conductual",
+     "enunciado": "Describe cómo priorizaste cuando tenías múltiples tareas/proyectos compitiendo por tu tiempo.",
+     "solucion": "STAR sobre priorización. SITUACIÓN: las demandas simultáneas y la presión. TAREA: maximizar el valor con tiempo limitado. ACCIÓN: qué CRITERIOS usaste para priorizar (impacto vs esfuerzo, urgencia, dependencias, objetivos del negocio), cómo comunicaste las decisiones y negociaste expectativas/plazos con los stakeholders. RESULTADO: lo entregado y el impacto de priorizar bien; qué aprendiste. Señales fuertes: criterio de priorización explícito, foco en impacto, comunicación de trade-offs, ejecución.",
+     "explicacion": "Errores comunes: 'trabajé más horas' en vez de priorizar, no tener criterio claro, o no comunicar las decisiones a los afectados. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q4",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que fuiste más allá de lo que tu rol exigía.",
+     "solucion": "STAR sobre ir más allá. SITUACIÓN: el contexto donde viste una necesidad fuera de tu rol. TAREA: lo que elegiste asumir adicionalmente. ACCIÓN: qué hiciste de más y por qué, equilibrándolo con tus responsabilidades. RESULTADO: el impacto y el valor añadido; qué aprendiste. Señales fuertes: ownership, orientación al impacto del conjunto, iniciativa, sin descuidar lo tuyo.",
+     "explicacion": "Errores comunes: presentar como heroísmo algo que descuidó tu trabajo principal, o no mostrar el impacto del esfuerzo extra. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q5",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una decisión difícil que tuviste que tomar con información incompleta.",
+     "solucion": "STAR sobre juicio bajo incertidumbre. SITUACIÓN: la decisión y la falta de información. TAREA: decidir a tiempo. ACCIÓN: cómo reuniste la mejor información disponible, evaluaste opciones/riesgos, decidiste con un criterio claro y planeaste cómo ajustar si te equivocabas (decisiones reversibles vs no). RESULTADO: el desenlace y el aprendizaje sobre decidir con datos limitados. Señales fuertes: sesgo a la acción razonada, marco de decisión, gestión del riesgo, aprendizaje.",
+     "explicacion": "Errores comunes: parálisis por análisis, o presentar una decisión imprudente como 'valiente'. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q6",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que motivaste o alineaste a un equipo hacia un objetivo común.",
+     "solucion": "STAR sobre liderazgo de personas. SITUACIÓN: el objetivo y el reto de alineación/motivación. TAREA: lograr que el equipo remara junto. ACCIÓN: cómo comunicaste una visión clara, conectaste el trabajo con un propósito, reconociste contribuciones y resolviste fricciones. RESULTADO: el logro del objetivo y la moral del equipo; qué aprendiste sobre motivar. Señales fuertes: visión, empatía, reconocimiento, e impacto en el resultado y el equipo.",
+     "explicacion": "Errores comunes: 'motivar' por presión, no mostrar cómo alineaste, o atribuirte el éxito del equipo. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q7",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que tomar una decisión impopular.",
+     "solucion": "STAR sobre integridad y firmeza. SITUACIÓN: la decisión y por qué era impopular. TAREA: hacer lo correcto pese a la resistencia. ACCIÓN: cómo evaluaste que era lo correcto (datos/principios), la comunicaste con transparencia, escuchaste objeciones y la sostuviste. RESULTADO: el desenlace y cómo gestionaste las consecuencias; qué aprendiste. Señales fuertes: criterio basado en evidencia/valores, comunicación empática, firmeza con apertura, ownership.",
+     "explicacion": "Errores comunes: terquedad sin escuchar, o ceder a la presión cuando la evidencia decía lo contrario. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q8",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que identificaste una oportunidad de mejora en un proceso y la implementaste.",
+     "solucion": "STAR sobre mejora continua. SITUACIÓN: el proceso ineficiente que detectaste. TAREA: mejorarlo. ACCIÓN: cómo analizaste el problema, propusiste la mejora (automatización, simplificación), conseguiste apoyo y la implementaste. RESULTADO: el ahorro/impacto CUANTIFICADO (tiempo, errores, costo); qué aprendiste. Señales fuertes: ojo para la ineficiencia, iniciativa, influir para el cambio, impacto medible.",
+     "explicacion": "Errores comunes: una mejora trivial, no cuantificar el ahorro, o no mostrar cómo lograste que se adoptara. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q9",
+     "tipo": "conductual",
+     "enunciado": "Describe tu mayor logro profesional.",
+     "solucion": "STAR sobre impacto. SITUACIÓN: el contexto y el reto del logro. TAREA: tu objetivo y rol. ACCIÓN: qué hiciste TÚ específicamente para lograrlo (decisiones, habilidades, persistencia). RESULTADO: el impacto CUANTIFICADO y por qué es tu mayor logro; qué dice de ti. Señales fuertes: impacto de negocio claro y medible, tu contribución específica, y relevancia para el puesto al que aplicas.",
+     "explicacion": "Errores comunes: elegir un logro irrelevante para el rol, atribuir a la suerte/al equipo sin tu parte, o no cuantificar. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q10",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que equilibrar la calidad técnica con un plazo ajustado.",
+     "solucion": "STAR sobre pragmatismo y trade-offs. SITUACIÓN: la tensión calidad↔tiempo. TAREA: entregar valor a tiempo sin comprometer lo esencial. ACCIÓN: cómo decidiste qué era 'suficientemente bueno' (MVP), qué deuda técnica aceptaste conscientemente y comunicaste, y qué no negociaste (correctitud crítica). RESULTADO: la entrega y el impacto; qué aprendiste sobre trade-offs. Señales fuertes: juicio pragmático, gestión consciente de deuda técnica, comunicación de trade-offs, foco en el valor.",
+     "explicacion": "Errores comunes: perfeccionismo que incumple el plazo, o sacrificar correctitud crítica sin avisar. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q11",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que influir en una decisión sin tener autoridad formal.",
+     "solucion": "STAR sobre influencia. SITUACIÓN: la decisión y tu falta de autoridad directa. TAREA: lograr el resultado correcto. ACCIÓN: cómo construiste credibilidad, usaste DATOS y un prototipo, identificaste aliados/decisores y adaptaste el argumento a sus intereses. RESULTADO: la decisión influida y su impacto; qué aprendiste sobre influir. Señales fuertes: persuasión con evidencia, mapeo de stakeholders, construir credibilidad, impacto.",
+     "explicacion": "Errores comunes: 'influir' por insistencia, no usar datos, o no mostrar el resultado de tu influencia. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q12",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que tuviste que gestionar prioridades en conflicto entre distintos stakeholders.",
+     "solucion": "STAR sobre manejo de stakeholders. SITUACIÓN: los stakeholders y sus prioridades incompatibles. TAREA: encontrar una vía que sirviera al conjunto. ACCIÓN: cómo entendiste los objetivos de cada uno, hiciste transparentes los trade-offs, buscaste un criterio común (impacto de negocio) y negociaste o escalaste cuando hizo falta. RESULTADO: la resolución y el impacto; qué aprendiste. Señales fuertes: diplomacia, transparencia sobre trade-offs, decisión basada en valor, comunicación.",
+     "explicacion": "Errores comunes: intentar contentar a todos sin priorizar, tomar partido sin criterio, o no comunicar las decisiones. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q13",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de un objetivo ambicioso que te fijaste y cómo lo lograste.",
+     "solucion": "STAR sobre orientación a metas. SITUACIÓN: el objetivo ambicioso y por qué lo elegiste. TAREA: el plan. ACCIÓN: cómo lo descompusiste en pasos, mediste el progreso, superaste obstáculos y mantuviste la disciplina. RESULTADO: el logro CUANTIFICADO frente a la meta; qué aprendiste sobre fijar y perseguir objetivos. Señales fuertes: ambición realista, planeación, persistencia, medición del progreso, impacto.",
+     "explicacion": "Errores comunes: un objetivo trivial, no mostrar el método para lograrlo, o no cuantificar el resultado. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q14",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que defendiste al usuario/cliente o a la calidad del producto frente a presiones internas.",
+     "solucion": "STAR sobre 'customer obsession'/integridad. SITUACIÓN: la presión interna (plazo, costo) que arriesgaba al usuario/calidad. TAREA: representar al usuario. ACCIÓN: cómo evidenciaste el impacto en el usuario con datos, propusiste una solución que equilibrara las necesidades y persuadiste a los decisores. RESULTADO: la decisión y su efecto en el usuario/producto; qué aprendiste. Señales fuertes: foco en el usuario, usar datos, equilibrar negocio y calidad, valentía respetuosa.",
+     "explicacion": "Errores comunes: idealismo sin considerar el negocio, o ceder al usuario sin datos que lo respalden. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc3-q15",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que tuviste que delegar o confiar una tarea importante a otra persona.",
+     "solucion": "STAR sobre delegación. SITUACIÓN: la tarea y por qué delegaste. TAREA: lograr el resultado a través de otros. ACCIÓN: cómo elegiste a la persona, comunicaste expectativas claras, diste autonomía con apoyo (sin micromanagement) y seguiste el avance. RESULTADO: el resultado y el desarrollo de la persona; qué aprendiste sobre delegar y confiar. Señales fuertes: confianza, claridad de expectativas, equilibrio autonomía/seguimiento, desarrollar a otros.",
+     "explicacion": "Errores comunes: delegar y luego microgestionar, no dar contexto suficiente, o no confiar y terminar haciéndolo tú. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    }
+   ]
+  },
+  {
+   "id": "arena-c4",
+   "bloque": "fase-7",
+   "orden": 118,
+   "titulo": "Arena Conductual · Data science aplicada, stakeholders y carrera (STAR)",
+   "libro": "Build a Career in Data Science (Emily Robinson & Jacqueline Nolis) + capítulos conductuales (Cracking the Coding / System Design)",
+   "lectura": "data/teoria/arena-c4.md",
+   "dosis": 30,
+   "objetivo": "Preguntas conductuales específicas de DS y de carrera: proyecto end-to-end con impacto de negocio, resultados negativos, modelos que fallan, datos sucios, ética, métricas, motivación y metas.",
+   "heuristicas": [
+    "narrativa-star",
+    "comunicar-resultado-ds-star"
+   ],
+   "metadata": {
+    "ruta": "conductual",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "Proyecto end-to-end: encuadre de NEGOCIO + tu rol + impacto medible (no solo AUC)",
+    "Resultado negativo: comunícalo honesto y como aprendizaje accionable",
+    "Modelo que falló en producción: causa raíz + monitoreo/salvaguardas",
+    "Stakeholder escéptico: traducir, validar de forma comprensible, conectar al objetivo",
+    "Motivación/metas: específicas, investigadas y alineadas con el rol"
+   ],
+   "banco": [
+    {
+     "id": "arc4-q1",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de un proyecto de data science del que estés orgulloso, de principio a fin.",
+     "solucion": "STAR sobre un proyecto end-to-end. SITUACIÓN: el problema de NEGOCIO (no solo técnico) y por qué importaba. TAREA: tu rol y el objetivo medible. ACCIÓN: el recorrido —entender el problema con stakeholders, datos/preparación, modelado/análisis, validación, despliegue/comunicación—, destacando TUS decisiones y trade-offs. RESULTADO: el IMPACTO DE NEGOCIO cuantificado (no solo el AUC, sino la decisión/valor que habilitó) y lo aprendido. Señales fuertes: encuadre de negocio, ownership del ciclo completo, decisiones justificadas, impacto medible más allá de la métrica técnica.",
+     "explicacion": "Errores comunes: quedarse en lo técnico sin el impacto de negocio, contar el proyecto del equipo sin tu rol, o no cuantificar el valor. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q2",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que comunicar un resultado negativo o nulo a stakeholders.",
+     "solucion": "STAR sobre honestidad y orientación al negocio (ver cap. 13 y consejo de 'negative response'). SITUACIÓN: el análisis/experimento que no dio el resultado esperado. TAREA: comunicarlo con utilidad. ACCIÓN: cómo lo presentaste con HONESTIDAD, enmarcándolo como APRENDIZAJE accionable (qué NO hacer ahorra recursos), con la evidencia clara, y propusiste el siguiente paso/hipótesis. RESULTADO: la decisión que tomó el negocio gracias a la verdad (p. ej. redirigir recursos); qué aprendiste. Señales fuertes: integridad, enmarcar lo negativo como valor, foco en la decisión, propuesta de siguiente paso.",
+     "explicacion": "Errores comunes: maquillar/ocultar el resultado, presentarlo como fracaso sin valor, o no proponer un camino adelante. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q3",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que un modelo o análisis funcionó en desarrollo pero falló en producción/realidad.",
+     "solucion": "STAR sobre ML en producción. SITUACIÓN: el modelo y la brecha entre offline y producción (data/training-serving skew, drift, supuestos rotos). TAREA: diagnosticar y resolver. ACCIÓN: cómo detectaste la brecha (monitoreo, métricas de negocio), investigaste la causa raíz, corregiste y añadiste salvaguardas (validación, monitoreo, fallback). RESULTADO: la recuperación y el aprendizaje de proceso. Señales fuertes: mentalidad de producción, causa raíz, monitoreo/salvaguardas, humildad ante la diferencia offline↔online.",
+     "explicacion": "Errores comunes: culpar a 'los datos' sin análisis, no mostrar el diagnóstico, o no añadir prevención. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q4",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que trabajar con datos sucios, incompletos o poco fiables.",
+     "solucion": "STAR sobre el trabajo real de datos. SITUACIÓN: la mala calidad de datos y su riesgo para el análisis. TAREA: producir algo fiable pese a ello. ACCIÓN: cómo PERFILASTE/diagnosticaste la calidad, decidiste el manejo (imputación, exclusión, validación con la fuente), documentaste supuestos y comunicaste las limitaciones. RESULTADO: el análisis fiable (con sus caveats) y el impacto; qué aprendiste sobre calidad de datos. Señales fuertes: rigor en data quality, decisiones documentadas, honestidad sobre limitaciones, pragmatismo.",
+     "explicacion": "Errores comunes: usar los datos sin cuestionar su calidad, o paralizarse esperando datos perfectos. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q5",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que un stakeholder no entendía o no confiaba en tu análisis.",
+     "solucion": "STAR sobre construir confianza. SITUACIÓN: el escepticismo o la incomprensión del stakeholder. TAREA: generar confianza y entendimiento. ACCIÓN: cómo indagaste su preocupación, simplificaste la explicación, mostraste validaciones/sanity checks que entendiera, y conectaste con su objetivo. RESULTADO: la confianza ganada y la decisión tomada; qué aprendiste sobre credibilidad. Señales fuertes: empatía, transparencia metodológica accesible, validar de formas que el stakeholder comprenda, paciencia.",
+     "explicacion": "Errores comunes: imponer autoridad técnica ('confía en el modelo'), usar jerga, o no atender la raíz de la desconfianza. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q6",
+     "tipo": "conductual",
+     "enunciado": "Describe cómo decidiste qué métrica usar o cómo definiste el éxito de un proyecto de datos.",
+     "solucion": "STAR sobre definir métricas. SITUACIÓN: el proyecto y la ambigüedad sobre 'qué es éxito'. TAREA: definir una métrica alineada con el negocio. ACCIÓN: cómo trabajaste con stakeholders para conectar el objetivo de negocio con una métrica medible (y guardrails), evitando métricas vanidosas o fáciles de 'gamear'. RESULTADO: la métrica adoptada y cómo guió las decisiones; qué aprendiste. Señales fuertes: alinear métrica con valor de negocio, considerar guardrails, pensar en incentivos perversos.",
+     "explicacion": "Errores comunes: optimizar una métrica técnica desconectada del negocio, o no involucrar a los stakeholders en la definición. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q7",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que enfrentaste una consideración ética o de privacidad en un proyecto de datos.",
+     "solucion": "STAR sobre ética de datos. SITUACIÓN: el dilema (sesgo del modelo, privacidad, uso de datos sensibles, fairness). TAREA: actuar con responsabilidad. ACCIÓN: cómo identificaste el riesgo, lo planteaste (a tu equipo/manager), evaluaste el impacto en las personas y propusiste mitigaciones (anonimización, auditoría de sesgo, consentimiento). RESULTADO: la decisión tomada y su efecto; qué aprendiste sobre IA responsable. Señales fuertes: conciencia ética, valentía para plantearlo, mitigaciones concretas, foco en las personas afectadas.",
+     "explicacion": "Errores comunes: ignorar el dilema, tratarlo como ajeno a tu rol, o no proponer mitigaciones reales. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q8",
+     "tipo": "conductual",
+     "enunciado": "¿Por qué quieres trabajar en data science (o en este puesto/empresa)?",
+     "solucion": "Pregunta de motivación (no estrictamente STAR, pero estructúrala con ejemplos). Conecta: (1) qué te APASIONA del problem-solving con datos (con un ejemplo real que lo ilustre), (2) por qué ESTE puesto/empresa encaja con tus fortalezas y metas (muestra que investigaste el rol/la empresa), y (3) qué VALOR aportarías. Señales fuertes: motivación genuina y específica (no genérica), conexión entre tu experiencia y el rol, conocimiento de la empresa, y orientación al impacto.",
+     "explicacion": "Errores comunes: respuesta genérica ('me gustan los datos'), no haber investigado la empresa, centrarse solo en lo que TÚ ganas, o no respaldar con ejemplos. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q9",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de ti / guíame por tu trayectoria.",
+     "solucion": "Pregunta de apertura: estructura una narrativa breve (1-2 min) tipo 'presente-pasado-futuro': quién eres profesionalmente HOY, los HITOS relevantes que te trajeron aquí (con 1-2 logros cuantificados como mini-STAR) y por qué este rol es el siguiente paso lógico. Señales fuertes: narrativa coherente y enfocada al puesto, logros concretos, concisión, y un 'puente' claro hacia por qué estás aquí.",
+     "explicacion": "Errores comunes: recitar el CV cronológicamente y sin foco, divagar, incluir lo irrelevante, o no conectar con el puesto. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q10",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que el alcance de un proyecto cambió a mitad de camino.",
+     "solucion": "STAR sobre adaptabilidad al cambio. SITUACIÓN: el cambio de alcance/requisitos y su causa. TAREA: re-alinear y seguir entregando valor. ACCIÓN: cómo evaluaste el impacto del cambio, renegociaste plazos/alcance con stakeholders, re-priorizaste y comunicaste. RESULTADO: la entrega adaptada y su impacto; qué aprendiste sobre gestionar el cambio. Señales fuertes: flexibilidad, gestión de expectativas, re-priorización con criterio, comunicación.",
+     "explicacion": "Errores comunes: resistirte al cambio, no renegociar el plazo y luego incumplir, o no comunicar el impacto del cambio. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q11",
+     "tipo": "conductual",
+     "enunciado": "Describe una vez que tu recomendación basada en datos fue ignorada o no se implementó.",
+     "solucion": "STAR sobre influencia y resiliencia. SITUACIÓN: la recomendación y por qué no se adoptó (contexto, política, timing). TAREA: maximizar la probabilidad de impacto. ACCIÓN: cómo presentaste la evidencia, indagaste por qué no se adoptó, y qué hiciste después (ajustar el enfoque, buscar otro momento/aliado, aceptar el contexto con madurez). RESULTADO: el desenlace y qué aprendiste sobre cómo lograr que los datos influyan. Señales fuertes: madurez (no amargura), aprendizaje sobre comunicación/timing/contexto organizacional.",
+     "explicacion": "Errores comunes: resentimiento hacia 'los que no entienden datos', o no reflexionar sobre cómo podrías haber comunicado mejor. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q12",
+     "tipo": "conductual",
+     "enunciado": "Cuéntame de una vez que tuviste que elegir entre un modelo simple e interpretable y uno complejo más preciso.",
+     "solucion": "STAR sobre juicio técnico orientado al contexto. SITUACIÓN: el problema y el trade-off interpretabilidad↔precisión. TAREA: elegir lo adecuado para el CONTEXTO (regulación, confianza del stakeholder, riesgo, mantenimiento). ACCIÓN: cómo evaluaste las necesidades reales (¿hace falta explicar decisiones? ¿el extra de precisión justifica la complejidad?), y por qué decidiste. RESULTADO: el resultado de la elección y su impacto; qué aprendiste. Señales fuertes: decisión guiada por el contexto/negocio (no por moda), considerar mantenimiento/confianza, justificar el trade-off.",
+     "explicacion": "Errores comunes: elegir lo complejo por defecto ('porque es lo avanzado'), o ignorar las necesidades de interpretabilidad/negocio. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q13",
+     "tipo": "conductual",
+     "enunciado": "Háblame de una vez que tuviste que estimar algo con datos muy limitados (un problema de Fermi/back-of-envelope).",
+     "solucion": "STAR sobre razonamiento estructurado. SITUACIÓN: la pregunta a estimar y la falta de datos. TAREA: dar una estimación defendible. ACCIÓN: cómo DESCOMPUSISTE el problema en partes estimables, hiciste supuestos explícitos y razonables, y validaste con un sanity check. RESULTADO: la estimación y cómo se usó; qué aprendiste sobre estimar bajo incertidumbre. Señales fuertes: descomposición lógica, supuestos explícitos, sanity checks, comunicar la incertidumbre.",
+     "explicacion": "Errores comunes: bloquearse por falta de datos, dar un número sin justificar, o no explicitar los supuestos. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q14",
+     "tipo": "conductual",
+     "enunciado": "Describe cómo te mantienes actualizado y cómo aprendes nuevas técnicas o herramientas.",
+     "solucion": "Pregunta de aprendizaje continuo (ilustra con ejemplos). Describe tus HÁBITOS concretos (lectura, cursos, proyectos personales, comunidad, aplicar en el trabajo) y, mejor, un EJEMPLO reciente de algo que aprendiste y APLICASTE con impacto. Señales fuertes: curiosidad genuina, método de aprendizaje, y —clave— evidencia de APLICAR lo aprendido (no solo consumir contenido).",
+     "explicacion": "Errores comunes: respuesta genérica ('leo blogs'), no dar un ejemplo aplicado, o nombrar herramientas de moda sin profundidad. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
+    },
+    {
+     "id": "arc4-q15",
+     "tipo": "conductual",
+     "enunciado": "¿Dónde te ves en 3-5 años / cuáles son tus metas profesionales?",
+     "solucion": "Pregunta de metas/ajuste. Estructura: una dirección PROFESIONAL coherente con tu trayectoria y con lo que el rol ofrece (crecer en profundidad técnica, en impacto, en liderazgo), mostrando que el puesto es un paso lógico. Sé concreto pero flexible. Señales fuertes: ambición realista, coherencia con el rol/empresa (no sonar a que te irás pronto), y orientación al crecimiento y al impacto.",
+     "explicacion": "Errores comunes: metas desalineadas con el puesto, vaguedad total, o sonar a que usas el rol solo de trampolín inmediato. Esqueleto STAR genérico: SITUACIÓN (1 frase de contexto) → TAREA (tu responsabilidad) → ACCIÓN (qué hiciste TÚ, en detalle, primera persona) → RESULTADO (desenlace medible + aprendizaje). Dedica el 60-70% a Acción y Resultado."
     }
    ]
   }
