@@ -17,6 +17,36 @@
 
 ---
 
+## Mini-ejemplo trabajado: overfit a un batch como sanity check
+
+Antes de entrenar horas, haz esta prueba de 5 minutos: toma **un solo batch** de ~8 ejemplos y entrénalo sin parar. Un modelo bien configurado **debe** poder llevar ese batch a pérdida ≈ 0 (memorizarlo). Si *no* lo consigue, no tienes un problema de generalización: tienes un **bug** (learning rate, función de pérdida, conexión rota, labels mal formateadas). Es el patrón **Useful Overfitting** en su versión diagnóstica.
+
+Y ojo: este "sobreajustar a propósito" solo es *legítimo como solución* cuando (1) no hay ruido y (2) tienes el dataset **completo** (todas las entradas posibles), como al tabular la solución de una PDE. En cualquier otro caso, sobreajustar es el enemigo.
+
+**Predicción antes de seguir:** un checkpoint que solo guarda el modelo exportado, ¿basta para reanudar el entrenamiento tras un crash? No: falta el **estado completo** (epoch/batch, estado del learning rate, dropout, historial RNN). El checkpoint ≠ el modelo exportado.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (transfer learning):** pocos cientos de ejemplos en una modalidad conocida → reusa un preentrenado, congela hasta el **bottleneck** (penúltima capa) y entrena una cabeza nueva.
+- **Contraejemplo (Useful Overfitting indebido):** sobreajustar a propósito cuando *sí* hay datos no vistos o ruido → memorizas ruido, desastre.
+- **Caso borde (two-phase en el edge):** wake-word on-device (corre siempre, pequeño) + modelo grande en la nube (solo cuando se activa) → exige **cuantización** que puede costar algo de precisión.
+
+## Errores típicos
+
+- **Conceptual:** confundir **parámetros** (los aprende el modelo) con **hiperparámetros** (los fijas tú) — y hacer grid search que no escala ni aprende de los trials.
+- **Técnico:** guardar solo el modelo exportado como "checkpoint" → no puedes reanudar ni hacer fine-tuning.
+- **De despliegue:** servir con estado en vez de una **función sin estado** → no escala a miles de QPS.
+
+## Transferencia isomorfa
+
+- **Two-Phase Predictions ↔ Cascade de modelos:** un modelo barato que filtra y delega lo difícil a uno caro es la misma idea que la cascade usual/raro (conecta con [[arena-mldp2]]).
+- **Batch Serving ↔ problema embarazosamente paralelo / Map-Reduce:** puntuar millones de ítems sin latencia es map puro sobre infra distribuida (conecta con [[arena-sd1]], estimación a escala).
+- **Stateless Serving Function ↔ funciones puras / horizontal scaling:** salida solo según entrada = instancias intercambiables desde un pool, el principio de escalado horizontal (conecta con [[arena-rml1]], models as code).
+
+Moraleja de la arista: *sobreajusta a propósito solo para diagnosticar (un batch a pérdida 0) o tabular funciones exactas; guarda el estado completo, congela hasta el bottleneck y sirve sin estado.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

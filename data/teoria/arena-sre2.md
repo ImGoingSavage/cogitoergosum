@@ -27,6 +27,34 @@ Si solo puedes medir cuatro métricas de un sistema de cara al usuario:
 
 ---
 
+## Mini-ejemplo trabajado: por qué el toil tiende al 100%
+
+Un SRE dedica hoy el **60%** de su tiempo a toil (reinicios manuales, tickets repetitivos). Como queda solo el 40% para ingeniería, *no alcanza* a automatizar lo suficiente; mientras tanto el servicio crece y el toil escala **O(n)** con él. Resultado: el toil sube al 70%, luego 80%… hasta el **100%**, y SRE degenera en Ops puro. El cap del **<50%** no es burocracia: es lo que garantiza que siempre quede tiempo de ingeniería para reducir el toil *futuro*, de modo que la organización escale **sublinealmente** (más servicio sin más gente).
+
+**Predicción antes de seguir:** un error 500 que tarda 50 ms y otro que tarda 5 s. Si mides "latencia" mezclando éxitos y errores, ¿qué pierdes? Pierdes que un **error lento es peor que uno rápido**; por eso se separa la latencia de éxito de la de error (una de las cuatro señales doradas).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (alerta por síntoma):** black-box que avisa "los usuarios ven errores ahora" → molesta a un humano solo ante daño real.
+- **Contraejemplo (toil mal etiquetado):** llamar "toil" a las reuniones o al grunt work que deja una mejora permanente — eso es overhead o ingeniería, no toil.
+- **Caso borde (saturación < 100%):** un sistema que se degrada al 80% de utilización; el p99 sube *antes* de saturar → indicador temprano ("el disco se llena en 4 h").
+
+## Errores típicos
+
+- **Conceptual:** confundir toil ("manual/repetitivo/O(n)/sin valor perdurable") con "trabajo que no me gusta".
+- **De monitoreo:** alertar por **causas** internas en vez de **síntomas** visibles → páginas que no son accionables.
+- **De medición:** reportar la **media** de latencia en vez de un **histograma**/p99, ocultando la cola.
+
+## Transferencia isomorfa
+
+- **Cuatro señales doradas ↔ SLOs de serving de ML:** latencia/tráfico/errores/saturación son exactamente las señales genéricas que también vigilas en un modelo en producción (conecta con [[arena-rml1]], las tres capas de SLO).
+- **Cap de toil <50% ↔ presupuestar deuda/automatización:** reservar capacidad para ingeniería es el mismo principio que pagar deuda técnica antes de que se componga (conecta con [[arena-htd4]]).
+- **p99 como early-warning ↔ pensar en la cola:** la saturación que asoma en el p99 antes que en la media es la misma lección de no fiarse del promedio (conecta con [[arena-sre1]]).
+
+Moraleja de la arista: *limita el toil para que la ingeniería no muera, y vigila pocas señales (latencia/tráfico/errores/saturación) por síntoma y por percentil, no por causa ni por media.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

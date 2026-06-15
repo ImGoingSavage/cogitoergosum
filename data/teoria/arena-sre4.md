@@ -25,6 +25,39 @@ La causa #1 es la **sobrecarga**: si el clúster B cae, su tráfico va a A (1.00
 
 ---
 
+## Mini-ejemplo trabajado: la aritmética de una cascada
+
+Dos clústeres, A y B, sirven **1.000 QPS** cada uno, y cada uno aguanta **1.100** como máximo. B cae. El balanceador manda *todo* el tráfico de B a A:
+
+- A recibe ahora **2.000 QPS** > su límite 1.100 → satura, las colas crecen, pierde deadlines, su tasa de éxito **cae por debajo de 1.000**.
+- El balanceador interpreta "A va mal" y reparte a C y D, que ya estaban a 1.000 → **se caen en cadena**. Fallo global en minutos.
+
+Peor con **reintentos naïf**: cada petición fallida se reintenta 3 veces → 2.000 QPS se vuelven 6.000 justo cuando el sistema agoniza. Las mitigaciones: **rechaza pronto y barato** (load shedding, HTTP 503), **degrada** la calidad antes de colapsar, **limita reintentos** con backoff exponencial + **jitter** y un presupuesto de reintentos, y planifica capacidad **N+2** (sobrevivir a perder 2 clústeres).
+
+**Predicción antes de seguir:** dejas un codepath experimental viejo tras un flag desactivado "por si acaso". ¿Riesgo? Es una bomba de tiempo (cf. Knight Capital, $465M): cada línea de código es un **pasivo**; bórrala, no la dejes dormida.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (release sano):** builds herméticos + lotes pequeños + cherry-pick desde mainline → sabes exactamente qué va en cada release y mides su impacto.
+- **Contraejemplo (complejidad accidental):** un binario "misc/util" que crece sin fronteras — complejidad que no es del problema; elimínala.
+- **Caso borde (degradación nunca ejercitada):** un modo degradado que solo se usa en emergencias → "el camino de código que nunca usas no funciona"; ejércelo regularmente.
+
+## Errores típicos
+
+- **Conceptual:** creer que más fiabilidad/funciones siempre es mejor; cada línea es un pasivo y "aburrido es bueno".
+- **Técnico:** reintentos sin límite ni jitter → amplifican la sobrecarga en vez de mitigarla.
+- **De capacidad:** no planificar N+2 ni probar el modo de fallo bajo sobrecarga *antes* de que ocurra.
+
+## Transferencia isomorfa
+
+- **Fallo en cascada por reintentos ↔ thundering herd / retry storm:** la amplificación de reintentos es el mismo patrón en colas, caches y APIs; backoff+jitter es la cura universal (conecta con [[arena-sd2]], bloques distribuidos).
+- **"Cada línea es un pasivo" ↔ deuda técnica:** borrar código muerto y celebrar "líneas negativas" es pagar deuda antes de que explote (conecta con [[arena-htd3]], dead codepaths).
+- **Builds herméticos ↔ reproducibilidad:** mismas fuentes → resultado idéntico es el principio de reproducibilidad de pipelines de ML (conecta con [[arena-mldp4]]).
+
+Moraleja de la arista: *la sobrecarga es la causa nº1 de cascadas; rechaza pronto, degrada antes de colapsar y nunca reintentes sin límite — y recuerda que el código simple y aburrido es el más fiable.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

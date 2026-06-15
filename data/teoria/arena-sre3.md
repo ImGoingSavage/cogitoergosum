@@ -25,6 +25,40 @@ Un **postmortem** registra impacto, acciones, **causa(s) raíz** y acciones de s
 
 ---
 
+## Mini-ejemplo trabajado: depurar como científico
+
+"El servicio está lento." Eso no es un reporte accionable. Conviértelo en el método hipotético-deductivo:
+
+1. **Reporte:** esperado = p99 < 200 ms; real = p99 = 3 s; repro = cualquier request a `/buscar` desde las 14:00.
+2. **Hipótesis 1:** "la BD está saturada". **Test:** mira la latencia de la BD → normal. **Descartada.**
+3. **Hipótesis 2:** "un deploy a las 14:00 cambió algo". **Test:** revisa el changelog → sí hubo deploy. **Cambio controlado:** rollback en un canario → la latencia vuelve a 200 ms. **Confirmada.**
+
+Cada paso *compara el estado observado contra una teoría* o *cambia el sistema de forma controlada y observa*. La trampa a evitar: aferrarse a la causa del último incidente o perseguir una correlación espuria. "Cuando oigas cascos, piensa en **caballos, no cebras**" (Occam), pero recuerda que correlación ≠ causa.
+
+**Predicción antes de seguir:** durante el incidente, tres ingenieros aplican fixes a la vez sin avisarse y la cosa empeora. ¿Qué falló y cómo lo evita el ICS? Es **freelancing**; el ICS lo previene haciendo que **solo Ops** modifique el sistema, coordinado por el Incident Command.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (incidente bien gestionado):** roles ICS separados (command/ops/comms/planning), un canal de comunicación, postmortem sin culpa al cierre.
+- **Contraejemplo (la historia de Mary):** todos "haciendo su trabajo" pero con foco solo técnico, mala comunicación y freelancing → el incidente se descontrola.
+- **Caso borde (síntoma raro real):** a veces *varios* fallos comunes explican mejor que uno raro (Hickam) — Occam guía, no dogmatiza.
+
+## Errores típicos
+
+- **Conceptual:** preguntar "¿de quién fue la culpa?" — pregunta equivocada; arreglas sistemas, no personas.
+- **De diagnóstico:** confundir correlación con causa, o aferrarse a la causa del incidente anterior.
+- **De coordinación:** modificar el sistema sin rol claro (freelancing) durante un incidente.
+
+## Transferencia isomorfa
+
+- **Método hipotético-deductivo ↔ inferencia causal y debugging de modelos:** plantear hipótesis y testearlas con cambios controlados es el RCT del ingeniero (conecta con [[arena-h15]], hacer vs observar).
+- **Postmortem sin culpa ↔ normalizar el error como parte del proceso:** atacar el sistema y no a la persona es la misma filosofía de que el error enseña, no castiga — alineado con la Constitución de la app.
+- **"Caballos, no cebras" ↔ tasa base / Occam:** preferir la explicación común es razonar con la prior correcta (conecta con [[arena-q2]], Bayes y tasa base).
+
+Moraleja de la arista: *depura con hipótesis y cambios controlados, coordina con roles claros (solo Ops toca el sistema), y cierra atacando el sistema, no a la persona.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

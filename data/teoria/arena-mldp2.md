@@ -32,6 +32,38 @@ En vez de binario Sí/No, entrena tres clases disjuntas: Sí, No y **Maybe** (ne
 
 ---
 
+## Mini-ejemplo trabajado: la paradoja del accuracy
+
+Detector de fraude con **5%** de positivos. Entrenas un modelo y reporta **95% de accuracy**. ¿Celebrar? No: un modelo que predice **siempre "no fraude"** acierta el 95% sin detectar *ni un solo* fraude. El accuracy está secuestrado por la clase mayoritaria.
+
+Mira precision y recall en su lugar. Si tu modelo marca 100 transacciones como fraude y 60 lo son (precision 0.60) pero hay 200 fraudes reales (recall 0.30), el F1 ≈ 0.40 — muy lejos del "95%". Y el **test set conserva el desbalance original** (no lo rebalancees, o medirás un mundo que no existe).
+
+**Predicción antes de seguir:** ¿es éste el mismo fenómeno que el PPV de un fenotipo clínico raro? Sí: con una clase rara, una métrica "global" engaña; hay que mirar la tasa base (conecta con [[arena-h13]], donde sens 90% daba PPV 49%).
+
+Para el sesgo-varianza: si subes la complejidad y el error de *entrenamiento* baja pero el de *validación* sube, estás cambiando sesgo por **varianza** (overfit) → toca **bagging**; si ambos errores son altos (underfit), es **sesgo** → **boosting**.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (bagging):** modelos con errores **poco correlacionados** (random forest) → el promedio baja la varianza hacia var/k.
+- **Contraejemplo (bagging inútil):** baggear un modelo **estable** (lineal, kNN, naive Bayes) → casi no ayuda; necesitas diversidad.
+- **Caso borde (cascade ≠ ensemble):** en inferencia no hay etiqueta, así que el modelo "típico" y el "raro" ven datos elegidos por un clasificador que **falla** → entrenarlos sobre predicciones exige diseño cuidadoso.
+
+## Errores típicos
+
+- **Conceptual:** confiar en el **accuracy** con clases desbalanceadas (paradoja del accuracy).
+- **Técnico:** rebalancear el **test set** (debe conservar el desbalance real) o baggear modelos estables.
+- **De diseño:** fabricar la **clase neutra** después de recolectar; el "Maybe" exige diseñar la recolección desde el inicio.
+
+## Transferencia isomorfa
+
+- **Paradoja del accuracy ↔ tasa base / PPV:** una clase rara vuelve engañosa la métrica global, igual que la prevalencia hunde el PPV de un test (conecta con [[arena-h13]] y [[arena-q2]]).
+- **Bagging/boosting ↔ reducir varianza/sesgo:** la descomposición sesgo-varianza es el marco de [[arena-isl1]]; los ensembles son sus dos remedios.
+- **Neutral class ↔ opción de abstención:** dejar que el modelo diga "no sé" en casos ambiguos es pariente de un umbral de confianza / rechazar la predicción.
+
+Moraleja de la arista: *con clases desbalanceadas el accuracy miente (mira P/R/F1 y la tasa base); elige el ensemble por el error que ataca —bagging para varianza, boosting para sesgo.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

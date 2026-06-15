@@ -18,6 +18,36 @@
 
 ---
 
+## Mini-ejemplo trabajado: por qué quitar la feature sensible no arregla el sesgo
+
+Quieres un modelo de crédito justo respecto a la **raza**, así que la eliminas de las features. ¿Resuelto? No: el **código postal**, el **ingreso** y el **historial** correlacionan con la raza y actúan como **proxies**. El modelo reconstruye la información sensible por la puerta de atrás y sigue discriminando — ahora de forma *oculta*.
+
+Estructuralmente es **confundimiento por proxy**: borrar la variable no cierra el camino que va de ella a la decisión a través de sus sustitutos (la misma lógica de [[arena-h4]]). La cura no es ceguera, es **medición**: evalúa el modelo por **slices** (tasa de aprobación, error por grupo) y corrige si un grupo recibe trato sistemáticamente distinto.
+
+**Predicción antes de seguir:** divides train/test con `random` sin semilla y tus filas son transacciones del mismo usuario. ¿Qué pasa? **Fuga**: el mismo usuario cae en train y test → métricas infladas. La cura es **Repeatable Splitting**: módulo de un **hash determinista** de una columna que capture la correlación (p. ej. `user_id`), que **no sea input** del modelo y tenga suficientes valores únicos.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (Transform):** guardas la transformación input→feature en el grafo del modelo → train y serving aplican lo mismo, mata el skew.
+- **Contraejemplo (split ingenuo):** `random.shuffle` con filas correlacionadas → fuga y resultados no reproducibles.
+- **Caso borde (Bridged Schema):** el esquema mejora (card → débito/crédito) y tienes poca data nueva → codifica la vieja con las **probabilidades a priori** de las clases nuevas en vez de tirarla.
+
+## Errores típicos
+
+- **Conceptual:** creer que la equidad se logra **quitando** la feature sensible (sobrevive en proxies).
+- **Técnico:** splits no deterministas o por una columna que *es* input → fuga y no reproducibilidad.
+- **De evaluación:** juzgar por **accuracy global** en vez de por **slices** (equidad, drift, subgrupos).
+
+## Transferencia isomorfa
+
+- **Transform ↔ paridad train/serving:** fijar la transformación input→feature en el grafo es la cura del training-serving skew de las Reglas de ML (conecta con [[arena-rom3]]).
+- **Repeatable Splitting ↔ hashing determinista:** dividir por `hash(columna) % n` es el mismo FarmHash de los Hashed Features y de las tablas hash (conecta con [[arena-mldp1]] y [[arena-cc1]]).
+- **Fairness por proxy ↔ confundimiento:** que una variable omitida sobreviva en sus sustitutos es exactamente el confundimiento por proxy del DAG causal (conecta con [[arena-h4]]).
+
+Moraleja de la arista: *la reproducibilidad se compra con transformaciones fijas y splits por hash determinista; la equidad no se logra cegando el modelo (los proxies delatan), sino midiendo por slices.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
