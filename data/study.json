@@ -1421,6 +1421,110 @@
    "cuando_usar": "Cuando hay más de un tipo de evento y la ocurrencia de uno excluye los demás.",
    "ejemplo": "Estimar la incidencia de recaída cuando muchos pacientes mueren antes: usa la CIF, no 1−KM.",
    "patron": "competing risks: cause-specific (censura competidores, etiología) vs Fine-Gray/CIF (predicción); 1−KM sobrestima"
+  },
+  {
+   "id": "que-es-ohdsi-open-science",
+   "nombre": "Qué es OHDSI (ciencia abierta colaborativa)",
+   "descripcion": "OHDSI (Observational Health Data Sciences and Informatics) es una colaboración INTERNACIONAL y de CIENCIA ABIERTA que genera evidencia de salud a partir de DATOS OBSERVACIONALES (no de ensayos): historias clínicas electrónicas (EHR) y datos de reclamaciones/claims. Su apuesta es estandarizar los datos a un modelo común (OMOP CDM) y los métodos a herramientas open-source (ATLAS, HADES), de modo que un análisis se escriba UNA vez y se ejecute en MUCHAS bases de datos de la red, generando evidencia reproducible y a gran escala. Sus tres casos de uso: CARACTERIZACIÓN (¿qué hay en los datos?), ESTIMACIÓN A NIVEL DE POBLACIÓN (efectos causales) y PREDICCIÓN A NIVEL DE PACIENTE.",
+   "cuando_usar": "Al situar cualquier proyecto de RWE en el ecosistema OHDSI/OMOP y elegir el caso de uso.",
+   "ejemplo": "Un estudio de seguridad de un fármaco corrido en 10 bases de la red sin mover datos de pacientes.",
+   "patron": "datos observacionales (EHR/claims) → estandarizar datos (CDM) + métodos (open-source) → red reproducible; 3 usos: caracterización/estimación/predicción"
+  },
+  {
+   "id": "omop-common-data-model",
+   "nombre": "El OMOP Common Data Model",
+   "descripcion": "El OMOP CDM es un modelo de datos RELACIONAL CENTRADO EN LA PERSONA que estandariza la ESTRUCTURA (sintaxis) de los datos observacionales: tablas estándar como PERSON, OBSERVATION_PERIOD (ventanas de observación), VISIT_OCCURRENCE, CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, MEASUREMENT, OBSERVATION, DEATH, más tablas DERIVADAS de ERA (CONDITION_ERA, DRUG_ERA) que agrupan eventos. ¿Por qué un CDM? Para que una herramienta o un script analítico escrito una vez funcione en CUALQUIER base transformada al CDM, habilitando estudios en red y reproducibilidad. La estandarización SEMÁNTICA (qué significan los códigos) la dan los vocabularios estándar.",
+   "cuando_usar": "Al transformar/consultar datos observacionales para análisis estandarizado o estudios en red.",
+   "ejemplo": "Una condición de un EHR y una de claims terminan ambas en CONDITION_OCCURRENCE con el mismo concept_id estándar.",
+   "patron": "modelo relacional persona-céntrico; tablas estándar + era; estandariza la ESTRUCTURA → escribir-una-vez-correr-en-todas"
+  },
+  {
+   "id": "vocabularios-estandarizados-omop",
+   "nombre": "Vocabularios estandarizados de OMOP",
+   "descripcion": "Cada evento clínico en el CDM se representa con un CONCEPT_ID de los Vocabularios Estandarizados. Hay CONCEPTOS ESTÁNDAR (uno por idea clínica, p. ej. SNOMED para condiciones, RxNorm para fármacos, LOINC para mediciones) y CONCEPTOS FUENTE/no estándar (ICD-10, NDC, CPT) que se MAPEAN a los estándar mediante relaciones 'Maps to'. Esto da estandarización SEMÁNTICA: distintos códigos fuente que significan lo mismo convergen al mismo concepto estándar. La tabla CONCEPT_ANCESTOR codifica HIERARQUÍAS, permitiendo consultar un concepto y TODOS sus descendientes (p. ej. 'todos los antihipertensivos') sin enumerarlos. Usagi ayuda a mapear códigos fuente a estándar.",
+   "cuando_usar": "Al definir cohortes/consultas que deben capturar un concepto clínico de forma completa y portable.",
+   "ejemplo": "Buscar 'diabetes mellitus' por su concepto SNOMED estándar y sus descendientes captura todas las variantes.",
+   "patron": "concept_id; estándar (SNOMED/RxNorm/LOINC) vs fuente (ICD/NDC) con 'Maps to'; CONCEPT_ANCESTOR para descendientes"
+  },
+  {
+   "id": "proceso-etl-cdm",
+   "nombre": "Proceso ETL a OMOP CDM",
+   "descripcion": "El ETL (Extract-Transform-Load) convierte los datos FUENTE (con su esquema y códigos propios) al OMOP CDM: extraer, transformar la estructura a las tablas del CDM y MAPEAR los códigos fuente a conceptos estándar, luego cargar. Es un esfuerzo conjunto CLÍNICO + TÉCNICO con muchas decisiones (cómo interpretar campos, qué dominio asignar). Herramientas: WHITE RABBIT (escanea y perfila la fuente), RABBIT-IN-A-HAT (diseña el documento de especificación del ETL), USAGI (mapeo de códigos a conceptos estándar). El ETL nunca es perfecto ni completamente lossless; debe documentarse y someterse a control de CALIDAD DE DATOS.",
+   "cuando_usar": "Al incorporar una base de datos nueva al ecosistema OMOP/OHDSI.",
+   "ejemplo": "Mapear los DRG/ICD-10 de un hospital a condition_occurrence con conceptos SNOMED estándar vía Usagi.",
+   "patron": "fuente → CDM: extraer + transformar estructura + mapear códigos; WhiteRabbit/Rabbit-in-a-Hat/Usagi; nunca perfecto, documentar"
+  },
+  {
+   "id": "calidad-datos-kahn",
+   "nombre": "Calidad de datos (marco de Kahn)",
+   "descripcion": "La calidad de los datos observacionales se evalúa con el marco de KAHN: tres CATEGORÍAS — CONFORMANCE (¿los datos cumplen el formato/estructura/relaciones esperados?), COMPLETENESS (¿faltan datos que deberían estar?) y PLAUSIBILITY (¿los valores son creíbles: rangos, temporalidad, consistencia?) — cruzadas con dos CONTEXTOS: VERIFICATION (contra reglas internas/del modelo) y VALIDATION (contra una referencia externa/conocimiento del mundo). En la práctica OHDSI: ACHILLES genera caracterización descriptiva y alertas, y el DATA QUALITY DASHBOARD (DQD) ejecuta miles de chequeos sistemáticos. La buena calidad de datos es condición para la calidad de la evidencia.",
+   "cuando_usar": "Antes de confiar en una base CDM para un estudio: ¿es apta para el propósito?",
+   "ejemplo": "DQD detecta fechas de nacimiento implausibles (conformance/plausibility) o ausencia de registros de muerte (completeness).",
+   "patron": "Kahn: conformance/completeness/plausibility × verification/validation; ACHILLES + DataQualityDashboard"
+  },
+  {
+   "id": "definir-cohorte-fenotipo",
+   "nombre": "Definir cohortes y fenotipos",
+   "descripcion": "Una COHORTE en OHDSI es 'un conjunto de personas que satisfacen uno o más criterios de inclusión durante un periodo de tiempo'. Una definición de cohorte tiene tres partes: EVENTOS DE ENTRADA (cohort entry), REGLAS DE INCLUSIÓN (filtros adicionales) y CRITERIOS DE SALIDA (cohort exit). Se construye con CONCEPT SETS (conjuntos de conceptos estándar + descendientes). Dos enfoques: BASADO EN REGLAS (determinista, transparente, en ATLAS) y PROBABILÍSTICO (un modelo asigna una probabilidad de tener la condición; PheValuator). Un FENOTIPO es la definición computable de una condición clínica; debe VALIDARSE midiendo su sensibilidad, especificidad y PPV (un cohort definition muy específica pero poco sensible, o viceversa, sesga el estudio).",
+   "cuando_usar": "Al operacionalizar la población, la exposición o el outcome de cualquier estudio observacional.",
+   "ejemplo": "Cohorte de 'nuevos usuarios de IECA' con entry=primera dispensación, inclusión=≥365 días previos, exit=fin de exposición.",
+   "patron": "cohorte = personas que cumplen criterios por un tiempo; entry/inclusión/exit + concept sets; rule-based vs probabilístico; valida PPV/sensibilidad"
+  },
+  {
+   "id": "caracterizacion-ohdsi",
+   "nombre": "Caracterización (analítica descriptiva)",
+   "descripcion": "La CARACTERIZACIÓN responde '¿qué hay en los datos?' de forma DESCRIPTIVA (no causal ni predictiva). Niveles: a NIVEL DE BASE DE DATOS (demografía, conteos, distribución temporal — ACHILLES), a NIVEL DE COHORTE (covariables, comorbilidades, fármacos de los que cumplen la definición), TREATMENT PATHWAYS (secuencias de tratamiento que reciben los pacientes de una condición) y tasas de INCIDENCIA/prevalencia. Es el primer paso para entender una base antes de estimar o predecir, y para detectar problemas (heterogeneidad entre bases, datos faltantes). No establece efectos: solo describe.",
+   "cuando_usar": "Para explorar/perfilar una base o cohorte antes de un estudio causal o predictivo.",
+   "ejemplo": "Treatment pathways de hipertensión: qué proporción empieza con tiazida vs IECA y cómo cambian de línea.",
+   "patron": "descriptivo: base / cohorte / treatment pathways / incidencia; ACHILLES; describe, no infiere"
+  },
+  {
+   "id": "estimacion-nivel-poblacion-ohdsi",
+   "nombre": "Estimación a nivel de población (OHDSI)",
+   "descripcion": "La ESTIMACIÓN A NIVEL DE POBLACIÓN estima EFECTOS CAUSALES de una exposición sobre un outcome en una población. Dos familias de diseño en OHDSI: (1) DISEÑOS DE COHORTE COMPARATIVA (cohort method, new-user, comparador activo, con PROPENSITY SCORES a gran escala usando miles de covariables para ajustar confundidores medidos); (2) DISEÑOS AUTOCONTROLADOS (self-controlled), donde cada persona es su propio control: SELF-CONTROLLED CASE SERIES (SCCS), CASE-CROSSOVER, self-controlled cohort — eliminan el confundimiento FIJO entre personas. Cada diseño tiene supuestos distintos y DIAGNÓSTICOS específicos (equilibrio de covariables, equipoise); se validan con controles negativos y calibración empírica.",
+   "cuando_usar": "Cuando la pregunta es de EFECTO causal (¿este fármaco causa este evento?) en datos observacionales.",
+   "ejemplo": "Comparar IECA vs tiazida (new-user, PS a gran escala) para el riesgo de angioedema, con diagnósticos de balance.",
+   "patron": "efecto causal; cohorte comparativa (new-user + PS a gran escala) vs autocontrolados (SCCS/case-crossover); diagnósticos + controles negativos"
+  },
+  {
+   "id": "prediccion-nivel-paciente-plp",
+   "nombre": "Predicción a nivel de paciente (PLP)",
+   "descripcion": "La PREDICCIÓN A NIVEL DE PACIENTE (PLP) construye modelos que predicen, para un INDIVIDUO, la probabilidad de un OUTCOME futuro (no estima efectos causales, sino que PRONOSTICA). El marco estandarizado define: una COHORTE OBJETIVO (target, sobre quién se predice), una COHORTE DE OUTCOME (qué se predice), y una VENTANA DE TIEMPO EN RIESGO (time-at-risk) relativa al inicio. Se extraen miles de features del historial, se ajusta un modelo (regresión regularizada, gradient boosting, etc.) y se EVALÚA con DISCRIMINACIÓN (AUC/AUROC) y CALIBRACIÓN (¿las probabilidades predichas coinciden con las observadas?), con validación interna y EXTERNA (en otras bases). Es pronóstico, no causalidad: las features 'predictoras' no implican causas.",
+   "cuando_usar": "Cuando la pregunta es de PRONÓSTICO individual (¿quién tiene alto riesgo de X?).",
+   "ejemplo": "Predecir riesgo de readmisión a 1 año en pacientes con insuficiencia cardiaca, evaluado por AUC y calibración.",
+   "patron": "pronóstico individual; target + outcome + time-at-risk; muchas features; evalúa discriminación (AUC) + calibración; validación externa"
+  },
+  {
+   "id": "validez-clinica-fenotipo",
+   "nombre": "Validez clínica (validación de fenotipos)",
+   "descripcion": "La VALIDEZ CLÍNICA pregunta si una definición de cohorte/fenotipo realmente captura el concepto clínico pretendido. Se valida estimando su SENSIBILIDAD (de los verdaderos casos, ¿cuántos captura?), ESPECIFICIDAD y, sobre todo, el VALOR PREDICTIVO POSITIVO (de los que captura, ¿cuántos son casos reales?). Métodos: SOURCE RECORD VERIFICATION (revisión manual de historias contra la definición) y PHEVALUATOR (estima las métricas de validez con un gold standard PROBABILÍSTICO, sin chart review masivo). También importa la GENERALIZABILIDAD: ¿la evidencia de estas bases aplica a la población diana? Un fenotipo mal validado introduce sesgo de misclasificación en todo el estudio.",
+   "cuando_usar": "Antes de usar una cohorte de exposición/outcome en un estudio que pretenda ser creíble.",
+   "ejemplo": "PheValuator estima que el fenotipo de IAM tiene PPV 0.85 y sensibilidad 0.70: se documenta y se considera en la interpretación.",
+   "patron": "¿captura el concepto clínico? sensibilidad/especificidad/PPV; source record verification + PheValuator; misclasificación = sesgo"
+  },
+  {
+   "id": "validez-de-metodo-controles-negativos",
+   "nombre": "Validez de método: controles negativos",
+   "descripcion": "La VALIDEZ DE MÉTODO evalúa si un diseño/método produce estimaciones SIN sesgo sistemático en una base dada. Herramienta central: los CONTROLES NEGATIVOS — pares exposición-outcome donde NO se espera efecto causal (el verdadero RR≈1). Un método válido debería estimar efectos centrados en el NULO para ellos; si las estimaciones se desvían del 1 (o sus intervalos no cubren 1 más de lo debido), hay ERROR SISTEMÁTICO RESIDUAL (confundimiento, sesgo de selección/medición). Se complementan con CONTROLES POSITIVOS (a menudo sintéticos, inyectando señales conocidas) para medir la POTENCIA. Además hay DIAGNÓSTICOS específicos de diseño (balance de covariables tras PS, equipoise/preference score, MDRR).",
+   "cuando_usar": "Antes de creer un efecto estimado: ¿el método está sesgado en ESTA base?",
+   "ejemplo": "50 controles negativos cuyas estimaciones deberían centrarse en RR=1; si se centran en 1.3, hay sesgo residual.",
+   "patron": "controles negativos (RR esperado≈1) miden sesgo sistemático; positivos (sintéticos) miden potencia; + diagnósticos de diseño"
+  },
+  {
+   "id": "calibracion-empirica-pvalores",
+   "nombre": "Calibración empírica de p-valores e intervalos",
+   "descripcion": "Los p-valores e intervalos de confianza clásicos asumen que el ÚNICO error es el aleatorio, pero en datos observacionales hay ERROR SISTEMÁTICO (confundimiento residual, etc.). La CALIBRACIÓN EMPÍRICA usa la distribución de estimaciones de los CONTROLES NEGATIVOS (cuyo efecto verdadero se conoce ≈null) para estimar la magnitud de ese error sistemático y AJUSTAR los p-valores y los intervalos de confianza, de modo que reflejen también el sesgo, no solo la varianza. Resultado: intervalos CALIBRADOS más anchos y p-valores más honestos; reduce los falsos positivos endémicos de los estudios observacionales. (Paquete EmpiricalCalibration.)",
+   "cuando_usar": "Al reportar significancia/incertidumbre de un efecto estimado en datos observacionales.",
+   "ejemplo": "Un IC nominal de 1.1-1.4 puede pasar a 0.9-1.7 tras calibrar con los controles negativos, dejando de ser 'significativo'.",
+   "patron": "usa controles negativos para medir el sesgo sistemático y calibrar p/IC; intervalos calibrados más anchos; menos falsos positivos"
+  },
+  {
+   "id": "estudios-en-red-ohdsi",
+   "nombre": "Estudios en red OHDSI",
+   "descripcion": "Un ESTUDIO EN RED ejecuta el MISMO paquete de análisis estandarizado en MÚLTIPLES bases de datos de la red (cada una en su CDM) SIN compartir datos a nivel de paciente: solo viajan los RESULTADOS AGREGADOS (estimaciones, diagnósticos), que luego se combinan/meta-analizan. Ventajas: PRIVACIDAD (los datos no salen de cada institución), ESCALA y heterogeneidad de poblaciones, y REPRODUCIBILIDAD (mismo código, protocolo pre-especificado). Es el modelo de evidencia a gran escala de OHDSI (p. ej. LEGEND), que prioriza transparencia, diagnósticos compartidos y pre-registro frente a estudios 'a medida' irreproducibles.",
+   "cuando_usar": "Para generar evidencia robusta y generalizable cuando los datos no pueden centralizarse.",
+   "ejemplo": "Correr un estudio de seguridad en 10 bases de 4 países; cada sitio devuelve resultados agregados que se meta-analizan.",
+   "patron": "mismo código en muchas bases; solo resultados agregados salen; privacidad + escala + reproducibilidad (p. ej. LEGEND)"
   }
  ],
  "bloques": [
@@ -2119,7 +2223,11 @@
     "arena-h7",
     "arena-h8",
     "arena-h9",
-    "arena-h10"
+    "arena-h10",
+    "arena-h11",
+    "arena-h12",
+    "arena-h13",
+    "arena-h14"
    ],
    "examen": {
     "items": [
@@ -4324,6 +4432,78 @@
        ]
       },
       "source": "Survival Analysis (Kleinbaum & Klein, 3rd ed.) — Cap. 9"
+     },
+     {
+      "id": "f7-ex-66",
+      "heuristica": "validez-de-metodo-controles-negativos",
+      "enunciado": "Estimas con un cohort method (datos observacionales OMOP) que un fármaco se asocia a un outcome con RR=1.3 (IC95% 1.1-1.5, p<0.05). Antes de declararlo un hallazgo, aplicas el enfoque de validez de método de OHDSI. (a) ¿Por qué el IC y el p-valor clásicos NO bastan en datos observacionales? (b) ¿Qué son los controles negativos y cómo los usas para detectar sesgo? (c) ¿Qué es la calibración empírica y qué le pasaría a tu RR/IC tras calibrar si los controles negativos revelan sesgo?",
+      "pistas": [
+       "¿Qué fuente de error ignoran los IC clásicos?",
+       "Controles negativos = pares con efecto verdadero conocido ≈…",
+       "Si las estimaciones de los negativos no se centran en 1…",
+       "La calibración usa la distribución de los negativos.",
+       "¿El IC calibrado es más ancho o más estrecho?"
+      ],
+      "solucion": "(a) Porque los p-valores e intervalos clásicos asumen que la ÚNICA fuente de error es el AZAR (varianza muestral) e ignoran el ERROR SISTEMÁTICO que domina en datos observacionales (confundimiento residual, sesgo de selección, misclasificación de fenotipos). Por eso un IC nominal del 95% puede cubrir el valor verdadero MUCHO menos del 95% de las veces, produciendo exceso de hallazgos 'significativos' falsos: con n grande, casi cualquier RR≠1 sale 'significativo' aunque sea sesgo, no efecto. (b) Los CONTROLES NEGATIVOS son pares exposición-outcome elegidos porque, según el conocimiento médico, NO tienen relación causal (efecto verdadero RR≈1). Corres EXACTAMENTE el mismo análisis sobre muchos de ellos: si el método es válido, sus estimaciones deberían distribuirse alrededor de RR=1 y sus IC cubrir el 1 al ~95%. Si en cambio se centran lejos de 1 (p. ej. en 1.2) o muchos IC excluyen el 1, eso REVELA el sesgo sistemático del método EN esa base. (Se complementan con controles positivos sintéticos para medir potencia y con diagnósticos de diseño: balance tras PS, equipoise/positividad, MDRR.) (c) La CALIBRACIÓN EMPÍRICA usa la distribución de estimaciones de los controles negativos para estimar la magnitud del error sistemático y AJUSTAR el p-valor y el IC de tu estimación de modo que reflejen también ese sesgo, no solo la varianza. Si los negativos revelan sesgo, tu IC CALIBRADO se ENSANCHA y el p-valor se vuelve más conservador: el RR=1.3 podría pasar a, digamos, IC 0.9-1.8 y dejar de ser 'significativo', evitando un falso positivo. Solo reportaría el hallazgo si sobrevive a la calibración y los diagnósticos pasan.",
+      "disparador": "Señal: 'RR significativo en datos observacionales'. Jugada: los IC clásicos solo capturan el azar; corre controles negativos (RR esperado≈1) para medir el sesgo sistemático del método en esa base, calibra empíricamente p/IC (se ensanchan) y exige que pasen los diagnósticos de diseño antes de creer el efecto.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "validez de método",
+        "controles negativos",
+        "controles positivos",
+        "calibración empírica",
+        "error sistemático vs aleatorio",
+        "diagnósticos de diseño"
+       ],
+       "errores_comunes": [
+        "Creer un p<0.05 observacional sin evaluar sesgo sistemático",
+        "No correr controles negativos",
+        "Reportar IC nominales sin calibrar"
+       ],
+       "casos_borde": [
+        "Con n enorme, casi todo RR≠1 es 'significativo' por sesgo",
+        "Si los diagnósticos de balance/equipoise fallan, no se reporta el efecto"
+       ]
+      },
+      "source": "The Book of OHDSI — Cap. 18 (Method Validity) y EmpiricalCalibration"
+     },
+     {
+      "id": "f7-ex-67",
+      "heuristica": "definir-cohorte-fenotipo",
+      "enunciado": "Necesitas definir la cohorte de 'nuevos usuarios de un fármaco' (exposición) y la de 'infarto agudo de miocardio' (outcome) para un estudio en la red OHDSI. (a) ¿Qué tres componentes tiene una definición de cohorte y cómo los especificarías para la exposición? (b) ¿Qué es un fenotipo y por qué hay que validarlo? ¿Qué métricas usarías? (c) ¿Cómo logras que la MISMA definición signifique lo mismo en todas las bases de la red?",
+      "pistas": [
+       "Entrada, inclusión y salida.",
+       "'Nuevos usuarios' implica una ventana sin uso previo.",
+       "Una definición imperfecta causa misclasificación.",
+       "Sensibilidad, especificidad, PPV; PheValuator.",
+       "Conceptos estándar + descendientes (CONCEPT_ANCESTOR)."
+      ],
+      "solucion": "(a) Una definición de cohorte tiene tres componentes: EVENTOS DE ENTRADA, REGLAS DE INCLUSIÓN y CRITERIOS DE SALIDA. Para 'nuevos usuarios' del fármaco: ENTRADA = primera exposición al fármaco (primer drug_exposure de su concept set); INCLUSIÓN = un periodo de OBSERVACIÓN previa suficiente sin exposición al fármaco (p. ej. ≥365 días en observation_period sin uso previo, garantizando que es realmente 'nuevo usuario' y no prevalente) y otros criterios (edad, ausencia de contraindicaciones); SALIDA = fin de la exposición continua (drug_era) o fin del periodo de observación. Esto evita el sesgo de usuario prevalente y define bien el tiempo en riesgo. (b) Un FENOTIPO es la definición computable de una condición clínica (aquí, la cohorte de IAM). Hay que validarlo porque una definición imperfecta introduce MISCLASIFICACIÓN (incluir no-casos o perder casos reales) que sesga la estimación. Métricas: SENSIBILIDAD (de los IAM reales, ¿cuántos captura?), ESPECIFICIDAD y VALOR PREDICTIVO POSITIVO (de los capturados, ¿cuántos son IAM reales?), evaluadas con SOURCE RECORD VERIFICATION (revisión de historias, gold standard costoso) o con PHEVALUATOR (gold standard probabilístico, escalable). Se documenta el trade-off entre una definición amplia (sensible) y una estricta (específica). (c) Construyendo las definiciones sobre CONCEPTOS ESTÁNDAR de los vocabularios (no códigos fuente) y usando CONCEPT SETS con las jerarquías (CONCEPT_ANCESTOR) para incluir un concepto y todos sus descendientes. Como cada base mapea sus códigos fuente (ICD-9/10, NDC) a los mismos conceptos estándar en su ETL, la misma definición de cohorte significa lo MISMO y captura lo equivalente en todas las bases, habilitando el estudio en red con resultados comparables.",
+      "disparador": "Señal: 'definir exposición/outcome para un estudio (en red)'. Jugada: especifica entry/inclusión/exit (new-user = ventana previa sin uso); valida el fenotipo (sens/espec/PPV con PheValuator o chart review) para evitar misclasificación; constrúyelo sobre conceptos estándar + descendientes para que sea portable en toda la red.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "definición de cohorte",
+        "new-user design",
+        "fenotipo",
+        "validación (sens/espec/PPV)",
+        "PheValuator",
+        "concept sets/jerarquías"
+       ],
+       "errores_comunes": [
+        "No exigir ventana de observación previa (incluir usuarios prevalentes)",
+        "Usar el fenotipo sin validar su PPV/sensibilidad",
+        "Definir cohortes sobre códigos fuente en vez de conceptos estándar"
+       ],
+       "casos_borde": [
+        "Una definición muy específica gana PPV pero pierde sensibilidad",
+        "Sin conceptos estándar la definición no es portable entre bases"
+       ]
+      },
+      "source": "The Book of OHDSI — Cap. 10 (Defining Cohorts) y Cap. 16 (Clinical Validity)"
      }
     ]
    }
@@ -19483,6 +19663,539 @@
      "enunciado": "Resume la diferencia conceptual entre CENSURA y RIESGO COMPETITIVO.",
      "solucion": "La CENSURA es la pérdida de observación de un sujeto que TODAVÍA PODRÍA tener el evento de interés (fin del estudio, abandono): se asume censura no informativa. Un RIESGO COMPETITIVO es un evento que IMPIDE definitivamente el evento de interés (p. ej. muerte por otra causa): el sujeto ya NO está 'en riesgo'. Confundirlos lleva a sobrestimar la incidencia (tratar el competidor como censura en un KM). La estructura de riesgos competitivos exige CIF/Fine-Gray en lugar de 1−KM.",
      "explicacion": "Censura = podría tener el evento luego; competidor = ya no podrá. Tratarlos igual sesga."
+    }
+   ]
+  },
+  {
+   "id": "arena-h11",
+   "bloque": "fase-7",
+   "orden": 103,
+   "titulo": "Arena OHDSI · Comunidad, datos observacionales y OMOP CDM",
+   "libro": "The Book of OHDSI (Observational Health Data Sciences and Informatics community)",
+   "lectura": "data/teoria/arena-h11.md",
+   "dosis": 30,
+   "objetivo": "Entender qué es OHDSI (ciencia abierta, datos observacionales, 3 casos de uso) y el OMOP Common Data Model (estructura persona-céntrica, tablas estándar y era) que habilita el análisis portable y los estudios en red.",
+   "heuristicas": [
+    "que-es-ohdsi-open-science",
+    "omop-common-data-model"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "OHDSI = ciencia abierta sobre datos observacionales (EHR/claims); estandariza datos + métodos",
+    "Tres casos de uso: caracterización (describir), estimación (causa), predicción (pronóstico)",
+    "OMOP CDM: modelo relacional persona-céntrico; estandariza la ESTRUCTURA",
+    "Tablas estándar (PERSON, OBSERVATION_PERIOD, CONDITION/DRUG_OCCURRENCE…) + era",
+    "Escribir el análisis una vez y correrlo en cualquier base → estudios en red"
+   ],
+   "banco": [
+    {
+     "id": "arh11-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es OHDSI y qué problema resuelve?",
+     "solucion": "OHDSI (Observational Health Data Sciences and Informatics) es una colaboración internacional de CIENCIA ABIERTA que genera evidencia de salud a partir de DATOS OBSERVACIONALES (no de ensayos clínicos). Resuelve la falta de estandarización y reproducibilidad de la investigación observacional: estandariza los DATOS a un modelo común (OMOP CDM) y los MÉTODOS a herramientas open-source, de modo que un análisis se escriba una vez y corra en muchas bases de la red, produciendo evidencia reproducible y a gran escala.",
+     "explicacion": "OHDSI es comunidad + estándares (CDM/vocabularios) + herramientas; no es un solo software."
+    },
+    {
+     "id": "arh11-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué tipos de datos observacionales de salud usa OHDSI y en qué se diferencian?",
+     "solucion": "Principalmente datos de RECLAMACIONES (claims: registros administrativos de facturación a aseguradoras, amplios en población y longitudinales pero con poco detalle clínico) e HISTORIAS CLÍNICAS ELECTRÓNICAS (EHR: ricas en detalle clínico pero fragmentadas, con seguimiento incompleto cuando el paciente cambia de proveedor). Ambos son datos recolectados para fines NO de investigación (atención/facturación), lo que condiciona su calidad y completitud.",
+     "explicacion": "Claims = amplitud poblacional/poco detalle; EHR = detalle clínico/seguimiento fragmentado."
+    },
+    {
+     "id": "arh11-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son los TRES casos de uso analíticos de OHDSI?",
+     "solucion": "(1) CARACTERIZACIÓN: describir qué hay en los datos (demografía, comorbilidades, tratamientos, incidencia) — descriptivo. (2) ESTIMACIÓN A NIVEL DE POBLACIÓN: estimar EFECTOS CAUSALES de una exposición sobre un outcome (¿el fármaco causa el evento?). (3) PREDICCIÓN A NIVEL DE PACIENTE: pronosticar la probabilidad de un outcome futuro para INDIVIDUOS. Cada uno responde una pregunta distinta y usa herramientas/diagnósticos propios.",
+     "explicacion": "Caracterización = describir; estimación = causa; predicción = pronóstico."
+    },
+    {
+     "id": "arh11-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el OMOP Common Data Model y qué estandariza?",
+     "solucion": "El OMOP CDM es un modelo de datos RELACIONAL CENTRADO EN LA PERSONA que estandariza la ESTRUCTURA (sintaxis) de los datos observacionales: define un conjunto fijo de tablas y campos a los que toda base se transforma. Junto con los Vocabularios Estandarizados, que dan la estandarización SEMÁNTICA (significado de los códigos), permite que herramientas y análisis escritos una vez funcionen en CUALQUIER base convertida al CDM.",
+     "explicacion": "CDM = estructura común; vocabularios = significado común; juntos habilitan análisis portables."
+    },
+    {
+     "id": "arh11-q5",
+     "tipo": "concepto",
+     "enunciado": "Nombra las principales tablas clínicas del OMOP CDM.",
+     "solucion": "Centradas en PERSON (una fila por individuo) y OBSERVATION_PERIOD (ventanas durante las que el individuo está bajo observación). Tablas de eventos clínicos: VISIT_OCCURRENCE (encuentros), CONDITION_OCCURRENCE (diagnósticos), DRUG_EXPOSURE (fármacos), PROCEDURE_OCCURRENCE (procedimientos), MEASUREMENT (laboratorios/vitales), OBSERVATION (otros hallazgos) y DEATH. Más tablas DERIVADAS de ERA (CONDITION_ERA, DRUG_ERA) que agrupan ocurrencias en periodos continuos.",
+     "explicacion": "Todo cuelga de PERSON y OBSERVATION_PERIOD; las era-tables resumen ocurrencias en periodos."
+    },
+    {
+     "id": "arh11-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué es importante la tabla OBSERVATION_PERIOD?",
+     "solucion": "Porque define las VENTANAS DE TIEMPO durante las cuales se espera que los eventos del paciente estén REGISTRADOS en la base (p. ej. el periodo de afiliación al seguro). Fuera de ese periodo, la ausencia de un registro NO significa ausencia del evento, solo que no se observaba. Es clave para calcular tiempo en riesgo, denominadores de incidencia y para no confundir 'no ocurrió' con 'no observado'.",
+     "explicacion": "Sin observation_period no se puede distinguir 'sano' de 'no observado'; es la base del tiempo en riesgo."
+    },
+    {
+     "id": "arh11-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa que el CDM permite 'escribir el análisis una vez y correrlo en cualquier base'?",
+     "solucion": "Que como todas las bases comparten la MISMA estructura de tablas y los MISMOS conceptos estándar, una herramienta (ATLAS) o un script (HADES/R/SQL) que consulta el CDM funciona idénticamente sobre cualquier base transformada, sin reescribirlo para cada esquema fuente. Esto habilita los ESTUDIOS EN RED (mismo paquete corrido en muchos sitios) y la reproducibilidad, que son la propuesta de valor central de OHDSI.",
+     "explicacion": "La estandarización convierte la portabilidad del análisis en la palanca de los estudios en red."
+    },
+    {
+     "id": "arh11-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la filosofía de CIENCIA ABIERTA es central en OHDSI?",
+     "solucion": "Porque la credibilidad de la evidencia observacional depende de la TRANSPARENCIA y la REPRODUCIBILIDAD: el CDM, los vocabularios, las herramientas (ATLAS, HADES) y los protocolos son abiertos, de modo que cualquiera puede inspeccionar, replicar y criticar un estudio. La colaboración abierta también permite ejecutar estudios en RED a gran escala y construir métodos validados comunitariamente, frente a estudios cerrados e irreproducibles.",
+     "explicacion": "Abierto + estandarizado = reproducible; es la respuesta de OHDSI a la crisis de credibilidad observacional."
+    },
+    {
+     "id": "arh11-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué diferencia hay entre la estandarización SINTÁCTICA y la SEMÁNTICA en OMOP?",
+     "solucion": "La estandarización SINTÁCTICA (estructural) la da el CDM: misma forma de tablas y campos. La estandarización SEMÁNTICA la dan los VOCABULARIOS ESTANDARIZADOS: mismo SIGNIFICADO de los códigos, mapeando los códigos fuente (ICD, NDC) a conceptos estándar únicos. Hacen falta AMBAS: dos bases con la misma estructura pero códigos distintos no serían comparables; los vocabularios garantizan que 'lo mismo' se represente igual.",
+     "explicacion": "Sintaxis (CDM) sin semántica (vocabularios) no basta para análisis comparables."
+    },
+    {
+     "id": "arh11-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son las tablas de ERA (CONDITION_ERA, DRUG_ERA) y para qué sirven?",
+     "solucion": "Son tablas DERIVADAS que agrupan ocurrencias individuales en PERIODOS CONTINUOS de una condición o exposición. Por ejemplo, múltiples dispensaciones de un fármaco con huecos cortos se combinan en un DRUG_ERA (un periodo de uso continuo), aplicando una regla de 'persistence window'. Sirven para razonar a nivel de EPISODIO de tratamiento/enfermedad en vez de eventos sueltos, útil para definir exposición sostenida y treatment pathways.",
+     "explicacion": "Las era-tables convierten eventos puntuales en episodios continuos según una ventana de persistencia."
+    },
+    {
+     "id": "arh11-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los datos observacionales se recolectaron para fines distintos a la investigación y qué implica?",
+     "solucion": "Claims se generan para FACTURAR y EHR para ATENDER pacientes, no para investigar. Implica que pueden faltar variables clave (estilo de vida, severidad), haber sesgos de codificación (lo que se factura vs lo que ocurre), seguimiento incompleto y errores. Por eso OHDSI enfatiza la CALIDAD DE DATOS, la VALIDACIÓN de fenotipos y la VALIDEZ DE MÉTODO (controles negativos, calibración): no se puede asumir que los datos son perfectos ni completos.",
+     "explicacion": "El propósito original (facturar/atender) condiciona qué falta y qué se codifica; de ahí el énfasis en validación."
+    },
+    {
+     "id": "arh11-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es ATLAS y qué es HADES en el ecosistema OHDSI?",
+     "solucion": "ATLAS es la aplicación WEB de OHDSI (interfaz gráfica) para definir cohortes, hacer caracterización, incidencia y diseñar estudios sin programar. HADES (Health Analytics Data-to-Evidence Suite) es el conjunto de paquetes de R (la 'Methods Library': CohortMethod, SelfControlledCaseSeries, PatientLevelPrediction, EmpiricalCalibration, etc.) para ejecutar análisis avanzados y estudios en red de forma reproducible. ATLAS genera código que se ejecuta contra el CDM; HADES da el control programático completo.",
+     "explicacion": "ATLAS = GUI sin código; HADES = paquetes R para análisis avanzado y estudios en red."
+    },
+    {
+     "id": "arh11-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ventaja da que todo evento clínico tenga un CONCEPT_ID estándar?",
+     "solucion": "Que se puede consultar y combinar datos de fuentes heterogéneas de forma UNIFORME: un mismo concepto representa la misma idea clínica sin importar el sistema de codificación origen. Además, las jerarquías de conceptos permiten consultar un concepto y TODOS sus descendientes (p. ej. 'todos los betabloqueantes') sin enumerar cada código. Esto hace las definiciones de cohortes portables y completas a través de la red.",
+     "explicacion": "El concept_id estándar + jerarquías es lo que hace portables y completas las definiciones."
+    },
+    {
+     "id": "arh11-q14",
+     "tipo": "concepto",
+     "enunciado": "¿En qué se diferencia la evidencia observacional de OHDSI de un ensayo clínico aleatorizado?",
+     "solucion": "El ECA aleatoriza y controla la exposición (alta validez interna, pero costoso, lento, con poblaciones estrechas y a veces poco ético/factible). La evidencia observacional de OHDSI usa datos del mundo real ya existentes: cubre poblaciones grandes y diversas, es rápida y barata a escala, pero NO aleatoriza, así que arrastra confundimiento y requiere métodos causales + validación (controles negativos, calibración) para ser creíble. Se complementan: OHDSI genera RWE para preguntas que un ECA no puede cubrir.",
+     "explicacion": "ECA = validez interna por diseño; OHDSI = escala/realismo a costa de necesitar control de sesgos."
+    },
+    {
+     "id": "arh11-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué papel juega EUNOMIA en aprender OHDSI?",
+     "solucion": "EUNOMIA es un conjunto de datos de EJEMPLO en formato OMOP CDM (con su base SQLite incorporada) usado para practicar y demostrar las herramientas sin necesidad de una base real ni datos sensibles. Permite ejecutar los ejemplos del libro (cohortes, caracterización, estimación, predicción) de forma reproducible para aprender el flujo de trabajo OHDSI.",
+     "explicacion": "EUNOMIA es el dataset de juguete OMOP para aprender y reproducir ejemplos sin datos reales."
+    }
+   ]
+  },
+  {
+   "id": "arena-h12",
+   "bloque": "fase-7",
+   "orden": 104,
+   "titulo": "Arena OHDSI · Vocabularios, ETL y calidad de datos",
+   "libro": "The Book of OHDSI (Observational Health Data Sciences and Informatics community)",
+   "lectura": "data/teoria/arena-h12.md",
+   "dosis": 30,
+   "objetivo": "Estandarización semántica (vocabularios: conceptos estándar vs fuente, dominios, jerarquías), el proceso de ETL a CDM (WhiteRabbit/Rabbit-in-a-Hat/Usagi) y la evaluación de calidad de datos (marco de Kahn, ACHILLES, DQD).",
+   "heuristicas": [
+    "vocabularios-estandarizados-omop",
+    "proceso-etl-cdm",
+    "calidad-datos-kahn"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "concept_id; estándar (SNOMED/RxNorm/LOINC) vs fuente (ICD/NDC) con 'Maps to'",
+    "CONCEPT_ANCESTOR/jerarquías: un concepto + todos sus descendientes en cohortes",
+    "ETL: estructura al CDM + códigos a estándar (WhiteRabbit/Rabbit-in-a-Hat/Usagi); nunca perfecto",
+    "Calidad (Kahn): conformance/completeness/plausibility × verification/validation",
+    "ACHILLES describe/alerta; DataQualityDashboard ejecuta los chequeos sistemáticos"
+   ],
+   "banco": [
+    {
+     "id": "arh12-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los Vocabularios Estandarizados de OMOP?",
+     "solucion": "Son el conjunto integrado de terminologías médicas (SNOMED, RxNorm, LOINC, ICD, CPT, NDC, etc.) que OHDSI distribuye, donde cada término es un CONCEPTO con un CONCEPT_ID único. Definen qué conceptos son ESTÁNDAR (la representación canónica de cada idea clínica) y proveen las relaciones para mapear los demás. Dan la estandarización SEMÁNTICA que, junto con el CDM, permite análisis uniformes a través de bases con sistemas de codificación distintos.",
+     "explicacion": "Es una 'tabla de conceptos' unificada con un id por idea clínica y relaciones entre terminologías."
+    },
+    {
+     "id": "arh12-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es la diferencia entre un concepto ESTÁNDAR y uno FUENTE (no estándar)?",
+     "solucion": "Un concepto ESTÁNDAR es la representación canónica ÚNICA de una idea clínica en su dominio (p. ej. condiciones en SNOMED, fármacos en RxNorm) y es el que se usa en los campos *_concept_id del CDM para análisis. Un concepto FUENTE/no estándar (ICD-10, NDC, CPT) es como venía en los datos originales; se conserva en los campos *_source_concept_id pero se MAPEA a un concepto estándar mediante la relación 'Maps to'. Así, códigos fuente distintos que significan lo mismo convergen al mismo estándar.",
+     "explicacion": "Estándar = canónico para analizar; fuente = original; 'Maps to' los conecta."
+    },
+    {
+     "id": "arh12-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un DOMINIO (domain) en los vocabularios y por qué importa?",
+     "solucion": "El dominio clasifica a qué TIPO de evento pertenece un concepto (Condition, Drug, Procedure, Measurement, Observation, etc.) y, por tanto, en qué TABLA del CDM debe ir. Importa porque la asignación de dominio determina dónde se almacena y consulta un dato: un mismo código fuente podría mapear a un concepto cuyo dominio dicta que va en condition_occurrence y no en observation. Respetar el dominio es esencial para que las consultas encuentren los datos donde deben estar.",
+     "explicacion": "El dominio enruta cada concepto a su tabla correcta del CDM."
+    },
+    {
+     "id": "arh12-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la tabla CONCEPT_ANCESTOR y para qué sirve en las definiciones de cohortes?",
+     "solucion": "CONCEPT_ANCESTOR codifica las relaciones JERÁRQUICAS entre conceptos (ancestro-descendiente). Permite, al definir un concept set, seleccionar un concepto de alto nivel e INCLUIR AUTOMÁTICAMENTE todos sus descendientes (p. ej. 'Diabetes mellitus' captura todos sus subtipos; un antihipertensivo captura toda su clase) sin enumerar cada código individual. Esto hace las definiciones más completas, mantenibles y portables.",
+     "explicacion": "La jerarquía permite 'este concepto y todos sus descendientes' con una sola selección."
+    },
+    {
+     "id": "arh12-q5",
+     "tipo": "concepto",
+     "enunciado": "¿En qué consiste el proceso de ETL hacia el CDM?",
+     "solucion": "Extract-Transform-Load: EXTRAER los datos de la fuente, TRANSFORMAR su estructura a las tablas del CDM y MAPEAR los códigos fuente a conceptos estándar, y CARGAR el resultado. Es un proyecto conjunto de expertos CLÍNICOS (interpretar el significado de los campos/códigos) y TÉCNICOS (implementar la transformación), con muchas decisiones documentadas. El ETL no es trivial ni perfecto: define la calidad de todo lo que viene después.",
+     "explicacion": "ETL = estructura al CDM + códigos a estándar; decisión clínica + técnica; cimiento del estudio."
+    },
+    {
+     "id": "arh12-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hacen WhiteRabbit, Rabbit-in-a-Hat y Usagi?",
+     "solucion": "WHITE RABBIT escanea y PERFILA la base fuente (qué tablas, campos, frecuencias de valores) para entenderla. RABBIT-IN-A-HAT toma ese escaneo y ayuda a DISEÑAR el documento de especificación del ETL (mapeo fuente→CDM). USAGI ayuda a MAPEAR los códigos fuente (no estándar) a CONCEPTOS ESTÁNDAR, sugiriendo correspondencias que un experto revisa. Juntos estructuran el proceso de ETL.",
+     "explicacion": "WhiteRabbit perfila, Rabbit-in-a-Hat diseña el ETL, Usagi mapea códigos a estándar."
+    },
+    {
+     "id": "arh12-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el ETL nunca es perfecto y qué implica?",
+     "solucion": "Porque los datos fuente son incompletos/ambiguos, los códigos no siempre tienen un mapeo estándar exacto, y muchas decisiones implican juicios clínicos (cómo interpretar un campo, qué dominio). Algo de información se pierde o se aproxima. Implica que el ETL debe DOCUMENTARSE cuidadosamente y someterse a CONTROL DE CALIDAD DE DATOS, y que los análisis deben asumir imperfecciones (de ahí la validación de fenotipos y la validez de método).",
+     "explicacion": "Mapeos imperfectos + decisiones clínicas = pérdida inevitable; por eso se documenta y se chequea calidad."
+    },
+    {
+     "id": "arh12-q8",
+     "tipo": "concepto",
+     "enunciado": "Describe el marco de KAHN para la calidad de datos.",
+     "solucion": "Clasifica la calidad en tres CATEGORÍAS — CONFORMANCE (¿los datos cumplen la estructura/formato/relaciones esperados del modelo?), COMPLETENESS (¿están presentes los datos que deberían?) y PLAUSIBILITY (¿los valores son creíbles: rangos, temporalidad, consistencia interna?) — cada una evaluada en dos CONTEXTOS: VERIFICATION (contra reglas internas/del propio modelo y metadatos) y VALIDATION (contra una referencia externa o el conocimiento del mundo real). Da un vocabulario sistemático para auditar una base CDM.",
+     "explicacion": "3 categorías (conformance/completeness/plausibility) × 2 contextos (verification/validation)."
+    },
+    {
+     "id": "arh12-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hacen ACHILLES y el Data Quality Dashboard (DQD)?",
+     "solucion": "ACHILLES genera una CARACTERIZACIÓN DESCRIPTIVA de la base (conteos, distribuciones, tendencias temporales) y alertas de posibles anomalías, útil para conocer la base y detectar problemas. El DATA QUALITY DASHBOARD (DQD) ejecuta SISTEMÁTICAMENTE miles de chequeos de calidad organizados según el marco de Kahn (conformance/completeness/plausibility), reportando cuáles pasan o fallan. Juntos operacionalizan la evaluación de la calidad de datos de una base CDM.",
+     "explicacion": "ACHILLES describe/alerta; DQD ejecuta los chequeos de Kahn de forma sistemática."
+    },
+    {
+     "id": "arh12-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la calidad de DATOS es condición necesaria para la calidad de la EVIDENCIA?",
+     "solucion": "Porque ningún método, por sofisticado que sea, puede compensar datos que no representan la realidad: si hay errores de conformance, datos faltantes o valores implausibles, las cohortes, estimaciones y predicciones heredan ese sesgo (garbage in, garbage out). La calidad de datos es el primer eslabón de la cadena de calidad de la evidencia (datos → clínica → software → método); evaluarla (DQD/ACHILLES) y juzgar la APTITUD PARA EL PROPÓSITO es prerrequisito de cualquier estudio creíble.",
+     "explicacion": "Datos malos sesgan todo aguas abajo; la calidad de datos es el primer eslabón de la evidencia."
+    },
+    {
+     "id": "arh12-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué diferencia hay entre VERIFICATION y VALIDATION en calidad de datos (Kahn)?",
+     "solucion": "VERIFICATION evalúa la calidad contra reglas INTERNAS: las especificaciones del modelo, los metadatos y restricciones esperadas (p. ej. que las fechas estén en rango válido, que las claves foráneas existan). VALIDATION evalúa contra una REFERENCIA EXTERNA o el conocimiento del mundo real (p. ej. ¿la prevalencia de diabetes en la base concuerda con la esperada en esa población?). La verificación dice 'consistente con el modelo'; la validación dice 'consistente con la realidad'.",
+     "explicacion": "Verification = vs el modelo/reglas internas; validation = vs el mundo real/referencia externa."
+    },
+    {
+     "id": "arh12-q12",
+     "tipo": "concepto",
+     "enunciado": "Da ejemplos de un problema de CONFORMANCE, uno de COMPLETENESS y uno de PLAUSIBILITY.",
+     "solucion": "CONFORMANCE: un valor de género que no está en el vocabulario permitido, o una clave que no referencia una fila existente (viola la estructura/relaciones del modelo). COMPLETENESS: ausencia total de registros de defunción cuando deberían existir, o un campo obligatorio vacío. PLAUSIBILITY: una fecha de evento ANTERIOR al nacimiento, una edad de 200 años o un valor de laboratorio fuera de todo rango fisiológico (valores increíbles o temporalmente imposibles).",
+     "explicacion": "Conformance=formato/estructura; completeness=falta lo que debería estar; plausibility=valores increíbles."
+    },
+    {
+     "id": "arh12-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué mapear a conceptos estándar (en vez de usar los códigos fuente) habilita los estudios en red?",
+     "solucion": "Porque cada base puede usar sistemas de codificación distintos (una ICD-9, otra ICD-10, otra SNOMED). Si todas MAPEAN sus códigos a los mismos conceptos ESTÁNDAR, una definición de cohorte escrita sobre conceptos estándar significa lo MISMO en todas las bases, y el mismo análisis produce resultados comparables. Sin ese mapeo semántico, un estudio en red compararía cosas distintas.",
+     "explicacion": "Solo el mapeo a conceptos estándar hace que 'la misma definición' signifique lo mismo en cada base."
+    },
+    {
+     "id": "arh12-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un CONCEPT SET y cómo se usa?",
+     "solucion": "Un concept set es un conjunto reutilizable de conceptos (con reglas como incluir descendientes, excluir ciertos conceptos, mapear desde fuente) que representa una idea clínica (p. ej. 'todos los inhibidores de la ECA' o 'diabetes tipo 2'). Se construye en ATLAS aprovechando las jerarquías (CONCEPT_ANCESTOR) y se usa como bloque de construcción de definiciones de cohortes y análisis, garantizando consistencia y portabilidad de la idea clínica.",
+     "explicacion": "Concept set = idea clínica reutilizable (conceptos + descendientes/exclusiones) para cohortes y consultas."
+    },
+    {
+     "id": "arh12-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué es importante distinguir 'dato ausente porque no ocurrió' de 'dato ausente porque no se observó'?",
+     "solucion": "Porque en datos observacionales la ausencia de un registro puede significar que el evento no ocurrió O que ocurrió pero fuera del periodo/sistema observado (p. ej. atención en otro proveedor). Confundirlos sesga la estimación de incidencia y de outcomes. El OBSERVATION_PERIOD y las reglas de completeness ayudan a delimitar cuándo se podía haber observado el evento, evitando interpretar 'no observado' como 'no ocurrió'.",
+     "explicacion": "Ausencia ≠ ausencia de evento; puede ser ausencia de observación (clave: observation_period)."
+    }
+   ]
+  },
+  {
+   "id": "arena-h13",
+   "bloque": "fase-7",
+   "orden": 105,
+   "titulo": "Arena OHDSI · Analítica estandarizada: cohortes, caracterización, estimación, predicción",
+   "libro": "The Book of OHDSI (Observational Health Data Sciences and Informatics community)",
+   "lectura": "data/teoria/arena-h13.md",
+   "dosis": 30,
+   "objetivo": "Los tres casos de uso con sus herramientas: definir cohortes/fenotipos (entry/inclusión/exit, rule-based vs probabilístico), caracterización descriptiva, estimación a nivel de población (cohort method + PS a gran escala, autocontrolados) y predicción a nivel de paciente (target/outcome/time-at-risk, AUC+calibración).",
+   "heuristicas": [
+    "definir-cohorte-fenotipo",
+    "caracterizacion-ohdsi",
+    "estimacion-nivel-poblacion-ohdsi",
+    "prediccion-nivel-paciente-plp"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Cohorte = personas que cumplen criterios por un tiempo (entry/inclusión/exit + concept sets)",
+    "Fenotipo: rule-based vs probabilístico; valídalo (sensibilidad/PPV) o sesga por misclasificación",
+    "Caracterización = descriptivo (base/cohorte/treatment pathways/incidencia)",
+    "Estimación: cohort method (new-user + PS a gran escala) vs autocontrolados (SCCS/case-crossover)",
+    "Predicción (PLP): target+outcome+time-at-risk; evalúa AUC (discriminación) y calibración"
+   ],
+   "banco": [
+    {
+     "id": "arh13-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo define OHDSI una COHORTE?",
+     "solucion": "Como 'un conjunto de personas que satisfacen uno o más criterios de inclusión durante un periodo de tiempo'. No es una simple lista: implica criterios de ENTRADA (qué evento inicia la pertenencia), reglas de INCLUSIÓN adicionales y criterios de SALIDA (cuándo deja de pertenecer). Una persona puede entrar a una cohorte una o varias veces. Es la unidad de construcción de exposiciones, outcomes y poblaciones de estudio.",
+     "explicacion": "Cohorte = personas que cumplen criterios por un tiempo, con entrada/inclusión/salida, no solo un filtro."
+    },
+    {
+     "id": "arh13-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son los tres componentes de una definición de cohorte?",
+     "solucion": "(1) EVENTOS DE ENTRADA (cohort entry): el evento que hace que la persona entre (p. ej. primera exposición a un fármaco). (2) REGLAS DE INCLUSIÓN: criterios adicionales que deben cumplirse (p. ej. ≥365 días de observación previa, cierta edad, ausencia de una condición). (3) CRITERIOS DE SALIDA (cohort exit): cuándo termina la pertenencia (fin de exposición, fin de observación, un evento). Definirlos con precisión determina a quién y por cuánto tiempo se estudia.",
+     "explicacion": "Entry + inclusión + exit; cada uno con concept sets y ventanas temporales."
+    },
+    {
+     "id": "arh13-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué diferencia hay entre una definición de cohorte BASADA EN REGLAS y una PROBABILÍSTICA?",
+     "solucion": "La BASADA EN REGLAS es determinista: lógica explícita de criterios (en ATLAS) que clasifica a cada persona como dentro o fuera; transparente y reproducible pero limitada por lo que se puede expresar en reglas. La PROBABILÍSTICA usa un MODELO que asigna a cada persona una PROBABILIDAD de tener la condición (a partir de muchas features), útil cuando una regla simple no captura bien el fenotipo; PheValuator emplea este enfoque para estimar la validez. Se eligen según el equilibrio entre transparencia y precisión.",
+     "explicacion": "Reglas = lógica determinista transparente; probabilística = modelo que da una probabilidad por persona."
+    },
+    {
+     "id": "arh13-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un FENOTIPO y por qué hay que validarlo?",
+     "solucion": "Un fenotipo es la DEFINICIÓN COMPUTABLE de una condición/característica clínica (la cohorte que pretende capturarla). Hay que validarlo porque una definición imperfecta introduce MISCLASIFICACIÓN (incluir no-casos o perder casos) que sesga todo el estudio. La validación mide SENSIBILIDAD (¿captura los casos reales?), ESPECIFICIDAD y VALOR PREDICTIVO POSITIVO (¿los capturados son casos reales?), revelando el trade-off entre una definición amplia (sensible) y una estricta (específica).",
+     "explicacion": "Fenotipo = definición computable; sin validar (sens/PPV) arrastra sesgo de misclasificación."
+    },
+    {
+     "id": "arh13-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la CARACTERIZACIÓN y qué niveles tiene?",
+     "solucion": "Es la analítica DESCRIPTIVA que responde '¿qué hay en los datos?'. Niveles: a NIVEL DE BASE DE DATOS (demografía, conteos, tendencias temporales — ACHILLES), a NIVEL DE COHORTE (covariables, comorbilidades, fármacos de quienes cumplen una definición), TREATMENT PATHWAYS (secuencias de tratamientos recibidos) y tasas de INCIDENCIA/prevalencia. No establece causas ni pronósticos: solo describe, y suele ser el primer paso para entender una base o cohorte.",
+     "explicacion": "Descriptivo: base / cohorte / pathways / incidencia; primer paso, no inferencia."
+    },
+    {
+     "id": "arh13-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los TREATMENT PATHWAYS?",
+     "solucion": "Son la caracterización de las SECUENCIAS de tratamiento que reciben los pacientes de una condición a lo largo del tiempo: qué fármaco/terapia usan primero, a cuál cambian, en qué orden y proporción. Revelan patrones de práctica clínica real (p. ej. qué porcentaje de hipertensos empieza con tiazida vs IECA y cómo escalan). Son descriptivos y útiles para entender el uso de tratamientos y comparar entre bases/países.",
+     "explicacion": "Secuencias reales de tratamiento por condición; muestran la práctica clínica observada."
+    },
+    {
+     "id": "arh13-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la ESTIMACIÓN A NIVEL DE POBLACIÓN y qué dos familias de diseño usa OHDSI?",
+     "solucion": "Es la estimación de EFECTOS CAUSALES de una exposición sobre un outcome en una población. Dos familias: (1) DISEÑOS DE COHORTE COMPARATIVA (cohort method): comparar nuevos usuarios de un tratamiento vs un comparador, ajustando confundidores con PROPENSITY SCORES (a gran escala, miles de covariables); (2) DISEÑOS AUTOCONTROLADOS (self-controlled): cada persona es su propio control, como el SELF-CONTROLLED CASE SERIES (SCCS) y el CASE-CROSSOVER, que eliminan el confundimiento FIJO entre personas. Cada uno tiene supuestos y diagnósticos propios.",
+     "explicacion": "Cohort method (comparación entre personas + PS) vs autocontrolados (comparación dentro de la persona)."
+    },
+    {
+     "id": "arh13-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ventaja tienen los diseños AUTOCONTROLADOS (p. ej. SCCS, case-crossover)?",
+     "solucion": "Que usan a cada individuo como su PROPIO control (comparan periodos expuestos vs no expuestos DENTRO de la misma persona), por lo que eliminan automáticamente el confundimiento por características FIJAS en el tiempo (genética, sexo, factores estables medidos o no), que no pueden variar dentro de la persona. A cambio, son sensibles a confundidores que VARÍAN en el tiempo y a tendencias temporales, y requieren que el outcome y la exposición tengan cierta estructura temporal.",
+     "explicacion": "Auto-control elimina confundidores fijos por diseño; vulnerable a los que cambian en el tiempo."
+    },
+    {
+     "id": "arh13-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los propensity scores 'a gran escala' en el cohort method de OHDSI?",
+     "solucion": "En lugar de elegir manualmente unos pocos confundidores, OHDSI ajusta un modelo de propensión usando MILES de covariables extraídas automáticamente del historial (condiciones, fármacos, procedimientos, demografía) mediante regresión regularizada (LASSO). Ese propensity score a gran escala se usa para emparejar/estratificar/ponderar y equilibrar los grupos en todas esas covariables medidas. La idea es maximizar el ajuste por confundimiento MEDIDO de forma sistemática y reproducible, evaluando luego el BALANCE logrado.",
+     "explicacion": "Miles de covariables + LASSO → PS que ajusta confundimiento medido de forma sistemática."
+    },
+    {
+     "id": "arh13-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la PREDICCIÓN A NIVEL DE PACIENTE (PLP) y en qué se diferencia de la estimación?",
+     "solucion": "La PLP construye modelos que PRONOSTICAN, para un individuo, la probabilidad de un OUTCOME futuro a partir de su historial; es PREDICCIÓN, no causalidad. Se diferencia de la estimación a nivel de población en la pregunta: la estimación busca el EFECTO causal de una intervención (¿qué pasa si trato?), mientras la predicción busca el RIESGO de un evento (¿quién lo tendrá?), sin asumir que las features predictoras sean causas. Una buena variable predictora puede no ser un factor causal y viceversa.",
+     "explicacion": "Predicción = pronóstico/riesgo (asociación útil); estimación = efecto causal. No confundir."
+    },
+    {
+     "id": "arh13-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se especifica un problema de PLP en el marco estandarizado?",
+     "solucion": "Con tres elementos: una COHORTE OBJETIVO (target: la población sobre la que se predice, p. ej. pacientes recién diagnosticados de X), una COHORTE DE OUTCOME (qué se predice, p. ej. readmisión), y una VENTANA DE TIEMPO EN RIESGO (time-at-risk: el periodo relativo al inicio en el que cuenta el outcome, p. ej. 1-365 días). Luego se extraen features del periodo previo, se ajusta el modelo y se evalúa. Esta estandarización hace las predicciones reproducibles y comparables.",
+     "explicacion": "Target + outcome + time-at-risk: la triple especificación estandarizada de un problema de predicción."
+    },
+    {
+     "id": "arh13-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se evalúa un modelo de predicción a nivel de paciente?",
+     "solucion": "Con dos dimensiones: DISCRIMINACIÓN — capacidad de separar quién tendrá el outcome de quién no, medida con el AUC/AUROC (1=perfecto, 0.5=azar); y CALIBRACIÓN — si las probabilidades predichas coinciden con las frecuencias observadas (p. ej. de aquellos a los que predijo 20%, ¿~20% tuvo el evento?), evaluada con gráficos de calibración. Se valida tanto INTERNAMENTE como EXTERNAMENTE (en otras bases de la red), porque un modelo puede discriminar bien pero estar mal calibrado, o no transportarse a otra población.",
+     "explicacion": "Discriminación (AUC) + calibración; validación interna y externa (otras bases)."
+    },
+    {
+     "id": "arh13-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué se usan MUCHAS covariables (miles) tanto en estimación como en predicción en OHDSI?",
+     "solucion": "Porque el historial clínico en el CDM permite extraer automáticamente miles de features (todas las condiciones, fármacos, procedimientos, etc. en ventanas de tiempo), y usarlas sistemáticamente —con regularización (LASSO) para evitar overfitting— hace el análisis REPRODUCIBLE y reduce la subjetividad de elegir variables a mano. En estimación sirve para ajustar confundidores medidos a gran escala; en predicción, para capturar señales predictivas. La regularización es clave para manejar la alta dimensión.",
+     "explicacion": "Features automáticas a gran escala + LASSO: reproducible y sistemático, no selección manual."
+    },
+    {
+     "id": "arh13-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué herramientas de OHDSI se usan para cada caso de uso analítico?",
+     "solucion": "Para CARACTERIZACIÓN y definición de cohortes: ATLAS (GUI) y ACHILLES. Para ESTIMACIÓN A NIVEL DE POBLACIÓN: paquetes de HADES como CohortMethod (cohorte comparativa), SelfControlledCaseSeries y CaseControl/CaseCrossover (autocontrolados), más EmpiricalCalibration. Para PREDICCIÓN A NIVEL DE PACIENTE: el paquete PatientLevelPrediction y FeatureExtraction. ATLAS puede diseñar muchos de estos análisis y generar el código que ejecutan los paquetes R.",
+     "explicacion": "ATLAS/ACHILLES (caracterización), CohortMethod/SCCS (estimación), PatientLevelPrediction (predicción)."
+    },
+    {
+     "id": "arh13-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué una buena variable PREDICTIVA no implica un factor CAUSAL (y al revés)?",
+     "solucion": "Porque la predicción explota cualquier ASOCIACIÓN estable con el outcome (incluida la creada por confundidores, marcadores o efectos del propio outcome), mientras que la causalidad requiere que intervenir sobre la variable CAMBIE el outcome. Una variable puede predecir muy bien sin ser causa (p. ej. un marcador de severidad), y una causa real puede predecir poco si es rara. Por eso no se deben interpretar los predictores de un modelo PLP como dianas de intervención.",
+     "explicacion": "Predecir usa asociación; causar exige que intervenir cambie el resultado. Son objetivos distintos."
+    }
+   ]
+  },
+  {
+   "id": "arena-h14",
+   "bloque": "fase-7",
+   "orden": 106,
+   "titulo": "Arena OHDSI · Calidad de la evidencia, validez de método y estudios en red",
+   "libro": "The Book of OHDSI (Observational Health Data Sciences and Informatics community)",
+   "lectura": "data/teoria/arena-h14.md",
+   "dosis": 30,
+   "objetivo": "Cómo se establece evidencia confiable: las 4 validez (datos/clínica/software/método), validación de fenotipos (PheValuator), validez de método con controles negativos y calibración empírica de p-valores/IC, diagnósticos de diseño y estudios en red reproducibles.",
+   "heuristicas": [
+    "validez-clinica-fenotipo",
+    "validez-de-metodo-controles-negativos",
+    "calibracion-empirica-pvalores",
+    "estudios-en-red-ohdsi"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Cuatro validez: datos, clínica (fenotipos), software, método",
+    "Validez clínica: sens/espec/PPV; source record verification + PheValuator",
+    "Controles negativos (RR esperado≈1) miden el sesgo sistemático del método",
+    "Calibración empírica ensancha IC / ajusta p con los negativos → menos falsos positivos",
+    "Estudios en red: mismo código en muchas bases, solo agregados salen (privacidad + escala)"
+   ],
+   "banco": [
+    {
+     "id": "arh14-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son los cuatro tipos de validez que componen la CALIDAD DE LA EVIDENCIA en OHDSI?",
+     "solucion": "(1) CALIDAD DE DATOS (¿son los datos aptos para el propósito?), (2) VALIDEZ CLÍNICA (¿las cohortes/fenotipos capturan los conceptos clínicos pretendidos y la evidencia generaliza?), (3) VALIDEZ DE SOFTWARE (¿el código de análisis hace lo que debe, está probado?), y (4) VALIDEZ DE MÉTODO (¿el diseño/método produce estimaciones sin sesgo sistemático en esta base?). La evidencia es creíble solo si las cuatro se sostienen; OHDSI provee herramientas para evaluar cada una.",
+     "explicacion": "Datos + clínica + software + método: las cuatro patas de la evidencia confiable."
+    },
+    {
+     "id": "arh14-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la VALIDEZ CLÍNICA y cómo se evalúa un fenotipo?",
+     "solucion": "La validez clínica pregunta si una definición de cohorte realmente representa la idea clínica pretendida (y si la evidencia generaliza a la población diana). Se evalúa midiendo la validez del fenotipo: SENSIBILIDAD, ESPECIFICIDAD y VALOR PREDICTIVO POSITIVO. Métodos: SOURCE RECORD VERIFICATION (revisión manual de historias clínicas reales contra la definición, el gold standard pero costoso) y PHEVALUATOR (estima las métricas con un gold standard probabilístico, escalable sin chart review masivo).",
+     "explicacion": "¿La cohorte = el concepto clínico? Mide sens/espec/PPV con source record verification o PheValuator."
+    },
+    {
+     "id": "arh14-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es PheValuator?",
+     "solucion": "PheValuator es una herramienta de OHDSI que estima la VALIDEZ de una definición de fenotipo (sensibilidad, especificidad, PPV) SIN requerir revisión manual masiva de historias. Construye un MODELO PROBABILÍSTICO de la condición (un 'xSpec' a partir de casos muy probables) que actúa como gold standard aproximado contra el cual evaluar la definición de cohorte. Permite validar fenotipos de forma escalable y reproducible a través de las bases de la red.",
+     "explicacion": "Gold standard probabilístico (modelo) para estimar sens/espec/PPV de un fenotipo sin chart review masivo."
+    },
+    {
+     "id": "arh14-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la VALIDEZ DE SOFTWARE y por qué importa en OHDSI?",
+     "solucion": "Es la garantía de que el CÓDIGO que ejecuta los análisis (las herramientas y paquetes) hace correctamente lo que pretende: sin bugs que distorsionen resultados. Importa porque toda la evidencia depende de software; un error en un paquete afectaría a TODOS los estudios que lo usan. OHDSI la aborda con un proceso de desarrollo open-source disciplinado: control de versiones, revisión de código, TESTS automatizados (unit/integration) y validación de la Methods Library.",
+     "explicacion": "El código bien probado evita que un bug contamine toda la evidencia generada con él."
+    },
+    {
+     "id": "arh14-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la VALIDEZ DE MÉTODO y cuál es su herramienta central?",
+     "solucion": "La validez de método evalúa si un DISEÑO/MÉTODO produce estimaciones sin SESGO SISTEMÁTICO en una base concreta (más allá del error aleatorio). Su herramienta central son los CONTROLES NEGATIVOS: pares exposición-outcome donde NO se espera efecto causal (verdadero RR≈1). Si el método estima efectos centrados en el nulo para ellos, da confianza; si se desvían sistemáticamente del 1, hay sesgo residual (confundimiento, selección, medición) que invalida o debe corregirse.",
+     "explicacion": "Mide el sesgo sistemático del método EN esa base, usando controles negativos como referencia."
+    },
+    {
+     "id": "arh14-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un CONTROL NEGATIVO y cómo se interpreta su resultado?",
+     "solucion": "Un control negativo es un par exposición-outcome elegido porque, según el conocimiento médico, NO existe relación causal (el efecto verdadero es nulo, RR≈1). Se corre el mismo análisis sobre muchos controles negativos: si el método es válido, sus estimaciones deberían DISTRIBUIRSE alrededor de RR=1 y sus intervalos cubrir el 1 al ~95%. Si en cambio se centran lejos de 1 o muchos IC excluyen el 1, se revela el ERROR SISTEMÁTICO del método en esa base, que luego se usa para calibrar.",
+     "explicacion": "RR esperado≈1; si las estimaciones no se centran en 1, hay sesgo sistemático medible."
+    },
+    {
+     "id": "arh14-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los CONTROLES POSITIVOS y para qué sirven?",
+     "solucion": "Son pares exposición-outcome con un efecto causal CONOCIDO (no nulo). Como es difícil conocer el efecto verdadero exacto en datos reales, OHDSI suele SINTETIZARLOS inyectando señales simuladas de magnitud conocida sobre controles negativos. Sirven para evaluar la POTENCIA y la calibración del método: ¿detecta efectos cuando los hay, y los estima sin sesgo de magnitud? Complementan a los negativos (que evalúan el error bajo el nulo).",
+     "explicacion": "Efecto conocido (a menudo sintético) para medir potencia/sesgo de magnitud; complementan a los negativos."
+    },
+    {
+     "id": "arh14-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la CALIBRACIÓN EMPÍRICA de p-valores e intervalos de confianza?",
+     "solucion": "Es ajustar los p-valores y los intervalos de confianza para que reflejen también el ERROR SISTEMÁTICO, no solo el aleatorio. Se usa la distribución de estimaciones de los CONTROLES NEGATIVOS (efecto verdadero≈null) para estimar la magnitud del sesgo/su variabilidad y, con ello, recalibrar: los p-valores calibrados son más conservadores y los intervalos CALIBRADOS más anchos. Así se corrige la sobreconfianza típica de los estudios observacionales y se reducen los falsos positivos.",
+     "explicacion": "Usa los negativos para medir el sesgo sistemático y ensanchar IC / ajustar p; menos falsos positivos."
+    },
+    {
+     "id": "arh14-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los p-valores e intervalos clásicos son insuficientes en estudios observacionales?",
+     "solucion": "Porque asumen que la ÚNICA fuente de error es el AZAR (varianza muestral), e ignoran el ERROR SISTEMÁTICO (confundimiento residual, sesgo de selección, misclasificación) que domina en datos observacionales. Por eso un IC nominal del 95% puede cubrir el valor verdadero MUCHO menos del 95% de las veces, generando exceso de hallazgos 'significativos' falsos. La calibración empírica corrige esto incorporando el sesgo estimado de los controles negativos.",
+     "explicacion": "Solo capturan el error aleatorio; el sistemático queda fuera, inflando los falsos positivos."
+    },
+    {
+     "id": "arh14-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué DIAGNÓSTICOS de estudio, además de los controles negativos, se usan en estimación?",
+     "solucion": "Diagnósticos específicos de diseño: para el cohort method, el BALANCE de covariables tras el ajuste por propensity score (las covariables deben quedar equilibradas entre grupos), el EQUIPOISE / distribución del preference score (¿hay solapamiento suficiente entre grupos? = positividad), y el MDRR (minimum detectable relative risk, ¿hay potencia?). Para diseños autocontrolados, chequeos de supuestos temporales. Estos diagnósticos deben PASAR antes de confiar en una estimación; si no, el resultado no se reporta como creíble.",
+     "explicacion": "Balance tras PS, equipoise/solapamiento, MDRR: deben pasar antes de creer el efecto."
+    },
+    {
+     "id": "arh14-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la OHDSI Methods Benchmark?",
+     "solucion": "Es un marco para EVALUAR y comparar el desempeño de los métodos de estimación usando un gran conjunto de controles (negativos reales y positivos sintéticos) en bases reales: mide métricas como el error sistemático, la cobertura de los intervalos (¿el IC del 95% cubre la verdad el 95% de las veces?), la AUC para distinguir efectos de no-efectos, etc. Permite elegir, para una pregunta y base dadas, el método con mejores propiedades operativas en vez de asumir que cualquiera sirve.",
+     "explicacion": "Banco de controles para medir empíricamente qué método tiene menos sesgo y mejor cobertura en cada contexto."
+    },
+    {
+     "id": "arh14-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un ESTUDIO EN RED de OHDSI y qué problema de privacidad resuelve?",
+     "solucion": "Es ejecutar el MISMO paquete de análisis estandarizado en MÚLTIPLES bases de datos de la red, cada una en su propio CDM, SIN compartir datos a nivel de paciente: solo los RESULTADOS AGREGADOS (estimaciones, diagnósticos) salen de cada institución y se combinan/meta-analizan centralmente. Resuelve la privacidad (los datos sensibles nunca abandonan su sitio) y a la vez logra escala y diversidad de poblaciones. Es el modelo de generación de evidencia a gran escala de OHDSI.",
+     "explicacion": "Mismo código en muchas bases; solo agregados viajan → privacidad + escala + reproducibilidad."
+    },
+    {
+     "id": "arh14-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hace creíble y reproducible a un estudio en red de OHDSI frente a un estudio observacional 'a medida'?",
+     "solucion": "Que usa DATOS estandarizados (CDM/vocabularios), MÉTODOS estandarizados y validados (HADES), un PROTOCOLO pre-especificado, DIAGNÓSTICOS compartidos (controles negativos, balance, calibración) y código ABIERTO que cualquiera puede inspeccionar y re-ejecutar. Frente a un estudio 'a medida' con decisiones ad hoc no documentadas (propenso al p-hacking y a la irreproducibilidad), el enfoque OHDSI hace transparentes los supuestos y permite replicar el resultado en otras bases.",
+     "explicacion": "Estandarización + pre-registro + diagnósticos abiertos = transparencia y replicabilidad."
+    },
+    {
+     "id": "arh14-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la generación de evidencia 'a gran escala' (p. ej. LEGEND) y por qué importa?",
+     "solucion": "Es producir evidencia para MUCHAS preguntas a la vez de forma sistemática (p. ej. todos los pares de tratamientos para una indicación) con el MISMO método riguroso, diagnósticos y calibración, en lugar de estudios aislados. LEGEND es un ejemplo (efectos de antihipertensivos). Importa porque contextualiza cada resultado entre miles, hace visibles los sesgos (vía controles negativos en masa) y combate el sesgo de publicación y el cherry-picking: se reportan TODOS los resultados, no solo los 'positivos'.",
+     "explicacion": "Responder muchas preguntas con un método uniforme y reportarlas todas combate cherry-picking y sesgo de publicación."
+    },
+    {
+     "id": "arh14-q15",
+     "tipo": "concepto",
+     "enunciado": "Resume la cadena completa de calidad que propone OHDSI para confiar en una estimación causal observacional.",
+     "solucion": "(1) DATOS aptos (DQD/ACHILLES, marco de Kahn). (2) FENOTIPOS validados (validez clínica: sens/espec/PPV, PheValuator). (3) SOFTWARE probado (validez de software). (4) DISEÑO con DIAGNÓSTICOS que pasen (balance tras PS, equipoise/positividad, MDRR). (5) VALIDEZ DE MÉTODO con CONTROLES NEGATIVOS y CALIBRACIÓN EMPÍRICA de p/IC. (6) Idealmente en un ESTUDIO EN RED pre-registrado y reproducible. Solo si toda la cadena se sostiene la estimación es creíble; cualquier eslabón débil la invalida.",
+     "explicacion": "Datos → fenotipo → software → diagnósticos de diseño → controles negativos/calibración → red reproducible."
     }
    ]
   }

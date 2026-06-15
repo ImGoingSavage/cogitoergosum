@@ -2311,3 +2311,50 @@ archivos). Contenido anclado en el libro (§1.2; TOC verificado: 3ª ed., 9 caps
 luego The Book of Why (epub — saltar si Read no abre), Causal Inference: The Mixtape
 (.txt en Biblioteca/). Después Sectores D (conductual) y C (problems.json). Próxima
 unidad: `arena-h11,h12…`; órdenes desde 103, `f7-ex-66`+, VERSION v51+.
+
+## Bitácora 2026-06-14 (Arena tanda 23) — The Book of OHDSI, 62 preguntas
+
+Procesado `The Book of OHDSI` (comunidad OHDSI, 5 partes, 20 caps., CC0) —
+libros[23] del ledger, ruta `health-ai-rwe`, cuota 25. Es la **capa operacional /
+de estandarización** de la RWE, valor NUEVO distinto de What If (teoría causal) y
+Survival (métodos): el ecosistema **OMOP/OHDSI a escala**. 4 unidades por las
+partes del libro (`fase-7`, órdenes 103-106):
+- **arena-h11** — comunidad + datos observacionales + **OMOP CDM** (Part I + ch8):
+  ciencia abierta, claims vs EHR, 3 casos de uso (caracterización/estimación/
+  predicción), CDM persona-céntrico (PERSON/OBSERVATION_PERIOD/eventos/era),
+  sintáctica vs semántica, ATLAS/HADES/EUNOMIA.
+- **arena-h12** — **vocabularios + ETL + calidad de datos** (ch3-6,15): concept_id
+  estándar (SNOMED/RxNorm/LOINC) vs fuente (ICD/NDC) con 'Maps to', dominios,
+  **CONCEPT_ANCESTOR**/concept sets, ETL (WhiteRabbit/Rabbit-in-a-Hat/Usagi),
+  **marco de Kahn** (conformance/completeness/plausibility × verification/validation),
+  ACHILLES + **DataQualityDashboard**.
+- **arena-h13** — **analítica estandarizada** (ch8-13): cohortes (entry/inclusión/
+  exit + concept sets, rule-based vs probabilístico), validación de **fenotipos**
+  (sens/espec/PPV), **caracterización** (pathways/incidencia), **estimación**
+  (cohort method + PS a gran escala vs autocontrolados SCCS/case-crossover),
+  **predicción PLP** (target+outcome+time-at-risk, AUC+calibración).
+- **arena-h14** — **calidad de evidencia + validez de método + red** (ch14,16-20):
+  4 validez (datos/clínica/software/método), **PheValuator**, **controles negativos**
+  (RR≈1) + positivos sintéticos, **calibración empírica** de p/IC (ensancha),
+  diagnósticos (balance/equipoise/MDRR), Methods Benchmark, **estudios en red**
+  (solo agregados salen), LEGEND.
+
+60 banco (15/unidad) + 2 examen (**f7-ex-66** validez de método: controles negativos
++ calibración empírica, **f7-ex-67** definir cohorte/fenotipo new-user + validación
++ portabilidad por conceptos estándar) = 62. 13 heurísticas nuevas
+(que-es-ohdsi-open-science, omop-common-data-model, vocabularios-estandarizados-omop,
+proceso-etl-cdm, calidad-datos-kahn, definir-cohorte-fenotipo, caracterizacion-ohdsi,
+estimacion-nivel-poblacion-ohdsi, prediccion-nivel-paciente-plp,
+validez-clinica-fenotipo, validez-de-metodo-controles-negativos,
+calibracion-empirica-pvalores, estudios-en-red-ohdsi). Catálogo total **205**
+heurísticas. `sw.js` **v51** (+4 lecciones `data/teoria/arena-h{11..14}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (106 unidades en `fase-7`, 67 ítems de examen); `verificar-shell.py` OK (191
+archivos). Contenido anclado en el libro (§1.2; TOC verificado: 5 partes, 20 caps.).
+
+**Siguiente** — orden §10 (health-ai-rwe): **The Book of Why** (Pearl & Mackenzie,
+libros[24], **EPUB** — saltar y anotar si Read no lo abre), luego **Causal
+Inference: The Mixtape** (Cunningham, libros[25], .txt en `Biblioteca/`). Después
+Sectores D (conductual) y C (problems.json). Próxima unidad: `arena-h15,h16…`;
+órdenes desde 107, `f7-ex-68`+, VERSION v52+.

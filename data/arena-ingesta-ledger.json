@@ -380,11 +380,16 @@
       "archivo": "Arena/Entrevista health  ai/TheBookOfOhdsi.pdf",
       "sector": "A",
       "ruta": "health-ai-rwe",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-h11",
+        "arena-h12",
+        "arena-h13",
+        "arena-h14"
+      ],
       "cuota_minima": 25,
-      "notas": ""
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. The Book of OHDSI (5 partes, 20 caps., CC0). CAPA OPERACIONAL/estandarización de RWE, valor NUEVO distinto de What If (teoría causal) y Survival (métodos): el ecosistema OMOP/OHDSI a escala. 4 unidades por las partes del libro: h11 comunidad + datos observacionales + OMOP CDM (Part I+III ch8: qué es OHDSI ciencia abierta, claims vs EHR, 3 casos de uso caracterización/estimación/predicción, OMOP CDM persona-céntrico, tablas PERSON/OBSERVATION_PERIOD/CONDITION-DRUG_OCCURRENCE/era, sintáctica vs semántica, ATLAS/HADES/EUNOMIA, escribir-una-vez-correr-en-todas), h12 vocabularios + ETL + calidad de datos (ch3-6,15: concept_id estándar SNOMED/RxNorm/LOINC vs fuente ICD/NDC con Maps to, dominios, CONCEPT_ANCESTOR/jerarquías, concept sets, ETL WhiteRabbit/Rabbit-in-a-Hat/Usagi nunca perfecto, marco de Kahn conformance/completeness/plausibility × verification/validation, ACHILLES + DataQualityDashboard, ausencia de evento vs de observación), h13 analítica estandarizada (ch8-13: cohorte=personas que cumplen criterios por un tiempo entry/inclusión/exit + concept sets, rule-based vs probabilístico, fenotipo y validación sens/espec/PPV, caracterización descriptiva base/cohorte/treatment pathways/incidencia, estimación cohort method new-user + PS a gran escala miles de covariables/LASSO vs autocontrolados SCCS/case-crossover, predicción PLP target+outcome+time-at-risk + AUC/calibración + validación externa, predictivo≠causal), h14 calidad de evidencia + validez de método + estudios en red (ch14,16-20: 4 validez datos/clínica/software/método, validez clínica PheValuator, validez de método CONTROLES NEGATIVOS RR≈1 miden sesgo sistemático + positivos sintéticos, CALIBRACIÓN EMPÍRICA de p/IC ensancha intervalos, diagnósticos balance/equipoise/MDRR, Methods Benchmark, estudios en red mismo código solo agregados salen privacidad+escala+reproducibilidad, LEGEND a gran escala). 60 banco (15/unidad) + 2 examen (f7-ex-66 validez de método controles negativos + calibración empírica, f7-ex-67 definir cohorte/fenotipo new-user + validación + portabilidad por conceptos estándar). Órdenes 103-106. 13 heurísticas nuevas (que-es-ohdsi-open-science, omop-common-data-model, vocabularios-estandarizados-omop, proceso-etl-cdm, calidad-datos-kahn, definir-cohorte-fenotipo, caracterizacion-ohdsi, estimacion-nivel-poblacion-ohdsi, prediccion-nivel-paciente-plp, validez-clinica-fenotipo, validez-de-metodo-controles-negativos, calibracion-empirica-pvalores, estudios-en-red-ohdsi). Catálogo total 205 heurísticas. VERSION v51 (191 archivos). Próximo libro §10 (health-ai-rwe): The Book of Why (Pearl & Mackenzie, EPUB — saltar si Read no lo abre y anotarlo), luego Causal Inference: The Mixtape (.txt en Biblioteca/)."
     },
     {
       "libro": "The Book of Why (Pearl & Mackenzie)",
