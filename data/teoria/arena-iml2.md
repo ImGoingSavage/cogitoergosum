@@ -35,6 +35,36 @@ Particiones recursivas (CART). **Interpretación:** sigue el camino raíz→hoja
 
 ---
 
+## Mini-ejemplo trabajado: leer un peso y un odds ratio
+
+**Lineal:** un modelo de precio de casa da β para `m²` = 1 500. Lectura: "manteniendo todo lo demás fijo, **cada m² extra** sube el precio predicho **1 500 €**". Para una categórica `barrio=centro` con β=20 000, es +20 000 € **respecto al barrio de referencia**. La importancia se mide con el **t-statistic** |β̂/SE(β̂)|, no con el tamaño crudo de β.
+
+**Logística:** un modelo de aprobación de crédito da β para `tiene_mora` = 0.69. No leas eso sobre la probabilidad, sino sobre los **odds**: el odds ratio es exp(0.69) ≈ **2.0** → tener mora **duplica los odds** de rechazo, ceteris paribus. exp(β)=1 sería sin efecto.
+
+**Predicción antes de seguir:** dos features muy correlacionadas (`m²` y `nº de habitaciones`). ¿Qué pasa con sus pesos? Se vuelven **inestables** (la multicolinealidad reparte el crédito de forma errática), y un cambio mínimo en los datos puede invertir los signos — la misma fragilidad de las *correlated features* de la deuda técnica.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (lineal interpretable):** relación aproximadamente lineal + features no colineales → el peso *es* el efecto por unidad.
+- **Contraejemplo (árbol para relación suave):** modelar una relación lineal/suave con un árbol → aproximación en escalera, fea e inestable.
+- **Caso borde (no linealidad con lectura por feature):** efecto curvo de la edad → un **GAM** (spline aditivo) captura la curva *sin* perder la lectura por feature, donde el lineal fallaría.
+
+## Errores típicos
+
+- **Conceptual:** interpretar el peso logístico como cambio en la **probabilidad** en vez de en los **log-odds** (usa exp(β) = odds ratio).
+- **Estadístico:** confiar en R² crudo (sube al añadir features) en vez del **R² ajustado**; ignorar la multicolinealidad.
+- **De modelo:** usar un lineal cuando hay interacciones sin añadir el término `xⱼ·xₖ` a mano.
+
+## Transferencia isomorfa
+
+- **Odds ratio exp(β) ↔ hazard ratio del Cox:** "exp del coeficiente = factor multiplicativo sobre odds/tasa" es la misma lectura que el HR=exp(β) de supervivencia (conecta con [[arena-h8]]).
+- **Multicolinealidad ↔ correlated features:** pesos inestables por features correlacionadas es el riesgo de brittleness de la deuda técnica y de atribuir a la feature no causal (conecta con [[arena-htd2]] y [[arena-h4]]).
+- **GAM aditivo ↔ separar efectos:** conservar la aditividad para leer el efecto de cada feature es el mismo espíritu que la linealidad de la esperanza descompone una suma (conecta con [[arena-q1]]).
+
+Moraleja de la arista: *el peso lineal es el efecto por unidad (ceteris paribus) y exp(β) el factor sobre odds/tasa; la correlación entre features vuelve esos pesos inestables — interpreta con cuidado.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

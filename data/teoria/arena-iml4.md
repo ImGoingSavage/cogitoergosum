@@ -25,6 +25,40 @@ Implementación moderna de los valores de Shapley con base teórica sólida (Lun
 
 ---
 
+## Mini-ejemplo trabajado: la "eficiencia" de Shapley, con números
+
+Un modelo predice el precio de una casa en **300 000 €**; la **predicción media** del dataset es **250 000 €**. La diferencia a explicar es **+50 000 €**. Los valores de Shapley reparten *exactamente* esos 50 000 € entre las features:
+
+- `m²` → +30 000
+- `barrio` → +25 000
+- `año de construcción` → −5 000
+
+Suma: 30 000 + 25 000 − 5 000 = **+50 000** = (300 000 − 250 000). Esa es la propiedad de **eficiencia**: las contribuciones suman *exactamente* la distancia entre la predicción y la media. Es el único método que cumple a la vez eficiencia, simetría, dummy (una feature sin efecto recibe 0) y aditividad → un reparto **justo y completo**. El coste exacto es exponencial (todas las coaliciones), así que se estima por muestreo; **SHAP** lo hace práctico (TreeSHAP exacto y rápido para árboles).
+
+**Predicción antes de seguir:** el banco te niega el crédito y quieres saber "¿qué cambio mínimo lo aprobaría?". ¿Shapley o contrafactual? **Contrafactual**: "si tu ingreso fuera +5k, te aprobarían" es contrastivo y **accionable** (recurso). Shapley te dice *cuánto pesó cada feature*, no *qué cambiar* — preguntas distintas.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (SHAP en árboles):** TreeSHAP da importancia local *y* global consistente, fundada en explicaciones locales sólidas.
+- **Contraejemplo (LIME inestable):** dos corridas de LIME sobre la misma instancia dan explicaciones distintas → la vecindad/kernel arbitrario lo vuelve frágil.
+- **Caso borde (ejemplo adversarial):** un contrafactual que cambia 1 píxel y voltea la clase sin que el humano note diferencia → el mismo mecanismo, ahora como riesgo de seguridad.
+
+## Errores típicos
+
+- **Conceptual:** creer que los valores de Shapley dan un **modelo** de predicción (no; LIME sí ajusta un lineal local, Shapley solo atribuye).
+- **Técnico:** usar LIME y reportar una sola corrida sin notar su inestabilidad.
+- **De elección:** pedir "qué cambiar" y entregar atribuciones (Shapley/SHAP) en vez de un **contrafactual**.
+
+## Transferencia isomorfa
+
+- **Contrafactual ↔ PN / but-for / explicación contrastiva:** "el cambio mínimo que voltea la decisión" es el contrafactual causal de Pearl y la probabilidad de necesidad legal (conecta con [[arena-h18]] y [[arena-iml1]]).
+- **Eficiencia de Shapley ↔ descomposición aditiva exacta:** repartir un total entre contribuyentes que suman el total es la misma idea de descomponer una esperanza en sumandos (conecta con [[arena-q1]], linealidad e indicadores).
+- **Instancias influyentes ↔ ¿qué datos causaron esto?:** rastrear qué puntos de entrenamiento moldearon una predicción (influence functions) es depuración causal de datos, pariente del leave-one-out (conecta con [[arena-htd2]]).
+
+Moraleja de la arista: *SHAP reparte la predicción de forma justa y completa (suma exacta a ŷ−media); pero si la pregunta es "¿qué cambiar?", la respuesta es un contrafactual, no una atribución.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

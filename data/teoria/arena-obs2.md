@@ -35,6 +35,41 @@ La IA solo ayuda si existen patrones **estables**; en entornos que cambian rápi
 
 ---
 
+## Mini-ejemplo trabajado: el Core Analysis Loop en acción
+
+Alerta: "el p99 de `/checkout` subió a 4 s". No sabes la causa. Aplicas el loop sin asumir nada:
+
+1. **¿Qué entiendes?** Checkout lento desde las 15:00.
+2. **Anomalía:** la curva de latencia de checkout salta a las 15:00.
+3. **Dimensiones comunes:** agrupas los eventos *lentos* por cada dimensión y comparas su distribución contra el baseline. Una herramienta tipo *BubbleUp* lo automatiza: `availability_zone=us-east-1a` aparece en el **98%** del área anómala pero solo en el **17%** del baseline. Sospechoso.
+4. **¿Sabes ya?** Casi. Aíslas a esa zona y repites: dentro de `us-east-1a`, `build_id=4521` cubre el 100% de lo lento → un deploy a esa zona es la causa.
+
+Esto es **fuerza bruta sobre todas las dimensiones**, posible porque guardaste eventos anchos de alta cardinalidad (no métricas preagregadas). El humano da el *significado* ("ese build hay que revertirlo"); la máquina solo surfaceó la correlación.
+
+**Predicción antes de seguir:** un vendedor promete que "AIOps detecta esto solo". ¿Confías? Solo si hay patrones **estables**; si cada deploy es una anomalía nueva, el baseline está mal dibujado y la IA hace ruido o silencio. Humano + máquina, no máquina sola.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (evento ancho):** un mapa de 300-400 dimensiones por petición → puedes trocear por cualquier campo después, sin haberlo anticipado.
+- **Contraejemplo (runbook exhaustivo):** intentar listar de antemano toda causa posible → se vuelve obsoleto y peligroso; la instrumentación *es* la documentación.
+- **Caso borde (span huérfano):** un span sin `Parent ID` que no es root → traza rota; la propagación del `Trace ID` por cabecera debe ser íntegra.
+
+## Errores típicos
+
+- **Conceptual:** usar la métrica preagregada o el log suelto como bloque base, en vez del **evento ancho** (una unidad de trabajo).
+- **Técnico:** instrumentar con una librería propietaria que ata a un proveedor en vez de **OpenTelemetry** (instrumentar una vez).
+- **De diagnóstico:** saltar por intuición/"scar tissue" en vez del loop científico → no escala con la complejidad.
+
+## Transferencia isomorfa
+
+- **Core Analysis Loop ↔ análisis exploratorio / GROUP BY:** anomalía → agrupar por dimensiones → aislar → repetir es EDA puro sobre datos de producción (conecta con [[arena-obs1]] y [[arena-m2]]).
+- **Depurar desde primeros principios ↔ método hipotético-deductivo:** el loop es el mismo troubleshooting científico del SRE (conecta con [[arena-sre3]]).
+- **Traza distribuida ↔ seguir una entidad por un pipeline:** el `Trace ID` propagado es como una clave que casa eventos de una misma petición a través de servicios (conecta con [[arena-mldp3]], keyed predictions).
+
+Moraleja de la arista: *guarda eventos anchos y depura con el loop científico (anomalía→agrupar→aislar→repetir); la máquina surfacea, el humano significa.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

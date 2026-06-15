@@ -38,6 +38,38 @@ La observabilidad es **socio-técnica** (herramienta + cultura). El OMM mide cin
 
 ---
 
+## Mini-ejemplo trabajado: por qué una TSDB explota con `user_id`
+
+Una TSDB (Prometheus, etc.) amortiza el coste **reusando series de tiempo**: cada combinación única de etiquetas es una serie. Mientras las etiquetas sean de **baja cardinalidad** (status=200/500, region=3 valores), hay pocas series y todo va barato.
+
+Indexa por `user_id` con 10 millones de usuarios y, de golpe, cada usuario crea **su propia serie** → 10M de series, el coste crece **lineal en eventos**: la **explosión de cardinalidad**. Por eso el almacén de observabilidad es **columnar híbrido particionado por tiempo**: lee solo las columnas de la consulta, y para observabilidad *que el resultado llegue rápido importa más que sea perfecto*.
+
+Y para no transmitir el 100%: **muestreo** que conserva la forma. Constante (1 de cada N) falla con errores raros; mejor **por clave** (errores > éxitos, clientes de pago > free) y, en trazas, **consistente** (mismo `trace ID` decide la traza **entera o nada**, nunca un hijo huérfano). Clave: **graba la sample rate dentro del evento** para reconstruir bien.
+
+**Predicción antes de seguir:** muestreas head-based (decides al iniciar la traza) pero te importan solo los errores. ¿Problema? Head-based no conoce el resultado aún → no puedes quedarte "solo con los errores"; eso exige **tail-based** (decides al final, pero bufferizas todo → caro).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (columnar particionado):** segmentos por tiempo + archivo por columna → consulta arbitraria barata, frescura en segundos.
+- **Contraejemplo (TSDB para alta cardinalidad):** indexar `user_id`/`request_id` en una TSDB → explosión de series; herramienta equivocada.
+- **Caso borde (impaciencia):** si el 90% de las subconsultas terminó, reintenta el 10% lento en vez de esperar → "rápido > perfecto" llevado a la ejecución.
+
+## Errores típicos
+
+- **Conceptual:** tratar la observabilidad como puramente técnica; el OMM es **socio-técnico** (herramienta + cultura).
+- **Técnico:** muestreo por probabilidad constante cuando importan los eventos raros → los pierdes.
+- **De integridad:** muestrear spans de forma inconsistente → trazas rotas; usa un trace ID propagado (entera o nada).
+
+## Transferencia isomorfa
+
+- **Explosión de cardinalidad ↔ granularidad de un índice/GROUP BY:** el coste de indexar alta cardinalidad es el mismo dilema que bajar el grano de una agregación (conecta con [[arena-obs1]] y [[arena-m2]]).
+- **Almacén columnar ↔ OLAP / formatos column-store:** leer solo las columnas de la consulta es exactamente Parquet/columnar de un data warehouse (conecta con [[arena-sd3]]).
+- **Muestreo que conserva cardinalidad ↔ muestreo representativo vs agregación:** guardar el evento con su sample rate es como un muestreo ponderado que permite reconstruir la población (conecta con [[arena-pst2]], bootstrap/muestreo).
+
+Moraleja de la arista: *la alta cardinalidad hunde a la TSDB; usa columnar particionado por tiempo y muestreo por clave/consistente con la sample rate grabada — rápido y representativo gana a exhaustivo y caro.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

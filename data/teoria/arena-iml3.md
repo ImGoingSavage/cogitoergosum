@@ -28,6 +28,38 @@ Entrena un **modelo interpretable** (árbol, lineal) para **imitar las prediccio
 
 ---
 
+## Mini-ejemplo trabajado: la trampa de independencia del PDP
+
+Quieres el efecto marginal del `peso corporal` sobre un riesgo predicho. El PDP **fija** peso = 50 kg en *todas* las personas, promedia las predicciones, y repite para cada valor. Problema: al fijar peso=50 kg en una persona de **2 m de altura**, creas una combinación **imposible** (altura y peso correlacionan) y le pides al modelo que prediga en una región donde nunca vio datos → la curva PDP se contamina con extrapolaciones absurdas.
+
+La cura es **ALE**: divide el peso en ventanas (cuantiles) y, *dentro de cada ventana*, mide cuánto cambia la predicción al mover el peso de un extremo al otro **usando solo personas reales de esa ventana**; luego acumula. Nunca inventa combinaciones imposibles → no sesgado por correlación.
+
+Además el PDP **oculta heterogeneidad**: si en la mitad de la gente el efecto es +k y en la otra −k, la curva promedio sale **plana** (engañosa). **ICE** (una línea por persona) lo revela: líneas no paralelas = interacción.
+
+**Predicción antes de seguir:** calculas importancia por permutación barajando una feature. ¿Sobre train o test? **Test**: en train, una feature memorizada por overfitting parece importante aunque no generalice; el test mide cuánto importa para *generalizar*.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (ALE):** features correlacionadas → efectos locales acumulados sobre instancias reales, centrado en 0.
+- **Contraejemplo (PDP bajo correlación):** usar PDP con features muy correlacionadas → combinaciones imposibles y curva sesgada.
+- **Caso borde (permutación con correlated features):** dos features correlacionadas se **reparten** la importancia (cada una parece menos importante) — no concluyas "ninguna importa".
+
+## Errores típicos
+
+- **Conceptual:** confiar en el PDP cuando hay correlación (supone independencia) o cuando hay heterogeneidad (la curva plana engaña).
+- **De evaluación:** medir importancia por permutación en **train** en vez de **test**.
+- **De interpretación:** leer una curva PDP plana como "sin efecto" cuando ICE mostraría efectos que se cancelan.
+
+## Transferencia isomorfa
+
+- **Independencia del PDP ↔ positividad/overlap causal:** fijar una feature a valores sin soporte real es el mismo pecado que evaluar un efecto causal donde no hay overlap (conecta con [[arena-h3]], positividad).
+- **Permutación en test, no train ↔ generalización:** medir importancia donde el modelo *no* memorizó es la misma lógica de evaluar fuera de muestra (conecta con [[arena-isl3]], remuestreo).
+- **Correlated features reparten importancia ↔ confundimiento/colinealidad:** atribuir mal entre features correlacionadas es el problema causal de distinguir el predictor real (conecta con [[arena-h4]]).
+
+Moraleja de la arista: *al perturbar una feature no inventes combinaciones imposibles (ALE > PDP bajo correlación), mide importancia en test, y desconfía de la curva promedio que esconde heterogeneidad.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

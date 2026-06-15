@@ -31,6 +31,39 @@ Las burn alerts predictivas funcionan mejor para SLOs ≤ 99.95%.
 
 ---
 
+## Mini-ejemplo trabajado: burn alert antes de quedarte sin budget
+
+SLO = **99.9%** sobre ventana deslizante de 30 días. El error budget es 0.1% del tráfico. A las 02:00 un brownout por fuga de memoria empieza a quemar budget **10× más rápido** de lo normal.
+
+- Una alerta de **umbral no-cero** ("avisa con < 30% de budget") saltaría… cuando ya quemaste el 70%: tarde, y te deja en feature-freeze.
+- Una **burn alert predictiva** extrapola el ritmo actual: "a esta velocidad, el budget de 30 días se agota en **6 horas**". Con un *lookahead* de 6 h y un *baseline* del mismo orden, te pagina **ahora**, mientras hay margen para revertir.
+
+Esto es exactamente lo que el monitoreo tradicional de umbral de CPU **nunca** habría visto (caso real Honeycomb 2019): la CPU se veía normal, pero la *experiencia del usuario* (el síntoma) se degradaba.
+
+**Predicción antes de seguir:** ¿por qué medir el SLO sobre ventana **deslizante** de 30 días y no por mes calendario? Porque las emociones del cliente no se "resetean" el día 1; un incidente el 31 importa igual que el 1.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (alerta sana):** SLI por eventos sobre un journey crítico → alerta por **síntoma de dolor del usuario**, accionable.
+- **Contraejemplo (alerta de causa):** "CPU > 80%" → mil causas posibles, casi siempre falso positivo → fatiga de alertas (normalización de la desviación, Challenger).
+- **Caso borde (auto-remediado):** un failover/autoscaling que se resolvió solo **no** debe despertar a nadie de madrugada.
+
+## Errores típicos
+
+- **Conceptual:** alertar por **causa potencial** en vez de por **síntoma**; el "qué" (dolor del usuario) debe desacoplarse del "por qué".
+- **De medición:** SLI **por tiempo** ("p99 < 300 ms cada 5 min") en vez de **por eventos** (proporción de eventos buenos) → falsos positivos/negativos.
+- **De ventana:** baseline de la burn alert demasiado corto vs el lookahead → predicción inestable (deben ser del mismo orden).
+
+## Transferencia isomorfa
+
+- **Error budget = 1 − SLO ↔ presupuesto de riesgo:** es el mismo arbitraje velocidad/estabilidad del SRE clásico (conecta con [[arena-sre1]]).
+- **Burn alert predictiva ↔ forecasting / detección temprana:** extrapolar el ritmo para actuar antes del agotamiento es un pronóstico con lookahead, como prever drift antes de que pegue (conecta con [[arena-dmls4]]).
+- **Normalización de la desviación ↔ fatiga de alertas tóxica:** desensibilizarse ante señales repetidas es un fallo socio-técnico, no técnico (conecta con [[arena-sre3]], postmortems sin culpa).
+
+Moraleja de la arista: *alerta por el síntoma del usuario vía SLO, gobierna releases con el error budget, y avisa antes de agotarlo con una burn alert predictiva sobre ventana deslizante.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
