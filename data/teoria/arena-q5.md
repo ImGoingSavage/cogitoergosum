@@ -1,144 +1,88 @@
-# Derivadas y mercados · No-arbitraje y Black-Scholes
+# Derivadas y mercados · No-arbitraje y Black–Scholes
 
-## Put-call parity — el resultado más importante
+## De qué trata (y qué sabrás hacer)
 
-**C − P = S − K·e^(−rT)**
+Casi toda la valoración de derivados sale de **una** idea: el **no-arbitraje**. Si dos carteras pagan exactamente lo mismo en todos los estados futuros, deben costar lo mismo hoy; si no, hay dinero gratis. De ahí salen la paridad put-call, el precio de una opción, y el hecho contraintuitivo de que el optimismo sobre el activo **no** afecta el precio de la opción.
 
-Demostración por no-arbitraje:
+Al terminar sabrás derivar la paridad put-call por replicación, estimar el precio de una call ATM con una regla de dedo, y explicar por qué $\mu$ (el retorno esperado) desaparece de Black–Scholes. Cada idea se ancla en una cartera concreta.
 
-| Portfolio | Hoy | S(T) > K | S(T) ≤ K |
-|-----------|-----|----------|----------|
-| A: Long call + K·e^{-rT} en efectivo | C + K·e^{-rT} | S(T) | K |
-| B: Long put + Long acción | P + S | S(T) | K |
+---
 
-Ambos pagan max(S(T), K) → deben costar lo mismo hoy.
+## Paridad put-call — el resultado más importante
 
-Con r=0 y S=K (ATM): **C = P** siempre. El upside ilimitado de la call ya está capturado en el precio de equilibrio.
+$$C-P=S-K\,e^{-rT}.$$
+
+Aquí $C,P$ son los precios de una call y una put con el mismo strike $K$ y vencimiento $T$, $S$ el precio del activo, y $r$ la tasa libre de riesgo. Se demuestra por **replicación**: compara dos carteras —(A) una call más $K\,e^{-rT}$ en efectivo; (B) una put más una acción—. Al vencimiento, **ambas** pagan $\max(S_T,K)$ en todos los estados. Como pagan igual siempre, cuestan igual hoy, y reordenando sale la paridad. Caso especial: con $r=0$ y $S=K$ (ATM), $C=P$ exactamente.
 
 ---
 
 ## Delta de una call ATM
 
-Δ = N(d₁) donde d₁ = [ln(S/K) + (r + σ²/2)T] / (σ√T).
+El **delta** $\Delta=\partial C/\partial S$ mide cuánto se mueve la opción cuando el activo se mueve \$1. Para una call at-the-money ($S=K$), $\Delta=N(d_1)$ con $d_1\approx0$, así que
 
-Para una call **ATM** (S=K): ln(S/K)=0 → d₁ = (r + σ²/2)·√T/σ ≈ 0 para tasas y vols moderadas.
+$$\Delta\approx 0.5.$$
 
-**Δ ≈ 0.5** para una call ATM.
-
-Intuición: hay ~50% de probabilidad de que la call venza in-the-money. Un aumento de \$1 en S mueve la call ~\$0.50. Cobertura: 1 call vendida ↔ 0.5 acciones compradas.
+Intuición: hay $\approx50\%$ de probabilidad de que la call venza in-the-money, y un aumento de \$1 en $S$ mueve la call $\approx$\$0.50. Cobertura: vender 1 call se cubre comprando $\approx0.5$ acciones. (Ojo: $\Delta$ es sensibilidad de precio, no exactamente la probabilidad de acabar ITM, que usa $N(d_2)$.)
 
 ---
 
-## Black-Scholes con σ = 0
+## Regla de dedo para una call ATM
 
-Si la volatilidad es cero, el activo crece deterministamente a S·e^(rT). Con S=K (ATM):
+Para $S=K$, $r\approx0$, vencimiento $T$ y volatilidad $\sigma$:
 
-- S(T) = S·e^(rT) > K con certeza → la call siempre expira in-the-money.
-- Payoff = S·e^(rT) − K; PV = S − K·e^(−rT).
-- **C = S − K·e^(−rT)** (igual que la parity con P=0).
-- **Δ = 1**: el delta hedge requiere 1 acción por call vendida.
+$$C\approx \frac{S\,\sigma\sqrt T}{\sqrt{2\pi}}\approx 0.4\,S\,\sigma\sqrt T.$$
 
-Para S=K=\$100, r=5%, T=1: C = 100 − 100·e^{-0.05} ≈ **\$4.88**.
+Para $S=$\$100, $\sigma=10\%$, $T=1$ año: $C\approx0.4\times100\times0.1=$\$4. El valor de una opción ATM es esencialmente **tiempo × volatilidad**: sin volatilidad ($\sigma=0$) la call ATM se vuelve un forward y vale $S-K\,e^{-rT}$ con $\Delta=1$.
 
 ---
 
-## Theta y Gamma — el intercambio tiempo/convexidad
+## Por qué $\mu$ no aparece en Black–Scholes
 
-De la ecuación de B-S:
+¿Por qué el retorno esperado del activo ($\mu$) no entra en el precio de la opción? Porque un portafolio **delta-hedgeado** (long opción, short $\Delta$ acciones) no tiene riesgo en el instante $dt$. Por no-arbitraje, algo sin riesgo debe rendir exactamente $r$; al escribir esa condición y derivar la EDP de Black–Scholes, el término $\mu$ **se cancela**.
 
-**Θ + ½σ²S²Γ + rSΔ − rC = 0**
-
-Long gamma (Γ>0): el portafolio gana con movimientos grandes (convexidad). Costo: Θ<0 (pierdes valor por el paso del tiempo).
-
-Short gamma: cobras tiempo (Θ>0) pero pierdes si el mercado se mueve mucho.
-
-**Theta y gamma tienen signo opuesto** para opciones vainilla (con r pequeño o derivada sin dividendos). La ecuación de B-S fuerza este balance.
+Consecuencia: dos traders, uno alcista y uno bajista (distinto $\mu$), le ponen **el mismo** precio a la opción dado $S,K,r,\sigma,T$. Lo que cobras no es tu opinión sobre la dirección, sino tu exposición a la **magnitud** (la volatilidad).
 
 ---
 
-## Precio de call ATM — regla de dedo
+## Theta y gamma — el intercambio tiempo/convexidad
 
-Para S=K, r≈0, madurez T, volatilidad σ:
-
-**C ≈ S·σ·√T / √(2π) ≈ 0.4·S·σ·√T**
-
-Para S=\$100, σ=10%, T=1 año: C ≈ 0.4×100×0.1 = **\$4** (≈\$3.99 exacto).
-
-Las tres anclas: \$1 (demasiado bajo para σ=10%), **\$5** (la respuesta correcta de orden de magnitud), \$10 (sería σ≈25%).
+La EDP de Black–Scholes amarra los Greeks: $\Theta+\tfrac12\sigma^2 S^2\Gamma+rS\Delta-rC=0$. La lectura práctica: **theta y gamma tienen signo opuesto** en opciones vainilla. Si eres long gamma ($\Gamma>0$, ganas con movimientos grandes), pagas con theta negativo (pierdes valor por el paso del tiempo). No puedes tener ambos a tu favor: la convexidad se paga con carry.
 
 ---
 
-## Tasa libre de riesgo en Black-Scholes
+## Regla $\sqrt T$ — escalar volatilidad en el tiempo
 
-¿Por qué no aparece μ (retorno esperado del activo)?
+Para retornos i.i.d. (sin autocorrelación), las varianzas de los incrementos se suman, así que la desviación estándar escala con la raíz del horizonte:
 
-El portafolio delta-hedgeado (long opción + short Δ acciones) tiene riesgo cero en el instante dt. Por no-arbitraje, debe rendir exactamente r. Al derivar la EDP de B-S, el término μ se cancela.
+$$\sigma(T\text{ años})=\sigma(1\text{ año})\times\sqrt T.$$
 
-Consecuencia: el precio de una opción **no depende de lo optimistas o pesimistas** que seamos sobre el activo. Dos traders con μ distintos le asignan el mismo precio a la opción (dado S, K, r, σ, T).
-
----
-
-## Regla √T — escalar volatilidad en el tiempo
-
-Para retornos i.i.d. sin autocorrelación:
-
-**σ(T años) = σ(1 año) × √T**
-
-Base: Var(r₁+r₂+…+rT) = T·Var(r) para i.i.d. → SD escala con √T.
-
-Para σ=10% anual: σ(4 años) = 10%×2 = **20%**; σ(1 mes) = 10%/√12 ≈ 2.89%.
-
-Límite: no vale con reversión a la media (la volatilidad de largo plazo crece más lento que √T).
+Para $\sigma=10\%$ anual: $\sigma(4\text{ años})=20\%$; $\sigma(1\text{ mes})\approx2.89\%$. **No** vale con reversión a la media (crece más lento) ni con momentum (más rápido). Es la misma raíz que el error estándar $\sigma/\sqrt n$ (conecta con [[arena-q6]]).
 
 ---
 
-## Estructura temporal — tasa forward
+## Mini-ejemplo trabajado: parity con números, y por qué $\mu$ desaparece
 
-La tasa forward del período [T₁, T₂] satisface:
+$S=100$, $K=100$, $r=0$, $T=1$. La paridad put-call dice $C-P=S-K\,e^{-rT}=100-100=0$, así que $C=P$ exactamente, **sin saber** $\sigma$ ni la dirección esperada del activo. Compra una call y vende una put (ambas strike 100): el payoff combinado es $S_T-100$ en *todo* estado — replicas un forward. Si $C\ne P$ con $r=0$, ese forward sintético cotizaría distinto de cero y habría arbitraje.
 
-(1+r₂)^T₂ = (1+r₁)^T₁ × (1+f)^(T₂−T₁)
-
-Para r₅=10%, r₁₀=15%: f₅→₁₀ = [(1.15)^10/(1.10)^5]^(1/5) − 1 ≈ **20.23%**.
-
-Aproximación lineal: f ≈ (r₂·T₂ − r₁·T₁)/(T₂−T₁) = (15%×10 − 10%×5)/5 = **20%**. Subestima el exacto por efecto de composición.
-
----
-
-## Paradoja de San Petersburgo
-
-E[payoff] = Σₖ 2^k·(1/2)^k = Σ1 = **∞**. Pero nadie paga ∞.
-
-Resolución de Bernoulli: utilidad logarítmica → E[log(W+payoff)] < ∞.
-
-Lección: valor esperado ≠ precio justo cuando la distribución tiene colas muy pesadas o el bankroll es finito.
-
----
-
-## Mini-ejemplo trabajado: parity con números, y por qué μ desaparece
-
-S=100, K=100, r=0, T=1. Put-call parity dice C − P = S − K·e^(−rT) = 100 − 100 = 0, así que **C = P** exactamente, sin saber σ ni la dirección esperada del activo. Compra una call y vende una put (ambas strike 100): el payoff combinado es S(T) − 100 en *todo* estado — replicas un forward. Si C ≠ P con r=0, ese forward sintético cotizaría distinto de cero y habría arbitraje.
-
-**Predicción antes de seguir:** dos traders, uno alcista (μ alto) y uno bajista (μ bajo), ¿le ponen precios distintos a la call? Respuesta: **no**. El portafolio delta-hedgeado (long call − Δ acciones) no tiene riesgo en dt, así que por no-arbitraje rinde r, y al derivar la EDP de Black-Scholes el término μ se cancela. El precio depende de σ, no del optimismo. *Lo que cobras no es tu opinión sobre la dirección, sino tu exposición a la magnitud.*
+**Predicción antes de seguir:** dos traders, uno alcista ($\mu$ alto) y uno bajista ($\mu$ bajo), ¿le ponen precios distintos a la call? Respuesta: **no**. El portafolio delta-hedgeado (long call $-\,\Delta$ acciones) no tiene riesgo en $dt$, así que por no-arbitraje rinde $r$, y al derivar la EDP de Black–Scholes el término $\mu$ se cancela. El precio depende de $\sigma$, no del optimismo. *Lo que cobras no es tu opinión sobre la dirección, sino tu exposición a la magnitud.*
 
 ## Prototipo, contraejemplo y caso borde
 
-- **Prototipo:** dos carteras con idéntico payoff en todos los estados → mismo precio hoy (toda la put-call parity sale de aquí).
-- **Contraejemplo (confundir Δ con probabilidad):** Δ = N(d₁) ≈ 0.5 para una ATM se lee mal como "50% de acabar ITM". La probabilidad real (medida física) usa N(d₂), no N(d₁); coinciden solo aproximadamente. Delta es sensibilidad de precio, no probabilidad.
-- **Caso borde (σ→0):** sin volatilidad la call ATM ya no vale ~0.4·S·σ·√T sino S − K·e^(−rT) con Δ=1: se vuelve un forward. El borde muestra que el valor "óptico" de la opción es puro tiempo×volatilidad.
+- **Prototipo:** dos carteras con idéntico payoff en todos los estados → mismo precio hoy (toda la paridad put-call sale de aquí).
+- **Contraejemplo (confundir $\Delta$ con probabilidad):** $\Delta=N(d_1)\approx0.5$ para una ATM se lee mal como "50% de acabar ITM". La probabilidad real usa $N(d_2)$, no $N(d_1)$; coinciden solo aproximadamente. Delta es sensibilidad de precio, no probabilidad.
+- **Caso borde ($\sigma\to0$):** sin volatilidad la call ATM ya no vale $\approx0.4\,S\,\sigma\sqrt T$ sino $S-K\,e^{-rT}$ con $\Delta=1$: se vuelve un forward. El borde muestra que el valor "óptico" de la opción es puro tiempo × volatilidad.
 
 ## Errores típicos
 
-- **Conceptual:** creer que un activo con mayor retorno esperado hace más cara la opción. No: μ no entra en B-S; entra σ.
-- **Técnico:** escalar volatilidad con √T cuando hay reversión a la media o momentum (la regla √T solo vale para retornos i.i.d.).
-- **De interpretación:** olvidar el signo opuesto Θ↔Γ; "soy long gamma y además quiero theta positivo" es imposible en vanilla (la EDP los amarra).
+- **Conceptual:** creer que un activo con mayor retorno esperado hace más cara la opción. No: $\mu$ no entra en B-S; entra $\sigma$.
+- **Técnico:** escalar volatilidad con $\sqrt T$ cuando hay reversión a la media o momentum (la regla $\sqrt T$ solo vale para retornos i.i.d.).
+- **De interpretación:** olvidar el signo opuesto $\Theta\leftrightarrow\Gamma$; "soy long gamma y además quiero theta positivo" es imposible en vainilla (la EDP los amarra).
 
 ## Transferencia isomorfa
 
-No-arbitraje y la corrección √T se transfieren más allá de las opciones:
-
-- **Delta-hedge cancela μ ↔ aleatorización borra el confundidor:** cubrir con Δ acciones elimina la dependencia de la dirección igual que un A/B test elimina la dependencia del confundidor; ambos aíslan el efecto "puro" cortando una flecha (conecta con [[arena-h17]], do(x) borra las flechas hacia X).
-- **Regla √T ↔ error estándar σ/√n:** la volatilidad escala con √T porque las varianzas de incrementos i.i.d. se suman — exactamente por qué el SE de la media decae como 1/√n (conecta con [[arena-q6]] y [[arena-q7]]).
-- **Replicación de payoff ↔ identificación causal:** "expresar un derivado con instrumentos cotizados" es estructuralmente "expresar P(Y|do(x)) con cantidades observables"; en ambos, si no se puede replicar/identificar, ningún dato lo salva.
+- **Delta-hedge cancela $\mu$ ↔ aleatorización borra el confundidor:** cubrir con $\Delta$ acciones elimina la dependencia de la dirección igual que un A/B test elimina la dependencia del confundidor; ambos aíslan el efecto "puro" cortando una flecha (conecta con [[arena-h17]], $do(x)$ borra las flechas hacia $X$).
+- **Regla $\sqrt T$ ↔ error estándar $\sigma/\sqrt n$:** la volatilidad escala con $\sqrt T$ porque las varianzas de incrementos i.i.d. se suman — exactamente por qué el SE de la media decae como $1/\sqrt n$ (conecta con [[arena-q6]] y [[arena-q7]]).
+- **Replicación de payoff ↔ identificación causal:** "expresar un derivado con instrumentos cotizados" es estructuralmente "expresar $P(Y\mid do(x))$ con cantidades observables"; en ambos, si no se puede replicar/identificar, ningún dato lo salva (conecta con [[arena-h5]]).
 
 Moraleja de la arista: *si dos cosas pagan igual en todos los estados, valen igual hoy; cubrir el riesgo direccional deja solo el precio de la incertidumbre.*
 
@@ -148,19 +92,18 @@ Moraleja de la arista: *si dos cosas pagan igual en todos los estados, valen igu
 
 | Señal | Jugada |
 |-------|--------|
-| "Call ATM con σ=0" | C = S − K·e^{-rT}; Δ=1 |
-| "Call vs put ATM, r=0" | C = P (put-call parity) |
-| "Break-even del straddle" | Strike ± prima total |
-| "Delta de call ATM" | ~0.5 (N(d₁) con d₁≈0) |
-| "Theta y gamma" | Opuesto siempre: Θ + ½σ²S²Γ = constante |
-| "Tasa forward implícita" | (1+r_largo)^T_largo/(1+r_corto)^T_corto = (1+f)^ΔT |
-| "¿Por qué r y no μ en B-S?" | Delta hedge → portafolio sin riesgo → debe rendir r |
-| "SD de retornos T años" | σ·√T (solo para i.i.d.) |
+| "Call ATM con $\sigma=0$" | $C=S-K\,e^{-rT}$; $\Delta=1$ |
+| "Call vs put ATM, $r=0$" | $C=P$ (paridad put-call) |
+| "Delta de call ATM" | $\approx0.5$ ($N(d_1)$ con $d_1\approx0$) |
+| "Theta y gamma" | Signo opuesto: $\Theta+\tfrac12\sigma^2S^2\Gamma=$ cte |
+| "Precio de call ATM (regla de dedo)" | $\approx0.4\,S\,\sigma\sqrt T$ |
+| "¿Por qué $r$ y no $\mu$ en B-S?" | Delta-hedge → cartera sin riesgo → rinde $r$ |
+| "SD de retornos $T$ años" | $\sigma\sqrt T$ (solo i.i.d.) |
 
 ---
 
-> **Síntesis:** No-arbitraje es la navaja de Occam de las finanzas cuantitativas: si dos posiciones tienen el mismo payoff en todos los estados, deben costar lo mismo hoy. Esa única idea genera put-call parity, el precio de la call con σ=0 y por qué μ no aparece en B-S.
+> **Síntesis:** El no-arbitraje es la navaja de Occam de las finanzas cuantitativas: si dos posiciones tienen el mismo payoff en todos los estados, cuestan lo mismo hoy. Esa única idea genera la paridad put-call, el precio de la call con $\sigma=0$ y por qué $\mu$ no aparece en Black–Scholes.
 
 ---
 
-*Retrieval: sin mirar, deriva la put-call parity con los dos portfolios; calcula el precio de una call ATM con σ=20%, S=K=100, r=0, T=1.*
+*Retrieval: sin mirar, deriva la paridad put-call con las dos carteras; calcula el precio aproximado de una call ATM con $\sigma=20\%$, $S=K=100$, $r=0$, $T=1$.*

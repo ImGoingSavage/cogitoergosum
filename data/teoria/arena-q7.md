@@ -1,205 +1,101 @@
 # Finanzas avanzadas · Bonos, Greeks y procesos estocásticos
 
+## De qué trata (y qué sabrás hacer)
+
+Tres mundos —bonos, opciones y acciones— que parecen distintos comparten un esqueleto: el precio de cualquier instrumento es **sensible** a su factor de riesgo, y esa sensibilidad es una **derivada**. La duración de un bono, el delta de una opción y la beta de una acción son la misma idea (primera derivada del precio); la convexidad y la gamma son la segunda. Y el mismo $\sigma^2/2$ que corrige el log-precio explica por qué la media de un precio supera a su mediana.
+
+Al terminar sabrás medir el riesgo de tasa de un bono (duración/convexidad), leer los Greeks de una opción, y manejar la distribución lognormal sin confundir media y mediana. Cada idea se ancla en un número.
+
+---
+
 ## Duración de un bono
 
-Duración de Macaulay = media ponderada del tiempo hasta cada flujo:
+La **duración** mide cuánto cae el precio de un bono cuando suben las tasas. La duración de Macaulay es el tiempo promedio de los flujos (ponderado por su valor presente); la **duración modificada** la convierte en sensibilidad porcentual:
 
-D = Σₜ [ t · VP(flujo_t) / Precio ]
+$$\frac{\Delta P}{P}\approx -D_{\text{mod}}\cdot\Delta y.$$
 
-donde VP(flujo_t) = flujo_t · e^{−yt} (o dividido por (1+y)^t en discreto).
-
-| Tipo de bono | Duración |
-|-------------|---------|
-| Cupón-cero, vencimiento T | D = T (exacto) |
-| Perpetuidad con tasa y | D = (1+y)/y |
-| Bono con cupón | D < T (los cupones intermedios ponderan el promedio hacia abajo) |
-
-**Duración modificada:** D_mod = D_Macaulay / (1+y)
-
-ΔP/P ≈ −D_mod · Δy
-
-Para D_mod = 6.5 y Δy = +0.50% = +0.005: ΔP/P ≈ −6.5 × 0.005 = −3.25%.
+Para $D_{\text{mod}}=6.5$ y $\Delta y=+0.50\%$: $\Delta P/P\approx-6.5\times0.005=-3.25\%$. Un cupón-cero a plazo $T$ tiene duración exactamente $T$; un bono con cupones tiene duración menor que $T$ (los cupones intermedios "adelantan" el promedio). La duración es, literalmente, la **elasticidad-precio respecto a la tasa**.
 
 ---
 
 ## Convexidad
 
-Corrección de segundo orden:
+La duración es la aproximación lineal; la **convexidad** $C$ es la corrección de segundo orden (Taylor de nuevo):
 
-ΔP/P ≈ −D_mod·Δy + ½·C·(Δy)²
+$$\frac{\Delta P}{P}\approx -D_{\text{mod}}\,\Delta y+\tfrac12\,C\,(\Delta y)^2.$$
 
-donde C = convexidad = (1/P) · ∂²P/∂y².
-
-La convexidad es siempre positiva para bonos vanilla: la curva precio-tasa es convexa. Por eso, con el mismo precio y duración, mayor convexidad es mejor — te beneficia en ambas direcciones.
-
-**Convexidad negativa:** bonos callable y MBS prepagables. Cuando bajan las tasas, el emisor prepaga → el bonista pierde el upside.
+Para bonos vainilla $C>0$: la curva precio-tasa es convexa, lo que **te favorece en ambas direcciones** (ganas más cuando las tasas bajan y pierdes menos cuando suben). Por eso, a igual precio y duración, más convexidad es mejor. **Convexidad negativa** (bonos callable, MBS prepagables): cuando bajan las tasas el emisor prepaga y te corta el upside — te quitan justo el lado bueno.
 
 ---
 
-## YTM y precio del bono — dirección
+## Greeks de opciones — el mapa
 
-| Condición | Precio |
-|----------|--------|
-| YTM > cupón | Bono bajo la par (descuento) |
-| YTM = cupón | Bono a la par |
-| YTM < cupón | Bono sobre la par (prima) |
+| Greek | Definición | Signo |
+|-------|-----------|-------|
+| Delta $\Delta$ | $\partial C/\partial S$ | call $(0,1)$; put $(-1,0)$ |
+| Gamma $\Gamma$ | $\partial^2 C/\partial S^2$ | $+$, igual call y put |
+| Vega $\nu$ | $\partial C/\partial\sigma$ | $+$, igual call y put |
+| Theta $\Theta$ | $\partial C/\partial t$ | $-$ para opciones largas |
+| Rho $\rho$ | $\partial C/\partial r$ | call $+$; put $-$ |
 
-**Pull to par:** a medida que se acerca el vencimiento, el precio siempre converge a la par (independientemente del YTM inicial).
-
----
-
-## Ratio de Sharpe
-
-S = (E[R] − r_f) / σ(R)
-
-Mide exceso de retorno por unidad de volatilidad total. Útil para comparar portafolios con distintos niveles de riesgo.
-
-**Limitación:** asume que toda la volatilidad es riesgo. Estrategias con alta kurtosis o cola izquierda pesada (ej. vender puts) pueden tener Sharpe alto con riesgo real subestimado.
+**Vega $>0$ para ambas:** una opción es un derecho asimétrico, así que más volatilidad la hace más valiosa (más chance de acabar ITM). Si $\sigma=0$, call y put ATM valen 0; al subir $\sigma$, ambas suben.
 
 ---
 
-## CAPM
+## Ratio de Sharpe y CAPM
 
-**E[R_i] = r_f + β_i · (E[R_m] − r_f)**
+El **ratio de Sharpe** $S=\tfrac{E[R]-r_f}{\sigma(R)}$ mide el exceso de retorno por unidad de volatilidad. Su trampa: asume que **toda** la volatilidad es riesgo; estrategias con cola izquierda pesada (vender puts) lucen con Sharpe alto y riesgo real subestimado.
 
-β_i = Cov(R_i, R_m) / Var(R_m) = ρ_{i,m} · (σ_i / σ_m)
-
-| β | Interpretación |
-|---|----------------|
-| β = 0 | Sin riesgo sistemático (ej. renta fija corta) |
-| β = 1 | Mueve igual que el mercado |
-| β > 1 | Amplifica el mercado (acciones cíclicas) |
-| β < 1 | Amortigua el mercado (acciones defensivas) |
-
-CAPM: solo el riesgo sistemático (β) recibe compensación; el riesgo idiosincrásico se diversifica en el portafolio.
+El **CAPM** dice que solo el riesgo *sistemático* se paga: $E[R_i]=r_f+\beta_i(E[R_m]-r_f)$, con $\beta_i=\tfrac{\text{Cov}(R_i,R_m)}{\text{Var}(R_m)}$. La $\beta$ es la pendiente de regresar el activo contra el mercado — el mismo coeficiente OLS (conecta con [[arena-q6]]). El riesgo idiosincrásico se diversifica y no recibe prima.
 
 ---
 
-## Greeks de opciones — mapa completo
+## Distribución lognormal — media vs. mediana
 
-| Greek | Definición | Signo (call/put) |
-|-------|-----------|-----------------|
-| Delta (Δ) | ∂C/∂S | Call: (0,1); Put: (−1,0) |
-| Gamma (Γ) | ∂²C/∂S² | +, mismo para call y put |
-| Vega (ν) | ∂C/∂σ | +, mismo para call y put |
-| Theta (Θ) | ∂C/∂t | − para long options (se pierde tiempo) |
-| Rho (ρ) | ∂C/∂r | Call: +; Put: − |
+Si $\ln S\sim N(\mu,\sigma^2)$, entonces $S$ es lognormal, y aquí vive un error clásico:
 
-**Vega > 0 para ambas:** opciones son derechos asimétricos; más volatilidad → más probable ITM en algún momento → más valor. Si σ = 0, call y put ATM valen 0; al aumentar σ, ambas suben.
+$$E[S]=e^{\mu+\sigma^2/2}, \qquad \text{mediana}(S)=e^{\mu}.$$
+
+La media **supera** a la mediana (la cola derecha tira del promedio); el término $+\sigma^2/2$ es la **prima de Jensen**. En finanzas, si $\ln(S_T/S_0)\sim N(\mu T,\sigma^2 T)$, entonces $E[S_T]=S_0\,e^{\mu T+\sigma^2 T/2}$.
 
 ---
 
-## Paridad de Tasas de Interés Cubierta (CIP)
+## Lema de Itô y el drift $-\sigma^2/2$
 
-No-arbitraje entre mercado FX y tasas de interés:
+Para el browniano geométrico $dS=\mu S\,dt+\sigma S\,dW$, aplicar Itô a $f=\ln S$ da
 
-**(1 + r_dom) = (F/S) · (1 + r_ext)**
+$$d(\ln S)=\left(\mu-\frac{\sigma^2}{2}\right)dt+\sigma\,dW \;\Rightarrow\; \ln\frac{S_T}{S_0}\sim N\!\left(\left(\mu-\tfrac{\sigma^2}{2}\right)T,\ \sigma^2 T\right).$$
 
-Reordenando: **F = S · (1 + r_dom) / (1 + r_ext)**
-
-Ejemplo: r_USD = 4%, r_EUR = 1%, S = 1.08 EUR/USD:
-
-F = 1.08 × 1.04/1.01 ≈ 1.1121
-
-Si el forward de mercado difiere: hay arbitraje —pide prestado en la divisa barata, invierte en la cara, cubre el FX con el forward.
-
-**En crisis (2008, 2020):** la escasez de USD encareció el financiamiento, rompiendo CIP. El cruce EUR/USD mostraba primas de hasta 80bps.
-
----
-
-## Distribución lognormal — media y mediana
-
-Si X ~ N(μ, σ²), entonces Y = e^X ~ Lognormal(μ, σ²).
-
-**E[Y] = e^(μ + σ²/2)** ← el término +σ²/2 es la "prima de Jensen"
-
-**Mediana(Y) = e^μ**
-
-E[Y] > Mediana porque la lognormal es sesgada a la derecha.
-
-En finanzas: si log(S_T/S_0) ~ N(μT, σ²T), entonces E[S_T] = S_0·e^(μT + σ²T/2). El retorno esperado del precio usa μ + σ²/2; el retorno esperado del log usa μ − σ²/2. Estos difieren en σ²T.
-
----
-
-## Lema de Itô
-
-Para dS = μS dt + σS dW (GBM) y f(t, S):
-
-**df = (∂f/∂t + μS·∂f/∂S + ½σ²S²·∂²f/∂S²) dt + σS·∂f/∂S dW**
-
-**Aplicación — f = ln(S):**
-
-∂f/∂t = 0, ∂f/∂S = 1/S, ∂²f/∂S² = −1/S²
-
-d(ln S) = (μ − σ²/2) dt + σ dW
-
-El término **−σ²/2** es el drift de Itô. Integrando:
-
-ln(S_T/S_0) = (μ − σ²/2)T + σ·W_T ~ N((μ−σ²/2)T, σ²T)
-
----
-
-## GBM — distribución completa
-
-S(t) = S(0) · exp( (μ − σ²/2)t + σ·W(t) )
-
-| Cantidad | Fórmula |
-|---------|---------|
-| E[S(T)] | S(0)·e^(μT) |
-| Mediana de S(T) | S(0)·e^((μ−σ²/2)T) |
-| Var(S(T)) | S(0)²·e^(2μT)·(e^(σ²T) − 1) |
-| P(S(T) > K) | N(d₂) bajo medida real; N(d₂) bajo neutral al riesgo |
-
-**Intuición μ vs μ−σ²/2:**
-- μ: tasa de crecimiento esperada del precio.
-- μ−σ²/2: tasa de crecimiento del log-precio (camino real).
-- La diferencia σ²/2 es el "costo de la aleatoriedad" (corrección de Jensen).
-
----
-
-## Escalar volatilidad en el tiempo
-
-Para retornos i.i.d.:
-
-**σ(T períodos) = σ(1 período) · √T**
-
-Conversión práctica: σ_anual = σ_diaria · √252 (días de trading).
-
-**Cuando NO aplica:**
-- Autocorrelación positiva (momentum): la vol anual crece más rápido que √T.
-- Reversión a la media: la vol anual crece más lento que √T.
-- GARCH / volatilidad estocástica: el factor de escala depende del régimen.
+El **mismo** $\sigma^2/2$ aparece restando en el drift del log-precio y sumando en $E[S]$: son las dos caras de la convexidad de la exponencial (conecta con [[arena-q11]] y [[arena-p3]]). Confundir $\mu$ (crecimiento del precio) con $\mu-\sigma^2/2$ (crecimiento del log, el camino típico) es un error frecuente.
 
 ---
 
 ## Mini-ejemplo trabajado: duración como gradiente del precio
 
-Un bono con duración modificada D_mod = 6.5. Las tasas suben Δy = +0.50% = +0.005. Primer orden: ΔP/P ≈ −6.5 × 0.005 = **−3.25%**. La duración es, literalmente, la **elasticidad-precio respecto a la tasa**: un gradiente local. La convexidad C>0 es la curvatura que corrige ese gradiente: con C=80, el término ½·80·(0.005)² = +0.10% amortigua la caída a ≈ −3.15%.
+Un bono con duración modificada $D_{\text{mod}}=6.5$. Las tasas suben $\Delta y=+0.50\%=+0.005$. Primer orden: $\Delta P/P\approx-6.5\times0.005=-3.25\%$. La duración es, literalmente, la **elasticidad-precio respecto a la tasa**: un gradiente local. La convexidad $C>0$ es la curvatura que corrige ese gradiente: con $C=80$, el término $\tfrac12\cdot80\cdot(0.005)^2=+0.10\%$ amortigua la caída a $\approx-3.15\%$.
 
 **Predicción antes de seguir:** entre dos bonos con igual precio y duración pero distinta convexidad, ¿cuál prefieres? Respuesta: el de **mayor convexidad** — gana más cuando las tasas bajan y pierde menos cuando suben (la curvatura te favorece en ambas direcciones). Por eso los MBS, con convexidad *negativa* (el deudor prepaga cuando bajan las tasas), se penalizan: te quitan justo el lado bueno de la curva.
 
 ## Prototipo, contraejemplo y caso borde
 
-- **Prototipo:** sensibilidad de primer orden de un precio a un factor → duración (bono/tasa), delta (opción/subyacente), beta (acción/mercado). Todos son ∂precio/∂factor.
-- **Contraejemplo (Sharpe engañoso):** vender puts produce retornos suaves con Sharpe alto, pero la cola izquierda es catastrófica; el Sharpe asume que *toda* la volatilidad mide el riesgo y ignora la asimetría. Sharpe alto ≠ bajo riesgo.
-- **Caso borde (convexidad negativa):** un bono callable o un MBS rompe la regla "más convexidad es mejor" porque cuando las tasas bajan, el emisor prepaga y te corta el upside. El borde revela qué supuesto (convexidad positiva) tenía la regla vanilla.
+- **Prototipo:** sensibilidad de primer orden de un precio a un factor → duración (bono/tasa), delta (opción/subyacente), beta (acción/mercado). Todos son $\partial\text{precio}/\partial\text{factor}$.
+- **Contraejemplo (Sharpe engañoso):** vender puts produce retornos suaves con Sharpe alto, pero la cola izquierda es catastrófica; el Sharpe asume que *toda* la volatilidad mide el riesgo e ignora la asimetría. Sharpe alto $\ne$ bajo riesgo.
+- **Caso borde (convexidad negativa):** un bono callable o un MBS rompe la regla "más convexidad es mejor" porque cuando las tasas bajan, el emisor prepaga y te corta el upside. El borde revela qué supuesto (convexidad positiva) tenía la regla vainilla.
 
 ## Errores típicos
 
-- **Conceptual:** confundir E[S_T] con la mediana en una lognormal. E[Y]=e^(μ+σ²/2) > mediana=e^μ; el +σ²/2 es la prima de Jensen, no un error.
-- **Técnico:** olvidar el drift de Itô −σ²/2 al pasar de dS a d(ln S); da una distribución log-precio mal centrada.
-- **De supuestos:** anualizar volatilidad con √252 cuando hay autocorrelación o cambios de régimen (GARCH); el √T solo vale para i.i.d.
+- **Conceptual:** confundir $E[S_T]$ con la mediana en una lognormal. $E[S]=e^{\mu+\sigma^2/2}>$ mediana $=e^\mu$; el $+\sigma^2/2$ es la prima de Jensen, no un error.
+- **Técnico:** olvidar el drift de Itô $-\sigma^2/2$ al pasar de $dS$ a $d(\ln S)$; da una distribución log-precio mal centrada.
+- **De supuestos:** anualizar volatilidad con $\sqrt{252}$ cuando hay autocorrelación o cambios de régimen (GARCH); el $\sqrt T$ solo vale para i.i.d.
 
 ## Transferencia isomorfa
 
-Los tres pilares (no-arbitraje, Itô, sensibilidades) son aristas, no islas:
+- **$-\sigma^2/2$ de Itô ↔ $+\sigma^2/2$ de Jensen:** el mismo $\sigma^2/2$ aparece restando en el drift del log-precio y sumando en $E[e^X]$; son las dos caras de la convexidad de la exponencial (conecta con [[arena-q6]]).
+- **Duración ↔ delta ↔ beta:** los tres son la primera derivada de un precio frente a su factor de riesgo; la convexidad/gamma es la segunda que los corrige (conecta con [[arena-q5]] y [[arena-p4]]).
+- **$\beta=\text{Cov}/\text{Var}$ ↔ coeficiente OLS:** la beta del CAPM es exactamente la pendiente de regresar el activo contra el mercado (conecta con [[arena-q6]]).
+- **mgf gaussiana ↔ valoración lognormal:** $E[e^X]=e^{\mu+\sigma^2/2}$ sale de la mgf evaluada en 1 (conecta con [[arena-p4]] y [[arena-b2]]).
 
-- **−σ²/2 de Itô ↔ +σ²/2 de Jensen:** el mismo σ²/2 aparece restando en el drift del log-precio y sumando en E[e^X]; son las dos caras de la convexidad de la exponencial (conecta con [[arena-q6]], transformaciones y lognormal).
-- **Duración ↔ delta ↔ beta:** los tres son la primera derivada de un precio frente a su factor de riesgo; la convexidad/gamma es la segunda derivada que los corrige (delta–gamma conecta con [[arena-q5]]).
-- **CIP ↔ put-call parity:** el forward FX sale del mismo no-arbitraje que la paridad call-put; replicar con préstamos en dos divisas es replicar un payoff con dos carteras (conecta con [[arena-q5]]).
-- **β vía Cov/Var ↔ coeficiente OLS:** β = Cov(R_i,R_m)/Var(R_m) es exactamente la pendiente de regresar el activo contra el mercado (conecta con [[arena-q6]], R² y MLE↔OLS).
-
-Moraleja de la arista: *sensibilidad es la primera derivada del precio; convexidad es la segunda. El mismo σ²/2 que baja el log-precio sube la media — conócelo y no confundirás media con mediana.*
+Moraleja de la arista: *sensibilidad es la primera derivada del precio; convexidad es la segunda. El mismo $\sigma^2/2$ que baja el log-precio sube la media — conócelo y no confundirás media con mediana.*
 
 ---
 
@@ -207,20 +103,19 @@ Moraleja de la arista: *sensibilidad es la primera derivada del precio; convexid
 
 | Señal | Jugada |
 |-------|--------|
-| "Sensibilidad del bono a tasas" | ΔP/P ≈ −D_mod·Δy |
-| "Tasa > cupón" | Bono bajo la par |
-| "Sharpe de dos portafolios" | Exceso retorno / σ; no basta el retorno absoluto |
-| "β de una acción" | β = ρ·(σ_acción/σ_mercado) |
-| "¿Vega de una put?" | Positivo — igual que call; más vol → más valor |
-| "Forward FX + dos tasas" | CIP: F = S·(1+r_dom)/(1+r_ext) |
-| "E[e^X] con X normal" | e^(μ + σ²/2); mediana e^μ |
-| "d(ln S) con GBM" | Lema de Itô → drift (μ − σ²/2) dt + σ dW |
-| "Vol diaria a anual" | ×√252 (solo i.i.d.) |
+| "Sensibilidad del bono a tasas" | $\Delta P/P\approx-D_{\text{mod}}\,\Delta y$ |
+| "A igual duración, ¿qué bono?" | Mayor convexidad |
+| "Sharpe de dos portafolios" | Exceso retorno $/\,\sigma$; cuidado con la asimetría |
+| "$\beta$ de una acción" | $\beta=\text{Cov}(R_i,R_m)/\text{Var}(R_m)$ |
+| "¿Vega de una put?" | Positivo — igual que call |
+| "$E[e^X]$ con $X$ normal" | $e^{\mu+\sigma^2/2}$; mediana $e^\mu$ |
+| "$d(\ln S)$ con GBM" | Itô → drift $(\mu-\sigma^2/2)\,dt+\sigma\,dW$ |
+| "Vol diaria a anual" | $\times\sqrt{252}$ (solo i.i.d.) |
 
 ---
 
-> **Síntesis:** Los tres pilares de quant finance avanzado se conectan: no-arbitraje (CIP, put-call parity) ↔ lema de Itô (GBM, distribución lognormal) ↔ Greeks (cómo cambia el precio ante cada parámetro). La corrección de Itô −σ²/2 es la fuente del drift log; la prima de Jensen +σ²/2 es por qué E[precio] > mediana del precio.
+> **Síntesis:** Los pilares del quant finance avanzado se conectan: no-arbitraje (paridad, CIP) ↔ lema de Itô (GBM, lognormal) ↔ Greeks (sensibilidades). La corrección de Itô $-\sigma^2/2$ es la fuente del drift log; la prima de Jensen $+\sigma^2/2$ es por qué $E[\text{precio}]>$ mediana del precio. Y duración, delta y beta son la misma primera derivada en tres mercados.
 
 ---
 
-*Retrieval: sin mirar, responde: (1) fórmula de duración modificada y su uso; (2) E[e^X] si X ~ N(0, 0.04); (3) d(ln S) por lema de Itô; (4) F_CIP con r_dom=5%, r_ext=2%, S=1.20.*
+*Retrieval: sin mirar, responde: (1) fórmula de duración modificada y su uso; (2) $E[e^X]$ si $X\sim N(0,0.04)$; (3) $d(\ln S)$ por lema de Itô; (4) por qué la media de una lognormal supera a su mediana.*
