@@ -467,11 +467,12 @@
       "archivo": "Arena/Problem solving y olimpiadas/Art and Craft of Problem Solving 3E (The).pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 28 (2026-06-14): 44 problemas a data/problems.json (ids 145-188), Sector C entrenamiento, esquema §4.1. Balanceado 11/11/11/11 (inversion/invariantes/optimizacion/patrones). Fuentes por capítulo: §3.1 simetría/reflexión + §4.4 juegos (inversion: censista 2,2,9, camino √170, perímetro mínimo Putnam'98, integral Putnam'80=π/4, monedas-mesa, √2 por descenso, takeaway mult-5, divide&conquer, Nim XOR 17^11^8, Putnam'95 Grundy, chocolate mn-1); §3.3-3.4 casillero/invariantes (invariantes: tile 66×62 de Bruijn, fichas Conway y=5 razón áurea, ranas paridad, uv+u+v=101!-1, rotación {3,4,12} sumSq 169≠196, sucesión último-dígito, divisibilidad cíclica, 9 puntos 3D, solitario búlgaro triangular, 5 puntos √2/2, torneo n-1); §3.2+§5.5 extremo/desigualdades (optimizacion: (Σa)(Σ1/a)≥n², ⌊Σ1/√n⌋=198, IMO'76 2·3^658, AM-GM cíclica, √(3Σ)≥Σ√, Cauchy-Engel 64, sumSq xyz=1, Nesbitt 3/2, IMO'84 7/27, n!<((n+1)/2)^n, monedas tangentes ≤5); §1.1+§3.1+§7.4-7.5 conteo/teoría-números (patrones: telescopaje 99/100, AP+d⁴ cuadrado, prod divisores n^(d/2), subconjuntos 2^29, esfera 1600/3, Grecia'95 n=5, RU'95 5 ternas, 2^8+2^11+2^n n=12, India'95 (1,1), Putnam'83 2301, x²+y²+z²=2xyz origen). Todas las afirmaciones numéricas verificadas con Python (juegos por solver retrógrado/Grundy, diofantinas por fuerza bruta, desigualdades por muestreo, identidades exactas). Solo se tocó problems.json: sin cambios de código, sin teoria/*.md, sin bump de sw.js. Builder idempotente en scripts/_build_zeitz.py.",
+      "ids_problemas": "145-188 en data/problems.json"
     },
     {
       "libro": "Cómo Plantear y Resolver Problemas (Pólya)",
