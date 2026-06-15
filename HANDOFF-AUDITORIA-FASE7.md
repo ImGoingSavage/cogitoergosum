@@ -65,7 +65,7 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**94 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**98 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
@@ -76,9 +76,10 @@ ponla en una sola línea `$$...$$`.
 | **Blitzstein (lote 13)** | b1, b2, b3, b4 (4) |
 | **Inferencia clásica (lotes 14-15)** | dg1-4 (DeGroot) + cb1-4 (Casella & Berger) (8) |
 | **Estadística aplicada (lotes 16-17)** | pst1-4 (Practical Statistics) + isl1-4 (ISLP) (8) |
+| **Ciencia de datos (lote 18)** | ads1, ads2, ads3, ads4 (Ace the DS Interview) (4) |
 | Muestra Oleada 1 | q12 (+cc1, h17 ya contados arriba) |
 
-### FALTAN (24 lecciones) — esto es lo que debes hacer
+### FALTAN (20 lecciones) — esto es lo que debes hacer
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
@@ -101,7 +102,7 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
 - ~~`arena-isl1, isl2, isl3, isl4` (ISLP)~~ **HECHAS (lote 17)**.
 
 **Ciencia de datos (route: ciencia-datos / ml-systems):**
-- `arena-ads1, ads2, ads3, ads4` (Ace the Data Science Interview)
+- ~~`arena-ads1, ads2, ads3, ads4` (Ace the DS Interview)~~ **HECHAS (lote 18)**.
 - `arena-cds1, cds2, cds3, cds4` (Cracking the Data Science Interview)
 - `arena-s1` (Huyen — "del modelo al sistema": skew, drift, rollout)
 
