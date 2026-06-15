@@ -2706,3 +2706,54 @@ patrones 69 (276 total, global balanceado). Builder idempotente en `scripts/_bui
 Kevin Houston (`How to Think Like a Mathematician`) y la serie AoPS (Intro/Med/Vol/Calculus).
 Mismo esquema §4.1 (ids 277+, sin huecos) y, donde aplique, `fase-0` como material
 introductorio del Modo Estudio. Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-15 (Arena tanda 32) — SECTOR C: Houston, *How to Think Like a Mathematician*, 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `How to Think Like a Mathematician`
+(Kevin Houston, Cambridge University Press) — libros[32] del ledger, ruta
+`entrenamiento`, cuota 40 (superada con **44**). Destino: **`data/problems.json`**
+(esquema §4.1), ids **277-320** sin huecos. Fuente: **cap. 24-26 (técnicas de prueba:
+inducción, contrapositiva)** + **cap. 27-29 (teoría de números: divisores, algoritmo
+de Euclides, aritmética modular)**.
+
+**Distribución 12/11/7/14** (invariantes/inversion/optimizacion/patrones) — Houston es
+un libro número-teórico y flojo en desigualdades, así que el sesgo hacia invariantes y
+patrones es honesto y además **mejora el balance GLOBAL** de problems.json (invariantes
+y optimizacion eran de los más bajos antes de esta tanda).
+
+- **invariantes** (12, modular/paridad/divisibilidad): x²+9x+20 par; x³−x÷3, x⁵−x÷5 y
+  xⁿ−x NO siempre ÷n (Fermat solo primos); x³−6x²+11x÷3; cuadrado mód 4 ∈ {0,1}; 3^{2n}−1÷8;
+  17 | 3^{4n}+4^{3n+2}; n²−1÷8 (n impar); 4·11ⁿ+2·5ⁿ÷6; ÷8 por los tres últimos dígitos;
+  m²|n²⇒m|n; números de Fermat coprimos dos a dos; 6·9ⁿ−4ⁿ÷5.
+- **inversion** (11, contradicción/contrapositiva/inducción): infinitud de primos (Euclides),
+  √n irracional si n no es cuadrado, x irr⇒√x irr, x+y irr⇒x o y irr, xy impar⇒ambos impares,
+  x² par⇒x par, todo n>1 es producto de primos (inducción fuerte), xₙ=2ⁿ+1, (x−1)|(xⁿ−1),
+  ángulos de n-gono = 180(n−2), x²−3x+2<0 ⟺ 1<x<2.
+- **optimizacion** (7, desigualdades/extremal): n²≤2^{n−1} (n≥7), 2ⁿ<n! (n≥4), xₙ<(7/4)ⁿ,
+  |Σxᵢ|≤Σ|xᵢ| (triangular), gcd(a+b,a−b)≤2 (coprimos), sin nx ≤ n sin x en [0,π/2], lema de
+  la división (menor resto vía buen orden).
+- **patrones** (14, NT/identidades/recurrencias/Fibonacci): Σi²=n(n+1)(2n+1)/6, Euclides
+  gcd(14441,3563)=7, Bézout 132·14441−535·3563=7, diofantina 51x+21y=18, fórmula de Binet,
+  Σ Fibonacci impares = F_{2n}, Σ Fibonacci pares = F_{2n+1}−1, recurrencia promediadora
+  xₙ=(2^{n−1}+(−1)ⁿ)/(3·2^{n−2}), factorización de 12870 y 17836, lcm·gcd=ab, 2ⁿ subconjuntos,
+  (xⁿ−1)/(x−1)=Σxⁱ, diofantina soluble ⟺ gcd|c, ∏F_k=F_{n+1}−2.
+
+**§1.2 cumplida — 49 afirmaciones numéricas verificadas con Python** (`/tmp/verify_houston.py`):
+modular/divisibilidad por conteo masivo; Euclides, Bézout y diofantinas por cálculo exacto;
+recurrencias e identidades de Fibonacci (incl. Binet, recurrencia promediadora con fracciones
+exactas) por cómputo exacto; desigualdades por muestreo; factorizaciones por trial division.
+**NOTA:** Houston es un libro de «cómo pensar/probar» (estilo Pólya), pero —a diferencia de
+Pólya, que se saltó— SÍ contiene ejercicios concretos y verificables en sus Partes IV-V
+(teoría de números, inducción), por lo que se procesó como tanda completa.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+320 ids únicos (1-320) sin huecos; esquema §4.1 correcto para 277-320; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: inversion 80, optimizacion 77, invariantes 80,
+patrones 83 (320 total, global balanceado, spread 77-83). Builder idempotente en
+`scripts/_build_houston.py`.
+
+**Siguiente** — continuar Sector C con la **serie AoPS** de la carpeta `Arena/Problem solving
+y olimpiadas/`: `IntroAlgeb.pdf`, `IntroGeom.pdf`, `IntroNumbTheo.pdf`, `introCountProb.pdf`,
+`MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf` (Patrick et al.).
+Mismo esquema §4.1 (ids 321+, sin huecos). Verificar SIEMPRE con Python.

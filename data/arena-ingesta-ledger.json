@@ -514,11 +514,12 @@
       "archivo": "Arena/Problem solving y olimpiadas/Kevin Houston - How to Think Like a Mathematician.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 32 (2026-06-15): 44 problemas a data/problems.json (ids 277-320), Sector C entrenamiento, esquema §4.1. Distribución 12/11/7/14 (invariantes/inversion/optimizacion/patrones) — Houston es número-teórico y flojo en desigualdades; el sesgo MEJORA el balance global (invariantes era de los más bajos). Fuente: cap. 24-26 (técnicas de prueba: inducción, contrapositiva) + cap. 27-29 (teoría de números: divisores, Euclides, modular). invariantes (modular/paridad/divisibilidad): x²+9x+20 div2, x³-x div3 & x⁵-x div5 & xⁿ-x NO div n compuesto, x³-6x²+11x div3, cuadrado mod4 in{0,1}, 3^{2n}-1 div8, 17|3^{4n}+4^{3n+2}, n²-1 div8 impar, 4·11ⁿ+2·5ⁿ div6, div8 por últimos 3 dígitos, m²|n²⇒m|n, números de Fermat coprimos, 6·9ⁿ-4ⁿ div5. inversion (contradicción/contrapositiva/inducción): infinitud primos (Euclides), √n irracional (n no cuadrado), x irr⇒√x irr, x+y irr⇒x o y irr, xy impar⇒ambos, x² par⇒x par, todo n>1 producto de primos (ind. fuerte), x_n=2^n+1, (x-1)|(xⁿ-1), ángulos n-gono=180(n-2), x²-3x+2<0⟺1<x<2. optimizacion (desigualdades/extremal): n²≤2^{n-1} (n≥7), 2^n<n! (n≥4), x_n<(7/4)^n, |Σx|≤Σ|x| (triangular), gcd(a+b,a-b)≤2 coprimos, sin nx≤n sin x [0,π/2], lema de la división (menor resto, buen orden). patrones (NT/identidades/recurrencias/Fibonacci): Σi²=n(n+1)(2n+1)/6, Euclides gcd(14441,3563)=7, Bézout 132·14441-535·3563=7, diofantina 51x+21y=18, Binet, Σ Fib impares=F_{2n}, Σ Fib pares=F_{2n+1}-1, recurrencia promediadora x_n=(2^{n-1}+(-1)ⁿ)/(3·2^{n-2}), factorización 12870 & 17836, lcm·gcd=ab, 2^n subconjuntos, (xⁿ-1)/(x-1)=Σxⁱ, diofantina soluble⟺gcd|c, ∏F_k=F_{n+1}-2. 49 afirmaciones numéricas verificadas con Python (modular/divisibilidad por conteo, Euclides/Bézout/diofantinas exactas, recurrencias y Fibonacci exactas, desigualdades por muestreo, factorizaciones). NOTA: Houston es un libro de 'cómo pensar/probar' (estilo Pólya) pero SÍ tiene ejercicios concretos verificables en Partes IV-V, por eso se procesó (a diferencia de Pólya, saltado). Solo se tocó problems.json: sin cambios de código, sin teoria/*.md, sin bump de sw.js. Builder idempotente en scripts/_build_houston.py.",
+      "ids_problemas": "277-320 en data/problems.json"
     },
     {
       "libro": "AoPS Introduction to Algebra",
