@@ -188,6 +188,41 @@ La duración máxima ocurre en el punto medio; es cuadrática en la escala del p
 
 ---
 
+## Mini-ejemplo trabajado: la Ley de Little en una cola M/M/1
+
+Un servidor recibe λ=4 solicitudes/hora y atiende a μ=5/hora. El factor de utilización ρ=λ/μ=0.8. Las métricas salen casi solas:
+
+- E[en sistema] L = ρ/(1−ρ) = 0.8/0.2 = **4 solicitudes**.
+- E[tiempo en sistema] W = 1/(μ−λ) = 1/(5−4) = **1 hora**.
+- Verifica con **Ley de Little**: L = λ·W = 4 × 1 = 4. ✓
+
+Little (L = λW) conecta cuántos hay en el sistema con cuánto esperan, sin asumir la distribución de servicio — vale en cualquier sistema en equilibrio.
+
+**Predicción antes de seguir:** si la utilización sube de ρ=0.8 a ρ=0.95 (μ baja a ~4.2), ¿el tiempo de espera sube ~19% o se dispara? Respuesta: **se dispara** — L=ρ/(1−ρ) explota cuando ρ→1 (de 4 a 19 en sistema). La latencia no crece lineal con la carga; cerca de la saturación, una pizca más de tráfico multiplica la espera. Por eso los sistemas se mantienen lejos de ρ=1.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** sistema de llegadas/servicio en equilibrio → M/M/1 + Ley de Little (L=λW); estable solo si ρ<1.
+- **Contraejemplo (martingala "infalible"):** doblar tras cada pérdida parece garantizar ganar $1, pero con capital finito E[pérdida] no es positiva; solo empuja el riesgo a una cola rara y enorme (ruina = pierdes todo).
+- **Caso borde (recurrencia nula):** la caminata aleatoria vuelve al origen con probabilidad 1, pero E[tiempo de retorno] = ∞. El borde separa "seguro que pasa" de "en tiempo esperado finito".
+
+## Errores típicos
+
+- **Conceptual:** creer que la martingala (doblar) crea valor esperado positivo; solo redistribuye riesgo a la cola.
+- **Técnico:** con desventaja (p<½), jugar tímido (apostar poco muchas veces); el juego audaz domina porque da menos oportunidades a la casa.
+- **De interpretación:** subestimar rachas: la racha más larga en n lanzamientos crece como log₂n, así que 10+ caras seguidas son esperables con n grande.
+
+## Transferencia isomorfa
+
+- **Ley de Little (L=λW) ↔ throughput/latencia de sistemas:** "cuántos en vuelo = tasa × tiempo" gobierna colas de servidores, pipelines y SLAs (conecta con [[arena-sre4]]).
+- **Martingala E[pérdida]=∞ ↔ San Petersburgo / media divergente:** doblar es el primo de la paradoja de San Petersburgo; cola pesada que rompe "media = resultado típico" (conecta con [[arena-q8]]).
+- **Ruina del jugador / duración k(N−k) ↔ parada óptima por martingala:** la probabilidad de absorción lineal y la duración cuadrática salen del muestreo opcional (conecta con [[arena-q11]]).
+- **Problema del ascensor k(1−(1−1/k)ᵐ) ↔ ocupación y hashing:** cuántos contenedores se usan es el mismo conteo que cajas/bolas y colisiones (conecta con [[arena-fc1]]).
+
+Moraleja de la arista: *la Ley de Little ata cola y espera en cualquier sistema estable, y la latencia se dispara cerca de ρ=1; ninguna martingala vence una esperanza negativa, solo esconde el riesgo en la cola.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

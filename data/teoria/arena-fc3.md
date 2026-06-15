@@ -175,6 +175,42 @@ Corrección de Bonferroni: usa α/k por prueba para controlar la tasa familiar.
 
 ---
 
+## Mini-ejemplo trabajado: la falacia del fiscal, con la tasa base
+
+Un perfil de ADN coincide con el acusado; el laboratorio dice "P(coincidencia | inocente) = 1 en un millón". El fiscal concluye "luego hay 1 en un millón de que sea inocente". **Falso.** Aplica Bayes en una ciudad de 1 000 000:
+
+- Esperados por azar entre inocentes: 1 000 000 × (1/1 000 000) ≈ 1 coincidencia inocente.
+- Más la coincidencia del verdadero culpable: 1.
+- P(inocente | coincidencia) ≈ 1/(1+1) = **1/2**, no 1 en un millón.
+
+La evidencia sola, sin la tasa base de cuántos inocentes hay, no condena.
+
+**Predicción antes de seguir:** ¿qué error cometió el fiscal? Respuesta: confundir P(coincidencia | inocente) con P(inocente | coincidencia) — invertir el condicional. Es **idéntico** a leer la sensibilidad de un test como su valor predictivo positivo: con una base enorme de "negativos reales", los falsos positivos dominan. Bayes y la tasa base son el antídoto a las tres grandes paradojas (fiscal, dos sobres, Simpson).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "evidencia rara, ¿culpable/enfermo?" → Bayes con tasa base; no inviertas el condicional.
+- **Contraejemplo (Simpson):** un tratamiento mejor en cada subgrupo puede salir peor en el total si la asignación está confundida; la asociación agregada se revierte al estratificar.
+- **Caso borde (adivinar cartas con feedback):** aunque conozcas las cartas vistas, E[aciertos] = 26, igual que sin estrategia; la información no ayuda en esperanza. El borde muestra que "saber más" no siempre cambia el resultado esperado.
+
+## Errores típicos
+
+- **Conceptual:** confundir P(A|B) con P(B|A) (fiscal); ignorar la tasa base.
+- **Técnico:** usar un prior impropio (dos sobres: P(2x) y P(x/2) "iguales") que no normaliza, produciendo el falso "siempre cambiar".
+- **De supuestos:** leer una asociación agregada como causal sin estratificar por la confundidora (Simpson).
+
+## Transferencia isomorfa
+
+- **Falacia del fiscal ↔ tasa base y VPP:** P(inocente|match) ≠ P(match|inocente) es exactamente sensibilidad ≠ VPP (conecta con [[arena-q2]]).
+- **Paradoja de Simpson ↔ confounding y back-door:** la reversión al estratificar es la firma de un confundidor no ajustado (conecta con [[arena-h17]] y [[arena-h1]]).
+- **Hash de cumpleaños (k≈1.177√N) ↔ colisiones y ocupación:** el mismo conteo que ~37% de cajas vacías y las colisiones de un sharding (conecta con [[arena-fc1]] y [[arena-sd2]]).
+- **Tasa de error acumulada ↔ tests múltiples:** 1−(1−α)ᵏ creciendo a ~1 es la multiplicidad que corrige Bonferroni (conecta con [[arena-dg3]]).
+- **Paradoja de la inspección ↔ sesgo de longitud / supervivencia:** interceptar intervalos largos con más probabilidad es el mismo sesgo que el immortal time (conecta con [[arena-h2]]).
+
+Moraleja de la arista: *casi toda paradoja probabilística es un condicional invertido o una tasa base olvidada; Bayes es el antídoto universal.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

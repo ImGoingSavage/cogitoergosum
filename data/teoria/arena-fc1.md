@@ -120,6 +120,37 @@ n bolas lanzadas en n cajas uniformemente al azar:
 
 ---
 
+## Mini-ejemplo trabajado: el secretario y el 1/e que reaparece
+
+100 candidatos en orden aleatorio; decides en el acto contratar o rechazar; quieres al mejor. La estrategia óptima: **rechaza los primeros ⌊n/e⌋ ≈ 37**, memoriza el mejor visto, y contrata al primero que lo supere. La probabilidad de quedarte con el verdadero mejor tiende a **1/e ≈ 37%** — sorprendentemente alta para "una sola oportunidad".
+
+La estructura: una fase de **exploración** (mira sin comprometerte para calibrar) y una de **explotación** (actúa con el umbral aprendido). El punto n/e equilibra "explorar de más y dejar pasar al mejor" contra "explotar de más sin información".
+
+**Predicción antes de seguir:** ¿reconoces ese 37%? Es el mismo 1/e de "P(ninguna persona recupera su sombrero)" y de "fracción esperada de cajas vacías" (n/e). Aparece siempre que cuentas eventos raros con tasa ≈1: P(0 éxitos) en una Poisson(1) es e⁻¹. El 1/e es la firma de "esperaba uno, no salió ninguno".
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (palomar):** "garantizar un par de k colores" → k+1 objetos; para r de un color específico, todos los otros + r.
+- **Contraejemplo (puntos fijos no se acumulan):** E[puntos fijos]=1 para todo n, pero NO porque sean independientes (no lo son); la linealidad no lo exige. Creer que "más personas = más coincidencias esperadas" es el error.
+- **Caso borde (urna de Pólya):** refuerzo positivo "el rico se hace más rico", y aun así la fracción final de rojas es **uniforme** en {0,…,n}. El borde rompe la intuición de que el refuerzo concentra.
+
+## Errores típicos
+
+- **Conceptual:** exigir independencia para sumar esperanzas de indicadores (puntos fijos, coincidencias).
+- **Técnico:** olvidar el factor de corrección finita (N−n)/(N−1) en la varianza hipergeométrica.
+- **De interpretación:** confundir "número de intentos hasta el r-ésimo éxito" (binomial negativa, E=r/p) con el número de éxitos en n intentos (binomial).
+
+## Transferencia isomorfa
+
+- **Problema de ocupación (n/e cajas vacías) ↔ colisiones de hash:** tras n inserciones en n slots, ~37% quedan vacíos y hay colisiones; es el mismo conteo que el cumpleaños (conecta con [[arena-sd2]] y [[arena-fc3]]).
+- **Secretario (1/e) ↔ parada óptima:** explorar y luego fijar umbral es backward induction sobre "quedarse vs seguir" (conecta con [[arena-q8]]).
+- **E[récords]=Hₙ ↔ coleccionista de cupones:** el número armónico cuenta récords y también el tiempo de coleccionar n tipos (conecta con [[arena-q6]]).
+- **Puntos fijos por indicadores ↔ linealidad de la esperanza:** el sombrero es el ejemplo canónico de descomponer en indicadores sin pelear con la dependencia (conecta con [[arena-q1]] y [[arena-b1]]).
+
+Moraleja de la arista: *el 1/e es la firma de "esperaba uno y salió ninguno"; aparece en sombreros, cajas vacías y en el secretario por la misma Poisson(1).*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

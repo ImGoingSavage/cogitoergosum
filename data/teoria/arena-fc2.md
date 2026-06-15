@@ -143,6 +143,41 @@ E[|U−V|] = 1/3 para U,V i.i.d. Uniform[0,1] (dem.: ∫∫|u−v|du dv = 1/3).
 
 ---
 
+## Mini-ejemplo trabajado: Bertrand y por qué "aleatorio" no basta
+
+¿Probabilidad de que una cuerda al azar de un círculo sea más larga que el lado del triángulo inscrito (√3·R)? La respuesta depende de **cómo** eliges la cuerda:
+
+- Dos puntos al azar en la circunferencia → **1/3**.
+- Punto medio al azar en el disco → **1/4**.
+- Distancia al centro al azar en [0,R] → **1/2**.
+
+Los tres cálculos son correctos; lo que cambia es qué objeto se distribuye uniformemente (ángulo, área, radio). "Cuerda aleatoria" no define una probabilidad hasta que fijas el espacio de muestreo.
+
+**Predicción antes de seguir:** ¿es la paradoja de Bertrand un error de cálculo o de planteamiento? Respuesta: de **planteamiento** — la pregunta está mal especificada. Es el mismo defecto que la paradoja de los dos sobres (un prior impropio mal definido): sin un modelo probabilístico explícito, el cálculo condicional es inválido aunque el álgebra sea correcta. "Uniforme respecto a qué" es siempre la primera pregunta.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** dos uniformes → punto en el cuadrado; "qué fracción cumple la condición" es un área (Romeo-Julieta 7/16, palo roto 1/4).
+- **Contraejemplo (Bertrand):** "elige al azar" sin especificar la geometría no tiene respuesta única.
+- **Caso borde (ley del arcoseno):** el browniano NO alterna de signo equitativamente; lo más probable es que pase casi todo el tiempo de un lado (Beta(½,½), moda en 0 y 1). El borde desafía la intuición de "se reparte 50/50".
+
+## Errores típicos
+
+- **Conceptual:** suponer "uniforme en el radio" en problemas de disco; la densidad del radio es 2r/R² (más área lejos del centro).
+- **Técnico:** integrar a ciegas en vez de dibujar la región y restar áreas/triángulos.
+- **De supuestos:** confiar en Monte Carlo para 3 decimales con pocas muestras; el error cae como 1/√n (n≈10⁶ para 3 decimales).
+
+## Transferencia isomorfa
+
+- **Probabilidad como área ↔ integración Monte Carlo:** estimar π con 4·(hits/n) es estimar una integral como fracción de puntos en una región (conecta con [[arena-q10]]).
+- **Error Monte Carlo 1/√n ↔ error estándar de la media:** la lentitud de Monte Carlo es la misma √n del SE y del bootstrap (conecta con [[arena-pst2]]).
+- **Ley del arcoseno ↔ movimiento browniano:** la fracción de tiempo positivo de un BM es Beta(½,½), un resultado de procesos estocásticos (conecta con [[arena-q11]]).
+- **Bertrand (modelo mal definido) ↔ prior impropio:** ambos enseñan que sin un modelo probabilístico explícito el cálculo es vacío (conecta con [[arena-fc3]]).
+
+Moraleja de la arista: *en probabilidad geométrica, dibuja y mide áreas; pero antes pregunta "¿uniforme respecto a qué?" — Bertrand cae si no lo haces.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
