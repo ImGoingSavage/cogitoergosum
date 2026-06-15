@@ -668,11 +668,17 @@
       "archivo": "Arena/Problem solving y olimpiadas/Vol1.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 39 (2026-06-15, Opus 4.8). 44 problemas (ids 585-628) al banco data/problems.json. Distribución 11/11/11/11 (invariantes/patrones/optimizacion/inversion), balance GLOBAL a 157/157/157/157 exactos. PDF de 5 MB CON capa de texto; TOC extraído con PyMuPDF (fitz): 29 capítulos que cubren TODO el temario básico (exponentes/logaritmos, complejos, ecuaciones lineales, proporciones, enteros, cuadráticas, factorizaciones, geometría completa, transformaciones, funciones, desigualdades, sucesiones/series, conteo, prob/estadística, conjuntos, demostraciones). Vol.1 es un REPASO TRANSVERSAL de temas ya minados en tandas previas (Intro/Intermediate Algebra, Geometry, Number Theory, C&P): se eligieron problemas con ÁNGULOS y NÚMEROS FRESCOS para NO duplicar (§1.6). Cada número verificado con Python/sympy (44 checks, todos OK). Mapeo: leyes de logaritmos/módulo-conjugado complejo/potencia de un punto/proporciones encadenadas/media/suma de ángulos -> invariantes; sucesiones-series/leyes de exponentes/coeficientes binomiales/sumas notables/último dígito -> patrones; desigualdades (AM-GM, Cauchy-Schwarz)/vértice/desigualdad triangular/distancias mínimas -> optimizacion; resolver ecuaciones (exp/log/sistemas/cuadráticas)/proporción inversa/porcentajes hacia atrás/reconstruir sucesiones/funciones inversas -> inversion. Casos: log8(32)=5/3; |(3+4i)(5+12i)|=65; potencia de un punto tangente=6; Cauchy-Schwarz 5x+12y=13; desigualdad triangular lados 5,9 -> 9 valores; obreros inversos 3·12=4·9 -> 9 días. Builder idempotente scripts/_build_aops_vol1.py. §9 verde: JSON válido, ids 1..628 sin huecos ni duplicados, esquema §4.1 OK en los 44 nuevos, verificar-shell.py OK (203 archivos).",
+      "ids_problemas": [
+        585, 586, 587, 588, 589, 590, 591, 592, 593, 594, 595,
+        596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606,
+        607, 608, 609, 610, 611, 612, 613, 614, 615, 616, 617,
+        618, 619, 620, 621, 622, 623, 624, 625, 626, 627, 628
+      ]
     },
     {
       "libro": "AoPS Vol. 2",

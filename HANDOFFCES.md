@@ -2998,3 +2998,35 @@ de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos
 **Siguiente** — seguir con la serie AoPS: `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf`. Mismo esquema
 §4.1 (ids 585+, sin huecos). Verificar SIEMPRE con Python; revisar tamaño y capa de texto del PDF
 (ver notas técnicas de tandas 37-38).
+
+## Bitácora 2026-06-15 (Arena tanda 39) — SECTOR C: AoPS *the Art of Problem Solving, Vol. 1* (Lehoczky & Rusczyk), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Vol. 1 (the Basics)` (Lehoczky & Rusczyk) —
+libros[40] del ledger, ruta `entrenamiento`, cuota 40 (superada con **44**). Destino:
+**`data/problems.json`** (esquema §4.1), ids **585-628** sin huecos. PDF de 5 MB con capa de
+texto; TOC extraído con `fitz` (29 capítulos, repaso transversal de TODO el temario básico).
+
+**DECISIÓN CLAVE (anti-duplicación, §1.6):** Vol.1 es un REPASO que solapa con temas ya minados
+en tandas previas (Intro/Intermediate Algebra, Geometry, Number Theory, C&P). Para no duplicar
+preguntas se eligieron deliberadamente **ángulos y números FRESCOS** (p.ej. logaritmos por sus
+LEYES de combinar en vez de evaluar; potencia de un punto tangente-secante con números nuevos;
+desigualdad triangular; proporción inversa; Cauchy-Schwarz con 5-12-13). Cada número verificado
+con Python/sympy.
+
+**Distribución 11/11/11/11** (invariantes/patrones/optimizacion/inversion) — balance **GLOBAL a
+157/157/157/157 exactos** (antes 146/146/146/146). Mapeo: leyes de log / módulo-conjugado complejo
+/ potencia de un punto / proporciones encadenadas / media / ángulos → **invariantes**;
+sucesiones-series / exponentes / binomios / sumas notables / último dígito → **patrones**;
+AM-GM, Cauchy-Schwarz, vértice, desigualdad triangular, distancias → **optimizacion**; resolver
+ecuaciones (exp/log/sistemas/cuadráticas), proporción inversa, porcentajes hacia atrás,
+reconstruir sucesiones, funciones inversas → **inversion**.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump de
+`sw.js`. Verificación §9 en verde: ambos JSON válidos; 628 ids únicos (1-628) sin huecos; esquema
+§4.1 correcto para 585-628; `verificar-shell.py` OK (203 archivos). Distribución total
+problems.json: **inversion 157, optimizacion 157, invariantes 157, patrones 157** (628 total,
+balance perfecto). Builder idempotente en `scripts/_build_aops_vol1.py`.
+
+**Siguiente** — seguir con la serie AoPS: `Vol2.pdf` (the ART of Problem Solving Vol. 2, temas
+avanzados), `Calculus.pdf`. Mismo esquema §4.1 (ids 629+, sin huecos). Verificar SIEMPRE con
+Python; cuidar la anti-duplicación con números frescos (Vol.2 también solapa temario).

@@ -20924,6 +20924,1558 @@
         "inversion",
         "nivel-intermedio"
       ]
+    },
+    {
+      "id": 585,
+      "titulo": "Combinar dos logaritmos",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Calcula log₂(48) − log₂(3).",
+      "hints": [
+        "La resta de logaritmos de la misma base se combina en el logaritmo de un cociente.",
+        "log_b(M) − log_b(N) = log_b(M/N).",
+        "log₂(48) − log₂(3) = log₂(48/3) = log₂(16).",
+        "16 = 2⁴.",
+        "= 4."
+      ],
+      "solucion": "log₂(48) − log₂(3) = log₂(48/3) = log₂(16) = 4. Verificado con Python.",
+      "explicacion": "Las leyes de los logaritmos hacen invariante el valor bajo reescritura: una resta se vuelve un cociente. Convierte un cálculo aparatoso en log₂(16) = 4.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "ley del cociente de logaritmos",
+        "logaritmo",
+        "potencias de 2"
+      ],
+      "transferencias": [
+        "escalas logarítmicas",
+        "decibeles",
+        "complejidad algorítmica"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 1.5 (Logarithms)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 586,
+      "titulo": "Sumar dos logaritmos",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Calcula log₆(4) + log₆(9).",
+      "hints": [
+        "La suma de logaritmos de la misma base se combina en el logaritmo de un producto.",
+        "log_b(M) + log_b(N) = log_b(M·N).",
+        "log₆(4) + log₆(9) = log₆(36).",
+        "36 = 6².",
+        "= 2."
+      ],
+      "solucion": "log₆(4) + log₆(9) = log₆(36) = 2. Verificado con Python.",
+      "explicacion": "La ley del producto de logaritmos: una suma se convierte en el log de un producto. El resultado no depende de cómo se separe (4·9 = 36 = 6²).",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "ley del producto de logaritmos",
+        "logaritmo",
+        "combinar"
+      ],
+      "transferencias": [
+        "acústica",
+        "química (pH)",
+        "teoría de la información"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 1.5 (Logarithms)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 587,
+      "titulo": "El módulo de un producto",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Calcula el módulo (valor absoluto) del número complejo (3 + 4i)(5 + 12i).",
+      "hints": [
+        "El módulo de un producto de complejos es el producto de los módulos: no hace falta multiplicar primero.",
+        "|z·w| = |z|·|w|.",
+        "|3 + 4i| = √(3² + 4²) = 5; |5 + 12i| = √(5² + 12²) = 13.",
+        "|(3 + 4i)(5 + 12i)| = 5·13.",
+        "= 65."
+      ],
+      "solucion": "|(3+4i)(5+12i)| = |3+4i|·|5+12i| = 5·13 = 65. Verificado con Python.",
+      "explicacion": "La multiplicatividad del módulo (|zw| = |z||w|) es un invariante clave de los complejos: al multiplicar, los módulos se multiplican y los argumentos se suman.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "módulo de complejos",
+        "|zw|=|z||w|",
+        "ternas pitagóricas"
+      ],
+      "transferencias": [
+        "procesamiento de señales",
+        "rotaciones",
+        "fasores eléctricos"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 2.2 (Complex Number Operations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 588,
+      "titulo": "Un complejo más su conjugado",
+      "estrategia": "invariantes",
+      "dificultad": 1,
+      "enunciado": "Si z = 7 − 3i, calcula z + z̄ (la suma de z con su conjugado).",
+      "hints": [
+        "El conjugado de a + bi es a − bi; piensa qué pasa con la parte imaginaria al sumarlos.",
+        "z̄ = 7 + 3i.",
+        "z + z̄ = (7 − 3i) + (7 + 3i).",
+        "Las partes imaginarias se cancelan: queda 7 + 7.",
+        "= 14 (que es 2·Re(z))."
+      ],
+      "solucion": "z + z̄ = (7 − 3i) + (7 + 3i) = 14 = 2·Re(z). Verificado con Python.",
+      "explicacion": "Sumar un complejo con su conjugado siempre da un número real (2·parte real): la parte imaginaria es invariante y se anula. Es la base para extraer la parte real.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "conjugado complejo",
+        "z+z̄=2Re(z)",
+        "número real"
+      ],
+      "transferencias": [
+        "análisis de señales",
+        "transformadas",
+        "física"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 2.2 (Complex Number Operations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "conjugado",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 589,
+      "titulo": "La tangente y la secante",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Desde un punto exterior a una circunferencia se traza una recta tangente y una recta secante. La secante corta la circunferencia a distancias 3 y 12 del punto exterior. ¿Cuánto mide el segmento tangente?",
+      "hints": [
+        "La 'potencia del punto' es la misma para cualquier recta que pase por el punto: tangente² = (segmento externo de la secante)·(secante completa).",
+        "Para la secante, el producto es (distancia al primer corte)·(distancia al segundo corte) = 3·12.",
+        "= 36.",
+        "Para la tangente, ese producto es el cuadrado del segmento tangente: t² = 36.",
+        "t = 6."
+      ],
+      "solucion": "Por la potencia de un punto, t² = 3·12 = 36, así que t = 6. Verificado con Python.",
+      "explicacion": "La potencia de un punto exterior es invariante: vale t² para la tangente y (externo)·(total) para cualquier secante. Igualar ambas da la tangente.",
+      "tiempo_estimado": 14,
+      "conceptos": [
+        "potencia de un punto",
+        "tangente y secante",
+        "t²=producto"
+      ],
+      "transferencias": [
+        "óptica",
+        "triangulación",
+        "geometría de circunferencias"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 17 (Power of a Point)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "potencia-punto",
+        "circulo",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 590,
+      "titulo": "Encadenar proporciones",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Se sabe que a/b = 3/5 y b/c = 5/7. Si c = 21, ¿cuánto vale a?",
+      "hints": [
+        "Encadena las razones para escribir a, b y c en una sola proporción continua.",
+        "a : b = 3 : 5 y b : c = 5 : 7 comparten el 5 de b, así que a : b : c = 3 : 5 : 7.",
+        "Entonces a/c = 3/7.",
+        "Con c = 21: a = (3/7)·21.",
+        "= 9."
+      ],
+      "solucion": "Encadenando, a : b : c = 3 : 5 : 7, así que a = (3/7)·c = (3/7)·21 = 9. Verificado con Python.",
+      "explicacion": "Las razones encadenadas componen un invariante: a/c = (a/b)·(b/c). Alinear los términos comunes da una proporción continua directa.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "proporciones encadenadas",
+        "razón continua",
+        "composición de razones"
+      ],
+      "transferencias": [
+        "conversión de unidades",
+        "escalas",
+        "engranajes"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 4 (Proportions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "proporciones",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 591,
+      "titulo": "Subir el promedio",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "El promedio de 5 números es 12. ¿Qué número hay que agregar al conjunto para que el promedio de los 6 números sea 14?",
+      "hints": [
+        "El promedio fija la suma: úsala como invariante antes y después de agregar el número.",
+        "Suma de los 5 números = 5·12 = 60.",
+        "Para que 6 números promedien 14, su suma debe ser 6·14 = 84.",
+        "El número agregado es 84 − 60.",
+        "= 24."
+      ],
+      "solucion": "Suma inicial = 60; suma requerida = 84; el número a agregar es 84 − 60 = 24. Verificado con Python.",
+      "explicacion": "El promedio es la suma dividida por la cantidad; razonar con la SUMA (un invariante recuperable) evita confusiones al cambiar el tamaño del conjunto.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "promedio",
+        "suma como invariante",
+        "estadística"
+      ],
+      "transferencias": [
+        "control de calidad",
+        "calificaciones",
+        "análisis de datos"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 26 (Statistics and Probability)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "estadistica",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 592,
+      "titulo": "El ángulo exterior del triángulo",
+      "estrategia": "invariantes",
+      "dificultad": 1,
+      "enunciado": "En un triángulo, dos de sus ángulos interiores miden 40° y 65°. ¿Cuánto mide el ángulo exterior adyacente al tercer ángulo?",
+      "hints": [
+        "Hay un invariante de ángulos: el ángulo exterior de un triángulo es igual a la suma de los dos ángulos interiores no adyacentes (los 'remotos').",
+        "Los ángulos remotos son 40° y 65°.",
+        "El ángulo exterior buscado es su suma.",
+        "= 40° + 65°.",
+        "= 105°."
+      ],
+      "solucion": "El ángulo exterior es igual a la suma de los dos interiores remotos: 40° + 65° = 105°. Verificado con Python.",
+      "explicacion": "El teorema del ángulo exterior se deriva de que los tres interiores suman 180° (invariante): el exterior (= 180 − tercero) iguala la suma de los otros dos.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "ángulo exterior",
+        "suma de remotos",
+        "ángulos de un triángulo"
+      ],
+      "transferencias": [
+        "navegación",
+        "diseño geométrico",
+        "topografía"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 14 (Angle Chasing)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "angulos",
+        "triangulo",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 593,
+      "titulo": "Distancia entre dos puntos",
+      "estrategia": "invariantes",
+      "dificultad": 1,
+      "enunciado": "¿Cuál es la distancia entre los puntos (1, 2) y (7, 10) en el plano cartesiano?",
+      "hints": [
+        "La distancia se obtiene del teorema de Pitágoras aplicado a las diferencias de coordenadas.",
+        "Distancia = √((x₂ − x₁)² + (y₂ − y₁)²).",
+        "Diferencias: 7 − 1 = 6 y 10 − 2 = 8.",
+        "= √(6² + 8²) = √(36 + 64) = √100.",
+        "= 10."
+      ],
+      "solucion": "Distancia = √(6² + 8²) = √100 = 10. Verificado con Python.",
+      "explicacion": "La fórmula de la distancia es Pitágoras en coordenadas: invariante bajo traslaciones. Aquí aparece la terna 6-8-10.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "distancia entre puntos",
+        "Pitágoras",
+        "coordenadas"
+      ],
+      "transferencias": [
+        "GPS",
+        "gráficos por computadora",
+        "física"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 16 (The Power of Coordinates)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "coordenadas",
+        "distancia",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 594,
+      "titulo": "Cambio de base",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Calcula log₈(32).",
+      "hints": [
+        "Expresa ambos números como potencias de una base común (2) y usa la relación entre logaritmos.",
+        "32 = 2⁵ y 8 = 2³.",
+        "log₈(32) = log₈(2⁵) = 5·log₈(2).",
+        "Como 8 = 2³, log₈(2) = 1/3.",
+        "= 5·(1/3) = 5/3."
+      ],
+      "solucion": "log₈(32) = log(32)/log(8) = (5·log2)/(3·log2) = 5/3. Verificado con Python.",
+      "explicacion": "La fórmula de cambio de base hace invariante el cociente log(M)/log(N) bajo la base elegida: log₈(32) = 5/3 sin importar en qué base se calcule.",
+      "tiempo_estimado": 14,
+      "conceptos": [
+        "cambio de base",
+        "logaritmo",
+        "potencias de 2"
+      ],
+      "transferencias": [
+        "conversión entre escalas",
+        "informática",
+        "matemática financiera"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 1.5 (Logarithms)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 595,
+      "titulo": "El cuadrado del módulo",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Para el número complejo z = 2 + i, calcula z·z̄ (el producto de z por su conjugado).",
+      "hints": [
+        "El producto de un complejo por su conjugado es siempre un número real: el cuadrado de su módulo.",
+        "z·z̄ = (a + bi)(a − bi) = a² + b².",
+        "Aquí a = 2 y b = 1.",
+        "= 2² + 1² = 4 + 1.",
+        "= 5 (que es |z|²)."
+      ],
+      "solucion": "z·z̄ = 2² + 1² = 5 = |z|². Verificado con Python.",
+      "explicacion": "z·z̄ = |z|² es real e invariante: elimina la parte imaginaria. Es la base de la división de complejos (racionalizar multiplicando por el conjugado).",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "módulo al cuadrado",
+        "z·z̄=|z|²",
+        "conjugado"
+      ],
+      "transferencias": [
+        "división de complejos",
+        "mecánica cuántica",
+        "fasores"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 2.2 (Complex Number Operations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "conjugado",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 596,
+      "titulo": "El término número cien",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "En la sucesión aritmética 7, 11, 15, 19, …, ¿cuál es el término número 100?",
+      "hints": [
+        "Identifica la diferencia común y usa la fórmula del término general.",
+        "Diferencia común d = 4; primer término a₁ = 7.",
+        "Término n-ésimo: aₙ = a₁ + (n − 1)·d.",
+        "a₁₀₀ = 7 + 99·4.",
+        "= 7 + 396 = 403."
+      ],
+      "solucion": "a₁₀₀ = 7 + 99·4 = 403. Verificado con Python.",
+      "explicacion": "El patrón aritmético da una fórmula lineal en n: aₙ = a₁ + (n−1)d. No hace falta listar 100 términos.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "sucesión aritmética",
+        "término general",
+        "diferencia común"
+      ],
+      "transferencias": [
+        "proyecciones lineales",
+        "planes de pago",
+        "depreciación"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "sucesiones",
+        "aritmetica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 597,
+      "titulo": "Suma de Gauss hasta doscientos",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula 1 + 2 + 3 + ⋯ + 200.",
+      "hints": [
+        "Empareja el primer término con el último, el segundo con el penúltimo, etc.: todos los pares suman lo mismo.",
+        "Cada par (1+200), (2+199), … suma 201, y hay 100 pares.",
+        "O usa la fórmula: suma = n(n + 1)/2.",
+        "= 200·201/2.",
+        "= 20100."
+      ],
+      "solucion": "Suma = 200·201/2 = 20100. Verificado con Python.",
+      "explicacion": "El truco de Gauss: emparejar extremos da pares de suma constante. La fórmula n(n+1)/2 captura ese patrón.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "suma de Gauss",
+        "serie aritmética",
+        "n(n+1)/2"
+      ],
+      "transferencias": [
+        "conteo acumulado",
+        "complejidad de algoritmos",
+        "sumas"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "aritmetica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 598,
+      "titulo": "Quinto término geométrico",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "En la sucesión geométrica 2, 6, 18, 54, …, ¿cuál es el quinto término?",
+      "hints": [
+        "Encuentra la razón común (cada término entre el anterior) y aplica el término general.",
+        "Razón r = 6/2 = 3; primer término a₁ = 2.",
+        "Término n-ésimo: aₙ = a₁·rⁿ⁻¹.",
+        "a₅ = 2·3⁴.",
+        "= 2·81 = 162."
+      ],
+      "solucion": "a₅ = 2·3⁴ = 162. Verificado con Python.",
+      "explicacion": "El patrón geométrico multiplica por una razón fija: aₙ = a₁·rⁿ⁻¹. El crecimiento es exponencial.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "sucesión geométrica",
+        "razón común",
+        "término general"
+      ],
+      "transferencias": [
+        "interés compuesto",
+        "crecimiento poblacional",
+        "decaimiento"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "sucesiones",
+        "geometrica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 599,
+      "titulo": "Suma de potencias de dos",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula 1 + 2 + 4 + 8 + ⋯ + 512 (las potencias de 2 desde 2⁰ hasta 2⁹).",
+      "hints": [
+        "Es una serie geométrica de razón 2; usa la fórmula de la suma.",
+        "Suma de 2⁰ + 2¹ + ⋯ + 2ⁿ = 2ⁿ⁺¹ − 1.",
+        "Aquí el último término es 2⁹, así que n = 9.",
+        "= 2¹⁰ − 1.",
+        "= 1024 − 1 = 1023."
+      ],
+      "solucion": "1 + 2 + ⋯ + 2⁹ = 2¹⁰ − 1 = 1023. Verificado con Python.",
+      "explicacion": "La suma de potencias de 2 desde 2⁰ es siempre una menos que la siguiente potencia: 2ⁿ⁺¹ − 1. Es la base de la representación binaria.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "serie geométrica",
+        "potencias de 2",
+        "2ⁿ⁺¹−1"
+      ],
+      "transferencias": [
+        "representación binaria",
+        "estructuras de datos",
+        "informática"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "geometrica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 600,
+      "titulo": "Una serie geométrica infinita",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula la suma infinita 2/3 + 2/9 + 2/27 + 2/81 + ⋯",
+      "hints": [
+        "Es geométrica con razón 1/3 (< 1), así que converge.",
+        "Primer término a = 2/3, razón r = 1/3.",
+        "Suma infinita = a/(1 − r).",
+        "= (2/3)/(1 − 1/3) = (2/3)/(2/3).",
+        "= 1."
+      ],
+      "solucion": "Suma = (2/3)/(1 − 1/3) = 1. Verificado con Python.",
+      "explicacion": "Una serie geométrica con |r| < 1 converge a a/(1−r). El patrón infinito tiene suma finita, aquí exactamente 1.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "serie geométrica infinita",
+        "convergencia",
+        "a/(1−r)"
+      ],
+      "transferencias": [
+        "fractales",
+        "valor presente perpetuo",
+        "decimales periódicos"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "geometrica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 601,
+      "titulo": "Simplificar potencias",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula 8⁴ / 4³ expresando todo como potencias de 2.",
+      "hints": [
+        "Convierte las bases a potencias de 2 y usa las leyes de los exponentes.",
+        "8 = 2³, así que 8⁴ = 2¹²; 4 = 2², así que 4³ = 2⁶.",
+        "8⁴/4³ = 2¹²/2⁶.",
+        "Al dividir potencias de la misma base se restan los exponentes: 2¹²⁻⁶.",
+        "= 2⁶ = 64."
+      ],
+      "solucion": "8⁴/4³ = 2¹²/2⁶ = 2⁶ = 64. Verificado con Python.",
+      "explicacion": "Reducir todo a una base común revela el patrón: al dividir, los exponentes se restan. Las leyes de exponentes evitan calcular números grandes.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "leyes de exponentes",
+        "base común",
+        "restar exponentes"
+      ],
+      "transferencias": [
+        "notación científica",
+        "informática",
+        "escalas"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 1 (Integer Exponents)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "exponentes",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 602,
+      "titulo": "Un coeficiente binomial",
+      "estrategia": "patrones",
+      "dificultad": 3,
+      "enunciado": "En el desarrollo de (x + y)⁵, ¿cuál es el coeficiente del término x²y³?",
+      "hints": [
+        "El teorema del binomio dice que el coeficiente de xᵏyⁿ⁻ᵏ en (x+y)ⁿ es C(n, k).",
+        "Aquí n = 5 y el término x²y³ tiene k = 2 (el exponente de x).",
+        "El coeficiente es C(5, 2).",
+        "C(5,2) = (5·4)/(2·1).",
+        "= 10."
+      ],
+      "solucion": "El coeficiente de x²y³ en (x+y)⁵ es C(5,2) = 10. Verificado con Python.",
+      "explicacion": "Los coeficientes del binomio son los números de una fila del triángulo de Pascal: C(n,k). El patrón conecta álgebra con combinatoria.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "teorema del binomio",
+        "coeficientes binomiales",
+        "triángulo de Pascal"
+      ],
+      "transferencias": [
+        "probabilidad binomial",
+        "expansiones algebraicas",
+        "combinatoria"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 25 (Learning to Count)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "binomio",
+        "pascal",
+        "patron",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 603,
+      "titulo": "Suma de los primeros impares",
+      "estrategia": "patrones",
+      "dificultad": 1,
+      "enunciado": "Calcula 1 + 3 + 5 + 7 + ⋯ + 19 (la suma de los primeros 10 números impares).",
+      "hints": [
+        "Suma los primeros impares y busca el patrón: 1, 1+3=4, 1+3+5=9, …",
+        "Los resultados 1, 4, 9, 16, … son cuadrados perfectos.",
+        "La suma de los primeros n impares es n².",
+        "Aquí hay 10 impares (del 1 al 19).",
+        "= 10² = 100."
+      ],
+      "solucion": "La suma de los primeros n impares es n²; para n = 10 da 100. Verificado con Python.",
+      "explicacion": "Un patrón clásico: 1 + 3 + ⋯ + (2n−1) = n². Se 've' apilando capas en forma de L para completar un cuadrado.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "suma de impares",
+        "cuadrados perfectos",
+        "1+3+...+(2n−1)=n²"
+      ],
+      "transferencias": [
+        "demostraciones visuales",
+        "series",
+        "números figurados"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 604,
+      "titulo": "Diferencia de cuadrados",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula 51² − 49² sin elevar al cuadrado.",
+      "hints": [
+        "Reconoce el patrón de la diferencia de cuadrados: a² − b² = (a + b)(a − b).",
+        "Aquí a = 51 y b = 49.",
+        "51² − 49² = (51 + 49)(51 − 49).",
+        "= 100·2.",
+        "= 200."
+      ],
+      "solucion": "51² − 49² = (51+49)(51−49) = 100·2 = 200. Verificado con Python.",
+      "explicacion": "La factorización a² − b² = (a+b)(a−b) convierte una resta de cuadrados grandes en un producto sencillo. Es un patrón de cálculo mental muy útil.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "diferencia de cuadrados",
+        "factorización",
+        "cálculo mental"
+      ],
+      "transferencias": [
+        "aritmética rápida",
+        "factorización de enteros",
+        "álgebra"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 7 (Special Factorizations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "factorizacion",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 605,
+      "titulo": "El último dígito de una potencia grande",
+      "estrategia": "patrones",
+      "dificultad": 3,
+      "enunciado": "¿Cuál es el último dígito (dígito de las unidades) de 3¹⁰⁰?",
+      "hints": [
+        "El último dígito de las potencias de 3 sigue un ciclo; encuéntralo.",
+        "3¹ = 3, 3² = 9, 3³ = 27, 3⁴ = 81: los últimos dígitos son 3, 9, 7, 1 y luego se repiten.",
+        "El ciclo tiene longitud 4. Reduce el exponente módulo 4.",
+        "100 = 4·25, así que 100 ≡ 0 (mód 4), que corresponde al final del ciclo.",
+        "El cuarto término del ciclo es 1, así que el último dígito de 3¹⁰⁰ es 1."
+      ],
+      "solucion": "Los últimos dígitos de las potencias de 3 ciclan 3, 9, 7, 1 (periodo 4); como 100 es múltiplo de 4, el último dígito es 1. Verificado con Python.",
+      "explicacion": "El último dígito de las potencias es periódico (aquí periodo 4). Reducir el exponente módulo el periodo resuelve exponentes enormes.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "ciclo de últimos dígitos",
+        "potencias de 3",
+        "periodicidad módulo 4"
+      ],
+      "transferencias": [
+        "aritmética modular",
+        "criptografía",
+        "verificación de cálculos"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 5 (Using the Integers)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "unidades",
+        "potencia",
+        "patron",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 606,
+      "titulo": "El vigésimo número triangular",
+      "estrategia": "patrones",
+      "dificultad": 1,
+      "enunciado": "Los números triangulares son 1, 3, 6, 10, 15, … (cada uno suma un entero más que el anterior). ¿Cuál es el vigésimo número triangular?",
+      "hints": [
+        "El n-ésimo número triangular es la suma 1 + 2 + ⋯ + n.",
+        "Hay una fórmula cerrada: Tₙ = n(n + 1)/2.",
+        "Aquí n = 20.",
+        "= 20·21/2.",
+        "= 210."
+      ],
+      "solucion": "T₂₀ = 20·21/2 = 210. Verificado con Python.",
+      "explicacion": "Los números triangulares cuentan puntos en un triángulo y valen n(n+1)/2: el mismo patrón de la suma de Gauss.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "números triangulares",
+        "n(n+1)/2",
+        "suma de Gauss"
+      ],
+      "transferencias": [
+        "conteo de conexiones",
+        "apretones de manos",
+        "números figurados"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 607,
+      "titulo": "Mínimo con dieciséis",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Para x > 0, ¿cuál es el valor mínimo de x + 16/x?",
+      "hints": [
+        "Aplica AM-GM a los dos términos, cuyo producto es constante.",
+        "x + 16/x ≥ 2·√(x · 16/x).",
+        "El producto x·(16/x) = 16.",
+        "= 2·√16 = 8, con igualdad cuando x = 16/x, es decir x = 4.",
+        "El mínimo es 8."
+      ],
+      "solucion": "Por AM-GM, x + 16/x ≥ 2√16 = 8, con igualdad en x = 4. El mínimo es 8. Verificado con Python.",
+      "explicacion": "AM-GM da el mínimo de x + c/x como 2√c (cuando los términos se igualan). Aquí c = 16 da mínimo 8.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "desigualdad AM-GM",
+        "producto constante",
+        "mínimo 2√c"
+      ],
+      "transferencias": [
+        "optimización de costos",
+        "diseño eficiente",
+        "economía"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 608,
+      "titulo": "La cima de otra parábola",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "¿Cuál es el valor máximo de 12x − x²?",
+      "hints": [
+        "La expresión es una parábola que abre hacia abajo; su máximo está en el vértice.",
+        "Para ax² + bx + c con a < 0, el vértice está en x = −b/(2a).",
+        "Aquí a = −1, b = 12, así que x = −12/(2·(−1)) = 6.",
+        "Evalúa: 12·6 − 6² = 72 − 36.",
+        "= 36."
+      ],
+      "solucion": "El máximo está en x = 6: 12·6 − 6² = 36. Verificado con Python.",
+      "explicacion": "El vértice x = −b/(2a) localiza el óptimo de cualquier cuadrática. Para a < 0 es un máximo.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "vértice de parábola",
+        "máximo de cuadrática",
+        "x=−b/2a"
+      ],
+      "transferencias": [
+        "maximizar ingresos",
+        "física (alcance)",
+        "optimización"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 6 (Quadratic Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cuadratica",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 609,
+      "titulo": "Producto máximo con suma veinte",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Dos números positivos suman 20. ¿Cuál es el mayor valor posible de su producto?",
+      "hints": [
+        "Con suma fija, el producto de dos positivos es máximo cuando son iguales (AM-GM).",
+        "Por AM-GM, √(ab) ≤ (a + b)/2 = 10.",
+        "Así que ab ≤ 100.",
+        "La igualdad ocurre cuando a = b = 10.",
+        "El producto máximo es 100."
+      ],
+      "solucion": "Por AM-GM, ab ≤ (20/2)² = 100, con igualdad en a = b = 10. El máximo es 100. Verificado con Python.",
+      "explicacion": "A suma fija, el producto se maximiza con términos iguales: principio isoperimétrico en versión algebraica.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "AM-GM",
+        "suma fija",
+        "producto máximo"
+      ],
+      "transferencias": [
+        "áreas máximas",
+        "asignación de recursos",
+        "diseño"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 610,
+      "titulo": "El fondo de la parábola",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "¿Cuál es el valor mínimo de x² − 10x + 30?",
+      "hints": [
+        "Completa el cuadrado para revelar el vértice.",
+        "x² − 10x + 30 = (x² − 10x + 25) + 5 = (x − 5)² + 5.",
+        "El término (x − 5)² es ≥ 0, mínimo 0 cuando x = 5.",
+        "El valor mínimo es entonces 0 + 5.",
+        "= 5."
+      ],
+      "solucion": "x² − 10x + 30 = (x − 5)² + 5; como (x−5)² ≥ 0, el mínimo es 5 en x = 5. Verificado con Python.",
+      "explicacion": "Completar el cuadrado escribe la cuadrática como (cuadrado) + constante; el mínimo se lee directo de la constante.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "completar el cuadrado",
+        "vértice",
+        "mínimo de cuadrática"
+      ],
+      "transferencias": [
+        "mínimos cuadrados",
+        "minimizar costos",
+        "física"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 6 (Quadratic Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cuadratica",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 611,
+      "titulo": "Cauchy-Schwarz con cinco y doce",
+      "estrategia": "optimizacion",
+      "dificultad": 4,
+      "enunciado": "Si x² + y² = 1, ¿cuál es el valor máximo de 5x + 12y?",
+      "hints": [
+        "Usa la desigualdad de Cauchy-Schwarz para acotar la combinación lineal.",
+        "(5x + 12y)² ≤ (5² + 12²)(x² + y²).",
+        "= (25 + 144)(1) = 169.",
+        "Así que 5x + 12y ≤ √169 = 13, con igualdad cuando (x, y) es proporcional a (5, 12).",
+        "El máximo es 13."
+      ],
+      "solucion": "Por Cauchy-Schwarz, (5x+12y)² ≤ (5²+12²)(x²+y²) = 169, así que 5x+12y ≤ 13. El máximo es 13. Verificado con Python.",
+      "explicacion": "Cauchy-Schwarz acota una combinación lineal sujeta a una restricción cuadrática: el máximo es la longitud del vector de coeficientes, √(5²+12²) = 13.",
+      "tiempo_estimado": 16,
+      "conceptos": [
+        "Cauchy-Schwarz",
+        "restricción cuadrática",
+        "vectores"
+      ],
+      "transferencias": [
+        "optimización con restricciones",
+        "proyecciones",
+        "aprendizaje automático"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cauchy-schwarz",
+        "optimizacion",
+        "nivel-avanzado"
+      ]
+    },
+    {
+      "id": 612,
+      "titulo": "El cerco mínimo de cien",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Entre todos los rectángulos de área 100, ¿cuál tiene el menor perímetro y cuánto vale?",
+      "hints": [
+        "A área fija, el perímetro es mínimo cuando el rectángulo es un cuadrado (AM-GM).",
+        "Si los lados son l y w con l·w = 100, por AM-GM l + w ≥ 2√(lw) = 2√100 = 20.",
+        "El perímetro 2(l + w) ≥ 40.",
+        "La igualdad ocurre cuando l = w = 10.",
+        "El perímetro mínimo es 40."
+      ],
+      "solucion": "Por AM-GM, l + w ≥ 2√100 = 20, así que el perímetro mínimo es 2·20 = 40 (cuadrado de lado 10). Verificado con Python.",
+      "explicacion": "A área fija, el cuadrado minimiza el perímetro: AM-GM aplicada a los lados. Es el principio isoperimétrico para rectángulos.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "AM-GM",
+        "área fija",
+        "perímetro mínimo"
+      ],
+      "transferencias": [
+        "minimizar material",
+        "diseño de envases",
+        "tensión superficial"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 613,
+      "titulo": "Máximo producto con suma treinta",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Dos números positivos suman 30. ¿Cuál es su máximo producto posible?",
+      "hints": [
+        "A suma fija, el producto es máximo cuando los números son iguales.",
+        "Por AM-GM, ab ≤ ((a + b)/2)².",
+        "= (30/2)² = 15².",
+        "La igualdad es a = b = 15.",
+        "El producto máximo es 225."
+      ],
+      "solucion": "Por AM-GM, ab ≤ (30/2)² = 225, con igualdad en a = b = 15. El máximo es 225. Verificado con Python.",
+      "explicacion": "El mismo principio AM-GM con otro total: a + b fijo ⇒ producto máximo en el punto medio. Aquí 15·15 = 225.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "AM-GM",
+        "suma fija",
+        "producto máximo"
+      ],
+      "transferencias": [
+        "áreas",
+        "asignación",
+        "diseño óptimo"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 614,
+      "titulo": "Suma mínima con producto fijo",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Dos números positivos x e y cumplen x·y = 36. ¿Cuál es el menor valor posible de x + y?",
+      "hints": [
+        "A producto fijo, la suma es mínima cuando los números son iguales (AM-GM).",
+        "Por AM-GM, x + y ≥ 2√(xy).",
+        "= 2√36 = 2·6.",
+        "La igualdad ocurre cuando x = y = 6.",
+        "La suma mínima es 12."
+      ],
+      "solucion": "Por AM-GM, x + y ≥ 2√36 = 12, con igualdad en x = y = 6. El mínimo es 12. Verificado con Python.",
+      "explicacion": "El recíproco del problema anterior: a producto fijo, la suma se minimiza con términos iguales. AM-GM funciona en ambos sentidos.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "AM-GM",
+        "producto fijo",
+        "suma mínima"
+      ],
+      "transferencias": [
+        "minimizar costos",
+        "diseño",
+        "economía"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 615,
+      "titulo": "El tercer lado del triángulo",
+      "estrategia": "optimizacion",
+      "dificultad": 3,
+      "enunciado": "Un triángulo tiene dos lados de longitudes 5 y 9, y el tercer lado mide un número entero. ¿Cuántos valores enteros distintos puede tomar ese tercer lado?",
+      "hints": [
+        "La desigualdad triangular acota el tercer lado: debe ser menor que la suma y mayor que la diferencia de los otros dos.",
+        "Si el tercer lado es t: |9 − 5| < t < 9 + 5.",
+        "Es decir 4 < t < 14.",
+        "Los enteros estrictamente entre 4 y 14 son 5, 6, 7, …, 13.",
+        "Son 9 valores."
+      ],
+      "solucion": "Por la desigualdad triangular, 4 < t < 14, así que t ∈ {5, …, 13}: 9 valores enteros. Verificado con Python.",
+      "explicacion": "La desigualdad triangular define el rango válido del tercer lado: entre la diferencia y la suma de los otros dos. Contar los enteros del intervalo abierto da la respuesta.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "desigualdad triangular",
+        "rango de valores",
+        "conteo de enteros"
+      ],
+      "transferencias": [
+        "diseño de estructuras",
+        "rangos factibles",
+        "geometría"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 11 (Triangles)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "desigualdad-triangular",
+        "optimizacion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 616,
+      "titulo": "Minimizar una suma de distancias",
+      "estrategia": "optimizacion",
+      "dificultad": 3,
+      "enunciado": "¿Cuál es el valor mínimo de |x − 2| + |x − 7| cuando x recorre todos los números reales?",
+      "hints": [
+        "Interpreta la expresión como la suma de las distancias de x a 2 y a 7 en la recta.",
+        "La distancia total de un punto a 2 y a 7 es mínima cuando x está ENTRE 2 y 7.",
+        "Para cualquier x entre 2 y 7, las dos distancias suman exactamente la distancia entre 2 y 7.",
+        "= 7 − 2.",
+        "= 5 (el mínimo, alcanzado para todo x en [2, 7])."
+      ],
+      "solucion": "|x−2| + |x−7| es la distancia total a 2 y 7; su mínimo es la distancia entre ellos, 7 − 2 = 5, para cualquier x ∈ [2,7]. Verificado con Python.",
+      "explicacion": "Sumar distancias a dos puntos fijos se minimiza colocándose entre ellos: el mínimo es la distancia entre los puntos. Es geometría de la recta, no cálculo.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "valor absoluto",
+        "suma de distancias",
+        "interpretación geométrica"
+      ],
+      "transferencias": [
+        "ubicación de instalaciones",
+        "logística",
+        "optimización"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 22 (Inequalities)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "valor-absoluto",
+        "optimizacion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 617,
+      "titulo": "El mayor cuadrado bajo doscientos",
+      "estrategia": "optimizacion",
+      "dificultad": 1,
+      "enunciado": "¿Cuál es el mayor entero n tal que n² < 200?",
+      "hints": [
+        "Busca el cuadrado perfecto más grande que sea menor que 200.",
+        "13² = 169 < 200.",
+        "14² = 196 < 200.",
+        "15² = 225 > 200, así que 15 ya se pasa.",
+        "El mayor n es 14."
+      ],
+      "solucion": "14² = 196 < 200 y 15² = 225 > 200, así que el mayor n es 14. Verificado con Python.",
+      "explicacion": "Maximizar un entero bajo una cota cuadrática es tomar la parte entera de la raíz: ⌊√199⌋ = 14.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "maximizar entero",
+        "cota cuadrática",
+        "raíz cuadrada"
+      ],
+      "transferencias": [
+        "acotar soluciones",
+        "estimación",
+        "diseño con límites"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 5 (Using the Integers)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 618,
+      "titulo": "Despejar el exponente",
+      "estrategia": "inversion",
+      "dificultad": 1,
+      "enunciado": "Resuelve para x: 5ˣ = 625.",
+      "hints": [
+        "Expresa 625 como potencia de 5 para igualar exponentes (o usa el logaritmo).",
+        "625 = 5⁴.",
+        "Entonces 5ˣ = 5⁴.",
+        "Como las bases coinciden, x = 4.",
+        "x = 4."
+      ],
+      "solucion": "5ˣ = 625 = 5⁴ ⇒ x = 4. Verificado con Python.",
+      "explicacion": "Resolver una ecuación exponencial es deshacer la potencia: igualar exponentes cuando las bases coinciden, o aplicar el logaritmo (su inverso).",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "ecuación exponencial",
+        "misma base",
+        "logaritmo inverso"
+      ],
+      "transferencias": [
+        "crecimiento/decaimiento",
+        "finanzas",
+        "complejidad"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 1 (Exponents)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "exponentes",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 619,
+      "titulo": "La base desconocida",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Resuelve para x: log_x(64) = 3.",
+      "hints": [
+        "La ecuación logarítmica dice que x elevado a 3 da 64; deshazla con la definición de logaritmo.",
+        "log_x(64) = 3 significa x³ = 64.",
+        "Busca el número cuyo cubo es 64.",
+        "4³ = 64.",
+        "x = 4."
+      ],
+      "solucion": "log_x(64) = 3 ⇔ x³ = 64 ⇒ x = 4. Verificado con Python.",
+      "explicacion": "La definición de logaritmo invierte la ecuación: log_x(64) = 3 equivale a x³ = 64. Despejar la base es tomar la raíz cúbica.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "definición de logaritmo",
+        "ecuación logarítmica",
+        "raíz cúbica"
+      ],
+      "transferencias": [
+        "escalas",
+        "modelos exponenciales",
+        "álgebra"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 1.5 (Logarithms)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 620,
+      "titulo": "Más obreros, menos días",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Tres obreros construyen un muro en 12 días. Trabajando al mismo ritmo, ¿cuántos días tardarían 4 obreros en construir el mismo muro?",
+      "hints": [
+        "Es una proporción INVERSA: más obreros ⇒ menos días. Lo invariante es el trabajo total (obreros × días).",
+        "Trabajo total = 3 obreros · 12 días = 36 'obrero-días'.",
+        "Con 4 obreros, los días cumplen 4 · días = 36.",
+        "días = 36/4.",
+        "= 9 días."
+      ],
+      "solucion": "El trabajo total es 3·12 = 36 obrero-días; con 4 obreros, días = 36/4 = 9. Verificado con Python.",
+      "explicacion": "En proporción inversa, el producto de las cantidades es constante. Reconocer ese invariante (obrero-días) permite despejar hacia atrás los días.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "proporción inversa",
+        "producto constante",
+        "trabajo"
+      ],
+      "transferencias": [
+        "planificación de proyectos",
+        "productividad",
+        "logística"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 4 (Proportions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "proporciones",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 621,
+      "titulo": "Deshacer un aumento",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Un precio aumentó un 20% y quedó en $60. ¿Cuál era el precio original?",
+      "hints": [
+        "Trabaja hacia atrás: el precio final es 1.20 veces el original, no el original más 20% del final.",
+        "Si P es el original, entonces 1.20·P = 60.",
+        "Despeja P = 60/1.20.",
+        "= 60/(6/5) = 60·(5/6).",
+        "= 50."
+      ],
+      "solucion": "1.20·P = 60 ⇒ P = 60/1.20 = 50. Verificado con Python.",
+      "explicacion": "Para deshacer un aumento porcentual hay que DIVIDIR por el factor (1.20), no restar el 20% del final. Pensar el final como múltiplo del original evita el error común.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "porcentaje inverso",
+        "factor multiplicativo",
+        "trabajar hacia atrás"
+      ],
+      "transferencias": [
+        "precios e impuestos",
+        "descuentos",
+        "finanzas"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 4 (Proportions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "porcentajes",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 622,
+      "titulo": "Sistema de dos ecuaciones",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Resuelve el sistema: x + y = 10 y x − y = 4. ¿Cuánto valen x e y?",
+      "hints": [
+        "Suma o resta las ecuaciones para eliminar una variable.",
+        "Sumando las dos ecuaciones: (x + y) + (x − y) = 10 + 4 ⇒ 2x = 14.",
+        "x = 7.",
+        "Sustituye en x + y = 10: 7 + y = 10 ⇒ y = 3.",
+        "x = 7, y = 3."
+      ],
+      "solucion": "Sumando: 2x = 14 ⇒ x = 7; luego y = 3. Verificado con Python.",
+      "explicacion": "La eliminación resuelve el sistema sumando ecuaciones para cancelar una variable. Es reconstruir los valores individuales a partir de su suma y su diferencia.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "sistema de ecuaciones",
+        "eliminación",
+        "suma y diferencia"
+      ],
+      "transferencias": [
+        "mezclas",
+        "circuitos",
+        "balance de cuentas"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 3 (Linear Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "sistemas",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 623,
+      "titulo": "Raíz cuadrada de un negativo",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Resuelve para z (número complejo): z² = −9. Da la solución con parte imaginaria positiva.",
+      "hints": [
+        "No hay raíz real de un negativo; usa la unidad imaginaria i, con i² = −1.",
+        "Buscas z tal que z² = −9 = 9·(−1).",
+        "z = ±√9·√(−1) = ±3i.",
+        "La solución con parte imaginaria positiva es 3i.",
+        "Comprueba: (3i)² = 9·i² = −9. ✓"
+      ],
+      "solucion": "z² = −9 ⇒ z = ±3i; la de parte imaginaria positiva es 3i (pues (3i)² = −9). Verificado con Python.",
+      "explicacion": "Los números complejos permiten resolver ecuaciones sin solución real: √(−9) = 3i. Resolver z² = −9 es invertir el cuadrado en el plano complejo.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "números complejos",
+        "unidad imaginaria",
+        "z²=−9"
+      ],
+      "transferencias": [
+        "circuitos de corriente alterna",
+        "ecuaciones diferenciales",
+        "física"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 2 (Complex Numbers)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 624,
+      "titulo": "Reconstruir la sucesión aritmética",
+      "estrategia": "inversion",
+      "dificultad": 3,
+      "enunciado": "En una sucesión aritmética, el tercer término es 10 y el séptimo es 26. ¿Cuál es el primer término?",
+      "hints": [
+        "Del salto entre el 3.º y el 7.º término recupera la diferencia común; luego retrocede al primero.",
+        "Del término 3 al 7 hay 4 pasos: a₇ − a₃ = 4·d ⇒ 26 − 10 = 4d ⇒ d = 4.",
+        "El primer término es a₃ menos 2 pasos: a₁ = a₃ − 2d.",
+        "= 10 − 2·4.",
+        "= 2."
+      ],
+      "solucion": "d = (26 − 10)/4 = 4; a₁ = a₃ − 2d = 10 − 8 = 2. Verificado con Python.",
+      "explicacion": "Dos términos cualesquiera determinan la diferencia común (por su separación) y, retrocediendo, el primer término. Es resolver la sucesión hacia atrás.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "sucesión aritmética",
+        "diferencia común",
+        "reconstruir a₁"
+      ],
+      "transferencias": [
+        "interpolación",
+        "calibración",
+        "modelos lineales"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "sucesiones",
+        "inversion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 625,
+      "titulo": "Reconstruir la sucesión geométrica",
+      "estrategia": "inversion",
+      "dificultad": 3,
+      "enunciado": "En una sucesión geométrica de términos positivos, el segundo término es 6 y el cuarto es 54. ¿Cuál es el primer término?",
+      "hints": [
+        "Del cociente entre el 4.º y el 2.º término recupera la razón; luego retrocede al primero.",
+        "a₄/a₂ = r², así que 54/6 = r² ⇒ r² = 9 ⇒ r = 3 (positivo).",
+        "El primer término es a₂ dividido entre r: a₁ = a₂/r.",
+        "= 6/3.",
+        "= 2."
+      ],
+      "solucion": "r² = a₄/a₂ = 9 ⇒ r = 3; a₁ = a₂/r = 6/3 = 2. Verificado con Python.",
+      "explicacion": "En una geométrica, la razón entre términos separados k posiciones es rᵏ; recuperarla permite retroceder al primer término dividiendo.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "sucesión geométrica",
+        "razón común",
+        "reconstruir a₁"
+      ],
+      "transferencias": [
+        "interés compuesto",
+        "decaimiento",
+        "modelos exponenciales"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 24 (Sequences and Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "sucesiones",
+        "geometrica",
+        "inversion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 626,
+      "titulo": "Deshacer la función",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Sea f(x) = 3x − 5. ¿Para qué valor de x se cumple f(x) = 16?",
+      "hints": [
+        "Deshaz las operaciones de f en orden inverso para despejar x.",
+        "f multiplica por 3 y resta 5; para invertir, primero suma 5 y luego divide entre 3.",
+        "Plantea 3x − 5 = 16.",
+        "3x = 21.",
+        "x = 7."
+      ],
+      "solucion": "3x − 5 = 16 ⇒ 3x = 21 ⇒ x = 7. Verificado con Python.",
+      "explicacion": "Resolver f(x) = valor es aplicar la función inversa: deshacer cada operación en orden contrario (sumar el 5, dividir por el 3).",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "función inversa",
+        "despejar",
+        "orden inverso"
+      ],
+      "transferencias": [
+        "decodificación",
+        "conversión de unidades",
+        "criptografía"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 21 (Functions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "funciones",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 627,
+      "titulo": "Deshacer un descuento",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Tras un descuento del 25%, un artículo cuesta $90. ¿Cuál era su precio original?",
+      "hints": [
+        "Trabaja hacia atrás: el precio final es el 75% del original (100% − 25%).",
+        "Si P es el original, 0.75·P = 90.",
+        "Despeja P = 90/0.75.",
+        "= 90/(3/4) = 90·(4/3).",
+        "= 120."
+      ],
+      "solucion": "0.75·P = 90 ⇒ P = 90/0.75 = 120. Verificado con Python.",
+      "explicacion": "Para deshacer un descuento se divide por el factor restante (0.75), no se suma el 25% del precio rebajado. El precio final es una fracción del original.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "porcentaje inverso",
+        "factor de descuento",
+        "trabajar hacia atrás"
+      ],
+      "transferencias": [
+        "precios y rebajas",
+        "impuestos",
+        "finanzas personales"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 4 (Proportions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "porcentajes",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 628,
+      "titulo": "El número y su cuadrado",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Un número entero positivo, sumado a su propio cuadrado, da 42. ¿Cuál es el número?",
+      "hints": [
+        "Traduce a una ecuación cuadrática y resuélvela.",
+        "Sea x el número: x² + x = 42, es decir x² + x − 42 = 0.",
+        "Factoriza: busca dos números que multipliquen −42 y sumen 1: 7 y −6.",
+        "(x + 7)(x − 6) = 0, con raíces x = −7 y x = 6.",
+        "Como se pide positivo, x = 6 (y en efecto 6² + 6 = 42)."
+      ],
+      "solucion": "x² + x = 42 ⇒ (x + 7)(x − 6) = 0 ⇒ x = 6 (positivo). Verificado con Python.",
+      "explicacion": "Plantear y factorizar la cuadrática reconstruye el número desde la condición. La factorización busca dos enteros con producto −42 y suma 1.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "ecuación cuadrática",
+        "factorización",
+        "raíz positiva"
+      ],
+      "transferencias": [
+        "modelado de problemas",
+        "diseño",
+        "álgebra aplicada"
+      ],
+      "source": "Lehoczky & Rusczyk, *the Art of Problem Solving, Vol. 1* — cap. 6 (Quadratic Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cuadratica",
+        "inversion",
+        "nivel-basico"
+      ]
     }
   ]
 }
