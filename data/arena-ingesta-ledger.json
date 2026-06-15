@@ -583,11 +583,17 @@
       "archivo": "Arena/Problem solving y olimpiadas/IntroGeom.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 34 (2026-06-15, Opus 4.8). 44 problemas (ids 365-408) al banco data/problems.json. Distribución 11/11/11/11 (invariantes/patrones/optimizacion/inversion), elegida para llevar el balance GLOBAL a 102/102/102/102 exactos. Fuentes internas (TOC verificado, leídas las secciones de Review/Challenge): cap. 4 Perimeter and Area (razón de áreas con base/altura compartida -> invariantes; máximos de área e isoperimétrico -> optimizacion; trabajar hacia atrás desde área/perímetro -> inversion); cap. 6 Right Triangles (ternas pitagóricas 3-4-5/5-12-13/8-15-17/7-24-25, triángulos 30-60-90 y 45-45-90, área del equilátero -> patrones; escalera deslizante, área+hipotenusa->perímetro -> inversion); cap. 9 Polygons (suma de ángulos interiores/exteriores, diagonales n(n-3)/2 -> invariantes); potencia de un punto (cap.13) y ángulo inscrito (cap.12) -> invariantes. El volumen de SOLUCIONES de AoPS es un libro aparte no disponible: cada número se resolvió y verificó de forma independiente con Python. Nota de honestidad: el Prob. 6.54 (triángulos rectángulos enteros con un cateto = 24) lo fija Python en 7, no 6 (factorizaciones pares de 576: catetos 24 con {7,10,18,32,45,70,143}); se usó 7. Builder idempotente scripts/_build_aops_introgeom.py. §9 verde: JSON válido, ids 1..408 sin huecos ni duplicados, esquema §4.1 OK en los 44 nuevos, verificar-shell.py OK (203 archivos).",
+      "ids_problemas": [
+        365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375,
+        376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386,
+        387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397,
+        398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408
+      ]
     },
     {
       "libro": "AoPS Introduction to Number Theory",

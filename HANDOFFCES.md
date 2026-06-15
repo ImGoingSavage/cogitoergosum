@@ -2796,3 +2796,43 @@ de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos
 **Siguiente** — seguir con la serie AoPS: `IntroGeom.pdf`, `IntroNumbTheo.pdf`,
 `introCountProb.pdf`, `MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`,
 `Calculus.pdf`. Mismo esquema §4.1 (ids 365+, sin huecos). Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-15 (Arena tanda 34) — SECTOR C: AoPS *Introduction to Geometry* (Rusczyk), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Introduction to Geometry` (Richard
+Rusczyk, Art of Problem Solving, 2.ª ed.) — libros[35] del ledger, ruta
+`entrenamiento`, cuota 40 (superada con **44**). Destino: **`data/problems.json`**
+(esquema §4.1), ids **365-408** sin huecos. Fuentes internas (TOC verificado; se leyeron
+las secciones de Review Problems / Challenge Problems de los caps. 4, 6 y 9):
+- **cap. 4 «Perimeter and Area»** → razón de áreas con base/altura compartida y la ceviana
+  que reparte el área (**invariantes**); máximos de área e isoperimétrico, rectángulo inscrito
+  (**optimizacion**); trabajar hacia atrás desde área/perímetro a dimensiones (**inversion**).
+- **cap. 6 «Right Triangles»** → ternas pitagóricas (3-4-5, 5-12-13, 8-15-17, 7-24-25 y sus
+  múltiplos), triángulos especiales 30-60-90 y 45-45-90, área del equilátero, recíproco de
+  Pitágoras y conteo de ternas (**patrones**); escalera deslizante y (área+hipotenusa)→perímetro
+  vía (a+b)² (**inversion**); altura mínima sobre el lado mayor (**optimizacion**).
+- **cap. 9 «Polygons»** → suma de ángulos interiores (n−2)·180°, exteriores = 360°, diagonales
+  n(n−3)/2 (**invariantes**); más **potencia de un punto** (cap. 13) y **ángulo inscrito**
+  (cap. 12) como invariantes.
+
+**Distribución 11/11/11/11** (invariantes/patrones/optimizacion/inversion) — geometría es
+balanceada por naturaleza; se eligió para llevar el balance **GLOBAL a 102/102/102/102 exactos**
+(antes 91/91/91/91).
+
+**NOTA de honestidad (verificación):** el volumen de SOLUCIONES de AoPS es un libro aparte
+**no disponible** en la Arena, así que **cada número se resolvió y verificó de forma independiente
+con Python** (44 afirmaciones — todas OK). Caso documentado: el **Prob. 6.54** (triángulos
+rectángulos de lados enteros con un cateto = 24) lo fija Python en **7**, no 6 — la enumeración
+da catetos 24 con {7, 10, 18, 32, 45, 70, 143} (siete factorizaciones pares de 576). Se usó 7;
+Python corrigió la suposición inicial.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+408 ids únicos (1-408) sin huecos; esquema §4.1 correcto para 365-408; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: **inversion 102, optimizacion 102, invariantes
+102, patrones 102** (408 total, balance perfecto). Builder idempotente en
+`scripts/_build_aops_introgeom.py`.
+
+**Siguiente** — seguir con la serie AoPS: `IntroNumbTheo.pdf`, `introCountProb.pdf`,
+`MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf`. Mismo esquema §4.1
+(ids 409+, sin huecos). Verificar SIEMPRE con Python.
