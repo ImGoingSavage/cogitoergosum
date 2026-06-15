@@ -617,11 +617,17 @@
       "archivo": "Arena/Problem solving y olimpiadas/introCountProb.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 36 (2026-06-15, Opus 4.8). 44 problemas (ids 453-496) al banco data/problems.json. Distribución 11/11/11/11 (patrones/invariantes/optimizacion/inversion), elegida para llevar el balance GLOBAL a 124/124/124/124 exactos. Fuentes internas (TOC verificado; leídas las secciones Review/Challenge de los caps. 2, 3, 4, 8 y 11): cap. 2 Basic Counting (casework/complementario/constructivo/restricciones) y cap. 3 Correcting for Overcounting (permutaciones con repetidos, simetrías circulares); cap. 4 Committees & Combinations (C(n,r), identidad C(n,r)=C(n,n-r)) y cap. 5 caminos en cuadrícula; cap. 8 Basic Probability (suma/complemento/producto); cap. 11 Expected Value y cap. 12-13 Pascal/hockey stick. Mapeo: fórmulas/identidades combinatorias (perm. con repetidos, C(n,r), Pascal, hockey stick, cuadrícula, palíndromos) -> patrones; conteo complementario/sobreconteo por división/P(A)+P(noA)=1/valor esperado como promedio -> invariantes; máximos-mínimos y garantías (palomar, menor n, decisión por EV) -> optimizacion; reconstruir n desde conteo/probabilidad y 'contar lo que no quieres' -> inversion. El volumen de SOLUCIONES de AoPS es un libro aparte no disponible: cada número se resolvió y verificó de forma independiente con Python (math.comb/factorial, fractions; 44 checks, todos OK). Casos: P(3 cartas no todas mismo color)=13/17; helicópteros óptimos=2; menor n con C(n,2)>=100 = 15; >=2 letras consecutivas iguales en 5-letras = 1 725 126. Builder idempotente scripts/_build_aops_introcp.py. §9 verde: JSON válido, ids 1..496 sin huecos ni duplicados, esquema §4.1 OK en los 44 nuevos, verificar-shell.py OK (203 archivos).",
+      "ids_problemas": [
+        453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463,
+        464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 474,
+        475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485,
+        486, 487, 488, 489, 490, 491, 492, 493, 494, 495, 496
+      ]
     },
     {
       "libro": "AoPS Intermediate Algebra",

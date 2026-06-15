@@ -2873,3 +2873,43 @@ de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos
 **Siguiente** — seguir con la serie AoPS: `introCountProb.pdf`, `MedAlgebra.pdf`,
 `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf`. Mismo esquema §4.1 (ids 453+, sin
 huecos). Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-15 (Arena tanda 36) — SECTOR C: AoPS *Introduction to Counting & Probability* (Patrick), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Introduction to Counting & Probability`
+(David Patrick, Art of Problem Solving) — libros[37] del ledger, ruta `entrenamiento`,
+cuota 40 (superada con **44**). Destino: **`data/problems.json`** (esquema §4.1), ids
+**453-496** sin huecos. Fuentes internas (TOC verificado; se leyeron las secciones
+Review/Challenge de los caps. 2, 3, 4, 8 y 11):
+- **cap. 2 «Basic Counting» + cap. 3 «Correcting for Overcounting»** → conteo complementario,
+  constructivo, restricciones; permutaciones con repetidos y simetrías circulares.
+- **cap. 4 «Committees and Combinations» + cap. 5** → C(n,r), identidad C(n,r)=C(n,n−r),
+  caminos en cuadrícula.
+- **cap. 8 «Basic Probability»** → suma/complemento/producto de probabilidades, P(A)+P(no A)=1.
+- **cap. 11 «Expected Value» + cap. 12-13 «Pascal / Hockey Stick»** → valor esperado,
+  identidades de Pascal y del palo de hockey.
+
+**Distribución 11/11/11/11** (patrones/invariantes/optimizacion/inversion) — para llevar el
+balance **GLOBAL a 124/124/124/124 exactos** (antes 113/113/113/113). Mapeo: fórmulas e
+identidades combinatorias → **patrones**; conteo complementario, corrección de sobreconteo por
+división y P(A)+P(no A)=1 / valor esperado como promedio ponderado → **invariantes**;
+máximos/mínimos y garantías de tipo palomar (pigeonhole) y decisiones por valor esperado →
+**optimizacion**; reconstruir n desde un conteo/probabilidad y «contar lo que no quieres»
+(complementario) → **inversion**.
+
+**NOTA de honestidad (verificación):** el volumen de SOLUCIONES de AoPS es un libro aparte
+**no disponible** en la Arena, así que **cada número se resolvió y verificó de forma independiente
+con Python** (math.comb/factorial, fractions; 44 afirmaciones — todas OK). Casos confirmados:
+P(3 cartas no todas del mismo color) = 13/17; helicópteros óptimos = 2; menor n con C(n,2) ≥ 100
+= 15; «palabras» de 5 letras con ≥2 consecutivas iguales = 1 725 126.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+496 ids únicos (1-496) sin huecos; esquema §4.1 correcto para 453-496; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: **inversion 124, optimizacion 124, invariantes
+124, patrones 124** (496 total, balance perfecto). Builder idempotente en
+`scripts/_build_aops_introcp.py`.
+
+**Siguiente** — seguir con la serie AoPS: `MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`,
+`Vol2.pdf`, `Calculus.pdf`. Mismo esquema §4.1 (ids 497+, sin huecos). Verificar SIEMPRE con
+Python.
