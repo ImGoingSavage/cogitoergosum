@@ -1,5 +1,11 @@
 # Linealidad de la esperanza bajo presión
 
+## Desde cero: qué es la esperanza y qué sabrás hacer
+
+La **esperanza** $E[X]$ de una variable aleatoria es su promedio ponderado por probabilidades: si $X$ toma el valor $x$ con probabilidad $P(X=x)$, entonces $E[X]=\sum_x x\,P(X=x)$. Es el "centro de gravedad" de la distribución —el número alrededor del cual se equilibran los resultados—. Para un dado justo, $E[X]=\tfrac{1+2+\cdots+6}{6}=3.5$.
+
+Esta lección construye **la** herramienta que más problemas de probabilidad ataja en entrevista: la linealidad de la esperanza. La idea es que la esperanza de una suma es la suma de las esperanzas, **sin importar si las partes están relacionadas entre sí**. Eso permite romper un problema enredado en piezas diminutas, resolver cada una de un vistazo, y sumar. Al final sabrás reconocer la señal ("¿cuántos de $n$ cumplen tal cosa?"), montar variables indicadoras y obtener la media sin tocar la distribución conjunta.
+
 ## El teorema y su fuerza oculta
 
 La linealidad de la esperanza dice algo que parece simple pero tiene una consecuencia extraordinaria:

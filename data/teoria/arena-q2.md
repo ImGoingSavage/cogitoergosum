@@ -1,5 +1,16 @@
 # Bayes, tasas base y señales ruidosas
 
+## Desde cero: el problema que esta lección resuelve
+
+Una prueba "buena" puede engañarte por completo. Imagina un detector que acierta el 99% de las veces, aplicado a algo muy raro (digamos, 1 de cada 1000). Casi todas sus alarmas serán falsas. ¿Por qué? Porque hay tantísimos casos sanos que incluso un 1% de error sobre ellos produce más falsos positivos que verdaderos positivos sobre la minoría enferma.
+
+Para entenderlo necesitas tres ideas, que construyo desde cero:
+- **Prevalencia (o tasa base):** qué tan común es la condición en la población, $P(E)$.
+- **Sensibilidad:** si alguien tiene la condición, ¿con qué probabilidad la prueba lo detecta? $P(+\mid E)$.
+- **Especificidad:** si alguien NO la tiene, ¿con qué probabilidad la prueba lo libera? $P(-\mid \neg E)$.
+
+Lo que de verdad te importa es lo contrario: "me salió positivo, ¿qué probabilidad tengo de estar enfermo?" $=P(E\mid +)$. Bayes convierte lo que el test te da ($P(+\mid E)$) en lo que quieres ($P(E\mid +)$), y verás que el resultado vive o muere según la prevalencia. Al final sabrás calcularlo con una tabla de 2×2 sin memorizar la fórmula.
+
 ## El error más caro en data science
 
 Antes de calcular el rendimiento de un modelo, pregunta siempre: **¿cuál es la prevalencia?**
