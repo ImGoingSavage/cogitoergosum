@@ -265,13 +265,21 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
 
 ---
 
-## 7. Oleada 3 (futuro, NO ahora — solo si lo piden)
+## 7. Oleada 3 (en curso desde 2026-06-15 — solo si lo piden)
 
-- Resolver `[[wiki-links]]`: hacerlos navegables (hoy son chips no clicables).
-- Render de `$$` multi-línea si aparece la necesidad.
+- ✅ **Resolver `[[wiki-links]]` (HECHO, sw.js v77, commit `fa4d02b`):** los
+  `[[arena-xxx]]` ahora son navegables. `js/markdown.js` los emite como
+  `<a class="enlace-unidad" data-unidad="…">` (con `data-auto` cuando no traen
+  etiqueta); `js/study.js` (`cablearEnlacesLeccion` / `navegarAUnidad`) pone el
+  título real de la unidad, marca rotos (`.enlace-roto`) y al click/Enter abre la
+  unidad destino (haciendo visible su bloque si hace falta) y su lección. CSS
+  `.enlace-unidad` en `css/styles.css`. Los `[[concepto-sin-unidad]]` siguen como
+  chip `.enlace-concepto`; los literales de matriz `[[1,3],…]` intactos. Verificado:
+  93 targets únicos resuelven a unidades de `study.json`, 0 rotos.
+- Render de `$$` multi-línea si aparece la necesidad. *(Pendiente.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
-  esquema → consultar a Edgar antes).
-- Rúbricas / simulación de entrevista (Nivel E) si el esquema lo soporta.
+  esquema → consultar a Edgar antes). *(Pendiente.)*
+- Rúbricas / simulación de entrevista (Nivel E) si el esquema lo soporta. *(Pendiente.)*
 
 ---
 
