@@ -65,7 +65,7 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**106 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**110 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
@@ -78,8 +78,13 @@ ponla en una sola línea `$$...$$`.
 | **Estadística aplicada (lotes 16-17)** | pst1-4 (Practical Statistics) + isl1-4 (ISLP) (8) |
 | **Ciencia de datos (lotes 18-19)** | ads1-4 + cds1-4 + s1 (9) |
 | **Health originales (lote 20)** | h1, h2 (2) |
+| **Conductual (lote 21)** | c1, c2, c3, c4 (STAR) (4) |
 
-### FALTAN (12 lecciones) — esto es lo que debes hacer
+### FALTAN (8 lecciones) — esto es lo que debes hacer
+
+**Solo restan las Quant largas (200+ líneas):** `arena-p1..p4` (A Practical Guide
+to Quantitative Finance) y `arena-fc1..fc4` (Fifty Challenging Problems in
+Probability). Cuida no inflar: inserta únicamente las secciones del contrato.
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
@@ -106,9 +111,8 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
 - ~~`arena-s1` (Huyen — skew, drift, rollout)~~ **HECHA (lote 19)**.
 
 **Conductual (route: conductual):**
-- `arena-c1, c2, c3, c4` (Build a Career in Data Science — STAR). *Formato STAR
-  ya es bastante adecuado; prioridad BAJA. Probablemente solo necesiten
-  Transferencia isomorfa ligera o pueden quedarse como needs_review.*
+- ~~`arena-c1, c2, c3, c4` (Build a Career in Data Science — STAR)~~ **HECHAS
+  (lote 21)**: toque ligero (errores típicos + transferencia hacia clusters técnicos).
 
 **Originales sueltos (route: health-ai-rwe):**
 - ~~`arena-h1` (DAGs/adjustment sets), `arena-h2` (target trial/immortal time)~~
