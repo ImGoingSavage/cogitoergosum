@@ -34,6 +34,13 @@ const NOMBRES_TIPO = {
 
 let datos = null; // contenido de data/study.json (null si no cargó)
 
+// Simulación de entrevista (Nivel E). El contenido vive en data/entrevista/<id>.json
+// (artefacto paralelo a data/teoria/, sin tocar el esquema de study.json). El
+// manifiesto _index.json lista qué unidades tienen simulación, para mostrar el
+// botón solo donde existe.
+let entrevistasDisponibles = new Set();
+const entrevistasCache = {}; // unidadId → objeto del JSON (null si no se pudo cargar)
+
 /* ============================ Arranque ================================ */
 
 export async function init() {
@@ -42,6 +49,12 @@ export async function init() {
     datos = await res.json();
   } catch {
     datos = null;
+  }
+  try {
+    const r = await fetch('data/entrevista/_index.json');
+    entrevistasDisponibles = new Set(r.ok ? await r.json() : []);
+  } catch {
+    entrevistasDisponibles = new Set();
   }
   actualizarRachaEstudio();
   actualizarHeaderRachas();
@@ -331,6 +344,138 @@ function cablearEnlacesLeccion(cont) {
   });
 }
 
+/* ===================== Simulación de entrevista (Nivel E) ============= */
+
+// Abre/cierra la simulación de entrevista de una unidad. Espeja a alternarLeccion
+// pero el contenido es JSON estructurado (rol + preguntas con rúbrica y errores),
+// renderizado como un guion interactivo: cada pregunta se responde en voz alta
+// ANTES de revelar la rúbrica (forcejeo antes de la solución, Nivel E sin IA).
+async function alternarEntrevista(u) {
+  const btn = $('btn-unidad-entrevista');
+  const cont = $('unidad-entrevista');
+  if (!cont.hidden) {
+    cont.hidden = true;
+    btn.textContent = '🎤 Simular entrevista';
+    return;
+  }
+  if (!(u.id in entrevistasCache)) {
+    btn.disabled = true;
+    try {
+      const res = await fetch(`data/entrevista/${u.id}.json`);
+      entrevistasCache[u.id] = res.ok ? await res.json() : null;
+    } catch {
+      entrevistasCache[u.id] = null;
+    }
+    btn.disabled = false;
+  }
+  cont.innerHTML = '';
+  const sim = entrevistasCache[u.id];
+  if (!sim) {
+    cont.innerHTML =
+      '<p class="leccion-error">La simulación no está disponible ahora mismo — revisa la conexión e inténtalo de nuevo (una vez cargada queda guardada para practicar sin red).</p>';
+  } else {
+    cont.appendChild(construirEntrevista(sim));
+  }
+  cont.hidden = false;
+  btn.textContent = 'Cerrar la simulación';
+}
+
+// Construye el DOM de una simulación (sin innerHTML de datos: todo con textContent,
+// el contenido es nuestro pero así no hay forma de inyectar markup por error).
+function construirEntrevista(sim) {
+  const frag = document.createDocumentFragment();
+
+  const rol = document.createElement('p');
+  rol.className = 'entrevista-rol';
+  const rolB = document.createElement('strong');
+  rolB.textContent = 'El entrevistador: ';
+  rol.append(rolB, document.createTextNode(sim.rol ?? ''));
+  if (sim.duracion) {
+    const d = document.createElement('span');
+    d.className = 'entrevista-duracion';
+    d.textContent = ` · ${sim.duracion}`;
+    rol.appendChild(d);
+  }
+  frag.appendChild(rol);
+
+  const intro = document.createElement('p');
+  intro.className = 'entrevista-instruccion';
+  intro.textContent =
+    'Responde cada pregunta en voz alta (o por escrito) antes de revelar la rúbrica. La nota la pones tú: ¿cubriste los puntos? ¿caíste en alguna trampa de comunicación?';
+  frag.appendChild(intro);
+
+  (sim.preguntas ?? []).forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'entrevista-q';
+
+    const preg = document.createElement('p');
+    preg.className = 'entrevista-pregunta';
+    const num = document.createElement('span');
+    num.className = 'entrevista-num';
+    num.textContent = `P${i + 1}. `;
+    preg.append(num, document.createTextNode(p.q ?? ''));
+    card.appendChild(preg);
+
+    const revelar = document.createElement('div');
+    revelar.className = 'entrevista-revelar';
+    revelar.hidden = true;
+
+    const tituloR = document.createElement('p');
+    tituloR.className = 'entrevista-subt';
+    tituloR.textContent = 'Una respuesta fuerte cubre:';
+    revelar.appendChild(tituloR);
+    revelar.appendChild(listaEntrevista(p.rubrica, 'rubrica'));
+
+    if (p.seguimiento) {
+      const seg = document.createElement('p');
+      seg.className = 'entrevista-seguimiento';
+      const segB = document.createElement('strong');
+      segB.textContent = 'Repregunta de presión: ';
+      seg.append(segB, document.createTextNode(p.seguimiento));
+      revelar.appendChild(seg);
+    }
+
+    if (p.errores?.length) {
+      const tituloE = document.createElement('p');
+      tituloE.className = 'entrevista-subt';
+      tituloE.textContent = 'Errores de comunicación frecuentes:';
+      revelar.appendChild(tituloE);
+      revelar.appendChild(listaEntrevista(p.errores, 'errores'));
+    }
+
+    const btn = document.createElement('button');
+    btn.className = 'secundario entrevista-toggle';
+    btn.type = 'button';
+    btn.textContent = 'Ver rúbrica y trampas';
+    btn.addEventListener('click', () => {
+      revelar.hidden = !revelar.hidden;
+      btn.textContent = revelar.hidden ? 'Ver rúbrica y trampas' : 'Ocultar rúbrica';
+    });
+
+    card.append(btn, revelar);
+    frag.appendChild(card);
+  });
+
+  if (sim.cierre) {
+    const cierre = document.createElement('blockquote');
+    cierre.className = 'entrevista-cierre';
+    cierre.textContent = sim.cierre;
+    frag.appendChild(cierre);
+  }
+  return frag;
+}
+
+function listaEntrevista(items, clase) {
+  const ul = document.createElement('ul');
+  ul.className = `entrevista-lista entrevista-${clase}`;
+  (items ?? []).forEach((it) => {
+    const li = document.createElement('li');
+    li.textContent = it;
+    ul.appendChild(li);
+  });
+  return ul;
+}
+
 // Navega a otra unidad desde un enlace de concepto y abre su lección directamente
 // (el lector venía leyendo). Si la unidad vive en otro bloque, lo hace visible.
 function navegarAUnidad(id) {
@@ -380,6 +525,22 @@ function abrirUnidad(unidadId) {
   $('unidad-leccion').hidden = true;
   $('unidad-leccion').innerHTML = '';
   btnLeccion.onclick = () => alternarLeccion(u);
+
+  // Simulación de entrevista (Nivel E): el botón solo aparece si la unidad
+  // tiene un guion en data/entrevista/<id>.json (según el manifiesto).
+  const btnEntrevista = $('btn-unidad-entrevista');
+  const contEntrevista = $('unidad-entrevista');
+  if (entrevistasDisponibles.has(u.id)) {
+    btnEntrevista.hidden = false;
+    btnEntrevista.disabled = false;
+    btnEntrevista.textContent = '🎤 Simular entrevista';
+    btnEntrevista.onclick = () => alternarEntrevista(u);
+  } else {
+    btnEntrevista.hidden = true;
+    btnEntrevista.onclick = null;
+  }
+  contEntrevista.hidden = true;
+  contEntrevista.innerHTML = '';
 
   const e = load('estudio');
   const enCurso = e.quizEnCurso?.unidadId === u.id;

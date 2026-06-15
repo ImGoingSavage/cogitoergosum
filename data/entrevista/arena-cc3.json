@@ -1,0 +1,49 @@
+{
+  "rol": "Entrevistador de MAANG (DS&A). Quiere ver cómo estructuras un DP, cómo aclaras la pregunta y cómo comunicas la complejidad antes de codificar.",
+  "duracion": "20 min",
+  "preguntas": [
+    {
+      "q": "Tienes monedas [1, 2, 5] y un objetivo de 11. Resuélvelo pensando en voz alta. Empieza aclarándome qué variante estás resolviendo.",
+      "rubrica": [
+        "Aclara la variante ANTES de codificar: ¿mínimo número de monedas, o número de combinaciones que suman 11?",
+        "Define el estado con palabras: dp[i] = mínimo de monedas para sumar i (o número de formas de sumar i).",
+        "Da la recurrencia: dp[i] = min(dp[i−c] + 1) sobre las monedas c ≤ i; caso base dp[0] = 0.",
+        "Para contar combinaciones, pone las monedas en el bucle externo y el objetivo en el interno (evita contar permutaciones).",
+        "Da la complejidad sin que se la pidan: O(n·objetivo) tiempo, O(objetivo) espacio."
+      ],
+      "errores": [
+        "Saltar a escribir código sin aclarar la variante ni nombrar el estado.",
+        "Para contar combinaciones, iterar el objetivo por fuera y las monedas por dentro — eso cuenta permutaciones (1+2 ≠ 2+1) e infla el resultado.",
+        "Olvidar el caso base dp[0] = 0 (o = 1 forma)."
+      ],
+      "seguimiento": "¿Por qué el orden de los dos bucles cambia el resultado entre 'combinaciones' y 'permutaciones'? Explícamelo con 1+2 vs 2+1."
+    },
+    {
+      "q": "Explícame la complejidad y por qué el DP evita el costo exponencial de la recursión ingenua.",
+      "rubrica": [
+        "La recursión ingenua expande un árbol exponencial porque recalcula los mismos subproblemas.",
+        "La memoización/DP guarda cada subproblema una sola vez → O(n·objetivo).",
+        "Conecta con la idea profunda: el DP es backward induction, resolver desde los subcasos pequeños hacia arriba."
+      ],
+      "errores": [
+        "Decir 'es O(n)' omitiendo el factor objetivo (el valor numérico importa, no solo el número de monedas).",
+        "No distinguir tiempo de espacio.",
+        "Describir el DP como 'un truco' en vez de como subproblemas reutilizados."
+      ]
+    },
+    {
+      "q": "El entrevistador sube la presión: '¿y si las monedas pudieran ser negativas, o el objetivo fuera 10^9?' ¿Qué cambia?",
+      "rubrica": [
+        "Monedas negativas rompen el orden de subproblemas: el DP por valor creciente deja de estar bien definido (ciclos).",
+        "Objetivo 10^9 hace inviable O(objetivo) en memoria/tiempo: hay que cambiar de enfoque (teoría de números, BFS sobre residuos, o fórmula).",
+        "Reconoce los límites del modelo en vez de forzar la misma receta."
+      ],
+      "errores": [
+        "Insistir en el mismo array dp aunque el objetivo sea gigantesco.",
+        "No ver que las monedas negativas invalidan el supuesto de monotonía del DP.",
+        "Quedarse en silencio ante la repregunta en vez de razonar los límites en voz alta."
+      ]
+    }
+  ],
+  "cierre": "Aclara la variante antes de codificar, nombra el estado y la recurrencia, y da la complejidad sin que te la pidan. Pensar hacia atrás (DP) es la misma estructura que la parada óptima y la esperanza condicional."
+}

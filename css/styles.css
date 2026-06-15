@@ -1614,6 +1614,90 @@ button.secundario.peligro:hover:not(:disabled) {
 }
 .leccion .enlace-unidad.enlace-roto::before { content: ''; margin: 0; }
 
+/* ===== Simulación de entrevista (Nivel E) ===== */
+.entrevista {
+  margin-top: 14px;
+  padding-left: 14px;
+  border-left: 2px solid var(--acento);
+}
+.entrevista-rol {
+  color: var(--texto);
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  margin: 4px 0 2px;
+}
+.entrevista-duracion { color: var(--texto-tenue); font-family: var(--fuente); font-size: 0.85rem; }
+.entrevista-instruccion {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+.entrevista-q {
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+.entrevista-pregunta {
+  color: var(--texto);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.entrevista-num { color: var(--acento); font-family: var(--fuente); font-weight: 600; }
+.entrevista-toggle { font-size: 0.85rem; }
+.entrevista-revelar {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--borde);
+}
+.entrevista-subt {
+  color: var(--texto-tenue);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 10px 0 6px;
+}
+.entrevista-lista { list-style: none; padding-left: 0; margin: 0; }
+.entrevista-lista li {
+  position: relative;
+  padding-left: 22px;
+  margin: 5px 0;
+  color: var(--texto-suave);
+  line-height: 1.45;
+}
+.entrevista-rubrica li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--exito);
+  font-weight: 700;
+}
+.entrevista-errores li::before {
+  content: '⚠';
+  position: absolute;
+  left: 0;
+  color: var(--peligro);
+}
+.entrevista-seguimiento {
+  margin: 12px 0 4px;
+  padding: 8px 12px;
+  background: var(--lampara-suave);
+  border-radius: 6px;
+  color: var(--texto);
+  font-size: 0.92rem;
+}
+.entrevista-cierre {
+  margin: 16px 0 4px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--lampara);
+  color: var(--texto);
+  font-family: var(--serif);
+  font-style: italic;
+}
+
 .leccion hr {
   border: none;
   border-top: 1px solid var(--borde);

@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v77';
+const VERSION = 'cogitoergosum-v78';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -50,6 +50,11 @@ const SHELL = [
   'data/quotes.json',
   'data/badges.json',
   'data/avatar.json',
+  // Simulación de entrevista (Nivel E): manifiesto + guiones por unidad.
+  'data/entrevista/_index.json',
+  'data/entrevista/arena-q2.json',
+  'data/entrevista/arena-cc3.json',
+  'data/entrevista/arena-h17.json',
   // Lecciones de teoría del Modo Estudio (una por unidad): texto plano
   // pequeño — precachearlas garantiza estudiar sin red desde el iPad.
   'data/teoria/polya-cuatro-pasos.md',
