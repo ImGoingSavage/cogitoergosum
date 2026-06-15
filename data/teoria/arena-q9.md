@@ -32,6 +32,37 @@ La trampa: la verosimilitud (1 vs 1/8) empuja fuerte hacia la moneda trucada, pe
 
 La **Cauchy**, densidad 1/(π(1+x²)), tiene varianza (y ni siquiera media propia) infinita: ∫x²/(1+x²) diverge. Es el contraejemplo estándar al TLC y a «promediar siempre reduce el ruido».
 
+## Mini-ejemplo trabajado: contar patrones con linealidad
+
+«Lanzas una moneda justa 1 000 000 de veces. ¿Cuántas apariciones esperadas del patrón exacto "6 caras seguidas de 6 cruces" (12 símbolos)?» No intentes modelar dependencias entre posiciones solapadas: define un **indicador** Iₖ = 1 si el patrón empieza en la posición k. Hay 10⁶ − 11 posiciones válidas, y cada una acierta con prob 2⁻¹². Por **linealidad de la esperanza** (que NO exige independencia):
+
+> E[total] = Σ E[Iₖ] = (10⁶ − 11) · 2⁻¹² ≈ **244.14**
+
+**Predicción antes de seguir:** los eventos Iₖ de posiciones vecinas están correlacionados (se solapan). ¿Eso invalida el cálculo de la *esperanza*? Respuesta: **no**. La linealidad de la esperanza es ciega a la dependencia; solo necesitarías la independencia si calcularas la *varianza*. Esa ceguera es justo lo que la hace tan potente.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (Bayes con base):** un dato a favor (3 caras) más una tasa base (1/10 trucada) → la respuesta 8/17 vive *entre* prior y verosimilitud, nunca en el extremo.
+- **Contraejemplo (correlaciones "libres"):** ρ(A,B)=0.9, ρ(B,C)=0.8 no permiten ρ(A,C)=0.1; la matriz no es semidefinida positiva (det < 0). Tratar las correlaciones como independientes es el error: están encadenadas geométricamente.
+- **Caso borde (Cauchy):** sin media ni varianza, promediar no concentra nada; el contraejemplo estándar a "más muestras = menos ruido".
+
+## Errores típicos
+
+- **Conceptual:** dejar que la verosimilitud arrastre toda la decisión e ignorar la tasa base (la moneda trucada es rara: 1/10).
+- **Técnico:** exigir independencia para sumar esperanzas de indicadores solapados — no hace falta.
+- **De supuestos:** asignar correlaciones a mano sin verificar que la matriz sea PSD, o aplicar el TCL a colas pesadas (Cauchy).
+
+## Transferencia isomorfa
+
+- **Linealidad de la esperanza ↔ conteo de eventos raros en sistemas:** "número esperado de colisiones / de falsos positivos / de patrones" se suma con indicadores sin pelear con la dependencia, igual que estimar carga esperada en un sharding (conecta con [[arena-sd2]]).
+- **Bayes (prior×verosimilitud) ↔ VPP:** 8/17 es el mismo motor que el valor predictivo positivo de un test; la rareza frena al dato (conecta con [[arena-q2]]).
+- **Matriz de correlación PSD ↔ varianza de portafolio ≥ 0:** que toda combinación aᵀCa sea no negativa es por qué no puedes inventar correlaciones; la misma restricción gobierna el riesgo de una cartera (conecta con [[arena-q6]], Var de sumas con covarianza).
+- **Cauchy ↔ TCL que falla:** cola pesada sin segundo momento aparece también como cociente de dos brownianos (conecta con [[arena-q11]]).
+
+Moraleja de la arista: *para contar, suma indicadores (la dependencia no estorba a la esperanza); para creer, mezcla prior y verosimilitud; y recuerda que las correlaciones viven presas dentro de una matriz PSD.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
