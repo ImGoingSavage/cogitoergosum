@@ -685,11 +685,17 @@
       "archivo": "Arena/Problem solving y olimpiadas/Vol2.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 40 (2026-06-15, Opus 4.8). 44 problemas (ids 629-672) al banco data/problems.json. Distribución 11/11/11/11 (invariantes/patrones/optimizacion/inversion), balance GLOBAL a 168/168/168/168 exactos. PDF de 81 MB, IMAGEN PURA (get_text vacío); TOC leído como imágenes con Read. Vol.2 es el companion AVANZADO (no-cálculo de bachillerato) con temas FRESCOS no minados antes: trigonometría, leyes de senos/cosenos, cuadriláteros cíclicos (Ptolomeo), cónicas/polares, polinomios (raíces, sumas de Newton), identidades funcionales, límites, complejos (DeMoivre, raíces de la unidad), vectores/producto punto, matrices/determinantes. Cada número verificado con Python/sympy (44 checks; sumas/productos de raíces de la unidad = 0 numéricamente ~1e-128). Mapeo: identidades trig (sin²+cos²=1)/ley cosenos-senos/Ptolomeo/sumas de Newton/producto punto/determinante -> invariantes; raíces de la unidad/DeMoivre/ciclos de i/valores trig notables/raíces de polinomios -> patrones; amplitud a·sin+b·cos/área con ángulo/AM-GM/distancia mínima a recta/extremos en cónicas -> optimizacion; resolver trig/trig inversa/identidades funcionales/hallar raíces/Newton hacia atrás/raíz cuadrada compleja -> inversion. Casos: ley cosenos 5,7,60° -> √39; ley senos 2R=20; Ptolomeo rectángulo 3,4 -> 25=25; amplitud 3sin+4cos=5; min 5cos+12sin=-13; sqrt(i)=(1+i)/√2. Builder idempotente scripts/_build_aops_vol2.py. §9 verde: JSON válido, ids 1..672 sin huecos ni duplicados, esquema §4.1 OK en los 44 nuevos, verificar-shell.py OK (203 archivos).",
+      "ids_problemas": [
+        629, 630, 631, 632, 633, 634, 635, 636, 637, 638, 639,
+        640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650,
+        651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661,
+        662, 663, 664, 665, 666, 667, 668, 669, 670, 671, 672
+      ]
     },
     {
       "libro": "AoPS Calculus (David Patrick)",

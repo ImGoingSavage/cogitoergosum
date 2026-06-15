@@ -3030,3 +3030,36 @@ balance perfecto). Builder idempotente en `scripts/_build_aops_vol1.py`.
 **Siguiente** — seguir con la serie AoPS: `Vol2.pdf` (the ART of Problem Solving Vol. 2, temas
 avanzados), `Calculus.pdf`. Mismo esquema §4.1 (ids 629+, sin huecos). Verificar SIEMPRE con
 Python; cuidar la anti-duplicación con números frescos (Vol.2 también solapa temario).
+
+## Bitácora 2026-06-15 (Arena tanda 40) — SECTOR C: AoPS *the Art of Problem Solving, Vol. 2* (Lehoczky & Rusczyk), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Vol. 2 (and Beyond)` (Lehoczky & Rusczyk) —
+libros[41] del ledger, ruta `entrenamiento`, cuota 40 (superada con **44**). Destino:
+**`data/problems.json`** (esquema §4.1), ids **629-672** sin huecos. PDF de 81 MB, **imagen pura**
+(get_text vacío); TOC leído como imágenes con Read.
+
+**VALOR NUEVO (anti-duplicación, §1.6):** Vol.2 es el companion AVANZADO de bachillerato y
+aporta temas FRESCOS no minados en tandas previas: **trigonometría** (identidades, leyes de
+senos/cosenos), **cuadriláteros cíclicos / Ptolomeo**, **cónicas/polares**, **polinomios**
+(raíces, **sumas de Newton**), **identidades funcionales**, **límites**, **complejos** (DeMoivre,
+**raíces de la unidad**, forma polar), **vectores/producto punto**, **matrices/determinantes**.
+Cada número verificado con Python/sympy (44 checks; las sumas/productos de raíces de la unidad
+salen 0 numéricamente, ~1e-128).
+
+**Distribución 11/11/11/11** (invariantes/patrones/optimizacion/inversion) — balance **GLOBAL a
+168/168/168/168 exactos** (antes 157/157/157/157). Mapeo: identidades trig / ley cosenos-senos /
+Ptolomeo / sumas de Newton / producto punto / determinante → **invariantes**; raíces de la unidad
+/ DeMoivre / ciclos de i / valores trig / raíces de polinomios → **patrones**; amplitud
+a·sen+b·cos / área con ángulo / AM-GM / distancia mínima / extremos en cónicas → **optimizacion**;
+resolver trig / trig inversa / identidades funcionales / hallar raíces / Newton hacia atrás /
+raíz cuadrada compleja → **inversion**.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump de
+`sw.js`. Verificación §9 en verde: ambos JSON válidos; 672 ids únicos (1-672) sin huecos; esquema
+§4.1 correcto para 629-672; `verificar-shell.py` OK (203 archivos). Distribución total
+problems.json: **inversion 168, optimizacion 168, invariantes 168, patrones 168** (672 total,
+balance perfecto). Builder idempotente en `scripts/_build_aops_vol2.py`.
+
+**Siguiente** — ÚLTIMO de la serie AoPS: `Calculus.pdf` (AoPS Calculus, David Patrick). Mismo
+esquema §4.1 (ids 673+, sin huecos). Verificar SIEMPRE con Python. Tras Calculus, solo queda en
+el ledger *A Mind for Numbers* (Sector B, soporte teórico).
