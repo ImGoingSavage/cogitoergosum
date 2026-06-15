@@ -2358,3 +2358,50 @@ libros[24], **EPUB** — saltar y anotar si Read no lo abre), luego **Causal
 Inference: The Mixtape** (Cunningham, libros[25], .txt en `Biblioteca/`). Después
 Sectores D (conductual) y C (problems.json). Próxima unidad: `arena-h15,h16…`;
 órdenes desde 107, `f7-ex-68`+, VERSION v52+.
+
+## Bitácora 2026-06-14 (Arena tanda 24) — The Book of Why (Pearl & Mackenzie), 62 preguntas
+
+Procesado `The Book of Why` (Judea Pearl & Dana Mackenzie, 10 caps.) — libros[24],
+ruta `health-ai-rwe`, cuota 25. **El EPUB SÍ es legible**: se extrajo con
+`unzip -p "<epub>" OEBPS/Text/chapterNNN.xhtml` + strip de HTML, y se verificó el
+texto (escalera cap.1, front-door/do-calculus cap.7). Enfoque **gráfico/do-calculus**
+de Pearl, **DIFERENCIADO** de `arena-h3/h4/h5` (What If, potential-outcomes-first):
+la escalera, el do-operator, el front-door, la taxonomía de junciones, las paradojas
+y la mediación. 4 unidades (`fase-7`, órdenes 107-110):
+- **arena-h15** — **escalera de la causalidad** + génesis (cap.1-2): 3 peldaños
+  (ver P(Y|X) / hacer P(Y|do(X)) / imaginar contrafactual), ML en peldaño 1,
+  mini-Turing test, "mind over data", Galton/Pearson vs **Sewall Wright** (path
+  diagrams), aleatorización = do.
+- **arena-h16** — **diagramas, junciones y paradojas** (cap.3,4,6): DAG (flechas
+  ausentes = supuestos fuertes), redes bayesianas vs causales, **3 junciones**
+  (cadena/mediador, fork/confundidor, collider/efecto común; condicionar cierra
+  cadena-fork y **abre** collider), **Simpson** resuelto por estructura, **Berkson**,
+  **Monty Hall** como collider.
+- **arena-h17** — **do-operator, back-door, front-door, do-calculus** (cap.4,7):
+  P(Y|X)≠P(Y|do(X)), do() borra flechas hacia X, identificación, back-door/
+  estandarización, **front-door** (mediador que capta todo el efecto → identifica
+  con confundidor no medido; tabaco→alquitrán→cáncer), IV/Dr. Snow, **do-calculus**
+  (3 reglas, completo).
+- **arena-h18** — **contrafactuales y mediación** (cap.8-9): peldaño 3, **SCM** con
+  errores U, **abducción→acción→predicción**, equivalencia con los **potential
+  outcomes** Y_x, mediación (NDE/NIE; Baron-Kenny falla con interacción), **PN**
+  (necesidad/'but-for'/legal) vs **PS** (suficiencia/prevención).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-68** escalera / ML en peldaño 1 /
+predecir≠causar, **f7-ex-69** front-door con confundidor no medido) = 62. 11
+heurísticas nuevas (escalera-de-la-causalidad, causalidad-requiere-modelo,
+diagramas-causales-junciones, paradoja-simpson-causal, sesgo-collider-berkson,
+do-operator-intervencion, criterio-puerta-delantera, do-calculus,
+contrafactual-modelo-estructural, analisis-mediacion-efectos,
+causa-necesaria-suficiente); h17 reúsa confundimiento-backdoor. Catálogo total
+**216** heurísticas. `sw.js` **v52** (+4 lecciones `data/teoria/arena-h{15..18}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (110 unidades en `fase-7`, 69 ítems de examen); `verificar-shell.py` OK (195
+archivos). Contenido anclado en el libro (§1.2; EPUB extraído y verificado).
+
+**Siguiente** — orden §10 (health-ai-rwe, ÚLTIMO de la ruta): **Causal Inference:
+The Mixtape** (Scott Cunningham, libros[25], **.txt en `Biblioteca/`**). Después la
+ruta health-ai-rwe queda completa → Sectores **D** (conductual, STAR) y **C**
+(problems.json + fase-0). Próxima unidad: `arena-h19,h20…`; órdenes desde 111,
+`f7-ex-70`+, VERSION v53+.

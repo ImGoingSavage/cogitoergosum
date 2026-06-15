@@ -1525,6 +1525,94 @@
    "cuando_usar": "Para generar evidencia robusta y generalizable cuando los datos no pueden centralizarse.",
    "ejemplo": "Correr un estudio de seguridad en 10 bases de 4 países; cada sitio devuelve resultados agregados que se meta-analizan.",
    "patron": "mismo código en muchas bases; solo resultados agregados salen; privacidad + escala + reproducibilidad (p. ej. LEGEND)"
+  },
+  {
+   "id": "escalera-de-la-causalidad",
+   "nombre": "La escalera de la causalidad (3 peldaños)",
+   "descripcion": "Pearl ordena las preguntas causales en tres PELDAÑOS de poder creciente. (1) ASOCIACIÓN / VER: '¿Qué pasa si VEO X?' — regularidades observadas, P(Y|X), correlación/regresión; es lo que hacen la estadística clásica y el machine learning/deep learning actual (rung 1). (2) INTERVENCIÓN / HACER: '¿Qué pasa si HAGO X?' — P(Y|do(X)); requiere un modelo causal, no basta con los datos observados (ej.: subir el precio, no solo ver clientes que pagaron caro). (3) CONTRAFACTUALES / IMAGINAR: '¿Qué HABRÍA pasado si hubiera hecho X en vez de Y?' — explica, atribuye responsabilidad, requiere un modelo estructural completo. Un nivel superior puede responder preguntas de los inferiores, pero NO al revés: con solo datos del peldaño 1 no se contestan preguntas de intervención o contrafactuales.",
+   "cuando_usar": "Para clasificar QUÉ tipo de pregunta causal te hacen y qué se necesita para responderla.",
+   "ejemplo": "'¿Los que fuman tienen más cáncer?' (ver) vs '¿prohibir fumar reduce el cáncer?' (hacer) vs '¿este paciente habría enfermado si no hubiera fumado?' (imaginar).",
+   "patron": "1 ver P(Y|X) (ML/estadística) · 2 hacer P(Y|do(X)) (intervención) · 3 imaginar (contrafactual); subir requiere más que datos"
+  },
+  {
+   "id": "causalidad-requiere-modelo",
+   "nombre": "La causalidad requiere un modelo, no solo datos",
+   "descripcion": "Tesis central de Pearl ('mind over data'): los DATOS por sí solos no contienen información causal — describen lo observado (peldaño 1), no lo que pasaría bajo intervención. Para subir la escalera hace falta un MODELO CAUSAL (un diagrama/DAG con supuestos sobre qué causa qué), que aporta la estructura que los datos no tienen. La historia: Galton y Pearson, fundadores de la estadística, DESTERRARON la causalidad (solo correlación 'objetiva'); Sewall Wright introdujo los PATH DIAGRAMS (primer modelo causal cuantitativo) pese a la oposición. La correlación no es causación porque distintos modelos causales pueden generar los MISMOS datos; el modelo, no los datos, decide.",
+   "cuando_usar": "Cuando alguien pretende sacar conclusiones causales 'dejando que los datos hablen'.",
+   "ejemplo": "Los mismos datos de A y Y son compatibles con A→Y, A←Y o A←C→Y; solo un modelo (DAG) los distingue.",
+   "patron": "datos = peldaño 1; subir exige un DAG con supuestos; correlación≠causación porque varios modelos dan los mismos datos"
+  },
+  {
+   "id": "diagramas-causales-junciones",
+   "nombre": "Diagramas causales y las tres junciones",
+   "descripcion": "Un DIAGRAMA CAUSAL (DAG) codifica supuestos y deja LEER cómo fluye la asociación por tres tipos de JUNCIÓN: (1) CADENA A→B→C (B es MEDIADOR): A y C se asocian; condicionar B los DESCONECTA. (2) BIFURCACIÓN/FORK A←B→C (B es CONFUNDIDOR/causa común): A y C se asocian espuriamente; condicionar B los desconecta. (3) COLLIDER A→B←C (B es efecto común): A y C son independientes; condicionar B (o un descendiente) los CONECTA espuriamente. Regla práctica: condicionar un mediador o un fork BLOQUEA el flujo; condicionar un collider lo ABRE. Esta taxonomía es la base de d-separación y de decidir qué ajustar.",
+   "cuando_usar": "Para razonar qué variables abren o cierran asociaciones al condicionarlas.",
+   "ejemplo": "Talento→éxito←belleza entre actores famosos (collider): condicionar 'famoso' crea correlación negativa espuria talento-belleza.",
+   "patron": "cadena (mediador) y fork (confundidor): condicionar BLOQUEA; collider (efecto común): condicionar ABRE"
+  },
+  {
+   "id": "paradoja-simpson-causal",
+   "nombre": "Paradoja de Simpson (resolución causal)",
+   "descripcion": "La PARADOJA DE SIMPSON: una asociación (p. ej. un tratamiento parece beneficioso) se INVIERTE al agregar/desagregar por un grupo — beneficioso en cada subgrupo pero perjudicial en el total, o viceversa. La estadística sola NO puede decir qué tabla creer; solo el MODELO CAUSAL lo resuelve: hay que ajustar por una variable si es un CONFUNDIDOR (causa común, fork) pero NO si es un MEDIADOR o un COLLIDER (ajustar entonces SESGA). Es decir, la decisión 'agregar o desagregar' depende de la ESTRUCTURA causal, no de los números. Misma data, conclusiones opuestas según el DAG.",
+   "cuando_usar": "Cuando una asociación cambia de signo al estratificar y hay que decidir qué tabla usar.",
+   "ejemplo": "Un fármaco baja la recuperación en hombres y en mujeres por separado pero la sube en el total: si el sexo es confundidor, cree los subgrupos; si es mediador, el total.",
+   "patron": "la asociación se invierte al estratificar; ajusta solo si la variable es confundidor (fork), no si es mediador/collider"
+  },
+  {
+   "id": "sesgo-collider-berkson",
+   "nombre": "Sesgo de collider (Berkson, Monty Hall)",
+   "descripcion": "Condicionar sobre un COLLIDER (efecto común de dos variables, A→C←B) o sobre un descendiente suyo CREA una asociación espuria entre A y B que no existía. El SESGO DE BERKSON es su versión clásica: en datos seleccionados por un efecto común (p. ej. solo pacientes hospitalizados, donde dos enfermedades 'compiten' por explicar el ingreso) aparecen correlaciones falsas entre las causas. El problema de MONTY HALL se explica igual: abrir una puerta (efecto de dónde está el premio Y de tu elección) es condicionar un collider que cambia las probabilidades. La selección de la muestra por un collider es una forma encubierta de este sesgo (= sesgo de selección).",
+   "cuando_usar": "Cuando la muestra o el análisis condicionan un efecto común de las variables de interés.",
+   "ejemplo": "Entre celebridades (fama = talento O belleza), talento y belleza correlacionan negativo aunque sean independientes en la población.",
+   "patron": "condicionar un efecto común crea correlación espuria; Berkson (muestras seleccionadas), Monty Hall; = sesgo de selección"
+  },
+  {
+   "id": "do-operator-intervencion",
+   "nombre": "El do-operator (ver vs hacer)",
+   "descripcion": "El DO-OPERATOR distingue OBSERVAR de INTERVENIR. P(Y|X=x) es 'la distribución de Y entre los que SE OBSERVA con X=x' (peldaño 1, puede estar confundida). P(Y|do(X=x)) es 'la distribución de Y si FORZÁRAMOS X=x en todos' (peldaño 2, el efecto causal). Intervenir do(x) equivale, en el grafo, a BORRAR todas las flechas que ENTRAN a X (eliminar sus causas, como hace la aleatorización) y fijar X=x; así se eliminan los caminos traseros. El objetivo de la identificación es expresar P(Y|do(x)) en términos de cantidades OBSERVACIONALES (sin do), usando el grafo. Confundir P(Y|x) con P(Y|do(x)) es el error de 'correlación = causación'.",
+   "cuando_usar": "Siempre que la pregunta sea de efecto de una intervención, no de mera observación.",
+   "ejemplo": "P(recuperación | do(tratar)) (lo que importa para decidir) ≠ P(recuperación | tratado observado) (confundido por quién elige tratarse).",
+   "patron": "do(x) = intervenir (borra flechas hacia X) ≠ ver; identificar = expresar P(Y|do(x)) con datos observacionales"
+  },
+  {
+   "id": "criterio-puerta-delantera",
+   "nombre": "Criterio de la puerta delantera (front-door)",
+   "descripcion": "El CRITERIO DE LA PUERTA DELANTERA (front-door) identifica el efecto causal de X sobre Y AUNQUE haya un CONFUNDIDOR NO MEDIDO entre ellos, si existe un MEDIADOR M completamente en el camino X→M→Y que: (1) intercepta TODO el efecto de X sobre Y (no hay otro camino directo X→Y), (2) no tiene caminos traseros abiertos con X, y (3) todos los caminos traseros de M a Y están bloqueados por X. Entonces se combina el efecto X→M con el efecto M→Y (cada uno identificable) para recuperar P(Y|do(X)). Es el complemento del back-door: cuando NO puedes ajustar por el confundidor (no medido) pero SÍ observas el mecanismo intermedio. Ejemplo de Pearl: fumar → alquitrán → cáncer, con un gen confundidor no medido.",
+   "cuando_usar": "Hay confundimiento no medido X-Y pero observas un mediador que canaliza todo el efecto.",
+   "ejemplo": "Estimar el efecto del tabaco sobre el cáncer vía el alquitrán pulmonar (mediador medido), pese a un gen confundidor no observado.",
+   "patron": "mediador que capta TODO el efecto y sin backdoors abiertos → identifica P(Y|do(x)) sin medir el confundidor"
+  },
+  {
+   "id": "do-calculus",
+   "nombre": "do-calculus (identificación de efectos)",
+   "descripcion": "El DO-CALCULUS es un conjunto de TRES REGLAS de reescritura (más los axiomas de probabilidad) que permiten transformar una expresión con do() en una EQUIVALENTE sin do(), usando la estructura del grafo causal: a grandes rasgos, (1) añadir/quitar observaciones, (2) intercambiar una intervención por una observación cuando el grafo lo justifica, y (3) añadir/quitar intervenciones que no tienen efecto. Es COMPLETO: si un efecto causal P(Y|do(x)) es IDENTIFICABLE a partir del grafo y los datos observacionales, el do-calculus lo demuestra y produce la fórmula; si no es identificable, también lo determina. Es el 'mapa universal' para encontrar CUALQUIER ruta de estimación (back-door y front-door son casos particulares).",
+   "cuando_usar": "Cuando back-door/front-door no aplican directamente y necesitas saber si el efecto es identificable y cómo.",
+   "ejemplo": "En un grafo complejo, el do-calculus dice si P(Y|do(x)) puede escribirse con datos observacionales y da la expresión.",
+   "patron": "3 reglas que eliminan do() usando el grafo; completo (decide identificabilidad); back-door y front-door son casos suyos"
+  },
+  {
+   "id": "contrafactual-modelo-estructural",
+   "nombre": "Contrafactuales y modelos causales estructurales (SCM)",
+   "descripcion": "Los CONTRAFACTUALES (peldaño 3: '¿qué habría pasado si…?') no se pueden computar solo con datos ni solo con intervenciones: requieren un MODELO CAUSAL ESTRUCTURAL (SCM), un conjunto de ecuaciones que asignan a cada variable su valor en función de sus causas y de términos de error U (lo idiosincrático de cada individuo). El algoritmo de tres pasos: (1) ABDUCCIÓN — usar la evidencia observada para actualizar las creencias sobre los U (qué tipo de individuo es este); (2) ACCIÓN — modificar el modelo según el contrafactual (do); (3) PREDICCIÓN — calcular Y en el modelo modificado con esos U. Así Pearl 'algoritmiza' los contrafactuales, conectándolos con los potential outcomes (Y_x) de Neyman-Rubin: son la misma idea expresada en lenguajes distintos.",
+   "cuando_usar": "Preguntas de atribución/explicación individual ('¿fue X la causa de este resultado?').",
+   "ejemplo": "¿Habría sobrevivido ESTE paciente sin el tratamiento? Abducción (su perfil), acción (quitar tratamiento), predicción.",
+   "patron": "SCM con errores U; contrafactual = abducción → acción → predicción; equivalen a los potential outcomes Y_x"
+  },
+  {
+   "id": "analisis-mediacion-efectos",
+   "nombre": "Análisis de mediación (efectos directo e indirecto)",
+   "descripcion": "La MEDIACIÓN descompone el efecto de X sobre Y en un EFECTO DIRECTO (X→Y) y uno INDIRECTO a través de un mediador M (X→M→Y). El método clásico de Baron-Kenny (producto/diferencia de coeficientes de regresión) solo es válido SIN interacciones ni no linealidades. Pearl define con contrafactuales el EFECTO DIRECTO NATURAL (NDE: cambiar X dejando M en el valor que habría tenido) y el EFECTO INDIRECTO NATURAL (NIE: cambiar M como respondería a X, dejando X fijo), que SÍ funcionan con interacciones y permiten una descomposición correcta del efecto total. OJO: para identificar efectos de mediación NO basta con ajustar por confundidores del par X-Y; hay supuestos adicionales sobre los confundidores de M-Y.",
+   "cuando_usar": "Cuando interesa POR QUÉ/por qué vía X afecta a Y (mecanismo), no solo el efecto total.",
+   "ejemplo": "¿Cuánto del efecto de un fármaco sobre la supervivencia pasa por bajar la presión (indirecto) vs otros mecanismos (directo)?",
+   "patron": "efecto = directo + indirecto; Baron-Kenny falla con interacción; usa NDE/NIE contrafactuales; ojo confundidores M-Y"
+  },
+  {
+   "id": "causa-necesaria-suficiente",
+   "nombre": "Causa necesaria vs suficiente (PN/PS)",
+   "descripcion": "Los contrafactuales formalizan dos nociones de causalidad. PROBABILIDAD DE NECESIDAD (PN): probabilidad de que el resultado NO habría ocurrido SIN la causa, dado que ambos ocurrieron — '¿fue X NECESARIA para Y?' (clave en lo legal: 'but for' causation, atribución de culpa). PROBABILIDAD DE SUFICIENCIA (PS): probabilidad de que la causa, de estar presente, PRODUZCA el resultado en quien no lo tenía — '¿basta X para Y?' (clave en políticas/prevención). Bajo supuestos (monotonicidad, exogeneidad) se pueden ESTIMAR combinando datos experimentales y observacionales. Aplicaciones: responsabilidad legal (¿el fármaco causó el daño de ESTE paciente?) y atribución (¿cuánto del calentamiento es atribuible a la actividad humana?).",
+   "cuando_usar": "Para atribución/responsabilidad individual o para evaluar suficiencia de una causa.",
+   "ejemplo": "En un juicio: PN = probabilidad de que el paciente NO se habría dañado de no tomar el fármaco (necesidad → culpa).",
+   "patron": "PN (¿necesaria? 'but for', legal) vs PS (¿suficiente? prevención); estimables combinando experimento + observación"
   }
  ],
  "bloques": [
@@ -2227,7 +2315,11 @@
     "arena-h11",
     "arena-h12",
     "arena-h13",
-    "arena-h14"
+    "arena-h14",
+    "arena-h15",
+    "arena-h16",
+    "arena-h17",
+    "arena-h18"
    ],
    "examen": {
     "items": [
@@ -4504,6 +4596,77 @@
        ]
       },
       "source": "The Book of OHDSI — Cap. 10 (Defining Cohorts) y Cap. 16 (Clinical Validity)"
+     },
+     {
+      "id": "f7-ex-68",
+      "heuristica": "escalera-de-la-causalidad",
+      "enunciado": "Un equipo de data science entrena un modelo de deep learning que predice muy bien quién desarrollará una enfermedad, y concluye que 'ya entienden las causas' y pueden recomendar intervenciones. Usando la escalera de la causalidad de Pearl, evalúa esa afirmación. (a) ¿En qué peldaño está su modelo y por qué? (b) ¿Qué tipo de preguntas NO puede responder y qué se necesita para subir? (c) Da las tres versiones (un peldaño cada una) de una pregunta sobre un fármaco.",
+      "pistas": [
+       "El deep learning ajusta asociaciones a datos…",
+       "¿Predecir = entender causas?",
+       "Para 'hacer' (intervenir) hace falta algo más que datos.",
+       "El tercer peldaño imagina mundos alternativos.",
+       "Ver / hacer / imaginar."
+      ],
+      "solucion": "(a) Su modelo está en el PELDAÑO 1 (ASOCIACIÓN). El deep learning, por sofisticado que sea, ajusta funciones a grandes volúmenes de datos para encontrar ASOCIACIONES/patrones —P(enfermedad | features observadas)— exactamente como un búho que predice dónde irá la presa sin entender por qué. Predecir bien (correlación) NO implica entender causas: buenas predicciones no requieren buenas explicaciones, y la misma data es compatible con varios modelos causales. (b) NO puede responder preguntas del PELDAÑO 2 (INTERVENCIÓN, '¿qué pasa si HAGO X?', P(Y|do(X))) —p. ej. si una intervención REDUCIRÁ la enfermedad— ni del PELDAÑO 3 (CONTRAFACTUALES, '¿qué habría pasado si…?') —atribución/explicación de un caso. Recomendar intervenciones a partir de un modelo de peldaño 1 es el error clásico de confundir correlación con causación (una feature puede predecir sin ser causa; intervenir sobre ella no cambiaría el outcome). Para subir hace falta un MODELO CAUSAL (un DAG con supuestos) que los datos por sí solos no aportan; con él, vía back-door/front-door/do-calculus o un experimento, se identifica P(Y|do(X)). (c) Sobre un fármaco: PELDAÑO 1 (ver): '¿los pacientes que TOMARON el fármaco se recuperan más?' P(recuperación | tomó). PELDAÑO 2 (hacer): '¿si DIÉRAMOS el fármaco a todos, se recuperarían más?' P(recuperación | do(dar)). PELDAÑO 3 (imaginar): 'este paciente lo tomó y se recuperó; ¿se HABRÍA recuperado SIN tomarlo?' (contrafactual de atribución).",
+      "disparador": "Señal: 'predice muy bien → entendemos las causas → intervengamos'. Jugada: ubícalo en el peldaño 1 (asociación); predecir ≠ causar; intervención (do) y contrafactuales exigen un MODELO causal, no más datos; separa ver / hacer / imaginar.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "escalera de la causalidad",
+        "asociación vs intervención vs contrafactual",
+        "do-operator",
+        "límites del ML",
+        "correlación≠causación"
+       ],
+       "errores_comunes": [
+        "Creer que predecir bien = entender causas",
+        "Recomendar intervenciones desde un modelo predictivo (peldaño 1)",
+        "Pensar que más datos suben de peldaño"
+       ],
+       "casos_borde": [
+        "Una feature muy predictiva puede no ser causal (marcador/confundida)",
+        "Subir de peldaño requiere supuestos del modelo, no solo datos"
+       ]
+      },
+      "source": "The Book of Why (Pearl & Mackenzie) — Cap. 1 (The Ladder of Causation)"
+     },
+     {
+      "id": "f7-ex-69",
+      "heuristica": "criterio-puerta-delantera",
+      "enunciado": "Quieres estimar el efecto causal de fumar (X) sobre el cáncer (Y) con datos observacionales, pero sospechas un factor genético NO medido que causa tanto fumar como cáncer. Sí puedes medir el alquitrán acumulado en los pulmones (M), que está en el camino X→M→Y. (a) ¿Por qué falla aquí el ajuste por la puerta trasera (back-door)? (b) ¿Qué criterio te permite identificar el efecto y qué condiciones debe cumplir el mediador? (c) Conceptualmente, ¿cómo se combina la información para obtener P(Y|do(fumar))?",
+      "pistas": [
+       "¿Puedes ajustar por el gen si no lo mides?",
+       "Hay un mediador que canaliza el efecto: X→M→Y.",
+       "El mediador no debe tener caminos traseros abiertos con X.",
+       "Se combinan dos efectos: X→M y M→Y.",
+       "do() sobre X y luego sobre M."
+      ],
+      "solucion": "(a) El AJUSTE POR LA PUERTA TRASERA requiere medir un conjunto que CIERRE todos los caminos traseros entre X e Y; aquí el camino trasero es X←gen→Y, pero el gen NO está medido, así que no se puede condicionar sobre él y el back-door es INVIABLE: queda confundimiento no controlable. (b) El CRITERIO DE LA PUERTA DELANTERA (FRONT-DOOR) permite identificar el efecto usando el mediador M (alquitrán), siempre que: (1) M INTERCEPTE TODO el efecto de X sobre Y (no haya un camino directo X→Y que no pase por M); (2) no haya camino trasero abierto entre X y M (X→M no esté confundido); y (3) todos los caminos traseros de M a Y estén BLOQUEADOS por X (el confundidor gen no afecta a M salvo a través de X). Bajo esas condiciones el efecto es identificable pese al confundidor no medido. (c) Se combinan dos efectos identificables por separado: el efecto de X sobre M —P(M|do(X)), identificable porque X→M no está confundido— y el efecto de M sobre Y —P(Y|do(M)), identificable ajustando por X, que bloquea el back-door de M a Y—. Encadenándolos (sumando sobre los valores de M: el efecto de fumar sobre el alquitrán, multiplicado por el efecto del alquitrán sobre el cáncer, promediado adecuadamente) se recupera P(Y|do(fumar)) SIN haber medido el gen. Es el ejemplo canónico de Pearl: el mecanismo intermedio (alquitrán) 'rescata' la identificación cuando el confundidor es desconocido.",
+      "disparador": "Señal: 'confundidor no medido X-Y, pero observo un mediador que canaliza el efecto'. Jugada: el back-door falla; usa front-door si el mediador capta TODO el efecto y no tiene backdoors problemáticos; encadena X→M (identificable) con M→Y (ajustando por X) para obtener P(Y|do(x)) sin medir el confundidor.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "criterio front-door",
+        "back-door",
+        "confundidor no medido",
+        "do-operator",
+        "identificación causal",
+        "mediador"
+       ],
+       "errores_comunes": [
+        "Insistir en ajustar por un confundidor no medido",
+        "No verificar que el mediador capte TODO el efecto (camino directo X→Y)",
+        "Olvidar que M-Y debe estar desconfundido por X"
+       ],
+       "casos_borde": [
+        "Si existe un camino directo X→Y no mediado, el front-door no aplica",
+        "Si el gen afecta a M por otra vía, se rompe la condición del front-door"
+       ]
+      },
+      "source": "The Book of Why (Pearl & Mackenzie) — Cap. 7 (front-door / do-calculus)"
      }
     ]
    }
@@ -20196,6 +20359,538 @@
      "enunciado": "Resume la cadena completa de calidad que propone OHDSI para confiar en una estimación causal observacional.",
      "solucion": "(1) DATOS aptos (DQD/ACHILLES, marco de Kahn). (2) FENOTIPOS validados (validez clínica: sens/espec/PPV, PheValuator). (3) SOFTWARE probado (validez de software). (4) DISEÑO con DIAGNÓSTICOS que pasen (balance tras PS, equipoise/positividad, MDRR). (5) VALIDEZ DE MÉTODO con CONTROLES NEGATIVOS y CALIBRACIÓN EMPÍRICA de p/IC. (6) Idealmente en un ESTUDIO EN RED pre-registrado y reproducible. Solo si toda la cadena se sostiene la estimación es creíble; cualquier eslabón débil la invalida.",
      "explicacion": "Datos → fenotipo → software → diagnósticos de diseño → controles negativos/calibración → red reproducible."
+    }
+   ]
+  },
+  {
+   "id": "arena-h15",
+   "bloque": "fase-7",
+   "orden": 107,
+   "titulo": "Arena Inferencia Causal (Pearl) · La escalera de la causalidad",
+   "libro": "The Book of Why: The New Science of Cause and Effect (Judea Pearl & Dana Mackenzie)",
+   "lectura": "data/teoria/arena-h15.md",
+   "dosis": 30,
+   "objetivo": "Dominar la visión de Pearl: los tres peldaños (asociación/intervención/contrafactuales), por qué la causalidad requiere un modelo y no solo datos, y la génesis histórica (Galton/Pearson, Sewall Wright, do-operator, ML en el peldaño 1).",
+   "heuristicas": [
+    "escalera-de-la-causalidad",
+    "causalidad-requiere-modelo"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Tres peldaños: ver P(Y|X) · hacer P(Y|do(X)) · imaginar (contrafactual)",
+    "El ML/deep learning actual vive en el peldaño 1 (asociación)",
+    "Los datos no contienen causalidad: subir la escalera exige un MODELO (DAG)",
+    "Un peldaño superior responde a los inferiores, no al revés",
+    "Galton/Pearson desterraron la causa; Sewall Wright (path diagrams) la rescató"
+   ],
+   "banco": [
+    {
+     "id": "arh15-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son los tres peldaños de la ESCALERA DE LA CAUSALIDAD de Pearl?",
+     "solucion": "(1) ASOCIACIÓN / VER ('¿qué pasa si VEO X?'): regularidades observadas, P(Y|X), correlación. (2) INTERVENCIÓN / HACER ('¿qué pasa si HAGO X?'): P(Y|do(X)), el efecto de actuar. (3) CONTRAFACTUALES / IMAGINAR ('¿qué HABRÍA pasado si hubiera hecho X?'): explicación, atribución, mundos alternativos. Cada peldaño es más poderoso: uno superior responde preguntas de los inferiores, pero NO al revés.",
+     "explicacion": "Ver → hacer → imaginar; el orden refleja poder causal creciente."
+    },
+    {
+     "id": "arh15-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué tipo de preguntas vive en cada peldaño y por qué el machine learning actual está en el primero?",
+     "solucion": "Peldaño 1 (asociación): predicción a partir de observación pasiva, P(Y|X) — la estadística clásica y el deep learning actual viven aquí (encuentran patrones en datos, como un búho que predice dónde irá la presa sin entender por qué). Peldaño 2 (intervención): efectos de actuar, P(Y|do(X)). Peldaño 3 (contrafactuales): atribución y explicación. El ML está en el 1 porque aprende ASOCIACIONES de datos observacionales; no puede, por sí solo, responder qué pasaría bajo una intervención nueva ni qué habría pasado de otro modo.",
+     "explicacion": "Buenas predicciones no requieren buenas explicaciones; por eso el ML predice sin 'entender' causas."
+    },
+    {
+     "id": "arh15-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué Pearl insiste en que 'los datos no contienen información causal' por sí solos?",
+     "solucion": "Porque los datos describen lo OBSERVADO (asociaciones, peldaño 1), pero distintos MODELOS CAUSALES pueden generar exactamente los mismos datos (A→Y, A←Y o A←C→Y son indistinguibles solo con la correlación). Para subir a intervención o contrafactuales hace falta AÑADIR supuestos causales que los datos no aportan, en forma de un MODELO/diagrama. Es la tesis 'mind over data': el conocimiento causal viene del modelo, no de los números.",
+     "explicacion": "La misma tabla de datos es compatible con varias estructuras causales; el modelo desempata."
+    },
+    {
+     "id": "arh15-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el mini-Turing test que propone Pearl?",
+     "solucion": "Es una prueba para una máquina causal: en vez de imitar conversación (Turing clásico), se le da un modelo causal de una situación y se le hacen preguntas de los tres niveles (asociación, intervención, contrafactual) para ver si las responde como un humano que entiende causas. Una máquina que solo aprende asociaciones (peldaño 1) fallaría las de intervención y contrafactuales; superar el test exige representar y razonar con un modelo causal.",
+     "explicacion": "Mide razonamiento causal, no fluidez lingüística; requiere subir la escalera."
+    },
+    {
+     "id": "arh15-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué papel jugaron Galton y Pearson en la historia de la causalidad según el libro?",
+     "solucion": "Francis Galton (regresión a la media) y sobre todo Karl Pearson, fundadores de la estadística moderna, DESTERRARON la causalidad de la ciencia: para Pearson solo existía la CORRELACIÓN (objetiva, medible) y la causalidad era un concepto metafísico a evitar. Esa postura dominó la estadística durante un siglo, dejando a los científicos sin lenguaje formal para la causa y reduciendo todo al peldaño 1. Pearl narra esto como el origen del 'tabú' causal que su trabajo busca revertir.",
+     "explicacion": "El rechazo de Pearson a la causalidad explica por qué la estadística se quedó en correlación."
+    },
+    {
+     "id": "arh15-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Quién fue Sewall Wright y por qué es importante en la génesis de la inferencia causal?",
+     "solucion": "Sewall Wright, genetista, inventó en los años 1920 el ANÁLISIS DE CAMINOS (path analysis): los PATH DIAGRAMS, el primer método para cuantificar efectos causales a partir de un diagrama de causas (estudiando, por ejemplo, los pesos de cobayas). Fue pionero porque introdujo un MODELO CAUSAL explícito cuando el establishment estadístico (Pearson y sucesores) lo rechazaba. Los DAGs causales de Pearl son descendientes directos de los path diagrams de Wright.",
+     "explicacion": "Wright probó que se podía razonar causalmente con un diagrama, desafiando el tabú de Pearson."
+    },
+    {
+     "id": "arh15-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'correlación no implica causación', en términos de la escalera?",
+     "solucion": "Porque la correlación vive en el peldaño 1 (asociación, P(Y|X)) y la causación en el 2 (intervención, P(Y|do(X))): son preguntas de niveles distintos. Una correlación entre A y Y puede deberse a A→Y, a Y→A o a un confundidor común A←C→Y, y los datos observacionales no distinguen entre ellos. Solo un modelo causal (peldaño superior) permite pasar de la asociación observada al efecto de intervenir.",
+     "explicacion": "Saltar de correlación a causa es subir un peldaño, y eso requiere supuestos del modelo."
+    },
+    {
+     "id": "arh15-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué quiere decir que un nivel superior de la escalera puede responder preguntas de los inferiores pero no al revés?",
+     "solucion": "Que si tienes un modelo capaz de responder contrafactuales (peldaño 3), también puedes derivar respuestas de intervención (2) y de asociación (1), porque el conocimiento es más rico. Pero a partir de solo asociaciones (peldaño 1) NO puedes, en general, deducir efectos de intervención ni contrafactuales: falta la estructura causal. Es una jerarquía de poder informativo (formalizada como la 'jerarquía causal'), no solo una clasificación.",
+     "explicacion": "Más arriba = más información; la información del peldaño 1 es insuficiente para los de arriba."
+    },
+    {
+     "id": "arh15-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué Pearl dice que el deep learning, pese a sus éxitos, sigue en el peldaño 1?",
+     "solucion": "Porque el deep learning ajusta funciones complejas a ENORMES cantidades de datos para encontrar ASOCIACIONES (clasificar imágenes, reconocer voz), lo cual es peldaño 1, por sofisticado que sea. No construye ni razona con un modelo causal, así que no responde por sí mismo qué pasaría bajo una intervención nueva ni preguntas contrafactuales de explicación. Sus éxitos muestran que ciertas tareas eran más fáciles de lo creído, no que haya alcanzado el razonamiento causal humano ('strong AI').",
+     "explicacion": "Curve-fitting masivo es aún asociación; le falta el modelo para subir la escalera."
+    },
+    {
+     "id": "arh15-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa 'mind over data' frente a 'data over mind'?",
+     "solucion": "'Data over mind' es la creencia de que con suficientes datos y algoritmos las respuestas (incluidas las causales) emergen solas — la postura del big data ingenuo. 'Mind over data' es la tesis de Pearl: para responder preguntas causales se necesita primero un MODELO (la 'mente': supuestos sobre cómo funciona el mundo) que guíe e interprete los datos; los datos son insumo, no oráculo. Sin modelo, más datos solo dan asociaciones más precisas, no causas.",
+     "explicacion": "El modelo causal es prerrequisito; los datos lo alimentan, no lo sustituyen."
+    },
+    {
+     "id": "arh15-q11",
+     "tipo": "concepto",
+     "enunciado": "Da un ejemplo de cada peldaño con la misma variable (p. ej. un medicamento).",
+     "solucion": "Peldaño 1 (ver): '¿Los pacientes que TOMARON el medicamento se recuperan más?' — P(recuperación | tomó). Peldaño 2 (hacer): '¿Si DIÉRAMOS el medicamento a todos, se recuperarían más?' — P(recuperación | do(dar)). Peldaño 3 (imaginar): 'Este paciente tomó el medicamento y se recuperó; ¿se HABRÍA recuperado igual SIN tomarlo?' — contrafactual. Las tres preguntas son distintas y la primera (correlación) puede engañar por confundimiento.",
+     "explicacion": "La misma intervención genera tres preguntas de poder creciente; no confundirlas."
+    },
+    {
+     "id": "arh15-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la aleatorización (RCT) es tan valiosa en el lenguaje de la escalera/do-operator?",
+     "solucion": "Porque aleatorizar el tratamiento equivale a una INTERVENCIÓN do(X): rompe los lazos entre X y sus causas habituales (confundidores), de modo que la asociación observada P(Y|X) en el experimento SÍ iguala el efecto causal P(Y|do(X)). Es decir, el RCT sube físicamente del peldaño 1 al 2 al cortar los caminos traseros. La inferencia causal observacional intenta lograr lo mismo con un modelo en vez de con el azar.",
+     "explicacion": "Aleatorizar 'borra las flechas hacia X', que es justo lo que hace el do-operator en el grafo."
+    },
+    {
+     "id": "arh15-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación tienen los diagramas causales con los path diagrams de Wright?",
+     "solucion": "Los DIAGRAMAS CAUSALES (DAGs) de Pearl son la evolución moderna de los PATH DIAGRAMS de Sewall Wright: ambos representan supuestos causales con flechas entre variables. Wright los usó para CUANTIFICAR efectos en modelos lineales; Pearl los generalizó a cualquier distribución (no lineales) y los dotó de reglas formales (d-separación, do-calculus) para identificar efectos. La continuidad histórica es directa: del path analysis al cálculo causal.",
+     "explicacion": "Misma idea (flechas = causas) extendida con reglas formales generales por Pearl."
+    },
+    {
+     "id": "arh15-q14",
+     "tipo": "concepto",
+     "enunciado": "Según Pearl, ¿qué le falta a una IA que solo aprende de datos para tener inteligencia 'humana'?",
+     "solucion": "Le falta un MODELO CAUSAL del mundo y la capacidad de razonar en los peldaños 2 y 3: imaginar intervenciones y contrafactuales, hacerse preguntas '¿qué pasaría si…?' y '¿por qué?', atribuir responsabilidad y aprender de la imaginación, no solo de la observación. Una IA de solo asociación no puede planear acciones nuevas con garantías ni explicar sus decisiones causalmente. Para Pearl, dotar a las máquinas de modelos causales es el camino hacia la 'strong AI'.",
+     "explicacion": "Razonar sobre intervenciones y contrafactuales (no solo patrones) es lo que falta para IA fuerte."
+    },
+    {
+     "id": "arh15-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué Pearl considera la causalidad una 'revolución' y no un detalle técnico?",
+     "solucion": "Porque durante un siglo la ciencia (liderada por la estadística de Pearson) careció de un lenguaje formal para la causa, tratándola como tabú; recuperarla con un cálculo riguroso (diagramas + do-operator + do-calculus + contrafactuales) cambia QUÉ preguntas se pueden plantear y responder en medicina, economía, IA, etc. No es una técnica más dentro de la estadística, sino un marco que añade dos peldaños enteros (intervención y contrafactuales) que antes estaban vedados.",
+     "explicacion": "Devuelve a la ciencia un lenguaje causal formal que había abandonado: cambia las preguntas posibles."
+    }
+   ]
+  },
+  {
+   "id": "arena-h16",
+   "bloque": "fase-7",
+   "orden": 108,
+   "titulo": "Arena Inferencia Causal (Pearl) · Diagramas, junciones y paradojas",
+   "libro": "The Book of Why: The New Science of Cause and Effect (Judea Pearl & Dana Mackenzie)",
+   "lectura": "data/teoria/arena-h16.md",
+   "dosis": 30,
+   "objetivo": "Diagramas causales y las tres junciones (cadena/mediador, fork/confundidor, collider), cómo condicionar abre o cierra el flujo, y las paradojas (Simpson, Berkson, Monty Hall) resueltas por la estructura causal.",
+   "heuristicas": [
+    "diagramas-causales-junciones",
+    "paradoja-simpson-causal",
+    "sesgo-collider-berkson"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Tres junciones: cadena (mediador), fork (confundidor), collider (efecto común)",
+    "Condicionar cadena/fork BLOQUEA el flujo; condicionar un collider lo ABRE",
+    "Confundidor = fork: ajustarlo cierra el camino trasero; collider: NO ajustar",
+    "Simpson: la asociación se invierte al estratificar; el DAG decide qué tabla creer",
+    "Berkson/Monty Hall: condicionar un efecto común crea correlación espuria"
+   ],
+   "banco": [
+    {
+     "id": "arh16-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un diagrama causal (DAG) y qué codifica?",
+     "solucion": "Es un grafo dirigido acíclico cuyos nodos son variables y cuyas flechas representan relaciones CAUSALES directas (de causa a efecto). Codifica los SUPUESTOS causales del investigador (qué causa qué y, crucialmente, qué NO causa qué — las flechas ausentes son afirmaciones fuertes). A partir de esa estructura se puede LEER cómo fluye la asociación entre variables y decidir qué ajustar, sin números, solo con la topología.",
+     "explicacion": "Las flechas presentes y AUSENTES son supuestos; el DAG es el modelo causal explícito."
+    },
+    {
+     "id": "arh16-q2",
+     "tipo": "concepto",
+     "enunciado": "Describe las tres JUNCIONES básicas de un diagrama causal.",
+     "solucion": "(1) CADENA A→B→C: B es un MEDIADOR; A y C están asociados. (2) BIFURCACIÓN (fork) A←B→C: B es una CAUSA COMÚN (confundidor); A y C están asociados espuriamente. (3) COLLIDER A→B←C: B es un EFECTO COMÚN; A y C son independientes (no asociados) marginalmente. Toda la estructura de un DAG se descompone en estas tres piezas, y cada una se comporta distinto al condicionar.",
+     "explicacion": "Cadena/fork transmiten asociación; el collider la bloquea (hasta que lo condicionas)."
+    },
+    {
+     "id": "arh16-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo cambia el flujo de asociación al CONDICIONAR cada tipo de junción?",
+     "solucion": "En una CADENA A→B→C, condicionar B (el mediador) DESCONECTA A de C (bloquea el flujo). En una BIFURCACIÓN A←B→C, condicionar B (el confundidor) también DESCONECTA A de C (elimina la asociación espuria). En un COLLIDER A→B←C, ocurre lo OPUESTO: A y C eran independientes, pero condicionar B (o un descendiente suyo) los CONECTA (abre una asociación espuria). Regla: condicionar cierra cadenas y forks, pero ABRE colliders.",
+     "explicacion": "Condicionar un mediador o confundidor bloquea; condicionar un collider abre."
+    },
+    {
+     "id": "arh16-q4",
+     "tipo": "concepto",
+     "enunciado": "En el lenguaje de junciones, ¿qué es un confundidor y por qué ajustarlo elimina el sesgo?",
+     "solucion": "Un confundidor es una CAUSA COMÚN de la exposición y el outcome: forma una BIFURCACIÓN X←C→Y que abre un camino trasero y crea asociación no causal. Ajustar (condicionar) por C cierra esa bifurcación, eliminando la asociación espuria y dejando solo el efecto causal de X sobre Y. Por eso 'desconfundir' es bloquear los forks/caminos traseros con el conjunto de ajuste adecuado.",
+     "explicacion": "El confundidor es el fork; condicionarlo cierra el camino trasero."
+    },
+    {
+     "id": "arh16-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué NO se debe ajustar por un collider, con un ejemplo?",
+     "solucion": "Porque condicionar un collider (efecto común) CREA una asociación espuria entre sus causas, que eran independientes. Ejemplo de Pearl: entre actores famosos, la FAMA es efecto común del TALENTO y la BELLEZA (talento→fama←belleza); si miramos solo a famosos (condicionamos fama), aparece una correlación NEGATIVA entre talento y belleza (los famosos poco talentosos tienden a ser bellos y viceversa) aunque en la población general sean independientes. Ajustar el collider introduce el sesgo en vez de quitarlo.",
+     "explicacion": "Condicionar un efecto común inventa correlación entre sus causas (sesgo de selección/collider)."
+    },
+    {
+     "id": "arh16-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el sesgo de Berkson?",
+     "solucion": "Es el sesgo de collider que aparece al estudiar una muestra SELECCIONADA por un efecto común. Clásicamente, en pacientes HOSPITALIZADOS dos enfermedades pueden aparecer correlacionadas (incluso negativamente) aunque no lo estén en la población, porque el ingreso al hospital es un efecto común de ambas (basta tener una para ingresar). Condicionar implícitamente en 'estar hospitalizado' (la muestra) abre la asociación espuria. Es la advertencia de que la SELECCIÓN de la muestra puede crear correlaciones falsas.",
+     "explicacion": "Muestras seleccionadas por un efecto común exhiben correlaciones espurias entre las causas."
+    },
+    {
+     "id": "arh16-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo explica el razonamiento causal/collider el problema de Monty Hall?",
+     "solucion": "En Monty Hall, la PUERTA QUE ABRE el presentador es un efecto común de DÓNDE ESTÁ el premio y de CUÁL elegiste: depende de ambas (no abre la tuya ni la del premio). Al observar qué puerta abre, condicionas ese collider, lo que CONECTA tu elección con la ubicación del premio y cambia las probabilidades: cambiar de puerta da 2/3 de ganar. La 'paradoja' desaparece al ver que la acción del presentador aporta información causal sobre dónde está el premio.",
+     "explicacion": "La puerta abierta es un collider; condicionarla actualiza la probabilidad → conviene cambiar."
+    },
+    {
+     "id": "arh16-q8",
+     "tipo": "concepto",
+     "enunciado": "¿En qué consiste la paradoja de Simpson?",
+     "solucion": "En que una asociación entre dos variables se INVIERTE (cambia de dirección) al desagregar los datos por un tercer grupo: un tratamiento puede parecer beneficioso en CADA subgrupo (hombres y mujeres) pero perjudicial en el TOTAL agregado, o viceversa. Numéricamente ambas tablas son correctas; la paradoja es que sugieren conclusiones opuestas y la estadística por sí sola no dice cuál seguir.",
+     "explicacion": "Misma data: el signo del efecto se invierte entre el agregado y los subgrupos."
+    },
+    {
+     "id": "arh16-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo RESUELVE el razonamiento causal la paradoja de Simpson?",
+     "solucion": "Decidiendo si la variable de agrupación debe ajustarse o no SEGÚN SU ROL CAUSAL en el DAG: si es un CONFUNDIDOR (causa común de tratamiento y outcome, un fork), hay que MIRAR LOS SUBGRUPOS (ajustar); si es un MEDIADOR (está en el camino tratamiento→variable→outcome) o un COLLIDER, hay que MIRAR EL AGREGADO (no ajustar, porque ajustar sesga). La estadística no puede elegir; solo el modelo causal dice qué tabla refleja el efecto real. Misma data, respuesta correcta determinada por la estructura.",
+     "explicacion": "Ajustar la variable solo si es confundidor; si es mediador/collider, ajustar es el error."
+    },
+    {
+     "id": "arh16-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la paradoja de Simpson demuestra la tesis central del libro?",
+     "solucion": "Porque muestra que con los MISMOS datos se pueden defender conclusiones OPUESTAS, y ninguna cantidad de análisis estadístico (peldaño 1) resuelve cuál es correcta: la respuesta depende de SUPUESTOS CAUSALES externos a los datos (el DAG). Es la prueba palpable de que la causalidad requiere un modelo, no solo números — 'mind over data'. Dos historias causales distintas detrás de la misma tabla exigen acciones distintas.",
+     "explicacion": "Es el caso emblemático de que los datos no bastan: el modelo decide la conclusión."
+    },
+    {
+     "id": "arh16-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación hay entre las redes bayesianas y los diagramas causales?",
+     "solucion": "Las REDES BAYESIANAS son grafos que codifican relaciones de DEPENDENCIA PROBABILÍSTICA (factorizan una distribución conjunta) y sirven para propagar evidencia (peldaño 1, asociación). Un DIAGRAMA CAUSAL tiene la MISMA forma de grafo, pero sus flechas se interpretan como CAUSAS, lo que le permite responder preguntas de intervención y contrafactuales (peldaños 2-3). Pearl desarrolló primero las redes bayesianas y luego dio el salto a interpretarlas causalmente: misma estructura, semántica más fuerte.",
+     "explicacion": "Red bayesiana = dependencia (asociación); diagrama causal = causa (sube de peldaño)."
+    },
+    {
+     "id": "arh16-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa que las flechas AUSENTES en un DAG son los supuestos más fuertes?",
+     "solucion": "Que una flecha presente solo afirma que PUEDE haber un efecto directo, pero una flecha AUSENTE afirma categóricamente que NO hay efecto causal directo entre esas variables. Esas ausencias son las que dan poder al modelo (permiten identificar efectos); también son las más arriesgadas porque, si son falsas (hay un efecto que omitimos), las conclusiones causales se invalidan. Por eso dibujar el DAG obliga a explicitar y defender qué relaciones se descartan.",
+     "explicacion": "Lo que el DAG NIEGA (flechas ausentes) es lo que permite —y arriesga— la identificación."
+    },
+    {
+     "id": "arh16-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un mediador y un confundidor, aun pareciendo iguales en los datos, exigen tratamientos opuestos?",
+     "solucion": "Porque en los datos ambos pueden mostrar asociación con tratamiento y outcome, pero su ROL CAUSAL difiere: el confundidor (fork X←C→Y) crea sesgo que se ELIMINA ajustándolo; el mediador (X→M→Y) transmite parte del efecto real, así que ajustarlo lo BLOQUEA y SESGA el efecto total. Solo el DAG distingue cuál es cuál; estadísticamente son indistinguibles. Tratar un mediador como confundidor (o viceversa) introduce el sesgo que se pretendía evitar.",
+     "explicacion": "Misma firma estadística, roles opuestos: ajustar el confundidor sí, el mediador no."
+    },
+    {
+     "id": "arh16-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es 'desconfundir' (deconfounding) en el marco de Pearl?",
+     "solucion": "Es identificar y bloquear todos los CAMINOS TRASEROS (no causales) entre la exposición y el outcome, típicamente condicionando un conjunto de variables que cierre las bifurcaciones (confundidores) sin abrir colliders ni bloquear mediadores. El criterio de la PUERTA TRASERA formaliza qué conjunto logra esto. Desconfundir convierte la asociación observada en el efecto causal: es el puente del peldaño 1 al 2 sin necesidad de un experimento.",
+     "explicacion": "Cerrar los caminos traseros (forks) con el conjunto correcto = estimar el efecto sin RCT."
+    },
+    {
+     "id": "arh16-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué Pearl dice que los diagramas hacen 'transparentes los supuestos'?",
+     "solucion": "Porque un DAG OBLIGA a poner por escrito, de forma visual y verificable, qué causa qué (y qué no), antes de tocar los datos. Cualquiera puede inspeccionar el diagrama, criticar una flecha presente o ausente y ver qué implica para el análisis (qué ajustar, qué es identificable). Frente a supuestos ocultos en una regresión, el diagrama los expone, facilitando el debate científico y la reproducibilidad. Los supuestos siguen siendo supuestos, pero ahora son explícitos y debatibles.",
+     "explicacion": "El diagrama saca los supuestos causales a la luz para poder discutirlos y refutarlos."
+    }
+   ]
+  },
+  {
+   "id": "arena-h17",
+   "bloque": "fase-7",
+   "orden": 109,
+   "titulo": "Arena Inferencia Causal (Pearl) · do-operator, back-door, front-door y do-calculus",
+   "libro": "The Book of Why: The New Science of Cause and Effect (Judea Pearl & Dana Mackenzie)",
+   "lectura": "data/teoria/arena-h17.md",
+   "dosis": 30,
+   "objetivo": "Subir de ver a hacer: el do-operator (intervenir = borrar flechas hacia X), back-door adjustment, el criterio de la puerta delantera (front-door) ante confundidor no medido, instrumentos y el do-calculus como herramienta general de identificación.",
+   "heuristicas": [
+    "do-operator-intervencion",
+    "confundimiento-backdoor",
+    "criterio-puerta-delantera",
+    "do-calculus"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "P(Y|X) (ver) ≠ P(Y|do(X)) (hacer); do() borra las flechas hacia X (como un RCT)",
+    "Identificar = expresar P(Y|do(x)) con datos observacionales usando el grafo",
+    "Back-door: ajustar un conjunto que cierre los caminos traseros (estandarización)",
+    "Front-door: mediador que capta todo el efecto → identifica sin medir el confundidor",
+    "do-calculus: 3 reglas, completo; decide si un efecto es identificable y da la fórmula"
+   ],
+   "banco": [
+    {
+     "id": "arh17-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué distingue P(Y|X) de P(Y|do(X))?",
+     "solucion": "P(Y|X=x) es OBSERVACIONAL: la distribución de Y entre quienes SE OBSERVAN con X=x (peldaño 1; puede estar confundida). P(Y|do(X=x)) es INTERVENCIONAL: la distribución de Y si FORZÁRAMOS X=x en TODA la población (peldaño 2, el efecto causal). Son distintas siempre que haya confundimiento: ver gente que eligió X=x no es lo mismo que imponer X=x a todos. Confundirlas es el error de 'correlación = causación'.",
+     "explicacion": "Ver (condicionar) ≠ hacer (intervenir); el do() es la marca de la intervención."
+    },
+    {
+     "id": "arh17-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué le hace el do-operator al diagrama causal?",
+     "solucion": "Intervenir con do(X=x) equivale, en el grafo, a BORRAR todas las flechas que ENTRAN a X (eliminar sus causas) y fijar X=x. Esto crea un 'grafo mutilado' donde X ya no depende de sus confundidores, igual que hace la aleatorización física. Como se eliminan los caminos traseros que pasaban por las causas de X, en ese grafo intervenido la asociación X-Y es puramente causal.",
+     "explicacion": "do(x) = quitar las flechas hacia X y fijarlo; replica gráficamente lo que hace un RCT."
+    },
+    {
+     "id": "arh17-q3",
+     "tipo": "concepto",
+     "enunciado": "¿En qué consiste la IDENTIFICACIÓN de un efecto causal?",
+     "solucion": "Consiste en expresar P(Y|do(X)) —una cantidad intervencional que no podemos medir directamente sin experimento— en términos de cantidades OBSERVACIONALES (probabilidades sin do, estimables de los datos), usando la estructura del DAG. Si se logra, el efecto es IDENTIFICABLE y se puede estimar con datos observacionales; si no, no hay forma de obtenerlo sin más datos o supuestos. Las herramientas para identificar son el back-door, el front-door y, en general, el do-calculus.",
+     "explicacion": "Identificar = traducir do() a fórmula con datos observados gracias al grafo."
+    },
+    {
+     "id": "arh17-q4",
+     "tipo": "concepto",
+     "enunciado": "Describe la fórmula de ajuste por la PUERTA TRASERA (back-door adjustment).",
+     "solucion": "Si un conjunto Z satisface el criterio de la puerta trasera (bloquea todos los caminos traseros de X a Y y no contiene descendientes de X), entonces P(Y|do(x)) = Σ_z P(Y | X=x, Z=z) · P(Z=z): se estima el efecto DENTRO de cada estrato de Z y se promedia ponderando por la PREVALENCIA de cada estrato en la población (estandarización). El back-door garantiza que el efecto en cada estrato es ya el causal (sin confundimiento), por eso el promedio ponderado es el efecto causal total.",
+     "explicacion": "Estratificar por los deconfundidores Z y promediar ponderando por P(Z): la estandarización."
+    },
+    {
+     "id": "arh17-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el criterio de la PUERTA DELANTERA (front-door) y cuándo se usa?",
+     "solucion": "Permite identificar el efecto de X sobre Y AUNQUE el confundidor X-Y NO esté medido, si existe un MEDIADOR M que: (1) intercepta TODO el efecto de X sobre Y (el único camino X→Y pasa por M), (2) no tiene camino trasero abierto con X, y (3) todos los caminos traseros de M a Y están bloqueados por X. Entonces se combina el efecto X→M con el efecto M→Y (ambos identificables) para recuperar P(Y|do(X)). Se usa cuando el back-door falla por confundimiento no medido pero se observa el MECANISMO intermedio.",
+     "explicacion": "Back-door imposible (confundidor no medido) pero hay un mediador que canaliza todo el efecto → front-door."
+    },
+    {
+     "id": "arh17-q6",
+     "tipo": "concepto",
+     "enunciado": "Da el ejemplo clásico de Pearl para el criterio de la puerta delantera.",
+     "solucion": "Fumar (X) → alquitrán en los pulmones (M) → cáncer (Y), con un GEN no observado que confunde fumar y cáncer (X←gen→Y). No se puede ajustar por el gen (no medido), así que el back-door falla. Pero si el alquitrán M capta todo el efecto del tabaco sobre el cáncer y no comparte confundidores problemáticos, el front-door permite estimar el efecto causal del tabaco combinando el efecto fumar→alquitrán con alquitrán→cáncer, sin medir el gen.",
+     "explicacion": "Tabaco→alquitrán→cáncer con gen confundidor no medido: el mediador 'alquitrán' salva la identificación."
+    },
+    {
+     "id": "arh17-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el do-calculus y qué garantiza?",
+     "solucion": "Es un conjunto de TRES REGLAS de reescritura (junto con el álgebra de probabilidad) que transforman expresiones con do() en expresiones equivalentes con menos (o ningún) do(), apoyándose en la estructura del grafo: a grandes rasgos permiten (1) agregar/eliminar observaciones, (2) intercambiar intervención por observación cuando el grafo lo justifica, y (3) agregar/eliminar intervenciones sin efecto. Garantiza COMPLETITUD: si un efecto es identificable a partir del grafo, el do-calculus encuentra la fórmula; si no lo es, también lo determina.",
+     "explicacion": "Tres reglas que eliminan el do(); completo: decide y resuelve la identificabilidad."
+    },
+    {
+     "id": "arh17-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el do-calculus se describe como un 'mapa universal' de Mount Intervention?",
+     "solucion": "Porque mientras el back-door y el front-door son RUTAS concretas (recetas) que sirven en ciertos grafos, el do-calculus es la herramienta GENERAL que puede mapear CUALQUIER ruta de estimación en cualquier grafo, por complejo que sea: explora todas las formas posibles de expresar P(Y|do(x)) con datos observacionales. Back-door y front-door son casos PARTICULARES derivables del do-calculus. Es 'universal' porque cubre todos los casos identificables.",
+     "explicacion": "Recetas (back/front-door) ⊂ do-calculus, que resuelve todo grafo identificable."
+    },
+    {
+     "id": "arh17-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo encaja la estimación por VARIABLE INSTRUMENTAL en este marco?",
+     "solucion": "La variable instrumental es otra 'ruta' para subir a la intervención cuando hay confundimiento NO medido: un instrumento Z que afecta a X y solo influye en Y a través de X (sin caminos traseros propios con Y). Permite recuperar información sobre P(Y|do(x)) usando la variación de X inducida por Z. Es una técnica complementaria al back-door y front-door; bajo supuestos adicionales (homogeneidad/monotonicidad) da un efecto puntual. Encaja como una de las rutas que el marco causal sistematiza.",
+     "explicacion": "El instrumento es otra vía ante confundidor no medido; el grafo justifica cuándo es válido."
+    },
+    {
+     "id": "arh17-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo ilustra el caso del Dr. John Snow (cólera) un instrumento/intervención natural?",
+     "solucion": "John Snow estableció que el cólera se transmitía por AGUA contaminada (no por 'miasmas') usando una INTERVENCIÓN/EXPERIMENTO NATURAL: distintas compañías suministraban agua a hogares vecinos casi al azar respecto a otros factores, una con agua contaminada y otra limpia. La compañía de agua actúa como un INSTRUMENTO que asigna la exposición independientemente de los confundidores, permitiendo inferir el efecto causal del agua sobre el cólera como si fuera un experimento. Pearl lo usa como ejemplo temprano de razonamiento causal correcto.",
+     "explicacion": "La asignación cuasi-aleatoria de la fuente de agua hace de instrumento natural para el efecto causal."
+    },
+    {
+     "id": "arh17-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué ajustar por MÁS variables no siempre mejora una estimación causal?",
+     "solucion": "Porque la validez del ajuste depende del ROL causal de las variables, no de su número: añadir un COLLIDER (o su descendiente) ABRE un camino espurio (sesgo), y añadir un MEDIADOR bloquea parte del efecto. El back-door exige un conjunto que cierre los caminos traseros SIN incluir descendientes de X. 'Controlar por todo lo disponible' puede, por tanto, INTRODUCIR sesgo donde no lo había. La selección de covariables se decide con el grafo.",
+     "explicacion": "Más covariables pueden abrir colliders o bloquear mediadores; el DAG, no la cantidad, manda."
+    },
+    {
+     "id": "arh17-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ventaja tiene el front-door sobre el back-door en la práctica?",
+     "solucion": "Que NO requiere medir (ni siquiera conocer) el confundidor entre X e Y: basta observar un MEDIADOR adecuado del mecanismo causal. Cuando el confundimiento es por variables no medidas o no medibles (genética, factores latentes), el back-door es imposible, pero el front-door puede identificar el efecto si existe ese mediador que capta todo el efecto y cumple las condiciones. Amplía los casos en que se puede estimar causalidad desde datos observacionales.",
+     "explicacion": "Salva la identificación cuando el confundidor es desconocido/no medible, vía el mecanismo intermedio."
+    },
+    {
+     "id": "arh17-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa que un efecto causal NO sea identificable?",
+     "solucion": "Significa que, dada la estructura del grafo (con sus variables medidas y no medidas), NO existe forma de expresar P(Y|do(x)) en términos de la distribución observacional: con esos datos y esos supuestos, el efecto causal no puede determinarse, por más datos que se recojan. El do-calculus puede DEMOSTRAR la no identificabilidad. Para avanzar haría falta medir más variables, añadir supuestos o hacer un experimento. Reconocerlo evita reportar como causal algo que no lo es.",
+     "explicacion": "Ni con datos infinitos se obtiene el efecto: faltan supuestos o variables; el do-calculus lo certifica."
+    },
+    {
+     "id": "arh17-q14",
+     "tipo": "concepto",
+     "enunciado": "¿En qué se parecen el do-operator y la aleatorización de un RCT?",
+     "solucion": "Ambos ELIMINAN las causas de la exposición. En un RCT, el azar asigna X independientemente de cualquier confundidor (medido o no), rompiendo los caminos traseros físicamente. El do(X=x) hace lo mismo en el MODELO: borra las flechas hacia X. Por eso el efecto que estima un RCT es exactamente P(Y|do(x)), y la inferencia causal observacional busca emular ese 'borrado' mediante ajuste (back-door), mediadores (front-door) o instrumentos, en lugar de con el azar.",
+     "explicacion": "RCT = intervención física; do() = intervención en el modelo; ambos cortan los caminos traseros."
+    },
+    {
+     "id": "arh17-q15",
+     "tipo": "concepto",
+     "enunciado": "Resume la 'conquista de Mount Intervention': las rutas para estimar P(Y|do(x)).",
+     "solucion": "Para subir del peldaño 1 (ver) al 2 (hacer) hay varias rutas: (1) BACK-DOOR ADJUSTMENT, ajustando por un conjunto que cierre los caminos traseros (la más común, requiere medir los confundidores); (2) FRONT-DOOR, usando un mediador que capte todo el efecto cuando el confundidor no está medido; (3) VARIABLES INSTRUMENTALES, ante confundimiento no medido con un instrumento válido; y (4) el DO-CALCULUS como herramienta general que, en cualquier grafo, encuentra una fórmula si el efecto es identificable o prueba que no lo es. Cada ruta tiene supuestos que el DAG hace explícitos.",
+     "explicacion": "Back-door, front-door, instrumentos y do-calculus: el repertorio para pasar de asociación a efecto."
+    }
+   ]
+  },
+  {
+   "id": "arena-h18",
+   "bloque": "fase-7",
+   "orden": 110,
+   "titulo": "Arena Inferencia Causal (Pearl) · Contrafactuales y mediación",
+   "libro": "The Book of Why: The New Science of Cause and Effect (Judea Pearl & Dana Mackenzie)",
+   "lectura": "data/teoria/arena-h18.md",
+   "dosis": 30,
+   "objetivo": "El peldaño 3: contrafactuales y modelos estructurales (SCM, abducción-acción-predicción), su equivalencia con los potential outcomes, análisis de mediación (efectos directo/indirecto naturales) y causalidad necesaria vs suficiente (PN/PS).",
+   "heuristicas": [
+    "contrafactual-modelo-estructural",
+    "analisis-mediacion-efectos",
+    "causa-necesaria-suficiente"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Contrafactual (peldaño 3): ¿qué habría pasado con ESTE caso si X fuera otro?",
+    "SCM con errores U: contrafactual = abducción → acción (do) → predicción",
+    "Contrafactual de Pearl = potential outcome Y_x de Neyman-Rubin (mismo concepto)",
+    "Mediación: efecto = directo + indirecto; usa NDE/NIE (Baron-Kenny falla con interacción)",
+    "PN (necesidad, 'but-for'/legal) vs PS (suficiencia/prevención)"
+   ],
+   "banco": [
+    {
+     "id": "arh18-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un contrafactual y por qué está en el peldaño más alto de la escalera?",
+     "solucion": "Un contrafactual es una afirmación sobre un MUNDO ALTERNATIVO: '¿qué HABRÍA pasado con Y si X hubiera sido distinto, dado lo que realmente ocurrió?'. Está en el peldaño 3 (imaginar) porque combina lo observado con una intervención hipotética sobre el MISMO caso, algo que ni la observación (peldaño 1) ni la intervención poblacional (peldaño 2) capturan: requiere razonar sobre individuos específicos en escenarios que no ocurrieron. Es la base de la explicación, la atribución y la responsabilidad.",
+     "explicacion": "Imaginar el resultado del mismo caso bajo otra acción: más que ver o intervenir en general."
+    },
+    {
+     "id": "arh18-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los contrafactuales no se pueden obtener solo con datos ni solo con experimentos?",
+     "solucion": "Porque un experimento (peldaño 2) da el efecto PROMEDIO de intervenir en una población, pero un contrafactual pregunta por un INDIVIDUO concreto en un mundo que no ocurrió ('este paciente que SÍ se trató y se curó, ¿se habría curado SIN tratamiento?'), y de ese individuo solo observamos UNA realidad. Para 'rellenar' la otra hace falta un MODELO ESTRUCTURAL que capture sus características latentes. Ni datos ni RCT bastan; se necesita el modelo del peldaño 3.",
+     "explicacion": "El experimento da promedios; el contrafactual exige el caso individual no observado → modelo estructural."
+    },
+    {
+     "id": "arh18-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un Modelo Causal Estructural (SCM) y qué papel juegan los términos de error U?",
+     "solucion": "Un SCM es un conjunto de ECUACIONES que asignan a cada variable su valor en función de sus causas (sus padres en el DAG) y de un término de error/exógeno U que recoge todo lo no modelado e idiosincrático de cada unidad. El DAG es el 'esqueleto' del SCM. Los U representan las características individuales latentes; conocerlos (o actualizarlos a partir de la evidencia) es lo que permite computar contrafactuales específicos de un individuo, no solo promedios.",
+     "explicacion": "SCM = ecuaciones causa→efecto + errores U; los U codifican lo individual que hace posible el contrafactual."
+    },
+    {
+     "id": "arh18-q4",
+     "tipo": "concepto",
+     "enunciado": "Describe el algoritmo de TRES PASOS para computar un contrafactual.",
+     "solucion": "(1) ABDUCCIÓN: usar la EVIDENCIA observada (lo que de hecho pasó con el individuo) para actualizar las creencias sobre los términos de error U (inferir 'qué tipo de caso' es). (2) ACCIÓN: MODIFICAR el modelo imponiendo el antecedente contrafactual con el do-operator (p. ej. fijar X al valor hipotético). (3) PREDICCIÓN: calcular el valor de Y en el modelo modificado usando los U actualizados. El resultado es el contrafactual para ESE individuo.",
+     "explicacion": "Abducción (inferir U) → acción (do) → predicción (recomputar Y); receta de Pearl para contrafactuales."
+    },
+    {
+     "id": "arh18-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación hay entre los contrafactuales de Pearl y los potential outcomes de Neyman-Rubin?",
+     "solucion": "Son la MISMA idea en lenguajes distintos. El potential outcome Y_x (o Y^{a=x}) de Neyman-Rubin —'el valor que tomaría Y si X fuera x'— es exactamente un contrafactual, que en el marco de Pearl se DERIVA del SCM (Y_x es el valor de Y en el modelo tras hacer do(X=x)). Pearl muestra que el enfoque gráfico/estructural y el de potential outcomes son equivalentes y complementarios: el grafo hace transparentes los supuestos, los potential outcomes facilitan ciertos cálculos.",
+     "explicacion": "Y_x (Rubin) = contrafactual derivable del SCM (Pearl): dos dialectos del mismo concepto."
+    },
+    {
+     "id": "arh18-q6",
+     "tipo": "concepto",
+     "enunciado": "¿En qué consiste el análisis de MEDIACIÓN?",
+     "solucion": "En descomponer el efecto total de X sobre Y en un EFECTO DIRECTO (X→Y, por vías que no pasan por el mediador) y un EFECTO INDIRECTO a través de un mediador M (X→M→Y). Responde POR QUÉ vía X afecta a Y (el mecanismo), no solo cuánto. Es central en ciencia (¿el fármaco actúa bajando la presión o por otra vía?) y en lo legal/social (¿la diferencia salarial es directa por sexo o indirecta vía el puesto?).",
+     "explicacion": "Total = directo + indirecto; la mediación abre la 'caja negra' del mecanismo causal."
+    },
+    {
+     "id": "arh18-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el método clásico de Baron-Kenny (producto de coeficientes) puede fallar?",
+     "solucion": "Porque asume LINEALIDAD y AUSENCIA de interacciones: estima el efecto indirecto como el producto de los coeficientes X→M y M→Y de regresiones lineales. Si hay INTERACCIÓN (el efecto de M sobre Y depende de X) o relaciones no lineales, ese producto no corresponde al efecto causal de mediación y da resultados sesgados. Por eso Pearl introduce definiciones CONTRAFACTUALES (efectos naturales) que siguen siendo válidas con interacciones y no linealidades.",
+     "explicacion": "El producto de coeficientes solo vale en modelos lineales sin interacción; si no, hay que usar efectos naturales."
+    },
+    {
+     "id": "arh18-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué son los efectos directo e indirecto NATURALES (NDE/NIE)?",
+     "solucion": "Son definiciones CONTRAFACTUALES de mediación válidas con interacciones. El EFECTO DIRECTO NATURAL (NDE) es el cambio en Y al cambiar X de un valor a otro mientras se MANTIENE M en el valor que habría tenido bajo el X de referencia (se 'congela' el mediador en su nivel natural). El EFECTO INDIRECTO NATURAL (NIE) es el cambio en Y al dejar X fijo pero cambiar M al valor que habría tomado bajo el otro X. Juntos permiten una descomposición correcta del efecto total incluso con interacciones.",
+     "explicacion": "NDE: mueve X con M congelado en su valor natural; NIE: mueve M (como respondería a X) con X fijo."
+    },
+    {
+     "id": "arh18-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué identificar efectos de mediación requiere MÁS supuestos que estimar el efecto total?",
+     "solucion": "Porque además de desconfundir el par X-Y, hay que desconfundir las relaciones X-M y, crucialmente, M-Y, y no debe haber confundidores de M-Y que sean a su vez afectados por X. Es decir, se necesitan supuestos de NO confundimiento adicionales sobre el mediador que el efecto total no exige. Por eso la mediación es más frágil: un confundidor no medido del mediador y el outcome invalida la descomposición aunque el efecto total esté bien identificado.",
+     "explicacion": "Mediar exige desconfundir también M-Y (y sin confundidores de M-Y afectados por X): más supuestos."
+    },
+    {
+     "id": "arh18-q10",
+     "tipo": "concepto",
+     "enunciado": "Distingue la PROBABILIDAD DE NECESIDAD (PN) de la PROBABILIDAD DE SUFICIENCIA (PS).",
+     "solucion": "PN (probabilidad de necesidad): dado que X e Y ocurrieron, la probabilidad de que Y NO habría ocurrido SIN X — '¿fue X NECESARIA para Y?'. Es la causalidad 'but-for', central en lo LEGAL (atribuir culpa: ¿el daño habría ocurrido igual?). PS (probabilidad de suficiencia): para alguien sin X ni Y, la probabilidad de que introducir X PRODUZCA Y — '¿BASTA X para causar Y?'. Es relevante para PREVENCIÓN y políticas. Son contrafactuales distintos y una causa puede ser necesaria sin ser suficiente y viceversa.",
+     "explicacion": "PN = ¿sin la causa, no habría pasado? (necesidad/legal); PS = ¿la causa bastaría? (suficiencia/prevención)."
+    },
+    {
+     "id": "arh18-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se aplican PN/PS a una pregunta legal de responsabilidad?",
+     "solucion": "En un litigio (p. ej. ¿un fármaco causó el daño de ESTE paciente?), la pregunta es de NECESIDAD: ¿el daño habría ocurrido de todos modos SIN el fármaco? Eso es la probabilidad de necesidad (PN), la formalización de la causalidad 'but-for' que usan los tribunales. Una PN alta apoya la atribución de responsabilidad. Pearl muestra que PN puede ESTIMARSE combinando datos experimentales (efecto promedio) y observacionales bajo ciertos supuestos, dando una base cuantitativa a juicios antes puramente cualitativos.",
+     "explicacion": "Responsabilidad = necesidad ('but-for') = PN, estimable combinando experimento y observación."
+    },
+    {
+     "id": "arh18-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los contrafactuales son esenciales para la EXPLICACIÓN y la atribución?",
+     "solucion": "Porque explicar 'por qué ocurrió Y' o atribuir Y a una causa X implica afirmar que 'sin X, Y no habría ocurrido (o sería distinto)' — un enunciado contrafactual. La mera asociación o incluso el efecto promedio de intervenir no responden a la atribución de un caso CONCRETO. Solo el peldaño 3 permite decir que X fue la causa de ESTE resultado, cuantificar cuánto contribuyó y asignar responsabilidad, que es lo que pide la explicación humana, la ciencia y el derecho.",
+     "explicacion": "Atribuir/explicar = afirmar un contrafactual ('sin X, no Y'): exige el peldaño 3."
+    },
+    {
+     "id": "arh18-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo enmarca Pearl la atribución del cambio climático en términos causales?",
+     "solucion": "Como una pregunta CONTRAFACTUAL de atribución: ¿cuánto del calentamiento (o de un evento extremo) se habría producido SIN la actividad humana? Se traduce en estimar la probabilidad de necesidad/suficiencia de las emisiones humanas respecto al fenómeno observado, combinando modelos y datos. Permite pasar de 'hay correlación entre CO₂ y temperatura' a afirmaciones causales atribuibles ('X% del calentamiento es atribuible a la actividad humana'), que es lo que requieren las decisiones de política.",
+     "explicacion": "Atribuir el clima = contrafactual ('¿sin humanos?') vía PN/PS, no mera correlación."
+    },
+    {
+     "id": "arh18-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué quiere decir Pearl con 'la virtud de ver tus supuestos'?",
+     "solucion": "Que expresar el problema como un SCM/DAG obliga a hacer EXPLÍCITOS los supuestos causales (qué causa qué, qué se asume independiente), de modo que las conclusiones contrafactuales puedan rastrearse hasta esos supuestos y ser criticadas o refutadas. Frente a métodos donde los supuestos quedan ocultos, el enfoque estructural los pone sobre la mesa: si alguien duda del resultado, puede señalar exactamente qué flecha o independencia rechaza. Es transparencia metodológica.",
+     "explicacion": "El modelo estructural hace auditables los supuestos detrás de cada conclusión contrafactual."
+    },
+    {
+     "id": "arh18-q15",
+     "tipo": "concepto",
+     "enunciado": "Según Pearl, ¿por qué los contrafactuales son clave para una IA verdaderamente inteligente?",
+     "solucion": "Porque una IA que solo asocia (peldaño 1) no puede explicar sus decisiones, imaginar alternativas, asumir responsabilidad ni aprender de escenarios que no ocurrieron. El razonamiento contrafactual le permitiría preguntarse '¿qué habría pasado si hubiera actuado distinto?', base del aprendizaje flexible, la planificación, la ética y la explicación. Para Pearl, dotar a las máquinas de modelos causales capaces de contrafactuales (no solo de datos) es el paso necesario hacia una IA con comprensión similar a la humana.",
+     "explicacion": "Imaginar alternativas (contrafactuales) habilita explicación, planeación y ética: lo que falta a la IA actual."
     }
    ]
   }
