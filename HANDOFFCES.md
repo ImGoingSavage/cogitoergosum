@@ -2836,3 +2836,40 @@ de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos
 **Siguiente** — seguir con la serie AoPS: `IntroNumbTheo.pdf`, `introCountProb.pdf`,
 `MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf`. Mismo esquema §4.1
 (ids 409+, sin huecos). Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-15 (Arena tanda 35) — SECTOR C: AoPS *Introduction to Number Theory* (Crawford/Rusczyk), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Introduction to Number Theory` (Mathew
+Crawford & Richard Rusczyk, Art of Problem Solving) — libros[36] del ledger, ruta
+`entrenamiento`, cuota 40 (superada con **44**). Destino: **`data/problems.json`**
+(esquema §4.1), ids **409-452** sin huecos. Fuentes internas (TOC verificado; se leyeron
+las secciones Review/Challenge de los caps. 4, 5, 10 y 12):
+- **cap. 4 «Prime Factorization»** → identidad ab = mcd·mcm, reconstruir n desde mcd/mcm,
+  menor múltiplo/menor k, completar a cuadrado/cubo perfecto (**invariantes/optimizacion/inversion**).
+- **cap. 5 «Divisor Problems»** → fórmula t(n) = ∏(eᵢ+1), divisores cuadrados perfectos,
+  menor entero con d divisores, números con t(n) primo (**patrones/optimizacion/inversion**).
+- **cap. 10 «Units Digits»** → dígito de unidades de productos (determinado por las unidades)
+  y ciclos de las potencias (incl. dígito de unidades en base b) (**invariantes/patrones**).
+- **cap. 12 «Modular Arithmetic»** → residuos, congruencias de producto y potencia, 21ⁿ−12ⁿ,
+  ciclos de potencias mód p (Fermat) (**invariantes/patrones**).
+
+**Distribución 11/11/11/11** (invariantes/patrones/optimizacion/inversion) — se eligió para
+llevar el balance **GLOBAL a 113/113/113/113 exactos** (antes 102/102/102/102).
+
+**NOTA de honestidad (verificación):** el volumen de SOLUCIONES de AoPS es un libro aparte
+**no disponible** en la Arena, así que **cada número se resolvió y verificó de forma independiente
+con Python** (sympy/math; 44 afirmaciones — todas OK). Casos comprobados por enumeración:
+menor N con producto-de-dos-divisible-por-el-tercero para {30,72,N} = **60**; menor entero con
+20 divisores = **240**; menor N con 7+30N no primo = **6** (187 = 11·17, tras cinco primos
+seguidos).
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+452 ids únicos (1-452) sin huecos; esquema §4.1 correcto para 409-452; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: **inversion 113, optimizacion 113, invariantes
+113, patrones 113** (452 total, balance perfecto). Builder idempotente en
+`scripts/_build_aops_intront.py`.
+
+**Siguiente** — seguir con la serie AoPS: `introCountProb.pdf`, `MedAlgebra.pdf`,
+`MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf`. Mismo esquema §4.1 (ids 453+, sin
+huecos). Verificar SIEMPRE con Python.
