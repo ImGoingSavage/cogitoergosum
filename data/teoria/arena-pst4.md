@@ -23,7 +23,7 @@ Predictores **redundantes** entre sí. La **multicolinealidad perfecta** ocurre 
 Se **omite** un predictor importante, y su efecto contamina a los incluidos, generando relaciones **espurias**. Ejemplo del libro: sin la variable "ubicación", los coeficientes de recámaras y baños salían **negativos** (absurdo); al añadir el grupo de código postal, los signos se corrigieron. La cláusula "manteniendo lo demás constante" falla si lo importante no está en el modelo.
 
 ### 3. Interacciones
-El efecto de un predictor **depende del nivel de otro**. Ejemplo: el valor del pie cuadrado depende de la zona — en la zona más cara cada pie² suma ~$447, en la más barata ~$177. Se modela con un **término de interacción** $X_1 \cdot X_2$. Cómo elegir cuáles incluir: conocimiento del dominio, selección stepwise, regresión penalizada, o **modelos de árbol** (que las buscan solas).
+El efecto de un predictor **depende del nivel de otro**. Ejemplo: el valor del pie cuadrado depende de la zona — en la zona más cara cada pie² suma ~\$447, en la más barata ~\$177. Se modela con un **término de interacción** $X_1 \cdot X_2$. Cómo elegir cuáles incluir: conocimiento del dominio, selección stepwise, regresión penalizada, o **modelos de árbol** (que las buscan solas).
 
 ## Diagnóstico por residuales
 

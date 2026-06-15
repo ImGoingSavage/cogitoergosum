@@ -29,7 +29,7 @@ Otra área sorprendente de deuda. En un sistema maduro, las **líneas de configu
 
 La imagen mental del paper: dibuja la caja "ML code". Ahora dibuja, alrededor, las cajas de *configuración, recolección de datos, extracción de features, verificación de datos, gestión de máquinas, infraestructura de serving, monitoreo, análisis de procesos…* La caja de ML es **diminuta** en el centro; el resto —**≥95%**— es **plumbing**. Internalizar esto reordena prioridades: el algoritmo no es donde está la deuda.
 
-Caso concreto del peligro de un anti-patrón: **Knight Capital perdió $465M en 45 minutos** porque un *dead experimental codepath* obsoleto se reactivó inesperadamente en producción. El costo de una rama experimental individual es bajo; la deuda **acumulada** de no arrancarlas es catastrófica.
+Caso concreto del peligro de un anti-patrón: **Knight Capital perdió \$465M en 45 minutos** porque un *dead experimental codepath* obsoleto se reactivó inesperadamente en producción. El costo de una rama experimental individual es bajo; la deuda **acumulada** de no arrancarlas es catastrófica.
 
 **Predicción antes de seguir:** tu sistema es 95% glue code envolviendo un paquete genérico de ML. ¿Reusar el paquete fue la decisión barata? A menudo no: el glue code **congela** el sistema a las peculiaridades del paquete y a veces sale más barato una **solución nativa limpia**. La cura intermedia: envolver el black-box en una **API común**.
 
@@ -61,14 +61,14 @@ Moraleja de la arista: *el ML es 5% modelo y 95% fontanería; la deuda vive en e
 |-------|--------|
 | 95% del código es para meter datos en un paquete genérico | Glue code: envuelve el black-box en una API común |
 | Preparación de datos = jungla de scrapes/joins/sampling | Pipeline jungle: rediseño clean-slate; piensa holísticamente |
-| Experimentos como if/else en el código principal | Dead codepaths (Knight Capital $465M): arráncalos periódicamente |
+| Experimentos como if/else en el código principal | Dead codepaths (Knight Capital \$465M): arráncalos periódicamente |
 | Map-Reduce para ML iterativo | Mala abstracción; considera parameter-server |
 | Parámetros como floats crudos sin significado | Plain-Old-Data-Type smell |
 | Más líneas de config que de código, sin review | Configuration debt: aplica los 6 principios y code-review |
 
 ---
 
-> **Síntesis:** el código ML es mayormente **plumbing**. Evita el **glue code** envolviendo paquetes en APIs comunes; las **pipeline jungles** con rediseño holístico; los **dead experimental codepaths** arrancándolos (Knight Capital perdió $465M por ellos). Hay **abstraction debt** (Map-Reduce es mala abstracción para ML iterativo) y **smells** (plain-old-data-type, multiple-language, prototype). La **configuration debt** puede superar al código: trátala con principios de diff fácil, verificación automática y **code review**.
+> **Síntesis:** el código ML es mayormente **plumbing**. Evita el **glue code** envolviendo paquetes en APIs comunes; las **pipeline jungles** con rediseño holístico; los **dead experimental codepaths** arrancándolos (Knight Capital perdió \$465M por ellos). Hay **abstraction debt** (Map-Reduce es mala abstracción para ML iterativo) y **smells** (plain-old-data-type, multiple-language, prototype). La **configuration debt** puede superar al código: trátala con principios de diff fácil, verificación automática y **code review**.
 
 ---
 

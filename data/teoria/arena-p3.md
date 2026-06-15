@@ -1,189 +1,133 @@
 # Procesos estocásticos y movimiento browniano
 
+## De qué trata (y qué sabrás hacer)
+
+Un **proceso estocástico** es el azar desplegándose en el tiempo. Esta lección construye, desde la caminata aleatoria más simple, el objeto central de las finanzas modernas: el **movimiento browniano**. La gran sorpresa es que el azar acumulado tiene una "rugosidad" que rompe el cálculo clásico, y arreglarla (el lema de Itô) explica las fórmulas que de otro modo parecen mágicas.
+
+Al terminar sabrás por qué la dispersión crece como $\sqrt T$, qué hace especial al browniano, de dónde sale la corrección $-\sigma^2/2$ al pasar a logaritmos, y cómo el cambio de medida permite valorar derivados como esperanzas. Se construye desde la caminata aleatoria, paso a paso.
+
+---
+
 ## Caminata aleatoria simple
 
-Sₙ = X₁+…+Xₙ con P(Xᵢ=+1) = P(Xᵢ=−1) = 1/2.
+Sumas pasos $\pm1$ al azar: $S_n=X_1+\cdots+X_n$ con $P(X_i=\pm1)=\tfrac12$. Como los pasos son independientes con media 0 y varianza 1:
 
-| Propiedad | Valor |
-|-----------|-------|
-| E[Sₙ] | 0 |
-| Var(Sₙ) | n |
-| E[Sₙ²] | n |
-| Distribución asintótica | Sₙ/√n → N(0,1) |
+$$E[S_n]=0, \qquad \text{Var}(S_n)=n, \qquad \frac{S_n}{\sqrt n}\xrightarrow{d}N(0,1).$$
 
-La dispersión crece como **√n**, no n — raíz de la regla √T en finanzas.
+La clave: la dispersión típica es $\sqrt{\text{Var}}=\sqrt n$, **no** $n$. Caminas "a la deriva" alejándote del origen como raíz del tiempo. Esa es la raíz de la regla $\sqrt T$ en finanzas (la volatilidad de un retorno escala con la raíz del horizonte).
 
 ---
 
-## Ruina del jugador — tabla de resultados
+## Movimiento browniano estándar
 
-Barreras en 0 (ruina) y N (meta). Inicio en k.
+Toma la caminata aleatoria, reduce el tamaño del paso y acelera el tiempo: en el límite obtienes el **movimiento browniano** $B_t$, definido por:
+1. $B_0=0$;
+2. **incrementos independientes** (lo que pasa después de $s$ es independiente de lo anterior);
+3. **incrementos gaussianos:** $B_t-B_s\sim N(0,\,t-s)$;
+4. trayectorias continuas.
 
-| p | P(llegar a N) | E[pasos hasta absorción] |
-|---|--------------|--------------------------|
-| 1/2 | k/N | k(N−k) |
-| ≠1/2 (ρ=q/p) | (1−ρᵏ)/(1−ρᴺ) | compleja pero finita |
-
-Para p<1/2: P(llegar a N) cae exponencialmente en la ventaja del casino.
-
-**Ecuación de balance:** Pₖ = p·P_{k+1} + q·P_{k−1}, P₀=0, P_N=1. Solución general: Pₖ = A + B·ρᵏ; condiciones de frontera dan A,B.
+De aquí sale su covarianza, $\text{Cov}(B_s,B_t)=\min(s,t)$. (Para $s\le t$: $E[B_s B_t]=E[B_s(B_t-B_s)]+E[B_s^2]=0+s=s$, usando incrementos independientes.) La varianza $\text{Var}(B_t)=t$ crece sin límite: el browniano se aleja, no revierte.
 
 ---
 
-## Movimiento browniano estándar — propiedades
+## Variación cuadrática — por qué el cálculo cambia
 
-B_t es movimiento browniano si:
-1. B₀ = 0
-2. Incrementos independientes: (B_t − B_s) ⊥ σ(B_r, r≤s) para s<t
-3. Incrementos estacionarios: B_t − B_s ~ N(0, t−s)
-4. Trayectorias continuas (a.s.)
-5. Variación cuadrática: [B,B]_t = t
+En el cálculo clásico, un incremento al cuadrado $(dx)^2$ es despreciable. Para el browniano **no**:
 
-**Covarianza:** Cov(B_s, B_t) = min(s,t) para s≤t.
+$$(dB)^2=dt.$$
 
-Dem.: E[B_sB_t] = E[B_s·(B_t−B_s)] + E[B_s²] = 0 + s = s.
+Las trayectorias son tan "rugosas" (continuas pero en ningún punto derivables) que la suma de incrementos al cuadrado en $[0,t]$ no tiende a 0 sino a $t$. Esta identidad es la fuente de todo lo que sigue: obliga a conservar un término de segundo orden que en el cálculo normal se tira.
 
 ---
 
-## Variación cuadrática — por qué importa
+## Lema de Itô — la regla de la cadena estocástica
 
-En cálculo clásico: (dx)² → 0 al segundo orden.
-En cálculo estocástico: **(dB)² = dt** (variación cuadrática = t).
+Si un activo sigue $dS=\mu S\,dt+\sigma S\,dW$ (browniano geométrico) y $f(t,S)$ es suave, la regla de la cadena gana un término extra por $(dW)^2=dt$:
 
-Esta identidad es la raíz del lema de Itô: la expansión de Taylor necesita el término ½f''·(dB)².
+$$df=\left(\frac{\partial f}{\partial t}+\mu S\frac{\partial f}{\partial S}+\tfrac12\sigma^2 S^2\frac{\partial^2 f}{\partial S^2}\right)dt+\sigma S\frac{\partial f}{\partial S}\,dW.$$
 
-La variación total de B_t en [0,T] es ∞ (las trayectorias son continuamente "rugosas").
+El caso más importante, $f=\ln S$ (con $\partial f/\partial S=1/S$, $\partial^2 f/\partial S^2=-1/S^2$):
 
----
+$$d(\ln S)=\left(\mu-\frac{\sigma^2}{2}\right)dt+\sigma\,dW \;\Rightarrow\; \ln\frac{S_T}{S_0}\sim N\!\left(\left(\mu-\tfrac{\sigma^2}{2}\right)T,\ \sigma^2 T\right).$$
 
-## Lema de Itô — fórmula completa
-
-Para dS = μS dt + σS dW y f(t,S) suave:
-
-**df = (∂f/∂t + μS·∂f/∂S + ½σ²S²·∂²f/∂S²) dt + σS·∂f/∂S dW**
-
-Caso f = ln(S):
-∂f/∂S = 1/S, ∂²f/∂S² = −1/S².
-
-**d(ln S) = (μ − σ²/2) dt + σ dW**
-
-Integrando: ln(S_T/S_0) ~ N((μ−σ²/2)T, σ²T).
+Ese $-\sigma^2/2$ (la "corrección de Itô") es la diferencia entre la media aritmética y la geométrica de los retornos — fuente de incontables errores (conecta con [[arena-q7]]).
 
 ---
 
-## Martingalas fundamentales del BM
+## Martingalas del browniano
 
-| Proceso | Martingala? | Verificación |
-|---------|-------------|-------------|
-| B_t | ✓ | E[B_t\|F_s] = B_s |
-| B_t² − t | ✓ | E[B_t²\|F_s] = B_s² + (t−s); resta t |
-| e^(σB_t − σ²t/2) | ✓ | Girsanov: E[e^{σ(B_t−B_s)} \| F_s] = e^{σ²(t−s)/2} |
+Una **martingala** es un "juego justo": su esperanza futura, dado el presente, es el valor actual. Tres martingalas clásicas del browniano (úsalas como plantillas para el test "¿es martingala?"):
 
----
+| Proceso | ¿Martingala? |
+|---------|-------------|
+| $B_t$ | sí ($E[B_t\mid \mathcal F_s]=B_s$) |
+| $B_t^2-t$ | sí (resta justo la varianza acumulada) |
+| $e^{\sigma B_t-\sigma^2 t/2}$ | sí (la exponencial con su corrección) |
 
-## Tiempo de primer toque
-
-T_a = inf{t ≥ 0 : B_t = a} para a > 0.
-
-- P(T_a < ∞) = **1** (BM alcanza cualquier nivel)
-- E[T_a] = **∞** (los tiempos de toque tienen cola pesada)
-- Distribución de T_a: Lévy-estable con índice 1/2; densidad: f(t) = a·e^{−a²/(2t)} / √(2πt³)
-
-OST (optional sampling): E[B_{T_a}]=0≠a → E[T_a]=∞ es necesario para que el OST falle.
+El test operativo: aplica Itô y exige que el término $dt$ (la deriva) se anule. Si sobrevive deriva, no es martingala.
 
 ---
 
-## Principio de reflexión
+## Tiempo de primer toque y reflexión
 
-P(max_{s≤t} B_s ≥ a) = **2·P(B_t ≥ a) = 2Φ(−a/√t)**
+Sea $T_a$ el primer instante en que $B_t$ alcanza el nivel $a>0$. Notable:
 
-Intuición: una vez que B toca a, la parte futura se refleja equiprobablemente hacia arriba y hacia abajo. La mitad de las trayectorias que cruzan a terminan por encima.
+$$P(T_a<\infty)=1\quad\text{(siempre lo alcanza)}, \qquad E[T_a]=\infty\quad\text{(cola pesada)}.$$
 
-Aplicación: opciones de barrera y knock-out — P(tocar la barrera en [0,T]).
+"Seguro que pasa" no implica "en tiempo esperado finito". El **principio de reflexión** da la probabilidad de que el máximo supere $a$:
 
----
+$$P\!\left(\max_{s\le t}B_s\ge a\right)=2\,P(B_t\ge a)=2\,\Phi\!\left(-\frac{a}{\sqrt t}\right).$$
 
-## Proceso de Ornstein-Uhlenbeck (OU)
-
-dX = −κ(X−θ)dt + σdW
-
-- κ: velocidad de reversión a la media
-- θ: nivel de equilibrio a largo plazo
-- Distribución estacionaria: N(θ, σ²/(2κ))
-
-Diferencia con BM: Var[X_t] → σ²/(2κ) (constante); BM tiene Var[B_t] = t (crece sin límite).
-
-**Usos:** modelo de Vasicek (tasas de interés), pares trading.
+Intuición: cada trayectoria que toca $a$ y termina por debajo tiene una imagen espejo (reflejada en $a$ desde el toque) que termina por encima, igual de probable. Esto valora opciones de barrera.
 
 ---
 
-## Proceso de Poisson
+## Ornstein–Uhlenbeck (reversión a la media)
 
-N(t) ~ Poisson(λt): E[N(t)] = Var[N(t)] = λt.
+$$dX=-\kappa(X-\theta)\,dt+\sigma\,dW.$$
 
-| Operación | Resultado |
-|-----------|-----------|
-| Superposición: Poisson(λ₁)+Poisson(λ₂) | Poisson(λ₁+λ₂) |
-| Adelgazamiento: incluye c/evento con prob p | Poisson(λp) |
-| Tiempo entre llegadas | Exp(λ) con E[T]=1/λ |
+A diferencia del browniano, este proceso es **jalado** de vuelta hacia un nivel $\theta$ a velocidad $\kappa$. Su varianza no crece sin límite sino que se estabiliza en $\sigma^2/(2\kappa)$; su distribución estacionaria es $N(\theta,\sigma^2/(2\kappa))$. Es el modelo de tasas de interés (Vasicek) y de spreads en pairs trading.
 
 ---
 
-## Cambio de medida — Girsanov
+## Proceso de Poisson y cambio de medida
 
-Si W_t es BM bajo ℙ y el proceso tiene drift θ:
+El **proceso de Poisson** cuenta eventos: $N(t)\sim\text{Poisson}(\lambda t)$, con tiempos entre llegadas $\text{Exp}(\lambda)$; superponer dos procesos suma las tasas, y adelgazar (retener con prob $p$) escala a $\lambda p$ (conecta con [[arena-b3]]).
 
-dX = θ dt + dW (bajo ℙ)
-
-Bajo la medida ℚ definida por dℚ/dℙ = e^{θW_T − θ²T/2}:
-
-**X_t es BM estándar bajo ℚ**
-
-En finanzas: ℙ es la medida real (drift μ), ℚ es la medida neutral al riesgo (drift r).
-Precio de opción = E^ℚ[e^{−rT}·payoff].
-
----
-
-## Cadena de Markov — distribución estacionaria
-
-**πP = π, Σπᵢ = 1**
-
-Método: sistema lineal n×n con la condición de normalización.
-
-Para cadenas ergódicas (irreducibles + aperiódicas): converge a π desde cualquier estado inicial.
+El **cambio de medida** (Girsanov) reescribe la probabilidad para **eliminar el drift**: bajo una nueva medida $\mathbb Q$, un proceso con deriva se vuelve browniano puro. En finanzas, $\mathbb Q$ es la medida neutral al riesgo y el precio de un derivado es $E^{\mathbb Q}[e^{-rT}\cdot\text{payoff}]$ — por eso el drift real $\mu$ desaparece de Black–Scholes (conecta con [[arena-q5]]).
 
 ---
 
 ## Mini-ejemplo trabajado: el principio de reflexión, intuición y número
 
-¿P(el máximo de un browniano en [0,t] supera el nivel a>0)? El principio de reflexión da una respuesta sorprendentemente limpia:
+¿$P(\text{el máximo de un browniano en }[0,t]\text{ supera }a>0)$? El principio de reflexión da una respuesta limpia:
 
-> P(max_{s≤t} B_s ≥ a) = 2·P(B_t ≥ a) = 2Φ(−a/√t)
+$$P\!\left(\max_{s\le t}B_s\ge a\right)=2\,P(B_t\ge a)=2\,\Phi\!\left(-\frac{a}{\sqrt t}\right).$$
 
-La intuición: cada trayectoria que toca a y termina **por debajo** de a tiene una imagen espejo (reflejada en a desde el instante del toque) que termina **por encima**, igual de probable. Así, las que terminan ≥ a son la mitad de las que tocaron a → P(tocar) = 2·P(B_t ≥ a). Para a=√t: 2Φ(−1) ≈ 2·0.159 = **0.317**.
+La intuición: cada trayectoria que toca $a$ y termina **por debajo** tiene una imagen espejo (reflejada en $a$ desde el instante del toque) que termina **por encima**, igual de probable. Así, las que terminan $\ge a$ son la mitad de las que tocaron $a$, de donde $P(\text{tocar})=2P(B_t\ge a)$. Para $a=\sqrt t$: $2\Phi(-1)\approx 2\cdot0.159=0.317$.
 
-**Predicción antes de seguir:** el browniano alcanza cualquier nivel a con probabilidad 1, pero ¿el tiempo esperado para hacerlo es finito? Respuesta: **no, E[T_a]=∞** (cola Lévy pesada). "Seguro que pasa" y "pasa en tiempo esperado finito" son cosas distintas; por eso el muestreo opcional falla aquí (E[B_{T_a}]=0≠a). El mismo abismo que separa recurrencia de la caminata (P=1) de su tiempo de retorno (∞).
+**Predicción antes de seguir:** el browniano alcanza cualquier nivel $a$ con probabilidad 1, pero ¿el tiempo esperado para hacerlo es finito? Respuesta: **no, $E[T_a]=\infty$** (cola Lévy pesada). "Seguro que pasa" y "pasa en tiempo esperado finito" son cosas distintas; por eso el muestreo opcional falla aquí ($E[B_{T_a}]=0\ne a$). El mismo abismo que separa la recurrencia de la caminata ($P=1$) de su tiempo de retorno ($\infty$) (conecta con [[arena-fc4]]).
 
 ## Prototipo, contraejemplo y caso borde
 
-- **Prototipo:** barrera/absorción → ruina del jugador (martingala) o reflexión para el máximo del BM.
-- **Contraejemplo (OU no es BM):** el browniano tiene Var=t creciente sin límite; el Ornstein-Uhlenbeck revierte a la media y su Var→σ²/(2κ) constante. Tratar un proceso con reversión como un BM rompe la escala √T.
-- **Caso borde (variación cuadrática):** (dB)²=dt no es cero — las trayectorias son tan rugosas que su variación total es ∞. El borde es la razón de que exista el término extra de Itô.
+- **Prototipo:** barrera/absorción → ruina del jugador (martingala) o reflexión para el máximo del browniano.
+- **Contraejemplo (OU no es browniano):** el browniano tiene $\text{Var}=t$ creciente sin límite; el Ornstein–Uhlenbeck revierte a la media y su $\text{Var}\to\sigma^2/(2\kappa)$ constante. Tratar un proceso con reversión como un browniano rompe la escala $\sqrt T$.
+- **Caso borde (variación cuadrática):** $(dB)^2=dt$ no es cero — las trayectorias son tan rugosas que su variación total es $\infty$. El borde es la razón de que exista el término extra de Itô.
 
 ## Errores típicos
 
-- **Conceptual:** olvidar el drift de Itô −σ²/2 al pasar de S a ln S (confunde media aritmética y geométrica).
-- **Técnico:** aplicar muestreo opcional sin verificar que el tiempo de parada tenga esperanza finita (falla para T_a).
-- **De supuestos:** escalar volatilidad con √t bajo reversión a la media (OU crece más lento).
+- **Conceptual:** olvidar el drift de Itô $-\sigma^2/2$ al pasar de $S$ a $\ln S$ (confunde media aritmética y geométrica).
+- **Técnico:** aplicar muestreo opcional sin verificar que el tiempo de parada tenga esperanza finita (falla para $T_a$).
+- **De supuestos:** escalar volatilidad con $\sqrt t$ bajo reversión a la media (el OU crece más lento).
 
 ## Transferencia isomorfa
 
-- **Variación cuadrática (dB)²=dt ↔ corrección de Itô y prima de Jensen:** el término ½f''(dB)² es el origen del −σ²/2 del log-precio y del +σ²/2 de E[e^X] (conecta con [[arena-q7]]).
-- **Ruina del jugador ↔ muestreo opcional en barreras:** P(absorción)=k/N sale de que la posición es martingala (conecta con [[arena-q11]] y [[arena-fc4]]).
-- **Girsanov (cambiar drift μ→r) ↔ no-arbitraje y medida neutral al riesgo:** quitar el drift para valorar como esperanza descontada es por qué μ no entra en Black-Scholes (conecta con [[arena-q5]]).
-- **Proceso de Poisson (superposición/adelgazamiento) ↔ exponencial y Gamma:** tiempos entre llegadas Exp(λ), conteo Poisson(λt) (conecta con [[arena-b3]]).
+- **Variación cuadrática $(dB)^2=dt$ ↔ corrección de Itô y prima de Jensen:** el término $\tfrac12 f''(dB)^2$ es el origen del $-\sigma^2/2$ del log-precio y del $+\sigma^2/2$ de $E[e^X]$ (conecta con [[arena-q7]]).
+- **Ruina del jugador ↔ muestreo opcional en barreras:** $P(\text{absorción})=k/N$ sale de que la posición es martingala (conecta con [[arena-q11]] y [[arena-fc4]]).
+- **Girsanov (cambiar drift $\mu\to r$) ↔ no-arbitraje y medida neutral al riesgo:** quitar el drift para valorar como esperanza descontada es por qué $\mu$ no entra en Black–Scholes (conecta con [[arena-q5]]).
+- **Proceso de Poisson (superposición/adelgazamiento) ↔ exponencial y Gamma:** tiempos entre llegadas $\text{Exp}(\lambda)$, conteo $\text{Poisson}(\lambda t)$ (conecta con [[arena-b3]]).
 
-Moraleja de la arista: *(dB)²=dt es la fuente del −σ²/2 de Itô; y "alcanza el nivel con probabilidad 1" no implica "en tiempo esperado finito".*
+Moraleja de la arista: *$(dB)^2=dt$ es la fuente del $-\sigma^2/2$ de Itô; y "alcanza el nivel con probabilidad 1" no implica "en tiempo esperado finito".*
 
 ---
 
@@ -191,20 +135,18 @@ Moraleja de la arista: *(dB)²=dt es la fuente del −σ²/2 de Itô; y "alcanza
 
 | Señal | Jugada |
 |-------|--------|
-| "Var del proceso en t pasos" | Caminata: Var=t; BM: Var=t |
-| "P(absorción en N desde k)" | Ruina: p=1/2 → k/N; p≠1/2 → (1−ρᵏ)/(1−ρᴺ) |
-| "Cov entre B_s y B_t" | min(s,t) |
-| "d(ln S) con GBM" | Itô: (μ−σ²/2)dt + σdW |
-| "E[max B_s en [0,t]]" | Reflexión: 2Φ(−a/√t) |
-| "¿E[T_a] para BM?" | ∞ (cola Lévy pesada) |
-| "Proceso que revierte a la media" | OU: dX = −κ(X−θ)dt + σdW |
-| "Cambiar drift μ a r" | Girsanov: cambio de medida |
-| "Precio de opción como esperanza" | E^ℚ[e^{−rT}·payoff] |
+| "Var del proceso en $t$" | Caminata y browniano: $\text{Var}=t$ |
+| "Cov entre $B_s$ y $B_t$" | $\min(s,t)$ |
+| "$d(\ln S)$ con GBM" | Itô: $(\mu-\sigma^2/2)dt+\sigma\,dW$ |
+| "$E[\max B_s$ en $[0,t]]$" | Reflexión: $2\Phi(-a/\sqrt t)$ |
+| "¿$E[T_a]$ para browniano?" | $\infty$ (cola Lévy pesada) |
+| "Proceso que revierte a la media" | OU: $dX=-\kappa(X-\theta)dt+\sigma\,dW$ |
+| "Precio de opción como esperanza" | $E^{\mathbb Q}[e^{-rT}\cdot\text{payoff}]$ |
 
 ---
 
-> **Síntesis:** El movimiento browniano es la continuación del límite de la caminata aleatoria. Sus propiedades clave son Cov(B_s,B_t)=min(s,t) y [B,B]_t=t. El lema de Itô es la regla de la cadena con este extra: el término (dB)²=dt genera el drift de Itô −σ²/2. El cambio de medida de Girsanov elimina el drift μ y permite calcular precios de derivados como esperanzas.
+> **Síntesis:** El movimiento browniano es el límite continuo de la caminata aleatoria, con $\text{Cov}(B_s,B_t)=\min(s,t)$ y variación cuadrática $(dB)^2=dt$. El lema de Itô es la regla de la cadena con ese término extra, que genera el drift $-\sigma^2/2$. El cambio de medida de Girsanov elimina el drift y permite valorar derivados como esperanzas descontadas.
 
 ---
 
-*Retrieval: sin mirar: (1) P(ruina desde k=4, N=8, p=0.4); (2) Cov(B_2, B_5); (3) distribución de ln(S_T/S_0) para GBM; (4) min de dos Poisson(3) y Poisson(5) independientes.*
+*Retrieval: sin mirar: (1) $\text{Cov}(B_2,B_5)$; (2) distribución de $\ln(S_T/S_0)$ para GBM; (3) $P(\max_{s\le t}B_s\ge a)$ por reflexión; (4) por qué $E[T_a]=\infty$ aunque $P(T_a<\infty)=1$.*

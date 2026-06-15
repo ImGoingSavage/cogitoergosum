@@ -1,192 +1,113 @@
 # Cadenas de Markov e inferencia bayesiana
 
-## Cadenas de Markov — definición
+## De qué trata (y qué sabrás hacer)
 
-**Propiedad de Markov:** P(Xₙ₊₁=j | X₀=i₀,...,Xₙ=iₙ) = P(Xₙ₊₁=j | Xₙ=iₙ)
+Dos ideas grandes, conectadas por un mismo motor (actualizar un vector de probabilidades). Las **cadenas de Markov** modelan sistemas cuya evolución depende solo del estado actual —el pasado se olvida—, y su pregunta central es el equilibrio de largo plazo. La **inferencia bayesiana** actualiza creencias sobre un parámetro desconocido a la luz de datos. Ambas se reducen a multiplicar y normalizar distribuciones.
 
-El futuro es condicionalmente independiente del pasado dado el presente.
-
-Una cadena de Markov de tiempo discreto queda determinada por:
-1. Espacio de estados S = {s₁, s₂, ...}
-2. Distribución inicial π₀
-3. Matriz de transición P donde Pᵢⱼ = P(Xₙ₊₁=j | Xₙ=i)
-
-Cada fila de P suma 1 (matriz estocástica por filas).
+Al terminar sabrás encontrar la distribución estacionaria de una cadena, decir cuándo converge, y actualizar un prior a un posterior usando conjugación (sumar pseudo-conteos). Cada idea parte de un caso pequeño manipulable a mano.
 
 ---
 
-## n pasos y la distribución de Xₙ
+## Cadenas de Markov — la propiedad de "sin memoria"
 
-P(Xₙ=j | X₀=i) = (Pⁿ)ᵢⱼ — potencia n-ésima de la matriz de transición.
+La **propiedad de Markov** dice que el futuro depende del pasado solo a través del presente:
 
-La distribución de Xₙ es π₀·Pⁿ (vector fila).
+$$P(X_{n+1}=j\mid X_0,\ldots,X_n=i)=P(X_{n+1}=j\mid X_n=i).$$
+
+Una cadena queda definida por su espacio de estados, una distribución inicial, y la **matriz de transición** $P$ con $P_{ij}=P(X_{n+1}=j\mid X_n=i)$. Cada fila suma 1 (de un estado *sales* a algún sitio). Para saber dónde estás tras $n$ pasos, elevas la matriz: $P(X_n=j\mid X_0=i)=(P^n)_{ij}$, y la distribución completa es $\pi_0 P^n$.
 
 ---
 
 ## Distribución estacionaria
 
-π es **estacionaria** si **πP = π** y Σπᵢ=1.
+Una distribución $\pi$ es **estacionaria** si al aplicar un paso no cambia: $\pi P=\pi$ (con $\sum_i\pi_i=1$). Es el equilibrio de largo plazo. Para hallarla, resuelve ese sistema lineal. Un atajo cuando aplica es el **balance detallado**:
 
-Método para encontrarla:
-1. Escribe el sistema πP=π (o balance detallado)
-2. Añade la condición Σπᵢ=1
-3. Resuelve el sistema lineal (n−1 ecuaciones + normalización)
+$$\pi_i P_{ij}=\pi_j P_{ji}\quad\text{para todo }i,j,$$
 
-**Balance detallado** (condición suficiente para estacionariedad):
-πᵢ·Pᵢⱼ = πⱼ·Pⱼᵢ para todo i,j
-
-Balance detallado ⟹ πP=π (pero no al revés).
+que dice "el flujo de $i$ a $j$ iguala el de $j$ a $i$". El balance detallado implica estacionariedad (pero no al revés: hay cadenas con flujo circular estacionario que no lo cumplen).
 
 ---
 
-## Convergencia y mixing
+## Convergencia: cuándo se olvida el inicio
 
-**Teorema:** Si la cadena es **irreducible** (conectada: de cualquier estado puedes llegar a cualquier otro) y **aperiódica** (mcd de tiempos de retorno = 1), entonces:
-
-Pⁿᵢⱼ → πⱼ cuando n→∞ (independientemente del estado inicial)
-
-**Período de un estado:** mcd{n: Pⁿᵢᵢ > 0}.
-
-Una cadena con un estado con un auto-loop (Pᵢᵢ > 0) es aperiódica.
-
-**Tiempo de retorno esperado:** E[Tᵢ] = 1/πᵢ.
-
-**Mixing time:** número de pasos para que la distribución sea ε-cercana (en variación total) a π.
+**Teorema:** si la cadena es **irreducible** (de cualquier estado llegas a cualquier otro) y **aperiódica** (no queda atrapada en ciclos rígidos), entonces $P^n_{ij}\to\pi_j$ desde **cualquier** estado inicial. El sistema olvida de dónde partió. Dos hechos útiles:
+- **Tiempo medio de retorno** a un estado $i$: $E[T_i]=1/\pi_i$ (si pasas $1/3$ del tiempo en $i$, vuelves cada 3 pasos en promedio).
+- Una cadena periódica (alterna $1\to2\to1\to2$) tiene $\pi$ pero $P^n$ **oscila** sin converger — por eso hace falta aperiodicidad.
 
 ---
 
-## MCMC — Metropolis-Hastings
+## Inferencia bayesiana — el motor
 
-Objetivo: muestrear de una distribución π difícil de normalizar.
+Bayes actualiza una creencia sobre un parámetro $\theta$ a la luz de datos:
 
-**Algoritmo:**
-1. En estado x, propón y ~ q(y|x) (distribución de propuesta)
-2. Acepta y con probabilidad α = min(1, π(y)q(x|y)/(π(x)q(y|x)))
-3. Si rechazas, quédate en x
+$$P(\theta\mid\text{datos})\;\propto\; \underbrace{P(\text{datos}\mid\theta)}_{\text{verosimilitud}}\;\cdot\;\underbrace{P(\theta)}_{\text{prior}}.$$
 
-**Por qué funciona:** la tasa de aceptación garantiza balance detallado → π es estacionaria.
-
-Si q es simétrica (q(y|x)=q(x|y)): **α = min(1, π(y)/π(x))** (Metropolis clásico).
-
-No necesitas normalizar π — solo calcular π(y)/π(x).
+El **prior** es lo que creías antes; la **verosimilitud** dice cómo de compatibles son los datos con cada $\theta$; el **posterior** es la creencia actualizada. La constante que falta (la evidencia $P(\text{datos})$) solo normaliza.
 
 ---
 
-## Inferencia bayesiana — fundamentos
+## Priors conjugados: cerrar la familia
 
-**Teorema de Bayes:**
-**P(θ|datos) ∝ P(datos|θ) · P(θ)**
-
-Posterior ∝ verosimilitud × prior
-
-| Término | Nombre | Rol |
-|---------|--------|-----|
-| P(θ) | Prior | Creencia antes de los datos |
-| P(datos|θ) | Verosimilitud | Cómo los datos dependen de θ |
-| P(θ|datos) | Posterior | Creencia actualizada |
-| P(datos) | Evidencia | Normalización (a menudo ignorada) |
-
----
-
-## Conjugate priors
-
-Un prior es **conjugado** para una verosimilitud si el posterior tiene la misma forma funcional.
+Un prior es **conjugado** si el posterior tiene la misma forma que el prior — así actualizar es solo cambiar parámetros, sin integrales.
 
 | Verosimilitud | Prior conjugado | Posterior |
 |--------------|----------------|----------|
-| Bin(n,p) | Beta(α,β) | Beta(α+x, β+n−x) |
-| Poisson(λ) | Gamma(α,β) | Gamma(α+Σxᵢ, β+n) |
-| Normal(μ,σ²) — μ desconocida | N(μ₀,τ²) | N(μₙ,τₙ²) |
-| Bernoulli(p) | Beta(α,β) | Beta(α+x, β+1−x) |
+| $\text{Bin}(n,p)$ | $\text{Beta}(\alpha,\beta)$ | $\text{Beta}(\alpha+x,\;\beta+n-x)$ |
+| $\text{Poisson}(\lambda)$ | $\text{Gamma}(\alpha,\beta)$ | $\text{Gamma}(\alpha+\sum x_i,\;\beta+n)$ |
+| $N(\mu,\sigma^2)$, $\mu$ desconocida | $N(\mu_0,\tau^2)$ | $N(\mu_n,\tau_n^2)$ |
 
-**Interpretación de Beta(α,β):** α = éxitos previos, β = fracasos previos (pseudo-counts).
+El caso estrella es **Beta–Binomial**: con prior $\text{Beta}(\alpha,\beta)$ y $x$ éxitos en $n$, el posterior es $\text{Beta}(\alpha+x,\beta+n-x)$. Interpreta $\alpha,\beta$ como **éxitos y fracasos previos** (pseudo-conteos): actualizar es literalmente sumar los datos a esos conteos.
 
----
+$$E[p\mid x]=\frac{\alpha+x}{\alpha+\beta+n}.$$
 
-## Beta-Binomial (el caso más importante)
-
-Prior: p ~ Beta(α,β)
-Datos: X|p ~ Bin(n,p)
-**Posterior: p|X ~ Beta(α+X, β+n−X)**
-
-**E[p|X] = (α+X)/(α+β+n)**
-
-Para α=β=1 (prior uniforme): E[p|X] = (X+1)/(n+2) (ley de sucesión de Laplace).
-
-Con muchos datos (n grande): la media posterior → X/n (MLE domina el prior).
+Con prior uniforme ($\alpha=\beta=1$) esto es $\tfrac{x+1}{n+2}$ (la regla de sucesión de Laplace). Con muchos datos, $E[p\mid x]\to x/n$: el prior se diluye y manda la evidencia (conecta con [[arena-b3]]).
 
 ---
 
-## Normal-Normal conjugado
+## Estimadores bayesianos según la pérdida
 
-Prior: μ ~ N(μ₀, τ²)
-Datos: X₁,...,Xₙ|μ ~ N(μ, σ²) i.i.d.
-**Posterior: μ|datos ~ N(μₙ, τₙ²)**
+Del posterior sacas un único número según qué error quieras minimizar:
 
-Donde:
-- 1/τₙ² = 1/τ² + n/σ²
-- μₙ = τₙ² · (μ₀/τ² + nX̄/σ²)
-
-Interpretación: la media posterior es el promedio ponderado de prior y datos (ponderado por precisiones).
-
----
-
-## Estimadores bayesianos
-
-| Pérdida | Estimador de Bayes |
+| Pérdida | Estimador óptimo |
 |---------|-------------------|
-| Cuadrática (θ-δ)² | Media posterior E[θ|datos] |
-| Absoluta |θ-δ| | Mediana posterior |
-| 0-1 (I(δ≠θ)) | Moda posterior (MAP) |
+| Cuadrática $(\theta-\delta)^2$ | media posterior $E[\theta\mid\text{datos}]$ |
+| Absoluta $\lvert\theta-\delta\rvert$ | mediana posterior |
+| 0–1 | moda posterior (MAP) |
 
-**MAP (Maximum A Posteriori):** maximiza P(θ|datos) ∝ P(datos|θ)·P(θ). Con prior uniforme: MAP = MLE.
-
----
-
-## Modelo gráfico y cadenas de Markov ocultas
-
-En un HMM (Hidden Markov Model):
-- Estados ocultos X₁,X₂,... siguen una cadena de Markov
-- Observaciones Yₜ ~ P(Y|Xₜ) condicionalmente independientes dado Xₜ
-
-Algoritmos:
-- Forward-Backward: P(Xₜ|Y₁,...,Yₙ)
-- Viterbi: argmax P(X₁,...,Xₙ|Y₁,...,Yₙ)
-- Baum-Welch (EM): estima parámetros
+El **MAP** (máximo a posteriori) maximiza $P(\theta\mid\text{datos})$; con prior uniforme coincide con el MLE (conecta con [[arena-cb2]]).
 
 ---
 
 ## Mini-ejemplo trabajado: distribución estacionaria de una cadena 2×2
 
-Dos estados (soleado=1, lluvioso=2) con P = [[0.6, 0.4], [0.2, 0.8]]. La estacionaria π=(π₁,π₂) cumple πP=π. La forma más rápida es el **balance detallado** (vale para 2 estados): π₁·P₁₂ = π₂·P₂₁ → π₁·0.4 = π₂·0.2 → π₁ = ½·π₂. Con π₁+π₂=1:
+Dos estados (soleado$=1$, lluvioso$=2$) con $P=\begin{pmatrix}0.6&0.4\\0.2&0.8\end{pmatrix}$. La estacionaria $\pi=(\pi_1,\pi_2)$ cumple $\pi P=\pi$. La forma más rápida es el **balance detallado** (vale para 2 estados): $\pi_1 P_{12}=\pi_2 P_{21}$, o sea $\pi_1\cdot0.4=\pi_2\cdot0.2$, de donde $\pi_1=\tfrac12\pi_2$. Con $\pi_1+\pi_2=1$:
 
-> π₂ = 2/3, π₁ = 1/3 → **π = (1/3, 2/3)**
+$$\pi_2=\tfrac23,\quad \pi_1=\tfrac13 \;\Rightarrow\; \pi=(\tfrac13,\tfrac23).$$
 
-A largo plazo el sistema pasa 1/3 del tiempo soleado y 2/3 lluvioso, **sin importar el clima inicial** (la cadena es irreducible y aperiódica). Y el tiempo medio de retorno a "soleado" es 1/π₁ = **3 días**.
+A largo plazo el sistema pasa $\tfrac13$ del tiempo soleado y $\tfrac23$ lluvioso, **sin importar el clima inicial** (la cadena es irreducible y aperiódica). El tiempo medio de retorno a "soleado" es $1/\pi_1=3$ días.
 
-**Predicción antes de seguir:** si arrancas 100% seguro de que hoy está soleado, ¿la distribución a 50 pasos depende de ese arranque? Respuesta: **prácticamente no** — converge a (1/3, 2/3). El estado inicial se "olvida" tras el mixing time; esa amnesia es la propiedad de Markov llevada al límite. (Excepción: si la cadena fuera periódica o reducible, el olvido no ocurriría.)
+**Predicción antes de seguir:** si arrancas 100% seguro de que hoy está soleado, ¿la distribución a 50 pasos depende de ese arranque? Respuesta: **prácticamente no** — converge a $(\tfrac13,\tfrac23)$. El estado inicial se "olvida" tras el mixing time; esa amnesia es la propiedad de Markov llevada al límite. (Excepción: si la cadena fuera periódica o reducible, el olvido no ocurriría.)
 
 ## Prototipo, contraejemplo y caso borde
 
-- **Prototipo:** sistema cuyo futuro depende solo del estado actual → cadena de Markov; busca π con πP=π (o balance detallado).
-- **Contraejemplo (no toda π viene de balance detallado):** balance detallado ⟹ estacionariedad, pero no al revés; una cadena con flujo circular (1→2→3→1) puede tener π estacionaria sin ser reversible. Asumir reversibilidad siempre es el error.
-- **Caso borde (periódica):** una cadena que alterna 1→2→1→2 tiene π=(½,½) pero Pⁿ **no converge** (oscila); el teorema de convergencia exige aperiodicidad. El borde revela qué hipótesis sostiene "se olvida el inicio".
+- **Prototipo:** sistema cuyo futuro depende solo del estado actual → cadena de Markov; busca $\pi$ con $\pi P=\pi$ (o balance detallado).
+- **Contraejemplo (no toda $\pi$ viene de balance detallado):** balance detallado $\Rightarrow$ estacionariedad, pero no al revés; una cadena con flujo circular ($1\to2\to3\to1$) puede tener $\pi$ estacionaria sin ser reversible. Asumir reversibilidad siempre es el error.
+- **Caso borde (periódica):** una cadena que alterna $1\to2\to1\to2$ tiene $\pi=(\tfrac12,\tfrac12)$ pero $P^n$ **no converge** (oscila); el teorema de convergencia exige aperiodicidad.
 
 ## Errores típicos
 
-- **Conceptual:** confundir la distribución estacionaria (equilibrio de largo plazo) con la distribución inicial, o creer que toda cadena converge (hace falta irreducible + aperiódica).
-- **Técnico:** en Metropolis-Hastings, olvidar el cociente de propuestas q(x|y)/q(y|x) cuando q no es simétrica, rompiendo el balance detallado.
-- **De supuestos:** reportar el posterior como si el prior no importara con pocos datos; el prior domina hasta que n crece.
+- **Conceptual:** confundir la distribución estacionaria (equilibrio de largo plazo) con la inicial, o creer que toda cadena converge (hace falta irreducible + aperiódica).
+- **Técnico:** en la actualización bayesiana, olvidar sumar los datos a *ambos* parámetros (éxitos a $\alpha$, fracasos a $\beta$).
+- **De supuestos:** reportar el posterior como si el prior no importara con pocos datos; el prior domina hasta que $n$ crece.
 
 ## Transferencia isomorfa
 
-- **Balance detallado de MCMC ↔ estacionariedad por construcción:** la tasa de aceptación de Metropolis está *diseñada* para que π satisfaga balance detallado; muestrear de π difícil = construir una cadena cuyo equilibrio es π.
-- **Beta-Binomial conjugado ↔ familia de distribuciones:** el posterior Beta(α+x, β+n−x) es la misma Beta=Gamma-normalizada de antes; conjugación es cerrar la familia bajo actualización (conecta con [[arena-b3]]).
-- **Posterior ∝ verosimilitud × prior ↔ Bayes con tasa base:** actualizar creencias sobre θ es el mismo gesto que actualizar odds de enfermedad con un test (conecta con [[arena-q2]]).
-- **Propiedad de Markov (estado suficiente) ↔ estado mínimo en sistemas/RL:** "el futuro depende solo del presente" es la definición de un estado bien diseñado en control y en diseño de features (conecta con [[arena-q11]], procesos como el OU, que son markovianos).
-- **HMM (estados latentes que evolucionan) ↔ secuencias con estructura oculta:** etiquetado de secuencias y series temporales con régimen oculto comparten el forward-backward.
+- **Beta–Binomial conjugado ↔ familia de distribuciones:** el posterior $\text{Beta}(\alpha+x,\beta+n-x)$ es la misma Beta$=$Gamma-normalizada de antes; conjugar es cerrar la familia bajo actualización (conecta con [[arena-b3]]).
+- **Posterior $\propto$ verosimilitud $\times$ prior ↔ Bayes con tasa base:** actualizar la creencia sobre $\theta$ es el mismo gesto que actualizar las odds de enfermedad con un test (conecta con [[arena-q2]]).
+- **Propiedad de Markov (estado suficiente) ↔ estado mínimo en sistemas/RL:** "el futuro depende solo del presente" es la definición de un estado bien diseñado en control y en features (conecta con [[arena-q11]], el OU es markoviano).
+- **MAP con prior uniforme $=$ MLE ↔ regularización:** un prior gaussiano sobre los pesos es exactamente la regularización L2 del MAP (conecta con [[arena-isl3]]).
 
-Moraleja de la arista: *una cadena de Markov olvida su inicio si es irreducible y aperiódica; el equilibrio es π con πP=π; y la inferencia bayesiana es exactamente "actualizar π" con verosimilitud × prior.*
+Moraleja de la arista: *una cadena de Markov olvida su inicio si es irreducible y aperiódica; el equilibrio es $\pi$ con $\pi P=\pi$; y la inferencia bayesiana es "actualizar $\pi$" con verosimilitud $\times$ prior.*
 
 ---
 
@@ -195,18 +116,17 @@ Moraleja de la arista: *una cadena de Markov olvida su inicio si es irreducible 
 | Señal | Jugada |
 |-------|--------|
 | "¿Cuándo converge la cadena?" | Irreducible + aperiódica |
-| "E[tiempo de retorno al estado i]" | 1/πᵢ |
-| "Muestrear de distribución difícil" | Metropolis-Hastings |
+| "$E[\text{tiempo de retorno al estado }i]$" | $1/\pi_i$ |
 | "Prior para proporción + datos binomiales" | Beta conjugado |
-| "Actualizar media con datos normales" | Normal-Normal conjugado |
-| "Posterior con muchos datos" | Domina el prior → ≈ MLE |
+| "Actualizar media con datos normales" | Normal–Normal conjugado |
+| "Posterior con muchos datos" | Domina la evidencia → $\approx$ MLE |
 | "Estimador bajo pérdida cuadrática" | Media posterior |
-| "MAP con prior uniforme" | MAP = MLE |
+| "MAP con prior uniforme" | $=$ MLE |
 
 ---
 
-> **Síntesis:** Las cadenas de Markov modelan sistemas donde el pasado solo importa a través del estado actual — memoria de primer orden. La distribución estacionaria es el equilibrio de largo plazo; el mixing time es cuánto tardas en llegar. La inferencia bayesiana es actualización de creencias vía Bayes: los conjugate priors hacen el cálculo analítico; MCMC lo hace numéricamente cuando no hay forma cerrada.
+> **Síntesis:** Las cadenas de Markov modelan sistemas con memoria de primer orden — el pasado solo importa por el estado actual. La distribución estacionaria es el equilibrio de largo plazo, al que se converge si la cadena es irreducible y aperiódica. La inferencia bayesiana es actualización de creencias vía Bayes; los priors conjugados convierten esa actualización en sumar pseudo-conteos.
 
 ---
 
-*Retrieval: cierra y responde: (1) distribución estacionaria para P=[[0.6,0.4],[0.2,0.8]]; (2) posterior de p después de Beta(3,3) + 4 éxitos en 10; (3) E[p|datos] en la respuesta anterior; (4) tasa de aceptación de Metropolis para pasar de estado con π=0.3 a estado con π=0.6.*
+*Retrieval: cierra y responde: (1) distribución estacionaria para $P=\big(\begin{smallmatrix}0.6&0.4\\0.2&0.8\end{smallmatrix}\big)$; (2) posterior de $p$ tras $\text{Beta}(3,3)$ y 4 éxitos en 10; (3) $E[p\mid\text{datos}]$ de lo anterior; (4) por qué una cadena periódica no converge aunque tenga $\pi$.*

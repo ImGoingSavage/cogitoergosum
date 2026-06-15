@@ -34,7 +34,7 @@ Dos clústeres, A y B, sirven **1.000 QPS** cada uno, y cada uno aguanta **1.100
 
 Peor con **reintentos naïf**: cada petición fallida se reintenta 3 veces → 2.000 QPS se vuelven 6.000 justo cuando el sistema agoniza. Las mitigaciones: **rechaza pronto y barato** (load shedding, HTTP 503), **degrada** la calidad antes de colapsar, **limita reintentos** con backoff exponencial + **jitter** y un presupuesto de reintentos, y planifica capacidad **N+2** (sobrevivir a perder 2 clústeres).
 
-**Predicción antes de seguir:** dejas un codepath experimental viejo tras un flag desactivado "por si acaso". ¿Riesgo? Es una bomba de tiempo (cf. Knight Capital, $465M): cada línea de código es un **pasivo**; bórrala, no la dejes dormida.
+**Predicción antes de seguir:** dejas un codepath experimental viejo tras un flag desactivado "por si acaso". ¿Riesgo? Es una bomba de tiempo (cf. Knight Capital, \$465M): cada línea de código es un **pasivo**; bórrala, no la dejes dormida.
 
 ## Prototipo, contraejemplo y caso borde
 

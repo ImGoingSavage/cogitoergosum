@@ -25,7 +25,7 @@ Para una call **ATM** (S=K): ln(S/K)=0 → d₁ = (r + σ²/2)·√T/σ ≈ 0 pa
 
 **Δ ≈ 0.5** para una call ATM.
 
-Intuición: hay ~50% de probabilidad de que la call venza in-the-money. Un aumento de $1 en S mueve la call ~$0.50. Cobertura: 1 call vendida ↔ 0.5 acciones compradas.
+Intuición: hay ~50% de probabilidad de que la call venza in-the-money. Un aumento de \$1 en S mueve la call ~\$0.50. Cobertura: 1 call vendida ↔ 0.5 acciones compradas.
 
 ---
 
@@ -38,7 +38,7 @@ Si la volatilidad es cero, el activo crece deterministamente a S·e^(rT). Con S=
 - **C = S − K·e^(−rT)** (igual que la parity con P=0).
 - **Δ = 1**: el delta hedge requiere 1 acción por call vendida.
 
-Para S=K=$100, r=5%, T=1: C = 100 − 100·e^{-0.05} ≈ **$4.88**.
+Para S=K=\$100, r=5%, T=1: C = 100 − 100·e^{-0.05} ≈ **\$4.88**.
 
 ---
 
@@ -62,9 +62,9 @@ Para S=K, r≈0, madurez T, volatilidad σ:
 
 **C ≈ S·σ·√T / √(2π) ≈ 0.4·S·σ·√T**
 
-Para S=$100, σ=10%, T=1 año: C ≈ 0.4×100×0.1 = **$4** (≈$3.99 exacto).
+Para S=\$100, σ=10%, T=1 año: C ≈ 0.4×100×0.1 = **\$4** (≈\$3.99 exacto).
 
-Las tres anclas: $1 (demasiado bajo para σ=10%), **$5** (la respuesta correcta de orden de magnitud), $10 (sería σ≈25%).
+Las tres anclas: \$1 (demasiado bajo para σ=10%), **\$5** (la respuesta correcta de orden de magnitud), \$10 (sería σ≈25%).
 
 ---
 

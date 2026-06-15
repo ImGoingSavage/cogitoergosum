@@ -115,7 +115,9 @@ function katexHTML(fuente, display) {
   const k = typeof globalThis !== 'undefined' ? globalThis.katex : undefined;
   if (k && typeof k.renderToString === 'function') {
     try {
-      return k.renderToString(fuente, { displayMode: display, throwOnError: false });
+      // strict:false → KaTeX renderiza texto acentuado en \text{} (español) sin
+      // ensuciar la consola con avisos; throwOnError:false → errores en rojo.
+      return k.renderToString(fuente, { displayMode: display, throwOnError: false, strict: false });
     } catch {
       return null;
     }
@@ -135,13 +137,16 @@ function inline(texto) {
   };
 
   let s = texto.replace(/`([^`]+)`/g, (_, c) => proteger(`<code>${c}</code>`));
+  // Dólar literal escapado (\$) → se protege como '$' ANTES de procesar $…$, de
+  // modo que las cantidades en dólares ($4M, $100) se escriban \$4M, \$100 y no se
+  // confundan con matemáticas. Convención: $…$ es SIEMPRE matemática.
+  s = s.replace(/\\\$/g, () => proteger('$'));
   // Matemáticas en bloque dentro de una línea: $$ … $$ (KaTeX display; fallback Unicode)
   s = s.replace(/\$\$([^$]+)\$\$/g, (_, m) =>
     proteger(katexHTML(desescapar(m), true) ?? `<span class="matematica">${texAUnicode(m)}</span>`)
   );
-  // Matemáticas en línea: $ … $ — el lookahead (?![0-9\s]) evita capturar
-  // cantidades en dólares ($4M, $100), que el corpus usa con frecuencia.
-  s = s.replace(/\$(?![0-9\s])([^$\n]+?)\$/g, (_, m) =>
+  // Matemáticas en línea: $ … $ (los \$ literales ya están protegidos arriba).
+  s = s.replace(/\$([^$\n]+?)\$/g, (_, m) =>
     proteger(katexHTML(desescapar(m), false) ?? `<span class="matematica">${texAUnicode(m)}</span>`)
   );
 
