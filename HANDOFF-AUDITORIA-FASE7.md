@@ -65,7 +65,7 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**78 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**82 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
@@ -74,9 +74,10 @@ ponla en una sola línea `$$...$$`.
 | **MAANG** | cc1-4, sd1-4, m1, m2 (10) |
 | **Quant núcleo (lotes 11-12)** | q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q13 (11) |
 | **Blitzstein (lote 13)** | b1, b2, b3, b4 (4) |
+| **DeGroot (lote 14)** | dg1, dg2, dg3, dg4 (4) |
 | Muestra Oleada 1 | q12 (+cc1, h17 ya contados arriba) |
 
-### FALTAN (40 lecciones) — esto es lo que debes hacer
+### FALTAN (36 lecciones) — esto es lo que debes hacer
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
@@ -93,7 +94,7 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
 - ~~`arena-b1, b2, b3, b4` (Blitzstein & Hwang)~~ **HECHAS (lote 13)**.
 
 **Estadística / inferencia (route: estadistica/quant):**
-- `arena-dg1, dg2, dg3, dg4` (DeGroot & Schervish)
+- ~~`arena-dg1, dg2, dg3, dg4` (DeGroot & Schervish)~~ **HECHAS (lote 14)**.
 - `arena-cb1, cb2, cb3, cb4` (Casella & Berger — Statistical Inference)
 - `arena-pst1, pst2, pst3, pst4` (Practical Statistics for Data Scientists)
 - `arena-isl1, isl2, isl3, isl4` (ISLP — Introduction to Statistical Learning)
