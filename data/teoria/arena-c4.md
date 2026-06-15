@@ -24,6 +24,25 @@
 
 ---
 
+## Errores típicos
+
+- **Conceptual:** reportar solo la métrica técnica (AUC, F1) en vez del **impacto de negocio** (la decisión o el valor que habilitó).
+- **De métrica:** proponer una métrica vanidosa o 'gameable' sin guardrails; lo que se optimiza sin contrapeso se infla a costa de otra cosa.
+- **De honestidad:** ocultar o maquillar un resultado negativo en vez de enmarcarlo como aprendizaje accionable.
+
+## Transferencia isomorfa
+
+Las conductuales de DS son las técnicas vistas desde el negocio: la misma estructura, otra audiencia.
+
+- **"Modelo que falló en producción" ↔ training-serving skew / drift:** diagnosticar causa raíz y añadir monitoreo es exactamente la lección de del-modelo-al-sistema (conecta con [[arena-s1]] y [[arena-cds3]]).
+- **Definir métrica + guardrails ↔ North Star y counter-metrics:** alinear la métrica al valor de negocio sin que se 'gamee' es el marco North Star + guardrail (conecta con [[arena-ads4]]).
+- **Causa raíz vs síntoma ↔ confounding y diagnóstico de métrica:** distinguir el impulsor del correlacionado es el mismo reflejo causal que corrige un coeficiente con signo absurdo (conecta con [[arena-pst4]]).
+- **Simple vs complejo según contexto ↔ sesgo-varianza e interpretabilidad:** elegir el modelo por interpretabilidad/regulación, no por moda, es el trade-off flexibilidad↔interpretabilidad (conecta con [[arena-isl1]]).
+
+Moraleja de la arista: *un proyecto de DS se cuenta por el valor de negocio que movió, no por su AUC; y una métrica sin guardrail siempre se acaba gameando.*
+
+---
+
 ## Disparadores
 
 | Pregunta | Jugada |

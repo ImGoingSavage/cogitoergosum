@@ -18,6 +18,25 @@ Prioriza con un **criterio explícito** (impacto vs esfuerzo, urgencia, dependen
 
 ---
 
+## Errores típicos
+
+- **Conceptual:** confundir "trabajé más horas" con priorizar; priorizar es **elegir con criterio**, no hacer más.
+- **De atribución:** acaparar el crédito (o diluirlo en "el equipo") en vez de nombrar tu rol específico y repartir con justicia.
+- **De decisión:** paralizarte ante información incompleta; se espera **sesgo a la acción razonada**, distinguiendo decisiones reversibles de irreversibles.
+
+## Transferencia isomorfa
+
+Liderazgo y priorización son, en el fondo, **decisión bajo restricción** — el mismo arsenal que los problemas técnicos:
+
+- **Priorizar impacto vs esfuerzo ↔ tradeoff explícito:** nombrar el criterio (impacto, urgencia, dependencias) es la heurística "tradeoff explícito" del arsenal mental, no una corazonada.
+- **Decidir con info incompleta ↔ parada óptima:** decidir ahora vs esperar más datos, sopesando reversibilidad, es valorar "quedarse vs continuar" como en un juego de parada óptima (conecta con [[arena-q8]]).
+- **MVP + deuda técnica consciente ↔ rollout incremental:** entregar lo mínimo crítico y asumir deuda comunicada es el mismo gesto que un despliegue por fases con guardrails (conecta con [[arena-dmls3]]).
+- **Influir con datos y prototipo ↔ evidencia experimental:** mover a stakeholders sin autoridad se apoya en la misma evidencia que decide un experimento.
+
+Moraleja de la arista: *priorizar es elegir con un criterio explícito, no trabajar más; y decidir con info incompleta es parada óptima, no parálisis.*
+
+---
+
 ## Disparadores
 
 | Pregunta | Jugada |

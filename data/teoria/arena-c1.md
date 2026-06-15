@@ -26,6 +26,25 @@ Foco en **madurez**: describe el desacuerdo de forma **objetiva y empática** (s
 
 ---
 
+## Errores típicos
+
+- **De estructura:** narrar todo el contexto (Situación/Tarea) y quedarte sin tiempo para la Acción y el Resultado, que deben ser el 60-70%.
+- **De atribución:** decir "hicimos" en vez de "hice"; el entrevistador evalúa **tu** contribución específica.
+- **De interpretación:** explicar el método a un no técnico con jerga, en vez de traducir a la **decisión** que habilita.
+
+## Transferencia isomorfa
+
+La respuesta conductual es **estructura antes que contenido**, igual que un problema técnico:
+
+- **STAR ↔ deconstrucción de Pólya:** Situación→Tarea→Acción→Resultado es el mismo andamiaje "entender→planear→ejecutar→reflexionar" que ordena un problema de Arena; el formato libera memoria de trabajo para pensar.
+- **'Disagree and commit' ↔ forcejeo antes de decidir:** escuchar la otra postura y discutir con datos antes de cerrar es el "forcejeo antes de la solución" del método socrático.
+- **Traducir a no técnicos ↔ comunicar un VPP a no-estadísticos:** "de cada 100 alertas, 49 son reales" es la misma traducción de método a implicación (conecta con [[arena-q2]]).
+- **Influir con datos + prototipo ↔ evidencia de un A/B test:** convencer sin autoridad se apoya en la misma evidencia experimental que decide un lanzamiento (conecta con [[arena-ads4]]).
+
+Moraleja de la arista: *en lo conductual, como en lo técnico, la estructura es el 80% de la claridad: STAR es tu deconstrucción y los datos son tu argumento.*
+
+---
+
 ## Disparadores
 
 | Pregunta | Jugada |

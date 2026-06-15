@@ -20,6 +20,25 @@ Elige un caso **real** y con consecuencias (ni trivial ni imprudente). **Asume l
 
 ---
 
+## Errores típicos
+
+- **Conceptual:** el falso defecto ("soy perfeccionista") en vez de un error real con aprendizaje; el entrevistador lo detecta al instante.
+- **De honestidad:** inventar una respuesta ante "no sé" en lugar de admitirlo y explicar **cómo lo averiguarías**.
+- **De interpretación:** elegir un fracaso trivial (sin consecuencias) o uno imprudente (que revela mal juicio); el punto es la lección, no la ausencia de errores.
+
+## Transferencia isomorfa
+
+Estas preguntas premian la misma postura que la Constitución de CogitoErgoSum: **el error es parte del proceso**.
+
+- **Fracaso → aprendizaje aplicado ↔ productive struggle:** narrar qué cambiaste tras fallar es el mismo "el amor es al proceso de pensar, no al resultado"; un fracaso sin cambio de proceso no enseña.
+- **Ambigüedad → supuestos explícitos ↔ plantilla de diseño / target trial:** descomponer y declarar supuestos antes de avanzar es lo que hace la plantilla antes de proponer arquitectura, o los 7 componentes antes de analizar datos (conecta con [[arena-s1]] y [[arena-h2]]).
+- **"No sé, así lo averiguaría" ↔ método socrático:** mostrar el método de búsqueda en vez de la respuesta es exactamente lo que entrena la mentoría socrática.
+- **Plazo en riesgo → avisar temprano ↔ monitoreo y alertas:** detectar la desviación y comunicarla pronto es el mismo reflejo que una alarma de drift antes de que el daño crezca (conecta con [[arena-cds3]]).
+
+Moraleja de la arista: *un fracaso vale por la lección que cambió tu proceso; admitir "no sé" con un método es más fuerte que inventar una respuesta.*
+
+---
+
 ## Disparadores
 
 | Pregunta | Jugada |
