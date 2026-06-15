@@ -409,14 +409,19 @@
     },
     {
       "libro": "Causal Inference: The Mixtape (Cunningham)",
-      "archivo": "Biblioteca/Causal Inference_ The Mixtape - Scott Cunningham.txt",
+      "archivo": "Biblioteca/Causal Inference_ The Mixtape - Cunningham-Cuasal-Inference-the-Mixtape.pdf",
       "sector": "A",
       "ruta": "health-ai-rwe",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
-      "unidades_creadas": [],
+      "estado": "completado",
+      "preguntas_agregadas": 62,
+      "unidades_creadas": [
+        "arena-h19",
+        "arena-h20",
+        "arena-h21",
+        "arena-h22"
+      ],
       "cuota_minima": 25,
-      "notas": "Disponible como .txt en Biblioteca/"
+      "notas": "2026-06-14 (cuenta A, Opus 4.8): completado. ÚLTIMO libro de la ruta health-ai-rwe (queda COMPLETA: 22 unidades arena-h1..h22). NOTA: el .txt de Biblioteca está cifrado (César +1, ilegible); se usó el PDF 'Biblioteca/Causal Inference_ The Mixtape - Cunningham-Cuasal-Inference-the-Mixtape.pdf' (TOC verificado). Toolkit CUASI-EXPERIMENTAL econométrico, valor NUEVO frente a What If/Book of Why/OHDSI/Survival: matching, IV/2SLS, RDD, DiD, panel/FE, control sintético. 4 unidades: h19 resultados potenciales + sesgo de selección (Y¹/Y⁰ switching equation, ATE/ATT/ATU, SUTVA no interferencia+bien definido, descomposición diferencia naïve=ATE+sesgo selección+sesgo heterogéneo, aleatorización anula sesgos, endógeno vs exógeno, no causación sin manipulación, potential outcomes↔DAGs), h20 matching/subclasificación/PS (CIA selección en observables (Y¹,Y⁰)⊥D|X fuerte/no testeable, subclasificación, maldición dimensionalidad, propensity score balancing score, IPW, soporte común/overlap, balance SMD<0.1, vecino más cercano sesga→corrección, CEM, matching no extrapola vs regresión, Lalonde/Dehejia-Wahba, todos fallan con confundidor no observado), h21 IV/2SLS + RDD (2SLS 1ª D~Z/2ª Y~D̂, relevancia+exclusión+independencia, LATE compliers bajo monotonicidad, instrumentos débiles F>10, forma reducida; RDD sharp determinista vs fuzzy=IV, running variable/cutoff, aleatorización local, McCrary no manipulación, continuidad covariables/cutoffs placebo, bandwidth sesgo-varianza, polinomios locales no globales, Card Medicare@65/Angrist-Lavy Maimónides, identifica sin CIA efecto local), h22 panel/FE + DiD + control sintético (FE unidad controla invariante en el tiempo no observado vía within, exogeneidad estricta, no resuelve variables en el tiempo; DiD doble diferencia=ATT bajo tendencias paralelas, TWFE, event study/pre-tendencias≈0/placebos, staggered+heterogéneo sesga Goodman-Bacon→Callaway-Sant'Anna, Card-Krueger; control sintético gemelo ponderado donor pool iguala pre-tratamiento, brecha=efecto, inferencia por placebo/permutación, California sintética/Prop99/Abadie). 60 banco (15/unidad) + 2 examen (f7-ex-70 DiD tendencias paralelas/event study/Goodman-Bacon, f7-ex-71 RDD sharp vs fuzzy/McCrary/sin CIA). Órdenes 111-114. 10 heurísticas nuevas (rubin-ate-att-atu-sutva, descomponer-comparacion-naive, matching-subclasificacion, supuesto-seleccion-en-observables-cia, instrumentos-debiles-2sls, regresion-discontinua-rdd, diferencias-en-diferencias, tendencias-paralelas-placebo, efectos-fijos-panel, control-sintetico); reúsa propensity-score y variable-instrumental. Catálogo total 226 heurísticas. VERSION v53 (199 archivos). RUTA health-ai-rwe COMPLETA. Próximo §10: Sector D (conductual/STAR: Build a Career in Data Science + caps. conductuales de Cracking/System Design) → cablear ruta 'conductual' (§6) si no está; luego Sector C (problems.json + fase-0)."
     },
     {
       "libro": "Build a Career in Data Science (Robinson & Nolis)",

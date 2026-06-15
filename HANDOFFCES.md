@@ -2405,3 +2405,48 @@ The Mixtape** (Scott Cunningham, libros[25], **.txt en `Biblioteca/`**). Despué
 ruta health-ai-rwe queda completa → Sectores **D** (conductual, STAR) y **C**
 (problems.json + fase-0). Próxima unidad: `arena-h19,h20…`; órdenes desde 111,
 `f7-ex-70`+, VERSION v53+.
+
+## Bitácora 2026-06-14 (Arena tanda 25) — Causal Inference: The Mixtape (Cunningham), 62 preguntas
+
+Procesado `Causal Inference: The Mixtape` (Scott Cunningham) — libros[25], ruta
+`health-ai-rwe`, cuota 25. **ÚLTIMO libro de la ruta health-ai-rwe**, que queda
+**COMPLETA (22 unidades, arena-h1..h22)**. NOTA: el `.txt` de `Biblioteca/` está
+**cifrado** (César +1: "Bnoxqhfgs"→"Copyright"), ilegible; se usó el **PDF**
+`Biblioteca/Causal Inference_ The Mixtape - Cunningham-Cuasal-Inference-the-Mixtape.pdf`
+(TOC verificado). Toolkit **cuasi-experimental econométrico**, valor NUEVO frente a
+What If/Book of Why/OHDSI/Survival. 4 unidades (`fase-7`, órdenes 111-114):
+- **arena-h19** — **resultados potenciales y sesgo de selección**: Y¹/Y⁰ +
+  switching equation, **ATE/ATT/ATU**, **SUTVA**, descomposición diferencia naïve =
+  ATE + sesgo de selección + sesgo heterogéneo, aleatorización, endógeno vs exógeno.
+- **arena-h20** — **matching, subclasificación, PS**: **CIA** (selección en
+  observables (Y¹,Y⁰)⊥D|X, no testeable), maldición de dimensionalidad, propensity
+  score/IPW, soporte común, balance, matching no extrapola vs regresión, Lalonde.
+- **arena-h21** — **IV/2SLS + RDD**: 2SLS (relevancia/exclusión/independencia, LATE,
+  instrumentos débiles F>10, forma reducida); **RDD** sharp vs fuzzy(IV), McCrary,
+  bandwidth/polinomio local, Card Medicare@65, identifica **sin CIA** (efecto local).
+- **arena-h22** — **panel/FE + DiD + control sintético**: efectos fijos (within,
+  exogeneidad estricta), **DiD** (doble diferencia = ATT bajo **tendencias
+  paralelas**, event study/placebos, **Goodman-Bacon** con staggered), **control
+  sintético** (gemelo ponderado del donor pool, inferencia por permutación, Abadie).
+
+60 banco (15/unidad) + 2 examen (**f7-ex-70** DiD/tendencias paralelas/Goodman-Bacon,
+**f7-ex-71** RDD sharp vs fuzzy/McCrary/sin CIA) = 62. 10 heurísticas nuevas
+(rubin-ate-att-atu-sutva, descomponer-comparacion-naive, matching-subclasificacion,
+supuesto-seleccion-en-observables-cia, instrumentos-debiles-2sls,
+regresion-discontinua-rdd, diferencias-en-diferencias, tendencias-paralelas-placebo,
+efectos-fijos-panel, control-sintetico); reúsa propensity-score y
+variable-instrumental. Catálogo total **226** heurísticas. `sw.js` **v53** (+4
+lecciones `data/teoria/arena-h{19..22}.md`).
+
+Verificación §9 en verde: JSON válido; sin ids duplicados; integridad referencial
+OK (114 unidades en `fase-7`, 71 ítems de examen); `verificar-shell.py` OK (199
+archivos). Contenido anclado en el PDF (§1.2; TOC verificado).
+
+**Siguiente** — la ruta `health-ai-rwe` queda **COMPLETA**. Orden §10 pasa al
+**Sector D** (ruta `conductual`/STAR): **Build a Career in Data Science** (Robinson
+& Nolis, libros[26]) + capítulos conductuales de Cracking the Coding/System Design.
+**Cablear la ruta `conductual` (§6)** si no está (chip ya existe en `js/study.js`;
+revisar CSS `.ruta-conductual`). Ver §SECTOR D del PROMPT-MAESTRO (esquema STAR:
+`solucion`=andamiaje STAR + señales, NUNCA historia inventada). Después Sector C
+(problems.json + fase-0). Próxima unidad: ids `arena-c1,c2…`; órdenes desde 115,
+`f7-ex-72`+, VERSION v54+.

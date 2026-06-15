@@ -1613,6 +1613,86 @@
    "cuando_usar": "Para atribución/responsabilidad individual o para evaluar suficiencia de una causa.",
    "ejemplo": "En un juicio: PN = probabilidad de que el paciente NO se habría dañado de no tomar el fármaco (necesidad → culpa).",
    "patron": "PN (¿necesaria? 'but for', legal) vs PS (¿suficiente? prevención); estimables combinando experimento + observación"
+  },
+  {
+   "id": "rubin-ate-att-atu-sutva",
+   "nombre": "Resultados potenciales: ATE/ATT/ATU y SUTVA",
+   "descripcion": "En el modelo de resultados potenciales (Rubin), cada unidad tiene Y¹ (con tratamiento) y Y⁰ (sin él); el efecto individual es δᵢ=Y¹ᵢ−Y⁰ᵢ (inobservable: 'switching equation' Y=D·Y¹+(1−D)·Y⁰ solo revela uno). Estimandos: ATE = E[Y¹−Y⁰] (toda la población), ATT = E[Y¹−Y⁰|D=1] (solo los tratados) y ATU = E[Y¹−Y⁰|D=0] (solo los no tratados); difieren si el efecto es heterogéneo. Supuesto clave SUTVA (Stable Unit Treatment Value Assumption): (1) NO interferencia entre unidades (el tratamiento de uno no afecta el resultado de otro) y (2) tratamiento bien definido/homogéneo (una sola versión). Sin SUTVA, los resultados potenciales no están bien definidos.",
+   "cuando_usar": "Al definir qué efecto causal exacto se busca y verificar los supuestos básicos.",
+   "ejemplo": "Una vacuna viola SUTVA por inmunidad de rebaño (interferencia): el resultado de uno depende de cuántos otros se vacunan.",
+   "patron": "Y¹/Y⁰, switching equation; ATE vs ATT vs ATU (heterogeneidad); SUTVA = sin interferencia + tratamiento bien definido"
+  },
+  {
+   "id": "descomponer-comparacion-naive",
+   "nombre": "Descomponer la comparación naïve (sesgo de selección)",
+   "descripcion": "La simple diferencia de medias observadas E[Y|D=1]−E[Y|D=0] NO es el efecto causal: se descompone en ATE + SESGO DE SELECCIÓN + SESGO POR EFECTOS HETEROGÉNEOS. El SESGO DE SELECCIÓN = E[Y⁰|D=1]−E[Y⁰|D=0]: cuánto difieren tratados y no tratados en su resultado base (lo que les pasaría SIN tratamiento) — si los más enfermos se tratan, este término es negativo y enmascara el efecto. El tercer término aparece porque ATT≠ATU. La ALEATORIZACIÓN (independencia (Y¹,Y⁰)⊥D) hace ambos sesgos CERO, por eso la diferencia de medias estima el ATE en un RCT. Toda la inferencia causal observacional intenta eliminar el sesgo de selección.",
+   "cuando_usar": "Para entender por qué 'comparar tratados vs no tratados' engaña y qué hay que neutralizar.",
+   "ejemplo": "Los hospitalizados que reciben cirugía mueren más que los que no: sesgo de selección (los operados estaban más graves), no daño de la cirugía.",
+   "patron": "E[Y|D=1]−E[Y|D=0] = ATE + sesgo de selección (E[Y⁰|D=1]−E[Y⁰|D=0]) + sesgo heterogéneo; aleatorizar los anula"
+  },
+  {
+   "id": "matching-subclasificacion",
+   "nombre": "Matching y subclasificación",
+   "descripcion": "Métodos de SELECCIÓN EN OBSERVABLES que estiman el efecto comparando unidades tratadas y no tratadas con MISMOS valores de covariables X. SUBCLASIFICACIÓN: estratificar por X, estimar el efecto en cada estrato y promediar ponderando (por la población → ATE, o por los tratados → ATT). MATCHING EXACTO: aparear cada tratado con controles idénticos en X; sufre la MALDICIÓN DE LA DIMENSIONALIDAD (con muchas covariables continuas no hay matches exactos) → matching aproximado (vecino más cercano por distancia, p. ej. Mahalanobis) que introduce SESGO de emparejamiento, corregible con un ajuste de regresión (bias-corrected matching). Alternativas: coarsened exact matching. Matching NO extrapola (a diferencia de la regresión): solo usa la región de soporte común.",
+   "cuando_usar": "Para estimar efectos ajustando confundidores observables sin imponer forma funcional lineal global.",
+   "ejemplo": "Lalonde/Dehejia-Wahba: emparejar participantes de un programa laboral con controles de igual perfil para estimar el efecto en ingresos.",
+   "patron": "comparar iguales en X; subclasificar/aparear; maldición de dimensionalidad → matching aprox. + corrección de sesgo; no extrapola"
+  },
+  {
+   "id": "supuesto-seleccion-en-observables-cia",
+   "nombre": "Supuesto de independencia condicional (CIA / selección en observables)",
+   "descripcion": "El SUPUESTO DE INDEPENDENCIA CONDICIONAL (CIA), también 'selección en observables', 'ignorabilidad' o 'unconfoundedness': condicionando en las covariables observadas X, el tratamiento es independiente de los resultados potenciales — (Y¹,Y⁰) ⊥ D | X. Equivale a que X cierra todos los caminos traseros (backdoor) y no hay confundimiento NO observado. Es lo que justifica matching, subclasificación, propensity score y regresión: solo bajo CIA esos métodos recuperan el efecto causal. Es FUERTE y NO verificable con los datos; si hay un confundidor no medido, todos esos métodos fallan. Por eso los diseños cuasi-experimentales (IV, RDD, DiD) buscan identificación SIN depender de CIA.",
+   "cuando_usar": "Antes de usar matching/PS/regresión: ¿es creíble que mido TODOS los confundidores?",
+   "ejemplo": "Estimar el efecto de la educación sobre el salario por matching asume CIA: que controlando por X no queda confundimiento (p. ej. habilidad no medida) — dudoso.",
+   "patron": "(Y¹,Y⁰)⊥D|X (ignorabilidad); habilita matching/PS/regresión; fuerte y no testeable; si falla → usa IV/RDD/DiD"
+  },
+  {
+   "id": "instrumentos-debiles-2sls",
+   "nombre": "IV por 2SLS e instrumentos débiles",
+   "descripcion": "La estimación por variable instrumental suele hacerse con MÍNIMOS CUADRADOS EN DOS ETAPAS (2SLS): (1ª) regresar el tratamiento endógeno D sobre el instrumento Z (y covariables) para obtener D̂ (la parte de D 'movida' por Z, exógena); (2ª) regresar Y sobre D̂. El instrumento debe cumplir RELEVANCIA (Z asociado a D, primera etapa fuerte), EXCLUSIÓN (Z afecta Y solo vía D) e INDEPENDENCIA (Z como-si-aleatorio respecto a confundidores). Bajo MONOTONICIDAD (sin 'defiers') 2SLS estima el LATE (efecto en los CUMPLIDORES). INSTRUMENTOS DÉBILES (relevancia baja): la primera etapa floja AMPLIFICA el sesgo y la varianza; regla práctica F>10 en la primera etapa. La forma REDUCIDA (Y sobre Z directamente) muestra el efecto total de Z y es un diagnóstico clave.",
+   "cuando_usar": "Tratamiento endógeno (confundimiento no medido o causalidad inversa) con un instrumento creíble.",
+   "ejemplo": "STAR/Krueger o usar la cercanía a una universidad como instrumento de los años de educación para su efecto en el salario.",
+   "patron": "2SLS: 1ª etapa D~Z, 2ª Y~D̂; relevancia+exclusión+independencia; LATE bajo monotonicidad; F>10 (instrumentos débiles)"
+  },
+  {
+   "id": "regresion-discontinua-rdd",
+   "nombre": "Regresión discontinua (RDD)",
+   "descripcion": "La REGRESIÓN DISCONTINUA explota una regla en la que el tratamiento se asigna según si una VARIABLE DE ASIGNACIÓN (running variable) cruza un UMBRAL (cutoff). RDD NÍTIDA (sharp): el tratamiento cambia de 0 a 1 determinísticamente en el cutoff; el efecto es el SALTO en E[Y] justo en el umbral. RDD DIFUSA (fuzzy): cruzar el cutoff cambia la PROBABILIDAD de tratamiento (no de 0 a 1) → se estima por IV usando el indicador de cutoff como instrumento. Identificación por 'aleatorización local': cerca del umbral, las unidades a ambos lados son comparables. Supuestos/diagnósticos: NO MANIPULACIÓN de la running variable (test de densidad de McCrary: sin salto en la densidad), continuidad de las covariables en el cutoff, elección de BANDWIDTH (sesgo↔varianza) y ajuste con polinomios locales (evitar polinomios globales de alto grado). Da un efecto LOCAL en el umbral.",
+   "cuando_usar": "Cuando el tratamiento se asigna por un corte en una variable continua (notas, edad, ingreso, tamaño de clase).",
+   "ejemplo": "Card et al.: Medicare a los 65 años → comparar resultados de salud justo antes/después de los 65 (cutoff de edad).",
+   "patron": "salto en el cutoff de la running variable; sharp (determinista) vs fuzzy (IV); McCrary (no manipulación); bandwidth + polinomio local; efecto local"
+  },
+  {
+   "id": "diferencias-en-diferencias",
+   "nombre": "Diferencias en diferencias (DiD)",
+   "descripcion": "DiD estima el efecto comparando el CAMBIO (antes→después) del grupo TRATADO con el cambio del grupo CONTROL: ATT = (Y_trat,post − Y_trat,pre) − (Y_ctrl,post − Y_ctrl,pre). La segunda diferencia RESTA las tendencias comunes y los niveles fijos, identificando el efecto bajo el supuesto de TENDENCIAS PARALELAS: sin el tratamiento, ambos grupos habrían evolucionado IGUAL. Se implementa con una regresión de efectos fijos de dos vías (TWFE) con dummies de grupo y tiempo + el término de interacción (tratado×post). Controla los confundidores INVARIANTES en el tiempo (aunque no observados) y los shocks comunes, pero NO los confundidores que varían en el tiempo de forma distinta entre grupos.",
+   "cuando_usar": "Hay un cambio de política que afecta a unos (tratados) y no a otros (control), con datos antes y después.",
+   "ejemplo": "Card-Krueger: efecto de subir el salario mínimo en NJ (tratado) usando PA (control) como contrafactual del cambio en empleo.",
+   "patron": "doble diferencia (tratado−control)×(post−pre); TWFE; identifica el ATT bajo tendencias paralelas; controla lo fijo en el tiempo"
+  },
+  {
+   "id": "tendencias-paralelas-placebo",
+   "nombre": "Tendencias paralelas y pruebas placebo",
+   "descripcion": "La validez de DiD descansa en TENDENCIAS PARALELAS (el control replica la tendencia contrafactual del tratado). No es verificable directamente, pero se APOYA con: (1) gráficos de PRE-TENDENCIAS / EVENT STUDY — estimar 'efectos' en los periodos ANTERIORES al tratamiento; deben ser ≈0 (si hay pre-tendencia, el supuesto es dudoso); (2) PRUEBAS PLACEBO — aplicar DiD a un periodo o grupo donde NO hubo tratamiento (no debe aparecer efecto). ADVERTENCIA moderna: con adopción ESCALONADA (staggered) y efectos heterogéneos, la regresión TWFE puede dar estimaciones SESGADAS (usa unidades ya tratadas como controles: 'mala comparación', Goodman-Bacon) → usar estimadores robustos (Callaway-Sant'Anna, etc.).",
+   "cuando_usar": "Para defender (o cuestionar) un diseño DiD antes de creer su estimación.",
+   "ejemplo": "Antes de creer un DiD de una ley, graficar 5 años previos: si las series ya divergían, las tendencias no eran paralelas.",
+   "patron": "event study (pre-tendencias≈0) + placebo; ojo TWFE con adopción escalonada/efectos heterogéneos (Goodman-Bacon)"
+  },
+  {
+   "id": "efectos-fijos-panel",
+   "nombre": "Datos de panel y efectos fijos",
+   "descripcion": "Con DATOS DE PANEL (mismas unidades observadas en varios periodos) los EFECTOS FIJOS de unidad controlan TODOS los confundidores INVARIANTES en el tiempo, observados o NO (el estimador 'within' usa solo la variación DENTRO de cada unidad, restando su media). Suelen añadirse efectos fijos de TIEMPO para shocks comunes. Supuesto clave: EXOGENEIDAD ESTRICTA (el error no se correlaciona con el tratamiento en NINGÚN periodo) — por eso los FE NO resuelven confundidores que VARÍAN en el tiempo ni la causalidad inversa, y absorben (no pueden estimar) cualquier covariable constante en el tiempo. Es la base de DiD (que son FE de dos vías).",
+   "cuando_usar": "Datos longitudinales donde preocupan confundidores estables no observados (cultura, habilidad, geografía).",
+   "ejemplo": "Estimar el efecto de una ley estatal con FE de estado (absorbe diferencias fijas entre estados) y FE de año (shocks nacionales).",
+   "patron": "FE de unidad = controla lo invariante en el tiempo (aun no observado) vía variación within; +FE de tiempo; exige exogeneidad estricta"
+  },
+  {
+   "id": "control-sintetico",
+   "nombre": "Control sintético",
+   "descripcion": "El CONTROL SINTÉTICO estima el efecto sobre UNA unidad tratada (un país, estado) construyendo un contrafactual como COMBINACIÓN PONDERADA de un 'donor pool' de unidades de control, con pesos elegidos para que el sintético REPRODUZCA la trayectoria PRE-tratamiento del tratado (en el outcome y predictores). El efecto es la BRECHA entre la unidad tratada y su 'gemelo sintético' tras el tratamiento. Es transparente (pesos explícitos, no negativos, suman 1; sin extrapolación fuera del rango del donor pool) y la inferencia se hace por PERMUTACIÓN/PLACEBO (aplicar el método a cada unidad de control y ver si el efecto del tratado destaca). Útil cuando hay pocas unidades tratadas y un buen ajuste pre-tratamiento.",
+   "cuando_usar": "Estudios de caso con una (o pocas) unidad tratada agregada y muchos controles, con historia pre-tratamiento.",
+   "ejemplo": "Abadie: efecto del control de tabaco en California construyendo una 'California sintética' con otros estados.",
+   "patron": "contrafactual = combinación ponderada del donor pool que iguala el pre-tratamiento; efecto = brecha; inferencia por placebo/permutación"
   }
  ],
  "bloques": [
@@ -2319,7 +2399,11 @@
     "arena-h15",
     "arena-h16",
     "arena-h17",
-    "arena-h18"
+    "arena-h18",
+    "arena-h19",
+    "arena-h20",
+    "arena-h21",
+    "arena-h22"
    ],
    "examen": {
     "items": [
@@ -4667,6 +4751,78 @@
        ]
       },
       "source": "The Book of Why (Pearl & Mackenzie) — Cap. 7 (front-door / do-calculus)"
+     },
+     {
+      "id": "f7-ex-70",
+      "heuristica": "diferencias-en-diferencias",
+      "enunciado": "Un estado sube el salario mínimo y quieres su efecto sobre el empleo usando un estado vecino que no lo cambió, con datos antes y después. (a) ¿Cómo estima el efecto un DiD y por qué la 'doble' diferencia? (b) ¿Cuál es el supuesto de identificación y cómo lo apoyas/cuestionas empíricamente? (c) ¿Qué riesgo aparece si en realidad muchos estados suben el salario en momentos distintos y los efectos son heterogéneos?",
+      "pistas": [
+       "Compara cambios, no niveles.",
+       "Una diferencia quita lo fijo del grupo; otra, la tendencia común.",
+       "¿Habrían evolucionado igual sin la política?",
+       "Mira los periodos PREVIOS al tratamiento.",
+       "TWFE con adopción escalonada usa ya-tratados como controles."
+      ],
+      "solucion": "(a) DiD estima ATT = (Ȳ_tratado,post − Ȳ_tratado,pre) − (Ȳ_control,post − Ȳ_control,pre). La PRIMERA diferencia (post−pre) elimina todo lo FIJO de cada estado (niveles preexistentes, diferencias estructurales); la SEGUNDA diferencia (tratado−control) resta la TENDENCIA COMÚN y los shocks que afectan a ambos estados (ciclo económico nacional). Lo que queda es el efecto del salario mínimo. Se implementa con una regresión de efectos fijos de dos vías (dummies de estado y de periodo) más la interacción tratado×post, cuyo coeficiente es el ATT. (b) El supuesto de identificación es TENDENCIAS PARALELAS: sin la política, el empleo del estado tratado habría seguido la MISMA trayectoria que el control (no que los niveles sean iguales —eso lo absorben los efectos fijos— sino las tendencias). Se APOYA con un EVENT STUDY/pre-tendencias: estimar 'efectos' en los periodos ANTERIORES; deben ser ≈0 (si las series ya divergían antes, el supuesto es dudoso) y con PRUEBAS PLACEBO (aplicar DiD donde no hubo tratamiento → efecto nulo). No se puede probar (es un contrafactual), pero pre-tendencias planas y placebos nulos lo hacen creíble. (c) Con adopción ESCALONADA (staggered) y efectos HETEROGÉNEOS, la regresión TWFE puede SESGARSE porque usa a las unidades YA TRATADAS como controles de las que se tratan después ('malas comparaciones', descomposición de Goodman-Bacon), pudiendo incluso invertir el signo. Solución: estimadores robustos a heterogeneidad (Callaway-Sant'Anna, Sun-Abraham, de Chaisemartin-D'Haultfœuille) en vez de un TWFE ingenuo.",
+      "disparador": "Señal: 'política afecta a unos y no a otros, con datos antes/después'. Jugada: DiD = doble diferencia (quita lo fijo y la tendencia común); identifica el ATT bajo TENDENCIAS PARALELAS, que apoyas con event study (pre-tendencias≈0) y placebos; con adopción escalonada+heterogeneidad evita el TWFE ingenuo (Goodman-Bacon) y usa estimadores robustos.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "diferencias en diferencias",
+        "tendencias paralelas",
+        "event study/placebo",
+        "TWFE",
+        "Goodman-Bacon",
+        "efectos fijos"
+       ],
+       "errores_comunes": [
+        "Usar solo antes-después (olvida la tendencia común)",
+        "Asumir tendencias paralelas sin chequear pre-tendencias",
+        "Aplicar TWFE ingenuo con adopción escalonada y efectos heterogéneos"
+       ],
+       "casos_borde": [
+        "DiD controla confundidores fijos pero no los que varían distinto entre grupos",
+        "Tendencias paralelas es sobre trayectorias, no niveles"
+       ]
+      },
+      "source": "Causal Inference: The Mixtape (Cunningham) — Differences-in-differences / Panel data"
+     },
+     {
+      "id": "f7-ex-71",
+      "heuristica": "regresion-discontinua-rdd",
+      "enunciado": "Una beca se otorga a todo estudiante con un puntaje de examen ≥ 80 y quieres estimar su efecto sobre la graduación. (a) ¿Por qué una RDD identifica el efecto y de qué supuesto depende (compáralo con matching/CIA)? (b) Distingue RDD sharp de fuzzy y di cuál es aquí. (c) ¿Qué amenazas debes descartar y con qué diagnósticos (incluye el de manipulación)?",
+      "pistas": [
+       "Los que sacan 79 y 81 son casi idénticos salvo la beca.",
+       "¿Necesitas medir todos los confundidores como en matching?",
+       "¿El puntaje ≥80 DETERMINA la beca o solo cambia su probabilidad?",
+       "¿Pueden los estudiantes manipular su puntaje justo en 80?",
+       "Densidad en el cutoff, covariables, bandwidth."
+      ],
+      "solucion": "(a) La RDD identifica el efecto por ALEATORIZACIÓN LOCAL: los estudiantes JUSTO por debajo (p. ej. 79) y JUSTO por encima (81) del umbral de 80 son prácticamente idénticos en todo —incluidas variables NO observadas— salvo que unos reciben la beca y otros no; quedar un punto arriba o abajo es esencialmente azaroso. Por eso el SALTO (discontinuidad) en la tasa de graduación en el cutoff estima el efecto causal LOCAL de la beca. Su supuesto es la CONTINUIDAD (sin tratamiento, los resultados potenciales y los confundidores serían continuos en 80) y la NO MANIPULACIÓN del puntaje; a diferencia de matching, NO requiere el CIA (no hace falta medir todos los confundidores), porque la comparabilidad local cubre también lo no observado. El precio: el efecto es solo LOCAL al umbral (validez externa limitada) y se necesita densidad de datos cerca de 80. (b) RDD SHARP: cruzar el umbral DETERMINA el tratamiento (probabilidad de 0 a 1); el efecto es el salto en E[Y] en el cutoff. RDD FUZZY: cruzar el umbral solo CAMBIA la PROBABILIDAD de tratamiento (hay incumplimiento) → se estima por IV usando 'puntaje≥80' como instrumento. Aquí, si TODOS los de ≥80 reciben la beca y NINGUNO por debajo, es SHARP; si algunos de ≥80 no la toman o hay excepciones por debajo, es FUZZY. (c) Amenazas y diagnósticos: (1) MANIPULACIÓN del puntaje (que los cercanos a 80 'empujen' su nota) → TEST DE DENSIDAD DE McCRARY: no debe haber salto/amontonamiento en la densidad del puntaje en 80. (2) Otros cambios que coincidan en 80 (otra regla con el mismo corte) → argumentar que no existen. (3) Discontinuidad espuria → comprobar que las COVARIABLES predeterminadas NO saltan en 80 (placebo de covariables) y que no hay saltos en CUTOFFS FALSOS. (4) Especificación → sensibilidad al BANDWIDTH y uso de POLINOMIOS LOCALES de bajo grado (no globales de alto grado), más el gráfico del outcome vs puntaje con binning.",
+      "disparador": "Señal: 'tratamiento asignado por un corte en una variable continua'. Jugada: RDD identifica por aleatorización local en el cutoff (sin CIA); distingue sharp (determinista) de fuzzy (probabilidad→IV); descarta manipulación con McCrary, valida con covariables continuas/cutoffs placebo y reporta robustez a bandwidth/polinomio local; el efecto es local al umbral.",
+      "metadata": {
+       "ruta": "health-ai-rwe",
+       "nivel": 3,
+       "skills": [
+        "RDD",
+        "sharp vs fuzzy",
+        "running variable/cutoff",
+        "McCrary density test",
+        "bandwidth/polinomio local",
+        "aleatorización local"
+       ],
+       "errores_comunes": [
+        "Usar polinomios globales de alto grado",
+        "No testear manipulación (McCrary)",
+        "Interpretar el efecto local como ATE poblacional"
+       ],
+       "casos_borde": [
+        "RDD fuzzy se estima por IV y da un LATE en el umbral",
+        "Si las covariables saltan en el cutoff, la identificación es dudosa"
+       ]
+      },
+      "source": "Causal Inference: The Mixtape (Cunningham) — Regression discontinuity"
      }
     ]
    }
@@ -20891,6 +21047,538 @@
      "enunciado": "Según Pearl, ¿por qué los contrafactuales son clave para una IA verdaderamente inteligente?",
      "solucion": "Porque una IA que solo asocia (peldaño 1) no puede explicar sus decisiones, imaginar alternativas, asumir responsabilidad ni aprender de escenarios que no ocurrieron. El razonamiento contrafactual le permitiría preguntarse '¿qué habría pasado si hubiera actuado distinto?', base del aprendizaje flexible, la planificación, la ética y la explicación. Para Pearl, dotar a las máquinas de modelos causales capaces de contrafactuales (no solo de datos) es el paso necesario hacia una IA con comprensión similar a la humana.",
      "explicacion": "Imaginar alternativas (contrafactuales) habilita explicación, planeación y ética: lo que falta a la IA actual."
+    }
+   ]
+  },
+  {
+   "id": "arena-h19",
+   "bloque": "fase-7",
+   "orden": 111,
+   "titulo": "Arena Inferencia Causal (Mixtape) · Resultados potenciales y sesgo de selección",
+   "libro": "Causal Inference: The Mixtape (Scott Cunningham)",
+   "lectura": "data/teoria/arena-h19.md",
+   "dosis": 30,
+   "objetivo": "El modelo de resultados potenciales en clave econométrica: Y¹/Y⁰, ATE/ATT/ATU, SUTVA, la descomposición de la diferencia naïve en ATE + sesgo de selección + sesgo heterogéneo, e independencia/aleatorización.",
+   "heuristicas": [
+    "rubin-ate-att-atu-sutva",
+    "descomponer-comparacion-naive"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Y¹/Y⁰ y switching equation Y=D·Y¹+(1−D)·Y⁰: solo se observa uno",
+    "ATE (todos) vs ATT (tratados) vs ATU (no tratados): difieren si hay heterogeneidad",
+    "SUTVA = sin interferencia + tratamiento bien definido",
+    "Diferencia naïve = ATE + sesgo de selección + sesgo heterogéneo",
+    "Aleatorizar ((Y¹,Y⁰)⊥D) anula los sesgos → diferencia de medias = ATE"
+   ],
+   "banco": [
+    {
+     "id": "arh19-q1",
+     "tipo": "concepto",
+     "enunciado": "En el modelo de resultados potenciales, ¿qué son Y¹ e Y⁰ y por qué el efecto individual es inobservable?",
+     "solucion": "Para cada unidad i, Y¹ᵢ es el resultado que tendría SI recibe el tratamiento y Y⁰ᵢ el que tendría SIN él; el efecto causal individual es δᵢ = Y¹ᵢ − Y⁰ᵢ. Es inobservable por el PROBLEMA FUNDAMENTAL: solo observamos UNO de los dos (el correspondiente al tratamiento que de hecho recibió), descrito por la 'switching equation' Y = D·Y¹ + (1−D)·Y⁰. El otro resultado potencial es un contrafactual que nunca vemos.",
+     "explicacion": "Solo se observa Y¹ o Y⁰ por unidad, nunca ambos; por eso se estiman efectos PROMEDIO."
+    },
+    {
+     "id": "arh19-q2",
+     "tipo": "concepto",
+     "enunciado": "Define ATE, ATT y ATU y di cuándo difieren.",
+     "solucion": "ATE (Average Treatment Effect) = E[Y¹−Y⁰] en TODA la población. ATT (on the Treated) = E[Y¹−Y⁰ | D=1], solo entre los que reciben el tratamiento. ATU (on the Untreated) = E[Y¹−Y⁰ | D=0], entre los no tratados. Difieren cuando el efecto es HETEROGÉNEO y la selección al tratamiento se relaciona con el tamaño del efecto (p. ej. quienes más se benefician son los que se tratan → ATT > ATU > ATE). En un RCT con efecto homogéneo coinciden.",
+     "explicacion": "Si todos responden igual, ATE=ATT=ATU; la heterogeneidad + selección los separa."
+    },
+    {
+     "id": "arh19-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el supuesto SUTVA y qué lo viola?",
+     "solucion": "SUTVA (Stable Unit Treatment Value Assumption) tiene dos partes: (1) NO INTERFERENCIA — el resultado de una unidad no depende del tratamiento de otras; (2) tratamiento BIEN DEFINIDO / sin múltiples versiones — 'tratar' significa lo mismo para todos. Lo viola, por ejemplo, la inmunidad de rebaño (vacunar a unos protege a otros = interferencia) o un 'tratamiento' ambiguo con versiones de efectos distintos. Sin SUTVA, los resultados potenciales Y¹/Y⁰ ni siquiera están bien definidos.",
+     "explicacion": "Interferencia entre unidades o tratamiento mal definido rompen SUTVA."
+    },
+    {
+     "id": "arh19-q4",
+     "tipo": "concepto",
+     "enunciado": "Descompón la diferencia simple de medias E[Y|D=1]−E[Y|D=0] en sus componentes.",
+     "solucion": "Se descompone en TRES términos: el EFECTO PROMEDIO (ATE) + el SESGO DE SELECCIÓN + el SESGO POR HETEROGENEIDAD del efecto. Formalmente, la diferencia observada = ATE + (E[Y⁰|D=1]−E[Y⁰|D=0]) + (1−π)(ATT−ATU), donde el segundo término es el sesgo de selección y el tercero refleja que tratados y no tratados tienen efectos distintos. Solo el primer término es causal; los otros dos son sesgos que contaminan la comparación cruda.",
+     "explicacion": "Diferencia naïve = ATE + sesgo de selección + sesgo heterogéneo; no es el efecto causal."
+    },
+    {
+     "id": "arh19-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el SESGO DE SELECCIÓN en esta descomposición?",
+     "solucion": "Es E[Y⁰|D=1] − E[Y⁰|D=0]: la diferencia en el resultado BASE (lo que les pasaría SIN tratamiento) entre quienes se tratan y quienes no. Captura que los dos grupos no son comparables de entrada. Si los más enfermos se tratan, E[Y⁰|D=1] es peor que E[Y⁰|D=0], el sesgo es negativo y puede hacer que un tratamiento beneficioso parezca inútil o dañino. Eliminar este término es el objetivo central de la inferencia causal observacional.",
+     "explicacion": "Cuánto difieren tratados y controles en ausencia de tratamiento; el corazón del confundimiento."
+    },
+    {
+     "id": "arh19-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la ALEATORIZACIÓN resuelve el problema de identificación?",
+     "solucion": "Porque al asignar D al azar, el tratamiento es INDEPENDIENTE de los resultados potenciales: (Y¹,Y⁰) ⊥ D. Eso hace que E[Y⁰|D=1] = E[Y⁰|D=0] (sesgo de selección = 0) y que los grupos sean intercambiables, de modo que la simple diferencia de medias estima el ATE sin sesgo. Los términos de selección y heterogeneidad de la descomposición se anulan. Por eso el RCT es el patrón de referencia.",
+     "explicacion": "Independencia (Y¹,Y⁰)⊥D anula ambos sesgos → la diferencia de medias = ATE."
+    },
+    {
+     "id": "arh19-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa el supuesto de INDEPENDENCIA y cómo se relaciona con la 'asignación como-si-aleatoria'?",
+     "solucion": "Independencia significa que los resultados potenciales NO dependen de quién recibe el tratamiento: (Y¹,Y⁰) ⊥ D. En un RCT se cumple por diseño. En estudios observacionales no se cumple en general, pero los diseños cuasi-experimentales buscan situaciones donde la asignación sea 'COMO-SI ALEATORIA' (condicional a covariables en matching/PS, o por una regla exógena en RDD, o por un instrumento), recuperando aproximadamente la independencia necesaria para identificar el efecto.",
+     "explicacion": "El objetivo de todo diseño causal es aproximar la independencia que el azar da gratis."
+    },
+    {
+     "id": "arh19-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es la diferencia entre el estimando ATE y el ATT, y por qué a veces solo se puede estimar el ATT?",
+     "solucion": "El ATE promedia el efecto sobre TODA la población; el ATT solo sobre los TRATADOS. Muchos métodos (matching sobre los tratados, DiD, control sintético) estiman naturalmente el ATT, porque construyen el contrafactual Y⁰ de los TRATADOS pero no necesariamente el Y¹ de los no tratados. Si el efecto es heterogéneo, el ATT (relevante para '¿funcionó en quienes lo recibieron?') puede diferir del ATE ('¿funcionaría si se aplicara a todos?'), que es más útil para extender la política.",
+     "explicacion": "ATT = efecto en quienes se trataron (lo que más métodos identifican); ATE = en todos (más exigente)."
+    },
+    {
+     "id": "arh19-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación tiene el modelo de resultados potenciales con los DAGs/inferencia causal de Pearl?",
+     "solucion": "Son dos lenguajes COMPLEMENTARIOS del mismo problema. El de RESULTADOS POTENCIALES (Rubin/Neyman) es algebraico: define efectos como contrastes Y¹−Y⁰ y razona con supuestos de independencia/ignorabilidad — fuerte para estimación econométrica. El de DAGs (Pearl) es gráfico: hace transparentes los supuestos causales y permite leer qué ajustar. El sesgo de selección de la descomposición de potential outcomes corresponde a caminos traseros abiertos en el DAG; usar ambos da claridad (qué identificar) y rigor (cómo estimar).",
+     "explicacion": "Potential outcomes (álgebra) y DAGs (grafos) describen lo mismo; combinarlos es lo más potente."
+    },
+    {
+     "id": "arh19-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'no hay causación sin manipulación' es relevante para definir bien un efecto?",
+     "solucion": "Porque para que Y¹ e Y⁰ (los resultados bajo y sin tratamiento) tengan sentido, el tratamiento debe ser una INTERVENCIÓN concebible y bien definida (manipulable). Atributos inmutables (raza, sexo biológico) no admiten un contrafactual claro ('¿qué Y tendría si fuera de otra raza?' es ambiguo), así que hablar de su 'efecto causal' es problemático. Definir la intervención concreta (qué se manipula y cómo) es parte de plantear bien la pregunta causal y conecta con SUTVA (tratamiento bien definido).",
+     "explicacion": "Sin una manipulación bien definida, el contrafactual Y¹/Y⁰ es ambiguo: define la intervención."
+    },
+    {
+     "id": "arh19-q11",
+     "tipo": "concepto",
+     "enunciado": "Da un ejemplo donde la comparación naïve engaña por sesgo de selección.",
+     "solucion": "Comparar la mortalidad de pacientes que reciben CIRUGÍA vs los que no: los operados suelen morir MÁS, no porque la cirugía dañe, sino porque se opera a los más graves (E[Y⁰|D=1] peor que E[Y⁰|D=0]). El sesgo de selección negativo enmascara el beneficio real. La comparación cruda mezcla el efecto del tratamiento con la diferencia de gravedad de base; hay que ajustar o usar un diseño que neutralice esa selección.",
+     "explicacion": "Los que se tratan están peor de entrada; su peor resultado no es culpa del tratamiento."
+    },
+    {
+     "id": "arh19-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la 'switching equation' y qué problema ilustra?",
+     "solucion": "Es Y = D·Y¹ + (1−D)·Y⁰: el resultado OBSERVADO es Y¹ si la unidad fue tratada (D=1) o Y⁰ si no (D=0). Ilustra el PROBLEMA FUNDAMENTAL de la inferencia causal: para cada unidad solo 'se enciende' uno de los dos resultados potenciales y el otro queda como contrafactual no observado. Por eso nunca observamos δᵢ=Y¹ᵢ−Y⁰ᵢ directamente y la causalidad se vuelve un problema de datos faltantes que requiere supuestos para promediar.",
+     "explicacion": "El interruptor D revela solo un resultado potencial por unidad; el otro falta siempre."
+    },
+    {
+     "id": "arh19-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el efecto promedio del tratamiento puede ser positivo aunque para muchos individuos sea negativo?",
+     "solucion": "Porque el ATE es un PROMEDIO: E[Y¹−Y⁰]. Si el tratamiento ayuda mucho a un subgrupo y perjudica levemente a otro, el promedio puede salir positivo aunque haya perdedores. La heterogeneidad del efecto (δᵢ varía) implica que un ATE positivo no garantiza beneficio universal, y por eso interesan también el ATT/ATU y los efectos por subgrupos para no ocultar a quienes el tratamiento daña.",
+     "explicacion": "El promedio puede esconder ganadores y perdedores; mira la heterogeneidad."
+    },
+    {
+     "id": "arh19-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué papel juega la covariable X en lograr independencia condicional?",
+     "solucion": "Cuando la independencia marginal (Y¹,Y⁰)⊥D no se cumple (estudio observacional), se busca la INDEPENDENCIA CONDICIONAL: (Y¹,Y⁰) ⊥ D | X, es decir, DENTRO de cada combinación de covariables X los tratados y no tratados son comparables. Si X contiene todos los confundidores (cierra los caminos traseros), condicionar en X elimina el sesgo de selección y permite estimar el efecto por matching, subclasificación, propensity score o regresión. Es el supuesto CIA.",
+     "explicacion": "Condicionar en los confundidores X restaura la independencia que el azar daría: base de 'selección en observables'."
+    },
+    {
+     "id": "arh19-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los economistas distinguen entre tratamiento 'endógeno' y 'exógeno'?",
+     "solucion": "Un tratamiento es EXÓGENO si su asignación es independiente de los resultados potenciales (como en un RCT o una regla externa): la comparación da el efecto causal. Es ENDÓGENO si quienes lo reciben difieren sistemáticamente (autoselección, causalidad inversa, confundidores): la asociación observada mezcla efecto y sesgo. La inferencia causal observacional consiste en convertir un tratamiento endógeno en uno 'como-si exógeno' mediante matching/PS (bajo CIA) o diseños cuasi-experimentales (IV, RDD, DiD) que aportan variación exógena.",
+     "explicacion": "Endógeno = la asignación se relaciona con el outcome (sesgo); el objetivo es hallar variación exógena."
+    }
+   ]
+  },
+  {
+   "id": "arena-h20",
+   "bloque": "fase-7",
+   "orden": 112,
+   "titulo": "Arena Inferencia Causal (Mixtape) · Matching, subclasificación y propensity score",
+   "libro": "Causal Inference: The Mixtape (Scott Cunningham)",
+   "lectura": "data/teoria/arena-h20.md",
+   "dosis": 30,
+   "objetivo": "Selección en observables: el supuesto CIA, subclasificación y matching (maldición de la dimensionalidad, propensity score, IPW, soporte común, corrección de sesgo) y su diferencia con la regresión.",
+   "heuristicas": [
+    "matching-subclasificacion",
+    "supuesto-seleccion-en-observables-cia",
+    "propensity-score"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "CIA / selección en observables: (Y¹,Y⁰)⊥D|X; fuerte y no testeable",
+    "Subclasificar/aparear por X; maldición de dimensionalidad → propensity score",
+    "Soporte común (overlap) y balance de covariables son imprescindibles",
+    "Matching no extrapola (vs regresión); vecino más cercano sesga → corrección",
+    "Todos (matching/PS/IPW/regresión) fallan si hay confundidor no observado"
+   ],
+   "banco": [
+    {
+     "id": "arh20-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el supuesto de INDEPENDENCIA CONDICIONAL (CIA) y por qué es central para matching/regresión?",
+     "solucion": "El CIA ('selección en observables', ignorabilidad, unconfoundedness) afirma que, condicionando en las covariables observadas X, el tratamiento es independiente de los resultados potenciales: (Y¹,Y⁰) ⊥ D | X. Es central porque es EXACTAMENTE lo que justifica que matching, subclasificación, propensity score y regresión recuperen el efecto causal: bajo CIA, comparar tratados y no tratados con el mismo X elimina el sesgo de selección. Si no se cumple (hay un confundidor no observado), todos esos métodos están sesgados.",
+     "explicacion": "CIA = no hay confundimiento no observado dado X; sin él, 'selección en observables' falla."
+    },
+    {
+     "id": "arh20-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el CIA es 'fuerte' y no verificable?",
+     "solucion": "Porque afirma que NO existe ningún confundidor no medido: que X captura TODAS las variables que afectan a la vez al tratamiento y al resultado. Esto no se puede comprobar con los datos (no observamos los resultados potenciales faltantes ni los confundidores omitidos); solo se justifica con conocimiento del dominio. Por eso un estudio de matching/regresión siempre carga el supuesto, indemostrable, de no confundimiento residual — y un crítico puede siempre proponer una variable omitida plausible.",
+     "explicacion": "Asume que mediste todo lo relevante; indemostrable, de ahí el atractivo de IV/RDD/DiD."
+    },
+    {
+     "id": "arh20-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo funciona la SUBCLASIFICACIÓN para estimar un efecto causal?",
+     "solucion": "Se ESTRATIFICA la muestra por las covariables X (en celdas/estratos), se estima el efecto (diferencia de medias tratado−control) DENTRO de cada estrato —donde tratados y controles son comparables bajo CIA— y luego se PROMEDIAN los efectos estrato-específicos ponderando por la prevalencia de cada estrato (ponderar por la población da el ATE; por los tratados, el ATT). Es la versión no paramétrica de 'controlar por X' y la base intuitiva del propensity score.",
+     "explicacion": "Efecto dentro de cada celda de X, promediado por su peso poblacional: estandarización."
+    },
+    {
+     "id": "arh20-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la MALDICIÓN DE LA DIMENSIONALIDAD en matching exacto?",
+     "solucion": "Al aumentar el número de covariables (y si son continuas), el número de celdas/estratos posibles EXPLOTA y se vuelve imposible encontrar tratados y controles con valores EXACTAMENTE iguales en todas las X: muchas celdas quedan vacías o con un solo grupo (violando el soporte común). Por eso el matching exacto es inviable con muchas covariables, y se recurre a matching APROXIMADO (vecino más cercano por una distancia) o al propensity score, que resume X en una dimensión.",
+     "explicacion": "Muchas covariables continuas → no hay matches exactos; se necesita aproximar o resumir X."
+    },
+    {
+     "id": "arh20-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué resume el PROPENSITY SCORE y cómo ayuda con la dimensionalidad?",
+     "solucion": "El propensity score es e(X)=P(D=1|X), la probabilidad de ser tratado dadas las covariables. Su propiedad de BALANCEO permite que condicionar SOLO en e(X) (una sola dimensión) equilibre toda la X entre tratados y controles, de modo que bajo CIA basta ajustar por el propensity score (emparejando, estratificando o ponderando) en lugar de por el vector completo de covariables. Así colapsa el problema multidimensional del matching a uno unidimensional.",
+     "explicacion": "e(X)=P(D=1|X) es un balancing score: condicionarlo equilibra X y evita la maldición de dimensionalidad."
+    },
+    {
+     "id": "arh20-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la ponderación por probabilidad inversa (IPW) en este contexto?",
+     "solucion": "Es ponderar cada observación por el INVERSO de su probabilidad de recibir el tratamiento que recibió (1/e(X) para tratados, 1/(1−e(X)) para controles), creando una pseudo-población donde el tratamiento es independiente de X. En esa población ponderada la diferencia de medias estima el efecto (ATE o ATT según la ponderación). Es una alternativa al matching/subclasificación que usa el mismo propensity score, pero es sensible a propensity scores cercanos a 0 o 1 (pesos enormes).",
+     "explicacion": "Reponderar por 1/e(X) reconstruye el balance; cuidado con pesos extremos (overlap pobre)."
+    },
+    {
+     "id": "arh20-q7",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el SOPORTE COMÚN (common support / overlap) y por qué importa?",
+     "solucion": "Es el rango de covariables (o de propensity score) donde EXISTEN tanto tratados como controles. Importa porque solo ahí se puede comparar: si para cierto X todos están tratados (o ninguno), no hay con quién emparejar y el efecto no es estimable en esa región (violación de positividad). Los métodos de matching restringen el análisis al soporte común, descartando unidades sin contraparte; esto reduce el sesgo de extrapolación pero cambia la población sobre la que se estima el efecto.",
+     "explicacion": "Sin solapamiento de tratados y controles no hay comparación posible (positividad)."
+    },
+    {
+     "id": "arh20-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el matching de vecino más cercano introduce sesgo y cómo se corrige?",
+     "solucion": "Porque con covariables continuas el control 'más cercano' no es idéntico al tratado: queda una diferencia (discrepancia de matching) en X que sesga el estimador, sesgo que NO desaparece al crecer la muestra cuando hay varias covariables continuas. Se corrige con un AJUSTE DE REGRESIÓN de la diferencia en covariables (bias-corrected matching de Abadie-Imbens): se modela cómo el outcome depende de X y se ajusta la discrepancia residual entre cada par emparejado.",
+     "explicacion": "El match imperfecto en X deja sesgo; se corrige con una regresión sobre la diferencia de covariables."
+    },
+    {
+     "id": "arh20-q9",
+     "tipo": "concepto",
+     "enunciado": "¿En qué se diferencian conceptualmente el MATCHING y la REGRESIÓN?",
+     "solucion": "Ambos estiman efectos bajo CIA, pero: la REGRESIÓN impone una FORMA FUNCIONAL (típicamente lineal) y EXTRAPOLA a regiones sin soporte común, ponderando implícitamente las observaciones de forma particular (más peso donde hay más varianza del tratamiento). El MATCHING es no paramétrico, NO extrapola (solo usa el soporte común) y deja explícito el contrafactual de cada tratado. La regresión puede dar estimaciones engañosas si la relación no es lineal o si extrapola fuera de los datos; el matching es más transparente pero descarta unidades sin match.",
+     "explicacion": "Regresión: forma funcional + extrapola; matching: no paramétrico + solo soporte común."
+    },
+    {
+     "id": "arh20-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ilustra el caso Lalonde / Dehejia-Wahba sobre matching?",
+     "solucion": "El estudio de LaLonde (1986) mostró que los métodos observacionales (regresión) NO reproducían el efecto experimental de un programa de empleo, sembrando escepticismo. Dehejia y Wahba (1999) mostraron que el PROPENSITY SCORE MATCHING, restringido al SOPORTE COMÚN y con buen balance de covariables, podía acercarse al resultado experimental. La lección: matching/PS pueden funcionar SI el CIA es plausible y hay solapamiento, pero su éxito depende crucialmente de tener las covariables correctas y verificar el balance.",
+     "explicacion": "Matching funciona solo con buenas covariables, soporte común y balance; no es magia."
+    },
+    {
+     "id": "arh20-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se verifica que el matching/propensity score logró BALANCE?",
+     "solucion": "Comparando la distribución de cada covariable entre tratados y controles DESPUÉS del emparejamiento/ponderación: deben quedar similares. Se usan diferencias de medias estandarizadas (standardized mean differences, idealmente <0.1), comparación de medias por covariable y a veces gráficos de la distribución del propensity score. Si tras el matching alguna covariable sigue desbalanceada, el modelo de propensión debe re-especificarse. El balance es el diagnóstico clave: sin él, el ajuste por observables no es creíble.",
+     "explicacion": "Covariables equilibradas tras el match (SMD<0.1) = el ajuste por observables es creíble."
+    },
+    {
+     "id": "arh20-q12",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el COARSENED EXACT MATCHING (CEM)?",
+     "solucion": "Es una estrategia que 'engruesa' (coarsen) las covariables continuas en intervalos/categorías y luego hace matching EXACTO sobre esas versiones engrosadas, conservando solo las celdas con tratados y controles. Controla directamente el balance (eligiendo la granularidad) y garantiza soporte común por construcción, evitando depender de un modelo de propensión. El precio es descartar unidades sin contraparte y cierta pérdida de información por el engrosamiento.",
+     "explicacion": "Discretizar X y emparejar exacto sobre lo discretizado: balance garantizado, a costa de descartar unidades."
+    },
+    {
+     "id": "arh20-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué matching, subclasificación, IPW y regresión comparten la misma debilidad fundamental?",
+     "solucion": "Porque TODOS dependen del CIA (selección en observables): solo identifican el efecto si las covariables X capturan TODOS los confundidores. Ninguno puede corregir un confundidor NO observado. Por eso, por sofisticado que sea el método de ajuste, su credibilidad descansa en el mismo supuesto indemostrable; si hay variables omitidas (habilidad, motivación, severidad no medida), todos quedan sesgados por igual. Esta limitación motiva los diseños cuasi-experimentales.",
+     "explicacion": "Todos asumen CIA; un confundidor no observado los sesga a todos: la misma fragilidad."
+    },
+    {
+     "id": "arh20-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Cuándo es preferible matching sobre una regresión lineal estándar?",
+     "solucion": "Cuando se teme que la relación entre covariables y outcome NO sea lineal o que la regresión EXTRAPOLE a regiones sin datos comparables; cuando se quiere transparencia sobre qué controles sirven de contrafactual; o cuando hay desbalance fuerte en covariables (la regresión 'rellena' con supuestos funcionales lo que el matching se niega a inventar). El matching restringe la inferencia al soporte común y no impone forma funcional, dando estimaciones más robustas a la mala especificación (aunque sobre una población recortada).",
+     "explicacion": "Ante no linealidad/extrapolación/desbalance, matching es más robusto que la regresión lineal."
+    },
+    {
+     "id": "arh20-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué estima típicamente el matching: ATE o ATT?",
+     "solucion": "Depende de cómo se empareje. Si se empareja cada TRATADO con controles similares, se estima el ATT (efecto sobre los tratados), porque se construye el contrafactual Y⁰ de los tratados. Si además se emparejan los controles con tratados (matching en ambas direcciones) y se ponderan por la población, se puede estimar el ATE. La elección del estimando debe ser explícita y coherente con la pregunta (¿efecto en quienes se trataron, o en toda la población?).",
+     "explicacion": "Emparejar tratados → ATT; emparejar en ambos sentidos y ponderar → ATE."
+    }
+   ]
+  },
+  {
+   "id": "arena-h21",
+   "bloque": "fase-7",
+   "orden": 113,
+   "titulo": "Arena Inferencia Causal (Mixtape) · Variables instrumentales y RDD",
+   "libro": "Causal Inference: The Mixtape (Scott Cunningham)",
+   "lectura": "data/teoria/arena-h21.md",
+   "dosis": 30,
+   "objetivo": "Diseños que rompen el CIA con variación exógena: IV por 2SLS (relevancia/exclusión/independencia, LATE, instrumentos débiles, forma reducida) y regresión discontinua (sharp vs fuzzy, McCrary, bandwidth, polinomios locales).",
+   "heuristicas": [
+    "variable-instrumental",
+    "instrumentos-debiles-2sls",
+    "regresion-discontinua-rdd"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "2SLS: 1ª etapa D~Z (parte exógena D̂), 2ª Y~D̂; relevancia+exclusión+independencia",
+    "Bajo monotonicidad, IV estima el LATE (compliers); instrumentos débiles: F>10",
+    "RDD: salto en el cutoff de la running variable (aleatorización local)",
+    "Sharp (determinista) vs fuzzy (cambia probabilidad → IV); efecto local",
+    "Diagnósticos RDD: McCrary (no manipulación), covariables continuas, bandwidth/polinomio local"
+   ],
+   "banco": [
+    {
+     "id": "arh21-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se estima un efecto por variable instrumental usando 2SLS?",
+     "solucion": "Mínimos cuadrados en DOS ETAPAS: (1ª) se regresa el tratamiento ENDÓGENO D sobre el INSTRUMENTO Z (y las covariables exógenas) y se obtienen los valores ajustados D̂ — la parte de D 'movida' solo por Z, libre del confundimiento. (2ª) se regresa el outcome Y sobre D̂ (y las covariables); el coeficiente de D̂ es el estimador IV del efecto causal. Intuitivamente, se usa solo la variación de D inducida por el instrumento, que es exógena.",
+     "explicacion": "1ª etapa: D~Z (extrae la parte exógena D̂); 2ª etapa: Y~D̂."
+    },
+    {
+     "id": "arh21-q2",
+     "tipo": "concepto",
+     "enunciado": "Enuncia las tres condiciones que debe cumplir un instrumento válido.",
+     "solucion": "(1) RELEVANCIA: el instrumento Z está correlacionado con (causa) el tratamiento D (primera etapa fuerte). (2) RESTRICCIÓN DE EXCLUSIÓN: Z afecta al outcome Y SOLO a través de D, no por otras vías. (3) INDEPENDENCIA / EXOGENEIDAD: Z es como-si-aleatorio, no comparte causas con Y (no está confundido con el outcome). La relevancia es verificable (mirar la primera etapa); la exclusión y la independencia NO lo son y se defienden con argumentos del dominio.",
+     "explicacion": "Relevancia (testeable) + exclusión + independencia (supuestos): las tres son necesarias."
+    },
+    {
+     "id": "arh21-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un INSTRUMENTO DÉBIL y por qué es peligroso?",
+     "solucion": "Es un instrumento con RELEVANCIA baja: poca correlación con el tratamiento (primera etapa floja). Es peligroso porque el estimador IV divide por esa asociación pequeña, lo que AMPLIFICA enormemente la varianza y cualquier sesgo por violaciones leves de la exclusión/independencia, y sesga el 2SLS hacia el OLS. Regla práctica: un estadístico F de la primera etapa > 10 sugiere un instrumento suficientemente fuerte; F bajos son señal de alarma.",
+     "explicacion": "Primera etapa floja → estimaciones inestables y sesgadas; exige F>10."
+    },
+    {
+     "id": "arh21-q4",
+     "tipo": "concepto",
+     "enunciado": "Bajo MONOTONICIDAD, ¿qué estima el IV (LATE) y a quién se refiere?",
+     "solucion": "Bajo monotonicidad (el instrumento nunca empuja a nadie en la dirección contraria: no hay 'defiers'), el IV estima el LATE (Local Average Treatment Effect): el efecto promedio SOLO en los CUMPLIDORES (compliers), es decir, quienes cambian su tratamiento EN RESPUESTA al instrumento. No es el ATE de toda la población ni el ATT: excluye a los 'always-takers' y 'never-takers'. Por eso el efecto IV es 'local' al subgrupo movido por ese instrumento concreto.",
+     "explicacion": "LATE = efecto en los compliers (movidos por Z), no en toda la población."
+    },
+    {
+     "id": "arh21-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la FORMA REDUCIDA y por qué es un diagnóstico útil en IV?",
+     "solucion": "La forma reducida es la regresión directa del outcome Y sobre el INSTRUMENTO Z (sin pasar por D): captura el efecto TOTAL de Z sobre Y. Es útil porque si el instrumento es válido y relevante, debe haber un efecto reducido detectable; si la forma reducida es nula, no hay nada que instrumentar (o el instrumento es débil/ inválido). El estimador IV es esencialmente el cociente entre la forma reducida (Z→Y) y la primera etapa (Z→D).",
+     "explicacion": "Y~Z directamente; IV ≈ (efecto reducido Z→Y) / (primera etapa Z→D)."
+    },
+    {
+     "id": "arh21-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué explota la REGRESIÓN DISCONTINUA (RDD) para identificar un efecto causal?",
+     "solucion": "Explota una REGLA DE ASIGNACIÓN basada en un UMBRAL (cutoff): el tratamiento se asigna según si una variable continua (la 'running variable' o variable de asignación) supera o no un punto de corte. Como las unidades JUSTO por encima y JUSTO por debajo del umbral son prácticamente idénticas salvo por recibir el tratamiento ('aleatorización local'), el SALTO (discontinuidad) en el resultado medio en el cutoff identifica el efecto causal local.",
+     "explicacion": "El corte crea comparabilidad local; el salto en Y en el umbral es el efecto."
+    },
+    {
+     "id": "arh21-q7",
+     "tipo": "concepto",
+     "enunciado": "Diferencia la RDD NÍTIDA (sharp) de la DIFUSA (fuzzy).",
+     "solucion": "En la RDD SHARP, cruzar el umbral DETERMINA el tratamiento (la probabilidad pasa de 0 a 1): el efecto es directamente el salto en E[Y] en el cutoff. En la RDD FUZZY, cruzar el umbral solo CAMBIA LA PROBABILIDAD de tratamiento (no de 0 a 1, hay incumplimiento): el salto en Y debe escalarse por el salto en la probabilidad de tratamiento, lo que equivale a usar el indicador de 'estar sobre el cutoff' como INSTRUMENTO del tratamiento (IV). La fuzzy estima un LATE en el umbral.",
+     "explicacion": "Sharp: tratamiento determinista en el corte; fuzzy: cambia la probabilidad → se estima por IV."
+    },
+    {
+     "id": "arh21-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el test de densidad de McCrary y qué amenaza detecta?",
+     "solucion": "Detecta la MANIPULACIÓN de la running variable: si los individuos pueden controlar con precisión su valor para caer del lado que les conviene del umbral, la comparación deja de ser válida (los que se autoseleccionan justo por encima difieren de los de abajo). El test de McCrary examina la DENSIDAD de la running variable alrededor del cutoff: NO debe haber un salto/amontonamiento (bunching) en el umbral. Un salto en la densidad es evidencia de manipulación y de que el supuesto de continuidad falla.",
+     "explicacion": "Busca 'bunching' en el cutoff; un salto en la densidad delata manipulación de la asignación."
+    },
+    {
+     "id": "arh21-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué supuestos clave debe cumplir una RDD válida además de la no manipulación?",
+     "solucion": "(1) CONTINUIDAD: en ausencia de tratamiento, E[Y⁰] (y los confundidores) serían CONTINUOS en el cutoff — cualquier salto en Y se debe al tratamiento, no a otro cambio que ocurra en el mismo umbral. (2) No debe haber OTRAS políticas/cambios que coincidan exactamente en ese corte. Se verifica además que las COVARIABLES predeterminadas NO salten en el cutoff (placebo) y que el resultado no salte en cutoffs FALSOS. La identificación es LOCAL al umbral.",
+     "explicacion": "Continuidad de potenciales y covariables en el cutoff; ningún otro cambio coincide en el corte."
+    },
+    {
+     "id": "arh21-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la elección del BANDWIDTH implica un trade-off sesgo-varianza en RDD?",
+     "solucion": "El bandwidth es el ancho de la ventana alrededor del cutoff que se usa para estimar el salto. Un bandwidth ESTRECHO usa solo observaciones muy cercanas (más comparables → menos SESGO) pero pocas (más VARIANZA). Uno ANCHO usa más datos (menos varianza) pero incluye unidades más lejanas, potencialmente distintas (más sesgo). Se elige por métodos de bandwidth óptimo (Imbens-Kalyanaraman/Calonico et al.) y se reporta la robustez a distintos anchos.",
+     "explicacion": "Ventana angosta: menos sesgo, más varianza; ancha: al revés. Reportar robustez al bandwidth."
+    },
+    {
+     "id": "arh21-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué se prefieren POLINOMIOS LOCALES de bajo grado a polinomios globales de alto grado en RDD?",
+     "solucion": "Porque un polinomio GLOBAL de alto grado ajustado a todo el rango puede producir formas erráticas cerca del cutoff (oscilaciones en los extremos) que generan un 'salto' espurio o lo enmascaran (crítica de Gelman-Imbens). En su lugar se ajusta una regresión LOCAL (lineal o cuadrática) a cada lado del umbral dentro del bandwidth, capturando la tendencia cerca del corte sin imponer una curva global inestable. Da estimaciones del salto más fiables.",
+     "explicacion": "Polinomios globales de alto grado distorsionan el salto; usar regresión local de bajo grado por lado."
+    },
+    {
+     "id": "arh21-q12",
+     "tipo": "concepto",
+     "enunciado": "Da un ejemplo clásico de RDD del libro.",
+     "solucion": "Card, Dobkin y Maestas: el efecto de MEDICARE, que en EE. UU. se otorga al cumplir 65 AÑOS (la edad es la running variable y 65 el cutoff). Comparando indicadores de salud/uso de servicios justo ANTES y DESPUÉS de los 65, el salto en el umbral identifica el efecto de la cobertura. Otro ejemplo del libro: Angrist y Lavy usan la 'regla de Maimónides' (un tope de tamaño de clase) como discontinuidad para estimar el efecto del tamaño de clase.",
+     "explicacion": "Medicare a los 65 (Card et al.) y la regla de Maimónides para tamaño de clase (Angrist-Lavy)."
+    },
+    {
+     "id": "arh21-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué tanto la RDD fuzzy como el IV estiman un LATE y no un ATE?",
+     "solucion": "Porque ambos identifican el efecto solo en el subgrupo cuyo tratamiento RESPONDE a la fuente de variación exógena: en IV, los CUMPLIDORES movidos por el instrumento; en RDD fuzzy, las unidades que cambian de estatus de tratamiento JUSTO en el cutoff. Quienes se tratarían (o no) independientemente del instrumento/umbral no contribuyen. Por eso el efecto es LOCAL a ese subgrupo y a ese punto, y puede no generalizarse a toda la población (validez externa limitada).",
+     "explicacion": "Solo identifican a quienes el instrumento/umbral mueve (compliers): efecto local, no poblacional."
+    },
+    {
+     "id": "arh21-q14",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ventaja tiene la RDD frente a matching/regresión en cuanto a supuestos?",
+     "solucion": "Que NO depende del CIA (selección en observables): no exige medir todos los confundidores. Su identificación viene de la 'aleatorización local' en el cutoff —las unidades a ambos lados son comparables incluso en variables NO observadas, porque caer un poco por encima o por debajo del umbral es esencialmente azaroso—. Solo requiere continuidad y no manipulación. A cambio, el efecto es LOCAL al umbral (menor validez externa) y necesita datos densos cerca del corte.",
+     "explicacion": "RDD identifica sin medir todos los confundidores (aleatorización local), a costa de un efecto solo local."
+    },
+    {
+     "id": "arh21-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Qué chequeos de robustez/falsación se hacen en una RDD creíble?",
+     "solucion": "(1) Test de DENSIDAD de McCrary (no manipulación). (2) CONTINUIDAD de covariables predeterminadas en el cutoff (no deben saltar = placebo de covariables). (3) Cutoffs FALSOS (placebo): no debe haber salto donde no hay política. (4) Sensibilidad al BANDWIDTH y al grado del polinomio. (5) Inspección visual del gráfico del outcome vs la running variable con binning. Pasar estos chequeos respalda que el salto observado es causal y no un artefacto.",
+     "explicacion": "McCrary + covariables continuas + cutoffs placebo + robustez a bandwidth/polinomio + gráfico."
+    }
+   ]
+  },
+  {
+   "id": "arena-h22",
+   "bloque": "fase-7",
+   "orden": 114,
+   "titulo": "Arena Inferencia Causal (Mixtape) · Panel/efectos fijos, DiD y control sintético",
+   "libro": "Causal Inference: The Mixtape (Scott Cunningham)",
+   "lectura": "data/teoria/arena-h22.md",
+   "dosis": 30,
+   "objetivo": "Diseños longitudinales: efectos fijos (controlan confundidores fijos no observados, exogeneidad estricta), diferencias en diferencias (tendencias paralelas, TWFE, placebos, problema del staggered) y control sintético.",
+   "heuristicas": [
+    "efectos-fijos-panel",
+    "diferencias-en-diferencias",
+    "tendencias-paralelas-placebo",
+    "control-sintetico"
+   ],
+   "metadata": {
+    "ruta": "health-ai-rwe",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "FE de unidad: controlan lo invariante en el tiempo (aun no observado) vía within",
+    "DiD: doble diferencia (tratado−control)×(post−pre) = ATT bajo tendencias paralelas",
+    "Apoya el supuesto con event study (pre-tendencias≈0) y placebos",
+    "TWFE con adopción escalonada + heterogeneidad sesga (Goodman-Bacon)",
+    "Control sintético: gemelo ponderado del donor pool; inferencia por placebo/permutación"
+   ],
+   "banco": [
+    {
+     "id": "arh22-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué controlan los EFECTOS FIJOS de unidad en datos de panel?",
+     "solucion": "Controlan TODAS las características de cada unidad que son CONSTANTES en el tiempo, observadas o NO OBSERVADAS (cultura, geografía, habilidad innata, calidad institucional). El estimador 'within' usa solo la variación DENTRO de cada unidad a lo largo del tiempo (restando la media de cada unidad), de modo que cualquier confundidor que no cambie en el tiempo se cancela. Es la gran ventaja del panel sobre el corte transversal: neutralizar confundidores fijos no medidos.",
+     "explicacion": "FE de unidad elimina lo invariante en el tiempo (aun no observado) vía variación within."
+    },
+    {
+     "id": "arh22-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué NO pueden resolver los efectos fijos y qué supuesto exigen?",
+     "solucion": "NO resuelven los confundidores que VARÍAN en el tiempo (shocks específicos de la unidad correlacionados con el tratamiento) ni la causalidad inversa, y ABSORBEN —no pueden estimar— cualquier covariable constante en el tiempo. Exigen EXOGENEIDAD ESTRICTA: el término de error no debe correlacionarse con el tratamiento en NINGÚN periodo (pasado, presente o futuro). Si el tratamiento responde a shocks pasados del outcome, los FE quedan sesgados.",
+     "explicacion": "FE no arreglan confundidores variables en el tiempo; requieren exogeneidad estricta."
+    },
+    {
+     "id": "arh22-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo estima un efecto la estrategia de DIFERENCIAS EN DIFERENCIAS (DiD)?",
+     "solucion": "Comparando el CAMBIO antes→después del grupo TRATADO con el cambio del grupo CONTROL: ATT = (Ȳ_trat,post − Ȳ_trat,pre) − (Ȳ_ctrl,post − Ȳ_ctrl,pre). La primera diferencia (post−pre) elimina lo fijo de cada grupo; la segunda diferencia (tratado−control) resta la tendencia común/shocks que afectan a ambos. Lo que queda es el efecto del tratamiento. Se implementa con una regresión de efectos fijos de dos vías (grupo y tiempo) más el término de interacción tratado×post.",
+     "explicacion": "Doble diferencia: (post−pre del tratado) − (post−pre del control) = ATT."
+    },
+    {
+     "id": "arh22-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es el supuesto de identificación de DiD?",
+     "solucion": "El supuesto de TENDENCIAS PARALELAS: en AUSENCIA del tratamiento, el grupo tratado y el control habrían seguido la MISMA tendencia temporal (su diferencia se habría mantenido constante). Es decir, el cambio del grupo control es un buen contrafactual del cambio que el grupo tratado habría tenido sin tratamiento. No requiere que los niveles sean iguales (eso lo absorben los efectos fijos), solo que las TRAYECTORIAS habrían sido paralelas.",
+     "explicacion": "Tendencias paralelas: sin tratamiento, ambos grupos habrían evolucionado igual (no niveles iguales)."
+    },
+    {
+     "id": "arh22-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se apoya empíricamente el supuesto de tendencias paralelas?",
+     "solucion": "Con un EVENT STUDY / análisis de PRE-TENDENCIAS: estimar los 'efectos' en los periodos ANTERIORES al tratamiento; si las trayectorias eran paralelas, esos coeficientes pre-tratamiento deben ser ≈0. También con PRUEBAS PLACEBO: aplicar DiD a un periodo o grupo donde NO hubo tratamiento (no debe aparecer efecto). Estas comprobaciones no PRUEBAN el supuesto (es sobre un contrafactual), pero pre-tendencias planas y placebos nulos lo hacen mucho más creíble.",
+     "explicacion": "Pre-tendencias ≈0 (event study) y placebos nulos respaldan (no prueban) las tendencias paralelas."
+    },
+    {
+     "id": "arh22-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué problema tiene la regresión TWFE con adopción ESCALONADA (staggered) y efectos heterogéneos?",
+     "solucion": "Cuando distintas unidades reciben el tratamiento en MOMENTOS distintos y el efecto varía entre grupos o en el tiempo, la regresión de efectos fijos de dos vías (TWFE) usa a las unidades YA TRATADAS como controles de las que se tratan después ('forbidden/bad comparisons'), lo que puede SESGAR el estimador e incluso darle el signo equivocado (descomposición de Goodman-Bacon). Solución: estimadores robustos a heterogeneidad (Callaway-Sant'Anna, Sun-Abraham, de Chaisemartin-D'Haultfœuille).",
+     "explicacion": "TWFE escalonado compara contra ya-tratados → sesgo (Goodman-Bacon); usa estimadores modernos."
+    },
+    {
+     "id": "arh22-q7",
+     "tipo": "concepto",
+     "enunciado": "Da un ejemplo clásico de DiD y su lógica de control.",
+     "solucion": "Card y Krueger (salario mínimo): Nueva Jersey SUBIÓ el salario mínimo (grupo tratado) y la vecina Pensilvania no (control). Compararon el CAMBIO en el empleo de comida rápida en NJ con el cambio en PA antes y después de la subida. La doble diferencia controla los shocks comunes a la región y las diferencias fijas entre estados, identificando el efecto del salario mínimo sobre el empleo bajo el supuesto de que sin la ley ambos estados habrían seguido tendencias paralelas.",
+     "explicacion": "Card-Krueger: NJ (sube salario) vs PA (control); la doble diferencia aísla el efecto."
+    },
+    {
+     "id": "arh22-q8",
+     "tipo": "concepto",
+     "enunciado": "¿Qué controla DiD que un simple antes-después o un simple tratado-vs-control NO controlan?",
+     "solucion": "Un simple ANTES-DESPUÉS (solo tratados) confunde el efecto con cualquier TENDENCIA TEMPORAL o shock que habría ocurrido igual (madurez, ciclo económico). Un simple TRATADO-vs-CONTROL en un momento confunde el efecto con DIFERENCIAS FIJAS preexistentes entre grupos (selección). DiD combina ambas comparaciones: la diferencia temporal quita los shocks comunes y la diferencia entre grupos quita los niveles fijos, dejando solo el efecto (bajo tendencias paralelas).",
+     "explicacion": "Antes-después olvida la tendencia común; tratado-control olvida las diferencias fijas; DiD quita ambas."
+    },
+    {
+     "id": "arh22-q9",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el CONTROL SINTÉTICO y para qué se usa?",
+     "solucion": "Es un método para estimar el efecto sobre UNA (o pocas) unidad tratada agregada (un estado, país) construyendo un CONTRAFACTUAL como combinación PONDERADA de un conjunto de unidades de control ('donor pool'). Los pesos (no negativos, suman 1) se eligen para que el 'sintético' REPRODUZCA la trayectoria del tratado ANTES del tratamiento (en el outcome y en predictores). El efecto es la BRECHA entre la unidad tratada y su gemelo sintético DESPUÉS del tratamiento. Se usa cuando DiD no aplica bien (un solo tratado, sin control obvio).",
+     "explicacion": "Gemelo sintético = mezcla ponderada de controles que iguala el pre-tratamiento; efecto = brecha post."
+    },
+    {
+     "id": "arh22-q10",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ventajas tiene el control sintético sobre un DiD estándar?",
+     "solucion": "(1) Elige los controles de forma SISTEMÁTICA y transparente (pesos explícitos) en lugar de a dedo. (2) NO extrapola: los pesos son no negativos y suman 1, así que el sintético está dentro del rango del donor pool. (3) Permite un buen ajuste PRE-tratamiento (en vez de asumir tendencias paralelas, las construye). (4) Sirve cuando hay UNA sola unidad tratada (donde DiD con inferencia estándar es débil). Es especialmente útil para estudios de caso comparativos.",
+     "explicacion": "Pesos explícitos, sin extrapolación, ajuste pre-tratamiento construido, y vale con un solo tratado."
+    },
+    {
+     "id": "arh22-q11",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se hace inferencia en el control sintético si solo hay una unidad tratada?",
+     "solucion": "Con PRUEBAS DE PLACEBO / PERMUTACIÓN: se aplica el mismo método a CADA unidad del donor pool como si fuera la tratada, generando una distribución de 'efectos placebo'. Si la brecha estimada para la unidad REALMENTE tratada es atípicamente grande respecto a esa distribución de placebos, el efecto se considera significativo (un p-valor de permutación). Como no hay muestra grande de tratados, esta inferencia por aleatorización reemplaza a los errores estándar clásicos.",
+     "explicacion": "Aplicar el método a cada control (placebos); el efecto real debe destacar sobre esa distribución."
+    },
+    {
+     "id": "arh22-q12",
+     "tipo": "concepto",
+     "enunciado": "Da un ejemplo clásico de control sintético.",
+     "solucion": "Abadie y Gardeazabal (efecto del terrorismo en el PIB del País Vasco) y, sobre todo, Abadie, Diamond y Hainmueller: el efecto de la PROPOSICIÓN 99 (control del TABACO en California, 1988) construyendo una 'California SINTÉTICA' como combinación ponderada de otros estados que reproduce el consumo de tabaco de California antes de 1988; la brecha posterior estima la caída en el consumo atribuible a la política.",
+     "explicacion": "California sintética (otros estados ponderados) para medir el efecto del control del tabaco."
+    },
+    {
+     "id": "arh22-q13",
+     "tipo": "concepto",
+     "enunciado": "¿Cuándo conviene usar panel/efectos fijos frente a un corte transversal con matching?",
+     "solucion": "Cuando se dispone de DATOS LONGITUDINALES y se teme confundimiento por características ESTABLES no observadas de las unidades (habilidad, cultura, calidad institucional): los efectos fijos los eliminan sin necesidad de medirlos, algo que matching (que solo controla observables, bajo CIA) no puede hacer. El corte transversal con matching es la opción cuando no hay panel, pero entonces se depende del CIA. El panel + FE relaja el supuesto para confundidores invariantes en el tiempo.",
+     "explicacion": "Con panel, los FE barren confundidores fijos NO observados que el matching no puede tocar."
+    },
+    {
+     "id": "arh22-q14",
+     "tipo": "concepto",
+     "enunciado": "Resume cómo cada diseño cuasi-experimental relaja la dependencia del CIA.",
+     "solucion": "MATCHING/PS/regresión dependen del CIA (medir todos los confundidores). Los cuasi-experimentales aportan variación 'como-si exógena' SIN ese supuesto: PANEL/FE elimina confundidores INVARIANTES en el tiempo (aun no observados); DiD usa un control para restar la tendencia común (supuesto de tendencias paralelas en vez de CIA); RDD usa la aleatorización local en un umbral (continuidad/no manipulación); IV usa un instrumento exógeno (exclusión/relevancia). Cada uno cambia el CIA por un supuesto distinto, a menudo más defendible y con efecto a veces LOCAL.",
+     "explicacion": "FE (fijos en el tiempo), DiD (tendencias paralelas), RDD (umbral local), IV (instrumento): otros supuestos en vez de CIA."
+    },
+    {
+     "id": "arh22-q15",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué ningún método cuasi-experimental es universalmente superior?",
+     "solucion": "Porque cada uno IDENTIFICA bajo un supuesto distinto, NO verificable del todo, y suele estimar un efecto distinto (a menudo LOCAL): IV/RDD fuzzy dan un LATE en compliers/umbral; RDD un efecto en el cutoff; DiD el ATT bajo tendencias paralelas; matching el ATE/ATT bajo CIA. La elección depende de qué supuesto es CREÍBLE para el problema y la fuente de variación disponible, no de una jerarquía fija. La buena práctica es triangular varios diseños y reportar diagnósticos/placebos de cada uno.",
+     "explicacion": "Cada diseño cambia un supuesto por otro y estima un efecto distinto; se elige por credibilidad, se triangula."
     }
    ]
   }
