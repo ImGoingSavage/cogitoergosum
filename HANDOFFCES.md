@@ -2494,3 +2494,50 @@ invariantes, patrones}, `dificultad` 1-5, `hints[5]` socráticos, solución
 **verificada con Python** para mates) **y** bloque `fase-0`. Fuente: carpeta
 `Arena/Problem solving y olimpiadas/` (Engel, Zeitz, Pólya, Putnam, Bóna, Kevin
 Houston, serie AoPS). OJO: esquema distinto (§4.1, no fase-7). VERSION v55+.
+
+## Bitácora 2026-06-14 (Arena tanda 27) — SECTOR C: Engel, *Problem-Solving Strategies*, 44 problemas
+
+Arranca el **SECTOR C (entrenamiento)** con `Problem-Solving Strategies` (Arthur
+Engel) — libros[27] del ledger, ruta `entrenamiento`, cuota 40 (superada con **44**).
+Destino: **`data/problems.json`** (esquema §4.1), ids **101-144** sin huecos. **A Mind
+for Numbers** (libros[27 previo, soporte-teórico, cuota 0) se deja como `pendiente`/no
+genera problemas de Arena; se saltó por prioridad §10 hacia el Sector C.
+
+Distribución por `estrategia` (las 4 ÚNICAS válidas), tomada de los capítulos de Engel
+que mejor encarnan cada heurística:
+- **invariantes** (10): borrar→|a−b| (E2), restas sobre 1..4n−1, seis sectores (E3),
+  ±1 cíclico 4|n (E7), raíz digital mod 9, tres enteros por paridad (P21), cuádruple
+  que diverge (E5, monovariante), pentágono IMO 1986 que se detiene (E9), romper
+  chocolate (nm−1), pizarrón a+b+ab ((n+1)!−1).
+- **optimizacion** (12, cap. 3 Extremal): parlamento ≤3 enemigos (E4/E14), enanos y
+  leche 6/7..0 (E13), √2 irracional por mínimo elemento (E17), autos en pista circular
+  (P15), seis puntos M/m≥√3 (P16), disparar al más cercano (P7), promedio de 4 vecinos
+  (E8), rey del torneo (E11), pozos sin cruces (E3), torres y n²/2 (P8), pentágono y
+  triángulo de diagonales (E6), circuncírculo que cubre (E16).
+- **patrones** (11, cap. 2/4 coloreo+casillas): R(3,3)=6 (E12), R(3,3,3)=17 (E13), nueve
+  tapetes 1/9 (E11), coprimos / divisibilidad entre n+1 de 1..2n, Erdős–Szekeres,
+  bloque consecutivo divisible por n, dos con mismo nº de amigos, tablero mutilado,
+  5 puntos en cuadrado (√2/2), 51 de 100.
+- **inversion** (11, cap. 13/14 juegos+hacia-atrás): 21 cerillos (mult 4), juego del 100
+  (≡1 mod 11), Nim 2 montones (espejo), monedas en mesa redonda (simetría), jarras 3&5
+  →4, misère 1-2 (≡1 mod 3), doblar/+1 hasta N (binario), pesas de Bachet 1/3/9/27,
+  Nim 3 montones (XOR), restar-cuadrado (DP retrógrada), juego del 15 = tres en raya.
+
+**§1.2 cumplida — TODAS las afirmaciones numéricas verificadas con Python** antes de
+escribir (invariantes de paridad/mod; R(3,3) y R(3,3,3) por fuerza bruta; Erdős–Szekeres
+y bloque-divisible en miles de instancias; Nim/XOR, juego-100, misère, subtract-square
+por minimax; Bachet 1..40; M/m≥√3 y enanos 6/7..0 por simulación). El builder de un solo
+uso vive en `scripts/_build_engel.py` (idempotencia por chequeo de ids).
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`,
+sin bump de `sw.js` (Engel → camino 1/entrenamiento, no fase-7/estudio). Verificación §9
+en verde: ambos JSON válidos; 144 ids únicos (1-144); esquema §4.1 correcto para 101-144;
+`verificar-shell.py` OK (203 archivos). Distribución total problems.json: invariantes 35,
+optimizacion 37, patrones 36, inversion 36.
+
+**Siguiente** — continuar Sector C con la carpeta `Arena/Problem solving y olimpiadas/`:
+Zeitz (Art and Craft), Pólya (Cómo plantear y resolver), Putnam and Beyond, Bóna
+(Walk Through Combinatorics), Kevin Houston, y la serie AoPS (Intro/Med/Vol/Calculus).
+Mismo esquema §4.1 (ids 145+, sin huecos) y, donde aplique, `fase-0` (Pólya/Houston/Zeitz
+cap.1-2/AoPS Intro como material introductorio del Modo Estudio). Verificar SIEMPRE con
+Python. `A Mind for Numbers` (soporte-teórico) puede marcarse `hecho` con 0 al cerrar.

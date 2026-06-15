@@ -455,11 +455,12 @@
       "archivo": "Arena/Problem solving y olimpiadas/75427434-problem-books-in-mathematics-problem-solving-strategies.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": "Sector C: problems.json"
+      "notas": "Tanda 27 (2026-06-14): 44 problemas a data/problems.json (ids 101-144), Sector C entrenamiento. Distribución: invariantes 10, optimizacion 12, patrones 11, inversion 11. Todas las afirmaciones numéricas verificadas con Python (paridad/invariantes, R(3,3)=6, R(3,3,3)=17, Erdős–Szekeres, Nim/XOR, juego del 100 ≡1 mod11, misère ≡1 mod3, subtract-square P, Bachet 1..40, M/m≥√3, gas circular, enanos 6/7..0). Solo se tocó problems.json: sin cambios de código, sin teoria/*.md, sin bump de sw.js.",
+      "ids_problemas": "101-144 en data/problems.json"
     },
     {
       "libro": "The Art and Craft of Problem Solving (Zeitz)",
