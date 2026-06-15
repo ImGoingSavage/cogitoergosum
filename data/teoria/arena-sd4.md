@@ -79,6 +79,41 @@
 
 ---
 
+## Mini-ejemplo trabajado: por qué WebSocket y no polling, con números
+
+Chat con 1 M usuarios conectados esperando mensajes que llegan, en promedio, **cada 30 s**.
+
+- **Polling cada 2 s:** cada cliente pregunta 30 veces antes de que llegue algo → **15 M peticiones/min** de las cuales el 96% devuelven "nada". Desperdicio masivo de servidor y batería.
+- **Long polling:** mejor (el servidor retiene hasta tener algo), pero cada mensaje cierra y reabre la conexión → reconexiones constantes a escala.
+- **WebSocket:** una conexión **persistente y bidireccional** (arranca como HTTP, hace *upgrade*). El servidor **empuja** el mensaje en el instante que llega; cero peticiones vacías.
+
+El precio: el servicio de chat es **con estado** (mantiene la conexión viva, el cliente queda pegado a un servidor), separado del tier stateless.
+
+**Predicción antes de seguir:** el typeahead debe responder en **<100 ms** por cada tecla. ¿Recorres el subárbol del trie en cada pulsación? No: **cacheas las top-k consultas en cada nodo** del trie → leer las k es O(longitud del prefijo), no O(tamaño del subárbol). Precomputar otra vez vence a computar.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (delta sync):** editas un archivo de 1 GB cambiando 4 MB → subes **solo el bloque cambiado**, no el archivo entero; dedup guarda bloques idénticos una vez.
+- **Contraejemplo (polling para tiempo real):** preguntar cada X segundos por mensajes → desperdicio si no hay nada y latencia si hay; usa WebSocket.
+- **Caso borde (push para todo en CDN):** pre-distribuir *todo* el catálogo de video a todas las CDNs es carísimo → push solo lo **viral**, pull para la cola larga.
+
+## Errores típicos
+
+- **Conceptual:** usar HTTP petición-respuesta donde el **servidor** necesita iniciar la comunicación (presencia, mensaje entrante) → WebSocket/heartbeat.
+- **De almacenamiento:** SQL relacional para el volumen y patrón por `message_id` del chat → mejor KV store con `message_id` ordenable por tiempo.
+- **De costo:** servir todo desde CDN sin distinguir popular vs cola larga.
+
+## Transferencia isomorfa
+
+- **Trie typeahead ↔ árbol de prefijos:** el autocompletado es el Trie de DS&A con top-k cacheado en cada nodo (conecta con [[arena-cc2]], Trie).
+- **Push viral / pull cola larga ↔ fanout write/read ↔ batch/online:** "pre-distribuir solo lo popular" es la misma decisión precompute-vs-on-demand del news feed y de batch vs online prediction (conecta con [[arena-sd3]] y [[arena-dmls3]]).
+- **Delta sync + dedup por hash de bloque ↔ memoria comprada / Merkle:** subir solo lo que cambió y deduplicar por hash es el anti-entropy de Merkle trees y el hashing de contenido (conecta con [[arena-sd2]]).
+- **`message_id` ordenable por tiempo ↔ Snowflake:** el ID único y ordenable de la conversación es el reparto de bits con timestamp en lo alto (conecta con [[arena-sd2]]).
+
+Moraleja de la arista: *el tiempo real rompe el modelo petición-respuesta (WebSocket/heartbeat); medios y archivos acercan datos (CDN) y mueven lo mínimo (delta sync, bitrates) — y precomputar lo más leído (top-k, video viral) gana otra vez.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

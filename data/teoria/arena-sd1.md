@@ -121,6 +121,40 @@ Identifica cuellos de botella, puntos únicos de fallo, qué monitorear, cómo m
 
 ---
 
+## Mini-ejemplo trabajado: estimación de capacidad a ojo
+
+"Diseña algo tipo Twitter." Antes de dibujar cajas, dimensiona (el *proceso*, no la precisión):
+
+- **Supuestos** (escríbelos): 300 M usuarios/mes, 50% diarios → DAU = 150 M; 2 tweets/día; 10% con media de 1 MB; retención 5 años.
+- **QPS de escritura:** 150 M × 2 / 86 400 s ≈ **3 500 QPS**; pico ≈ 2× = **7 000**.
+- **Almacenamiento/día:** 150 M × 2 × 10% × 1 MB = **30 TB/día** → ×365×5 ≈ **55 PB** en 5 años.
+
+Redondea sin pudor (`99 987 / 9.1` ≈ `100 000 / 10`); etiqueta unidades siempre. Estos números deciden el diseño: 55 PB descarta "todo en una máquina" → necesitas sharding y blob storage; 7 000 QPS pico justifica caché y colas.
+
+**Predicción antes de seguir:** el ingeniero junior guarda la sesión del usuario en la **memoria del servidor de app**. ¿Por qué es bandera roja? Rompe el *stateless*: si el load balancer manda la siguiente petición a otro servidor, la sesión no está; y no puedes escalar ni tolerar caídas. El estado va a un almacén compartido (Redis).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (escalado horizontal):** tier web stateless + sesión en Redis → cualquier servidor atiende cualquier petición, redundante.
+- **Contraejemplo (sobre-ingeniería):** meter Kafka, sharding y multi-región el día 1 para 100 usuarios → complejidad sin requisito; lo simple que cumple gana.
+- **Caso borde (lecturas ≫ escrituras):** la BD se hunde por lecturas → réplicas de lectura + caché read-through descargan la primaria.
+
+## Errores típicos
+
+- **Conceptual:** confundir escalado **vertical** (máquina más grande, tope físico, punto único de fallo) con **horizontal** (más máquinas, redundante) — a escala real, horizontal es obligatorio.
+- **De proceso:** lanzarse a diseñar sin **fijar el alcance** (ser "Jimmy") — pregunta features, escala, stack antes de dibujar.
+- **De estimación:** buscar precisión decimal en vez de **orden de magnitud**; etiquetar mal o no escribir supuestos.
+
+## Transferencia isomorfa
+
+- **Tier stateless ↔ funciones puras / serving sin estado:** "cualquier servidor atiende cualquier petición" es el escalado horizontal de un modelo servido como función sin estado (conecta con [[arena-mldp3]] y [[arena-rml3]]).
+- **Back-of-envelope ↔ estimación de Fermi:** dimensionar con supuestos y redondeo es el problema de Fermi clásico (conecta con la estimación de los brainteasers).
+- **Números de latencia (memoria≪disco≪red) ↔ pensar en la jerarquía:** la cura "comprime antes de enviar, evita seeks" es la misma intuición que memoria comprada del hashing (conecta con [[arena-cc1]]).
+
+Moraleja de la arista: *escalar es una secuencia (separar, stateless, replicar, cachear, desacolar con colas); dimensiona a orden de magnitud para decidir el diseño y huye de la sobre-ingeniería.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

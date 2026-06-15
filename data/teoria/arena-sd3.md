@@ -77,6 +77,38 @@
 
 ---
 
+## Mini-ejemplo trabajado: el hotkey del fanout on write
+
+Usuario normal con 200 amigos publica un post. **Fanout on write** (push): copias el `post_id` a los 200 feeds → 200 escrituras, barato, y leer el feed es instantáneo (precomputado). Perfecto.
+
+Ahora una **celebridad con 50 M seguidores** publica. Fanout on write dispara **50 M escrituras** de golpe → tormenta que satura el sistema (el "hotkey"). Y si pre-generas feeds de seguidores **inactivos**, gastas en vano.
+
+La **solución híbrida** (la real): fanout on write para usuarios normales (feeds rápidos), y **fanout on read** (pull) para las celebridades — al abrir tu feed, *recoges* en el momento los posts de las pocas celebridades que sigues. Lo mejor de ambos: lectura rápida sin la tormenta del influencer.
+
+**Predicción antes de seguir:** ¿qué decisión de ML es isomorfa a "push vs pull"? **Batch vs online prediction**: fanout on write = precomputar (batch, rápido al leer, caro y rancio si nadie lo pide); fanout on read = computar on-demand (online, fresco, pelea contra la latencia). La misma dualidad precompute/compute (conecta con [[arena-dmls3]]).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (cuello = lectura):** URL corta o feed que se lee muchísimo → precomputa y cachea; las colas absorben los picos de escritura.
+- **Contraejemplo (fanout write para celebridad):** push a 50 M feeds → hotkey; ahí va pull.
+- **Caso borde (301 vs 302):** 301 (permanente) el navegador cachea → menos carga pero **pierdes analítica de clics**; 302 (temporal) cada visita pasa por tu servidor (analítica, más carga).
+
+## Errores típicos
+
+- **Conceptual:** elegir un único modo de fanout para todos; la respuesta a escala es **híbrida**.
+- **De diseño:** clave de URL por **conversión de base** (ID→base62) sin notar que es **enumerable** (predecible) cuando el caso exige no-adivinable → hash+sal.
+- **De robustez:** un crawler "BFS simple" sin **politeness**, dedup ni límite de profundidad (spider traps) → martillea hosts y se cuelga.
+
+## Transferencia isomorfa
+
+- **Fanout write/read ↔ batch/online prediction:** precomputar vs computar on-demand es la misma decisión que servir predicciones en batch o en tiempo real (conecta con [[arena-dmls3]]).
+- **Bloom filter para dedup ↔ hashing probabilístico:** el filtro de Bloom del crawler es memoria comprada con falsos positivos controlados, pariente de la tabla hash (conecta con [[arena-cc1]] y [[arena-sd2]], Merkle/SSTable).
+- **Cola de notificaciones ↔ desacoplar con event-driven:** la cola que absorbe picos y aísla proveedores es el pub/sub asíncrono que desacopla servicios (conecta con [[arena-dmls3]]).
+
+Moraleja de la arista: *a escala el cuello es la lectura → precomputa y cachea; pero precomputar (fanout write/batch) cuesta al escribir, así que para los casos extremos (celebridad) cambias a on-demand (pull/online) — híbrido.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

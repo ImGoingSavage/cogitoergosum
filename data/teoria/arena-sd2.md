@@ -110,6 +110,38 @@ El timestamp en los bits altos garantiza orden creciente; la secuencia evita col
 
 ---
 
+## Mini-ejemplo trabajado: por qué `hash % n` es un desastre al reescalar
+
+Tienes 4 servidores de caché y asignas `servidor = hash(key) % 4`. Añades un quinto → ahora es `% 5`. ¿Cuántas claves cambian de servidor?
+
+Una clave con `hash=100`: antes `100 % 4 = 0`, ahora `100 % 5 = 0` (coincide). Pero `hash=101`: antes 1, ahora 1; `hash=102`: antes 2, ahora 2; `hash=103`: antes 3, ahora 3; `hash=104`: antes 0, ahora **4** (cambia). En general, cambiar el módulo remapea **casi todas** las claves → **tormenta de cache miss** justo al escalar.
+
+El **consistent hashing** lo arregla: servidores y claves en un **anillo**; una clave va al primer servidor en sentido horario. Al añadir un nodo, solo se mueven las **k/n claves** de su segmento, no todas. Los **vnodes** (cada servidor = muchos puntos en el anillo) reducen la varianza del reparto.
+
+**Predicción antes de seguir:** KV store con N=3 réplicas. ¿Qué W y R dan **consistencia fuerte**? Necesitas **W + R > N**: p. ej. W=2, R=2 (2+2=4 > 3) garantiza que el conjunto de lectura y el de escritura **se solapan** en al menos un nodo con el dato más reciente.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (token bucket):** rate limiter que permite ráfagas controladas, implementado en Redis con INCR+EXPIRE atómico.
+- **Contraejemplo (CA no existe):** prometer consistencia *y* disponibilidad ignorando particiones → en el mundo real la partición es inevitable, eliges CP o AP.
+- **Caso borde (fixed window counter):** un contador por minuto deja pasar hasta **2×** el límite en el borde de la ventana (ráfaga al final de un minuto + inicio del siguiente) → sliding window lo suaviza.
+
+## Errores típicos
+
+- **Conceptual:** creer en "CA" de CAP; ante partición (inevitable) eliges **CP** (banca, bloquea) o **AP** (feed, reconcilia luego).
+- **Técnico:** rate limiter distribuido sin atomicidad → race conditions; usa scripts Lua/locks o un contador centralizado.
+- **De consistencia:** asumir consistencia fuerte con **W + R ≤ N** (no hay solapamiento garantizado).
+
+## Transferencia isomorfa
+
+- **Consistent hashing ↔ hashing como reparto / load balancing:** repartir claves minimizando el remapeo es la misma función hash que reparte elementos en buckets (conecta con [[arena-cc1]], hashing).
+- **Token/leaking bucket ↔ load shedding / control de sobrecarga:** limitar el caudal para no colapsar es el rate-limiting del SRE (conecta con [[arena-sre4]], rechazar pronto).
+- **Quórum W+R>N ↔ dial consistencia-latencia:** ajustar W/R es el mismo trade-off explícito que el error budget o el CAP — más garantía cuesta más latencia.
+
+Moraleja de la arista: *`hash % n` remapea todo al reescalar; el anillo mueve solo k/n. Y la consistencia es un dial (W+R>N), no un absoluto — ante partición eliges CP o AP.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
