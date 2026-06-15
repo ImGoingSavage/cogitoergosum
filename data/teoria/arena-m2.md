@@ -140,6 +140,24 @@ FROM ventas;
 
 ---
 
+## Errores típicos
+
+- **Conceptual:** filtrar el resultado de una ventana en el mismo `WHERE` (`WHERE rn = 1`) — el `WHERE` se evalúa **antes** que las funciones de ventana; necesitas un **CTE/subquery** y filtrar fuera.
+- **Técnico:** olvidar el desempate en `ROW_NUMBER` con empates en la columna de orden → resultado no determinístico (añade `id` como segundo criterio).
+- **De frame:** confiar en el default `RANGE` con fechas duplicadas cuando querías un acumulado fila a fila → usa `ROWS BETWEEN ... CURRENT ROW`.
+
+## Transferencia isomorfa
+
+La ventana SQL "calcula sobre filas relacionadas sin colapsarlas" reaparece en análisis y ciencia de datos:
+
+- **PARTITION BY ↔ GROUP BY sin colapsar:** conservar la fila y añadir el agregado es lo que distingue un *transform* de un *aggregate* — la misma idea que un feature derivado que se une de vuelta a cada registro (conecta con [[arena-cds1]], feature engineering).
+- **LAG/LEAD ↔ diferencias en panel / DiD:** comparar cada fila con su período anterior es exactamente la "primera diferencia" (post − pre) del estimador de diferencias en diferencias (conecta con [[arena-h22]], DiD).
+- **AVG OVER ... ROWS k PRECEDING ↔ ventana deslizante / streaming feature:** el promedio móvil de k días es una ventana deslizante temporal, igual que las streaming features de ML systems (conecta con [[arena-dmls3]]) y la ventana del array (conecta con [[arena-cc1]]).
+
+Moraleja de la arista: *las window functions conservan la fila y calculan sobre su vecindad (partición/orden/frame); definir cohortes, comparar períodos (LAG=DiD) y promedios móviles es el mismo gesto en SQL, en paneles y en streams.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |

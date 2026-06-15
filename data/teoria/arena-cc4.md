@@ -180,6 +180,40 @@ Un pico es un elemento mayor que sus vecinos. Siempre existe en cualquier array.
 
 ---
 
+## Mini-ejemplo trabajado: búsqueda binaria sobre la respuesta
+
+"Un barco debe llevar todos los paquetes en ≤ 5 días; ¿la **mínima capacidad** diaria?" El truco: no buscas en un array, buscas en el **dominio de la respuesta** (capacidades), que es **monótono**: si una capacidad C funciona, toda capacidad > C también.
+
+- `condicion(C)` = "¿se puede en ≤ 5 días con capacidad C?" (simulas en O(n)).
+- Rango: `left = max(paquete)` (no puedes llevar menos que el paquete más grande), `right = suma(paquetes)` (todo en un día).
+- Binaria: si `condicion(mid)` es True, baja `right=mid` (busca menor); si no, `left=mid+1`.
+
+Conviertes un problema de optimización en **buscar el primer True** sobre un predicado monótono — el mismo esqueleto sirve para "mínima velocidad para llegar a tiempo" o "kth smallest en matriz ordenada".
+
+**Predicción antes de seguir:** te dan [1..n] con un número faltante y quieres O(1) espacio. ¿Cómo? **XOR** de 1..n contra el XOR del array: como `x^x=0`, todo lo presente se cancela y queda el faltante. La cancelación del XOR es un **invariante** puro.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (binaria sobre respuesta):** cualquier "mínimo/máximo X tal que condición(X)" con condición monótona.
+- **Contraejemplo (binaria sin monotonía):** aplicar búsqueda binaria a un predicado que oscila (True/False/True) → no converge; la binaria exige monotonía.
+- **Caso borde (overflow del mid):** `mid = (left+right)/2` puede desbordar; usa `left + (right-left)/2`.
+
+## Errores típicos
+
+- **Conceptual:** creer que la búsqueda binaria es solo para arrays ordenados; sirve para **cualquier propiedad monótona**.
+- **Técnico:** condiciones de parada mal puestas en "primera/última ocurrencia" → bucle infinito o off-by-one.
+- **De heap:** para los k **más grandes**, usar un max-heap de todo (O(n log n)) en vez de un **min-heap de tamaño k** (O(n log k)).
+
+## Transferencia isomorfa
+
+- **Binaria sobre respuesta ↔ monotonicidad como heurística:** explotar "si X cumple, todo lo mayor también" es la misma palanca que ordena el espacio de soluciones en optimización y en parada óptima (conecta con [[arena-q8]], parada óptima).
+- **XOR / Boyer-Moore ↔ invariante:** "lo que se empareja se cancela" y "el mayoritario sobrevive a los votos" son invariantes de conteo, el corazón del brainteaser (conecta con [[arena-q12]]).
+- **QuickSelect / median-of-medians ↔ estadísticos de orden:** hallar el k-ésimo sin ordenar todo es el cómputo de cuantiles, base de estimadores robustos (conecta con [[arena-pst1]]).
+
+Moraleja de la arista: *la búsqueda binaria es para cualquier predicado monótono (no solo arrays), y los trucos de XOR son invariantes de conteo disfrazados de bits.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

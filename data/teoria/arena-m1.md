@@ -137,6 +137,32 @@ Para Group Anagrams:
 
 ---
 
+## Mini-ejemplo trabajado: subarray con suma k (prefix sum + hash)
+
+"¿Cuántos subarreglos contiguos suman exactamente k?" Truco: la suma del subarreglo (i, j] = `prefix[j] − prefix[i]`. Quieres `prefix[j] − prefix[i] = k`, es decir `prefix[i] = prefix[j] − k`. Eso es **¡Two Sum sobre sumas prefijas!**
+
+Recorre llevando la suma acumulada y un **hash contador** de las sumas prefijas vistas: en cada j, suma cuántas veces apareció `prefix − k`. Con `nums=[1,1,1]`, `k=2`: prefijos 1,2,3; cuando vas en prefix=2 buscas 0 (1 vez, el prefix vacío) → 1 subarray; en prefix=3 buscas 1 (1 vez) → otro. Total **2**. Una pasada O(n).
+
+Es la misma jugada del complemento: "¿existe un prefijo anterior tal que la diferencia sea k?" → hash de lo visto.
+
+**Predicción antes de seguir:** "subarreglo contiguo de suma mínima ≥ k". ¿Hash? **No** necesariamente: con elementos positivos es **sliding window** (dos punteros); reconocer cuándo el hash *no* es la respuesta vale tanto como saber usarlo.
+
+## Errores típicos
+
+- **Conceptual:** asumir O(1) **garantizado**; es O(1) amortizado, O(n) peor caso (colisiones).
+- **Técnico:** insertar antes de consultar en Two Sum → falso emparejamiento consigo mismo (orden: buscar, luego insertar).
+- **De interpretación:** usar hash cuando el enunciado dice "**contiguo**" (ventana) u "**ordenado**" (two pointers).
+
+## Transferencia isomorfa
+
+- **Prefix sum + hash ↔ ventana temporal acumulada:** "diferencia entre dos acumulados" es el patrón de cualquier agregado sobre el tiempo (gasto entre dos fechas, eventos entre dos instantes) — pariente de las window functions de SQL (conecta con [[arena-m2]]).
+- **Hash como memoria ↔ deduplicación de eventos:** "¿ya vi esta clave?" es deduplicar diagnósticos por `patient_id` (conecta con [[arena-h11]], observation_period).
+- **Clave canónica (anagramas) ↔ entity resolution:** agrupar bajo una firma canónica es el mismo gesto que mapear códigos fuente a un concepto estándar (conecta con [[arena-h12]], 'Maps to').
+
+Moraleja de la arista: *el hash compra O(1) con memoria; el patrón del complemento reaparece sobre sumas prefijas (suma k) y sobre cohortes — el array es solo el disfraz.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |

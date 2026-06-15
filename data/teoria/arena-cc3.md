@@ -190,6 +190,43 @@ Con k=2: dos transacciones → dp 2D O(n).
 
 ---
 
+## Mini-ejemplo trabajado: coin change mínimo, llenando la tabla
+
+Monedas {1, 3, 4}, objetivo amount=6. `dp[j]` = mínimo de monedas para sumar j. Base `dp[0]=0`:
+
+- `dp[1]` = 1 (una de 1)
+- `dp[2]` = 2 (1+1)
+- `dp[3]` = 1 (una de 3)
+- `dp[4]` = 1 (una de 4)
+- `dp[5]` = min(dp[5−1], dp[5−3], dp[5−4]) + 1 = min(dp[4], dp[2], dp[1]) + 1 = min(1,2,1)+1 = **2** (1+4 ó 3+... )
+- `dp[6]` = min(dp[5], dp[3], dp[2]) + 1 = min(2,1,2)+1 = **2** (3+3)
+
+Cada `dp[j]` pregunta "¿qué moneda usé *de última*?" y se apoya en un subproblema ya resuelto — eso *es* DP: recursión con memoria sobre el último paso.
+
+**Predicción antes de seguir:** con monedas {1, 3, 4} y amount=6, ¿el **greedy** (toma la moneda más grande que quepa) da el óptimo? Greedy haría 4+1+1 = **3 monedas**; la DP encuentra 3+3 = **2**. Greedy **falla** con monedas arbitrarias; solo es seguro con sistemas "canónicos" como {1,5,10,25}.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (subproblemas superpuestos):** Fibonacci/escaleras → el mismo subproblema se recalcula muchas veces → memoiza.
+- **Contraejemplo (greedy donde se necesita DP):** coin change con {1,3,4} → greedy subóptimo; knapsack 0/1 también requiere DP.
+- **Caso borde (orden de loops en Coin Change 2):** para **contar formas** sin permutaciones duplicadas, la moneda va en el bucle **externo**; invertirlo cuenta (1,3) y (3,1) como distintos.
+
+## Errores típicos
+
+- **Conceptual:** memoizar sin subproblemas superpuestos (no aporta) o elegir un estado que no captura todo lo necesario para decidir.
+- **Técnico:** en knapsack 0/1 recorrer la capacidad **hacia adelante** (eso es unbounded, reusa el ítem) en vez de en orden inverso.
+- **De interpretación:** aplicar greedy a coin change con monedas arbitrarias.
+
+## Transferencia isomorfa
+
+- **Escaleras (1 ó 2 pasos) ↔ Fibonacci:** la recurrencia dp[i]=dp[i−1]+dp[i−2] es *literalmente* el conejo de Fibonacci del brainteaser quant (conecta con [[arena-q12]]).
+- **Edit distance / LCS ↔ alineamiento de secuencias:** la misma DP de dos secuencias aparece en diff de archivos y en alineamiento de ADN/eventos clínicos (conecta con [[arena-h7]], series temporales de eventos).
+- **Knapsack ↔ subset-sum / asignación bajo presupuesto:** maximizar valor bajo una capacidad es el patrón de cualquier decisión con recurso limitado (conecta con [[arena-h21]], asignación).
+
+Moraleja de la arista: *DP = recursión con memoria; encuentra el estado mínimo y pregunta "¿qué pasó en el último paso?" — y desconfía del greedy salvo que un exchange argument lo justifique.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

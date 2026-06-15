@@ -182,6 +182,41 @@ Para deserializar: reconstruye el árbol procesando los valores en pre-orden, us
 
 ---
 
+## Mini-ejemplo trabajado: orden topológico (Kahn) a mano
+
+Cursos con prerrequisitos: A→C, B→C, C→D (toma A y B antes de C, C antes de D). ¿En qué orden cursarlos?
+
+1. **In-degree:** A=0, B=0, C=2, D=1.
+2. **Cola inicial** (in-degree 0): [A, B].
+3. Saca A → reduce C a 1. Saca B → reduce C a 0 → entra C a la cola. Saca C → reduce D a 0 → entra D. Saca D.
+4. Orden: **A, B, C, D**. Procesaste los 4 nodos → **no hay ciclo**.
+
+Si al final quedaran nodos sin procesar (in-degree nunca llegó a 0), habría un **ciclo** → imposible ordenar. Ese es justo el chequeo de "¿se puede terminar todos los cursos?" (Course Schedule).
+
+**Predicción antes de seguir:** quieres el **camino más corto en pasos** en un grafo *sin pesos*. ¿Dijkstra? No hace falta: BFS lo da en O(V+E), porque sin pesos "menos aristas = más corto". Dijkstra es para pesos ≥ 0; con pesos negativos, Bellman-Ford.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (BFS para shortest path sin pesos):** laberinto/grid → BFS desde el origen da la distancia mínima en pasos.
+- **Contraejemplo (Dijkstra con pesos negativos):** Dijkstra falla si hay aristas negativas (asume que una vez fijada la distancia mínima no mejora) → usa Bellman-Ford.
+- **Caso borde (validar BST):** comprobar solo `hijo_izq < raíz < hijo_der` **falla** con nietos; hay que heredar cotas min/max hacia abajo.
+
+## Errores típicos
+
+- **Conceptual:** usar DFS para el camino más corto (no lo garantiza); el shortest path sin pesos es **BFS**.
+- **Técnico:** detección de ciclo en grafo **dirigido** mirando "vecino ya visitado" (eso vale para no dirigido); en dirigido necesitas el estado **gris** (en la pila de recursión).
+- **De estructura:** asumir que un BST está balanceado → en el degenerado (insertar ordenado) las operaciones caen a O(n).
+
+## Transferencia isomorfa
+
+- **Orden topológico ↔ DAG causal / build systems:** ordenar tareas por dependencias es el mismo DAG que ordena causas antes que efectos en inferencia causal (conecta con [[arena-h16]]) y que resuelve dependencias en un compilador.
+- **Union-Find ↔ componentes conexas / Kruskal:** "¿están en el mismo grupo?" en casi O(1) es la base del MST y de contar islas — el mismo invariante de "cada unión baja el nº de componentes en 1" del brainteaser de las roturas (conecta con [[arena-q12]]).
+- **Trie ↔ hash map para prefijos:** un árbol de prefijos es la versión de hashing que *sí* soporta "todas las palabras que empiezan con…" (conecta con [[arena-cc1]], hashing como memoria).
+
+Moraleja de la arista: *el grafo es la abstracción de las relaciones; BFS da el camino más corto en pasos, DFS detecta ciclos y ordena (topo sort = DAG), y Union-Find responde "¿conectados?" casi gratis.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
