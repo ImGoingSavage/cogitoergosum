@@ -120,6 +120,39 @@ Esto implica:
 
 ---
 
+## Mini-ejemplo trabajado: el MLE de Uniforme[0,θ] es sesgado y cómo arreglarlo
+
+n=4 muestras de Uniforme[0,θ], máximo observado X₍₄₎=8. El MLE es θ̂=X₍ₙ₎=8 (no puedes haber generado un 8 con θ<8, y la verosimilitud decrece en θ por encima). Pero **siempre** X₍ₙ₎ ≤ θ, así que el MLE **subestima sistemáticamente**:
+
+> E[X₍ₙ₎] = n/(n+1)·θ = 4/5·θ → Bias = −θ/5
+
+El insesgado se obtiene reescalando: θ̃ = (n+1)/n · X₍ₙ₎ = 5/4·8 = **10**. Y este θ̃, función del suficiente-completo X₍ₙ₎, es el **UMVUE**.
+
+**Predicción antes de seguir:** ¿el MLE θ̂=8 o el insesgado θ̃=10 tiene menor MSE? Respuesta: sorprendentemente el insesgado **no siempre gana**; el estimador de mínimo MSE escala por (n+2)/(n+1), entre ambos. De nuevo: insesgado, MLE y mínimo-MSE son tres objetivos distintos, y aquí divergen visiblemente. (Conecta con el trade-off MSE=Var+Bias².)
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (receta UMVUE):** halla T suficiente y completo, toma cualquier insesgado δ, calcula E[δ|T] → UMVUE (Lehmann-Scheffé).
+- **Contraejemplo (la cota CR no siempre se alcanza):** solo en familias exponenciales de un parámetro un insesgado iguala 1/(nI(θ)); fuera de ahí el UMVUE puede tener varianza estrictamente mayor que la cota.
+- **Caso borde (soporte dependiente de θ):** en Uniforme[0,θ] la regularidad de Cramér-Rao **falla** (el soporte depende de θ), por eso el MLE converge a tasa 1/n, no 1/√n. El borde rompe la asintótica estándar.
+
+## Errores típicos
+
+- **Conceptual:** reportar el MLE como insesgado; muchos MLE (σ̂², X₍ₙ₎) lo son solo asintóticamente.
+- **Técnico:** aplicar Cramér-Rao a la Uniforme (condiciones de regularidad violadas).
+- **De supuestos:** condicionar en un suficiente no completo y creer que el resultado es UMVUE.
+
+## Transferencia isomorfa
+
+- **Rao-Blackwell (E[δ|T]) ↔ promediar para reducir varianza:** condicionar en el suficiente nunca empeora, el análogo teórico de ensamblar modelos (conecta con [[arena-dg1]]).
+- **MLE asintóticamente N(θ,1/(nI)) ↔ IC y tests de Wald:** la normalidad asintótica es el motor de todos los intervalos de gran muestra (conecta con [[arena-cb4]] y [[arena-dg2]]).
+- **Insesgado ≠ mínimo MSE ↔ sesgo-varianza en ML:** corregir el sesgo del máximo es la misma decisión que regularizar un modelo (conecta con [[arena-iml4]]).
+- **Conjugación Beta-Binomial ↔ actualización bayesiana de tasas:** el posterior cierra la familia, igual que en toda inferencia de proporciones (conecta con [[arena-b4]]).
+
+Moraleja de la arista: *el MLE del máximo subestima; reescalar por (n+1)/n lo insesga y lo vuelve UMVUE — pero insesgado, MLE y mínimo-MSE rara vez coinciden.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

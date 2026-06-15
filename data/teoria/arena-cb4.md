@@ -111,6 +111,40 @@ Regla de Bonferroni: usa αᵢ = α/k en cada IC para garantizar nivel 1−α co
 
 ---
 
+## Mini-ejemplo trabajado: delta method para un odds estimado
+
+Estimas una proporción p̂=0.2 con n=100 (SE de p̂ ≈ √(0.2·0.8/100)=0.04) y quieres un IC para el **logit** g(p)=log(p/(1−p)). No hay pivote exacto, pero el delta method propaga la incertidumbre usando la derivada:
+
+> g'(p) = 1/(p(1−p)) = 1/(0.2·0.8) = 6.25
+> SE(logit) ≈ g'(p̂)·SE(p̂) = 6.25·0.04 = 0.25
+
+IC del 95% para el logit: log(0.2/0.8) ± 1.96·0.25 = −1.386 ± 0.49. La idea: **una transformación suave estira el error por su pendiente local** g'(θ). Linealizas g alrededor de θ̂ y la normalidad se transfiere.
+
+**Predicción antes de seguir:** ¿por qué construir el IC en la escala logit y luego transformar de vuelta, en lugar de p̂±1.96·SE directo? Respuesta: porque cerca de p=0 o p=1 el IC simétrico en p se sale de [0,1] y la aproximación normal es mala; en la escala logit (sin fronteras) la normalidad funciona mejor y al des-transformar el intervalo queda **dentro de (0,1)** y asimétrico, como debe ser. La transformación estabiliza.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** hay pivote con distribución conocida (z, t, χ², F) → IC exacto despejando θ.
+- **Contraejemplo (g'(θ)=0):** si la derivada se anula, el delta method de primer orden da varianza 0 (falso); hay que ir al segundo orden (χ²). El método falla justo en los puntos planos.
+- **Caso borde (IC asimétrico):** para σ² el pivote χ² no es simétrico, así que el IC más corto NO es de colas iguales; usar ± simétrico es un error. El borde recuerda que la forma del pivote manda.
+
+## Errores típicos
+
+- **Conceptual:** interpretar "IC 95%" como "P(θ en el intervalo)=0.95"; θ es fijo, el intervalo es aleatorio — la cobertura es frecuentista.
+- **Técnico:** aplicar IC simétrico (±) a pivotes asimétricos (χ², F, Beta).
+- **De supuestos:** usar el delta method con n pequeño o cerca de g'(θ)=0, donde la linealización es pobre.
+
+## Transferencia isomorfa
+
+- **Delta method ↔ propagación de errores e ingeniería:** "SE(g(θ̂)) ≈ |g'|·SE(θ̂)" es la fórmula universal de propagación de incertidumbre en física y métricas derivadas (conecta con [[arena-q7]], donde la duración es g'(precio) y la convexidad el segundo orden).
+- **Transformación estabilizadora (logit, √, arctanh) ↔ feature engineering / normalización:** transformar para que la varianza sea constante y el rango no tenga fronteras es lo mismo que normalizar features antes de un modelo (conecta con [[arena-dmls1]]).
+- **IC por inversión de test ↔ dualidad IC-test:** el IC es el conjunto de θ₀ que el test no rechaza; el IC más preciso viene de invertir el test UMP (conecta con [[arena-cb3]] y [[arena-dg3]]).
+- **Bonferroni simultáneo ↔ corrección de tests múltiples:** repartir α entre k intervalos es el mismo control de error familiar que en experimentación con muchas métricas (conecta con [[arena-dg3]] y [[arena-obs1]]).
+
+Moraleja de la arista: *sin pivote exacto, linealiza con el delta method (el error se estira por la pendiente g'); y transformar a una escala sin fronteras hace que la normalidad —y el IC— se porten bien.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

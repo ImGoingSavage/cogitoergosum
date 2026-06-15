@@ -104,6 +104,39 @@ Ejemplo: α=.05, β*=.90 da z_{α/2}+z_{β*}≈1.96+1.28=3.24.
 
 ---
 
+## Mini-ejemplo trabajado: del cociente NP al test z
+
+H₀: μ=0 vs H₁: μ=1, datos N(μ,1), n observaciones. El lema de Neyman-Pearson dice: el test **más potente** rechaza cuando la razón de verosimilitudes supera un umbral:
+
+> L(1|x)/L(0|x) = exp(Σxᵢ − n/2) > k
+
+Tomar logaritmo: Σxᵢ > k', es decir **X̄ > c**. El test óptimo no es una regla arbitraria: *cae* sobre el promedio, y c se fija para que P₀(X̄>c)=α. Así, el famoso test z unilateral es simplemente el cociente de verosimilitudes disfrazado.
+
+**Predicción antes de seguir:** si la alternativa fuera bilateral (H₁: μ≠0), ¿sigue existiendo un único test más potente? Respuesta: **no** — para μ>0 conviene rechazar a la derecha y para μ<0 a la izquierda, y ningún test maximiza la potencia en *ambos* lados a la vez. Por eso no existe UMP bilateral en general; se recurre al LRT. La monotonía del cociente (MLR) es justo lo que salva el caso unilateral.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** familia con razón de verosimilitud monótona (MLR) en T → test UMP unilateral "rechaza si T>c".
+- **Contraejemplo (Cauchy sin MLR):** la Cauchy no tiene MLR, así que ni siquiera el caso unilateral admite UMP simple; el cociente no es monótono.
+- **Caso borde (paradoja de Lindley):** con n enorme, un p-valor de 0.04 puede convenir con P(H₀|datos)>0.5. El borde revela que p pequeño no es "H₀ improbable"; frecuentista y bayesiano divergen.
+
+## Errores típicos
+
+- **Conceptual:** leer el p-valor como P(H₀|datos); es P(estadístico tan extremo | H₀), el mismo condicional invertido que confunde sensibilidad con VPP.
+- **Técnico:** usar χ²(1) para −2lnλ cuando hay r restricciones (debe ser χ²(r)) o cerca de un borde del espacio paramétrico (la asintótica de Wilks falla).
+- **De supuestos:** buscar un UMP bilateral donde no existe en vez de usar el LRT.
+
+## Transferencia isomorfa
+
+- **Cociente de verosimilitudes NP ↔ likelihood ratio de un test diagnóstico:** "rechaza si L(H₁)/L(H₀)>k" es exactamente actualizar odds con LR⁺; el umbral k fija el trade-off sensibilidad/especificidad (conecta con [[arena-q2]]).
+- **Función de potencia / UMP ↔ ROC y umbral óptimo:** elegir c que maximiza la potencia a α fijo es deslizarse por la curva ROC hasta el punto de operación; Neyman-Pearson *es* la teoría de detección óptima (conecta con [[arena-htd4]]).
+- **LRT −2lnλ ~ χ²(r) ↔ comparación de modelos anidados:** el test de razón de verosimilitudes sustenta selección por verosimilitud, F-tests y deviance de GLM (conecta con [[arena-dg2]]).
+- **p-valor uniforme bajo H₀ ↔ calibración:** que p~U(0,1) cuando H₀ es cierta es la base de chequear si un test (o un modelo) está bien calibrado (conecta con [[arena-dg3]]).
+
+Moraleja de la arista: *el test óptimo siempre es un cociente de verosimilitudes contra un umbral; deslizar ese umbral es recorrer la ROC, y un p pequeño mide sorpresa bajo H₀, no la verdad de H₀.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

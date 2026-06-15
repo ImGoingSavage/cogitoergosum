@@ -95,6 +95,39 @@ Consecuencia: la función de verosimilitud es uno-a-uno con el estadístico mini
 
 ---
 
+## Mini-ejemplo trabajado: por qué ΣXᵢ basta (factorización)
+
+n monedas Bernoulli(p), datos x=(1,0,1,1,0). La verosimilitud es:
+
+> L(p|x) = ∏ p^{xᵢ}(1−p)^{1−xᵢ} = p^{Σxᵢ}(1−p)^{n−Σxᵢ}
+
+Toda la dependencia de x entra **solo a través de Σxᵢ = 3**: dos muestras distintas con el mismo total (p. ej. (1,1,1,0,0)) dan exactamente la misma verosimilitud. Por el criterio de factorización f(x|p)=g(T,p)·h(x) con g=p^T(1−p)^{n−T} y h(x)=1, T=ΣXᵢ es **suficiente**. El orden y las posiciones de los 1 son "ruido" irrelevante para p.
+
+**Predicción antes de seguir:** ¿el suficiente es siempre una suma/promedio? Respuesta: **no**. Para Uniforme[0,θ] el suficiente es el **máximo** X₍ₙ₎, no la suma; para la Cauchy ningún resumen comprime y hay que retener *todos* los estadísticos de orden. La forma del suficiente la dicta la familia, y fuera de la exponencial puede no haber compresión. (Caja negra: que la familia exponencial sea la única con suficiente de dimensión fija —Pitman-Koopman-Darmois— asúmelo por ahora; lo que importa es la intuición "comprime sin perder θ".)
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** familia exponencial → T=(Σt₁(Xᵢ),…) suficiente y, si es de rango completo, **completo** → habilita Lehmann-Scheffé.
+- **Contraejemplo (suficiente pero no completo):** N(θ, aθ²) con a fijo: (ΣXᵢ, ΣXᵢ²) es suficiente pero NO completo porque el espacio paramétrico es una curva, no un abierto. Suficiente no garantiza UMVUE único.
+- **Caso borde (ancilario):** S²/σ² no informa de μ pero su distribución es libre de μ → es **ancilario**; por Basu, X̄ ⊥ S² en la normal. El borde muestra que un estadístico puede ignorar por completo el parámetro.
+
+## Errores típicos
+
+- **Conceptual:** confundir suficiente (captura θ) con completo (unicidad); se necesita completo *además* de suficiente para Lehmann-Scheffé.
+- **Técnico:** olvidar el factor h(x) al factorizar, o intentar derivar el suficiente cuando el soporte depende de θ (Uniforme).
+- **De supuestos:** aplicar Basu sin verificar que T sea completo *y* suficiente y V ancilario.
+
+## Transferencia isomorfa
+
+- **Estadístico suficiente ↔ estado mínimo / compresión de features:** T(X) resume los datos sin perder información sobre θ, igual que un estado markoviano resume la historia o un embedding resume una entrada (conecta con [[arena-b4]] y [[arena-dg1]]).
+- **Ancilario ↔ pivote:** un estadístico cuya distribución no depende de θ es la materia prima de un pivote para construir intervalos de confianza (conecta con [[arena-cb4]]).
+- **Familia exponencial ↔ GLM y conjugación:** la forma h(x)exp(η·T−A) es la misma que da suficientes compactos, priors conjugados y los modelos lineales generalizados (conecta con [[arena-b4]]).
+- **Principio de verosimilitud ↔ "solo la verosimilitud importa":** dos datasets con la misma L dan la misma inferencia — el fundamento de comparar modelos por razón de verosimilitudes (conecta con [[arena-cb3]]).
+
+Moraleja de la arista: *el suficiente comprime los datos a lo que importa de θ; la completitud lo vuelve único; y un ancilario —ciego a θ— es la semilla de un pivote.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
