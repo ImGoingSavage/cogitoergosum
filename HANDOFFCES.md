@@ -2955,3 +2955,46 @@ de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos
 **Siguiente** — seguir con la serie AoPS: `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`,
 `Calculus.pdf`. Mismo esquema §4.1 (ids 541+, sin huecos). Verificar SIEMPRE con Python; si el
 PDF supera 100 MB, extraer el TOC con `fitz` (ver nota técnica arriba).
+
+## Bitácora 2026-06-15 (Arena tanda 38) — SECTOR C: AoPS *Intermediate Counting & Probability* (Patrick), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Intermediate Counting & Probability` (David
+Patrick, Art of Problem Solving) — libros[39] del ledger, ruta `entrenamiento`, cuota 40
+(superada con **44**). Destino: **`data/problems.json`** (esquema §4.1), ids **541-584** sin
+huecos.
+
+**NOTA TÉCNICA:** el PDF (81 MB) cabe bajo el límite de 100 MB de Read, **pero NO tiene capa de
+texto** (`fitz.get_text()` devolvió vacío: es imagen pura). El TOC y las secciones de ejercicio
+(caps. 3 PIE, 7 Distributions) se leyeron como **imágenes con la tool Read**. Cada número se
+verificó de forma independiente con Python. *Regla para el siguiente agente: un PDF puede estar
+bajo 100 MB y aun así ser imagen pura; probar `fitz.get_text()` primero y, si está vacío, leer
+páginas como imágenes con Read.*
+
+Fuentes internas (capítulos por TOC):
+- **cap. 3 PIE + cap. 12 Combinatorial Identities** → inclusión-exclusión y Vandermonde
+  (**invariantes** y **patrones**).
+- **cap. 5 Pigeonhole** → garantías de peor caso (**optimizacion**).
+- **cap. 6 Constructive Expectation + cap. 11 Conditional Probability** → linealidad de la
+  esperanza, probabilidad total (**invariantes**); Bayes y Monty Hall (**inversion**).
+- **cap. 7 Distributions, cap. 9 Fibonacci, cap. 10 Recursion (Catalan), cap. 14 Generating
+  Functions** → estrellas y barras, Fibonacci/Catalan (**patrones**); recurrencias y particiones
+  (**inversion**).
+
+**Distribución 11/11/11/11** (patrones/invariantes/optimizacion/inversion) — para llevar el
+balance **GLOBAL a 146/146/146/146 exactos** (antes 135/135/135/135).
+
+**NOTA de honestidad (verificación):** cada número se resolvió y verificó con Python (44 checks,
+todos OK). Casos: estrellas-barras a+b+c+d=17 positivos = 560; PIE divisibles por 2,3,5 en 1-100
+= 74; desarreglos D₄ = 9; Bayes (prevalencia 1%, sens/espec 90%) = 1/12; Monty Hall al cambiar =
+2/3; particiones de 5 = 7; Catalan C₄ = 14.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+584 ids únicos (1-584) sin huecos; esquema §4.1 correcto para 541-584; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: **inversion 146, optimizacion 146, invariantes
+146, patrones 146** (584 total, balance perfecto). Builder idempotente en
+`scripts/_build_aops_medcp.py`.
+
+**Siguiente** — seguir con la serie AoPS: `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf`. Mismo esquema
+§4.1 (ids 585+, sin huecos). Verificar SIEMPRE con Python; revisar tamaño y capa de texto del PDF
+(ver notas técnicas de tandas 37-38).

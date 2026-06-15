@@ -651,11 +651,17 @@
       "archivo": "Arena/Problem solving y olimpiadas/MedCountProb.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 38 (2026-06-15, Opus 4.8). 44 problemas (ids 541-584) al banco data/problems.json. Distribución 11/11/11/11 (patrones/invariantes/optimizacion/inversion), balance GLOBAL a 146/146/146/146 exactos. NOTA TÉCNICA: el PDF (81 MB) NO tiene capa de texto (imagen pura, get_text vacío); el TOC y secciones de ejercicio se leyeron como IMÁGENES con la tool Read (caps. 3 PIE y 7 Distributions confirmados). Cada número se verificó de forma independiente con Python (math.comb/factorial, fractions; 44 checks, todos OK). Fuentes (capítulos por TOC): cap. 3 A Piece of PIE, cap. 5 Pigeonhole, cap. 6 Constructive Expectation, cap. 7 Distributions (estrellas y barras), cap. 9 Fibonacci, cap. 10 Recursion (Catalan), cap. 11 Conditional Probability (Bayes, Monty Hall), cap. 12 Combinatorial Identities, cap. 14 Generating Functions. Mapeo: Fibonacci/Catalan/estrellas-barras/identidades (Vandermonde, sum C^2) -> patrones; PIE/prob. condicional-total/linealidad de la esperanza -> invariantes; principio del palomar (garantías de peor caso) -> optimizacion; recurrencias (Hanoi, Catalan, lineales)/Bayes/Monty Hall/particiones -> inversion. Casos: estrellas-barras a+b+c+d=17 pos = 560; PIE div 2,3,5 en 1-100 = 74; desarreglos D4 = 9; Bayes test (prev 1%, sens/spec 90%) = 1/12; Monty Hall switch = 2/3; particiones de 5 = 7; Catalan C4 = 14. Builder idempotente scripts/_build_aops_medcp.py. §9 verde: JSON válido, ids 1..584 sin huecos ni duplicados, esquema §4.1 OK en los 44 nuevos, verificar-shell.py OK (203 archivos).",
+      "ids_problemas": [
+        541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 551,
+        552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562,
+        563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573,
+        574, 575, 576, 577, 578, 579, 580, 581, 582, 583, 584
+      ]
     },
     {
       "libro": "AoPS Vol. 1",
