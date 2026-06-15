@@ -1,137 +1,125 @@
 # Probabilidad y Bayes · Entrevistas cuantitativas
 
+## De qué trata (y qué sabrás hacer)
+
+Casi todos los errores en estos problemas no son de cálculo, sino de **espacio muestral mal condicionado**: no actualizar correctamente cuando llega información. El hilo de esta lección es uno solo: *cuando alguien con información revela algo, el espacio de posibilidades se reescribe*. Monty Hall, la moneda trucada y la ruleta rusa son la misma idea vista desde ángulos distintos.
+
+Al terminar sabrás: aplicar Bayes recordando la tasa base, reconocer cuándo una revelación es informativa (y cuándo no), montar cadenas de estados para esperanzas con rachas, y resolver problemas de optimización condicional. Cada uno se construye contando estados.
+
+---
+
 ## Bayes con tasa base
 
-La fórmula de Bayes es simple; la trampa es la **tasa base (prevalencia)**.
+La fórmula es fácil; la trampa es **la prevalencia**:
 
-P(E|+) = P(+|E)·P(E) / [P(+|E)·P(E) + P(+|¬E)·P(¬E)]
+$$P(E\mid +)=\frac{P(+\mid E)\,P(E)}{P(+\mid E)\,P(E)+P(+\mid\neg E)\,P(\neg E)}.$$
 
-**Ejemplo canónico:** prevalencia 0.5%, sensibilidad 100%, especificidad 93% (FP=7%).
+Ejemplo: prevalencia $0.5\%$, sensibilidad $100\%$, especificidad $93\%$ (falsos positivos $7\%$).
+- Numerador: $1\times0.005=0.005$.
+- Denominador: $0.005+0.07\times0.995\approx0.0747$.
+- $P(E\mid +)\approx 6.7\%$.
 
-- Numerador = 1 × 0.005 = 0.005
-- Denominador = 0.005 + 0.07 × 0.995 ≈ 0.0747
-- P(E|+) ≈ **6.7%**
-
-La lección: con prevalencia baja, la mayoría de positivos son falsos positivos. En 10 000 personas: 50 verdaderos positivos vs ~697 falsos positivos → 14 falsos por cada verdadero.
+Con prevalencia baja, la mayoría de positivos son falsos. En 10 000 personas: 50 verdaderos positivos frente a $\approx697$ falsos $\Rightarrow$ 14 falsos por cada verdadero (conecta con [[arena-q2]]).
 
 ---
 
 ## El problema de Monty Hall
 
-Eliges puerta A (P=1/3 de premio). El anfitrión —con información— abre una puerta vacía diferente. La probabilidad del premio en A sigue siendo 1/3; la otra puerta no elegida hereda las 2/3.
+Eliges la puerta A (premio con $P=\tfrac13$). El anfitrión —que **sabe** dónde está el premio— abre una puerta vacía distinta. ¿Conviene cambiar? Sí: cambiar gana con $P=\tfrac23$.
 
-**Cambiar siempre gana con P=2/3.**
+Recupéralo contando los tres estados igual de probables (eliges A):
+- Premio en **A** ($\tfrac13$): el anfitrión abre B o C; **quedarte gana**, cambiar pierde.
+- Premio en **B** ($\tfrac13$): el anfitrión *debe* abrir C; **cambiar a B gana**.
+- Premio en **C** ($\tfrac13$): el anfitrión *debe* abrir B; **cambiar a C gana**.
 
-Error clásico: "quedan 2 puertas, P=1/2". Incorrecto porque el anfitrión actúa con información, no al azar.
-
-Verificación de fuerza bruta (3 escenarios igualmente probables):
-- Premio en A: te quedas → ganas; cambias → pierdes.
-- Premio en B: te quedas → pierdes; cambias → ganas.
-- Premio en C: te quedas → pierdes; cambias → ganas.
-
-Cambiar gana 2/3.
-
----
-
-## Geometría probabilística
-
-**Triángulo de palo roto:** P(3 trozos forman triángulo) = **1/4**.
-
-Condición: cada trozo < 1/2. Con cortes en X e Y (0<X<Y<1), el espacio muestral es el triángulo superior {0<X<Y<1}. La región favorable tiene área 1/4 del espacio total.
-
-**Cita de reconocimiento:** problema de longitudes aleatorias → dibujar el espacio muestral geométrico.
+Cambiar gana 2 de 3. El error clásico ("quedan 2 puertas, $\tfrac12$") ignora que el anfitrión **actúa con información**: su elección de qué abrir concentra la masa $\tfrac23$ en la puerta que no abrió.
 
 ---
 
 ## Moneda de dos caras — Bayes secuencial
 
-Frasco: 999 justas + 1 de dos caras. Observas 10 caras seguidas.
+Un frasco tiene 999 monedas justas y 1 de dos caras. Sacas una y salen 10 caras seguidas. ¿$P(\text{es la de dos caras})$?
 
-P(2C|10H) = 1/1000 / [1/1000 + (1/1024)×(999/1000)] = 1024/2023 ≈ **50.6%**
+$$P(2C\mid 10H)=\frac{1/1000}{1/1000+(1/1024)(999/1000)}=\frac{1024}{2023}\approx 50.6\%.$$
 
-Intuición: la moneda de dos caras es 1024 veces más probable de producir el evento observado. Aunque es muy rara (1/1000), esa ventaja de likelihood casi cancela su rareza.
+Intuición: la moneda de dos caras es $1024$ veces más capaz de producir lo observado (verosimilitud). Aunque es rarísima a priori ($1/1000$), esa enorme ventaja de verosimilitud casi cancela su rareza. La respuesta vive **entre** prior y verosimilitud.
 
 ---
 
 ## Valor esperado con cadena de estados
 
-Para calcular E[lanzamientos hasta k caras consecutivas con moneda justa (p=1/2):
+¿Cuántos lanzamientos de una moneda justa esperas hasta ver $k$ caras seguidas? Define estados según cuántas caras llevas: $E_j$ = lanzamientos esperados desde "llevo $j$ caras consecutivas". Cada lanzamiento avanza (cara) o reinicia (cruz):
 
-Define estados: E₀ = "empezando", E₁ = "última fue cara", …, Eₖ₋₁ = "k−1 consecutivas".
+$$E_0=1+\tfrac12 E_1+\tfrac12 E_0,\quad E_1=1+\tfrac12 E_2+\tfrac12 E_0,\ \ldots,\ E_{k-1}=1+\tfrac12\cdot0+\tfrac12 E_0.$$
 
-**Sistema de ecuaciones (p=1/2):**
-- E₀ = 1 + (1/2)E₁ + (1/2)E₀
-- E₁ = 1 + (1/2)E₂ + (1/2)E₀
-- …
-- Eₖ₋₁ = 1 + (1/2)·0 + (1/2)E₀
+Resolviendo, $E_0=2+4+\cdots+2^k=2(2^k-1)$.
 
-**Solución general:** E₀ = 2 + 4 + 8 + … + 2ᵏ = 2(2ᵏ − 1)
-
-| k | E[lanzamientos] |
+| $k$ | $E[\text{lanzamientos}]$ |
 |---|----------------|
 | 2 | 6 |
 | 3 | 14 |
 | 4 | 30 |
 
+Plantear estados y resolver hacia atrás es **backward induction**, idéntico a la recurrencia de un DP (conecta con [[arena-cc3]]).
+
 ---
 
-## Ruleta rusa — probabilidad condicional en estados
+## Ruleta rusa — condicionar en lo ya ocurrido
 
-2 balas contiguas en revólver de 6 recámaras. Sobreviviste al primer disparo (el tambor ya giró).
+Revólver de 6 recámaras con **2 balas contiguas**. Sobreviviste al primer disparo (el tambor ya estaba en posición, sin girar). ¿Girar antes del segundo?
 
-Dado que sobreviviste, las posiciones posibles de las balas son {2,3},{3,4},{4,5},{5,6} (4 casos igualmente probables). Solo {2,3} pone bala en la siguiente recámara.
+Dado que sobreviviste, las posiciones posibles de las balas son $\{2,3\},\{3,4\},\{4,5\},\{5,6\}$ (4 casos igual de probables). Solo $\{2,3\}$ pone una bala en la siguiente recámara:
+- **No girar:** $P(\text{sobrevivir})=\tfrac34=75\%$.
+- **Girar:** $P(\text{sobrevivir})=\tfrac46\approx66.7\%$.
 
-- **No girar:** P(sobrevivir) = 3/4 = 75%
-- **Girar:** P(sobrevivir) = 4/6 ≈ 66.7%
-
-**No gires.**
+**No gires.** La contigüidad de las balas es el dato que rompe la simetría y cambia la respuesta.
 
 ---
 
 ## Optimización de probabilidad — frascos y bolas
 
-50 blancas + 50 negras en 2 frascos, ojo vendado.
+50 bolas blancas y 50 negras en 2 frascos; eliges un frasco al azar con los ojos vendados y sacas una bola, ganando si es blanca. ¿Cómo repartes para maximizar $P(\text{blanca})$?
 
-**Óptimo:** 1 blanca en frasco A, 49 blancas + 50 negras en frasco B.
+Óptimo: **1 blanca sola en el frasco A**, y las 49 blancas + 50 negras en el B.
 
-P = 1/2 × 1 + 1/2 × (49/99) = 1/2 + 49/198 ≈ **74.75%**
+$$P=\tfrac12\cdot1+\tfrac12\cdot\frac{49}{99}=\tfrac12+\frac{49}{198}\approx 74.75\%.$$
 
-Lógica: el frasco A garantiza P=1 cuando se elige. El frasco B maximiza la proporción condicionada. Ninguna otra distribución supera esta.
+Lógica: el frasco A garantiza victoria si lo eliges; el B conserva casi la mitad de las blancas para no desperdiciar masa. Ninguna otra repartición supera esto.
 
 ---
 
 ## Mini-ejemplo trabajado: Monty Hall por conteo de estados
 
-No memorices "2/3"; recupéralo contando. Tres puertas, premio uniforme, eliges A:
+No memorices "$\tfrac23$"; recupéralo contando. Tres puertas, premio uniforme, eliges A:
 
-- Premio en **A** (prob 1/3): el anfitrión abre B o C; **quedarte gana**, cambiar pierde.
-- Premio en **B** (prob 1/3): el anfitrión *debe* abrir C (no puede abrir tu A ni el premio); **cambiar a B gana**.
-- Premio en **C** (prob 1/3): el anfitrión *debe* abrir B; **cambiar a C gana**.
+- Premio en **A** (prob $\tfrac13$): el anfitrión abre B o C; **quedarte gana**, cambiar pierde.
+- Premio en **B** (prob $\tfrac13$): el anfitrión *debe* abrir C (no puede abrir tu A ni el premio); **cambiar a B gana**.
+- Premio en **C** (prob $\tfrac13$): el anfitrión *debe* abrir B; **cambiar a C gana**.
 
-Cambiar gana en 2 de los 3 estados → P = 2/3. La clave es que el anfitrión **actúa con información**: su elección de qué abrir filtra los estados, concentrando la masa 2/3 en la puerta que no abrió.
+Cambiar gana en 2 de los 3 estados → $P=\tfrac23$. La clave es que el anfitrión **actúa con información**: su elección de qué abrir filtra los estados, concentrando la masa $\tfrac23$ en la puerta que no abrió.
 
-**Predicción antes de seguir:** ¿qué pasa si el anfitrión abre una puerta *al azar* (y resulta vacía por suerte)? Respuesta: entonces no filtra información condicionada y la probabilidad se vuelve **1/2** — quedarte o cambiar da igual. La paradoja vive *enteramente* en que el anfitrión sabe.
+**Predicción antes de seguir:** ¿qué pasa si el anfitrión abre una puerta *al azar* (y resulta vacía por suerte)? Respuesta: entonces no filtra información condicionada y la probabilidad se vuelve $\tfrac12$ — quedarte o cambiar da igual. La paradoja vive *enteramente* en que el anfitrión sabe.
 
 ## Prototipo, contraejemplo y caso borde
 
 - **Prototipo:** un agente con información revela algo no aleatorio → recondiciona el espacio (Monty Hall, moneda de dos caras).
-- **Contraejemplo (Monty aleatorio):** si quien revela actúa sin información, no hay actualización informativa y "quedan 2, luego 1/2" sí vale. El error es aplicar la intuición de Monty cuando la revelación fue azarosa.
-- **Caso borde (ruleta rusa):** balas *contiguas* rompen la simetría; condicionar en "sobreviví" deja {2,3},{3,4},{4,5},{5,6} y solo {2,3} es fatal → no girar (3/4 > 2/3). El borde muestra que la contigüidad es el dato que cambia la respuesta.
+- **Contraejemplo (Monty aleatorio):** si quien revela actúa sin información, no hay actualización informativa y "quedan 2, luego $\tfrac12$" sí vale. El error es aplicar la intuición de Monty cuando la revelación fue azarosa.
+- **Caso borde (ruleta rusa):** balas *contiguas* rompen la simetría; condicionar en "sobreviví" deja $\{2,3\},\{3,4\},\{4,5\},\{5,6\}$ y solo $\{2,3\}$ es fatal → no girar ($\tfrac34>\tfrac23$). El borde muestra que la contigüidad es el dato que cambia la respuesta.
 
 ## Errores típicos
 
 - **Conceptual:** no condicionar sobre el evento ya ocurrido (sobreviví, el anfitrión abrió) y contar estados a priori.
-- **Técnico:** en Bayes secuencial, comparar solo las *prior* ("la moneda de dos caras es rarísima, 1/1000") e ignorar el cociente de verosimilitudes (1024×) que casi cancela la rareza.
+- **Técnico:** en Bayes secuencial, comparar solo las *prior* ("la moneda de dos caras es rarísima, $1/1000$") e ignorar el cociente de verosimilitudes ($1024\times$) que casi cancela la rareza.
 - **De interpretación:** confundir "el anfitrión abrió una vacía" (información) con "salió una vacía por azar" (sin información).
 
 ## Transferencia isomorfa
 
 El hilo común es **actualizar creencias cuando una observación reduce el espacio de estados**:
 
-- **Moneda de dos caras ↔ likelihood ratio encadenado:** P(2C|10H) ∝ verosimilitud × prior es el mismo cómputo que multiplicar LR⁺ de tests médicos independientes (conecta con [[arena-q2]], odds posteriores = LR × odds previos).
+- **Moneda de dos caras ↔ likelihood ratio encadenado:** $P(2C\mid 10H)\propto$ verosimilitud $\times$ prior es el mismo cómputo que multiplicar $LR^+$ de tests médicos independientes (conecta con [[arena-q2]], odds posteriores $=LR\times$ odds previos).
 - **Anfitrión que revela ↔ selección/censura informativa:** condicionar en lo que un proceso con información decide mostrar es la estructura del sesgo de selección y del *collider* causal (conecta con [[arena-h17]], condicionar en un collider abre caminos espurios).
-- **Valor esperado por estados ↔ programación dinámica:** plantear E₀, E₁, … y resolver el sistema es backward induction, idéntico a la recurrencia de un DP (conecta con [[arena-cc3]]).
-- **Triángulo del palo roto ↔ probabilidad geométrica:** "longitudes aleatorias" → dibuja el espacio muestral como región y compara áreas; el mismo gesto que integrar densidades en un cuadrado unitario.
+- **Valor esperado por estados ↔ programación dinámica:** plantear $E_0,E_1,\ldots$ y resolver el sistema es backward induction, idéntico a la recurrencia de un DP (conecta con [[arena-cc3]]).
+- **Triángulo del palo roto ↔ probabilidad geométrica:** "longitudes aleatorias" → dibuja el espacio muestral como región y compara áreas (conecta con [[arena-fc2]]).
 
 Moraleja de la arista: *no preguntes "cuántos casos hay" sino "qué me dijo la observación"; quien revela con información reescribe el espacio de estados.*
 
@@ -141,17 +129,17 @@ Moraleja de la arista: *no preguntes "cuántos casos hay" sino "qué me dijo la 
 
 | Señal | Jugada |
 |-------|--------|
-| "Prueba positiva, ¿qué probabilidad?" | Bayes con tasa base: prevalencia × sensibilidad / P(+) |
-| "El anfitrión abre una puerta" | Monty Hall: cambia → P=2/3 |
+| "Prueba positiva, ¿qué probabilidad?" | Bayes con tasa base: prevalencia $\times$ sensibilidad $/\,P(+)$ |
+| "El anfitrión abre una puerta" | Monty Hall: cambia → $P=\tfrac23$ |
 | "¿Puedes formar un triángulo?" | Geometría del espacio de muestras |
-| "¿Cuántos lanzamientos hasta k seguidos?" | Sistema de ecuaciones de estado → E=Σ2ⁱ |
+| "¿Cuántos lanzamientos hasta $k$ seguidos?" | Sistema de ecuaciones de estado → $E=\sum 2^i$ |
 | "¿Giras el tambor?" | Condiciona en haber sobrevivido y cuenta estados válidos |
-| "Distribuir entre frascos para maximizar P" | Un frasco con certeza, el otro con máxima proporción |
+| "Distribuir entre frascos para maximizar $P$" | Un frasco con certeza, el otro con máxima proporción |
 
 ---
 
-> **Síntesis:** Probabilidad en entrevistas quant mide si ves la condición correcta. Monty Hall, Bayes y ruleta rusa fallan si calculas sin condicionar bien. El árbol de probabilidad siempre es tu aliado.
+> **Síntesis:** La probabilidad en entrevistas quant mide si ves la condición correcta. Monty Hall, Bayes y ruleta rusa fallan si calculas sin condicionar bien. El árbol de probabilidad siempre es tu aliado.
 
 ---
 
-*Retrieval: sin mirar, calcula: (1) P(E|+) con prevalencia 1%, sensibilidad 95%, FP=10%; (2) E[lanzamientos para 2 caras seguidas]; (3) optimización del frasco.*
+*Retrieval: sin mirar, calcula: (1) $P(E\mid +)$ con prevalencia $1\%$, sensibilidad $95\%$, FP$=10\%$; (2) $E[\text{lanzamientos para 2 caras seguidas}]$; (3) la optimización del frasco.*

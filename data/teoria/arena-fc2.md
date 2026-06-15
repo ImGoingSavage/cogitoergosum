@@ -1,177 +1,124 @@
 # Probabilidad geométrica
 
+## De qué trata (y qué sabrás hacer)
+
+La probabilidad geométrica traduce el azar en **longitudes, áreas y volúmenes**: en vez de contar casos, mides regiones. La pregunta "¿probabilidad de que…?" se vuelve "¿qué fracción de esta figura cumple la condición?". Pero hay una trampa filosófica: *"al azar" no significa nada hasta que fijas respecto a qué eres uniforme* (la paradoja de Bertrand).
+
+Al terminar sabrás montar el espacio muestral como una región, medir la probabilidad como un cociente de áreas, reconocer cuándo un problema está mal planteado, y conectar todo con Monte Carlo. Cada resultado se construye desde su dibujo.
+
+---
+
 ## La aguja de Buffon
 
-Aguja de longitud L, líneas paralelas separadas d (L ≤ d):
+Dejas caer una aguja de longitud $L$ sobre un suelo con líneas paralelas separadas $d$ (con $L\le d$). ¿Probabilidad de que la aguja cruce una línea?
 
-**P(aguja cruza una línea) = 2L / (πd)**
+$$P(\text{cruce})=\frac{2L}{\pi d}.$$
 
-Para L=d: P = 2/π ≈ 63.7%.
-
-Dem.: Sea x = distancia del centro al línea más cercana (Uniform[0, d/2]) y θ = ángulo (Uniform[0, π/2]). El cruce ocurre cuando x < (L/2)cosθ.
-
-P = (2/d)·∫₀^{π/2} (L/2)cosθ · (2/π) dθ = **2L/(πd)**
-
-Aplicación: estimar π experimentalmente (π ≈ 2L·n / (d·c), donde c = número de cruces en n lanzamientos).
+Cómo sale: describe la aguja con dos uniformes — la distancia $x$ del centro a la línea más cercana ($\text{Unif}[0,d/2]$) y el ángulo $\theta$ ($\text{Unif}[0,\pi/2]$). La aguja cruza si $x<\tfrac{L}{2}\cos\theta$. Integrando esa condición sobre el rectángulo de $(x,\theta)$ aparece el $\pi$. Para $L=d$: $P=\tfrac2\pi\approx 63.7\%$. Curiosamente, esto permite **estimar $\pi$** lanzando agujas: $\pi\approx \tfrac{2Ln}{dc}$ con $c$ cruces en $n$ lanzamientos.
 
 ---
 
 ## Par uniforme en un cuadrado
 
-X,Y i.i.d. Uniform[0,1]. P(|X−Y| < r) para r ∈ (0,1):
+$X,Y$ i.i.d. $\text{Unif}[0,1]$. La probabilidad de que estén a distancia menor que $r$:
 
-**P(|X−Y| < r) = 2r − r²**
+$$P(|X-Y|<r)=2r-r^2 \quad (0<r<1).$$
 
-Dem.: área del cuadrado fuera de la banda de ancho r alrededor de la diagonal:
-P = 1 − 2·(1−r)²/2 = 1 − (1−r)² = **2r − r²**
-
-Para r=0.3: P = 0.51.
+Dibújalo: la condición $|X-Y|<r$ es una **banda** alrededor de la diagonal del cuadrado. Su complemento son dos triángulos de cateto $1-r$, con área total $(1-r)^2$. Así $P=1-(1-r)^2=2r-r^2$. Para $r=0.3$: $P=0.51$.
 
 ---
 
 ## La paradoja de Bertrand
 
-¿Cuál es P(una cuerda aleatoria de un círculo de radio R es más larga que el lado del triángulo equilátero inscrito, √3·R)?
+Trazas una cuerda "al azar" en un círculo de radio $R$. ¿Probabilidad de que sea más larga que el lado del triángulo equilátero inscrito ($\sqrt3\,R$)? La respuesta **depende del método** de aleatorización:
 
-Depende de qué se entiende por "aleatoria":
-
-| Método de elección | P(cuerda > √3·R) |
+| Cómo eliges la cuerda | $P(\text{cuerda}>\sqrt3 R)$ |
 |--------------------|-----------------|
-| Dos puntos aleatorios en la circunferencia | **1/3** |
-| Punto medio aleatorio en el disco | **1/4** |
-| Distancia al centro aleatoria (0 a R) | **1/2** |
+| Dos puntos al azar en la circunferencia | $1/3$ |
+| Punto medio al azar en el disco | $1/4$ |
+| Distancia al centro al azar en $[0,R]$ | $1/2$ |
 
-Los tres son correctos dado su modelo; la paradoja ilustra que "uniforme" no está definida sin especificar la geometría del espacio de muestreo.
-
----
-
-## Rango de 3 uniformes
-
-X₁,X₂,X₃ i.i.d. Uniform[0,1]. Rango = X₍₃₎ − X₍₁₎.
-
-**E[rango] = E[X₍₃₎] − E[X₍₁₎] = 3/4 − 1/4 = 1/2**
-
-En general, para n variables: E[X₍ₙ₎ − X₍₁₎] = (n−1)/(n+1).
-
-P(rango < r) = r²·(3 − 2r) para r ∈ [0,1].
+Los tres son correctos **dado su modelo**. La paradoja enseña la lección más importante de la probabilidad geométrica: "uniforme" no está definido sin especificar **qué** objeto se distribuye uniformemente (ángulo, área o radio). Es un error de planteamiento, no de cálculo.
 
 ---
 
-## Monte Carlo para π
+## Rango de varias uniformes
 
-Puntos uniformes en [−1,1]² (cuadrado de lado 2, área 4). Círculo inscrito de radio 1 (área π).
+Con $X_1,X_2,X_3\sim\text{Unif}[0,1]$, el rango $X_{(3)}-X_{(1)}$ tiene esperanza
 
-**π ≈ 4 · (número de puntos dentro del círculo) / (número total de puntos)**
+$$E[\text{rango}]=E[X_{(3)}]-E[X_{(1)}]=\tfrac34-\tfrac14=\tfrac12,$$
 
-P(punto cae en círculo) = π/4. Error estándar: σ/√n con σ²=π/4·(1−π/4).
+por linealidad (no necesitas la conjunta). En general $E[X_{(n)}-X_{(1)}]=\tfrac{n-1}{n+1}$, y $P(\text{rango}<r)=r^2(3-2r)$ para tres puntos.
 
-Con n=10,000 puntos: error típico ≈ 0.016; requiere n≈10^6 para 3 decimales correctos.
+---
 
-Monte Carlo es lento (error ∝ 1/√n) pero escala bien a dimensiones altas.
+## Monte Carlo para $\pi$
+
+Lanzas puntos uniformes en $[-1,1]^2$ (cuadrado de área 4) y cuentas cuántos caen en el círculo inscrito de radio 1 (área $\pi$). Como $P(\text{dentro})=\pi/4$:
+
+$$\pi\approx 4\cdot\frac{\#\{\text{puntos dentro del círculo}\}}{\#\{\text{total}\}}.$$
+
+El error estándar cae como $1/\sqrt n$ (es una proporción binomial), así que con $n=10\,000$ el error típico es $\approx0.016$ y necesitas $n\approx10^6$ para 3 decimales. Monte Carlo es **lento** pero su error no empeora con la dimensión, por eso domina en integrales de muchas variables.
 
 ---
 
 ## El palo roto (broken stick)
 
-Se rompe un palo en 3 piezas, rotura uniforme. P(formar triángulo):
+Rompes un palo en 3 piezas con dos cortes uniformes. ¿Probabilidad de que formen triángulo?
 
-**P = 1/4**
+$$P=\frac14.$$
 
-Dem.: sean los puntos de corte U₁ < U₂ en [0,1]. Las 3 piezas forman triángulo ↔ cada pieza < 1/2. El área de la región {U₁<1/2, U₂>1/2, U₂−U₁<1/2} dentro del triángulo del espacio muestral (0<U₁<U₂<1) es 1/4 del total.
-
-Analogía: los 3 segmentos cumplen desigualdad triangular ↔ punto cae en triángulo central del triángulo de Sierpinski.
+Cómo: con cortes $U_1<U_2$, las piezas son $U_1$, $U_2-U_1$, $1-U_2$. Forman triángulo si **cada una es menor que $\tfrac12$** (ninguna domina a las otras dos juntas, que es la desigualdad triangular). Esa región ocupa un cuarto del espacio muestral. La condición "ninguna pieza $>\tfrac12$" es la misma desigualdad triangular disfrazada.
 
 ---
 
-## El encuentro del autobús
+## Distancia esperada al centro de un disco
 
-Dos personas llegan uniformemente en [0,60] min. Cada una espera 15 min.
+Punto uniforme en un disco de radio $R$. La trampa: el radio **no** es uniforme, porque hay más área lejos del centro. $P(d\le r)=\tfrac{\pi r^2}{\pi R^2}=\tfrac{r^2}{R^2}$, así que la densidad del radio es $f(r)=\tfrac{2r}{R^2}$. Entonces
 
-P(se encuentran) = P(|X−Y| ≤ 15):
-
-Usando la fórmula P(|X−Y| < r) para X,Y ∈ [0,T]: P = 1 − (1−r/T)².
-
-**P = 1 − (45/60)² = 1 − 9/16 = 7/16 ≈ 43.75%**
+$$E[d]=\int_0^R r\cdot\frac{2r}{R^2}\,dr=\frac{2R}{3}.$$
 
 ---
 
-## Distancia esperada al centro
+## Ley del arcoseno (la más contraintuitiva)
 
-Punto uniformemente distribuido en disco de radio R:
+Para un movimiento browniano $B_t$ en $[0,1]$, sea $\tau$ la fracción del tiempo que pasa por encima de cero. Uno esperaría que $\tau$ ronde $\tfrac12$ (mitad arriba, mitad abajo). Es al revés:
 
-**E[distancia al centro] = 2R/3**
+$$P(\tau\le x)=\frac{2}{\pi}\arcsin(\sqrt x), \qquad \tau\sim\text{Beta}(\tfrac12,\tfrac12),$$
 
-Dem.: P(d ≤ r) = πr²/(πR²) = r²/R². Densidad de d: f(r) = 2r/R² para r ∈ [0,R].
-
-E[d] = ∫₀^R r·(2r/R²)dr = [2r³/(3R²)]₀^R = **2R/3**.
-
----
-
-## Ley del arcoseno
-
-Para movimiento browniano estándar B_t en [0,1]:
-
-Sea τ = último tiempo en [0,1] que B_t = 0 (o, equivalentemente, fracción del tiempo que B_t > 0).
-
-**P(τ ≤ x) = (2/π)·arcsin(√x)**
-
-Consecuencia: τ tiene distribución Beta(1/2, 1/2) con moda en 0 y 1.
-
-Contraintuitivo: el proceso browniano pasa la mitad del tiempo con el mismo signo con mayor probabilidad que alternando frecuentemente. El tiempo más probable es que el BM esté casi siempre > 0 o casi siempre < 0, no 50/50.
-
----
-
-## Cobertura circular
-
-n arcos de longitud (2π/n) colocados uniformemente en una circunferencia de longitud 2π:
-
-**P(arcos cubren toda la circunferencia) = n/2^{n-1}**
-
-Para n=3: P = 3/4. Para n=4: P = 4/8 = 1/2. Para n=5: P = 5/16.
-
----
-
-## Distancia Manhattan esperada
-
-Dos puntos uniformes en [0,1]²:
-
-**E[|X₁−X₂| + |Y₁−Y₂|] = 2/3**
-
-Por linealidad: E[|X₁−X₂|] + E[|Y₁−Y₂|] = 1/3 + 1/3 = **2/3**.
-
-E[|U−V|] = 1/3 para U,V i.i.d. Uniform[0,1] (dem.: ∫∫|u−v|du dv = 1/3).
+con moda en 0 y en 1. Lo **más** probable es que el browniano pase casi todo el tiempo de un solo lado, no alternando. El azar acumulado es "pegajoso": rachas largas son lo normal, no la excepción.
 
 ---
 
 ## Mini-ejemplo trabajado: Bertrand y por qué "aleatorio" no basta
 
-¿Probabilidad de que una cuerda al azar de un círculo sea más larga que el lado del triángulo inscrito (√3·R)? La respuesta depende de **cómo** eliges la cuerda:
+¿Probabilidad de que una cuerda al azar de un círculo sea más larga que el lado del triángulo inscrito ($\sqrt3\,R$)? La respuesta depende de **cómo** eliges la cuerda:
 
-- Dos puntos al azar en la circunferencia → **1/3**.
-- Punto medio al azar en el disco → **1/4**.
-- Distancia al centro al azar en [0,R] → **1/2**.
+- Dos puntos al azar en la circunferencia → $\tfrac13$.
+- Punto medio al azar en el disco → $\tfrac14$.
+- Distancia al centro al azar en $[0,R]$ → $\tfrac12$.
 
 Los tres cálculos son correctos; lo que cambia es qué objeto se distribuye uniformemente (ángulo, área, radio). "Cuerda aleatoria" no define una probabilidad hasta que fijas el espacio de muestreo.
 
-**Predicción antes de seguir:** ¿es la paradoja de Bertrand un error de cálculo o de planteamiento? Respuesta: de **planteamiento** — la pregunta está mal especificada. Es el mismo defecto que la paradoja de los dos sobres (un prior impropio mal definido): sin un modelo probabilístico explícito, el cálculo condicional es inválido aunque el álgebra sea correcta. "Uniforme respecto a qué" es siempre la primera pregunta.
+**Predicción antes de seguir:** ¿es la paradoja de Bertrand un error de cálculo o de planteamiento? Respuesta: de **planteamiento** — la pregunta está mal especificada. Es el mismo defecto que un prior impropio mal definido: sin un modelo probabilístico explícito, el cálculo condicional es inválido aunque el álgebra sea correcta. "Uniforme respecto a qué" es siempre la primera pregunta.
 
 ## Prototipo, contraejemplo y caso borde
 
-- **Prototipo:** dos uniformes → punto en el cuadrado; "qué fracción cumple la condición" es un área (Romeo-Julieta 7/16, palo roto 1/4).
+- **Prototipo:** dos uniformes → punto en el cuadrado; "qué fracción cumple la condición" es un área (Romeo-Julieta $\tfrac7{16}$, palo roto $\tfrac14$).
 - **Contraejemplo (Bertrand):** "elige al azar" sin especificar la geometría no tiene respuesta única.
-- **Caso borde (ley del arcoseno):** el browniano NO alterna de signo equitativamente; lo más probable es que pase casi todo el tiempo de un lado (Beta(½,½), moda en 0 y 1). El borde desafía la intuición de "se reparte 50/50".
+- **Caso borde (ley del arcoseno):** el browniano NO alterna de signo equitativamente; lo más probable es que pase casi todo el tiempo de un lado ($\text{Beta}(\tfrac12,\tfrac12)$, moda en 0 y 1). El borde desafía la intuición de "se reparte 50/50".
 
 ## Errores típicos
 
-- **Conceptual:** suponer "uniforme en el radio" en problemas de disco; la densidad del radio es 2r/R² (más área lejos del centro).
+- **Conceptual:** suponer "uniforme en el radio" en problemas de disco; la densidad del radio es $\tfrac{2r}{R^2}$ (más área lejos del centro).
 - **Técnico:** integrar a ciegas en vez de dibujar la región y restar áreas/triángulos.
-- **De supuestos:** confiar en Monte Carlo para 3 decimales con pocas muestras; el error cae como 1/√n (n≈10⁶ para 3 decimales).
+- **De supuestos:** confiar en Monte Carlo para 3 decimales con pocas muestras; el error cae como $1/\sqrt n$ ($n\approx10^6$ para 3 decimales).
 
 ## Transferencia isomorfa
 
-- **Probabilidad como área ↔ integración Monte Carlo:** estimar π con 4·(hits/n) es estimar una integral como fracción de puntos en una región (conecta con [[arena-q10]]).
-- **Error Monte Carlo 1/√n ↔ error estándar de la media:** la lentitud de Monte Carlo es la misma √n del SE y del bootstrap (conecta con [[arena-pst2]]).
-- **Ley del arcoseno ↔ movimiento browniano:** la fracción de tiempo positivo de un BM es Beta(½,½), un resultado de procesos estocásticos (conecta con [[arena-q11]]).
+- **Probabilidad como área ↔ integración Monte Carlo:** estimar $\pi$ con $4\cdot(\text{hits}/n)$ es estimar una integral como fracción de puntos en una región (conecta con [[arena-q10]]).
+- **Error Monte Carlo $1/\sqrt n$ ↔ error estándar de la media:** la lentitud de Monte Carlo es la misma $\sqrt n$ del SE y del bootstrap (conecta con [[arena-pst2]]).
+- **Ley del arcoseno ↔ movimiento browniano:** la fracción de tiempo positivo de un BM es $\text{Beta}(\tfrac12,\tfrac12)$, un resultado de procesos estocásticos (conecta con [[arena-q11]]).
 - **Bertrand (modelo mal definido) ↔ prior impropio:** ambos enseñan que sin un modelo probabilístico explícito el cálculo es vacío (conecta con [[arena-fc3]]).
 
 Moraleja de la arista: *en probabilidad geométrica, dibuja y mide áreas; pero antes pregunta "¿uniforme respecto a qué?" — Bertrand cae si no lo haces.*
@@ -182,20 +129,20 @@ Moraleja de la arista: *en probabilidad geométrica, dibuja y mide áreas; pero 
 
 | Señal | Jugada |
 |-------|--------|
-| "Aguja sobre líneas paralelas" | Buffon: 2L/(πd) |
-| "P(dos uniformes están cerca)" | 2r − r² para |X−Y| < r en [0,1] |
+| "Aguja sobre líneas paralelas" | Buffon: $\tfrac{2L}{\pi d}$ |
+| "$P(\text{dos uniformes están cerca})$" | $2r-r^2$ para $|X-Y|<r$ en $[0,1]$ |
 | "Cuerda aleatoria y triángulo" | Bertrand: depende del modelo |
-| "Monte Carlo para estimar π" | 4 × (hits en círculo) / n |
-| "3 piezas forman triángulo" | P = 1/4 |
-| "Dos personas llegan en [0,T]" | P(se encuentran) = 1 − ((T−d)/T)² |
-| "E[distancia al centro en disco]" | 2R/3 |
-| "Fracción del tiempo BM > 0" | Ley del arcoseno: Beta(1/2, 1/2) |
-| "E[|U−V|] para uniformes" | 1/3 |
+| "Monte Carlo para estimar $\pi$" | $4\times(\text{hits en círculo})/n$ |
+| "3 piezas forman triángulo" | $P=\tfrac14$ |
+| "Dos personas llegan en $[0,T]$" | $P(\text{encuentro})=1-\big(\tfrac{T-d}{T}\big)^2$ |
+| "$E[\text{distancia al centro en disco}]$" | $\tfrac{2R}{3}$ |
+| "Fracción del tiempo BM $>0$" | Ley del arcoseno: $\text{Beta}(\tfrac12,\tfrac12)$ |
+| "$E[|U-V|]$ para uniformes" | $\tfrac13$ |
 
 ---
 
-> **Síntesis:** La probabilidad geométrica conecta el azar con el área/volumen. Los resultados clave son: Buffon (2L/πd), par uniforme (2r−r²), palo roto (1/4), Bertrand (la pregunta mal planteada), Monte Carlo (4·hits/n). La ley del arcoseno es la más contraintuitiva: el movimiento browniano no "alterna" — tiende a quedarse en el mismo semiplano.
+> **Síntesis:** La probabilidad geométrica conecta el azar con el área/volumen. Resultados clave: Buffon ($\tfrac{2L}{\pi d}$), par uniforme ($2r-r^2$), palo roto ($\tfrac14$), Bertrand (la pregunta mal planteada), Monte Carlo ($4\cdot\text{hits}/n$). La ley del arcoseno es la más contraintuitiva: el browniano no "alterna" — tiende a quedarse en el mismo semiplano.
 
 ---
 
-*Retrieval: cierra y responde: (1) P(aguja de longitud 1 cruza líneas separadas 2); (2) P(|X−Y|<0.5) para X,Y~Unif[0,1]; (3) P(palo roto forma triángulo); (4) E[distancia Manhattan en [0,1]²].*
+*Retrieval: cierra y responde: (1) $P(\text{aguja de longitud 1 cruza líneas separadas 2})$; (2) $P(|X-Y|<0.5)$ para $X,Y\sim\text{Unif}[0,1]$; (3) $P(\text{palo roto forma triángulo})$; (4) $E[\text{distancia Manhattan en }[0,1]^2]$.*
