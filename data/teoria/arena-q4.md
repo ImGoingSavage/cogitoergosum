@@ -100,6 +100,43 @@ Lógica: el frasco A garantiza P=1 cuando se elige. El frasco B maximiza la prop
 
 ---
 
+## Mini-ejemplo trabajado: Monty Hall por conteo de estados
+
+No memorices "2/3"; recupéralo contando. Tres puertas, premio uniforme, eliges A:
+
+- Premio en **A** (prob 1/3): el anfitrión abre B o C; **quedarte gana**, cambiar pierde.
+- Premio en **B** (prob 1/3): el anfitrión *debe* abrir C (no puede abrir tu A ni el premio); **cambiar a B gana**.
+- Premio en **C** (prob 1/3): el anfitrión *debe* abrir B; **cambiar a C gana**.
+
+Cambiar gana en 2 de los 3 estados → P = 2/3. La clave es que el anfitrión **actúa con información**: su elección de qué abrir filtra los estados, concentrando la masa 2/3 en la puerta que no abrió.
+
+**Predicción antes de seguir:** ¿qué pasa si el anfitrión abre una puerta *al azar* (y resulta vacía por suerte)? Respuesta: entonces no filtra información condicionada y la probabilidad se vuelve **1/2** — quedarte o cambiar da igual. La paradoja vive *enteramente* en que el anfitrión sabe.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** un agente con información revela algo no aleatorio → recondiciona el espacio (Monty Hall, moneda de dos caras).
+- **Contraejemplo (Monty aleatorio):** si quien revela actúa sin información, no hay actualización informativa y "quedan 2, luego 1/2" sí vale. El error es aplicar la intuición de Monty cuando la revelación fue azarosa.
+- **Caso borde (ruleta rusa):** balas *contiguas* rompen la simetría; condicionar en "sobreviví" deja {2,3},{3,4},{4,5},{5,6} y solo {2,3} es fatal → no girar (3/4 > 2/3). El borde muestra que la contigüidad es el dato que cambia la respuesta.
+
+## Errores típicos
+
+- **Conceptual:** no condicionar sobre el evento ya ocurrido (sobreviví, el anfitrión abrió) y contar estados a priori.
+- **Técnico:** en Bayes secuencial, comparar solo las *prior* ("la moneda de dos caras es rarísima, 1/1000") e ignorar el cociente de verosimilitudes (1024×) que casi cancela la rareza.
+- **De interpretación:** confundir "el anfitrión abrió una vacía" (información) con "salió una vacía por azar" (sin información).
+
+## Transferencia isomorfa
+
+El hilo común es **actualizar creencias cuando una observación reduce el espacio de estados**:
+
+- **Moneda de dos caras ↔ likelihood ratio encadenado:** P(2C|10H) ∝ verosimilitud × prior es el mismo cómputo que multiplicar LR⁺ de tests médicos independientes (conecta con [[arena-q2]], odds posteriores = LR × odds previos).
+- **Anfitrión que revela ↔ selección/censura informativa:** condicionar en lo que un proceso con información decide mostrar es la estructura del sesgo de selección y del *collider* causal (conecta con [[arena-h17]], condicionar en un collider abre caminos espurios).
+- **Valor esperado por estados ↔ programación dinámica:** plantear E₀, E₁, … y resolver el sistema es backward induction, idéntico a la recurrencia de un DP (conecta con [[arena-cc3]]).
+- **Triángulo del palo roto ↔ probabilidad geométrica:** "longitudes aleatorias" → dibuja el espacio muestral como región y compara áreas; el mismo gesto que integrar densidades en un cuadrado unitario.
+
+Moraleja de la arista: *no preguntes "cuántos casos hay" sino "qué me dijo la observación"; quien revela con información reescribe el espacio de estados.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

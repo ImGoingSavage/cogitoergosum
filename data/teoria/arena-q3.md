@@ -84,6 +84,39 @@ Para el juego a 50 con M=10: hitos = {6, 17, 28, 39, 50}. Ve primero y llama 6.
 
 ---
 
+## Mini-ejemplo trabajado: el problema de las bombillas a mano
+
+100 bombillas apagadas; en la pasada k accionas cada bombilla múltiplo de k. La bombilla n cambia de estado una vez por cada divisor de n. Toma n=12: divisores {1,2,3,4,6,12} → 6 conmutaciones → termina **apagada**. Toma n=9: divisores {1,3,9} → 3 conmutaciones → termina **encendida**.
+
+La estructura profunda: cada divisor d se empareja con n/d, así que los divisores vienen en parejas y el conteo es **par**… salvo cuando d = n/d, es decir cuando d = √n es entero. Por eso el invariante es la **paridad del número de divisores**, y solo los cuadrados perfectos la rompen.
+
+**Predicción antes de seguir:** entre 1 y 100, ¿cuántas bombillas quedan encendidas? Respuesta: ⌊√100⌋ = **10** (las que son 1², 2², …, 10²). No hace falta simular 100 pasadas: el invariante colapsa el problema a una raíz cuadrada.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "¿cuántos quedan encendidos / cuántas veces se conmuta?" → cuenta divisores y mira la **paridad** (cuadrado perfecto ⟺ impar).
+- **Contraejemplo (tentación aditiva):** "el estanque se llena en 30 días, ¿y con 8 ranas?" tienta a dividir 30/8. Pero el crecimiento es multiplicativo: 8 = 2³ son solo **3 duplicaciones** de ventaja → 27 días. Confundir aditivo con multiplicativo es el error clásico.
+- **Caso borde (n!):** los ceros finales de n! no se cuentan con los 2 (abundan) sino con el primo **más escaso**, el 5. El borde revela cuál factor es el cuello de botella.
+
+## Errores típicos
+
+- **Conceptual:** buscar una fórmula cerrada cuando el problema pide hallar un **invariante** (paridad, módulo, logaritmo) que colapsa el conteo.
+- **Técnico:** en el ángulo del reloj, olvidar que el horario también se mueve (0.5°/min) y usar solo 30H; o no tomar el suplemento cuando el ángulo supera 180°.
+- **De interpretación:** tratar el crecimiento exponencial como lineal (dividir el tiempo) en problemas de duplicación.
+
+## Transferencia isomorfa
+
+Un brainteaser bien hecho entrena el reflejo de **buscar la cantidad que no cambia**, y ese reflejo es transversal:
+
+- **Paridad de divisores ↔ invariante de bucle:** "lo que permanece par/impar pase lo que pase" es el mismo argumento que un *loop invariant* al probar correctitud de un algoritmo (conecta con [[arena-cc3]], donde la recurrencia se sostiene sobre una invariante de estado).
+- **Principio del palomar ↔ colisiones de hash:** "k+1 objetos en k cajas garantizan un par" es exactamente por qué un hash con más claves que buckets *debe* colisionar (conecta con [[arena-sd2]], hashing/sharding).
+- **Aritmética modular del juego de Nim ↔ estados ganadores:** controlar los hitos {N, N−(M+1), …} es razonar módulo (M+1), el mismo módulo que decide quién gana en juegos combinatorios.
+- **Logaritmo como "días de ventaja" ↔ escala √T y vida media:** convertir un factor multiplicativo en una distancia aditiva (log) es el mismo truco que escalar volatilidad o vida media en el tiempo.
+
+Moraleja de la arista: *cuando un conteo explota, no lo enumeres: busca la cantidad invariante (paridad, módulo, log) que lo colapsa a una sola línea.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

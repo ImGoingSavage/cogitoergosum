@@ -107,6 +107,31 @@ Un resultado útil no es solo "VPP = 49%". Es:
 
 ---
 
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** test bueno (sens 90%, esp 95%) sobre condición rara (prev 1%) → VPP bajo (~15%). La tabla de contingencia lo revela de inmediato: los falsos positivos nacen de una base enorme de sanos.
+- **Contraejemplo (la trampa del backtest balanceado):** mides el modelo en un set 50/50 y obtienes "precisión 92%". En producción la prevalencia es 0.2% y la precisión real (VPP) colapsa. *El balance artificial es un cambio de tasa base disfrazado de métrica.*
+- **Caso borde (prevalencia → 0):** por buena que sea la especificidad, si la condición casi no existe, casi todo positivo es falso. El límite VPP→0 cuando prev→0 con esp<100% es la prueba de que **ninguna calidad de test salva a una base demasiado rara**; solo subir la prevalencia efectiva (segmentar) lo hace.
+
+## Errores típicos
+
+- **Conceptual:** confundir sensibilidad P(+|E) con VPP P(E|+) — invertir el condicional. Es el mismo error que leer P(datos|H₀) como P(H₀|datos).
+- **Técnico:** olvidar el segundo sumando del denominador (los falsos positivos P(+|¬E)·P(¬E)); sin él, el VPP sale inflado.
+- **De supuestos:** reportar precisión de un set balanceado como si fuera la de producción, sin declarar la prevalencia real.
+
+## Transferencia isomorfa
+
+La estructura "una señal ruidosa contra una base abrumadora" reaparece en todo dominio donde hay clases desbalanceadas:
+
+- **VPP ↔ precision de un clasificador:** el VPP *es* la precision en ML; un modelo de fraude con AUC alta puede tener precision baja en producción por la misma tasa base (conecta con [[arena-htd4]], donde el *prediction bias* y el desbalance distorsionan la métrica online).
+- **LR⁺ encadenado ↔ Bayes secuencial:** multiplicar likelihood ratios de tests independientes es exactamente actualizar odds tras cada cara observada en la moneda de dos caras (conecta con [[arena-q4]], moneda 999+1).
+- **Odds ratio ↔ hazard ratio de Cox:** el LR⁺ vive en el mundo de los odds; el mismo gesto multiplicativo aparece al combinar riesgos en [[arena-h8]].
+- **Tasa base clínica ↔ alerta de fraude ↔ trading signal:** "1 de cada 6 alertas es real" es el mismo PPV que en cribado médico (conecta con [[arena-h13]]).
+
+Moraleja de la arista: *una señal nunca habla sola; siempre discute con la tasa base, y cuando la base es rara, la base gana.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |

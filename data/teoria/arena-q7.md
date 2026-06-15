@@ -172,6 +172,37 @@ Conversión práctica: σ_anual = σ_diaria · √252 (días de trading).
 
 ---
 
+## Mini-ejemplo trabajado: duración como gradiente del precio
+
+Un bono con duración modificada D_mod = 6.5. Las tasas suben Δy = +0.50% = +0.005. Primer orden: ΔP/P ≈ −6.5 × 0.005 = **−3.25%**. La duración es, literalmente, la **elasticidad-precio respecto a la tasa**: un gradiente local. La convexidad C>0 es la curvatura que corrige ese gradiente: con C=80, el término ½·80·(0.005)² = +0.10% amortigua la caída a ≈ −3.15%.
+
+**Predicción antes de seguir:** entre dos bonos con igual precio y duración pero distinta convexidad, ¿cuál prefieres? Respuesta: el de **mayor convexidad** — gana más cuando las tasas bajan y pierde menos cuando suben (la curvatura te favorece en ambas direcciones). Por eso los MBS, con convexidad *negativa* (el deudor prepaga cuando bajan las tasas), se penalizan: te quitan justo el lado bueno de la curva.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** sensibilidad de primer orden de un precio a un factor → duración (bono/tasa), delta (opción/subyacente), beta (acción/mercado). Todos son ∂precio/∂factor.
+- **Contraejemplo (Sharpe engañoso):** vender puts produce retornos suaves con Sharpe alto, pero la cola izquierda es catastrófica; el Sharpe asume que *toda* la volatilidad mide el riesgo y ignora la asimetría. Sharpe alto ≠ bajo riesgo.
+- **Caso borde (convexidad negativa):** un bono callable o un MBS rompe la regla "más convexidad es mejor" porque cuando las tasas bajan, el emisor prepaga y te corta el upside. El borde revela qué supuesto (convexidad positiva) tenía la regla vanilla.
+
+## Errores típicos
+
+- **Conceptual:** confundir E[S_T] con la mediana en una lognormal. E[Y]=e^(μ+σ²/2) > mediana=e^μ; el +σ²/2 es la prima de Jensen, no un error.
+- **Técnico:** olvidar el drift de Itô −σ²/2 al pasar de dS a d(ln S); da una distribución log-precio mal centrada.
+- **De supuestos:** anualizar volatilidad con √252 cuando hay autocorrelación o cambios de régimen (GARCH); el √T solo vale para i.i.d.
+
+## Transferencia isomorfa
+
+Los tres pilares (no-arbitraje, Itô, sensibilidades) son aristas, no islas:
+
+- **−σ²/2 de Itô ↔ +σ²/2 de Jensen:** el mismo σ²/2 aparece restando en el drift del log-precio y sumando en E[e^X]; son las dos caras de la convexidad de la exponencial (conecta con [[arena-q6]], transformaciones y lognormal).
+- **Duración ↔ delta ↔ beta:** los tres son la primera derivada de un precio frente a su factor de riesgo; la convexidad/gamma es la segunda derivada que los corrige (delta–gamma conecta con [[arena-q5]]).
+- **CIP ↔ put-call parity:** el forward FX sale del mismo no-arbitraje que la paridad call-put; replicar con préstamos en dos divisas es replicar un payoff con dos carteras (conecta con [[arena-q5]]).
+- **β vía Cov/Var ↔ coeficiente OLS:** β = Cov(R_i,R_m)/Var(R_m) es exactamente la pendiente de regresar el activo contra el mercado (conecta con [[arena-q6]], R² y MLE↔OLS).
+
+Moraleja de la arista: *sensibilidad es la primera derivada del precio; convexidad es la segunda. El mismo σ²/2 que baja el log-precio sube la media — conócelo y no confundirás media con mediana.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

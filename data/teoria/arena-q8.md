@@ -37,6 +37,41 @@ El **truco de la martingala** para «3 caras seguidas»: apuesta de forma que ga
 
 Si aciertas uniformemente el área, la densidad del radio es 2s/R² (no uniforme: hay más área lejos del centro). La distancia esperada al centro es **2R/3**. Útil para detectar el error de suponer densidad uniforme en el radio.
 
+## Mini-ejemplo trabajado: el dado con parada, paso a paso
+
+Tres tiros, te quedas o sigues. Resuelve **hacia atrás**:
+
+1. **Último tiro:** sin opción, E = (1+2+3+4+5+6)/6 = 3.5.
+2. **Dos tiros:** te quedas con el primero solo si supera el valor de continuar (3.5), o sea si sale 4,5,6; si no, continúas y obtienes 3.5. E(2) = (4+5+6)/6 + (3/6)·3.5 = 2.5 + 1.75 = **4.25**.
+3. **Tres tiros:** te quedas con el primero si supera 4.25, o sea si sale 5,6; si no, continúas con valor 4.25. E(3) = (5+6)/6 + (4/6)·4.25 = 1.833 + 2.833 = **4.667**.
+
+La regla de parada —"quédate si el valor inmediato supera la esperanza de continuar"— es idéntica al ejercicio temprano de una opción americana.
+
+**Predicción antes de seguir:** con 10 tiros disponibles, ¿el umbral de "quédate" sube o baja? Respuesta: **sube** (hacia ~5), porque tener más tiros por delante hace más valioso continuar, así que solo un valor muy alto justifica detenerte. Más opciones futuras ⇒ umbral de ejercicio más exigente.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "puedes quedarte o seguir / cuándo detenerte" → parada óptima por backward induction; compara premio inmediato vs E(continuar).
+- **Contraejemplo (densidad radial):** en la diana, suponer que el radio es uniforme da R/2; es **falso** porque hay más área lejos del centro (densidad 2s/R²), y la distancia esperada es 2R/3. "Uniforme en el área" ≠ "uniforme en el radio".
+- **Caso borde (media divergente):** doblar en cara / partir a la mitad en cruz tiene E por tiro = 5/4 > 1, así que E(n) = (5/4)ⁿ → ∞, *aunque casi toda trayectoria tiende a 0*. La media la dominan trayectorias raras enormes — un borde que avisa: valor esperado ≠ resultado típico.
+
+## Errores típicos
+
+- **Conceptual:** resolver hacia adelante en vez de hacia atrás; el valor de continuar solo se conoce desde el final.
+- **Técnico:** en "n éxitos seguidos", intentar sumar una serie infinita en vez de usar la apuesta-martingala + muestreo opcional (que da 2^(n+1)−2 en una línea).
+- **De interpretación:** reportar la media cuando la distribución es de cola pesada (San Petersburgo): el precio justo no es E[payoff] si el bankroll es finito.
+
+## Transferencia isomorfa
+
+"Trabajar hacia atrás bajo la estrategia óptima" es una estructura, no un truco aislado:
+
+- **Parada óptima ↔ opción americana:** quedarte si el premio inmediato supera la continuación *es* el criterio de ejercicio temprano de una americana (conecta con [[arena-q5]], valoración por no-arbitraje).
+- **Backward induction ↔ programación dinámica:** resolver E(1)→E(2)→E(3) es exactamente llenar una tabla de DP de atrás hacia adelante (conecta con [[arena-cc3]], coin change/DP).
+- **Torre de esperanza ↔ ecuaciones de estado:** plantear E₀ = 1 + ½E₁ + ½E₀ para "k caras seguidas" es la ley de esperanza total aplicada a una cadena de estados (conecta con [[arena-q6]]).
+- **Media divergente ↔ paradoja de San Petersburgo:** colas tan pesadas que E=∞ aparecen igual en juegos de doblar y en payoffs de cola larga; el valor esperado deja de ser precio justo.
+
+Moraleja de la arista: *valorar un juego es valorar una opción: resuelve hacia atrás y quédate solo cuando el premio en mano supere la esperanza de seguir.*
+
 ## Disparadores
 
 | Señal | Jugada |

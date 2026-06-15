@@ -183,6 +183,41 @@ La familia normal es cerrada bajo transformaciones lineales y convoluciones — 
 
 ---
 
+## Mini-ejemplo trabajado: la torre de esperanza resuelve la geométrica
+
+¿Cuántos lanzamientos esperas hasta la primera cara con moneda justa? En vez de sumar la serie, condiciona en el primer lanzamiento (eso es la torre E[X] = E[E[X|primer tiro]]):
+
+> E[X] = (1/2)·1 + (1/2)·(1 + E[X])
+
+El primer término: con prob 1/2 sale cara y terminas en 1 tiro. El segundo: con prob 1/2 sale cruz, gastaste 1 tiro y **vuelves al mismo estado**. Despejando: E[X] − (1/2)E[X] = 1 → E[X] = **2**. Generaliza a sesgo p: E[X] = 1/p.
+
+**Predicción antes de seguir:** ¿la varianza de la media muestral de 100 tiros de un dado es mayor o menor que la de un solo tiro? Respuesta: **menor, por un factor 100** (σ²/n). Promediar no cambia la media pero divide la varianza entre n; por eso para *reducir el error a la mitad* hay que *cuadruplicar* n. La misma √n que reaparece en la regla √T de finanzas.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** proceso con reinicio o estructura condicional (geométrica, coleccionista, primer éxito) → plantea la torre E[X] = Σ E[X|Y]P(Y) y resuelve la ecuación lineal.
+- **Contraejemplo (ρ=0 ≠ independencia):** Y = X² con X simétrica tiene Cov(X,Y)=0, así que ρ=0, pero Y depende totalmente de X. Correlación cero solo descarta relación *lineal*.
+- **Caso borde (Cauchy):** si σ²=∞, la LGN clásica falla y el TCL clásico no aplica; promediar muestras de Cauchy no concentra nada. El borde revela qué supuesto (varianza finita) sostiene ambos teoremas.
+
+## Errores típicos
+
+- **Conceptual:** leer el p-valor como P(H₀ verdadera|datos). Es P(datos tan extremos|H₀) — el condicional invertido, el mismo error que confundir sensibilidad con VPP.
+- **Técnico:** reportar R² alto como evidencia de buen modelo: R² nunca baja al añadir variables; usa R²_adj y validación fuera de muestra.
+- **De supuestos:** aplicar el TCL con n pequeño y cola pesada, o usar σ/√n cuando las observaciones están autocorrelacionadas (entonces el n "efectivo" es menor).
+
+## Transferencia isomorfa
+
+Las dos llaves maestras —la √n y la torre— cruzan dominios:
+
+- **Error estándar σ/√n ↔ regla √T de volatilidad:** ambas salen de Var(ΣXᵢ)=n·Var(X) para i.i.d.; reducir incertidumbre con más datos y escalar riesgo con el horizonte son la misma raíz (conecta con [[arena-q5]] y [[arena-q7]]).
+- **p-valor ↔ tasa base / VPP:** "datos improbables bajo H₀" no es "H₀ improbable", igual que "sensibilidad alta" no es "VPP alto"; sin la prior/tasa base no inviertes el condicional (conecta con [[arena-q2]]).
+- **Ley de varianza total ↔ descomposición sesgo-varianza:** within + between es la misma partición que error irreducible vs varianza del modelo en ML (conecta con [[arena-iml4]], donde se descompone el error de predicción).
+- **Torre de esperanza ↔ backward induction / DP:** condicionar en el primer paso y resolver la recurrencia es el motor de la parada óptima (conecta con [[arena-cc3]]).
+
+Moraleja de la arista: *cuando algo tiene estructura condicional, condiciona en el primer paso; cuando promedias n cosas i.i.d., la incertidumbre cae como 1/√n — no más rápido.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

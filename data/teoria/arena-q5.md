@@ -114,6 +114,36 @@ Lección: valor esperado ≠ precio justo cuando la distribución tiene colas mu
 
 ---
 
+## Mini-ejemplo trabajado: parity con números, y por qué μ desaparece
+
+S=100, K=100, r=0, T=1. Put-call parity dice C − P = S − K·e^(−rT) = 100 − 100 = 0, así que **C = P** exactamente, sin saber σ ni la dirección esperada del activo. Compra una call y vende una put (ambas strike 100): el payoff combinado es S(T) − 100 en *todo* estado — replicas un forward. Si C ≠ P con r=0, ese forward sintético cotizaría distinto de cero y habría arbitraje.
+
+**Predicción antes de seguir:** dos traders, uno alcista (μ alto) y uno bajista (μ bajo), ¿le ponen precios distintos a la call? Respuesta: **no**. El portafolio delta-hedgeado (long call − Δ acciones) no tiene riesgo en dt, así que por no-arbitraje rinde r, y al derivar la EDP de Black-Scholes el término μ se cancela. El precio depende de σ, no del optimismo. *Lo que cobras no es tu opinión sobre la dirección, sino tu exposición a la magnitud.*
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** dos carteras con idéntico payoff en todos los estados → mismo precio hoy (toda la put-call parity sale de aquí).
+- **Contraejemplo (confundir Δ con probabilidad):** Δ = N(d₁) ≈ 0.5 para una ATM se lee mal como "50% de acabar ITM". La probabilidad real (medida física) usa N(d₂), no N(d₁); coinciden solo aproximadamente. Delta es sensibilidad de precio, no probabilidad.
+- **Caso borde (σ→0):** sin volatilidad la call ATM ya no vale ~0.4·S·σ·√T sino S − K·e^(−rT) con Δ=1: se vuelve un forward. El borde muestra que el valor "óptico" de la opción es puro tiempo×volatilidad.
+
+## Errores típicos
+
+- **Conceptual:** creer que un activo con mayor retorno esperado hace más cara la opción. No: μ no entra en B-S; entra σ.
+- **Técnico:** escalar volatilidad con √T cuando hay reversión a la media o momentum (la regla √T solo vale para retornos i.i.d.).
+- **De interpretación:** olvidar el signo opuesto Θ↔Γ; "soy long gamma y además quiero theta positivo" es imposible en vanilla (la EDP los amarra).
+
+## Transferencia isomorfa
+
+No-arbitraje y la corrección √T se transfieren más allá de las opciones:
+
+- **Delta-hedge cancela μ ↔ aleatorización borra el confundidor:** cubrir con Δ acciones elimina la dependencia de la dirección igual que un A/B test elimina la dependencia del confundidor; ambos aíslan el efecto "puro" cortando una flecha (conecta con [[arena-h17]], do(x) borra las flechas hacia X).
+- **Regla √T ↔ error estándar σ/√n:** la volatilidad escala con √T porque las varianzas de incrementos i.i.d. se suman — exactamente por qué el SE de la media decae como 1/√n (conecta con [[arena-q6]] y [[arena-q7]]).
+- **Replicación de payoff ↔ identificación causal:** "expresar un derivado con instrumentos cotizados" es estructuralmente "expresar P(Y|do(x)) con cantidades observables"; en ambos, si no se puede replicar/identificar, ningún dato lo salva.
+
+Moraleja de la arista: *si dos cosas pagan igual en todos los estados, valen igual hoy; cubrir el riesgo direccional deja solo el precio de la incertidumbre.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
