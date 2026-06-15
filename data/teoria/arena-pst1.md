@@ -41,6 +41,40 @@ El **coeficiente de correlación** (Pearson) mide la asociación **lineal** entr
 
 ---
 
+## Mini-ejemplo trabajado: un outlier mueve la media, no la mediana
+
+Sueldos (en miles) de un pueblo: 20, 22, 25, 28, 30. Media = 25, mediana = 25. Ahora llega Bill Gates con 1 000 000:
+
+> Media = (20+22+25+28+30+1 000 000)/6 ≈ **166 837** — absurda, nadie gana eso.
+> Mediana (valor central de los 6 ordenados, promedio de 25 y 28) = **26.5** — apenas se mueve.
+
+La media usa la *magnitud* de cada dato, así que un valor extremo la arrastra sin límite; la mediana solo usa el *orden*, así que le da igual cuán grande sea el outlier, solo cuántos hay.
+
+**Predicción antes de seguir:** ¿cuántos de los 6 datos tendrías que volver gigantes para arrastrar la mediana arbitrariamente lejos? Respuesta: **la mitad** (3 de 6). Ese número —la fracción de datos que pueden corromperse antes de romper el estimador— se llama *punto de ruptura*: 0% para la media, 50% para la mediana. Robustez es exactamente "punto de ruptura alto".
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** datos con outliers → mediana / media recortada para el centro, IQR / MAD-mediana para la dispersión.
+- **Contraejemplo (sd "robusta"):** la desviación estándar se prefiere por conveniencia matemática (cuadrados), NO por robustez; de hecho sd > MAD > MAD-mediana en sensibilidad. Elegir sd "porque es estándar" en datos con colas es un error.
+- **Caso borde (Pearson y un outlier):** un solo punto extremo puede inflar o invertir la correlación de Pearson; la asociación "lineal fuerte" puede ser un artefacto de un dato. El borde motiva correlaciones de rango (Spearman).
+
+## Errores típicos
+
+- **Conceptual:** reportar la media de una variable sesgada (ingresos, tiempos) como si describiera al individuo típico.
+- **Técnico:** dividir la varianza entre n en vez de n−1 (subestima); olvidar el grado de libertad perdido por estimar la media.
+- **De interpretación:** leer Pearson alto como relación causal o como cualquier relación (solo capta la *lineal*).
+
+## Transferencia isomorfa
+
+- **Robustez (mediana) ↔ eficiencia en colas pesadas:** cuando los datos son Cauchy o con outliers, la mediana aplasta a la media (que puede tener varianza infinita) (conecta con [[arena-q11]] y [[arena-dg1]]).
+- **IQR / MAD-mediana ↔ detección de outliers y leverage:** la regla 1.5×IQR del boxplot es el mismo gesto que marcar residuales influyentes en regresión (conecta con [[arena-pst4]]).
+- **n−1 (grados de libertad) ↔ insesgamiento de S²:** la corrección es la misma que vuelve insesgado el UMVUE de σ² (conecta con [[arena-dg1]]).
+- **Pearson (correlación lineal) ↔ ρ≠independencia:** mide solo asociación lineal; Y=X² da ρ=0 con dependencia total (conecta con [[arena-q6]]).
+
+Moraleja de la arista: *elige el resumen por su punto de ruptura: si hay outliers, mediana e IQR; la media y la sd son cómodas pero frágiles.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

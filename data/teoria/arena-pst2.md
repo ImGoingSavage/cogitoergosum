@@ -44,6 +44,42 @@ Un IC del 90%/95% es el rango central de la distribución muestral (bootstrap) q
 
 ---
 
+## Mini-ejemplo trabajado: bootstrap de la mediana cuando no hay fórmula
+
+Tienes 5 tiempos de respuesta (ms): 120, 135, 150, 160, 800. La mediana es 150, pero ¿cuán estable es? No existe una fórmula simple para el SE de la mediana, así que **remuestreas con reemplazo**:
+
+- Remuestra 1: {135,150,150,160,800} → mediana 150
+- Remuestra 2: {120,120,135,150,800} → mediana 135
+- Remuestra 3: {150,160,160,800,800} → mediana 160
+- … repite R=1000 veces y mira la desviación estándar de esas 1000 medianas.
+
+Esa desviación **es** el error estándar de la mediana, y los percentiles 2.5 y 97.5 dan un IC del 95% — todo sin asumir normalidad.
+
+**Predicción antes de seguir:** ¿el bootstrap puede rescatar una muestra de tamaño 5 y darte la precisión de una de tamaño 500? Respuesta: **no**. El bootstrap solo reordena la información que ya tienes; estima cómo variaría el estadístico en muestras *parecidas a la tuya*, pero no inventa datos ni reduce el SE real (que sigue ∝ 1/√n). Confundir "muchas remuestras" con "más datos" es el malentendido central.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** estadístico sin fórmula de SE (mediana, coeficiente, ratio) → bootstrap con reemplazo R veces.
+- **Contraejemplo (bootstrap ≠ más datos):** R=10 000 remuestras de n=5 no mejoran la información; solo mapean la incertidumbre de esos 5 puntos.
+- **Caso borde (regresión a la media):** una estrella con un gran primer año tiende a uno peor el segundo, sin que nada haya cambiado realmente. Leerlo como "declive" es un sesgo de selección, no un efecto.
+
+## Errores típicos
+
+- **Conceptual:** confundir desviación estándar (variabilidad de los datos) con error estándar (variabilidad del estadístico, ∝1/√n).
+- **Técnico:** bootstrapear valores individuales cuando los datos son multivariados; hay que remuestrear **filas completas** para preservar la correlación.
+- **De supuestos:** interpretar un IC del 95% como "95% de probabilidad de que el parámetro esté aquí"; la cobertura es del procedimiento, no del intervalo concreto.
+
+## Transferencia isomorfa
+
+- **SE ∝ 1/√n ↔ la √n universal:** la misma raíz que escala la volatilidad (√T) y dicta que cuadruplicar n duplica la precisión (conecta con [[arena-q6]] y [[arena-dg3]]).
+- **Bootstrap ↔ bagging:** remuestrear con reemplazo y promediar es exactamente lo que hace un Random Forest para bajar varianza (conecta con [[arena-iml4]]).
+- **IC por percentiles del bootstrap ↔ IC por pivote:** dos rutas al mismo intervalo; el bootstrap evita necesitar la distribución exacta del pivote (conecta con [[arena-cb4]]).
+- **Regresión a la media / sesgo de selección ↔ condicionar en un collider:** elegir casos por un valor extremo y mirar su evolución es el mismo sesgo estructural que abrir un camino espurio (conecta con [[arena-h17]]).
+
+Moraleja de la arista: *el bootstrap mapea la incertidumbre de cualquier estadístico remuestreando lo que ya tienes — no crea datos, y el SE real sigue cayendo solo como 1/√n.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

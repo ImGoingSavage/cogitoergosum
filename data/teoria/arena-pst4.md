@@ -37,6 +37,37 @@ Los **residuales** (observado − predicho) son la materia prima para validar lo
 
 ---
 
+## Mini-ejemplo trabajado: el coeficiente con signo absurdo (confounding)
+
+Regresas el precio de casas sobre número de recámaras y baños, y obtienes coeficientes **negativos**: ¿una recámara más *baja* el precio? Absurdo. Lo que pasa: falta la variable **ubicación**. Las casas grandes (más recámaras) abundan en zonas baratas (afueras), así que, al ignorar la zona, "más recámaras" carga con "zona barata".
+
+Al añadir el código postal como predictor, la cláusula "manteniendo lo demás constante" por fin incluye la zona, y los signos se **corrigen a positivos**. El coeficiente no estaba mal calculado: estaba respondiendo a la pregunta equivocada.
+
+**Predicción antes de seguir:** ¿este es un problema de *comisión* (incluir de más) o de *omisión* (excluir de más)? Respuesta: de **omisión** — confounding por variable omitida. Su gemelo de comisión es la *multicolinealidad* (incluir dos predictores redundantes), que en vez de sesgar el signo infla la varianza y vuelve inestables los coeficientes. Omitir lo importante sesga; incluir lo redundante desestabiliza.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** coeficiente con signo o magnitud absurda → sospecha confounding → busca el predictor omitido (ubicación, tamaño, tiempo).
+- **Contraejemplo (multicolinealidad, no confounding):** dos predictores casi idénticos (m² y pies²) no sesgan la predicción pero hacen que los coeficientes "salten" entre signos; el modelo predice bien aunque sus betas sean ilegibles.
+- **Caso borde (heteroscedasticidad):** si la varianza de los residuales crece con la predicción, suele faltar un predictor o una interacción; el ajuste promedio engaña sobre el error local.
+
+## Errores típicos
+
+- **Conceptual:** interpretar un beta observacional como efecto causal sin haber cerrado los confundidores.
+- **Técnico:** usar un intervalo de confianza (de la media) cuando se quiere la incertidumbre de **una** predicción individual (intervalo de predicción, mucho más ancho).
+- **De interpretación:** crear P variables dummy en vez de P−1 e introducir multicolinealidad perfecta (sin solución única).
+
+## Transferencia isomorfa
+
+- **Confounding / variable omitida ↔ back-door y ajuste:** "manteniendo lo demás constante" falla exactamente cuando no ajustas por la causa común; añadir la ubicación es cerrar un camino trasero (conecta con [[arena-h17]]).
+- **Multicolinealidad ↔ VIF y features redundantes:** predictores que cargan la misma información inflan la varianza igual que en la teoría de Gauss-Markov, y como el leakage infla el desempeño (conecta con [[arena-dg4]] y [[arena-dmls1]]).
+- **Término de interacción ↔ modificación de efecto / heterogeneidad:** que el valor del m² dependa de la zona es el mismo fenómeno que un efecto de tratamiento que varía por subgrupo (conecta con [[arena-h8]]).
+- **Intervalo de predicción vs confianza ↔ incertidumbre del modelo + ruido irreducible:** la misma descomposición Var = explicada + irreducible de la ley de varianza total (conecta con [[arena-cb4]] y [[arena-b2]]).
+
+Moraleja de la arista: *un signo absurdo grita "falta un predictor" (confounding, omisión); coeficientes que saltan gritan "sobra un predictor" (multicolinealidad, comisión); y predecir un individuo necesita el intervalo ancho, no el de la media.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

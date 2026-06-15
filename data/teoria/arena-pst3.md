@@ -46,6 +46,43 @@ Si pruebas **muchas** comparaciones, subgrupos, variables o modelos, **algo sald
 
 ---
 
+## Mini-ejemplo trabajado: test de permutación a mano
+
+Página A convierte 3/10 (30%), página B 5/10 (50%). Diferencia observada = 20 pp. ¿Real o azar? La H0 dice que las dos páginas son **intercambiables**, así que el grupo no debería importar:
+
+1. Junta los 20 usuarios (8 conversiones, 12 no) en una sola urna.
+2. Baraja y reparte 10 al "grupo A" y 10 al "B", **sin reemplazo**.
+3. Calcula la diferencia de tasas de esa repartición aleatoria → una iteración.
+4. Repite R=10 000 veces → la distribución de diferencias *bajo puro azar*.
+5. El **p-valor** es la fracción de permutaciones con diferencia ≥ 20 pp.
+
+Si, digamos, el 18% de las permutaciones alcanzan ±20 pp, p≈0.18: el azar explica fácilmente la diferencia → **no significativa** (con n=10 por grupo casi nada lo es).
+
+**Predicción antes de seguir:** ¿por qué barajar etiquetas encarna exactamente la H0? Respuesta: porque si A y B no difieren, la etiqueta "A/B" es solo un *post-it* intercambiable; la distribución de diferencias que generas al rebarajar es literalmente "qué tan grande sería la diferencia si el grupo no significara nada". El test no asume una fórmula: *construye* el azar.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "¿la diferencia A vs B es real?" → permutación (baraja etiquetas, R veces, compara) sin asumir normalidad.
+- **Contraejemplo (multiplicidad):** prueba 20 subgrupos y ~1 saldrá "significativo" a α=0.05 por puro azar; reportar solo ese es el "vast search effect". El antídoto del DS es un holdout / validación cruzada.
+- **Caso borde (proxy mal elegido):** optimizar "tiempo en página" como sustituto de "compra" puede subir el proxy y bajar la venta si no están bien alineados. El borde recuerda validar la métrica subrogada.
+
+## Errores típicos
+
+- **Conceptual:** leer el p-valor como P(H0 cierta); es P(diferencia tan extrema | H0).
+- **Técnico:** parar el experimento en cuanto cruza p<0.05 (peeking): mirar repetidamente infla el error tipo I igual que la multiplicidad.
+- **De supuestos:** dimensionar el test sin potencia y concluir "no hay efecto" cuando solo faltó n (error tipo II por baja potencia).
+
+## Transferencia isomorfa
+
+- **Test de permutación ↔ p-valor de Neyman-Pearson:** ambos preguntan "¿qué tan extremo es esto bajo H0?"; la permutación construye la distribución nula empíricamente en vez de derivarla (conecta con [[arena-cb3]] y [[arena-dg3]]).
+- **H0 "grupos intercambiables" ↔ aleatorización / do-operator:** asignar al azar es lo que vuelve las etiquetas intercambiables y estima un efecto causal sin confundidores (conecta con [[arena-h17]]).
+- **Multiplicidad / peeking ↔ monitoreo de muchas señales:** vigilar muchas métricas garantiza falsas alarmas; el control es el mismo (FDR/Bonferroni o holdout) que en observabilidad (conecta con [[arena-obs1]]).
+- **Potencia / tamaño del efecto ↔ MDE de un rollout:** fijar el efecto mínimo detectable antes de lanzar es diseñar el experimento de despliegue (conecta con [[arena-dmls3]]).
+
+Moraleja de la arista: *barajar las etiquetas materializa la H0 y fabrica el azar; lo difícil no es el test, es no engañarte probando demasiado (multiplicidad y peeking).*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
