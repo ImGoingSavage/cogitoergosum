@@ -65,29 +65,28 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**103 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**106 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
-| **Health AI / causal** | arena-h3 … h22 (20) |
+| **Health AI / causal** | arena-h1 … h22 (22 — cluster completo) |
 | **ML Systems** | rom1-4, rml1-4, dmls1-4, htd1-4, sre1-4, mldp1-4, obs1-4, iml1-4 (32) |
 | **MAANG** | cc1-4, sd1-4, m1, m2 (10) |
-| **Quant núcleo (lotes 11-12)** | q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q13 (11) |
+| **Quant núcleo (lotes 11-12,20)** | q1 … q13 (12 — cluster completo) |
 | **Blitzstein (lote 13)** | b1, b2, b3, b4 (4) |
 | **Inferencia clásica (lotes 14-15)** | dg1-4 (DeGroot) + cb1-4 (Casella & Berger) (8) |
 | **Estadística aplicada (lotes 16-17)** | pst1-4 (Practical Statistics) + isl1-4 (ISLP) (8) |
 | **Ciencia de datos (lotes 18-19)** | ads1-4 + cds1-4 + s1 (9) |
-| Muestra Oleada 1 | q12 (+cc1, h17 ya contados arriba) |
+| **Health originales (lote 20)** | h1, h2 (2) |
 
-### FALTAN (15 lecciones) — esto es lo que debes hacer
+### FALTAN (12 lecciones) — esto es lo que debes hacer
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
 sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
 
 **Quant / probabilidad (route: quant):**
-- `arena-q1` *(ojo: ya nació estudiable, solo añádele la sección **Transferencia
-  isomorfa** + Errores típicos; no la reescribas)*
+- ~~`arena-q1` (toque ligero: Transferencia + Errores típicos)~~ **HECHA (lote 20)**.
 - ~~`arena-q2 … q11, q13` (Quant núcleo, lotes 11-12)~~ **HECHAS — cluster
   completo**.
 - `arena-p1, p2, p3, p4` (A Practical Guide to Quantitative Finance — acertijos,
@@ -112,8 +111,8 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
   Transferencia isomorfa ligera o pueden quedarse como needs_review.*
 
 **Originales sueltos (route: health-ai-rwe):**
-- `arena-h1` (DAGs y adjustment sets), `arena-h2` (target trial / immortal time).
-  *Son los originales cortos del bloque; mismo tratamiento que h3-h22.*
+- ~~`arena-h1` (DAGs/adjustment sets), `arena-h2` (target trial/immortal time)~~
+  **HECHAS (lote 20)** — el cluster Health (h1-h22) queda completo.
 
 > Cómo recomputar esta lista en cualquier momento (la marca de "hecha" es que el
 > archivo contiene la cadena `Transferencia isomorfa`):
