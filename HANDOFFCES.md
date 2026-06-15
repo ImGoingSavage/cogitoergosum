@@ -2594,3 +2594,63 @@ Pólya (`Cómo Plantear y Resolver Problemas`), Putnam and Beyond (Andreescu), B
 (`A Walk Through Combinatorics`), Kevin Houston, y la serie AoPS (Intro/Med/Vol/Calculus).
 Mismo esquema §4.1 (ids 189+, sin huecos) y, donde aplique, `fase-0` como material
 introductorio del Modo Estudio. Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-14 (Arena tanda 29) — SECTOR C: Pólya SALTADO (decisión del usuario)
+
+El usuario pidió **brincar Pólya** (`Cómo Plantear y Resolver Problemas`) y marcarlo
+`completado` con 0 problemas en el ledger. Razón anotada: *How to Solve It* es ante todo
+metodología/heurística (las 4 fases de Pólya YA son el esqueleto de la app y de los
+`hints`), no una cantera de enunciados con respuesta numérica verificable; su material
+introductorio encaja mejor en `fase-0`/Modo Estudio que en `problems.json`. Sin cambios
+en datos salvo el `estado` del ledger. Se priorizó §10 hacia Putnam and Beyond (tanda 30).
+
+## Bitácora 2026-06-14 (Arena tanda 30) — SECTOR C: Andreescu & Gelca, *Putnam and Beyond*, 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Putnam and Beyond` (Răzvan Gelca & Titu
+Andreescu, Springer 2007) — libros[30] del ledger, ruta `entrenamiento`, cuota 40
+(superada con **44**). Destino: **`data/problems.json`** (esquema §4.1), ids **189-232**
+sin huecos. **Distribución balanceada 11/11/11/11.** Fuente: **cap. 1 «Methods of Proof»**
+(que mapea perfecto a las 4 estrategias) + **§3.1.1 «Search for a Pattern»**. El libro
+trae soluciones completas en su parte 2, lo que facilitó verificar.
+
+- **inversion** (11, §1.1 contradicción + §1.2 construcción/hacia-atrás): √2+√3+√5 irracional,
+  9 consecutivos sin partición de igual producto, Euler (no hay polinomio entero que dé solo
+  primos), desplazamiento cíclico único con sumas parciales positivas (Raney), L-triominós en
+  2ⁿ×2ⁿ menos esquina, cubo no disecable en cubos distintos (extremo), **IMO 2005** fichas
+  (2 restantes ⇔ 3∤(n−1)), ±1²±2²±…±n²=N, Zeckendorf, n-dígitos div 2ⁿ con {2,3}, n-dígitos
+  div 5ⁿ con {5–9}.
+- **invariantes** (11, §1.3 casillero + §1.5 invariantes/semi-invariantes): **IMO 1972** (10
+  números de dos dígitos → subconjuntos de igual suma), 9 puntos en cuadrado → triángulo ≤1/8,
+  un Fibonacci divisible por 1000 (Pisano), ajedrecista → 20 juegos en días consecutivos, 2m+1
+  enteros → tres suman 0, rotación √2 (sumSq 6.5≠6+2√2), Ducci 4-tuplas → (0,0,0,0), signos
+  3×3 (invariante de producto 2×2), caballo generalizado (retorno en pasos pares), **IMO 1985**
+  (1985 enteros → 4 con producto 4ª potencia), bolas de colores (≥1 verde).
+- **optimizacion** (11, §1.4 extremo + §1.2 desigualdades): 50 enteros <100 → dos coprimos,
+  3ⁿ≥n³, (n/3)ⁿ<n!<(n/2)ⁿ, Σ1/k³<3/2, Cauchy Σ1/(1+aᵢ)≥n/(1+G), Huygens ∏(1+aᵢ)≥(1+G)ⁿ,
+  |sin nx|≤n|sin x|, Σaᵢ²≥(2n+1)/3·Σaᵢ (enteros distintos), Σ|sin xᵢ|+|cos Σxᵢ|≥1, n puntos →
+  ángulo ≤π/n, cuadrados de área total 1 caben en cuadrado de área 2.
+- **patrones** (11, §1.2 Fibonacci + §3.1.1 sucesiones): F(2n+1)=F(n+1)²+F(n)², F(3n)=
+  F(n+1)³+F(n)³−F(n−1)³, identidad armónica alternante, recurrencia x_{n+3}=xₙ+xₙ₊₁xₙ₊₂ (alcanza
+  múltiplo de m), divisores coprimos a+b−1|n ⇔ n potencia de primo impar, sucesión 1,2,2,3,3,3,…
+  → ⌈(√(8k+1)−1)/2⌉, recurrencia de orden 4 → aₙ=n·Fₙ, ecuación funcional → aₙ=n², torres 3 vs
+  100 → menor m=99, recurrencia con techo → xₙ−1 múltiplo de 3, teselados 2n×3 con dominós (2±√3).
+
+**§1.2 cumplida — 39 afirmaciones numéricas verificadas con Python** (`/tmp/verify_putnam.py`):
+juegos/IMO 2005 por búsqueda exhaustiva; identidades de Fibonacci y sucesiones recursivas
+(297/299/300/303/311/Tomescu) por cómputo exacto; desigualdades por muestreo masivo; casillero
+por conteo; Ducci/caballo/signos por simulación y BFS. Las pruebas de existencia/estructura
+(cubo, ajedrecista, bolas, 50-coprimos, ángulo, cuadrados-área2) se tomaron **fielmente del
+libro** (su «solución» es el argumento). **NOTA de honestidad:** se descartó el problema 1.1.6
+(no existe f:ℤ→{1,2,3} con f(x)≠f(y) si |x−y|∈{2,3,5}) porque no se pudo verificar limpiamente
+(no hay K₄ en el grafo de distancias {2,3,5}, así que el argumento de coloreo no es por clique).
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+232 ids únicos (1-232) sin huecos; esquema §4.1 correcto para 189-232; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: inversion 58, optimizacion 59, invariantes 57,
+patrones 58 (232 total, global balanceado). Builder idempotente en `scripts/_build_putnam.py`.
+
+**Siguiente** — continuar Sector C con la carpeta `Arena/Problem solving y olimpiadas/`:
+Bóna (`A Walk Through Combinatorics`), Kevin Houston (`How to Think Like a Mathematician`),
+y la serie AoPS (Intro/Med/Vol/Calculus). Mismo esquema §4.1 (ids 233+, sin huecos) y, donde
+aplique, `fase-0` como material introductorio del Modo Estudio. Verificar SIEMPRE con Python.
