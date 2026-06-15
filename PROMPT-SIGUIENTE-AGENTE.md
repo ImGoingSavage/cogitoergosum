@@ -25,7 +25,7 @@ metadata y los quizzes viven en `data/study.json` (campo `unidades[]`); **NO edi
 
 ---
 
-## Estado EXACTO (al 2026-06-15, sw.js v80, último commit en `main`)
+## Estado EXACTO (al 2026-06-15, sw.js v87, último commit en `main`)
 
 **Oleada 2 (enriquecimiento por lotes): COMPLETA — 118/118.** Las 118 lecciones
 `data/teoria/arena-*.md` contienen ya la sección **Transferencia isomorfa** y el
@@ -61,6 +61,15 @@ comm -23 \
   `crearUnidadItem()` (`js/study.js`); las demás fases siguen con lista plana. La
   simulación vive ahora dentro de cada acordeón (`abrirSimCluster(id, btn, panel)`);
   se retiró la tarjeta `#estudio-entrevista`. CSS `.cluster-*` en `css/styles.css`.
+- ✅ **KaTeX vendorizado local** (sw.js v81): render de matemáticas calidad de libro,
+  self-hosted en `assets/katex/` (sin CDN, offline/PWA). `js/markdown.js` usa
+  `window.katex` con fallback a Unicode. **CONVENIO NUEVO (impórtate):** `$…$` es
+  **siempre matemática**; la moneda va con `\$` (`\$4M`, `\$100`). Se quitó el viejo
+  guard anti-`$100`. Al escribir lecciones nuevas, dólares = `\$`.
+- ✅ **Cluster 1 (quant-prob) reescrito DESDE CERO** (sw.js v82-v87): las 25 lecciones
+  asumen conocimiento nulo y construyen desde ahí (auditoria.md), con math en LaTeX.
+  Contenido original (sin reproducir texto de los libros), conservando lo curado.
+  Pendiente (otra oleada, si Edgar lo pide): los otros 7 clusters.
 
 ---
 

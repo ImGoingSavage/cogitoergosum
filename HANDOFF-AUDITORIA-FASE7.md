@@ -324,6 +324,33 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
     `#entrevista-sim`). Se conserva `.entrevista*` del guion de simulación.
   - **Pendiente de iterar:** el orden didáctico es un juicio pedagógico revisable;
     densificar los 8 guiones sigue disponible (ver punto anterior).
+- ✅ **KaTeX vendorizado local (render de matemáticas calidad de libro) — HECHO
+  (sw.js v81).** Edgar pidió que las expresiones se vean "como en el libro". Se
+  vendoriza KaTeX 0.16.11 self-hosted (sin CDN, offline/PWA) en `assets/katex/`
+  (`katex.min.js` UMD → `window.katex`, `katex.min.css` recortado a woff2-only,
+  20 fuentes). `js/markdown.js` renderiza `$…$`/`$$…$$` con KaTeX (`strict:false`,
+  `throwOnError:false`) y cae a `texAUnicode` si KaTeX no cargó (p. ej. el smoke en
+  Node). `index.html` carga css+js en `<head>`; `sw.js` precachea todo en SHELL.
+  - **CAMBIO DE CONVENIO (clave para el siguiente agente):** `$…$` es **siempre
+    matemática**; la **moneda se escribe `\$`** (`\$4M`, `\$100`). Se quitó el viejo
+    guard anti-`$100` (rompía toda math que empezara con dígito: `$3/6$`, `$2^n$`).
+    Al escribir lecciones nuevas usa `\$` para dólares. Migrada la moneda cruda a
+    `\$` en las lecciones que la usaban (q5, h21, pst4, rom4, htd3, sre4).
+  - **Verificación:** las 118 lecciones renderizan en KaTeX sin throw. Script ad-hoc:
+    extrae `$…$`/`$$…$$` (protegiendo `\$`) y corre `katex.renderToString(...,
+    {throwOnError:true, strict:false})`; debe dar 0 throws.
+- ✅ **Cluster 1 (quant-prob) reescrito DESDE CERO — HECHO (sw.js v82-v87).** Edgar
+  pidió que cada lección asuma conocimiento nulo y construya desde ahí (auditoria.md:
+  espina conceptual → intuición/analogía → fórmula con símbolos explicados → mini-caso
+  → prototipo/contraejemplo/borde → errores → forcejeo → transferencia → moraleja),
+  con math en LaTeX. **Las 25 lecciones del cluster quant-prob** quedaron reescritas
+  (contenido original, sin reproducir texto de los libros; se conservó todo lo curado):
+  b1, p1, q1, q2 (lote 1, v82); p2, fc1, b2, b3 (lote 2, v83); q10, fc2, q4, q9 (lote
+  3, v84); fc3, q3, q12, q13 (lote 4, v85); q8, fc4, b4, p3 (lote 5, v86); q11, p4,
+  q5, q7, q6 (lote 6, v87). q1/q2 ya eran fuertes: solo se les insertó la espina de
+  arranque desde cero. **Pendiente:** replicar el mismo trabajo en los otros 7 clusters
+  (stats-inf, dsa, system-design, ds-applied, ml-systems, causal-health, conductual)
+  cuando Edgar lo pida — son otra oleada.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*
