@@ -32,6 +32,38 @@ Evaluar offline no basta: hay que probar con tráfico real, minimizando riesgo.
 
 ---
 
+## Mini-ejemplo trabajado: nombrar el shift por su probabilidad
+
+Un modelo de aprobación de crédito se degrada. Descompón P(X,Y) = P(Y|X)·P(X) para diagnosticar *qué* cambió:
+
+- Llega una oleada de solicitantes **más jóvenes** (cambia P(X)), pero "a igual perfil, el riesgo es el mismo" → **covariate shift**: P(X) cambia, P(Y|X) intacto. Re-pesar por densidad suele bastar.
+- Tras una crisis, **más gente** entra en default (cambia P(Y)), pero "dado que alguien hace default, sus features se ven igual" → **label shift**.
+- Tras una nueva ley, el **mismo perfil** que antes era "riesgoso" ahora es "seguro" (cambia P(Y|X), la *relación* misma) → **concept drift**, el más peligroso, porque ni re-pesar lo arregla: hay que reentrenar con la nueva realidad.
+
+**Predicción antes de seguir:** quieres detectar que la distribución de producción se movió. ¿Qué herramienta? Un **two-sample test** (Kolmogorov-Smirnov, MMD) contra una referencia — *la misma maquinaria del A/B testing*, vista desde el otro lado. Y para probar un modelo nuevo sin riesgo: **shadow deployment** (recibe el mismo tráfico, predice en paralelo, **no se sirve**), luego A/B aleatorio o canary.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (shadow → canary):** shadow valida sin servir, luego canary sube el % gradualmente con rollback si las métricas caen.
+- **Contraejemplo (A/B sin aleatoriedad real):** enrutar al candidato por un criterio sesgado (p. ej. usuarios nuevos) → sesgo de selección que invalida el test.
+- **Caso borde (concept drift):** re-pesar por densidad arregla covariate shift pero **no** el concept drift; ahí solo sirve reentrenar.
+
+## Errores típicos
+
+- **Conceptual:** llamar "concept drift" a todo shift; distingue P(X) (covariate), P(Y) (label) y P(Y|X) (concept).
+- **De validación:** confiar solo en eval offline; hay que **test en producción** (shadow/A-B/canary).
+- **De significancia:** olvidar que un p=0.05 falla el 5% de las veces, y que el tamaño de muestra importa.
+
+## Transferencia isomorfa
+
+- **Two-sample test de shift ↔ A/B testing:** detectar que dos distribuciones difieren es la misma maquinaria estadística vista desde el otro lado (conecta con [[arena-ads4]] y [[arena-pst3]], tests de permutación).
+- **Concept drift ↔ prediction bias / umbral caducado:** que la relación input→output mute es lo que el prediction bias detecta y lo que invalida un umbral fijo (conecta con [[arena-htd4]]).
+- **Covariate shift ↔ falta de overlap / independencia del PDP:** evaluar donde P(X) cambió es pedirle al modelo que prediga fuera de su soporte, como el PDP bajo correlación o la positividad causal (conecta con [[arena-iml3]] y [[arena-h3]]).
+
+Moraleja de la arista: *nombra el shift por su probabilidad (P(X)/P(Y)/P(Y|X)), detéctalo con two-sample tests, y valida en producción con shadow→canary; el concept drift solo se cura reentrenando.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

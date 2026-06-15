@@ -29,6 +29,36 @@
 
 ---
 
+## Mini-ejemplo trabajado: por qué replicar no baja la latencia de UNA predicción
+
+Tu modelo tarda **200 ms** por predicción y recibes **1 000 QPS**, pero un solo servidor solo aguanta 500 QPS. Añades una segunda réplica → ahora aguantas 1 000 QPS. ¿Bajó la latencia? **No**: cada predicción **sigue tardando 200 ms**; lo que subió es el **throughput** (peticiones/seg), no la velocidad de una.
+
+Para bajar la latencia de *una* predicción hay otras palancas: hardware más potente (GPU para matrices densas), o **abaratar el modelo** (menos features/capas, cuantización, o una **cascada** donde un modelo barato resuelve los casos fáciles y solo los difíciles van al caro). Y mide la **tail latency** (peor 1–5%), no la media: el usuario que sufre es el de la cola.
+
+**Predicción antes de seguir:** el espacio de queries es acotado y conocido (recomendaciones diarias por usuario). ¿Online o batch? **Batch (offline)**: precomputas todo a un store y servir se vuelve un *lookup* — simple, verificable (revisas todas las predicciones), con rollback por tablas. Online solo si el input no se conoce de antemano.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (MaaS):** modelo como microservicio stateless → escalado horizontal, versionado y A/B fáciles, monitoreo centralizado.
+- **Contraejemplo (replicar para latencia):** añadir réplicas esperando que *una* predicción sea más rápida → solo sube throughput.
+- **Caso borde (modelo sparse en GPU):** un modelo disperso aprovecha poco las miles de ALUs de la GPU → a veces la **CPU** sirve mejor.
+
+## Errores típicos
+
+- **Conceptual:** confundir **throughput** (QPS) con **latencia** (tiempo de una predicción) — réplicas suben el primero, no bajan la segunda.
+- **De medición:** mirar la latencia **media** en vez de la **tail** (p99) que define la peor experiencia.
+- **De operación:** quedarse en monitoreo agregado sin **observabilidad por slices** → no ves el subgrupo afectado.
+
+## Transferencia isomorfa
+
+- **Cascada de serving ↔ two-phase predictions:** un modelo barato que filtra y delega lo difícil es el patrón cascade/two-phase de los design patterns (conecta con [[arena-mldp3]]).
+- **Observabilidad por slices ↔ alta cardinalidad:** `requests_total{lang=es}` en vez del agregado es la misma idea de trocear por dimensión (conecta con [[arena-obs1]]).
+- **Training-serving skew ↔ paridad de features:** que la feature se compute igual en train y serving es el problema recurrente de [[arena-rom3]] y [[arena-dmls4]].
+
+Moraleja de la arista: *réplicas suben el throughput, no bajan la latencia de una predicción (para eso, hardware/modelo más barato/cascada); y vigila la cola y los slices, no el promedio.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

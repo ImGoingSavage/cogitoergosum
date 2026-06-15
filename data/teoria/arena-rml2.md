@@ -32,6 +32,36 @@ Creación → ingestión (filtrado/muestreo) → procesamiento (validación, lim
 
 ---
 
+## Mini-ejemplo trabajado: "ya quité el nombre, está anonimizado"
+
+Un equipo publica un dataset "anónimo": borra nombres y emails, deja solo **género, fecha de nacimiento y código postal**. Parece seguro. Pero el estudio de **Sweeney** mostró que **el 87%** de la población de EE. UU. es identificable de forma única con *exactamente* esos tres campos. Cruzando con un padrón electoral público, reidentificas a la mayoría → no estaba anonimizado, estaba **pseudonimizado** (reversible con un dato extra), que debe tratarse como *tan arriesgado como el dato crudo*.
+
+Por eso "más datos == mejor" es falso: cada dato es también un **pasivo** (legal, ético, de borrado). Y borrar de verdad es difícil (copias, backups, índices) → dos tácticas: reescritura periódica que omite lo borrado, o **cifrar todo y tirar la llave** (sin llave, el dato es ilegible en todos los backups).
+
+**Predicción antes de seguir:** un apagón de pagos afecta *solo* al sitio en español. Pierdes esos datos de compra. ¿Ignorable? No: la pérdida es **sesgada** (MAR/MNAR, no MCAR). El modelo "aprende" que el español no compra, muestra menos resultados en español y **empeora las ventas aun después** del apagón. La pregunta de oro al perder datos: *¿la pérdida es sesgada?*
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (confiabilidad asumida):** versionas configs, datos y snapshots porque *todo modelo se reentrenará*; tienes fallback + rollback.
+- **Contraejemplo (fallback insuficiente):** el modelo supera tanto a la heurística que, cuando falla, el fallback ya no basta — la trampa de "un buen modelo se volverá malo".
+- **Caso borde (entrenar demasiado rápido):** más learners distribuidos → race conditions que hacen **divergir** el modelo; hay que sincronizar el estado y limitar la tasa de actualización.
+
+## Errores típicos
+
+- **Conceptual:** creer que quitar el identificador directo anonimiza (los cuasi-identificadores reidentifican).
+- **De datos:** tratar toda pérdida de datos como ignorable sin preguntar si es **sesgada** (MCAR vs MAR/MNAR).
+- **De métrica:** confundir **utilización** (usado/pagado) con **eficiencia** (valor/coste) — GPU al 100% no significa producir valor.
+
+## Transferencia isomorfa
+
+- **MCAR/MAR/MNAR ↔ mecanismos de datos faltantes causales:** que la pérdida sea aleatoria o sesgada es el mismo marco que decide si ignorar o corregir datos faltantes en inferencia (conecta con [[arena-h19]], sesgo de selección).
+- **Feature store ↔ paridad train/serving:** un lugar único y versionado para features ataca el training-serving skew (conecta con [[arena-rom3]]).
+- **Cifrar y tirar la llave ↔ borrado criptográfico:** hacer un dato ilegible sin perseguir cada copia es privacidad por diseño (conecta con [[arena-h14]], estudios en red sin compartir datos).
+
+Moraleja de la arista: *el dato es activo y pasivo; los cuasi-identificadores reidentifican (Sweeney 87%), la pérdida sesgada envenena el modelo, y "borrar" de verdad es cifrar y tirar la llave.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

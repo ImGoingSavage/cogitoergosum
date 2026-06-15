@@ -30,6 +30,39 @@ Para que un modelo grande corra rápido o en dispositivos limitados, se **compri
 
 ---
 
+## Mini-ejemplo trabajado: distillation y quantization para caber en el edge
+
+Tienes un modelo de lenguaje de **440 MB** que da 91% de accuracy, pero quieres correrlo en un móvil sin red. Dos técnicas combinadas:
+
+1. **Knowledge distillation:** entrenas un modelo **student** pequeño para *imitar las salidas* del **teacher** grande (no las etiquetas reales, sino sus probabilidades). DistilBERT es el caso canónico: ~40% más pequeño conservando ~97% del rendimiento.
+2. **Quantization:** representas los pesos con **menos bits** (de 32 a 8) → ~4× menos memoria y cómputo más rápido. Riesgo: pérdida de precisión numérica (rango/redondeo).
+
+Resultado: un modelo que cabe y corre en el dispositivo, ganando **latencia, offline y privacidad** (los datos no salen del móvil).
+
+**Predicción antes de seguir:** ¿conviene servir esto online (predecir al momento) o batch (precomputar)? Si el input **no se conoce de antemano** (lo que el usuario escribe ahora), debe ser **online**; batch solo sirve cuando puedes precomputar todas las predicciones que se pedirán.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (batch prediction):** recomendaciones diarias precomputadas a un store → servir es un lookup instantáneo.
+- **Contraejemplo (batch para input desconocido):** precomputar predicciones para una búsqueda libre → imposible, el espacio de inputs es infinito; va online.
+- **Caso borde (streaming features):** "viajes en los últimos 5 min" no se puede precomputar en batch → exige stream processing (Kafka/Flink) además del batch.
+
+## Errores típicos
+
+- **Conceptual:** confundir **batch features** (históricas, en reposo) con **streaming features** (en movimiento); los sistemas online serios necesitan ambas.
+- **Técnico:** cuantizar sin medir la pérdida de precisión numérica resultante.
+- **De arquitectura:** usar request-driven (REST síncrono) donde un event-driven (pub/sub asíncrono) desacoplaría mejor los servicios.
+
+## Transferencia isomorfa
+
+- **Knowledge distillation ↔ teacher-student / compresión:** entrenar un modelo chico para imitar a uno grande es el mismo patrón que un surrogate que aproxima una caja negra (conecta con [[arena-iml3]], surrogate global).
+- **Batch prediction ↔ problema embarazosamente paralelo:** precomputar millones de predicciones a un store es map puro sobre infra distribuida (conecta con [[arena-mldp3]], batch serving).
+- **Edge + cuantización ↔ two-phase predictions:** modelo pequeño on-device + grande en la nube es el patrón two-phase con compresión (conecta con [[arena-mldp3]]).
+
+Moraleja de la arista: *comprime (distillation/quantization/pruning/low-rank) para servir rápido o en el edge; elige batch vs online por si conoces el input de antemano, y recuerda que online serio necesita streaming features.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

@@ -30,6 +30,39 @@ Cuando una clase domina (fraude: 99.9% legítimo), un modelo que diga "siempre l
 
 ---
 
+## Mini-ejemplo trabajado: reservoir sampling, por qué funciona
+
+Llega un stream de tamaño **desconocido** y quieres **k=1** muestra uniformemente al azar (cada elemento con prob 1/n al final, sin saber n). El algoritmo:
+
+1. Guarda el 1.º en el reservorio.
+2. Para el n-ésimo elemento, genera `i` aleatorio en [1, n]; si `i ≤ k` (aquí i=1), **reemplaza**; si no, descarta.
+
+¿Por qué es uniforme? El elemento n entra con prob **k/n = 1/n**. ✓ ¿Y los anteriores siguen con 1/n? El elemento 1 sobrevive si los siguientes no lo expulsan: P(sobrevive) = ∏... = 1/n también. La magia: en *cualquier* punto donde pares, cada elemento visto tiene exactamente probabilidad k/n — sin conocer n de antemano ni guardar el stream entero.
+
+**Predicción antes de seguir:** quieres muestrear de una distribución P cara/imposible de samplear, pero tienes una Q fácil. ¿Cómo? **Importance sampling**: muestrea de Q y repondera cada muestra por **P(x)/Q(x)** (requiere Q>0 donde P≠0). Es *exactamente* la maquinaria de IP weighting / off-policy: estimar la política nueva reponderando la vieja (conecta con [[arena-h5]]).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (estratificado):** hay grupos raros que no quieres perder → muestrea dentro de cada estrato.
+- **Contraejemplo (no probabilístico):** armar el dataset por conveniencia/bola de nieve → rápido pero no representativo, arrastra sesgo al modelo.
+- **Caso borde (feedback-loop length largo):** la etiqueta natural de "compra" tarda semanas en llegar → detectas fallos lento; los clics (minutos) son más rápidos.
+
+## Errores típicos
+
+- **Conceptual:** confiar en el **accuracy** con clases desbalanceadas (99.9% legítimo → "siempre legítimo" acierta 99.9% e inútil); usa F1/AUC.
+- **Técnico:** muestrear un stream materializándolo en memoria en vez de **reservoir sampling**.
+- **De etiquetas:** ignorar la **label multiplicity** (anotadores que discrepan) sin instrucciones claras.
+
+## Transferencia isomorfa
+
+- **Importance sampling ↔ IP weighting / off-policy:** reponderar por P/Q es el mismo estimador que corrige confundimiento o evalúa una política nueva con datos de la vieja (conecta con [[arena-h5]] y [[arena-h20]]).
+- **Reservoir sampling ↔ algoritmos de streaming con estado mínimo:** mantener k muestras correctas sin guardar el stream es el espíritu de los algoritmos online de un paso (conecta con [[arena-dmls3]], streaming features).
+- **Desbalance / accuracy paradox ↔ tasa base:** una clase rara vuelve engañosa la métrica global, como el PPV de un fenotipo raro (conecta con [[arena-mldp2]] y [[arena-h13]]).
+
+Moraleja de la arista: *muestrea bien (estratificado para grupos raros, reservoir para streams, importance para distribuciones inaccesibles), aprovecha natural labels y abandona el accuracy cuando hay desbalance.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

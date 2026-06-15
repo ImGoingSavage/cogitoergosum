@@ -40,6 +40,40 @@ El **manifiesto del ingeniero ético de guardia**: es un error "arreglar primero
 
 ---
 
+## Mini-ejemplo trabajado: el modelo congelado 3 semanas (Historia 1)
+
+Síntoma: la búsqueda "no encuentra"; el CTR de los top-5 lleva semanas cayendo y el *golden set* está "sospechosamente estable". Nadie ve un error en logs.
+
+- **Causa próxima:** el modelo de ranking llevaba **3 semanas congelado** — no se reentrenaba.
+- **Causa raíz:** los `log-feeders` se quedaban sin memoria y **crasheaban en bucle (OOM crash loop)**, así que el training nunca terminaba y el modelo nunca se actualizaba.
+- **Mitigación:** subir de 10 a 20 log-feeders.
+
+La lección clave: en un sistema de ML mal instrumentado, **un problema de sistemas se manifiesta solo como caída de calidad** — a menudo la única señal end-to-end. Por eso el *follow-up* añadió alertas por **edad del modelo**, golden set (que cambie *demasiado* o *nada* es malo), **tasa de entrenamiento** y **CTR top-5 por hora**.
+
+**Predicción antes de seguir:** un bug afecta al 100% de un slice pequeño (digamos, búsquedas en coreano), pero la métrica **agregada** apenas se mueve. ¿Lo detecta el monitoreo agregado? No — por eso un incidente de ML es **Public** (lo ven antes los usuarios) y hay que mirar **slices**.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (incidente gestionado):** estado + roles (commander/comms/ops/planning) + registro → respuesta coordinada y postmortem.
+- **Contraejemplo (incidente no gestionado):** un ingeniero depura en solitario, no mide impacto, no comunica, otros toman pasos descoordinados → el peor tipo.
+- **Caso borde (mitigación fuera del ML):** la mejor respuesta puede ser de producto ("mostrar agotado e invitar a avisar"), no seguir tocando el modelo.
+
+## Errores típicos
+
+- **Conceptual:** creer que un problema de "calidad" es siempre del modelo; suele ser un fallo de sistemas que solo *se ve* como caída de calidad.
+- **De ética:** "primero que funcione, la privacidad después" — la privacidad no se pospone, ni bajo presión.
+- **De monitoreo:** no alertar por **frescura del modelo**/golden set → degradación silenciosa de semanas.
+
+## Transferencia isomorfa
+
+- **Roles de incidente ↔ Incident Command System (SRE):** commander/comms/ops/planning son invariantes entre incidentes de infra y de ML; solo Ops modifica el sistema (conecta con [[arena-sre3]]).
+- **Caída de calidad como única señal ↔ fallo silencioso de ML:** un sistema que "se ajusta" a un dato roto sin lanzar error es el fallo silencioso de las Reglas de ML (conecta con [[arena-rom1]]).
+- **Public/Fuzzy/Unbounded ↔ monitorear por slices y proxies:** que el daño se diluya en el agregado obliga a vigilar subgrupos, como en distribution shift (conecta con [[arena-dmls4]]).
+
+Moraleja de la arista: *gestiona con estado+roles+registro; en ML el problema de sistemas se disfraza de caída de calidad, así que alerta por frescura del modelo y por slices — y nunca pospongas la privacidad.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
