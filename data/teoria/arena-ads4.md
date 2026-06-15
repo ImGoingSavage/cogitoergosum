@@ -53,6 +53,38 @@ Plantea $H_0$ (sin efecto), elige métrica primaria + guardrails, define tamaño
 
 ---
 
+## Mini-ejemplo trabajado: cuando el A/B test subestima por efectos de red
+
+Pruebas una feature social (p.ej. "reacciones") en una red de amigos: asignas usuarios al azar a control/tratamiento. El grupo tratamiento reacciona más… pero sus amigos en **control** ven esas reacciones y también se activan. El control "se contamina": su métrica sube, así que la **diferencia tratamiento − control se encoge** y subestimas el efecto real.
+
+La causa profunda: la aleatorización a nivel usuario rompe el supuesto de que la asignación de A no afecta el resultado de B (no interferencia). La mitigación es **aleatorizar por clusters** (particiona el grafo en comunidades y asigna comunidades enteras), aislando el tratamiento dentro de cada grupo.
+
+**Predicción antes de seguir:** ¿este sesgo infla o desinfla el efecto medido? Respuesta: lo **desinfla** (el control mejora "por contagio", reduciendo la brecha). Es el espejo del problema causal de *interferencia*/SUTVA: el resultado de una unidad depende del tratamiento de otras. Randomizar por clusters es a las redes lo que el ajuste por confundidores es a los datos observacionales: proteger la comparación.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "¿lanzamos esta feature?" → A/B test: H0 sin efecto, métrica primaria + guardrails, randomiza, evalúa tamaño de efecto.
+- **Contraejemplo (significancia ≠ enviar):** con millones de usuarios cualquier diferencia es p<0.05; si sube revenue pero baja retención (guardrail), no se envía. El p-valor no decide solo.
+- **Caso borde (efecto novedad):** un pico inicial por curiosidad se desvanece; mirar solo el promedio temprano engaña. Aísla usuarios nuevos o corre el test más tiempo.
+
+## Errores típicos
+
+- **Conceptual:** confundir causa raíz con correlación al diagnosticar una caída de métrica (un síntoma correlacionado no es la causa).
+- **Técnico:** usar GROUP BY cuando necesitas conservar las filas (ranking, deltas) — ahí van window functions.
+- **De supuestos:** correr decenas de tests/segmentos y reportar el significativo sin corregir multiplicidad (Bonferroni/FDR).
+
+## Transferencia isomorfa
+
+- **A/B test (randomización) ↔ do-operator:** asignar al azar estima un efecto causal cortando los confundidores, exactamente P(Y|do(X)) (conecta con [[arena-h17]]).
+- **Efectos de red ↔ interferencia / SUTVA:** que el tratamiento de unos afecte a otros es el mismo problema que viola la no interferencia en inferencia causal; clusters ↔ aislar unidades (conecta con [[arena-h17]]).
+- **Pruebas múltiples / peeking ↔ control de error familiar:** corregir muchos tests es lo mismo que en experimentos estadísticos y monitoreo (conecta con [[arena-pst3]] y [[arena-dg3]]).
+- **Causa raíz vs correlación ↔ confounding y variable omitida:** distinguir el síntoma del impulsor es el reflejo causal que también corrige signos absurdos en regresión (conecta con [[arena-pst4]]).
+- **Window function LAG/cohortes ↔ ventanas temporales:** comparar una fila con la anterior (retención mes a mes) es el patrón de ventanas deslizantes sobre el tiempo.
+
+Moraleja de la arista: *aleatorizar vuelve comparables los grupos (como do(x)), pero los efectos de red rompen esa comparación; aíslalos por clusters y decide con tamaño de efecto y guardrails, no con el p-valor solo.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

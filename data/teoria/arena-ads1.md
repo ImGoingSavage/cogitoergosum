@@ -56,6 +56,41 @@ Pista: modela usuarios (nuevo / activo / churned) como cadena y pregunta el comp
 
 ---
 
+## Mini-ejemplo trabajado: el test "98% preciso" de algo raro
+
+Enfermedad con prevalencia 1%. Test con sensibilidad 98% y especificidad 98%. Das positivo: ¿probabilidad de estar enfermo? Tabla con N=10 000:
+
+- Enfermos: 100 → 98 verdaderos positivos.
+- Sanos: 9900 → 2% falsos positivos = 198.
+- P(enfermo | +) = 98/(98+198) = 98/296 ≈ **33%**.
+
+Un test "98% preciso" deja **dos de cada tres positivos como falsos**, porque hay 99× más sanos que enfermos: el 2% de una base enorme aplasta al 98% de una base diminuta.
+
+**Predicción antes de seguir:** ¿qué sube más el valor predictivo, mejorar la sensibilidad de 98% a 99% o aplicar el test solo a un grupo de riesgo con prevalencia 10%? Respuesta: **la prevalencia** — con prev 10% el VPP salta a ~84% sin tocar el test. La palanca más fuerte casi nunca es el test; es a quién se lo aplicas. Por eso "dado que" siempre exige preguntar la tasa base.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "dado que ocurrió B" → Bayes; descompón el denominador con la ley de probabilidad total.
+- **Contraejemplo (independencia falsa):** dos eventos pueden parecer ligados pero ser independientes si P(A|B)=P(A); confundir "ocurren juntos a veces" con dependencia es un error.
+- **Caso borde (exponencial sin memoria):** el tiempo de espera ya transcurrido no cambia la distribución del restante: P(X>s+t | X>s)=P(X>t). El borde define la exponencial y la separa de distribuciones con envejecimiento (Weibull).
+
+## Errores típicos
+
+- **Conceptual:** invertir el condicional (leer sensibilidad P(+|E) como VPP P(E|+)).
+- **Técnico:** en conteo, no decidir si el orden importa (permutación vs combinación).
+- **De interpretación:** modelar tiempos de espera con normal en vez de exponencial/Poisson.
+
+## Transferencia isomorfa
+
+- **Bayes con tasa base ↔ VPP de un clasificador:** la enfermedad rara es el mismo cálculo que la precisión de un modelo de fraude en producción (conecta con [[arena-q2]]).
+- **Exponencial sin memoria ↔ proceso de Poisson y Gamma:** los tiempos entre eventos son exponenciales y su suma es Gamma; modela colas y llegadas (conecta con [[arena-b3]]).
+- **Cadena de Markov estacionaria ↔ comportamiento a largo plazo:** usuarios nuevo/activo/churned convergen a π=πP, el equilibrio que olvida el estado inicial (conecta con [[arena-b4]]).
+- **Conteo (orden sí/no) ↔ linealidad de la esperanza:** muchos problemas de "¿cuántas formas / qué probabilidad" se resuelven con indicadores sin pelear con la dependencia (conecta con [[arena-b1]]).
+
+Moraleja de la arista: *"dado que" pide Bayes, y Bayes siempre discute con la tasa base; cuando la base es rara, la base gana.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

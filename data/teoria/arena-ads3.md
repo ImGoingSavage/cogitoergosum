@@ -63,6 +63,40 @@ Minimiza la función de pérdida moviéndose en la dirección de máximo descens
 
 ---
 
+## Mini-ejemplo trabajado: precisión vs recall con una matriz de confusión
+
+Detector de cáncer sobre 1000 pacientes, 50 enfermos. El modelo marca 60 positivos: 45 son cáncer real (TP), 15 son falsas alarmas (FP); deja 5 cánceres sin detectar (FN).
+
+- **Precisión** = TP/(TP+FP) = 45/60 = **75%** (de mis alarmas, cuántas aciertan).
+- **Recall** = TP/(TP+FN) = 45/50 = **90%** (de los cánceres, cuántos atrapo).
+- **Accuracy** = (45+935)/1000 = 98% — alta, pero engaña: predecir "sano" siempre daría 95%.
+
+**Predicción antes de seguir:** si bajas el umbral para atrapar los 5 cánceres que se escapan (recall→100%), ¿qué le pasa a la precisión? Respuesta: **baja** — atraparás más cánceres a costa de más falsas alarmas, así que FP sube y la precisión cae. Precisión y recall están en tensión; el umbral los intercambia, y eliges según cueste más un FP (alarma innecesaria) o un FN (cáncer perdido). En cáncer, priorizas recall.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** clases desbalanceadas → razona con precisión/recall/F1/AUC, nunca accuracy.
+- **Contraejemplo (alta varianza disfrazada de éxito):** train accuracy 100% es overfitting, no maestría; el test lo desmiente. El error de train siempre baja con la complejidad.
+- **Caso borde (PCA y escala):** PCA sin estandarizar deja que la feature con unidades grandes (ingresos en pesos) domine las componentes; el borde obliga a estandarizar antes.
+
+## Errores típicos
+
+- **Conceptual:** atacar alta varianza con más complejidad (empeora) o alto sesgo con más datos (no ayuda); el remedio depende de cuál domina.
+- **Técnico:** tocar el test set más de una vez (lo conviertes en validación y sobreajustas a él).
+- **De interpretación:** reportar accuracy en problemas desbalanceados.
+
+## Transferencia isomorfa
+
+- **Sesgo-varianza ↔ MSE = Var + Bias²:** el eje central del ML es la descomposición de teoría de estimación; alta varianza pide regularizar (conecta con [[arena-dg1]] y [[arena-isl1]]).
+- **L1/L2 ↔ shrinkage de James-Stein y priors:** lasso/ridge encogen los pesos, cambiando sesgo por varianza, exactamente como Stein (conecta con [[arena-dg4]]).
+- **Precisión ↔ VPP y tasa base:** la precisión *es* el valor predictivo positivo; con clase rara, AUC alta no garantiza precisión (conecta con [[arena-q2]]).
+- **Bagging / Random Forest ↔ bootstrap y decorrelación:** promediar modelos sobre muestras con reemplazo baja varianza (conecta con [[arena-pst2]] e [[arena-isl4]]).
+- **PCA ↔ covarianza PSD:** las componentes son los ejes de la matriz de covarianza, semidefinida positiva (conecta con [[arena-q9]]).
+
+Moraleja de la arista: *accuracy engaña con clases raras; razona con precisión (=VPP) y recall, que el umbral intercambia según el costo de FP vs FN.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
