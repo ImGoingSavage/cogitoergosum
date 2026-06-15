@@ -154,6 +154,39 @@ Para cadenas ergódicas (irreducibles + aperiódicas): converge a π desde cualq
 
 ---
 
+## Mini-ejemplo trabajado: el principio de reflexión, intuición y número
+
+¿P(el máximo de un browniano en [0,t] supera el nivel a>0)? El principio de reflexión da una respuesta sorprendentemente limpia:
+
+> P(max_{s≤t} B_s ≥ a) = 2·P(B_t ≥ a) = 2Φ(−a/√t)
+
+La intuición: cada trayectoria que toca a y termina **por debajo** de a tiene una imagen espejo (reflejada en a desde el instante del toque) que termina **por encima**, igual de probable. Así, las que terminan ≥ a son la mitad de las que tocaron a → P(tocar) = 2·P(B_t ≥ a). Para a=√t: 2Φ(−1) ≈ 2·0.159 = **0.317**.
+
+**Predicción antes de seguir:** el browniano alcanza cualquier nivel a con probabilidad 1, pero ¿el tiempo esperado para hacerlo es finito? Respuesta: **no, E[T_a]=∞** (cola Lévy pesada). "Seguro que pasa" y "pasa en tiempo esperado finito" son cosas distintas; por eso el muestreo opcional falla aquí (E[B_{T_a}]=0≠a). El mismo abismo que separa recurrencia de la caminata (P=1) de su tiempo de retorno (∞).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** barrera/absorción → ruina del jugador (martingala) o reflexión para el máximo del BM.
+- **Contraejemplo (OU no es BM):** el browniano tiene Var=t creciente sin límite; el Ornstein-Uhlenbeck revierte a la media y su Var→σ²/(2κ) constante. Tratar un proceso con reversión como un BM rompe la escala √T.
+- **Caso borde (variación cuadrática):** (dB)²=dt no es cero — las trayectorias son tan rugosas que su variación total es ∞. El borde es la razón de que exista el término extra de Itô.
+
+## Errores típicos
+
+- **Conceptual:** olvidar el drift de Itô −σ²/2 al pasar de S a ln S (confunde media aritmética y geométrica).
+- **Técnico:** aplicar muestreo opcional sin verificar que el tiempo de parada tenga esperanza finita (falla para T_a).
+- **De supuestos:** escalar volatilidad con √t bajo reversión a la media (OU crece más lento).
+
+## Transferencia isomorfa
+
+- **Variación cuadrática (dB)²=dt ↔ corrección de Itô y prima de Jensen:** el término ½f''(dB)² es el origen del −σ²/2 del log-precio y del +σ²/2 de E[e^X] (conecta con [[arena-q7]]).
+- **Ruina del jugador ↔ muestreo opcional en barreras:** P(absorción)=k/N sale de que la posición es martingala (conecta con [[arena-q11]] y [[arena-fc4]]).
+- **Girsanov (cambiar drift μ→r) ↔ no-arbitraje y medida neutral al riesgo:** quitar el drift para valorar como esperanza descontada es por qué μ no entra en Black-Scholes (conecta con [[arena-q5]]).
+- **Proceso de Poisson (superposición/adelgazamiento) ↔ exponencial y Gamma:** tiempos entre llegadas Exp(λ), conteo Poisson(λt) (conecta con [[arena-b3]]).
+
+Moraleja de la arista: *(dB)²=dt es la fuente del −σ²/2 de Itô; y "alcanza el nivel con probabilidad 1" no implica "en tiempo esperado finito".*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

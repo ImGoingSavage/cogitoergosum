@@ -195,6 +195,44 @@ Monte Carlo: error independiente de la dimensión — ventaja decisiva en integr
 
 ---
 
+## Mini-ejemplo trabajado: Taylor convierte una opción en Δ y Γ
+
+¿Cómo cambia el precio de una opción C(S) ante un movimiento ΔS del subyacente? Expande en Taylor alrededor de S:
+
+> C(S+ΔS) ≈ C(S) + Δ·ΔS + ½Γ·(ΔS)²
+
+donde Δ=∂C/∂S y Γ=∂²C/∂S². La **primera derivada** (delta) es la sensibilidad lineal; la **segunda** (gamma) es la curvatura. Un portafolio delta-neutral (long call, short Δ acciones) borra el término lineal y deja:
+
+> ΔP&L ≈ ½Γ·(ΔS)² + Θ·dt
+
+Con Γ>0 (long gamma) ganas con movimientos grandes en cualquier dirección, pero pagas Θ<0 (el tiempo corroe). Toda la "magia" de los Greeks es una serie de Taylor truncada en el segundo término.
+
+**Predicción antes de seguir:** ¿reconoces Δ y Γ de algún otro instrumento? Respuesta: son **exactamente** la duración y la convexidad de un bono — primera y segunda derivada del precio frente a su factor de riesgo. Delta↔duración, gamma↔convexidad, theta↔carry. Una vez ves "Taylor de primer y segundo orden", el bono y la opción son el mismo objeto.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** sensibilidad de un precio a un factor → Taylor: primer orden (Δ/duración) + segundo orden (Γ/convexidad).
+- **Contraejemplo (PCA y escala):** la descomposición espectral de Σ supone features comparables; sin estandarizar, la variable de unidades grandes domina las componentes principales. PCA "sin escalar" engaña.
+- **Caso borde (covarianza singular):** si una variable es combinación lineal de otras (multicolinealidad perfecta), Σ tiene un valor propio 0 (semidefinida, no definida) y no es invertible. El borde conecta álgebra lineal con colinealidad.
+
+## Errores típicos
+
+- **Conceptual:** confundir media y mediana de una lognormal: E[e^X]=e^{μ+σ²/2} > e^μ por la convexidad (Jensen).
+- **Técnico:** usar L'Hôpital donde Taylor es inmediato (lim(e^x−1−x)/x²=½ sale de e^x−1−x≈x²/2).
+- **De supuestos:** aplicar Monte Carlo esperando convergencia rápida; el error cae como 1/√N (su ventaja es la dimensión, no la velocidad).
+
+## Transferencia isomorfa
+
+- **Taylor → Δ, Γ ↔ duración y convexidad:** primera y segunda derivada del precio son los mismos Greeks de un bono (conecta con [[arena-q7]]).
+- **Descomposición espectral (PCA) ↔ matriz de covarianza PSD:** las componentes son vectores propios de Σ, semidefinida positiva porque xᵀΣx=E[(xᵀ(X−μ))²]≥0 (conecta con [[arena-q9]] y [[arena-q6]]).
+- **mgf gaussiana e^{μt+σ²t²/2} ↔ valoración lognormal:** evaluarla en t=1 da E[e^X], el puente a la prima de Jensen (conecta con [[arena-q7]]).
+- **Newton-Raphson ↔ optimización del MLE:** resolver f'(θ)=0 con convergencia cuadrática es cómo se ajusta una logística o se maximiza una log-verosimilitud (conecta con [[arena-dg2]]).
+- **Monte Carlo O(1/√N) ↔ error estándar:** la lentitud √N es la misma del SE de la media y del bootstrap (conecta con [[arena-pst2]] y [[arena-fc2]]).
+
+Moraleja de la arista: *casi todo es una derivada: delta/gamma son duración/convexidad, PCA son los ejes de la covarianza, y el segundo orden de Taylor es donde vive la convexidad.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

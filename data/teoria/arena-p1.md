@@ -131,6 +131,43 @@ Solo hay 2 "buenas" disposiciones de 2^n posibles (todas CW o todas CCW).
 
 ---
 
+## Mini-ejemplo trabajado: telescopio que colapsa 99 términos en 2
+
+Quieres Σ_{k=1}^{99} 1/(k(k+1)). En vez de sumar 99 fracciones, descompón cada término:
+
+> 1/(k(k+1)) = 1/k − 1/(k+1)
+
+Al sumar, cada −1/(k+1) cancela el +1/(k+1) del término siguiente:
+
+> (1/1 − 1/2) + (1/2 − 1/3) + … + (1/99 − 1/100) = 1 − 1/100 = **99/100**
+
+Solo sobreviven el primer y el último término. El "trabajo" es ver la **fracción parcial**, no sumar.
+
+**Predicción antes de seguir:** ¿qué tienen en común el telescopio, contar cuadrados perfectos por paridad de divisores y los productos ∏(1−1/k²)? Respuesta: todos **colapsan una operación larga a sus extremos** al revelar una estructura que se cancela o se empareja. Es el mismo reflejo de "buscar la cantidad invariante que evita enumerar" — el corazón de los brainteasers cuantitativos.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** suma de la forma 1/(k(k+1)) o producto (1−1/k²) → fracciones parciales → telescopio.
+- **Contraejemplo (contar por número, no por posición):** para "cuántos dígitos 1 en {1,…,100}", contar número por número se enreda; el 11 aporta a dos posiciones. Cuenta **por posición** (unidades, decenas…).
+- **Caso borde (balanza ternaria):** k pesadas distinguen 3ᵏ bolas, no 2ᵏ — la balanza da tres resultados. Pensar en binario sobreestima las pesadas.
+
+## Errores típicos
+
+- **Conceptual:** intentar sumar/multiplicar a fuerza bruta cuando hay una identidad que colapsa (telescopio, diferencia de cuadrados).
+- **Técnico:** en potencias mod m, no reducir el exponente módulo el **período** del ciclo de residuos (Euler).
+- **De interpretación:** en el cumpleaños, pensar que el tamaño del grupo (n) es lo que crece, cuando lo que crece es el número de **pares** (~n²/2).
+
+## Transferencia isomorfa
+
+- **Telescopio ↔ invariante que colapsa el conteo:** cancelar términos intermedios es el mismo gesto que la paridad de divisores o un módulo que evita enumerar (conecta con [[arena-q3]]).
+- **Balanza 3ᵏ ↔ cota de información / log₃:** cada pesada extrae log₂3 bits; el límite del canal fija el mínimo de pruebas (conecta con [[arena-q13]]).
+- **Cumpleaños (pares ~n²/2) ↔ colisiones de hash:** el umbral √N de colisiones es el mismo conteo de pares (conecta con [[arena-fc1]] y [[arena-fc3]]).
+- **Σ k·xᵏ = x/(1−x)² ↔ esperanza geométrica y perpetuidad:** derivar la serie geométrica da E[geométrica] y el valor de un flujo creciente (conecta con [[arena-q5]] y [[arena-q8]]).
+
+Moraleja de la arista: *antes de calcular, busca la identidad que colapsa —telescopio, diferencia de cuadrados, módulo—; el esfuerzo está en reconocer el patrón, no en sumar.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

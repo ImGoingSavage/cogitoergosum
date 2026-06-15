@@ -162,6 +162,40 @@ X ~ Exp(λ), Y ~ Exp(μ), independientes:
 
 ---
 
+## Mini-ejemplo trabajado: "al menos un as" por complemento
+
+P(al menos un as en 5 cartas de una baraja de 52). Contar directamente "exactamente 1, 2, 3, 4 ases" y sumar es laborioso. El complemento lo vuelve trivial:
+
+> P(al menos uno) = 1 − P(ninguno) = 1 − C(48,5)/C(52,5) = 1 − 0.6588 = **0.3412**
+
+C(48,5) cuenta las manos sin ningún as; dividir entre todas las manos da P(ninguno), y 1 menos eso es la respuesta. Un solo cociente en vez de cuatro sumandos.
+
+**Predicción antes de seguir:** ¿cuándo el complemento NO ayuda? Respuesta: cuando "ninguno" es tan complejo como "al menos uno" — por ejemplo, "exactamente 2 ases" no tiene complemento simple. La regla: el complemento brilla para "al menos uno / al menos un éxito", porque "ninguno" suele ser un producto limpio de probabilidades. Reconocer la forma "al menos uno" es la señal.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** reconoce el modelo → retícula C(m+n,n), stars and bars C(n+k−1,k−1), ruina k/N, Poisson(np), competencia de exponenciales.
+- **Contraejemplo (ruina con desventaja):** con p=0.45 (no 0.5), P(llegar a N) no es k/N sino (1−ρᵏ)/(1−ρᴺ) con ρ=q/p; una desventaja del 5% compuesta es devastadora (32.8% vs 50%).
+- **Caso borde (exponencial sin memoria):** P(X>s+t|X>s)=P(X>t); el tiempo ya esperado no cambia el restante. La única continua con esa propiedad — el borde la define.
+
+## Errores típicos
+
+- **Conceptual:** usar la fórmula simétrica k/N de la ruina cuando el juego no es justo (p≠½).
+- **Técnico:** en stars and bars, confundir el caso xᵢ≥0 (C(n+k−1,k−1)) con xᵢ≥1 (C(n−1,k−1)).
+- **De supuestos:** aproximar Bin(n,p) por Poisson cuando p no es pequeño (la aproximación pide n grande, p chico, λ=np moderado).
+
+## Transferencia isomorfa
+
+- **Complemento "al menos uno" ↔ palomar y conteo:** 1−P(ninguno) es el mismo atajo que resuelve garantías y coincidencias (conecta con [[arena-fc1]]).
+- **Derangements (D(n)/n!→1/e) ↔ puntos fijos y el secretario:** el 1/e reaparece en sombreros y parada óptima (conecta con [[arena-fc1]]).
+- **Ruina del jugador ↔ muestreo opcional / barreras:** P(absorción) lineal en p=½ sale del argumento de martingala (conecta con [[arena-q11]] y [[arena-fc4]]).
+- **min(X,Y)~Exp(λ+μ), P(X<Y)=λ/(λ+μ) ↔ proceso de Poisson:** competir exponenciales es el mecanismo de las llegadas y la Gamma (conecta con [[arena-b3]] y [[arena-ads1]]).
+- **Coleccionista n·Hₙ ↔ récords y caché:** el número armónico cuenta cupones, récords y cobertura (conecta con [[arena-q6]]).
+
+Moraleja de la arista: *el trabajo está en reconocer el modelo, no en calcular; "al menos uno" pide complemento, y una desventaja compuesta en la ruina es letal.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
