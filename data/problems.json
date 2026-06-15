@@ -17793,6 +17793,1569 @@
         "inversion",
         "nivel-intermedio"
       ]
+    },
+    {
+      "id": 497,
+      "titulo": "Sin resolver la ecuación",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Sin hallar las raíces, determina la suma y el producto de las raíces de x² − 7x + 12 = 0.",
+      "hints": [
+        "Las fórmulas de Vieta relacionan los coeficientes con la suma y el producto de las raíces, sin necesidad de resolver.",
+        "Para x² + bx + c = 0, la suma de las raíces es −b y el producto es c.",
+        "Aquí b = −7 y c = 12.",
+        "Suma = −(−7) = 7; producto = 12.",
+        "(Verifica: las raíces son 3 y 4, suma 7, producto 12.)"
+      ],
+      "solucion": "Por Vieta, suma de raíces = −(−7) = 7 y producto = 12 (las raíces son 3 y 4). Verificado con Python.",
+      "explicacion": "Las fórmulas de Vieta hacen que la suma y el producto de las raíces sean invariantes legibles directamente de los coeficientes, sin resolver la ecuación.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "fórmulas de Vieta",
+        "suma y producto de raíces",
+        "coeficientes"
+      ],
+      "transferencias": [
+        "diseño de filtros",
+        "teoría de control",
+        "polinomios característicos"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 4/8 (Vieta's Formulas)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "vieta",
+        "cuadratica",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 498,
+      "titulo": "La suma de los cuadrados de las raíces",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Las raíces de x² + 5x − 14 = 0 son r y s. ¿Cuánto vale r² + s²?",
+      "hints": [
+        "No resuelvas: expresa r² + s² en términos de la suma y el producto de las raíces.",
+        "Identidad: r² + s² = (r + s)² − 2rs.",
+        "Por Vieta, r + s = −5 y rs = −14.",
+        "r² + s² = (−5)² − 2(−14) = 25 + 28.",
+        "= 53."
+      ],
+      "solucion": "r² + s² = (r+s)² − 2rs = (−5)² − 2(−14) = 25 + 28 = 53. Verificado con Python.",
+      "explicacion": "Las expresiones simétricas en las raíces (como r²+s²) se escriben siempre en términos de los invariantes de Vieta (suma y producto), evitando resolver la ecuación.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "expresiones simétricas",
+        "Vieta",
+        "identidad (r+s)²"
+      ],
+      "transferencias": [
+        "momentos estadísticos",
+        "energía de sistemas",
+        "polinomios simétricos"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (Vieta's Formulas)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "vieta",
+        "simetria",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 499,
+      "titulo": "Suma de recíprocos de un cúbico",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Las raíces del polinomio x³ − 6x² + 11x − 6 son p, q y r. ¿Cuánto vale 1/p + 1/q + 1/r?",
+      "hints": [
+        "La suma de recíprocos se escribe con Vieta: 1/p + 1/q + 1/r = (qr + pr + pq)/(pqr).",
+        "Para x³ + ax² + bx + c, la suma de productos por pares de raíces es b y el producto es −c.",
+        "Aquí la suma de productos por pares es 11 y el producto de las raíces es 6.",
+        "1/p + 1/q + 1/r = (suma de pares)/(producto) = 11/6.",
+        "(Verifica: las raíces son 1, 2, 3; 1 + 1/2 + 1/3 = 11/6.)"
+      ],
+      "solucion": "1/p + 1/q + 1/r = (pq+qr+rp)/(pqr) = 11/6 (por Vieta; las raíces son 1, 2, 3). Verificado con Python.",
+      "explicacion": "Vieta da todas las funciones simétricas de las raíces de un cúbico: suma, suma de pares y producto. La suma de recíprocos es solo el cociente de dos de ellas.",
+      "tiempo_estimado": 14,
+      "conceptos": [
+        "Vieta para cúbicos",
+        "suma de recíprocos",
+        "funciones simétricas"
+      ],
+      "transferencias": [
+        "circuitos",
+        "sistemas dinámicos",
+        "polinomios característicos"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (Vieta's Formulas)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "vieta",
+        "cubico",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 500,
+      "titulo": "La suma que se desmorona",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Calcula 1/(1·2) + 1/(2·3) + 1/(3·4) + ⋯ + 1/(99·100).",
+      "hints": [
+        "Cada término se puede partir en una diferencia: busca esa descomposición (fracciones parciales).",
+        "1/(n(n+1)) = 1/n − 1/(n+1).",
+        "Al sumar, casi todo se cancela: queda solo el primer y el último término (suma telescópica).",
+        "Suma = 1/1 − 1/100.",
+        "= 99/100."
+      ],
+      "solucion": "Como 1/(n(n+1)) = 1/n − 1/(n+1), la suma telescopa a 1 − 1/100 = 99/100. Verificado con Python.",
+      "explicacion": "En una suma telescópica, lo invariante es lo que NO se cancela: solo sobreviven los extremos. Reconocer la diferencia 1/n − 1/(n+1) colapsa cientos de términos en dos.",
+      "tiempo_estimado": 14,
+      "conceptos": [
+        "suma telescópica",
+        "fracciones parciales",
+        "cancelación"
+      ],
+      "transferencias": [
+        "series numéricas",
+        "análisis de algoritmos",
+        "sumas parciales"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 17 (Telescoping)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "telescopaje",
+        "series",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 501,
+      "titulo": "Telescopaje con impares",
+      "estrategia": "invariantes",
+      "dificultad": 4,
+      "enunciado": "Calcula 1/(1·3) + 1/(3·5) + 1/(5·7) + ⋯ + 1/(97·99).",
+      "hints": [
+        "Descompón cada término como diferencia, con cuidado por el salto de 2 entre los factores.",
+        "1/((2k−1)(2k+1)) = (1/2)·[1/(2k−1) − 1/(2k+1)].",
+        "La suma telescopa: sobreviven el primer 1/1 y el último −1/99, multiplicados por 1/2.",
+        "Suma = (1/2)(1 − 1/99).",
+        "= (1/2)(98/99) = 49/99."
+      ],
+      "solucion": "Como 1/((2k−1)(2k+1)) = (1/2)[1/(2k−1) − 1/(2k+1)], la suma telescopa a (1/2)(1 − 1/99) = 49/99. Verificado con Python.",
+      "explicacion": "El factor 1/2 aparece porque los factores difieren en 2. Tras la descomposición, el telescopaje deja solo los extremos: el invariante de la cancelación.",
+      "tiempo_estimado": 16,
+      "conceptos": [
+        "telescopaje",
+        "fracciones parciales",
+        "factor de ajuste"
+      ],
+      "transferencias": [
+        "series",
+        "procesamiento de señales",
+        "sumas cerradas"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 17 (Telescoping)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "telescopaje",
+        "series",
+        "invariante",
+        "nivel-avanzado"
+      ]
+    },
+    {
+      "id": 502,
+      "titulo": "El compañero conjugado",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Una ecuación cuadrática con coeficientes reales tiene a 3 + 2i como una de sus raíces. Si es mónica (coeficiente principal 1), ¿cuál es la ecuación?",
+      "hints": [
+        "Para coeficientes reales, las raíces complejas vienen en pares conjugados: si 3 + 2i es raíz, también lo es 3 − 2i.",
+        "La cuadrática mónica es (x − (3 + 2i))(x − (3 − 2i)).",
+        "Suma de raíces = (3 + 2i) + (3 − 2i) = 6; producto = (3 + 2i)(3 − 2i) = 9 + 4 = 13.",
+        "Por Vieta, la ecuación es x² − (suma)x + (producto).",
+        "= x² − 6x + 13."
+      ],
+      "solucion": "El conjugado 3 − 2i también es raíz; suma = 6, producto = (3+2i)(3−2i) = 13. La ecuación es x² − 6x + 13 = 0. Verificado con Python.",
+      "explicacion": "La invariancia bajo conjugación de los polinomios reales obliga a que las raíces no reales aparezcan en pares conjugados, cuya suma y producto son reales (aquí 6 y 13).",
+      "tiempo_estimado": 14,
+      "conceptos": [
+        "raíces conjugadas",
+        "coeficientes reales",
+        "Vieta"
+      ],
+      "transferencias": [
+        "análisis de señales",
+        "sistemas con resonancia",
+        "filtros"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 3/8 (Complex Numbers, Vieta)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "conjugado",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 503,
+      "titulo": "Suma de cuadrados desde suma y producto",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Dos números r y s cumplen r + s = 10 y r·s = 21. ¿Cuánto vale r² + s²?",
+      "hints": [
+        "Relaciona r² + s² con la suma y el producto mediante una identidad algebraica.",
+        "(r + s)² = r² + 2rs + s², así que r² + s² = (r + s)² − 2rs.",
+        "Sustituye r + s = 10 y rs = 21.",
+        "r² + s² = 10² − 2·21 = 100 − 42.",
+        "= 58."
+      ],
+      "solucion": "r² + s² = (r+s)² − 2rs = 100 − 42 = 58. Verificado con Python.",
+      "explicacion": "Conocer la suma y el producto basta para cualquier polinomio simétrico de dos variables. La identidad (r+s)² − 2rs es el puente invariante.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "expresiones simétricas",
+        "identidad (r+s)²",
+        "suma y producto"
+      ],
+      "transferencias": [
+        "estadística (varianza)",
+        "física de osciladores",
+        "álgebra"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (expresiones simétricas)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "simetria",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 504,
+      "titulo": "La suma de los cubos",
+      "estrategia": "invariantes",
+      "dificultad": 3,
+      "enunciado": "Si a + b = 5 y a·b = 6, ¿cuánto vale a³ + b³?",
+      "hints": [
+        "Existe una identidad que expresa a³ + b³ con la suma y el producto.",
+        "a³ + b³ = (a + b)³ − 3ab(a + b).",
+        "Sustituye a + b = 5 y ab = 6.",
+        "= 5³ − 3·6·5 = 125 − 90.",
+        "= 35."
+      ],
+      "solucion": "a³ + b³ = (a+b)³ − 3ab(a+b) = 125 − 90 = 35. Verificado con Python.",
+      "explicacion": "Los polinomios simétricos de grado superior también se reducen a la suma y el producto. La identidad de a³+b³ evita resolver para a y b por separado.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "polinomios simétricos",
+        "identidad a³+b³",
+        "suma y producto"
+      ],
+      "transferencias": [
+        "álgebra",
+        "criptografía",
+        "teoría de Galois elemental"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8/20 (simetría)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "simetria",
+        "invariante",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 505,
+      "titulo": "El producto que telescopa",
+      "estrategia": "invariantes",
+      "dificultad": 4,
+      "enunciado": "Calcula el producto (1 − 1/2²)(1 − 1/3²)(1 − 1/4²) ⋯ (1 − 1/10²).",
+      "hints": [
+        "Factoriza cada término como diferencia de cuadrados: 1 − 1/n² = (1 − 1/n)(1 + 1/n).",
+        "1 − 1/n² = ((n−1)/n)·((n+1)/n).",
+        "Escribe el producto como dos cadenas que se telescopan: ∏(n−1)/n · ∏(n+1)/n.",
+        "La primera cadena da 1/10 (de 1·2·…·9 sobre 2·3·…·10) y la segunda da 11/2.",
+        "Producto = (1/10)·(11/2) = 11/20."
+      ],
+      "solucion": "1 − 1/n² = ((n−1)/n)((n+1)/n); el producto de n=2 a 10 telescopa a (1/10)(11/2) = 11/20. Verificado con Python.",
+      "explicacion": "Un producto telescópico es el análogo multiplicativo de la suma telescópica: tras factorizar, casi todos los factores se cancelan y solo quedan los extremos.",
+      "tiempo_estimado": 16,
+      "conceptos": [
+        "producto telescópico",
+        "diferencia de cuadrados",
+        "cancelación"
+      ],
+      "transferencias": [
+        "productos infinitos",
+        "análisis",
+        "identidades de Wallis"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 17 (Telescoping)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "telescopaje",
+        "producto",
+        "invariante",
+        "nivel-avanzado"
+      ]
+    },
+    {
+      "id": 506,
+      "titulo": "El módulo escondido en el producto",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Calcula el producto (3 + 4i)(3 − 4i), donde i es la unidad imaginaria.",
+      "hints": [
+        "El producto de un número complejo por su conjugado siempre da un número real.",
+        "(a + bi)(a − bi) = a² + b² (es el cuadrado del módulo).",
+        "Aquí a = 3 y b = 4.",
+        "= 3² + 4² = 9 + 16.",
+        "= 25 (que es |3 + 4i|²)."
+      ],
+      "solucion": "(3 + 4i)(3 − 4i) = 3² + 4² = 25 = |3 + 4i|². Verificado con Python.",
+      "explicacion": "El producto de conjugados z·z̄ = |z|² es real e invariante: elimina la parte imaginaria. Es la base de la racionalización de denominadores complejos.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "conjugado complejo",
+        "módulo",
+        "z·z̄ = |z|²"
+      ],
+      "transferencias": [
+        "procesamiento de señales",
+        "mecánica cuántica",
+        "racionalización"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 3 (Complex Numbers)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "conjugado",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 507,
+      "titulo": "Otra suma simétrica",
+      "estrategia": "invariantes",
+      "dificultad": 2,
+      "enunciado": "Las raíces de x² − 8x + 15 = 0 son r y s. ¿Cuánto vale (r + 2)(s + 2)?",
+      "hints": [
+        "Expande (r + 2)(s + 2) y exprésalo con la suma y el producto de las raíces.",
+        "(r + 2)(s + 2) = rs + 2(r + s) + 4.",
+        "Por Vieta, r + s = 8 y rs = 15.",
+        "= 15 + 2·8 + 4 = 15 + 16 + 4.",
+        "= 35. (Verifica: raíces 3 y 5, (5)(7) = 35.)"
+      ],
+      "solucion": "(r+2)(s+2) = rs + 2(r+s) + 4 = 15 + 16 + 4 = 35 (raíces 3 y 5). Verificado con Python.",
+      "explicacion": "Cualquier expresión simétrica en las raíces, incluso desplazada, se evalúa con los invariantes de Vieta sin resolver la ecuación.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "Vieta",
+        "expresión simétrica",
+        "expansión"
+      ],
+      "transferencias": [
+        "transformación de raíces",
+        "diseño de polinomios",
+        "álgebra"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (Vieta's Formulas)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "vieta",
+        "simetria",
+        "invariante",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 508,
+      "titulo": "El vigésimo término",
+      "estrategia": "patrones",
+      "dificultad": 1,
+      "enunciado": "En una sucesión aritmética, el primer término es 3 y la diferencia común es 5. ¿Cuál es el vigésimo término?",
+      "hints": [
+        "En una sucesión aritmética cada término se obtiene sumando la diferencia común al anterior: hay una fórmula directa.",
+        "El n-ésimo término es a_n = a_1 + (n − 1)·d.",
+        "Aquí a_1 = 3, d = 5, n = 20.",
+        "a_20 = 3 + 19·5.",
+        "= 3 + 95 = 98."
+      ],
+      "solucion": "a_20 = a_1 + 19·d = 3 + 19·5 = 98. Verificado con Python.",
+      "explicacion": "El patrón aritmético (sumar siempre lo mismo) da una fórmula lineal en n. No hace falta listar los 20 términos.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "sucesión aritmética",
+        "término general",
+        "diferencia común"
+      ],
+      "transferencias": [
+        "depreciación lineal",
+        "planes de pago",
+        "progresiones"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 10 (Arithmetic Sequences)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "sucesiones",
+        "aritmetica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 509,
+      "titulo": "Suma de una progresión aritmética",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula la suma de los primeros 50 términos de la sucesión aritmética 2, 5, 8, 11, …",
+      "hints": [
+        "Primero halla el último término; luego usa la fórmula de la suma de una progresión aritmética.",
+        "Diferencia común d = 3; término 50 = 2 + 49·3 = 149.",
+        "La suma es (número de términos)·(primer + último)/2.",
+        "= 50·(2 + 149)/2.",
+        "= 50·151/2 = 3775."
+      ],
+      "solucion": "Término 50 = 2 + 49·3 = 149; suma = 50·(2+149)/2 = 3775. Verificado con Python.",
+      "explicacion": "La suma de una progresión aritmética es el promedio de los extremos por el número de términos: el patrón de Gauss de emparejar primero con último.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "serie aritmética",
+        "suma de Gauss",
+        "promedio de extremos"
+      ],
+      "transferencias": [
+        "acumulación de pagos",
+        "conteo",
+        "física del movimiento uniforme"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 10 (Arithmetic Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "aritmetica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 510,
+      "titulo": "Suma de una progresión geométrica",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula la suma de los primeros 10 términos de la sucesión geométrica 3, 6, 12, 24, …",
+      "hints": [
+        "En una geométrica cada término multiplica al anterior por una razón fija; hay una fórmula cerrada para la suma.",
+        "Razón r = 2, primer término a = 3, n = 10.",
+        "Suma = a·(rⁿ − 1)/(r − 1).",
+        "= 3·(2¹⁰ − 1)/(2 − 1) = 3·(1024 − 1).",
+        "= 3·1023 = 3069."
+      ],
+      "solucion": "Suma = 3·(2¹⁰ − 1)/(2 − 1) = 3·1023 = 3069. Verificado con Python.",
+      "explicacion": "El patrón geométrico (multiplicar por una razón) da una suma cerrada a(rⁿ−1)/(r−1). El crecimiento es exponencial, no lineal.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "serie geométrica",
+        "razón común",
+        "fórmula cerrada"
+      ],
+      "transferencias": [
+        "interés compuesto",
+        "crecimiento de poblaciones",
+        "decaimiento"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 10 (Geometric Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "geometrica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 511,
+      "titulo": "La serie geométrica infinita",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula la suma infinita 1 + 1/3 + 1/9 + 1/27 + ⋯",
+      "hints": [
+        "Es una serie geométrica con razón |r| < 1, que converge a un valor finito.",
+        "Razón r = 1/3, primer término a = 1.",
+        "Suma infinita = a/(1 − r) cuando |r| < 1.",
+        "= 1/(1 − 1/3).",
+        "= 1/(2/3) = 3/2."
+      ],
+      "solucion": "Suma = a/(1 − r) = 1/(1 − 1/3) = 3/2. Verificado con Python.",
+      "explicacion": "Cuando la razón cumple |r| < 1, las potencias se achican y la serie geométrica converge a a/(1−r). El patrón infinito tiene suma finita.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "serie geométrica infinita",
+        "convergencia",
+        "a/(1−r)"
+      ],
+      "transferencias": [
+        "fractales",
+        "decimales periódicos",
+        "valor presente perpetuo"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 10 (Geometric Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "geometrica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 512,
+      "titulo": "La suma de los primeros cuadrados",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula 1² + 2² + 3² + ⋯ + 10².",
+      "hints": [
+        "Existe una fórmula cerrada para la suma de los primeros n cuadrados.",
+        "1² + 2² + ⋯ + n² = n(n + 1)(2n + 1)/6.",
+        "Aquí n = 10.",
+        "= 10·11·21/6.",
+        "= 2310/6 = 385."
+      ],
+      "solucion": "∑_{k=1}^{10} k² = 10·11·21/6 = 385. Verificado con Python.",
+      "explicacion": "La suma de cuadrados sigue un patrón polinómico cúbico en n. La fórmula n(n+1)(2n+1)/6 lo captura sin sumar término a término.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "suma de cuadrados",
+        "fórmula cerrada",
+        "n(n+1)(2n+1)/6"
+      ],
+      "transferencias": [
+        "momentos de inercia",
+        "estadística",
+        "sumas de Riemann"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 17 (Sums of Polynomial Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "potencias",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 513,
+      "titulo": "La suma de los primeros cubos",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula 1³ + 2³ + 3³ + 4³ + 5³.",
+      "hints": [
+        "La suma de los primeros cubos tiene una fórmula sorprendentemente bella.",
+        "1³ + 2³ + ⋯ + n³ = (1 + 2 + ⋯ + n)² = [n(n+1)/2]².",
+        "Aquí n = 5, y 1 + 2 + 3 + 4 + 5 = 15.",
+        "= 15².",
+        "= 225."
+      ],
+      "solucion": "∑_{k=1}^{5} k³ = [5·6/2]² = 15² = 225. Verificado con Python.",
+      "explicacion": "El patrón notable: la suma de los primeros n cubos es el CUADRADO de la suma de los primeros n enteros. Conecta cubos con triangulares.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "suma de cubos",
+        "(∑k)²",
+        "identidad de Nicómaco"
+      ],
+      "transferencias": [
+        "geometría de números",
+        "demostraciones visuales",
+        "estadística"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 17 (Sums of Polynomial Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "potencias",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 514,
+      "titulo": "Un logaritmo en base dos",
+      "estrategia": "patrones",
+      "dificultad": 1,
+      "enunciado": "¿Cuánto vale log₂(64)?",
+      "hints": [
+        "El logaritmo en base 2 de un número pregunta: ¿a qué potencia hay que elevar 2 para obtenerlo?",
+        "Busca el exponente e tal que 2^e = 64.",
+        "Lista potencias de 2: 2, 4, 8, 16, 32, 64.",
+        "64 = 2⁶.",
+        "log₂(64) = 6."
+      ],
+      "solucion": "log₂(64) = 6 porque 2⁶ = 64. Verificado con Python.",
+      "explicacion": "El logaritmo recorre el patrón de las potencias al revés: cuenta cuántas veces se multiplica la base. log₂ de una potencia de 2 es su exponente.",
+      "tiempo_estimado": 6,
+      "conceptos": [
+        "logaritmo",
+        "potencias de 2",
+        "exponente"
+      ],
+      "transferencias": [
+        "escala decibélica",
+        "complejidad algorítmica",
+        "teoría de la información"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 13 (Introduction to Logarithms)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "exponentes",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 515,
+      "titulo": "Logaritmo en base tres",
+      "estrategia": "patrones",
+      "dificultad": 1,
+      "enunciado": "¿Cuánto vale log₃(81)?",
+      "hints": [
+        "Pregunta: ¿a qué potencia hay que elevar 3 para obtener 81?",
+        "Lista potencias de 3: 3, 9, 27, 81.",
+        "81 = 3⁴.",
+        "Por tanto el exponente es 4.",
+        "log₃(81) = 4."
+      ],
+      "solucion": "log₃(81) = 4 porque 3⁴ = 81. Verificado con Python.",
+      "explicacion": "El mismo patrón en otra base: el logaritmo de una potencia de la base es directamente su exponente. Las potencias crecen y el log las 'cuenta'.",
+      "tiempo_estimado": 6,
+      "conceptos": [
+        "logaritmo",
+        "potencias de 3",
+        "exponente"
+      ],
+      "transferencias": [
+        "escalas logarítmicas",
+        "crecimiento exponencial",
+        "pH químico"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 13 (Introduction to Logarithms)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "exponentes",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 516,
+      "titulo": "El decimal que se repite",
+      "estrategia": "patrones",
+      "dificultad": 3,
+      "enunciado": "Expresa el decimal periódico 0.272727… (con el bloque '27' repitiéndose) como una fracción en su forma más simple.",
+      "hints": [
+        "Un decimal periódico tiene un patrón repetitivo que se puede 'atrapar' con un truco algebraico.",
+        "Sea x = 0.272727…; como el bloque tiene 2 cifras, multiplica por 100: 100x = 27.2727…",
+        "Resta: 100x − x = 27, es decir 99x = 27.",
+        "x = 27/99.",
+        "Simplifica: 27/99 = 3/11."
+      ],
+      "solucion": "Sea x = 0.27̄; 100x − x = 27 ⇒ x = 27/99 = 3/11. Verificado con Python.",
+      "explicacion": "El patrón periódico se elimina restando dos múltiplos del número. Un bloque de k cifras se atrapa multiplicando por 10ᵏ. Todo decimal periódico es racional.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "decimal periódico",
+        "serie geométrica",
+        "fracción"
+      ],
+      "transferencias": [
+        "conversión de bases",
+        "representación de números",
+        "señales periódicas"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 10/13 (decimales periódicos)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "decimales",
+        "patron",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 517,
+      "titulo": "Una potencia de dos",
+      "estrategia": "patrones",
+      "dificultad": 1,
+      "enunciado": "¿Cuánto vale 2¹⁰?",
+      "hints": [
+        "Multiplica 2 por sí mismo 10 veces, o usa potencias intermedias conocidas.",
+        "2⁵ = 32.",
+        "2¹⁰ = (2⁵)² = 32².",
+        "32² = 1024.",
+        "2¹⁰ = 1024."
+      ],
+      "solucion": "2¹⁰ = (2⁵)² = 32² = 1024. Verificado con Python.",
+      "explicacion": "Las leyes de exponentes permiten construir potencias grandes a partir de pequeñas: 2¹⁰ = (2⁵)². El valor 1024 ≈ 1000 es la base de los 'kilo' informáticos.",
+      "tiempo_estimado": 6,
+      "conceptos": [
+        "potencias",
+        "leyes de exponentes",
+        "2¹⁰=1024"
+      ],
+      "transferencias": [
+        "informática (kibibytes)",
+        "crecimiento exponencial",
+        "duplicación"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 13 (Exponential Function Basics)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "exponentes",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 518,
+      "titulo": "Suma de una progresión con paso tres",
+      "estrategia": "patrones",
+      "dificultad": 2,
+      "enunciado": "Calcula la suma de los primeros 15 términos de la sucesión aritmética 1, 4, 7, 10, …",
+      "hints": [
+        "Halla el término 15 y luego promedia extremos por el número de términos.",
+        "Diferencia común d = 3; término 15 = 1 + 14·3 = 43.",
+        "Suma = (número de términos)·(primer + último)/2.",
+        "= 15·(1 + 43)/2.",
+        "= 15·44/2 = 15·22 = 330."
+      ],
+      "solucion": "Término 15 = 1 + 14·3 = 43; suma = 15·(1+43)/2 = 330. Verificado con Python.",
+      "explicacion": "El patrón de Gauss vuelve a aparecer: emparejar el primero con el último da el promedio, que multiplicado por la cantidad de términos da la suma.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "serie aritmética",
+        "suma de Gauss",
+        "término general"
+      ],
+      "transferencias": [
+        "acumulación",
+        "conteo de filas",
+        "progresiones"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 10 (Arithmetic Series)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "series",
+        "aritmetica",
+        "patron",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 519,
+      "titulo": "El mínimo de x más su recíproco",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Para x > 0, ¿cuál es el valor mínimo de x + 1/x?",
+      "hints": [
+        "Dos números positivos cuyo producto es fijo tienen suma mínima cuando son iguales (AM-GM).",
+        "Por AM-GM, x + 1/x ≥ 2·√(x · 1/x).",
+        "El producto x·(1/x) = 1 es constante.",
+        "x + 1/x ≥ 2·√1 = 2, con igualdad cuando x = 1/x, es decir x = 1.",
+        "El mínimo es 2."
+      ],
+      "solucion": "Por AM-GM, x + 1/x ≥ 2√(x·1/x) = 2, con igualdad en x = 1. El mínimo es 2. Verificado con Python.",
+      "explicacion": "La desigualdad AM-GM dice que la media aritmética ≥ la geométrica, con igualdad cuando los términos son iguales. Es la herramienta estándar para mínimos de sumas con producto fijo.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "desigualdad AM-GM",
+        "producto constante",
+        "igualdad en x=1"
+      ],
+      "transferencias": [
+        "optimización de costos",
+        "diseño eficiente",
+        "economía"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (AM-GM)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 520,
+      "titulo": "Mínimo con un cuatro",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Para x > 0, ¿cuál es el valor mínimo de x + 4/x?",
+      "hints": [
+        "Aplica AM-GM a los dos términos, cuyo producto es constante.",
+        "x + 4/x ≥ 2·√(x · 4/x).",
+        "El producto x·(4/x) = 4.",
+        "x + 4/x ≥ 2·√4 = 4, con igualdad cuando x = 4/x, es decir x = 2.",
+        "El mínimo es 4."
+      ],
+      "solucion": "Por AM-GM, x + 4/x ≥ 2√4 = 4, con igualdad en x = 2. El mínimo es 4. Verificado con Python.",
+      "explicacion": "AM-GM funciona siempre que el producto de los términos sea constante: aquí x·(4/x)=4. La igualdad ocurre cuando los términos se igualan.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "AM-GM",
+        "producto constante",
+        "mínimo"
+      ],
+      "transferencias": [
+        "optimización",
+        "diseño de recipientes",
+        "logística"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (AM-GM)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 521,
+      "titulo": "La cima de la parábola",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "¿Cuál es el valor máximo de −x² + 6x − 5?",
+      "hints": [
+        "La gráfica abre hacia abajo (coeficiente de x² negativo), así que hay un máximo en el vértice.",
+        "Completa el cuadrado: −(x² − 6x) − 5 = −((x − 3)² − 9) − 5.",
+        "= −(x − 3)² + 9 − 5 = −(x − 3)² + 4.",
+        "El término −(x − 3)² ≤ 0, máximo 0 cuando x = 3.",
+        "El valor máximo es 4."
+      ],
+      "solucion": "−x² + 6x − 5 = −(x − 3)² + 4; como −(x−3)² ≤ 0, el máximo es 4 en x = 3. Verificado con Python.",
+      "explicacion": "Completar el cuadrado revela el vértice de la parábola, donde está el óptimo. Es la 'desigualdad trivial' (cuadrado ≥ 0) aplicada a cuadráticas.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "completar el cuadrado",
+        "vértice",
+        "máximo de cuadrática"
+      ],
+      "transferencias": [
+        "trayectorias balísticas",
+        "maximizar ingresos",
+        "optimización"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 5 (Maxima and Minima of Quadratics)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cuadratica",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 522,
+      "titulo": "Producto máximo con suma fija",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "Dos números positivos suman 10. ¿Cuál es el mayor valor posible de su producto?",
+      "hints": [
+        "Con suma fija, el producto de dos positivos es máximo cuando son iguales (AM-GM).",
+        "Sean a y b con a + b = 10. Por AM-GM, √(ab) ≤ (a + b)/2.",
+        "√(ab) ≤ 5, así que ab ≤ 25.",
+        "La igualdad ocurre cuando a = b = 5.",
+        "El producto máximo es 25."
+      ],
+      "solucion": "Por AM-GM, ab ≤ ((a+b)/2)² = 25, con igualdad en a = b = 5. El producto máximo es 25. Verificado con Python.",
+      "explicacion": "El recíproco de un problema AM-GM: a suma fija, el producto se maximiza con términos iguales. Es el principio isoperimétrico en versión algebraica.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "AM-GM",
+        "suma fija",
+        "producto máximo"
+      ],
+      "transferencias": [
+        "áreas máximas",
+        "asignación de recursos",
+        "diseño"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (AM-GM)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 523,
+      "titulo": "Mínimo de una fracción",
+      "estrategia": "optimizacion",
+      "dificultad": 3,
+      "enunciado": "Para x > 0, ¿cuál es el valor mínimo de (x² + 9)/x?",
+      "hints": [
+        "Separa la fracción en dos términos y aplica AM-GM.",
+        "(x² + 9)/x = x + 9/x.",
+        "Por AM-GM, x + 9/x ≥ 2·√(x · 9/x).",
+        "= 2·√9 = 6, con igualdad cuando x = 9/x, es decir x = 3.",
+        "El mínimo es 6."
+      ],
+      "solucion": "(x² + 9)/x = x + 9/x ≥ 2√9 = 6, con igualdad en x = 3. El mínimo es 6. Verificado con Python.",
+      "explicacion": "Separar una fracción en una suma del tipo x + c/x prepara el terreno para AM-GM. El mínimo es 2√c, alcanzado cuando los términos se igualan.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "AM-GM",
+        "separar fracción",
+        "mínimo 2√c"
+      ],
+      "transferencias": [
+        "optimización de costos",
+        "diseño de cajas",
+        "economía"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (Maxima and Minima)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 524,
+      "titulo": "Cauchy-Schwarz en acción",
+      "estrategia": "optimizacion",
+      "dificultad": 4,
+      "enunciado": "Si x² + y² = 1, ¿cuál es el valor máximo de 3x + 4y?",
+      "hints": [
+        "La desigualdad de Cauchy-Schwarz acota un producto escalar por el producto de las magnitudes.",
+        "Cauchy-Schwarz: (3x + 4y)² ≤ (3² + 4²)(x² + y²).",
+        "= (9 + 16)(1) = 25.",
+        "Así que 3x + 4y ≤ √25 = 5, con igualdad cuando (x, y) es proporcional a (3, 4).",
+        "El valor máximo es 5."
+      ],
+      "solucion": "Por Cauchy-Schwarz, (3x+4y)² ≤ (3²+4²)(x²+y²) = 25, así que 3x+4y ≤ 5 (igualdad en (x,y) ∝ (3,4)). El máximo es 5. Verificado con Python.",
+      "explicacion": "Cauchy-Schwarz acota combinaciones lineales sujetas a una restricción cuadrática; la igualdad se da cuando los vectores son paralelos. Geométricamente, 5 es la longitud del vector (3,4).",
+      "tiempo_estimado": 16,
+      "conceptos": [
+        "desigualdad de Cauchy-Schwarz",
+        "restricción cuadrática",
+        "vectores paralelos"
+      ],
+      "transferencias": [
+        "optimización con restricciones",
+        "proyecciones",
+        "aprendizaje automático"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (Cauchy-Schwarz Inequality)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cauchy-schwarz",
+        "optimizacion",
+        "nivel-avanzado"
+      ]
+    },
+    {
+      "id": 525,
+      "titulo": "Mínimo con coeficientes",
+      "estrategia": "optimizacion",
+      "dificultad": 3,
+      "enunciado": "Para x > 0, ¿cuál es el valor mínimo de 2x + 3/x? (Da la respuesta exacta.)",
+      "hints": [
+        "Aplica AM-GM a los dos términos 2x y 3/x.",
+        "2x + 3/x ≥ 2·√(2x · 3/x).",
+        "El producto (2x)(3/x) = 6.",
+        "= 2·√6, con igualdad cuando 2x = 3/x, es decir x = √(3/2).",
+        "El mínimo es 2√6."
+      ],
+      "solucion": "Por AM-GM, 2x + 3/x ≥ 2√((2x)(3/x)) = 2√6, con igualdad en x = √(3/2). El mínimo es 2√6 ≈ 4.90. Verificado con Python.",
+      "explicacion": "AM-GM se aplica a cualquier par de términos positivos con producto constante, aun con coeficientes. El mínimo de ax + b/x es 2√(ab).",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "AM-GM",
+        "coeficientes",
+        "mínimo 2√(ab)"
+      ],
+      "transferencias": [
+        "optimización",
+        "ingeniería",
+        "diseño de costos"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (AM-GM)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 526,
+      "titulo": "Mínimo de una suma de cuadrados",
+      "estrategia": "optimizacion",
+      "dificultad": 3,
+      "enunciado": "Si x + y = 6, ¿cuál es el valor mínimo de x² + y²?",
+      "hints": [
+        "Una suma de cuadrados con suma de variables fija es mínima cuando las variables son iguales.",
+        "Usa x² + y² = (x + y)² − 2xy = 36 − 2xy: minimizar x²+y² es maximizar xy.",
+        "Por AM-GM, xy es máximo (= 9) cuando x = y = 3.",
+        "x² + y² = 36 − 2·9 = 18 (también 3² + 3² = 18).",
+        "El mínimo es 18."
+      ],
+      "solucion": "x² + y² = (x+y)² − 2xy = 36 − 2xy, mínimo cuando xy es máximo (x=y=3): 36 − 18 = 18. Verificado con Python.",
+      "explicacion": "Minimizar una suma de cuadrados con suma lineal fija equivale a maximizar el producto (AM-GM): el óptimo es simétrico, con las variables iguales.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "suma de cuadrados",
+        "AM-GM",
+        "simetría del óptimo"
+      ],
+      "transferencias": [
+        "mínimos cuadrados",
+        "estadística (varianza)",
+        "física"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (Maxima and Minima)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "optimizacion",
+        "simetria",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 527,
+      "titulo": "Tres factores con producto fijo",
+      "estrategia": "optimizacion",
+      "dificultad": 4,
+      "enunciado": "Tres números positivos a, b, c tienen producto a·b·c = 8. ¿Cuál es el valor mínimo de su suma a + b + c?",
+      "hints": [
+        "Usa AM-GM para tres variables: la media aritmética ≥ la media geométrica.",
+        "(a + b + c)/3 ≥ ∛(abc).",
+        "∛(abc) = ∛8 = 2.",
+        "a + b + c ≥ 3·2 = 6, con igualdad cuando a = b = c = 2.",
+        "El mínimo es 6."
+      ],
+      "solucion": "Por AM-GM con tres variables, a + b + c ≥ 3∛(abc) = 3∛8 = 6, con igualdad en a = b = c = 2. El mínimo es 6. Verificado con Python.",
+      "explicacion": "AM-GM se generaliza a n variables: la suma es mínima (con producto fijo) cuando todas son iguales. Aquí ∛8 = 2 fija el óptimo simétrico.",
+      "tiempo_estimado": 16,
+      "conceptos": [
+        "AM-GM con n variables",
+        "producto fijo",
+        "óptimo simétrico"
+      ],
+      "transferencias": [
+        "optimización de volúmenes",
+        "diseño de empaques",
+        "economía"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (AM-GM with More Variables)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "am-gm",
+        "optimizacion",
+        "nivel-avanzado"
+      ]
+    },
+    {
+      "id": 528,
+      "titulo": "Maximizar un producto lineal",
+      "estrategia": "optimizacion",
+      "dificultad": 2,
+      "enunciado": "¿Cuál es el valor máximo de 100x − x²?",
+      "hints": [
+        "La expresión es una parábola que abre hacia abajo; su máximo está en el vértice.",
+        "Factoriza o completa el cuadrado: 100x − x² = −(x² − 100x).",
+        "El vértice de x² − 100x está en x = 50.",
+        "Evalúa: 100·50 − 50² = 5000 − 2500.",
+        "= 2500."
+      ],
+      "solucion": "100x − x² es máximo en el vértice x = 50: 100·50 − 50² = 2500. Verificado con Python.",
+      "explicacion": "Para una cuadrática ax² + bx + c con a < 0, el máximo está en x = −b/(2a). Aquí el vértice en x = 50 da el valor 2500.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "vértice de parábola",
+        "máximo de cuadrática",
+        "x = −b/2a"
+      ],
+      "transferencias": [
+        "maximizar ingresos",
+        "física (alcance)",
+        "optimización"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 5 (Maxima and Minima of Quadratics)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cuadratica",
+        "optimizacion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 529,
+      "titulo": "Tres variables, suma fija",
+      "estrategia": "optimizacion",
+      "dificultad": 3,
+      "enunciado": "Si x + y + z = 12, ¿cuál es el valor mínimo de x² + y² + z²?",
+      "hints": [
+        "Una suma de cuadrados con la suma de las variables fija es mínima cuando todas son iguales.",
+        "Por la desigualdad de la media cuadrática (o Cauchy-Schwarz), x²+y²+z² ≥ (x+y+z)²/3.",
+        "= 12²/3 = 144/3 = 48.",
+        "La igualdad ocurre cuando x = y = z = 4.",
+        "El mínimo es 48 (y 4² · 3 = 48)."
+      ],
+      "solucion": "Por QM-AM (o Cauchy-Schwarz), x²+y²+z² ≥ (x+y+z)²/3 = 144/3 = 48, con igualdad en x=y=z=4. El mínimo es 48. Verificado con Python.",
+      "explicacion": "La desigualdad (∑xᵢ²) ≥ (∑xᵢ)²/n (media cuadrática ≥ media aritmética) generaliza el caso de dos variables: el óptimo reparte el total por igual.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "media cuadrática vs aritmética",
+        "Cauchy-Schwarz",
+        "óptimo simétrico"
+      ],
+      "transferencias": [
+        "mínimos cuadrados",
+        "reparto equitativo",
+        "estadística"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 12 (Maxima and Minima)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "optimizacion",
+        "cauchy-schwarz",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 530,
+      "titulo": "Construir la cuadrática",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Halla la ecuación cuadrática mónica (coeficiente principal 1) cuyas raíces son 2 y 5.",
+      "hints": [
+        "Trabaja hacia atrás desde las raíces: una cuadrática mónica es (x − r₁)(x − r₂).",
+        "(x − 2)(x − 5).",
+        "Por Vieta, la ecuación es x² − (suma de raíces)x + (producto).",
+        "Suma = 2 + 5 = 7; producto = 2·5 = 10.",
+        "x² − 7x + 10 = 0."
+      ],
+      "solucion": "La cuadrática mónica es (x − 2)(x − 5) = x² − 7x + 10. Verificado con Python.",
+      "explicacion": "Construir un polinomio desde sus raíces es invertir las fórmulas de Vieta: la suma de las raíces da el coeficiente lineal (con signo) y el producto da el término independiente.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "construir desde raíces",
+        "Vieta inversa",
+        "polinomio mónico"
+      ],
+      "transferencias": [
+        "diseño de filtros",
+        "asignación de polos",
+        "control"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (Using Roots to Make Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "vieta",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 531,
+      "titulo": "Cuadrática con raíces complejas",
+      "estrategia": "inversion",
+      "dificultad": 3,
+      "enunciado": "Halla la ecuación cuadrática mónica de coeficientes reales que tiene a 3 + 2i como una de sus raíces.",
+      "hints": [
+        "Coeficientes reales ⇒ la otra raíz es el conjugado 3 − 2i. Trabaja hacia atrás desde el par.",
+        "La ecuación es (x − (3 + 2i))(x − (3 − 2i)).",
+        "Suma de raíces = 6; producto = (3 + 2i)(3 − 2i) = 9 + 4 = 13.",
+        "Por Vieta, x² − 6x + 13.",
+        "x² − 6x + 13 = 0."
+      ],
+      "solucion": "Con raíces 3 ± 2i: suma 6, producto 13 ⇒ x² − 6x + 13 = 0. Verificado con Python.",
+      "explicacion": "Para reconstruir un polinomio real con una raíz compleja hay que incluir su conjugado; así la suma y el producto salen reales y Vieta inversa da los coeficientes.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "construir desde raíces",
+        "conjugado",
+        "Vieta inversa"
+      ],
+      "transferencias": [
+        "diseño de sistemas estables",
+        "filtros",
+        "EDOs"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (Using Roots to Make Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "complejos",
+        "vieta",
+        "inversion",
+        "nivel-intermedio"
+      ]
+    },
+    {
+      "id": 532,
+      "titulo": "El logaritmo deshace la potencia",
+      "estrategia": "inversion",
+      "dificultad": 1,
+      "enunciado": "Resuelve para x: 2ˣ = 32.",
+      "hints": [
+        "Para despejar un exponente, aplica la operación inversa de la exponencial: el logaritmo.",
+        "x = log₂(32).",
+        "Equivale a preguntar: ¿qué potencia de 2 da 32?",
+        "32 = 2⁵.",
+        "x = 5."
+      ],
+      "solucion": "2ˣ = 32 = 2⁵ ⇒ x = 5. Verificado con Python.",
+      "explicacion": "El logaritmo es la función inversa de la exponencial: deshace la potencia para despejar el exponente. Resolver 2ˣ = 32 es leer el exponente de 32 en base 2.",
+      "tiempo_estimado": 6,
+      "conceptos": [
+        "logaritmo como inverso",
+        "ecuación exponencial",
+        "despejar exponente"
+      ],
+      "transferencias": [
+        "crecimiento/decaimiento",
+        "complejidad algorítmica",
+        "finanzas"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 13 (Switching Between Logs and Exponents)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 533,
+      "titulo": "La exponencial deshace el logaritmo",
+      "estrategia": "inversion",
+      "dificultad": 1,
+      "enunciado": "Resuelve para x: log₂(x) = 5.",
+      "hints": [
+        "El logaritmo y la exponencial son inversos: para deshacer log₂, eleva 2 a ambos lados.",
+        "Si log₂(x) = 5, entonces x = 2⁵.",
+        "Calcula 2⁵.",
+        "= 32.",
+        "x = 32."
+      ],
+      "solucion": "log₂(x) = 5 ⇒ x = 2⁵ = 32. Verificado con Python.",
+      "explicacion": "Para despejar una incógnita dentro de un logaritmo se aplica la exponencial (la inversa). Es la otra cara del problema anterior.",
+      "tiempo_estimado": 6,
+      "conceptos": [
+        "exponencial como inverso",
+        "ecuación logarítmica",
+        "despejar"
+      ],
+      "transferencias": [
+        "escalas logarítmicas",
+        "química (pH)",
+        "acústica"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 13 (Switching Between Logs and Exponents)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "logaritmos",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 534,
+      "titulo": "Deshacer una función",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Sea f(x) = 2x + 3. ¿Para qué valor de x se cumple f(x) = 11? (Es decir, evalúa f⁻¹(11).)",
+      "hints": [
+        "Buscar f⁻¹(11) es deshacer las operaciones de f en orden inverso.",
+        "f multiplica por 2 y luego suma 3; para invertir, primero resta 3 y luego divide entre 2.",
+        "Plantea 2x + 3 = 11.",
+        "2x = 8.",
+        "x = 4."
+      ],
+      "solucion": "2x + 3 = 11 ⇒ x = 4, así que f⁻¹(11) = 4. Verificado con Python.",
+      "explicacion": "La función inversa deshace las operaciones en orden contrario: lo último que hace f (sumar 3) se deshace primero. Es pensar el proceso hacia atrás.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "función inversa",
+        "deshacer operaciones",
+        "despejar"
+      ],
+      "transferencias": [
+        "criptografía",
+        "conversión de unidades",
+        "decodificación"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 2 (Inverse Functions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "funciones",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 535,
+      "titulo": "Una sucesión definida por recurrencia",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Una función cumple f(x + 1) = f(x) + 2 para todo x, y f(1) = 5. ¿Cuánto vale f(10)?",
+      "hints": [
+        "La recurrencia dice que cada paso suma 2; reconstruye f(10) avanzando desde f(1).",
+        "De f(1) a f(10) hay 9 pasos, cada uno suma 2.",
+        "f(10) = f(1) + 9·2.",
+        "= 5 + 18.",
+        "= 23."
+      ],
+      "solucion": "f(10) = f(1) + 9·2 = 5 + 18 = 23. Verificado con Python.",
+      "explicacion": "Una recurrencia f(x+1) = f(x) + d genera una progresión aritmética; reconstruir un valor lejano es sumar d tantas veces como pasos haya. Es desplegar la definición hacia adelante.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "recurrencia",
+        "progresión aritmética",
+        "reconstruir valor"
+      ],
+      "transferencias": [
+        "sucesiones recursivas",
+        "programación dinámica",
+        "modelos iterativos"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 17 (Algebra of Recursive Sequences)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "funciones",
+        "recurrencia",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 536,
+      "titulo": "Resolver dentro de una función",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Sea f(x) = (x − 1)/2. ¿Para qué valor de x se cumple f(x) = 4?",
+      "hints": [
+        "Deshaz las operaciones de f en orden inverso para despejar x.",
+        "Plantea (x − 1)/2 = 4.",
+        "Multiplica por 2: x − 1 = 8.",
+        "Suma 1: x = 9.",
+        "x = 9."
+      ],
+      "solucion": "(x − 1)/2 = 4 ⇒ x − 1 = 8 ⇒ x = 9. Verificado con Python.",
+      "explicacion": "Resolver f(x) = valor es invertir paso a paso: deshacer la división (multiplicar) y luego la resta (sumar). El orden inverso es la clave.",
+      "tiempo_estimado": 10,
+      "conceptos": [
+        "función inversa",
+        "despejar",
+        "orden inverso de operaciones"
+      ],
+      "transferencias": [
+        "decodificación",
+        "conversión de escalas",
+        "criptografía"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 2 (Inverse Functions)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "funciones",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 537,
+      "titulo": "Construir el cúbico",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Halla el polinomio cúbico mónico cuyas raíces son 1, 2 y 3.",
+      "hints": [
+        "Trabaja hacia atrás: un cúbico mónico con esas raíces es (x − 1)(x − 2)(x − 3).",
+        "Multiplica los dos primeros: (x − 1)(x − 2) = x² − 3x + 2.",
+        "Multiplica por (x − 3): (x² − 3x + 2)(x − 3).",
+        "= x³ − 3x² + 2x − 3x² + 9x − 6 = x³ − 6x² + 11x − 6.",
+        "El polinomio es x³ − 6x² + 11x − 6."
+      ],
+      "solucion": "(x − 1)(x − 2)(x − 3) = x³ − 6x² + 11x − 6. Verificado con Python.",
+      "explicacion": "Construir un cúbico desde sus raíces es invertir Vieta para tres raíces: los coeficientes son (con signos) la suma, la suma de pares y el producto de las raíces.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "construir desde raíces",
+        "Vieta inversa",
+        "cúbico mónico"
+      ],
+      "transferencias": [
+        "diseño de polinomios",
+        "asignación de polos",
+        "interpolación"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 8 (Using Roots to Make Equations)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "vieta",
+        "cubico",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 538,
+      "titulo": "Otra exponencial",
+      "estrategia": "inversion",
+      "dificultad": 2,
+      "enunciado": "Resuelve para x: 3^(x − 1) = 27.",
+      "hints": [
+        "Expresa ambos lados como potencias de la misma base para igualar exponentes.",
+        "27 = 3³.",
+        "Entonces 3^(x − 1) = 3³.",
+        "Como las bases son iguales, los exponentes coinciden: x − 1 = 3.",
+        "x = 4."
+      ],
+      "solucion": "3^(x−1) = 27 = 3³ ⇒ x − 1 = 3 ⇒ x = 4. Verificado con Python.",
+      "explicacion": "Cuando ambos lados se escriben con la misma base, la inyectividad de la exponencial permite igualar exponentes. Es resolver hacia atrás reconociendo 27 = 3³.",
+      "tiempo_estimado": 8,
+      "conceptos": [
+        "ecuación exponencial",
+        "misma base",
+        "igualar exponentes"
+      ],
+      "transferencias": [
+        "crecimiento exponencial",
+        "interés compuesto",
+        "decaimiento"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 13 (Switching Between Logs and Exponents)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "exponentes",
+        "inversion",
+        "nivel-basico"
+      ]
+    },
+    {
+      "id": 539,
+      "titulo": "Una ecuación funcional con sustitución",
+      "estrategia": "inversion",
+      "dificultad": 5,
+      "enunciado": "Una función f satisface f(x) + 2·f(1/x) = x para todo x ≠ 0. ¿Cuánto vale f(2)?",
+      "hints": [
+        "Sustituye x = 2 y también x = 1/2 para obtener dos ecuaciones que liguen f(2) y f(1/2).",
+        "Con x = 2: f(2) + 2·f(1/2) = 2. Con x = 1/2: f(1/2) + 2·f(2) = 1/2.",
+        "Tienes un sistema lineal en las incógnitas f(2) y f(1/2).",
+        "De la primera, f(2) = 2 − 2·f(1/2); sustituye en la segunda: f(1/2) + 2(2 − 2f(1/2)) = 1/2 ⇒ −3f(1/2) = −7/2 ⇒ f(1/2) = 7/6.",
+        "Entonces f(2) = 2 − 2·(7/6) = 2 − 7/3 = −1/3."
+      ],
+      "solucion": "Sustituyendo x = 2 y x = 1/2 se obtiene el sistema f(2) + 2f(1/2) = 2 y f(1/2) + 2f(2) = 1/2, cuya solución da f(2) = −1/3. Verificado con Python.",
+      "explicacion": "La técnica estándar para ecuaciones funcionales con f(x) y f(1/x) es sustituir x y 1/x para crear un sistema lineal y despejar el valor buscado. Es resolver hacia atrás con dos miradas.",
+      "tiempo_estimado": 22,
+      "conceptos": [
+        "ecuación funcional",
+        "sustitución x y 1/x",
+        "sistema lineal"
+      ],
+      "transferencias": [
+        "resolución de funcionales",
+        "transformadas",
+        "simetrías"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 19 (Finding Values, Substitution)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "funciones",
+        "ecuacion-funcional",
+        "inversion",
+        "nivel-avanzado"
+      ]
+    },
+    {
+      "id": 540,
+      "titulo": "El parámetro y la raíz que falta",
+      "estrategia": "inversion",
+      "dificultad": 3,
+      "enunciado": "La ecuación x² + bx + 12 = 0 tiene a x = 3 como una de sus raíces. Halla b y la otra raíz.",
+      "hints": [
+        "Como 3 es raíz, debe satisfacer la ecuación: sustitúyela para hallar b.",
+        "3² + b·3 + 12 = 0 ⇒ 9 + 3b + 12 = 0 ⇒ 3b = −21 ⇒ b = −7.",
+        "Para la otra raíz usa Vieta: el producto de las raíces es el término independiente, 12.",
+        "3 · (otra raíz) = 12 ⇒ otra raíz = 4.",
+        "b = −7 y la otra raíz es 4."
+      ],
+      "solucion": "Sustituyendo x = 3: 9 + 3b + 12 = 0 ⇒ b = −7. Por Vieta, producto de raíces = 12 ⇒ otra raíz = 4. Verificado con Python.",
+      "explicacion": "Conocer una raíz permite despejar el parámetro (sustituyendo) y luego usar Vieta (el producto de raíces) para recuperar la raíz faltante. Es reconstruir todo hacia atrás desde un dato.",
+      "tiempo_estimado": 12,
+      "conceptos": [
+        "raíz conocida",
+        "despejar parámetro",
+        "Vieta para la otra raíz"
+      ],
+      "transferencias": [
+        "ingeniería inversa de modelos",
+        "calibración",
+        "diseño de sistemas"
+      ],
+      "source": "Rusczyk, *Intermediate Algebra* (Art of Problem Solving) — cap. 4/8 (Quadratics, Vieta)",
+      "source_url": "",
+      "year": "",
+      "tags": [
+        "cuadratica",
+        "vieta",
+        "inversion",
+        "nivel-intermedio"
+      ]
     }
   ]
 }

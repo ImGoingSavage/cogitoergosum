@@ -2913,3 +2913,45 @@ de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos
 **Siguiente** — seguir con la serie AoPS: `MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`,
 `Vol2.pdf`, `Calculus.pdf`. Mismo esquema §4.1 (ids 497+, sin huecos). Verificar SIEMPRE con
 Python.
+
+## Bitácora 2026-06-15 (Arena tanda 37) — SECTOR C: AoPS *Intermediate Algebra* (Rusczyk), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Intermediate Algebra` (Richard Rusczyk,
+Art of Problem Solving) — libros[38] del ledger, ruta `entrenamiento`, cuota 40 (superada
+con **44**). Destino: **`data/problems.json`** (esquema §4.1), ids **497-540** sin huecos.
+
+**NOTA TÉCNICA importante:** el PDF (193 MB, escaneado) **excede el límite de 100 MB de la tool
+Read**. El TOC se extrajo con **PyMuPDF (`fitz`)**; la capa OCR distorsiona los símbolos
+matemáticos, así que los problemas se **reformularon con palabras propias fieles a los temas de
+cada capítulo** (§5 lo permite) y **cada número se verificó de forma independiente con
+Python/sympy** (44 afirmaciones — todas OK). *Para los próximos AoPS grandes (Vol1/Vol2/Calculus
+si superan 100 MB), usar la misma vía: `fitz` para el TOC y construcción verificada con Python.*
+
+Fuentes internas (capítulos confirmados por TOC):
+- **cap. 3 Complex Numbers, cap. 4 Quadratics, cap. 8 Vieta's Formulas** → fórmulas de Vieta
+  (suma/producto de raíces), expresiones simétricas, conjugados (**invariantes**); construir
+  ecuaciones desde sus raíces, despejar parámetros (**inversion**).
+- **cap. 10/17 Sequences & Series** → aritméticas/geométricas, sumas de potencias y telescopaje
+  (**patrones** e **invariantes**).
+- **cap. 12/18 Inequalities** → AM-GM, Cauchy-Schwarz, vértice de la parábola (**optimizacion**).
+- **cap. 13 Exponents & Logarithms, cap. 19 Functional Equations** → logs como inverso de la
+  exponencial, ecuaciones funcionales por sustitución (**inversion**).
+
+**Distribución 11/11/11/11** (invariantes/patrones/optimizacion/inversion) — para llevar el
+balance **GLOBAL a 135/135/135/135 exactos** (antes 124/124/124/124).
+
+**NOTA de honestidad (verificación):** el volumen de SOLUCIONES de AoPS es un libro aparte
+**no disponible**; cada número se resolvió y verificó con Python/sympy. Casos: telescopaje
+∑1/(n(n+1)) hasta 99 = 99/100; producto ∏(1−1/n²) de 2 a 10 = 11/20; ecuación funcional
+f(x)+2f(1/x)=x ⇒ f(2) = −1/3; Cauchy-Schwarz: máx de 3x+4y con x²+y²=1 es 5.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+540 ids únicos (1-540) sin huecos; esquema §4.1 correcto para 497-540; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: **inversion 135, optimizacion 135, invariantes
+135, patrones 135** (540 total, balance perfecto). Builder idempotente en
+`scripts/_build_aops_medalg.py`.
+
+**Siguiente** — seguir con la serie AoPS: `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`,
+`Calculus.pdf`. Mismo esquema §4.1 (ids 541+, sin huecos). Verificar SIEMPRE con Python; si el
+PDF supera 100 MB, extraer el TOC con `fitz` (ver nota técnica arriba).
