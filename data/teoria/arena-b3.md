@@ -1,209 +1,179 @@
 # Distribuciones importantes y sus relaciones
 
-## La familia Gamma
+## De qué trata (y qué sabrás hacer)
 
-**Gamma(α, λ):** densidad f(x) = λ^α·x^{α-1}·e^{-λx}/Γ(α) para x>0.
+La trampa al estudiar distribuciones es tratarlas como una lista de fórmulas que memorizar. No lo son: son una **red de parentescos**. La exponencial es un caso de la Gamma; la Beta es una Gamma normalizada; la chi-cuadrado es Gamma con parámetros concretos; la $t$ nace de dividir una normal por una chi. Si entiendes los vínculos, reconstruyes cualquier fórmula y eliges la distribución correcta ante un enunciado nuevo.
 
-E[X] = α/λ ;  Var[X] = α/λ²
+Al terminar sabrás, ante un problema, decir "esto es un tiempo de espera → Gamma", "esto es una proporción desconocida → Beta", "esto es un cociente de varianzas → F", y conocerás el porqué de cada parentesco. Cada familia se motiva desde lo que modela.
 
-**Relaciones clave:**
-- Gamma(1, λ) = Exp(λ) — la exponencial es un caso especial
-- Gamma(n, λ) = suma de n Exp(λ) independientes (para n entero)
-- Gamma(n/2, 1/2) = χ²(n) — la chi-cuadrado es una Gamma
+---
 
-| α | λ | Distribución especial |
+## La familia Gamma: tiempos de espera apilados
+
+La **Gamma** modela el tiempo hasta que ocurren $\alpha$ eventos de un proceso sin memoria. Su densidad:
+
+$$f(x)=\frac{\lambda^\alpha x^{\alpha-1}e^{-\lambda x}}{\Gamma(\alpha)}\quad(x>0), \qquad E[X]=\frac{\alpha}{\lambda},\quad \text{Var}[X]=\frac{\alpha}{\lambda^2}.$$
+
+Lo importante son sus parentescos:
+- $\text{Gamma}(1,\lambda)=\text{Exp}(\lambda)$ — la exponencial es una Gamma con $\alpha=1$ (esperar **un** evento).
+- $\text{Gamma}(n,\lambda)=$ suma de $n$ exponenciales independientes (esperar el $n$-ésimo evento).
+- $\text{Gamma}(n/2,\,1/2)=\chi^2(n)$ — la chi-cuadrado es una Gamma disfrazada.
+
+| $\alpha$ | $\lambda$ | Caso especial |
 |---|---|----------------------|
-| 1 | λ | Exp(λ) |
-| n entero | λ | Erlang(n,λ) |
-| n/2 | 1/2 | χ²(n) |
+| 1 | $\lambda$ | $\text{Exp}(\lambda)$ |
+| $n$ entero | $\lambda$ | Erlang$(n,\lambda)$ |
+| $n/2$ | $1/2$ | $\chi^2(n)$ |
 
-Propiedad de reproducción: X₁~Gamma(α₁,λ), X₂~Gamma(α₂,λ) independientes → X₁+X₂~Gamma(α₁+α₂,λ).
-
----
-
-## La distribución Beta
-
-**Beta(α, β):** densidad f(x) = x^{α-1}(1-x)^{β-1}/B(α,β) para x∈(0,1).
-
-**E[X] = α/(α+β);  Var[X] = αβ/((α+β)²(α+β+1))**
-
-| α | β | Distribución especial |
-|---|---|----------------------|
-| 1 | 1 | Uniform[0,1] |
-| 1/2 | 1/2 | Arcsine |
-| n | m | k-ésimo estadístico de orden de Unif[0,1] (k=n, n+m-1 total) |
-
-**Relación con Gamma:** Si X~Gamma(α), Y~Gamma(β) independientes (misma escala), entonces **X/(X+Y) ~ Beta(α,β)**.
-
-La Beta es el **conjugate prior** de la binomial: prior Beta(α,β) + datos Bin(n,p) → posterior Beta(α+x, β+n-x).
+Y se **reproduce**: $X_1\sim\text{Gamma}(\alpha_1,\lambda)$ más $X_2\sim\text{Gamma}(\alpha_2,\lambda)$ (misma escala) da $\text{Gamma}(\alpha_1+\alpha_2,\lambda)$ — apilar esperas suma los $\alpha$.
 
 ---
 
-## Distribución t-Student
+## La distribución Beta: una proporción en $(0,1)$
 
-**t(ν) = Z / √(V/ν)** donde Z~N(0,1), V~χ²(ν) independientes.
+La **Beta** vive en $(0,1)$, así que es la distribución natural de una **probabilidad o proporción desconocida**:
 
-**E[X] = 0** para ν>1 (indefinida para ν≤1, como la Cauchy t(1))
+$$f(x)=\frac{x^{\alpha-1}(1-x)^{\beta-1}}{B(\alpha,\beta)}\quad(0<x<1), \qquad E[X]=\frac{\alpha}{\alpha+\beta}.$$
 
-**Var[X] = ν/(ν-2)** para ν>2 (indefinida para ν≤2)
+Piensa en $\alpha$ como "éxitos previos" y $\beta$ como "fracasos previos"; la media $\tfrac{\alpha}{\alpha+\beta}$ es la fracción de éxitos. Casos especiales: $\text{Beta}(1,1)=\text{Unif}[0,1]$. Y su vínculo con la Gamma: si $X\sim\text{Gamma}(\alpha)$, $Y\sim\text{Gamma}(\beta)$ (misma escala), entonces $\tfrac{X}{X+Y}\sim\text{Beta}(\alpha,\beta)$ — **la Beta es una Gamma normalizada a proporción**.
 
-Propiedades:
-- Simétrica alrededor de 0
-- Colas más pesadas que la normal
-- t(ν) → N(0,1) cuando ν→∞
-- t(1) = Cauchy (sin media ni varianza)
-
-**Aplicación:** T = (X̄−μ)/(S/√n) ~ t(n−1) para muestra de N(μ,σ²) con σ desconocida.
+Su rol estrella: es el **prior conjugado** de la binomial. Prior $\text{Beta}(\alpha,\beta)$ + datos $\text{Bin}$ con $x$ éxitos en $n$ → posterior $\text{Beta}(\alpha+x,\,\beta+n-x)$. Actualizar es **sumar conteos** (conecta con [[arena-b4]]).
 
 ---
 
-## Distribución F de Snedecor
+## Distribución $t$ de Student: la normal con incertidumbre en $\sigma$
 
-**F(m,n) = (χ²(m)/m) / (χ²(n)/n)** donde χ²s independientes.
+Cuando estimas la media de datos normales pero **no conoces** $\sigma$ y la estimas de la muestra, el estadístico ya no es normal sino $t$:
 
-**E[F] = n/(n−2)** para n>2
+$$t(\nu)=\frac{Z}{\sqrt{V/\nu}},\quad Z\sim N(0,1),\ V\sim\chi^2(\nu)\ \text{indep.}$$
 
-Aplicaciones:
-- Test de igualdad de varianzas: F = S₁²/S₂² ~ F(n₁−1, n₂−1)
-- ANOVA: MS_between/MS_within ~ F(k−1, n−k)
+Es simétrica alrededor de 0, pero con **colas más pesadas** que la normal (el denominador aleatorio añade incertidumbre). $E[X]=0$ para $\nu>1$ y $\text{Var}[X]=\tfrac{\nu}{\nu-2}$ para $\nu>2$. Casos límite: $t(1)=$ Cauchy (¡sin media ni varianza!) y $t(\nu)\to N(0,1)$ cuando $\nu\to\infty$. Su aplicación canónica: $T=\tfrac{\bar X-\mu}{S/\sqrt n}\sim t(n-1)$.
 
 ---
 
-## Distribución Lognormal
+## Distribución $F$: cociente de varianzas
 
-**X = e^Y** con Y~N(μ,σ²):
+La **$F$** compara dos varianzas dividiendo dos chi-cuadrado (cada una escalada por sus grados de libertad):
 
-**E[X] = e^{μ+σ²/2}** (mayor que e^μ por la convexidad de e^y)
+$$F(m,n)=\frac{\chi^2(m)/m}{\chi^2(n)/n}, \qquad E[F]=\frac{n}{n-2}\ (n>2).$$
 
-**Var[X] = e^{2μ+σ²}·(e^{σ²}−1)**
-
-**Mediana de X = e^μ** (siempre menor que la media)
-
-La distribución de ln(X) es N(μ,σ²) — útil para modelar precios de activos, ingresos, tamaños de partículas.
+Aparece en el test de igualdad de varianzas ($F=S_1^2/S_2^2$) y en **ANOVA** (varianza entre grupos / varianza dentro). Si la $F$ es grande, la señal "entre grupos" supera al ruido "dentro".
 
 ---
 
-## Distribución Weibull
+## Distribución Lognormal: crecimiento multiplicativo
 
-**F(x) = 1 − e^{-(x/λ)^k}** para x>0.
+Si $\ln X\sim N(\mu,\sigma^2)$, entonces $X$ es **lognormal**. Modela cantidades que crecen de forma multiplicativa y no pueden ser negativas: precios de activos, ingresos, tamaños de partículas.
 
-**E[X] = λ·Γ(1+1/k)**
+$$E[X]=e^{\mu+\sigma^2/2}, \qquad \text{mediana}=e^{\mu}, \qquad \text{Var}[X]=e^{2\mu+\sigma^2}(e^{\sigma^2}-1).$$
 
-| k | Comportamiento |
+Ojo: la **media supera a la mediana** ($e^{\mu+\sigma^2/2}>e^\mu$) porque la cola derecha tira del promedio. Confundirlas distorsiona cualquier análisis de precios o ingresos (conecta con [[arena-q7]]).
+
+---
+
+## Distribución Weibull: tasas de fallo
+
+La **Weibull** generaliza la exponencial para modelar fallos cuya tasa cambia con el tiempo:
+
+$$F(x)=1-e^{-(x/\lambda)^k}\quad(x>0), \qquad E[X]=\lambda\,\Gamma(1+1/k).$$
+
+El parámetro de forma $k$ dicta el comportamiento del hazard (la tasa instantánea de fallo):
+
+| $k$ | Tasa de fallo |
 |---|---------------|
-| k < 1 | Tasa de fallo decreciente (infant mortality) |
-| k = 1 | Tasa constante (Exp) |
-| k > 1 | Tasa de fallo creciente (envejecimiento) |
+| $k<1$ | decreciente (mortalidad infantil) |
+| $k=1$ | constante (es la exponencial) |
+| $k>1$ | creciente (envejecimiento) |
+
+Es exactamente la forma del hazard que estudia el análisis de supervivencia (conecta con [[arena-h8]]).
 
 ---
 
-## Distribución Bernoulli y familia binomial
+## Familia binomial y familia Poisson
 
-| Distribución | Modela | Parámetros |
-|-------------|--------|-----------|
-| Bernoulli(p) | Un ensayo binario | p |
-| Bin(n,p) | Suma de n Bernoulli i.i.d. | n, p |
-| Geom(p) | Intentos hasta primer éxito | p |
-| Bin. negativa(r,p) | Intentos hasta r-ésimo éxito | r, p |
-| Hipergeométrica | Éxitos en muestra sin reemplazo | N, K, n |
+La **familia binomial** (ensayos discretos éxito/fracaso):
 
----
+| Distribución | Modela |
+|-------------|--------|
+| Bernoulli$(p)$ | un ensayo |
+| Bin$(n,p)$ | éxitos en $n$ ensayos |
+| Geom$(p)$ | ensayos hasta el 1.er éxito |
+| Bin. negativa$(r,p)$ | ensayos hasta el $r$-ésimo éxito |
+| Hipergeométrica | éxitos en muestra **sin** reemplazo |
 
-## La familia Poisson
-
-**Poisson(λ):** P(X=k) = e^{-λ}λ^k/k!
-
-Propiedad de reproducción: sum de Poissons independientes es Poisson.
-
-**Adelgazamiento:** Si X~Poisson(λ) y cada evento se retiene con probabilidad p independientemente, el número retenido ~ Poisson(λp).
-
-**Condicional:** Si X+Y~Poisson(λ+μ) y X~Poisson(λ) independiente de Y~Poisson(μ), entonces [X|X+Y=n] ~ Bin(n, λ/(λ+μ)).
+La **Poisson** (conteos de eventos raros), $P(X=k)=\tfrac{e^{-\lambda}\lambda^k}{k!}$, tiene tres propiedades que vale la pena saber:
+- **Reproducción:** suma de Poissons independientes es Poisson (suma los $\lambda$).
+- **Adelgazamiento:** si retienes cada evento de $\text{Poisson}(\lambda)$ con probabilidad $p$, lo retenido es $\text{Poisson}(\lambda p)$.
+- **Condicional:** dado $X+Y=n$ (con $X\sim\text{Poisson}(\lambda)$, $Y\sim\text{Poisson}(\mu)$ indep.), $X\mid X+Y=n\sim\text{Bin}\!\big(n,\tfrac{\lambda}{\lambda+\mu}\big)$.
 
 ---
 
-## Momentos de la distribución normal estándar
+## Familia exponencial (el paraguas)
 
-X~N(0,1): E[X^{2k}] = (2k-1)!! = (2k-1)·(2k-3)·…·3·1
+Muchísimas distribuciones se escriben en la forma
 
-| Momento | Valor |
-|---------|-------|
-| E[X] | 0 |
-| E[X²] | 1 |
-| E[X³] | 0 |
-| E[X⁴] | 3 |
-| E[X⁵] | 0 |
-| E[X⁶] | 15 |
-| E[|X|] | √(2/π) |
+$$f(x\mid\theta)=h(x)\exp\!\big(\eta(\theta)\,T(x)-A(\theta)\big).$$
 
-**Función generatriz de momentos de N(0,1):** M(t) = e^{t²/2}
+| Distribución | $\eta(\theta)$ | $T(x)$ |
+|-------------|------|------|
+| $N(\mu,1)$ | $\mu$ | $x$ |
+| Poisson$(\lambda)$ | $\ln\lambda$ | $x$ |
+| Bernoulli$(p)$ | $\text{logit}(p)$ | $x$ |
 
----
-
-## Familia exponencial
-
-Densidad de la forma: **f(x|θ) = h(x) · exp(η(θ)·T(x) − A(θ))**
-
-| Distribución | η(θ) | T(x) | A(θ) |
-|-------------|------|------|------|
-| N(μ,σ²=1) | μ | x | μ²/2 |
-| Poisson(λ) | ln(λ) | x | λ |
-| Bernoulli(p) | logit(p) | x | ln(1/(1-p)) |
-
-Propiedad: E[T(X)] = dA/dη. La familia exponencial tiene **estadístico suficiente** T(x) (compacto) y **priors conjugados**.
+$T(x)$ es un **estadístico suficiente**: resume todo lo que los datos dicen del parámetro. Esta estructura común es la que hace que estas familias tengan priors conjugados y estimadores limpios (conecta con [[arena-cb1]] y [[arena-cb2]]).
 
 ---
 
 ## Mini-ejemplo trabajado: la Gamma es solo exponenciales apiladas
 
-¿Cuánto esperas hasta el 3.er autobús si llegan como Poisson a tasa λ=2/hora? Cada espera entre autobuses es Exp(2) con media 1/2 h. El tiempo hasta el 3.º es la **suma de 3 exponenciales independientes** = Gamma(3, 2):
+¿Cuánto esperas hasta el 3.er autobús si llegan como Poisson a tasa $\lambda=2$/hora? Cada espera entre autobuses es $\text{Exp}(2)$ con media $1/2$ h. El tiempo hasta el 3.º es la **suma de 3 exponenciales independientes** $=\text{Gamma}(3,2)$:
 
-> E[X] = α/λ = 3/2 = **1.5 h**, Var[X] = α/λ² = 3/4
+$$E[X]=\frac{\alpha}{\lambda}=\frac{3}{2}=1.5\text{ h}, \qquad \text{Var}[X]=\frac{\alpha}{\lambda^2}=\frac34.$$
 
-No hay que integrar la densidad Gamma: "tiempo hasta el n-ésimo evento de Poisson" *es* Gamma(n, λ) por construcción, igual que Gamma(1,λ)=Exp(λ) y Gamma(n/2,1/2)=χ²(n). Las distribuciones no son fichas sueltas: son la misma familia mirada desde ángulos distintos.
+No hay que integrar la densidad Gamma: "tiempo hasta el $n$-ésimo evento de Poisson" *es* $\text{Gamma}(n,\lambda)$ por construcción, igual que $\text{Gamma}(1,\lambda)=\text{Exp}(\lambda)$ y $\text{Gamma}(n/2,1/2)=\chi^2(n)$. Las distribuciones no son fichas sueltas: son la misma familia mirada desde ángulos distintos.
 
-**Predicción antes de seguir:** si en vez del tiempo absoluto preguntas "¿qué fracción del tiempo total a los 5 autobuses transcurrió antes del 3.º?", ¿qué distribución aparece? Respuesta: una **Beta**. X/(X+Y) con X~Gamma(3), Y~Gamma(2) es Beta(3,2): la Beta es una Gamma *normalizada*, una proporción acotada en (0,1). Por eso la Beta es el prior natural de una probabilidad.
+**Predicción antes de seguir:** si en vez del tiempo absoluto preguntas "¿qué fracción del tiempo total hasta los 5 autobuses transcurrió antes del 3.º?", ¿qué distribución aparece? Respuesta: una **Beta**. $\tfrac{X}{X+Y}$ con $X\sim\text{Gamma}(3)$, $Y\sim\text{Gamma}(2)$ es $\text{Beta}(3,2)$: la Beta es una Gamma *normalizada*, una proporción acotada en $(0,1)$. Por eso la Beta es el prior natural de una probabilidad.
 
 ## Prototipo, contraejemplo y caso borde
 
-- **Prototipo:** "tiempo hasta el n-ésimo evento" → Gamma; "una proporción / probabilidad desconocida" → Beta; "cociente de varianzas" → F.
-- **Contraejemplo (t no tiene siempre varianza):** la t(ν) parece "casi normal", pero t(1)=Cauchy no tiene media ni varianza, y Var existe solo para ν>2. Tratar toda t como de cola ligera es el error.
-- **Caso borde (lognormal):** E[X]=e^{μ+σ²/2} > mediana=e^μ siempre. El borde recuerda que en distribuciones sesgadas a la derecha la media supera a la mediana — confundirlas distorsiona precios e ingresos.
+- **Prototipo:** "tiempo hasta el $n$-ésimo evento" → Gamma; "una proporción / probabilidad desconocida" → Beta; "cociente de varianzas" → F.
+- **Contraejemplo ($t$ no siempre tiene varianza):** la $t(\nu)$ parece "casi normal", pero $t(1)=$ Cauchy no tiene media ni varianza, y $\text{Var}$ existe solo para $\nu>2$. Tratar toda $t$ como de cola ligera es el error.
+- **Caso borde (lognormal):** $E[X]=e^{\mu+\sigma^2/2}>$ mediana $=e^\mu$ siempre. El borde recuerda que en distribuciones sesgadas a la derecha la media supera a la mediana — confundirlas distorsiona precios e ingresos.
 
 ## Errores típicos
 
-- **Conceptual:** ver las distribuciones como una lista que memorizar en vez de una red de relaciones (Exp⊂Gamma, χ²⊂Gamma, Beta=Gamma normalizada, t=Z/√(χ²/ν)).
-- **Técnico:** usar la media e^{μ+σ²/2} cuando se quería la mediana e^μ de una lognormal (o viceversa).
+- **Conceptual:** ver las distribuciones como una lista que memorizar en vez de una red de relaciones ($\text{Exp}\subset\text{Gamma}$, $\chi^2\subset\text{Gamma}$, Beta = Gamma normalizada, $t=Z/\sqrt{\chi^2/\nu}$).
+- **Técnico:** usar la media $e^{\mu+\sigma^2/2}$ cuando se quería la mediana $e^\mu$ de una lognormal (o viceversa).
 - **De supuestos:** aplicar el adelgazamiento de Poisson sin que las retenciones sean independientes entre eventos.
 
 ## Transferencia isomorfa
 
-- **Beta conjugada ↔ actualización bayesiana de una proporción:** Beta(α,β) + Bin(n,x) → Beta(α+x, β+n−x); α,β son éxitos/fracasos previos (pseudo-conteos), el motor de toda inferencia de tasas (conecta con [[arena-b4]]).
-- **Gamma (tiempo al n-ésimo evento) ↔ procesos de llegada:** colas, fallos de servidores y eventos de tráfico se modelan con el mismo proceso de Poisson↔Gamma (conecta con [[arena-sre4]], donde las cascadas y tiempos entre fallos importan).
-- **Weibull (tasa de fallo k) ↔ análisis de supervivencia:** k<1, =1, >1 son hazard decreciente/constante/creciente, exactamente la forma del hazard que estudia Cox (conecta con [[arena-h8]]).
-- **t-Student de cola pesada ↔ Cauchy y varianza infinita:** ν pequeño = colas gordas que rompen la intuición normal (conecta con [[arena-q11]]).
-- **Lognormal ↔ precios de activos:** ln(X) normal modela precios, ingresos y tamaños multiplicativos (conecta con [[arena-q7]]).
+- **Beta conjugada ↔ actualización bayesiana de una proporción:** $\text{Beta}(\alpha,\beta)+\text{Bin}(n,x)\to\text{Beta}(\alpha+x,\beta+n-x)$; $\alpha,\beta$ son éxitos/fracasos previos (pseudo-conteos), el motor de toda inferencia de tasas (conecta con [[arena-b4]]).
+- **Gamma (tiempo al $n$-ésimo evento) ↔ procesos de llegada:** colas, fallos de servidores y eventos de tráfico se modelan con el mismo proceso Poisson↔Gamma (conecta con [[arena-sre4]]).
+- **Weibull (forma $k$) ↔ análisis de supervivencia:** $k<1,=1,>1$ son hazard decreciente/constante/creciente, exactamente la forma del hazard de Cox (conecta con [[arena-h8]]).
+- **$t$ de cola pesada ↔ Cauchy y varianza infinita:** $\nu$ pequeño = colas gordas que rompen la intuición normal (conecta con [[arena-q11]]).
+- **Lognormal ↔ precios de activos:** $\ln X$ normal modela precios, ingresos y tamaños multiplicativos (conecta con [[arena-q7]]).
 
 Moraleja de la arista: *no memorices distribuciones; memoriza sus parentescos — la Gamma apila exponenciales, la Beta normaliza Gammas, y la mgf convierte cada relación en álgebra.*
 
 ---
 
-## Dispersadores clave
+## Disparadores
 
 | Señal | Jugada |
 |-------|--------|
-| "Tiempo hasta n-ésimo evento de Poisson" | Gamma(n, λ) |
-| "Fracción de dos Gammas" | Beta(α,β) |
-| "Prior para proporción" | Beta(α,β) conjugado binomial |
-| "Normal con σ desconocida" | t(n-1) |
-| "Cociente de chi-cuadrados" | F(m,n) |
-| "ln(X) es normal" | X es lognormal |
-| "P(X es par) para Poisson" | (1+e^{-2λ})/2 via pgf |
-| "Mgf de N(μ,σ²) en t=1" | e^{μ+σ²/2} |
+| "Tiempo hasta $n$-ésimo evento de Poisson" | $\text{Gamma}(n,\lambda)$ |
+| "Fracción de dos Gammas" | $\text{Beta}(\alpha,\beta)$ |
+| "Prior para proporción" | $\text{Beta}(\alpha,\beta)$ conjugado binomial |
+| "Normal con $\sigma$ desconocida" | $t(n-1)$ |
+| "Cociente de chi-cuadrados" | $F(m,n)$ |
+| "$\ln(X)$ es normal" | $X$ es lognormal |
+| "mgf de $N(\mu,\sigma^2)$ en $t=1$" | $e^{\mu+\sigma^2/2}$ |
 
 ---
 
-> **Síntesis:** Las distribuciones no son listas de fórmulas — son familias relacionadas. La Gamma generaliza la Exp; la Beta es una Gamma normalizada; la t es normal/chi; la F es cociente de chi. El principio unificador: las mgf (o pgf o función característica) convierten todas estas relaciones en álgebra.
+> **Síntesis:** Las distribuciones no son listas de fórmulas — son familias relacionadas. La Gamma generaliza la Exp; la Beta es una Gamma normalizada; la $t$ es normal/chi; la $F$ es cociente de chi. El principio unificador: las mgf convierten todas estas relaciones en álgebra.
 
 ---
 
-*Retrieval: cierra y responde: (1) E y Var de Gamma(4,2); (2) distribución de X/(X+Y) si X~Gamma(3), Y~Gamma(5); (3) E[F(5,10)]; (4) E[X] y mediana[X] para X~Lognormal(1,1).*
+*Retrieval: cierra y responde: (1) $E$ y $\text{Var}$ de $\text{Gamma}(4,2)$; (2) distribución de $\tfrac{X}{X+Y}$ si $X\sim\text{Gamma}(3)$, $Y\sim\text{Gamma}(5)$; (3) $E[F(5,10)]$; (4) $E[X]$ y mediana de $X\sim\text{Lognormal}(1,1)$.*
