@@ -23,6 +23,38 @@ Regla práctica: el **monitoreo** sirve para la salud del **sistema/infraestruct
 
 ---
 
+## Mini-ejemplo trabajado: el p99 "rápido" y el cliente furioso
+
+Tu dashboard muestra **p99 de latencia = 80 ms**, verde. Pero llegan quejas de timeouts. Con **monitoreo** (métricas preagregadas) estás atascado: el número está bien y no anticipaste un dashboard para "usuarios que se quejan".
+
+Con **observabilidad** trozas eventos anchos: filtras `status=timeout`, agrupas por `user_id`, `region`, `app_version`, `device`… y descubres que **todos** los afectados comparten `app_version=3.2.1` en una sola región. La métrica p99 los ocultó porque son el 0.05% del tráfico —se promedian hacia la invisibilidad—, pero el evento individual de **alta cardinalidad** (user_id, request_id) los hace aparecer.
+
+**Predicción antes de seguir:** ¿por qué una *métrica* no puede simplemente "agruparse por user_id"? Porque cada valor único de user_id crea una nueva serie temporal; con millones de usuarios la **cardinalidad** hace explotar el coste de almacenamiento. Las métricas viven en baja cardinalidad; los eventos anchos, no.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (observabilidad):** fallo nuevo y nunca visto → investigación iterativa sobre eventos de alta cardinalidad/dimensionalidad, sin desplegar código.
+- **Contraejemplo (monitoreo donde toca observabilidad):** crear un dashboard por cada modo de fallo en un sistema de 30 microservicios → solo cubres los known-unknowns que imaginaste; los unknown-unknowns se escapan.
+- **Caso borde (infra de alto orden):** CPU/memoria/disco sí son monitoreo legítimo —cambian poco y predecible— y conviven con la observabilidad del código.
+
+## Errores típicos
+
+- **Conceptual:** creer que "más dashboards" = observabilidad; los dashboards son monitoreo reactivo de known-unknowns.
+- **De datos:** confiar en la **media** preagregada, que oculta al usuario individual; baja a eventos.
+- **De diseño:** tirar la alta cardinalidad (user_id, request_id) "para ahorrar", justo la dimensión más útil para depurar.
+
+## Transferencia isomorfa
+
+Observabilidad es análisis exploratorio de datos aplicado a producción:
+
+- **Cardinalidad ↔ granularidad de un GROUP BY:** "puedo trocear por user_id" es exactamente bajar el grano de una agregación SQL; la preagregación de una métrica es un GROUP BY que ya no puedes deshacer (conecta con [[arena-m2]], window functions).
+- **Eventos anchos ↔ filas desnormalizadas:** cientos de claves por evento es una fila ancha que permite correlaciones ad-hoc, como una tabla de hechos rica.
+- **Unknown-unknowns ↔ EDA / observabilidad del modelo:** investigar un fallo no anticipado es lo mismo que el debugging slice-by-slice de un modelo en producción (conecta con [[arena-htd1]], detección de cambios).
+
+Moraleja de la arista: *monitorear responde preguntas que ya hiciste; observar responde las que aún no imaginabas — y eso exige guardar alta cardinalidad, no promedios.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

@@ -32,6 +32,42 @@ Cuando un sistema de ML cae, la causa suele ser un fallo clásico de sistemas/da
 
 ---
 
+## Mini-ejemplo trabajado: tres capas de SLO para un recomendador
+
+Tu modelo de recomendación tiene **AUC 0.82** offline. ¿Está "sano" en producción? Define SLOs por capa:
+
+1. **Señales doradas (infra):** "99.9% de las peticiones de scoring responden en <100 ms". Mide latencia/errores; **no dice nada** de si las recomendaciones son buenas.
+2. **Salud básica del modelo:** "el artefacto cargó, pesa lo esperado, devuelve scores en [0,1] para una petición canaria". Detecta un modelo corrupto, **sin** entender su contenido.
+3. **Calidad (negocio), por slices:** "el CTR de la sección recomendada ≥ 4% en usuarios nuevos y recurrentes". *Esta* es la única que mide si el ML sirve — y ningún SLO de infra la sustituye.
+
+Las tres pueden estar verdes en 1 y 2 mientras el CTR (capa 3) se desploma porque un join quedó vacío: el modelo "funciona" (responde rápido, carga bien) pero recomienda basura.
+
+**Predicción antes de seguir:** despliegas un modelo nuevo y el CTR cae. ¿Reentrenas el modelo? Probablemente **no**: la mayoría de los fallos no son de ML. Revisa primero permisos, la versión copiada a serving y la frescura de los datos.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (deploy como código):** ramp-up por usuarios×servidores, SLOs medidos durante el rollout, rollback listo → un modelo malo daña a pocos.
+- **Contraejemplo ("refactor" en vez de "release"):** mezclar 5 cambios en un despliegue; el ruido de fondo del ML vuelve **indeducible** cuál rompió la métrica.
+- **Caso borde (rollback que empeora):** revertir el binario pero no el **formato de datos** que ya escribió → código viejo leyendo datos nuevos = 100% de error (la historia del rollback de pagos).
+
+## Errores típicos
+
+- **Conceptual:** creer que un sistema de ML "se termina"; es un **loop** que la organización siempre quiere mejorar.
+- **De medición:** usar solo SLOs de infraestructura y declarar el modelo sano sin un SLO de **negocio por slices**.
+- **De diagnóstico:** asumir que la caída es del modelo y no del sistema distribuido genérico.
+
+## Transferencia isomorfa
+
+La fiabilidad de ML hereda la del software, con un giro:
+
+- **Models as code ↔ CI/CD + rollback:** un modelo tumba el serving igual que un binario; merece el mismo rigor de release y reversión (conecta con [[arena-sre1]], releases y error budget).
+- **SLO de negocio por slices ↔ guardrail metrics en A/B:** medir CTR/ingreso por segmento durante el rollout es el mismo papel que las métricas guardrail de un experimento (conecta con [[arena-ads4]]).
+- **Fracción no aleatoria de datos faltantes ↔ sesgo de selección:** omitir un trozo *sesgado* de datos lleva de "casi bien" a "muy mal" — el mismo peligro que el sesgo de selección causal (conecta con [[arena-h19]]).
+
+Moraleja de la arista: *la infraestructura nunca mide la calidad del ML; necesitas un SLO de negocio por slices, despliega el modelo como código y sospecha del sistema antes que del modelo.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

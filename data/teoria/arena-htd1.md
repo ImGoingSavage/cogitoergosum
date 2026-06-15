@@ -23,6 +23,38 @@ La predicción de mₐ suele ser **ampliamente accesible** (runtime, archivos, l
 
 ---
 
+## Mini-ejemplo trabajado: CACE en acción
+
+Tu modelo de ranking usa 3 features: `precio`, `rating`, `popularidad`. Mides la importancia y `popularidad` aporta el 30%. Un equipo de datos "mejora" la feature `precio` (antes en dólares, ahora normalizada 0-1). No tocaste `popularidad`… pero al reentrenar, su importancia cae al 18% y el modelo se descalibra.
+
+¿Por qué? Porque el modelo aprende **pesos conjuntos**: cambiar la escala de una feature redistribuye cómo el modelo reparte el crédito entre **todas** las demás. Eso es **CACE — Changing Anything Changes Everything**. Y no aplica solo a features: cambiar el learning rate, el umbral de convergencia, el muestreo o el threshold de decisión tiene el mismo efecto de onda.
+
+**Predicción antes de seguir:** para "arreglar" un caso especial, decides entrenar un segundo modelo m_a' que toma la salida de m_a y le suma una corrección. ¿Qué deuda creas? Una **correction cascade**: ahora mejorar m_a puede *empeorar* el sistema (m_a' aprendió a compensar sus errores) → deadlock de mejora. Mejor mete el caso especial *dentro* de m_a con una feature que lo distinga.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (entanglement gestionado):** ensemble de submodelos con errores **no correlacionados** y detección de cambios slice-by-slice → aíslas mejoras.
+- **Contraejemplo (ensemble que engaña):** componentes con errores **correlacionados**; mejorar uno empeora el sistema, justo lo contrario de lo que esperabas.
+- **Caso borde (undeclared consumer):** otro equipo empezó a leer tu predicción desde un log; tu "mejora" rompe su sistema sin que lo sepas → acoplamiento oculto.
+
+## Errores típicos
+
+- **Conceptual:** tratar la deuda de ML como deuda de código (refactor + tests) cuando vive a **nivel de sistema** (los datos corrompen las abstracciones).
+- **De diseño:** parchear modelo sobre modelo (cascada) en vez de añadir features que distingan los casos.
+- **De gobernanza:** exponer la predicción sin SLA ni control de acceso → consumidores no declarados bajo presión de plazos.
+
+## Transferencia isomorfa
+
+La deuda técnica del ML reescribe principios clásicos de ingeniería:
+
+- **Undeclared consumers ↔ acoplamiento por contrato de API roto:** consumir una salida sin declararlo es el mismo antipatrón que depender de un detalle interno no documentado; la cura (SLA/access control) es la **encapsulación** de siempre (conecta con [[arena-sd2]], bloques distribuidos).
+- **CACE ↔ acoplamiento global / variables compartidas:** "cambiar algo lo cambia todo" es la versión-ML del estado global mutable que hace frágil cualquier sistema.
+- **Correction cascade ↔ herencia/parches apilados:** modelo-sobre-modelo es como una jerarquía de overrides que nadie puede tocar sin romper la siguiente capa.
+
+Moraleja de la arista: *en ML los datos disuelven las fronteras; CACE, cascadas y consumidores ocultos son acoplamiento clásico amplificado — y se combaten con aislamiento, features que distingan casos y contratos explícitos.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

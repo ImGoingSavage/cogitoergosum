@@ -24,6 +24,44 @@ Diseñar un sistema de ML no es lineal: encuadrar el problema, reunir datos, ent
 
 ---
 
+## Mini-ejemplo trabajado: desacoplar objetivos en un feed
+
+Un feed quiere **maximizar engagement** *y* **calidad del contenido**, que tiran en direcciones opuestas (el clickbait engancha pero baja la calidad). La tentación es una sola loss:
+
+`loss = α·engagement + β·calidad`
+
+Problema: si producto decide que ahora la calidad pesa más, hay que cambiar β y **reentrenar todo** — caro y lento. La jugada de desacople: entrena **dos modelos**, uno que predice engagement y otro que predice calidad, y combínalos *en el ranking*:
+
+`score = α·ŝ_engagement + β·ŝ_calidad`
+
+Ahora reajustar la prioridad es cambiar α, β en la combinación, **sin reentrenar**, y puedes razonar sobre cada objetivo por separado.
+
+**Predicción antes de seguir:** el equipo quiere recomendar por "vídeo realmente visto" en vez de por click (para matar el clickbait). ¿Es un cambio de features o de **encuadre**? De encuadre: pasas de clasificación (click sí/no) a regresión sobre fracción vista — y ojo con el **label bias** al cambiar el objetivo.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (ML justificado):** patrón aprendible + datos + repetición + error tolerable + mapeo claro a métrica de negocio → adelante.
+- **Contraejemplo (accuracy huérfana):** un modelo con F1 altísimo que no mueve ninguna métrica de negocio → muere joven; la métrica de ML era un fin en sí misma.
+- **Caso borde (multietiqueta):** un artículo que es "tech" *y* "finanzas" a la vez no es multiclase (una de N) sino **multilabel** → sigmoid + multi-hot + umbral por clase, no softmax.
+
+## Errores típicos
+
+- **Conceptual:** optimizar la métrica de ML (accuracy/F1) sin atarla a una de **negocio** — el fallo nº1 de proyectos que mueren.
+- **De diseño:** meter objetivos en conflicto en una sola loss ponderada → cada reajuste exige reentrenar.
+- **De encuadre:** elegir clasificación cuando añadir una categoría obliga a reentrenar; un encuadre de regresión/ranking por par lo evita.
+
+## Transferencia isomorfa
+
+El encuadre de objetivos es un patrón que cruza dominios:
+
+- **Métrica de ML vs de negocio ↔ proxy vs meta real:** el riesgo de optimizar un proxy desalineado es el mismo que en las Reglas de ML (lanzamiento multi-métrica) y en quant (optimizar la señal equivocada) (conecta con [[arena-rml1]]).
+- **Desacoplar objetivos ↔ separar modelos componibles:** un modelo por objetivo combinado al servir es pariente de los ensembles aislados que evitan el entanglement de la deuda técnica (conecta con [[arena-htd1]]).
+- **Multilabel sigmoid ↔ Bernoullis independientes:** tratar cada etiqueta como un 0/1 independiente es exactamente modelar variables indicadoras por separado (conecta con la linealidad/indicadores de [[arena-q1]]).
+
+Moraleja de la arista: *el encuadre decide el destino del proyecto: ata el ML al negocio, desacopla objetivos en conflicto y elige el tipo de tarea pensando en cuánto costará mantenerlo.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

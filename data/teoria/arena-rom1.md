@@ -24,6 +24,42 @@ La consigna de Zinkevich: **«haz machine learning como el gran ingeniero que er
 
 ---
 
+## Mini-ejemplo trabajado: filtro de spam, regla por regla
+
+Sigue el orden de Zinkevich en un caso concreto:
+
+1. **Sin datos (R1):** lanzas con una **lista negra** de dominios + "≥3 enlaces ⇒ sospechoso". Cubres ~50% del problema y *ya recoges datos* (qué se marcó, qué reportó el usuario).
+2. **Instrumentas primero (R2):** registras cada decisión y el feedback antes de tocar ML; en un mes tienes histórico para entrenar.
+3. **Heurística simple → ML (R3):** cuando la lista negra crece a 200 reglas if/else inmantenibles, pasas a un clasificador.
+4. **Primer modelo simple + infra (R4-R5):** regresión logística con features obvias (nº de enlaces, dominio en lista negra como **feature**, no como filtro — R7); testeas la tubería *sin* el modelo.
+5. **Fallo silencioso (R10):** semanas después la precisión cae sola. No hay error en logs: la tabla de "dominios reportados" dejó de refrescarse hace 40 días y el modelo **se reajustó** alrededor del dato podrido. Solo lo ves si rastreas estadísticas de los datos de entrada.
+
+**Predicción antes de seguir:** ese fallo del paso 5, ¿salta como `page` o como email? Como el modelo malo ya está en producción, es **user-facing → page** (R9); si lo hubieras cazado antes de exportar, bastaba un email.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** problema con patrón + datos que llegan + error tolerable → heurística primero, ML después, pipeline simple y monitoreado.
+- **Contraejemplo (ML prematuro):** montar una red neuronal el día 1 sin datos ni instrumentación → mucha infra rota y cero señal; la heurística habría sacado el 50%.
+- **Caso borde (heurística compleja):** una heurística con 200 reglas que *funciona* pero nadie puede mantener — la señal de que tocaba ML hace tiempo (R3).
+
+## Errores típicos
+
+- **Conceptual:** creer que el algoritmo sofisticado es la palanca; casi siempre lo son **las features y la infra** ("haz ML como ingeniero, no como experto en ML").
+- **Técnico:** copiar un pipeline (cargo cult) arrastrando *drops* de datos que el nuevo caso sí necesita (R6).
+- **De monitoreo:** vigilar solo métricas de modelo y no las **estadísticas de los datos de entrada** → los fallos silenciosos pasan inadvertidos.
+
+## Transferencia isomorfa
+
+Las reglas de Zinkevich son ingeniería de propósito general:
+
+- **"Lanza sin ML" ↔ evitar optimización prematura:** empezar simple y complejizar solo al agotar lo barato es la misma disciplina que no microoptimizar antes de medir.
+- **Fallo silencioso por tabla obsoleta ↔ data drift / leakage:** un input que decae sin lanzar error es exactamente el monitoreo de distribución de [[arena-dmls4]]; el modelo "se adapta" al dato podrido en vez de quejarse.
+- **Heurística → feature (R7) ↔ feature engineering:** convertir conocimiento de dominio en una columna es el corazón del feature engineering (conecta con [[arena-cds1]]).
+
+Moraleja de la arista: *el primer modelo es de ingeniería, no de ML; las ganancias vienen de features e infra fiable, y el peor bug del ML es el que no lanza error.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

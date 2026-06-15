@@ -33,6 +33,41 @@ De los **métodos**: expressive power, translucency (cuánto miran dentro del mo
 
 ---
 
+## Mini-ejemplo trabajado: por qué una explicación contrastiva convence
+
+Un banco niega un préstamo. Dos explicaciones del mismo modelo:
+
+- **No contrastiva (lista de causas):** "tu score se calculó con ingreso, deuda, antigüedad laboral, nº de cuentas, edad…". Verdadera, pero **inútil** para el cliente: no sabe qué hacer.
+- **Contrastiva (vs un caso de referencia):** "te habríamos aprobado **si** tu deuda/ingreso fuera ≤ 35% (ahora es 48%)". Una sola causa, frente a un contrafactual concreto. Esto es lo que la gente *en realidad* pregunta: no "¿por qué?" sino "¿por qué **esto y no la aprobación**?".
+
+La segunda funciona porque es **contrastiva** (vs un caso de referencia), **selectiva** (1 causa, no la lista entera — efecto Rashomon) y **social** (en el lenguaje del cliente). La verdad por sí sola no basta.
+
+**Predicción antes de seguir:** esa explicación "¿qué cambio mínimo habría volteado la decisión?" ¿de qué peldaño causal es? Es un **contrafactual** (peldaño 3) y una **probabilidad de necesidad / but-for** — la misma estructura legal de [[arena-h18]], ahora aplicada a un clasificador.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (explicación local):** "¿por qué ESTA predicción?" → explicación local, a menudo más **fiel** y simple porque la superficie es casi lineal localmente (idea de LIME).
+- **Contraejemplo (interpretar lo que no hace falta):** un modelo trivial y de bajo impacto, o uno cuya explicación invita a **gaming** del sistema → interpretar de más es coste sin beneficio.
+- **Caso borde (alta fidelity, baja stability):** un método cuyas explicaciones cambian mucho ante instancias casi idénticas → poco confiable aunque aproxime bien en promedio.
+
+## Errores típicos
+
+- **Conceptual:** confundir interpretabilidad **global** (cómo se comporta en promedio) con **local** (por qué esta predicción) — distinta pregunta, distinto método.
+- **De método:** usar un método específico del modelo cuando necesitas **comparar** entre modelos → ahí van los **agnósticos** (caja negra).
+- **De comunicación:** dar la lista exhaustiva de causas en vez de 1-3 contrastivas → cierto pero inservible.
+
+## Transferencia isomorfa
+
+La interpretabilidad reusa ideas de causalidad y modelado:
+
+- **Explicación contrastiva ↔ contrafactual / but-for:** "¿por qué esto y no aquello?" es exactamente el contrafactual de Pearl y la probabilidad de necesidad legal (conecta con [[arena-h18]]).
+- **Métodos agnósticos ↔ tratar el modelo como caja negra input→output:** la misma abstracción que permite testear un sistema sin mirar sus tripas (conecta con [[arena-rml1]], probar la infra independientemente del ML).
+- **Explicación local lineal ↔ aproximación de primer orden:** LIME ajusta un modelo simple en un entorno pequeño, como linealizar una función cerca de un punto.
+
+Moraleja de la arista: *una explicación útil no es la verdad completa sino la respuesta contrastiva y selectiva a "¿por qué esto y no aquello?" — que es un contrafactual disfrazado.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
