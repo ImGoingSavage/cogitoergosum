@@ -172,6 +172,41 @@ Menor AIC/BIC → mejor modelo. Para selección consistente de modelo: BIC. Para
 
 ---
 
+## Mini-ejemplo trabajado: shrinkage de James-Stein con intuición
+
+Estimas 3 medias independientes θ₁,θ₂,θ₃ con una observación N(θᵢ,1) cada una: X=(2, −1, 4). El estimador "obvio" es X̄=X mismo. James-Stein encoge hacia 0:
+
+> θ̂_JS = (1 − (d−2)/‖X‖²)·X, con d=3, ‖X‖²=4+1+16=21
+> factor = 1 − 1/21 ≈ 0.952 → θ̂_JS ≈ (1.90, −0.95, 3.81)
+
+Para d≥3, **este estimador sesgado domina a X** en MSE total, *aunque las tres medias no tengan nada que ver entre sí*. La paradoja: prestar fuerza entre problemas independientes mejora el agregado.
+
+**Predicción antes de seguir:** ¿de dónde sale la mejora si los θᵢ son ajenos? Respuesta: encoger introduce **sesgo** pero recorta mucha **varianza**; con d≥3 la cuenta MSE=Var+Bias² sale a favor. Es exactamente lo que hace la **regularización ridge** (y un prior bayesiano hacia 0): cambiar un poco de sesgo por mucha varianza. Stein descubrió en 1961 lo que ML redescubrió como regularización.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** errores con media 0 y varianza constante → OLS es BLUE (Gauss-Markov), sin pedir normalidad.
+- **Contraejemplo (R² engañoso):** añadir variables irrelevantes nunca baja R²; parece "mejor modelo" pero sobreajusta. Solo R² ajustado / AIC / CV penalizan la complejidad.
+- **Caso borde (multicolinealidad):** con predictores casi colineales, β̂ sigue insesgado pero Var(β̂) explota (VIF alto) y los signos se vuelven inestables. El borde muestra que insesgado no implica interpretable.
+
+## Errores típicos
+
+- **Conceptual:** leer un coeficiente OLS grande como "efecto importante" sin mirar su SE ni la colinealidad.
+- **Técnico:** comparar modelos de distinto tamaño por R² en vez de R² ajustado / AIC / BIC / CV.
+- **De interpretación:** interpretar β de regresión observacional como causal sin un diseño que controle confundidores.
+
+## Transferencia isomorfa
+
+- **James-Stein ↔ ridge / prior bayesiano:** encoger hacia 0 es regularización L2; el shrinkage óptimo es un prior disfrazado (conecta con [[arena-iml4]], regularización y sesgo-varianza).
+- **Odds ratio de la logística (e^β) ↔ hazard ratio de Cox:** ambos son efectos multiplicativos sobre un log-link; e^β en log-odds es el primo de e^β en log-hazard (conecta con [[arena-h8]]).
+- **ANOVA (between/within) ↔ ley de varianza total:** SS_between + SS_within es exactamente Var[E[Y|X]] + E[Var[Y|X]] (conecta con [[arena-b2]]).
+- **Multicolinealidad / VIF ↔ leakage y features redundantes:** predictores que cargan la misma información inflan la varianza igual que features filtradas inflan el desempeño aparente (conecta con [[arena-dmls1]]).
+- **AIC/BIC/CV ↔ selección de modelo en producción:** penalizar complejidad para predecir bien fuera de muestra es la misma decisión que elegir capacidad de un modelo desplegado (conecta con [[arena-iml4]]).
+
+Moraleja de la arista: *OLS es BLUE pero no intocable; encoger (Stein/ridge) cambia sesgo por varianza y suele ganar, y comparar modelos exige penalizar complejidad, no mirar R².*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

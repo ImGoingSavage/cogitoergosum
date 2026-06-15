@@ -149,6 +149,39 @@ El estimador de Bayes minimiza el riesgo de Bayes (esperanza del riesgo frecuent
 
 ---
 
+## Mini-ejemplo trabajado: un estimador sesgado puede ganar (MSE)
+
+Estima la varianza σ² de una normal con n=5 datos. Dos candidatos:
+- **Insesgado** S² = Σ(xᵢ−x̄)²/(n−1). Bias=0, pero Var grande.
+- **MLE** σ̂² = Σ(xᵢ−x̄)²/n (divide por n). Tiene Bias<0 (subestima), pero menor Var.
+
+Como **MSE = Var + Bias²**, un poco de sesgo a cambio de mucha menos varianza puede bajar el MSE total. De hecho, el estimador de mínimo MSE para σ² en la normal divide por **n+1**, ¡más sesgado aún que el MLE! Ninguno es "el correcto": depende de qué penalizas.
+
+**Predicción antes de seguir:** si te obsesionas con insesgamiento (Bias=0) y eliges siempre S², ¿garantizas el menor error de estimación? Respuesta: **no**. Insesgado solo significa que aciertas *en promedio sobre muchas muestras*; en una muestra concreta, un estimador con sesgo pequeño y varianza baja suele estar más cerca de σ². El sesgo no es el enemigo; el MSE es lo que importa. Esa es la semilla del trade-off sesgo–varianza de todo ML.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** comparar estimadores por MSE = Var + Bias²; el que domina para todo θ es preferible.
+- **Contraejemplo (insesgado ≠ mejor):** X̄ es insesgado para μ, pero en Cauchy tiene varianza infinita y la mediana lo aplasta. Insesgado y útil no son lo mismo.
+- **Caso borde (suficiencia en Uniforme[0,θ]):** aquí el suficiente no es X̄ sino el **máximo** X₍ₙ₎. El borde rompe la intuición "promedia siempre": la última observación (la mayor) contiene toda la información de θ.
+
+## Errores típicos
+
+- **Conceptual:** creer que insesgado implica bajo error; ignora la varianza (y el MSE).
+- **Técnico:** olvidar que la información de Fisher es aditiva (Iₙ=n·I), y mal-escalar la cota de Cramér-Rao.
+- **De supuestos:** aplicar Lehmann-Scheffé sin verificar *completitud* del estadístico suficiente (suficiente solo no basta para UMVUE).
+
+## Transferencia isomorfa
+
+- **MSE = Var + Bias² ↔ trade-off sesgo-varianza en ML:** el mismo desglose gobierna por qué un modelo flexible (baja sesgo, alta varianza) puede generalizar peor que uno simple (conecta con [[arena-iml4]]).
+- **Estadístico suficiente ↔ compresión de features / estado mínimo:** T(X) resume los datos sin perder información sobre θ, igual que un buen embedding o un estado markoviano resume la historia (conecta con [[arena-b4]]).
+- **Rao-Blackwell (condiciona en T) ↔ promediar para reducir varianza:** "E[θ̂|T] nunca empeora" es la versión teórica de ensamblar/bagging para bajar varianza.
+- **Mediana vs media en colas pesadas ↔ robustez:** cuando hay Cauchy/outliers, la mediana (más eficiente) gana a X̄ (conecta con [[arena-q11]]).
+
+Moraleja de la arista: *no persigas insesgamiento; persigue MSE bajo. Var + Bias² es el mismo trade-off que decide si un modelo generaliza.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

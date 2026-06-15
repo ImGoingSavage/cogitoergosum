@@ -140,6 +140,39 @@ El MLE igualal estadístico suficiente T a su valor esperado bajo el modelo. Est
 
 ---
 
+## Mini-ejemplo trabajado: el MLE de Poisson es solo el promedio
+
+Observas conteos diarios de eventos: n=30 días, Σxᵢ=90. Modelo Poisson(λ). La log-verosimilitud es ℓ(λ) = −nλ + (Σx)·lnλ + const. Deriva e iguala a 0:
+
+> ∂ℓ/∂λ = −n + Σx/λ = 0 → λ̂ = Σx/n = 90/30 = **3**
+
+El MLE es la media muestral. No es casualidad: en una familia exponencial la ecuación de verosimilitud iguala el **estadístico suficiente** a su esperanza, E_λ[T(X)] = T̄. Aquí T=Σx y E[Σx]=nλ, así que λ̂=X̄.
+
+**Predicción antes de seguir:** ¿el MLE de E[X²]=λ²+λ es 3²+3=12? Respuesta: **sí**, por la **invarianza del MLE** — el MLE de cualquier g(λ) es g(λ̂). No hay que re-optimizar: enchufas λ̂=3. Esa propiedad (que la media posterior bayesiana *no* tiene) es lo que hace al MLE tan barato de usar.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** familia regular → log-verosimilitud cóncava → deriva, iguala a 0, y el MLE es único (en exponenciales canónicas siempre).
+- **Contraejemplo (MLE en el borde):** para Uniforme[0,θ], ∂ℓ/∂θ no se anula nunca; el MLE es θ̂=máx(xᵢ), una solución de *frontera*, no de derivada cero. Derivar a ciegas falla.
+- **Caso borde (σ̂² sesgado):** el MLE de σ² divide por n, no por n−1; es sesgado aunque sea MLE. Optimalidad asintótica no implica insesgamiento en muestra finita.
+
+## Errores típicos
+
+- **Conceptual:** confundir la verosimilitud (función de θ, datos fijos) con una densidad de θ; el MLE no es una probabilidad.
+- **Técnico:** usar la información esperada I(θ) cuando solo se tiene la observada J(θ̂)=−ℓ''(θ̂); para ICs prácticos a veces se prefiere J.
+- **De supuestos:** aplicar la normalidad asintótica √n(θ̂−θ)→N(0,1/I) con n pequeño o cerca de un borde del espacio paramétrico.
+
+## Transferencia isomorfa
+
+- **OLS = MLE bajo errores normales ↔ mínimos cuadrados:** maximizar la verosimilitud gaussiana es exactamente minimizar ‖y−Xβ‖²; con errores Laplace sería minimizar Σ|ε| (LAD, robusto) (conecta con [[arena-q6]] y [[arena-dg4]]).
+- **LRT −2lnΛ ~ χ²(r) ↔ comparación de modelos anidados:** el test de razón de verosimilitudes es el motor de la selección por verosimilitud y prima a AIC/BIC (conecta con [[arena-dg4]]).
+- **Familia exponencial (E[T]=T̄) ↔ GLM y conjugación:** el estadístico suficiente compacto y los priors conjugados nacen de la misma forma h(x)exp(η·T−A) (conecta con [[arena-b4]], conjugados).
+- **Newton-Raphson para el MLE ↔ optimización de la pérdida en ML:** maximizar log-verosimilitud cóncava ≡ minimizar una pérdida convexa por descenso/segundo orden (conecta con [[arena-dmls1]]).
+
+Moraleja de la arista: *el MLE resuelve ∂ℓ/∂θ=0, iguala el suficiente a su media, y se propaga por g(θ̂) gratis; bajo errores normales, eso es exactamente OLS.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

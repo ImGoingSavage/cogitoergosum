@@ -159,6 +159,39 @@ P(al menos 1 error tipo I) = 1-(1-α)^m ≈ m·α para α pequeño.
 
 ---
 
+## Mini-ejemplo trabajado: test t y su IC dual, a mano
+
+n=25, X̄=6, S=4, y quieres contrastar H₀: μ=5. El estadístico:
+
+> t = (X̄ − μ₀)/(S/√n) = (6 − 5)/(4/5) = 1/0.8 = **1.25**
+
+Con 24 grados de libertad, el crítico bilateral al 5% es ≈2.064. Como |1.25| < 2.064, **no rechazas H₀**. Y de forma equivalente, el IC del 95% es 6 ± 2.064·0.8 = (4.35, 7.65), que **contiene** el 5. Misma decisión por dos caminos: ese es el principio de dualidad IC↔test.
+
+**Predicción antes de seguir:** si cuadruplicas el tamaño a n=100 (mismos X̄, S), ¿qué le pasa al estadístico y al ancho del IC? Respuesta: el error estándar S/√n cae a la **mitad** (√100=10 vs 5), así que t≈2.5 (ahora *sí* rechazas) y el IC se estrecha a la mitad. Cuadruplicar n duplica la precisión — la misma √n de σ/√n que aparece por todas partes. No es que el efecto crezca; es que lo ves mejor.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** un parámetro, un pivote con distribución conocida (z, t, χ²) → construyes IC y test simultáneamente.
+- **Contraejemplo (p-valor mal leído):** p=0.03 NO es "97% de que H₁ sea cierta" ni "3% de que los datos sean azar"; es P(datos tan extremos | H₀). Confundirlo con P(H₀|datos) es el mismo error de condicional invertido que la tasa base.
+- **Caso borde (IC de σ² asimétrico):** como la χ² no es simétrica, el IC de la varianza no se centra en S²; usar ± simétrico es incorrecto. El borde recuerda que el pivote dicta la forma.
+
+## Errores típicos
+
+- **Conceptual:** interpretar "no rechazar H₀" como "H₀ es verdadera"; solo significa evidencia insuficiente.
+- **Técnico:** usar z en vez de t con n pequeño y σ desconocida (subestima el ancho del IC).
+- **De supuestos:** correr m tests y reportar el p<0.05 más bonito sin corregir (FWER ≈ m·α); con 20 tests, esperas ~1 falso positivo por azar.
+
+## Transferencia isomorfa
+
+- **Error tipo I/II ↔ falso positivo/negativo de un clasificador:** α y β son exactamente 1−especificidad y 1−sensibilidad; la curva de potencia es la ROC del test (conecta con [[arena-q2]] y [[arena-htd4]]).
+- **p-valor uniforme bajo H₀ ↔ transformada integral:** que p~U(0,1) cuando H₀ es cierta es la misma propiedad CDF→uniforme de la valoración probabilística (conecta con [[arena-q6]]).
+- **Corrección de tests múltiples ↔ peeking en A/B testing:** mirar muchas métricas o parar temprano infla el error tipo I; Bonferroni/BH son el antídoto, igual que en experimentación online (conecta con [[arena-obs1]], monitoreo de muchas señales).
+- **Tamaño de muestra n≈(z_α+z_β)²σ²/δ² ↔ MDE de un experimento:** diseñar potencia es elegir el efecto mínimo detectable antes de lanzar (conecta con [[arena-dmls3]], rollout/experimentos).
+
+Moraleja de la arista: *IC y test son el mismo objeto visto de dos lados; el p-valor mide sorpresa bajo H₀, no la verdad de H₀; y la √n manda en la precisión.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
