@@ -65,7 +65,7 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**110 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**114 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
@@ -79,12 +79,13 @@ ponla en una sola línea `$$...$$`.
 | **Ciencia de datos (lotes 18-19)** | ads1-4 + cds1-4 + s1 (9) |
 | **Health originales (lote 20)** | h1, h2 (2) |
 | **Conductual (lote 21)** | c1, c2, c3, c4 (STAR) (4) |
+| **Fifty Challenging (lote 22)** | fc1, fc2, fc3, fc4 (4) |
 
-### FALTAN (8 lecciones) — esto es lo que debes hacer
+### FALTAN (4 lecciones) — esto es lo que debes hacer
 
-**Solo restan las Quant largas (200+ líneas):** `arena-p1..p4` (A Practical Guide
-to Quantitative Finance) y `arena-fc1..fc4` (Fifty Challenging Problems in
-Probability). Cuida no inflar: inserta únicamente las secciones del contrato.
+**Solo restan las Quant largas de A Practical Guide (200+ líneas):**
+`arena-p1..p4` (acertijos, combinatoria, brownian, álgebra lineal). Cuida no
+inflar: inserta únicamente las secciones del contrato.
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
@@ -96,7 +97,7 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
   completo**.
 - `arena-p1, p2, p3, p4` (A Practical Guide to Quantitative Finance — acertijos,
   combinatoria, brownian, álgebra lineal). **Son MUY largas (200+ líneas)**.
-- `arena-fc1, fc2, fc3, fc4` (Fifty Challenging Problems in Probability)
+- ~~`arena-fc1, fc2, fc3, fc4` (Fifty Challenging Problems)~~ **HECHAS (lote 22)**.
 - ~~`arena-b1, b2, b3, b4` (Blitzstein & Hwang)~~ **HECHAS (lote 13)**.
 
 **Estadística / inferencia (route: estadistica/quant):**
