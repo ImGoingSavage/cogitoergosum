@@ -276,10 +276,21 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   `.enlace-unidad` en `css/styles.css`. Los `[[concepto-sin-unidad]]` siguen como
   chip `.enlace-concepto`; los literales de matriz `[[1,3],…]` intactos. Verificado:
   93 targets únicos resuelven a unidades de `study.json`, 0 rotos.
-- Render de `$$` multi-línea si aparece la necesidad. *(Pendiente.)*
+- 🟡 **Rúbricas / simulación de entrevista (Nivel E) — INFRA + 3 EJEMPLARES
+  (sw.js v78, commit `fe8aad1`):** simulación SIN IA (guion del entrevistador +
+  rúbrica + errores de comunicación). **No toca `study.json`**: el contenido vive
+  en `data/entrevista/<id>.json` (artefacto paralelo a `data/teoria/`) con
+  manifiesto `_index.json` que decide dónde aparece el botón. Esquema:
+  `{ rol, duracion, preguntas:[{q, rubrica[], errores[], seguimiento?}], cierre }`.
+  Hechos 3 guiones (uno por ruta): `arena-q2`, `arena-cc3`, `arena-h17`. UI en
+  `js/study.js` (`alternarEntrevista`/`construirEntrevista`, botón en `abrirUnidad`),
+  `index.html` (`#btn-unidad-entrevista`/`#unidad-entrevista`), CSS `.entrevista`.
+  **Pendiente:** validar UX con Edgar y, si aprueba, **autorar los guiones de las
+  unidades restantes** (añadir cada `data/entrevista/<id>.json` + su id al
+  `_index.json` + al SHELL de `sw.js`). No requiere migración de esquema.
+- Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
-  esquema → consultar a Edgar antes). *(Pendiente.)*
-- Rúbricas / simulación de entrevista (Nivel E) si el esquema lo soporta. *(Pendiente.)*
+  esquema → consultar a Edgar antes). *(Pendiente — gated.)*
 
 ---
 
