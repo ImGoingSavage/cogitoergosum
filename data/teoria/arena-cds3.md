@@ -37,6 +37,37 @@ Una vez en producción: rastrear versiones de modelo y datos, documentar diseño
 
 ---
 
+## Mini-ejemplo trabajado: detectar data drift con un baseline
+
+Tu modelo de fraude se entrenó cuando la edad media de los usuarios era 35 (σ=10). Tres meses después, el tráfico viene de una campaña que atrajo jóvenes: edad media 24. El modelo no cambió, pero la **entrada sí**. Fijas un *baseline* (la distribución de entrenamiento) y comparas la entrada nueva con un índice como el **PSI** (Population Stability Index): PSI < 0.1 estable, 0.1–0.25 cambio moderado, > 0.25 drift severo. Aquí saltaría la alarma.
+
+Lo clave: el data drift se detecta **sin labels** (solo comparas distribuciones de features), así que avisa *antes* de que lleguen las etiquetas reales de fraude (que tardan semanas).
+
+**Predicción antes de seguir:** si el PSI de las features está estable pero el modelo empeora, ¿qué pasó? Respuesta: probablemente **concept drift** — cambió P(Y|X), la *relación* features→fraude, no las features mismas (p. ej. nuevos esquemas de fraude). Eso NO lo ves comparando distribuciones de entrada; necesitas performance con labels o proxies. Data drift (cambia P(X)) y concept drift (cambia P(Y|X)) son alarmas distintas y se monitorean por separado.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** el modelo era preciso y empeora → compara entrada vs baseline (PSI/KS) para data drift; performance vs labels para concept drift.
+- **Contraejemplo ("funciona en mi máquina"):** sin contenedor, el modelo depende del entorno local; en prod faltan versiones de librerías. Docker empaca dependencias para que el comportamiento sea idéntico.
+- **Caso borde (data drift sin concept drift):** llega tráfico de otro país (P(X) cambia) pero el patrón fraude/no-fraude es el mismo (P(Y|X) intacto); reentrenar puede no hacer falta. El borde separa los dos tipos de drift.
+
+## Errores típicos
+
+- **Conceptual:** confundir data drift (distribución de entrada) con concept drift (relación aprendida); requieren monitoreos distintos.
+- **Técnico:** esperar a tener labels para detectar problemas, cuando el data drift se ve sin ellos.
+- **De supuestos:** desplegar sin baseline ni plan de rollback, de modo que un drift pasa inadvertido.
+
+## Transferencia isomorfa
+
+- **Data drift vs concept drift ↔ P(X) vs P(Y|X):** la misma descomposición distingue covariate shift de cambio de la función objetivo (conecta con [[arena-htd4]] y [[arena-s1]]).
+- **PSI / Jensen-Shannon ↔ distancia entre distribuciones y test KS:** medir cuánto se alejó la entrada del baseline es comparar distribuciones, primo del test de Kolmogorov-Smirnov (conecta con [[arena-dg3]]).
+- **Contenedor reproducible ↔ pipeline determinista:** empacar entorno+dependencias garantiza los mismos pasos siempre, la misma reproducibilidad que exige un pipeline de features (conecta con [[arena-dmls3]]).
+- **Monitoreo + alertas ↔ observabilidad:** baseline, métricas en tiempo real y alarmas ante caídas son el mismo aparato que vigila un sistema en producción (conecta con [[arena-obs1]]).
+
+Moraleja de la arista: *data drift (cambia la entrada) se ve sin labels comparando con un baseline; concept drift (cambia la relación) exige performance real — son alarmas distintas, monitoréalas por separado.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

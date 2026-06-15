@@ -70,6 +70,39 @@ Copia esta tabla en la pizarra **antes** de proponer arquitectura o modelo:
 
 ---
 
+## Mini-ejemplo trabajado: el skew que nadie ve hasta producción
+
+La feature "promedio de compras en los últimos 7 días" se calcula así:
+- **Offline (entrenamiento):** sobre el histórico completo, una media limpia sobre 7 días de datos siempre presentes.
+- **Online (serving):** una ventana deslizante en tiempo real donde, si faltan días, se rellena con 0 (default).
+
+Un usuario nuevo con 2 días de historia recibe offline un promedio sobre 2 días, pero online un promedio "sobre 7" con 5 ceros → **valores sistemáticamente más bajos en serving**. El modelo fue entrenado con una feature y se sirve con otra; el AUC offline no lo detecta porque offline ambos coinciden.
+
+**Predicción antes de seguir:** ¿cómo entrenarías para que el modelo aprenda la feature *real* que verá en producción? Respuesta: **loggea las features tal como se sirvieron** y reentrena sobre esos logs, no sobre el cálculo histórico idealizado. La regla profunda: la única feature que importa es la que el modelo recibe en inferencia; entrénalo sobre exactamente eso. Un feature store con código compartido offline/online elimina la duplicación de raíz.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** "funciona en pruebas, falla en prod" → audita training-serving skew (¿misma feature offline y online?) y leakage temporal en el split.
+- **Contraejemplo (AUC mejor, negocio peor):** un AUC global más alto puede empeorar el top-k visible; optimizar la métrica equivocada engaña. La métrica debe capturar el objetivo real.
+- **Caso borde (feedback loop):** el modelo decide qué se muestra → qué se clica → los datos del próximo entrenamiento; el sesgo se amplifica solo. El borde muestra que el modelo contamina sus propios datos futuros.
+
+## Errores típicos
+
+- **Conceptual:** tratar el modelo como el sistema; en producción es la pieza más pequeña, el contorno (datos, features, monitoreo, rollback) es lo que falla.
+- **Técnico:** split de evaluación que no respeta el tiempo (leakage temporal) → AUC offline inflado.
+- **De supuestos:** desplegar sin plan de rollback ni guardrails definidos antes del lanzamiento.
+
+## Transferencia isomorfa
+
+- **Training-serving skew ↔ data/covariate shift:** train y serving ven distribuciones distintas; es el mismo desajuste P_train(X) ≠ P_serving(X) del drift (conecta con [[arena-htd4]] y [[arena-cds3]]).
+- **Leakage temporal ↔ data leakage de preprocesamiento:** "ver el futuro" en el split es el mismo pecado que escalar antes de separar train/test (conecta con [[arena-cds1]]).
+- **Feedback loop ↔ regresión a la media / sesgo de selección:** el modelo que genera sus propios datos de entrenamiento sesga la distribución, como condicionar en lo que un proceso decide mostrar (conecta con [[arena-h17]]).
+- **AUC global vs top-k ↔ métrica alineada al costo real:** discriminación promedio no es calidad del top visible; elegir la métrica correcta es la misma disciplina que precisión vs recall según el costo (conecta con [[arena-ads3]]).
+
+Moraleja de la arista: *en producción el modelo es lo de menos; entrénalo sobre las features que de verdad verá (loggeadas), respeta el tiempo en el split, y define rollback y guardrails antes de desplegar.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |

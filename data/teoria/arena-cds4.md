@@ -51,6 +51,37 @@ Bash conecta las piezas: navegar (`cd`, `ls`), mover/copiar archivos, lanzar scr
 
 ---
 
+## Mini-ejemplo trabajado: el tamaño del bin cambia la historia
+
+Tienes 200 tiempos de respuesta. Un histograma con **5 bins** anchos los aplana en una sola joroba: "distribución unimodal". El mismo dato con **80 bins** se vuelve dentado y ruidoso: cada pico es un artefacto de pocos puntos. Con ~15 bins aparece la verdad: dos modos (usuarios rápidos en caché, lentos sin caché).
+
+El bin es una **perilla de suavizado**: pocos bins = mucho sesgo (escondes estructura), muchos bins = mucha varianza (inventas estructura). El histograma honesto vive en medio.
+
+**Predicción antes de seguir:** ¿esta tensión te recuerda a algún parámetro de modelado? Respuesta: es **exactamente** el trade-off sesgo-varianza — el ancho de bin es a un histograma lo que K es a KNN o λ a un suavizador: bins anchos ↔ K grande (suave, sesgado), bins finos ↔ K=1 (dentado, varianza alta). Elegir el bin es elegir flexibilidad, y el ojo puede engañarse igual que un modelo puede sobreajustar.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** elegir gráfico según estructura → barras (comparar categorías), líneas (tendencia temporal), scatter (correlación), histograma (distribución).
+- **Contraejemplo (gráfico que miente):** un eje Y que no empieza en 0 en un gráfico de barras exagera diferencias pequeñas; el gráfico "correcto" mal configurado engaña.
+- **Caso borde (pastel con muchas categorías):** el ojo no compara bien ángulos; con >4 categorías un gráfico de barras comunica mejor que un pastel.
+
+## Errores típicos
+
+- **Conceptual:** elegir el gráfico primero y forzar la narrativa, en vez de dejar que la estructura del dato y la audiencia lo dicten.
+- **Técnico:** un único bin/escala sin probar alternativas; el histograma "por defecto" puede ocultar bimodalidad.
+- **De interpretación:** confundir correlación visible en un scatter con causalidad.
+
+## Transferencia isomorfa
+
+- **Ancho de bin ↔ flexibilidad / sesgo-varianza:** suavizar de más esconde estructura, de menos inventa ruido, como K en KNN o λ en un spline (conecta con [[arena-isl1]]).
+- **Git (log inmutable de commits) ↔ versionado y reproducibilidad:** la historia append-only de Git es el mismo principio de auditoría que versionar modelo+pipeline en MLOps (conecta con [[arena-cds3]]).
+- **Elegir el gráfico según la estructura ↔ elegir la herramienta según el problema:** "barras para comparar, líneas para tendencia" es el mismo reflejo de reconocimiento que "ventana deslizante para subarreglos, hashing para memoria".
+- **Storytelling con audiencia ↔ comunicación bajo presión (Nivel E):** adaptar el nivel técnico a quien escucha es la competencia que la simulación de entrevista entrena.
+
+Moraleja de la arista: *el ancho de bin es una perilla de sesgo-varianza para el ojo; suaviza demasiado y escondes la verdad, suaviza poco e inventas ruido.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

@@ -55,6 +55,37 @@ Mitigaciones:
 
 ---
 
+## Mini-ejemplo trabajado: por qué sin activación no-lineal la red colapsa
+
+Apila dos capas lineales: h = W₁x, y = W₂h = W₂W₁x. El producto W₂W₁ es **otra matriz**, así que dos capas lineales equivalen a **una sola** transformación lineal. Añade 100 capas: sigue siendo lineal. Sin una no-linealidad entre capas, la profundidad no compra nada — la red no puede doblar la frontera de decisión.
+
+Mete una ReLU entre capas: y = W₂·max(0, W₁x). Ahora cada neurona aporta un "doblez" y la composición genera fronteras arbitrariamente complejas. La activación no es un adorno: es lo que convierte "muchas capas" en "función expresiva".
+
+**Predicción antes de seguir:** en una red muy profunda con sigmoides, ¿por qué las primeras capas aprenden lentísimo? Respuesta: backprop multiplica derivadas capa por capa, y la sigmoide satura (derivada ≤ 0.25). Multiplicar muchos números <1 hace que el gradiente **se desvanezca exponencialmente** hacia las capas tempranas → casi no se actualizan. Es el mismo fenómeno que multiplicar muchas probabilidades pequeñas y obtener casi cero; por eso se trabaja en log y se usa ReLU (derivada 1 en positivos).
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** capa oculta profunda → ReLU (no satura en positivos); salida binaria → sigmoide; multiclase → softmax.
+- **Contraejemplo (más capas sin no-linealidad):** apilar capas lineales no aumenta la capacidad; parece "más profundo" pero es un modelo lineal disfrazado.
+- **Caso borde (exploding gradient):** el gemelo del vanishing — derivadas grandes multiplicadas dan actualizaciones enormes, NaNs; se corta con gradient clipping.
+
+## Errores típicos
+
+- **Conceptual:** creer que profundidad por sí sola da expresividad (sin activación no-lineal, no).
+- **Técnico:** usar sigmoide/tanh en capas ocultas profundas y sufrir vanishing gradient; o mala inicialización (He para ReLU, Glorot para tanh).
+- **De interpretación:** leer la salida de una sigmoide como probabilidad calibrada sin verificar calibración.
+
+## Transferencia isomorfa
+
+- **Descenso de gradiente ↔ optimización del MLE:** entrenar minimizando la pérdida es maximizar la log-verosimilitud por gradiente; la log-loss *es* el MLE de Bernoulli (conecta con [[arena-dg2]]).
+- **Sigmoide de salida ↔ regresión logística:** la última capa con sigmoide es exactamente un modelo logístico sobre las features aprendidas (conecta con [[arena-isl2]]).
+- **Vanishing gradient ↔ producto de números pequeños:** multiplicar derivadas <1 colapsa igual que multiplicar verosimilitudes pequeñas; por eso log-espacio y ReLU (conecta con [[arena-cb3]], log-verosimilitud).
+- **Backprop (regla de la cadena) ↔ delta method:** ambos propagan una perturbación por derivadas encadenadas; uno hacia atrás en una red, otro a través de una transformación g (conecta con [[arena-cb4]]).
+
+Moraleja de la arista: *la no-linealidad es lo que hace que apilar capas valga la pena; y multiplicar muchas derivadas pequeñas desvanece el gradiente, como multiplicar probabilidades desvanece la verosimilitud.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
