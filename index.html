@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CogitoErgoSum — Entrenamiento del pensamiento</title>
   <meta name="theme-color" content="#16130f" />
+  <!-- KaTeX vendorizado local (assets/katex/, sin CDN, offline/PWA): render de
+       matemáticas con calidad de libro en las lecciones del Modo Estudio. El JS
+       expone window.katex; js/markdown.js lo usa con fallback a Unicode. -->
+  <link rel="stylesheet" href="assets/katex/katex.min.css" />
+  <script defer src="assets/katex/katex.min.js"></script>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />

@@ -8,11 +8,15 @@
  * Además: matemáticas $…$ (en línea) y $$…$$ (bloque), y enlaces [[slug]]:
  * los que apuntan a una unidad real (arena-xxx) se renderizan navegables
  * (.enlace-unidad, el click lo cablea js/study.js); el resto queda como chip
- * informativo (.enlace-concepto). El render de matemáticas es un traductor ligero LaTeX→Unicode
- * (sin librerías, convención del proyecto): legible, no tipográficamente
- * perfecto.
+ * informativo (.enlace-concepto).
+ *
+ * Matemáticas: se renderizan con KaTeX (vendorizado local en assets/katex/, sin
+ * CDN, offline) cuando window.katex está disponible — calidad tipográfica de
+ * libro. Si KaTeX no cargó (p. ej. el smoke test en Node), se cae a un traductor
+ * ligero LaTeX→Unicode (texAUnicode): legible aunque no tipográficamente exacto.
  * Todo el texto se escapa ANTES de transformar: una lección jamás puede
- * inyectar HTML.
+ * inyectar HTML. Para KaTeX se revierten esas entidades (desescapar) y se le pasa
+ * el LaTeX crudo; KaTeX produce su propio HTML seguro.
  */
 
 function escapar(texto) {
@@ -92,6 +96,33 @@ function texAUnicode(tex) {
   return r;
 }
 
+/** Revierte el escape de escapar() para devolver el LaTeX crudo a KaTeX. */
+function desescapar(t) {
+  return t
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&amp;', '&');
+}
+
+/**
+ * Renderiza LaTeX con KaTeX si está disponible (browser); devuelve su HTML
+ * seguro o null para que el llamador caiga al fallback Unicode. `fuente` debe
+ * ser LaTeX crudo (ya desescapado). En Node (smoke test) globalThis.katex es
+ * undefined → null → fallback.
+ */
+function katexHTML(fuente, display) {
+  const k = typeof globalThis !== 'undefined' ? globalThis.katex : undefined;
+  if (k && typeof k.renderToString === 'function') {
+    try {
+      return k.renderToString(fuente, { displayMode: display, throwOnError: false });
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
 /** Transforma negrita/cursiva/código/matemáticas/enlaces de una línea ya escapada. */
 function inline(texto) {
   // Spans de código y matemáticas se protegen primero (token  i ) para que
@@ -104,11 +135,15 @@ function inline(texto) {
   };
 
   let s = texto.replace(/`([^`]+)`/g, (_, c) => proteger(`<code>${c}</code>`));
-  // Matemáticas en bloque dentro de una línea: $$ … $$
-  s = s.replace(/\$\$([^$]+)\$\$/g, (_, m) => proteger(`<span class="matematica">${texAUnicode(m)}</span>`));
+  // Matemáticas en bloque dentro de una línea: $$ … $$ (KaTeX display; fallback Unicode)
+  s = s.replace(/\$\$([^$]+)\$\$/g, (_, m) =>
+    proteger(katexHTML(desescapar(m), true) ?? `<span class="matematica">${texAUnicode(m)}</span>`)
+  );
   // Matemáticas en línea: $ … $ — el lookahead (?![0-9\s]) evita capturar
   // cantidades en dólares ($4M, $100), que el corpus usa con frecuencia.
-  s = s.replace(/\$(?![0-9\s])([^$\n]+?)\$/g, (_, m) => proteger(`<span class="matematica">${texAUnicode(m)}</span>`));
+  s = s.replace(/\$(?![0-9\s])([^$\n]+?)\$/g, (_, m) =>
+    proteger(katexHTML(desescapar(m), false) ?? `<span class="matematica">${texAUnicode(m)}</span>`)
+  );
 
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
@@ -207,12 +242,14 @@ export function renderMarkdown(md) {
       continue;
     }
 
-    // Ecuación en bloque: una línea que es solo $$ … $$ → centrada, sin <p>
+    // Ecuación en bloque: una línea que es solo $$ … $$ → centrada, sin <p>.
+    // KaTeX en displayMode (ya es bloque); fallback al traductor Unicode.
     const eq = /^\$\$(.+)\$\$$/.exec(t);
     if (eq) {
       cerrarLista();
       cerrarCita();
-      html.push(`<div class="ecuacion">${texAUnicode(eq[1])}</div>`);
+      const kt = katexHTML(desescapar(eq[1]), true);
+      html.push(kt ?? `<div class="ecuacion">${texAUnicode(eq[1])}</div>`);
       continue;
     }
 

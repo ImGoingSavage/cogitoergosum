@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v80';
+const VERSION = 'cogitoergosum-v81';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -45,6 +45,30 @@ const SHELL = [
   'js/claustro.js',
   'js/markdown.js',
   'js/pizarra.js',
+  // KaTeX vendorizado local (render de matemáticas, offline): JS + CSS + fuentes
+  // woff2. js/markdown.js lo usa con fallback a Unicode si no cargara.
+  'assets/katex/katex.min.js',
+  'assets/katex/katex.min.css',
+  'assets/katex/fonts/KaTeX_AMS-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Caligraphic-Bold.woff2',
+  'assets/katex/fonts/KaTeX_Caligraphic-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Fraktur-Bold.woff2',
+  'assets/katex/fonts/KaTeX_Fraktur-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Main-Bold.woff2',
+  'assets/katex/fonts/KaTeX_Main-BoldItalic.woff2',
+  'assets/katex/fonts/KaTeX_Main-Italic.woff2',
+  'assets/katex/fonts/KaTeX_Main-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Math-BoldItalic.woff2',
+  'assets/katex/fonts/KaTeX_Math-Italic.woff2',
+  'assets/katex/fonts/KaTeX_SansSerif-Bold.woff2',
+  'assets/katex/fonts/KaTeX_SansSerif-Italic.woff2',
+  'assets/katex/fonts/KaTeX_SansSerif-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Script-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Size1-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Size2-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Size3-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Size4-Regular.woff2',
+  'assets/katex/fonts/KaTeX_Typewriter-Regular.woff2',
   'data/problems.json',
   'data/study.json',
   'data/quotes.json',
