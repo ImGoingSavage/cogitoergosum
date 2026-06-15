@@ -502,11 +502,12 @@
       "archivo": "Arena/Problem solving y olimpiadas/A_Walk_Through_Combinatorics_An_Introduc.pdf",
       "sector": "C",
       "ruta": "entrenamiento",
-      "estado": "pendiente",
-      "preguntas_agregadas": 0,
+      "estado": "completado",
+      "preguntas_agregadas": 44,
       "unidades_creadas": [],
       "cuota_minima": 40,
-      "notas": ""
+      "notas": "Tanda 31 (2026-06-14): 44 problemas a data/problems.json (ids 233-276), Sector C entrenamiento, esquema §4.1. Balanceado 11/11/11/11. Fuente: cap. 1 (Pigeon-Hole), cap. 2 (Induction), cap. 9 (Graph Theory) — todos con soluciones completas en el libro. invariantes (cap.1 casillero + cap.9 paridad): fiesta Smith (anfitriona=4), 1500 despegues>1440, 100 ptos cubo tetra 1/99, 9 enteros producto cuadrado (2^3 clases), 502 enteros suma/diff mod 1000, 17 ptos triángulo 1/4, n+1 de {1..2n} uno divide otro (parte impar — OJO: variante 'doble' es FALSA, contraejemplo {1,3,4,5,7}), handshake hermanos impares par, dos vértices mismo grado, apretones impares par, 44^n-1 div 7 (n=3). inversion (cap.2 inducción/construcción): a_n=2·3^n-1, a_n=(2·4^n+1)/3, a_n=2·3^{n-1} (suma acumulada), n^3+11n div 6, 8^n-14n+27 div 7, cuadrados→3m+1, torneo rey, 2^n→fila n+1, triángulo→3n+1 semejantes, cuadrado→n cuadrados (n>14), a_n=(8·10^n+1)/9. optimizacion (cap.2 desigualdades + cap.9 extremal): AM-GM inducción Cauchy, HM≤GM, 3^n>n^4 (n≥8), 100 reales 99 sumas no-neg (óptimo), 10v/28e→C4, 9v grados≥27→grado≥4, 10v/38e→K4 inducido, 7v grado≥3→conexo, grado≥k→ciclo≥k+1, recurrencia a_n≤3^n, [4,4,4,2,1,1] no gráfica (Havel-Hakimi). patrones (cap.2 identidades + cap.9 conteo): Σk^3=(Σk)^2 (Nicómaco), Σi(i+1)=n(n+1)(n+2)/3, recurrencia raíz doble a_n=n·3^{n-1}, #grafos=2^C(n,2), automorfismos K_n/C_n/P_n/S_n, ciclos ham K_n=(n-1)!/2, >6600 no-isomorfos 8 vért, aut(cubo)=48, ciclos ham cubo=6, 1/a+1/b+1/c=1→(2,3,6), 1/a+..+1/d=1→6 cuádruplas. 44 afirmaciones numéricas verificadas con Python (recurrencias/identidades exactas, divisibilidad, conteo de grafos/automorfismos/ciclos por enumeración, diofantinas por fuerza bruta, casillero por conteo, desigualdades por muestreo, C4 empírico en 20k grafos + ex(10;C4)=16); pruebas extremales/de existencia (torneo rey, fila, conexión, ciclo, 100-reales-óptimo) tomadas fielmente del libro. CORRECCIÓN aplicada: se cambió 'uno es el doble' (falso) por 'uno divide al otro' (verdadero) en Ej.25. Solo se tocó problems.json: sin cambios de código, sin teoria/*.md, sin bump de sw.js. Builder idempotente en scripts/_build_bona.py.",
+      "ids_problemas": "233-276 en data/problems.json"
     },
     {
       "libro": "How to Think Like a Mathematician (Kevin Houston)",

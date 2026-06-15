@@ -2654,3 +2654,55 @@ patrones 58 (232 total, global balanceado). Builder idempotente en `scripts/_bui
 Bóna (`A Walk Through Combinatorics`), Kevin Houston (`How to Think Like a Mathematician`),
 y la serie AoPS (Intro/Med/Vol/Calculus). Mismo esquema §4.1 (ids 233+, sin huecos) y, donde
 aplique, `fase-0` como material introductorio del Modo Estudio. Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-14 (Arena tanda 31) — SECTOR C: Bóna, *A Walk Through Combinatorics*, 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `A Walk Through Combinatorics` (Miklós
+Bóna, 2.ª ed., World Scientific) — libros[31] del ledger, ruta `entrenamiento`, cuota
+40 (superada con **44**). Destino: **`data/problems.json`** (esquema §4.1), ids
+**233-276** sin huecos. **Distribución balanceada 11/11/11/11.** Fuente: **cap. 1
+«Pigeon-Hole Principle»**, **cap. 2 «Mathematical Induction»** y **cap. 9 «Graph
+Theory»** — los tres con soluciones completas en el libro, lo que facilitó verificar.
+
+- **invariantes** (11, cap. 1 casillero + cap. 9 paridad): fiesta de los Smith (la
+  anfitriona da 4 apretones), 1500 despegues > 1440 minutos, 100 puntos en cubo →
+  tetraedro ≤ 1/99, 9 enteros (factores ≤ 6) → producto cuadrado (2³ clases de paridad),
+  502 enteros → suma o diferencia divisible por 1000, 17 puntos en triángulo → dos a ≤ 1/4,
+  n+1 de {1..2n} → uno divide a otro (parte impar), apretón de manos (hermanos impares /
+  apretones impares son par en número), dos vértices del mismo grado, 44ⁿ−1 divisible por 7.
+- **inversion** (11, cap. 2 inducción/construcción): aₙ=2·3ⁿ−1, aₙ=(2·4ⁿ+1)/3, aₙ=2·3ⁿ⁻¹
+  (suma acumulada), 6 | n³+11n, 7 | 8ⁿ−14n+27, cortar cuadrados → 3m+1, torneo donde un
+  «rey» lista a todos, 2ⁿ jugadores → fila de n+1 que se vencen, triángulo → 3n+1 semejantes,
+  cuadrado → n cuadrados (n>14), aₙ=(8·10ⁿ+1)/9.
+- **optimizacion** (11, cap. 2 desigualdades + cap. 9 extremal): AM-GM por inducción de
+  Cauchy, HM ≤ GM, 3ⁿ>n⁴ (n≥8), 100 reales suma 0 → ≥99 sumas no negativas (óptimo), 10
+  vértices/28 aristas → C₄, 9 vértices grados ≥27 → grado ≥4, 10 vértices/38 aristas → K₄
+  inducido, 7 vértices grado ≥3 → conexo, grado mínimo k → ciclo ≥ k+1, recurrencia aₙ ≤ 3ⁿ,
+  secuencia [4,4,4,2,1,1] no gráfica (Havel–Hakimi).
+- **patrones** (11, cap. 2 identidades + cap. 9 conteo): Σk³=(Σk)² (Nicómaco), Σi(i+1)=
+  n(n+1)(n+2)/3, recurrencia con raíz doble aₙ=n·3ⁿ⁻¹, #grafos sobre [n]=2^C(n,2),
+  automorfismos de Kₙ/Cₙ/Pₙ/Sₙ, ciclos hamiltonianos de Kₙ=(n−1)!/2, >6600 grafos no
+  isomorfos en 8 vértices, automorfismos del cubo = 48, ciclos hamiltonianos del cubo = 6,
+  1/a+1/b+1/c=1 → (2,3,6), 1/a+1/b+1/c+1/d=1 → 6 cuádruplas.
+
+**§1.2 cumplida — las 44 afirmaciones numéricas verificadas con Python**
+(`/tmp/verify_bona.py`): recurrencias e identidades por cómputo exacto; divisibilidad
+directa; conteo de grafos, automorfismos y ciclos hamiltonianos por enumeración; diofantinas
+(fracciones egipcias) por fuerza bruta; casillero por conteo; desigualdades por muestreo. El
+C₄ forzado se confirmó empíricamente (20 000 grafos aleatorios 10v/28e siempre tienen C₄) y
+con el valor extremal ex(10; C₄)=16 < 28. Las pruebas extremales/de existencia (torneo «rey»,
+fila de jugadores, conexión por grado mínimo, ciclo largo, optimalidad de las 99 sumas) se
+tomaron **fielmente del libro**. **CORRECCIÓN de honestidad:** el Ej. 25 del cap. 1 pregunta
+si entre n+1 enteros de {1..2n} siempre hay dos donde uno es el DOBLE del otro — la respuesta
+es NO (contraejemplo {1,3,4,5,7} para n=4); se usó la variante verdadera «uno DIVIDE al otro».
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+276 ids únicos (1-276) sin huecos; esquema §4.1 correcto para 233-276; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: inversion 69, optimizacion 70, invariantes 68,
+patrones 69 (276 total, global balanceado). Builder idempotente en `scripts/_build_bona.py`.
+
+**Siguiente** — continuar Sector C con la carpeta `Arena/Problem solving y olimpiadas/`:
+Kevin Houston (`How to Think Like a Mathematician`) y la serie AoPS (Intro/Med/Vol/Calculus).
+Mismo esquema §4.1 (ids 277+, sin huecos) y, donde aplique, `fase-0` como material
+introductorio del Modo Estudio. Verificar SIEMPRE con Python.
