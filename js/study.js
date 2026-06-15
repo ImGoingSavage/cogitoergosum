@@ -240,30 +240,19 @@ export function renderizar() {
     sel.value = b.id;
   }
 
-  // Lista de unidades del bloque con su estado
+  // Lista de unidades del bloque con su estado. En el bloque Arena (fase-7) la
+  // lista plana de 118 lecciones se agrupa bajo las 8 categorías de la taxonomía
+  // (cada una colapsable, con sus unidades en orden didáctico + su simulación de
+  // entrevista). Las demás fases conservan la lista plana directa.
   const ul = $('estudio-unidades');
   ul.innerHTML = '';
-  unidadesDe(b).forEach((u) => {
-    const li = document.createElement('li');
-    li.className = 'unidad-item';
-    const hecha = unidadCompletada(u.id);
-    const abierta = unidadDisponible(b, u);
-    const estado = hecha ? '✓' : abierta ? '▸' : '🔒';
-    li.classList.add(hecha ? 'hecha' : abierta ? 'abierta' : 'bloqueada');
-
-    const btn = document.createElement('button');
-    btn.className = 'unidad-boton';
-    btn.disabled = !hecha && !abierta;
-    const rutaLabel = u.metadata?.ruta
-      ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${({'quant':'quant','maang':'maang','health-ai-rwe':'health ai','ml-systems':'ml systems','ciencia-datos':'ciencia de datos','conductual':'conductual'}[u.metadata.ruta] ?? u.metadata.ruta)}</span>`
-      : '';
-    btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
-    btn.querySelector('.unidad-nombre').textContent = u.titulo;
-    btn.querySelector('.unidad-libro').textContent = u.libro;
-    btn.addEventListener('click', () => abrirUnidad(u.id));
-    li.appendChild(btn);
-    ul.appendChild(li);
-  });
+  if (b.id === 'fase-7' && taxonomia.length > 0) {
+    ul.classList.add('estudio-clusters');
+    renderClustersFase7(ul, b);
+  } else {
+    ul.classList.remove('estudio-clusters');
+    unidadesDe(b).forEach((u) => ul.appendChild(crearUnidadItem(u, b)));
+  }
 
   // Estado del examen del bloque
   const listo = bloqueUnidadesCompletas(b);
@@ -277,9 +266,6 @@ export function renderizar() {
   $('btn-examen-iniciar').textContent = e.examenes[b.id]?.intentos
     ? 'Reintentar examen del bloque'
     : 'Presentar examen del bloque';
-
-  // Simulación de entrevista por área (Nivel E): solo en el bloque Arena (fase-7).
-  renderEntrevistaTaxonomia();
 
   // Paneles: retomar lo que estaba en curso
   $('estudio-unidad').hidden = true;
@@ -359,51 +345,181 @@ const ETIQUETA_TRACK = {
   conductual: 'conductual',
 };
 
-// Pinta la taxonomía de la Fase 7 como rondas de entrevista: una tarjeta-botón por
-// cluster (área), con su track y cuántas unidades lo componen. Click → abre la
-// simulación de esa ronda. Se invoca desde renderizar() solo en el bloque fase-7.
-function renderEntrevistaTaxonomia() {
-  const card = $('estudio-entrevista');
-  if (!card) return;
-  const esArena = bloqueVisibleObj().id === 'fase-7' && taxonomia.length > 0;
-  card.hidden = !esArena;
-  if (!esArena) return;
-
-  const lista = $('entrevista-clusters');
-  lista.innerHTML = '';
-  taxonomia.forEach((c) => {
-    const li = document.createElement('li');
-    li.className = 'entrevista-cluster-item';
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'entrevista-cluster-boton';
-    const chip = ETIQUETA_TRACK[c.track]
-      ? `<span class="ruta-chip ruta-${c.track === 'health' ? 'health-ai-rwe' : c.track === 'ds' ? 'ciencia-datos' : c.track}">${ETIQUETA_TRACK[c.track]}</span>`
-      : '';
-    btn.innerHTML = `<span class="entrevista-cluster-nombre"></span>${chip}<span class="entrevista-cluster-n"></span><span class="entrevista-cluster-desc"></span>`;
-    btn.querySelector('.entrevista-cluster-nombre').textContent = c.titulo;
-    btn.querySelector('.entrevista-cluster-n').textContent = `${c.unidades?.length ?? 0} unidades`;
-    btn.querySelector('.entrevista-cluster-desc').textContent = c.descripcion ?? '';
-    btn.addEventListener('click', () => abrirSimCluster(c.id, btn));
-    li.appendChild(btn);
-    lista.appendChild(li);
-  });
-  $('entrevista-sim').hidden = true;
-  $('entrevista-sim').innerHTML = '';
+// Mapea el track de un cluster a la clase .ruta-* del chip (mismo color que la
+// ruta de las unidades, para que categoría y unidades se lean como una familia).
+function rutaDeTrack(track) {
+  return track === 'health' ? 'health-ai-rwe' : track === 'ds' ? 'ciencia-datos' : track;
 }
 
-// Abre (o cierra si ya estaba) la simulación de un cluster: carga su guion
-// cluster-<id>.json y lo renderiza como ronda interactiva (forcejeo antes de la
-// rúbrica). El contenido es JSON estructurado, sin tocar el esquema de study.json.
-async function abrirSimCluster(clusterId, btn) {
-  const panel = $('entrevista-sim');
-  const cluster = taxonomia.find((c) => c.id === clusterId);
-  if (!cluster) return;
+// Construye el <li> de una unidad (lección): botón con estado, título, chip de
+// ruta y libro; al click abre el panel de unidad. Extraído para reutilizarlo en
+// la lista plana (fases 0-6) y dentro de los acordeones de la taxonomía (fase-7).
+const ETIQUETA_RUTA = {
+  quant: 'quant',
+  maang: 'maang',
+  'health-ai-rwe': 'health ai',
+  'ml-systems': 'ml systems',
+  'ciencia-datos': 'ciencia de datos',
+  conductual: 'conductual',
+};
 
-  // Segundo click en el mismo cluster → cerrar.
-  if (!panel.hidden && panel.dataset.cluster === clusterId) {
+function crearUnidadItem(u, b) {
+  const li = document.createElement('li');
+  li.className = 'unidad-item';
+  const hecha = unidadCompletada(u.id);
+  const abierta = unidadDisponible(b, u);
+  const estado = hecha ? '✓' : abierta ? '▸' : '🔒';
+  li.classList.add(hecha ? 'hecha' : abierta ? 'abierta' : 'bloqueada');
+
+  const btn = document.createElement('button');
+  btn.className = 'unidad-boton';
+  btn.disabled = !hecha && !abierta;
+  const rutaLabel = u.metadata?.ruta
+    ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${ETIQUETA_RUTA[u.metadata.ruta] ?? u.metadata.ruta}</span>`
+    : '';
+  btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
+  btn.querySelector('.unidad-nombre').textContent = u.titulo;
+  btn.querySelector('.unidad-libro').textContent = u.libro;
+  btn.addEventListener('click', () => abrirUnidad(u.id));
+  li.appendChild(btn);
+  return li;
+}
+
+/* ============ Acordeones de la taxonomía (vista del bloque Arena) ========= */
+
+// Qué categorías quedan desplegadas — en memoria, para conservar el estado entre
+// re-renders de la sesión (p. ej. al cerrar una unidad) sin tocar el esquema de
+// almacenamiento. Vista limpia por defecto: todas colapsadas al cargar.
+const clustersExpandidos = new Set();
+
+// Pinta las 118 lecciones de fase-7 agrupadas en las 8 categorías de la taxonomía:
+// cada una es un acordeón (categoría → al desplegar muestra sus unidades en orden
+// didáctico + el botón para simular su ronda de entrevista). Una unidad de fase-7
+// que no estuviera en ninguna categoría se recoge en un grupo "Otras unidades"
+// para no perderla nunca.
+function renderClustersFase7(container, b) {
+  const colocadas = new Set();
+  taxonomia.forEach((c) => {
+    const unidades = (c.unidades ?? []).map(unidad).filter((u) => u && u.bloque === b.id);
+    unidades.forEach((u) => colocadas.add(u.id));
+    container.appendChild(crearClusterAcordeon(c, unidades, b));
+  });
+
+  const sueltas = unidadesDe(b).filter((u) => !colocadas.has(u.id));
+  if (sueltas.length) {
+    container.appendChild(
+      crearClusterAcordeon(
+        {
+          id: '__otras',
+          titulo: 'Otras unidades',
+          descripcion: 'Unidades del bloque aún sin categoría en la taxonomía.',
+        },
+        sueltas,
+        b
+      )
+    );
+  }
+}
+
+// Un acordeón = cabecera (chevron + título + chip de track + progreso) y cuerpo
+// colapsable (descripción, secuencia didáctica, lista de unidades y simulación).
+function crearClusterAcordeon(c, unidades, b) {
+  const li = document.createElement('li');
+  li.className = 'cluster-acordeon';
+
+  const hechas = unidades.filter((u) => unidadCompletada(u.id)).length;
+  const total = unidades.length;
+  const completo = total > 0 && hechas === total;
+  if (completo) li.classList.add('cluster-completo');
+  const abierto = clustersExpandidos.has(c.id);
+
+  const cuerpoId = `cluster-cuerpo-${c.id}`;
+
+  const cab = document.createElement('button');
+  cab.type = 'button';
+  cab.className = 'cluster-cabecera';
+  cab.setAttribute('aria-expanded', String(abierto));
+  cab.setAttribute('aria-controls', cuerpoId);
+  const chip = ETIQUETA_TRACK[c.track]
+    ? `<span class="ruta-chip ruta-${rutaDeTrack(c.track)}">${ETIQUETA_TRACK[c.track]}</span>`
+    : '';
+  cab.innerHTML =
+    '<span class="cluster-chevron" aria-hidden="true">▸</span>' +
+    '<span class="cluster-titulo"></span>' +
+    chip +
+    `<span class="cluster-progreso${completo ? ' cluster-progreso-ok' : ''}"></span>`;
+  cab.querySelector('.cluster-titulo').textContent = c.titulo;
+  cab.querySelector('.cluster-progreso').textContent =
+    total > 0 ? `${hechas}/${total} ${completo ? '✓' : 'unidades'}` : 'sin unidades';
+
+  const cuerpo = document.createElement('div');
+  cuerpo.className = 'cluster-cuerpo';
+  cuerpo.id = cuerpoId;
+  cuerpo.hidden = !abierto;
+
+  if (c.descripcion) {
+    const desc = document.createElement('p');
+    desc.className = 'cluster-desc';
+    desc.textContent = c.descripcion;
+    cuerpo.appendChild(desc);
+  }
+  if (c.secuencia) {
+    const sec = document.createElement('p');
+    sec.className = 'cluster-secuencia';
+    const sb = document.createElement('strong');
+    sb.textContent = 'Secuencia: ';
+    sec.append(sb, document.createTextNode(c.secuencia));
+    cuerpo.appendChild(sec);
+  }
+
+  const ul = document.createElement('ul');
+  ul.className = 'estudio-unidades';
+  unidades.forEach((u) => ul.appendChild(crearUnidadItem(u, b)));
+  cuerpo.appendChild(ul);
+
+  // Simulación de entrevista de esta ronda (Nivel E), integrada en la categoría.
+  if (c.sim) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cluster-sim-wrap';
+    const lanzar = document.createElement('button');
+    lanzar.type = 'button';
+    lanzar.className = 'secundario entrevista-launch';
+    lanzar.textContent = '🎤 Simular entrevista de esta ronda';
+    const panel = document.createElement('div');
+    panel.className = 'entrevista';
     panel.hidden = true;
-    panel.dataset.cluster = '';
+    lanzar.addEventListener('click', () => abrirSimCluster(c.id, lanzar, panel));
+    wrap.append(lanzar, panel);
+    cuerpo.appendChild(wrap);
+  }
+
+  cab.addEventListener('click', () => {
+    const ahora = cuerpo.hidden;
+    cuerpo.hidden = !ahora;
+    cab.setAttribute('aria-expanded', String(ahora));
+    li.classList.toggle('abierto', ahora);
+    if (ahora) clustersExpandidos.add(c.id);
+    else clustersExpandidos.delete(c.id);
+  });
+
+  li.classList.toggle('abierto', abierto);
+  li.append(cab, cuerpo);
+  return li;
+}
+
+// Abre (o cierra si ya estaba) la simulación de un cluster en SU panel (cada
+// categoría tiene el suyo): carga su guion cluster-<id>.json y lo renderiza como
+// ronda interactiva (forcejeo antes de la rúbrica). JSON estructurado, sin tocar
+// el esquema de study.json.
+async function abrirSimCluster(clusterId, btn, panel) {
+  const cluster = taxonomia.find((c) => c.id === clusterId);
+  if (!cluster || !panel) return;
+
+  // Segundo click → cerrar.
+  if (!panel.hidden) {
+    panel.hidden = true;
+    panel.innerHTML = '';
+    btn.textContent = '🎤 Simular entrevista de esta ronda';
     return;
   }
 
@@ -430,8 +546,8 @@ async function abrirSimCluster(clusterId, btn) {
     panel.appendChild(titulo);
     panel.appendChild(construirEntrevista(sim));
   }
-  panel.dataset.cluster = clusterId;
   panel.hidden = false;
+  btn.textContent = '✕ Cerrar simulación';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -539,6 +655,10 @@ function navegarAUnidad(id) {
   const b = datos.bloques.find((x) => x.id === u.bloque);
   if (b && b.id !== bloqueVisibleObj().id) {
     bloqueVisible = b;
+    // Si la unidad destino vive en una categoría de la taxonomía, despliégala
+    // para que el lector aterrice viendo su contexto (no una lista colapsada).
+    const cl = taxonomia.find((c) => (c.unidades ?? []).includes(id));
+    if (cl) clustersExpandidos.add(cl.id);
     renderizar();
   }
   abrirUnidad(id);

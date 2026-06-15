@@ -340,20 +340,11 @@
         <div id="examen-contenido"></div>
       </article>
 
-      <!-- Simulación de entrevista (Nivel E, sin IA), organizada sobre la
-           taxonomía semántica de la Fase 7 (auditoria.md Fase 3): una ronda por
-           área. Solo visible en el bloque Arena (fase-7). Datos en
-           data/entrevista/_taxonomia.json + cluster-<id>.json. -->
-      <article class="tarjeta" id="estudio-entrevista" hidden>
-        <h2>🎤 Simulación de entrevista por área</h2>
-        <p class="piso-instruccion">
-          Elige una ronda. El entrevistador hace su pregunta; tú respondes en voz
-          alta (o por escrito) <strong>antes</strong> de revelar la rúbrica y las
-          trampas de comunicación. La nota la pones tú: ¿cubriste los puntos?
-        </p>
-        <ul id="entrevista-clusters" class="entrevista-clusters"></ul>
-        <div id="entrevista-sim" class="entrevista" hidden></div>
-      </article>
+      <!-- La Fase 7 (Arena) agrupa sus 118 lecciones bajo las 8 categorías de la
+           taxonomía (data/entrevista/_taxonomia.json): cada categoría es un
+           acordeón con sus unidades en orden didáctico y, dentro, la simulación de
+           entrevista de esa ronda (Nivel E, sin IA, cluster-<id>.json). Lo pinta
+           renderClustersFase7() en js/study.js dentro de #estudio-unidades. -->
 
     </section>
 

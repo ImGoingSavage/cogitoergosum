@@ -25,7 +25,7 @@ metadata y los quizzes viven en `data/study.json` (campo `unidades[]`); **NO edi
 
 ---
 
-## Estado EXACTO (al 2026-06-15, sw.js v79, último commit en `main`)
+## Estado EXACTO (al 2026-06-15, sw.js v80, último commit en `main`)
 
 **Oleada 2 (enriquecimiento por lotes): COMPLETA — 118/118.** Las 118 lecciones
 `data/teoria/arena-*.md` contienen ya la sección **Transferencia isomorfa** y el
@@ -44,18 +44,23 @@ comm -23 \
   `<a class="enlace-unidad">`; `js/study.js` (`cablearEnlacesLeccion`/`navegarAUnidad`)
   pone el título real y navega. Los `[[concepto-sin-unidad]]` siguen como chip; los
   literales de matriz `[[1,3],…]` intactos. NO lo rehagas.
-- ✅ **Taxonomía aplicada + simulación de entrevista por área (Nivel E sin IA)**
-  (sw.js v79). Sin tocar `study.json`, todo en `data/entrevista/`:
+- ✅ **Taxonomía aplicada + simulación de entrevista por área (Nivel E sin IA).**
+  Sin tocar `study.json`, todo en `data/entrevista/`:
   - `_taxonomia.json`: 8 clusters (= 8 rondas de entrevista) que **particionan las
     118 unidades sin solape**: quant-prob (25), stats-inf (16), dsa (6),
     system-design (4), ds-applied (9), ml-systems (32), causal-health (22),
-    conductual (4). Cada cluster tiene `track`, `descripcion`, `sim` y `unidades[]`.
+    conductual (4). Cada cluster tiene `track`, `descripcion`, `secuencia`, `sim` y
+    `unidades[]`. **El `unidades[]` está en orden DIDÁCTICO** (no por sub-libro).
   - `cluster-<id>.json` ×8: el guion de cada ronda
     (`{ rol, duracion, preguntas:[{q, rubrica[], errores[], seguimiento?}], cierre }`),
     con 3-4 preguntas cada uno (cobertura representativa, **no exhaustiva todavía**).
-  - UI: tarjeta `#estudio-entrevista` "Simulación de entrevista por área", visible
-    solo en el bloque `fase-7`; `renderEntrevistaTaxonomia()` + `abrirSimCluster()` +
-    `construirEntrevista()` en `js/study.js`; CSS `.entrevista*` en `css/styles.css`.
+- ✅ **Vista Estudio de fase-7 agrupada por las 8 categorías (UI/UX) (sw.js v80).**
+  En el bloque Arena, `renderizar()` pinta **acordeones** (una categoría por cluster,
+  colapsable; al desplegar: unidades en orden didáctico + botón de simulación de su
+  ronda) en `#estudio-unidades` vía `renderClustersFase7()`/`crearClusterAcordeon()`/
+  `crearUnidadItem()` (`js/study.js`); las demás fases siguen con lista plana. La
+  simulación vive ahora dentro de cada acordeón (`abrirSimCluster(id, btn, panel)`);
+  se retiró la tarjeta `#estudio-entrevista`. CSS `.cluster-*` en `css/styles.css`.
 
 ---
 

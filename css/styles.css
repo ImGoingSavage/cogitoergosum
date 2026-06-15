@@ -1698,36 +1698,74 @@ button.secundario.peligro:hover:not(:disabled) {
   font-style: italic;
 }
 
-/* Lista de rondas (clusters de la taxonomía) */
-.entrevista-clusters { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
-.entrevista-cluster-item { margin: 0; }
-.entrevista-cluster-boton {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: "nombre chip" "n n" "desc desc";
-  gap: 4px 10px;
-  width: 100%;
-  text-align: left;
-  padding: 12px 14px;
-  background: var(--bg-sutil);
+.entrevista-sim-titulo { margin: 0 0 12px; color: var(--acento); font-size: 1.05rem; }
+
+/* ===== Acordeones de la taxonomía (vista del bloque Arena, fase-7) ===== */
+/* La lista #estudio-unidades pasa de lista plana a rejilla de 8 categorías. */
+.estudio-clusters { display: grid; gap: 10px; }
+
+.cluster-acordeon {
+  margin: 0;
   border: 1px solid var(--borde);
   border-radius: var(--radio);
+  background: var(--bg-sutil);
+  overflow: hidden;
+  transition: border-color var(--transicion);
+}
+.cluster-acordeon.abierto { border-color: var(--acento); }
+.cluster-completo { border-color: color-mix(in srgb, var(--exito) 55%, var(--borde)); }
+
+.cluster-cabecera {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "chev titulo chip" "chev titulo progreso";
+  align-items: center;
+  gap: 2px 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  min-height: 56px;
+  background: transparent;
+  border: none;
   color: var(--texto);
+  font-family: inherit;
   cursor: pointer;
-  transition: border-color var(--transicion), background var(--transicion);
 }
-.entrevista-cluster-boton:hover,
-.entrevista-cluster-boton:focus-visible {
-  border-color: var(--acento);
-  background: var(--bg-elevado);
-  outline: none;
+.cluster-cabecera:hover { background: var(--bg-elevado); }
+.cluster-cabecera:focus-visible { outline: 2px solid var(--acento); outline-offset: -2px; }
+
+.cluster-chevron {
+  grid-area: chev;
+  color: var(--acento);
+  font-size: 0.9rem;
+  transition: transform var(--transicion);
 }
-.entrevista-cluster-nombre { grid-area: nombre; font-weight: 600; font-size: 1.02rem; align-self: center; }
-.entrevista-cluster-boton .ruta-chip { grid-area: chip; align-self: center; }
-.entrevista-cluster-n { grid-area: n; color: var(--texto-tenue); font-size: 0.78rem; }
-.entrevista-cluster-desc { grid-area: desc; color: var(--texto-suave); font-size: 0.88rem; line-height: 1.45; }
-.entrevista-sim-titulo { margin: 0 0 12px; color: var(--acento); font-size: 1.05rem; }
-#entrevista-sim { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--borde); border-left: none; padding-left: 0; }
+.cluster-acordeon.abierto .cluster-chevron { transform: rotate(90deg); }
+
+.cluster-titulo { grid-area: titulo; font-weight: 600; font-size: 1.04rem; line-height: 1.35; }
+.cluster-cabecera .ruta-chip { grid-area: chip; justify-self: end; align-self: center; }
+.cluster-progreso { grid-area: progreso; justify-self: end; color: var(--texto-tenue); font-size: 0.76rem; }
+.cluster-progreso-ok { color: var(--exito); font-weight: 700; }
+
+.cluster-cuerpo {
+  padding: 4px 16px 16px;
+  border-top: 1px dashed var(--borde);
+}
+.cluster-desc { color: var(--texto-suave); font-size: 0.9rem; line-height: 1.5; margin: 12px 0 6px; }
+.cluster-secuencia {
+  color: var(--texto);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  background: var(--lampara-suave);
+  border-radius: 6px;
+}
+.cluster-secuencia strong { color: var(--acento); }
+.cluster-cuerpo .estudio-unidades { margin: 10px 0 0; }
+
+.cluster-sim-wrap { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--borde); }
+.entrevista-launch { width: 100%; }
 
 .leccion hr {
   border: none;

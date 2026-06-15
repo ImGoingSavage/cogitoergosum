@@ -297,6 +297,33 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
     (cobertura representativa, no exhaustiva); se pueden profundizar/ampliar. Para
     añadir un cluster nuevo: archivo `cluster-<id>.json` + entrada en `_taxonomia.json`
     + línea en el SHELL de `sw.js`.
+- ✅ **Vista Estudio de fase-7 agrupada por taxonomía (UI/UX) — HECHO (sw.js v80).**
+  Edgar pidió que la vista Estudio del bloque Arena no muestre las 118 lecciones en
+  lista plana desordenada, sino **solo las 8 categorías** de la taxonomía, cada una
+  colapsable; al desplegar muestra sus unidades **en orden didáctico** + el botón de
+  simulación de su ronda. **No toca `study.json`.** Cambios:
+  - `data/entrevista/_taxonomia.json`: el `unidades[]` de cada cluster se reordenó a
+    **secuencia didáctica** (articulación vertical: los temas iniciales sostienen a
+    los del final) y se añadió el campo `secuencia` (frase que describe ese arco).
+    La partición de las 118 sin solape se mantiene (validado).
+  - `js/study.js`: `renderizar()` ahora, si el bloque es `fase-7` y hay taxonomía,
+    llama `renderClustersFase7()` (acordeones) en vez de la lista plana; las demás
+    fases siguen con lista plana. Helper `crearUnidadItem(u,b)` (extraído, reutilizado
+    en ambos modos). `crearClusterAcordeon()` pinta cabecera (chevron + título + chip
+    de track + progreso `k/N`) y cuerpo colapsable (descripción, `secuencia`, unidades,
+    y el botón+panel de simulación). Estado de despliegue en memoria
+    (`clustersExpandidos`, todas colapsadas al cargar; `navegarAUnidad` despliega la
+    categoría destino). `abrirSimCluster(clusterId, btn, panel)` ahora recibe su panel
+    (cada categoría tiene el suyo). Se retiró `renderEntrevistaTaxonomia` y el uso de
+    los IDs `#estudio-entrevista`/`#entrevista-clusters`/`#entrevista-sim`.
+  - `index.html`: se eliminó la tarjeta suelta `#estudio-entrevista` (la simulación
+    vive ahora dentro de cada acordeón).
+  - `css/styles.css`: estilos `.estudio-clusters`/`.cluster-acordeon`/`.cluster-cabecera`/
+    `.cluster-chevron`/`.cluster-cuerpo`/`.cluster-secuencia`/`.cluster-sim-wrap`/
+    `.entrevista-launch` (se reemplazaron los antiguos `.entrevista-cluster-*` y
+    `#entrevista-sim`). Se conserva `.entrevista*` del guion de simulación.
+  - **Pendiente de iterar:** el orden didáctico es un juicio pedagógico revisable;
+    densificar los 8 guiones sigue disponible (ver punto anterior).
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*
