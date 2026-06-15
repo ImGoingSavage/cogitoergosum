@@ -65,16 +65,17 @@ ponla en una sola línea `$$...$$`.
 
 ## 3. Estado EXACTO del plan (al 2026-06-15)
 
-**63 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
+**70 / 118 lecciones enriquecidas.** Clusters COMPLETOS:
 
 | Cluster | Lecciones (todas hechas) |
 |---|---|
 | **Health AI / causal** | arena-h3 … h22 (20) |
 | **ML Systems** | rom1-4, rml1-4, dmls1-4, htd1-4, sre1-4, mldp1-4, obs1-4, iml1-4 (32) |
 | **MAANG** | cc1-4, sd1-4, m1, m2 (10) |
+| **Quant núcleo (lote 11)** | q2, q3, q4, q5, q6, q7, q8 (7) |
 | Muestra Oleada 1 | q12 (+cc1, h17 ya contados arriba) |
 
-### FALTAN (55 lecciones) — esto es lo que debes hacer
+### FALTAN (48 lecciones) — esto es lo que debes hacer
 
 Agrupadas por sub-libro (mira `data/study.json` campo `libro` de cada unidad
 para la fuente; los libros están en `Arena/` y `Biblioteca/` y **se pueden citar
@@ -83,8 +84,9 @@ sin problema de copyright**, ver `<permisos>` de `auditoria.md`):
 **Quant / probabilidad (route: quant):**
 - `arena-q1` *(ojo: ya nació estudiable, solo añádele la sección **Transferencia
   isomorfa** + Errores típicos; no la reescribas)*
-- `arena-q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q13` (Heard on the Street,
-  Practical Guide, Quant Job Interview / Joshi)
+- ~~`arena-q2, q3, q4, q5, q6, q7, q8`~~ **HECHAS (lote 11)**.
+- `arena-q9, q10, q11, q13` (Heard on the Street, Practical Guide, Quant Job
+  Interview / Joshi) — pendientes del cluster Quant núcleo.
 - `arena-p1, p2, p3, p4` (A Practical Guide to Quantitative Finance — acertijos,
   combinatoria, brownian, álgebra lineal). **Son MUY largas (200+ líneas)**.
 - `arena-fc1, fc2, fc3, fc4` (Fifty Challenging Problems in Probability)
