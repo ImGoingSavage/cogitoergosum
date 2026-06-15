@@ -276,18 +276,27 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   `.enlace-unidad` en `css/styles.css`. Los `[[concepto-sin-unidad]]` siguen como
   chip `.enlace-concepto`; los literales de matriz `[[1,3],…]` intactos. Verificado:
   93 targets únicos resuelven a unidades de `study.json`, 0 rotos.
-- 🟡 **Rúbricas / simulación de entrevista (Nivel E) — INFRA + 3 EJEMPLARES
-  (sw.js v78, commit `fe8aad1`):** simulación SIN IA (guion del entrevistador +
-  rúbrica + errores de comunicación). **No toca `study.json`**: el contenido vive
-  en `data/entrevista/<id>.json` (artefacto paralelo a `data/teoria/`) con
-  manifiesto `_index.json` que decide dónde aparece el botón. Esquema:
-  `{ rol, duracion, preguntas:[{q, rubrica[], errores[], seguimiento?}], cierre }`.
-  Hechos 3 guiones (uno por ruta): `arena-q2`, `arena-cc3`, `arena-h17`. UI en
-  `js/study.js` (`alternarEntrevista`/`construirEntrevista`, botón en `abrirUnidad`),
-  `index.html` (`#btn-unidad-entrevista`/`#unidad-entrevista`), CSS `.entrevista`.
-  **Pendiente:** validar UX con Edgar y, si aprueba, **autorar los guiones de las
-  unidades restantes** (añadir cada `data/entrevista/<id>.json` + su id al
-  `_index.json` + al SHELL de `sw.js`). No requiere migración de esquema.
+- 🟢 **Taxonomía aplicada + simulación de entrevista POR ÁREA (Nivel E) — HECHO
+  (sw.js v79, commit `39f606f`).** Edgar pidió aplicar la taxonomía propuesta
+  (auditoria.md Fase 3) y montar la simulación SOBRE ella (rondas por cluster, no
+  por unidad). **No toca `study.json`**; todo vive en `data/entrevista/`:
+  - `_taxonomia.json`: **8 clusters = 8 rondas**, cada uno con `track`,
+    `descripcion` (por qué existe) y la lista de `unidades`. Particiona las 118 sin
+    solape: quant-prob (25), stats-inf (16), dsa (6), system-design (4), ds-applied
+    (9), ml-systems (32), causal-health (22), conductual (4). *(El mapeo se computa
+    de `study.json` por ruta + prefijo de id; ver el script en el commit.)*
+  - `cluster-<id>.json` ×8: guion de cada ronda. Esquema
+    `{ rol, duracion, preguntas:[{q, rubrica[], errores[], seguimiento?}], cierre }`.
+  - UI: tarjeta `#estudio-entrevista` "Simulación de entrevista por área", visible
+    solo en el bloque `fase-7`; lista las rondas y abre su guion. `js/study.js`
+    (`renderEntrevistaTaxonomia` desde `renderizar()`, `abrirSimCluster`,
+    `construirEntrevista`), `index.html` (`#estudio-entrevista`/`#entrevista-clusters`/
+    `#entrevista-sim`), CSS `.entrevista*`. La versión previa por-unidad (botón en el
+    panel de unidad + `_index.json` + 3 JSON `arena-*`) se retiró (`git rm`).
+  - **Pendiente de iterar tras review:** los 8 guiones tienen 3-4 preguntas cada uno
+    (cobertura representativa, no exhaustiva); se pueden profundizar/ampliar. Para
+    añadir un cluster nuevo: archivo `cluster-<id>.json` + entrada en `_taxonomia.json`
+    + línea en el SHELL de `sw.js`.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*
