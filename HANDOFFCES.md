@@ -2757,3 +2757,42 @@ patrones 83 (320 total, global balanceado, spread 77-83). Builder idempotente en
 y olimpiadas/`: `IntroAlgeb.pdf`, `IntroGeom.pdf`, `IntroNumbTheo.pdf`, `introCountProb.pdf`,
 `MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`, `Calculus.pdf` (Patrick et al.).
 Mismo esquema §4.1 (ids 321+, sin huecos). Verificar SIEMPRE con Python.
+
+## Bitácora 2026-06-15 (Arena tanda 33) — SECTOR C: AoPS *Introduction to Algebra* (Rusczyk), 44 problemas
+
+Continúa el **SECTOR C (entrenamiento)** con `Introduction to Algebra` (Richard
+Rusczyk, Art of Problem Solving, 2.ª ed.) — libros[34] del ledger, ruta
+`entrenamiento`, cuota 40 (superada con **44**). Destino: **`data/problems.json`**
+(esquema §4.1), ids **321-364** sin huecos. Fuentes internas:
+- **cap. 11 «Special Factorizations»** (Simon's Favorite Factoring Trick, diferencia de
+  cuadrados, identidad del producto de 4 consecutivos +1, telescopaje con racionalización)
+  → **patrones**.
+- **cap. 15 «More Inequalities»** (desigualdad trivial x²≥0, AM-GM, optimización cuadrática
+  completando el cuadrado, discriminante como condición de existencia) → **optimizacion**.
+- **cap. 22 «Special Manipulations»** (elevar ecuaciones a potencias; auto-similaridad:
+  radicales anidados y fracciones continuas) → **inversion**; (simetría, sumas/productos de
+  raíces tipo Vieta, sistemas simétricos) → **invariantes**.
+
+**Distribución 14/8/11/11** (optimizacion/patrones/inversion/invariantes) — el texto es
+riquísimo en optimización cuadrática y desigualdades, sesgo elegido para llevar el balance
+**GLOBAL a 91/91/91/91 exactos** (antes 77/83/80/80).
+
+**NOTA de honestidad (verificación):** el volumen de SOLUCIONES de AoPS es un libro aparte
+**no disponible** en la Arena, así que **cada solución y cada número se resolvió y verificó de
+forma independiente con Python** (sympy/fractions; scripts `/tmp/verif_aops.py` y
+`/tmp/verif_aops2.py`, 26 afirmaciones — todas OK tras corregir dos artefactos del propio
+verificador, no de la matemática). Caso documentado: en `bc − 7b + 3c = 70` el texto cuenta
+**6** soluciones admitiendo enteros de cualquier signo; el problema **336** pide enteros
+**positivos** y se verifican **2** soluciones [(4,14),(46,8)] — el enunciado quedó acotado a
+positivos para coincidir con lo verificado.
+
+**Solo se tocó `data/problems.json`.** Sin cambios de código, sin `data/teoria/*.md`, sin bump
+de `sw.js` (entrenamiento, no fase-7/estudio). Verificación §9 en verde: ambos JSON válidos;
+364 ids únicos (1-364) sin huecos; esquema §4.1 correcto para 321-364; `verificar-shell.py` OK
+(203 archivos). Distribución total problems.json: **inversion 91, optimizacion 91, invariantes
+91, patrones 91** (364 total, balance perfecto). Builder idempotente en
+`scripts/_build_aops_introalg.py`.
+
+**Siguiente** — seguir con la serie AoPS: `IntroGeom.pdf`, `IntroNumbTheo.pdf`,
+`introCountProb.pdf`, `MedAlgebra.pdf`, `MedCountProb.pdf`, `Vol1.pdf`, `Vol2.pdf`,
+`Calculus.pdf`. Mismo esquema §4.1 (ids 365+, sin huecos). Verificar SIEMPRE con Python.
