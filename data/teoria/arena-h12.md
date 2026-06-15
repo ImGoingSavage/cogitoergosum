@@ -27,6 +27,38 @@ Tools: **ACHILLES** (caracterización descriptiva + alertas) y **DataQualityDash
 
 ---
 
+## Mini-ejemplo trabajado: estándar, fuente y descendientes
+
+Quieres una cohorte de "diabetes tipo 2". En tus datos crudos aparecen tres códigos **fuente** distintos: ICD-10 `E11.9`, ICD-9 `250.00` y un código local de hospital. Los tres significan lo mismo; cada uno se guarda en `condition_source_concept_id` y, vía la relación **'Maps to'**, **convergen** al mismo SNOMED estándar en `condition_concept_id`. Ahora analizas una sola idea, no tres dialectos.
+
+¿Y si quieres "cualquier antihipertensivo"? No listas 200 fármacos a mano: tomas el concepto estándar "agentes antihipertensivos" y, con **CONCEPT_ANCESTOR**, incluyes **todos sus descendientes** en la jerarquía. Eso empaquetado es un **concept set** reutilizable.
+
+**Predicción antes de seguir:** si construyes la cohorte usando los campos `*_source_concept_id` (los códigos crudos) en vez de los estándar, ¿qué pasa en una base que usa ICD-9 y otra ICD-10? No encuentras los mismos pacientes → el estudio en red se rompe. La portabilidad vive en la capa **estándar**, no en la fuente.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** mapear ICD/NDC → estándar con Usagi, revisar con un clínico, documentar las decisiones → ETL trazable.
+- **Contraejemplo (analizar sobre fuente):** filtrar por `source_concept_id` "porque es lo que vino" — parece fiel al dato, pero pierde portabilidad y descendientes.
+- **Caso borde (mapeo imperfecto):** un código local sin equivalente estándar limpio → queda sin mapear o mapeado a un padre demasiado general; por eso el ETL "nunca es perfecto" y se somete a DQD.
+
+## Errores típicos
+
+- **Conceptual:** confundir conformance (¿estructura válida?) con completeness (¿falta lo que debería?) o plausibility (¿valores creíbles?) — son ejes distintos de Kahn.
+- **Técnico:** olvidar incluir descendientes (CONCEPT_ANCESTOR) → cohorte incompleta.
+- **De método:** confiar en una base sin correr DQD/ACHILLES; datos malos sesgan todo aguas abajo.
+
+## Transferencia isomorfa
+
+El stack de vocabularios + ETL + DQ es ingeniería de datos clásica:
+
+- **'Maps to' / estándar ↔ entity resolution / dimensión conforme:** unificar muchos códigos fuente en una clave canónica es exactamente *entity resolution* y las *dimensiones conformes* del data warehouse (conecta con [[arena-sd3]]).
+- **CONCEPT_ANCESTOR ↔ rollups jerárquicos:** "selecciona un nodo y todos sus hijos" es la operación de jerarquía de cualquier OLAP (categoría → subcategorías).
+- **Kahn / DQD ↔ data validation (tipo Great Expectations):** conformance/completeness/plausibility son las mismas familias de aserciones de cualquier pipeline serio (conecta con [[arena-dmls2]]).
+
+Moraleja de la arista: *mapea a una clave canónica, arrastra la jerarquía y valida antes de analizar — es entity resolution + data quality con bata de epidemiólogo.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

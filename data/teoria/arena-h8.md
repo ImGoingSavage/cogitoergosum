@@ -30,6 +30,46 @@ Cada estrato g recibe su **propio h₀g(t)**, con β **compartidos** (modelo sin
 
 ---
 
+## Mini-ejemplo trabajado: leer un HR
+
+Un Cox da β = **0.69** para "fuma (sí/no)". El hazard ratio es HR = exp(0.69) ≈ **2.0**: en cualquier instante, un fumante tiene *el doble* de tasa de fallo que un no fumante, **a igualdad de las demás covariables**. Si en vez de binaria fuera "cigarros/día" con β=0.05, el HR por **10** cigarros es exp(0.05·10) = exp(0.5) ≈ **1.65**.
+
+Lo crucial: el HR es el **mismo a t=1 mes y a t=5 años** — eso *es* el supuesto PH. El hazard base h₀(t) puede subir o bajar con el tiempo (la gente se muere más con la edad), pero **se cancela en el cociente**, por eso el Cox no necesita especificarlo (verosimilitud parcial: usa solo el orden de los eventos).
+
+**Predicción antes de seguir:** si el efecto de fumar fuera enorme a los 60 años pero nulo a los 30, ¿qué pasa con un único HR? Es engañoso (promedia dos efectos distintos) → PH **violado**; lo verías en curvas log(−log S) que **se cruzan**.
+
+### [CAJA NEGRA OK] Verosimilitud parcial de Cox
+
+- **Qué puedes asumir:** estima los β usando solo el *orden* de los eventos y quién está en riesgo en cada uno, sin tocar h₀(t).
+- **Por qué se permite:** la derivación formal (procesos de conteo, martingalas) no cambia cómo la usas ni la interpretas en entrevista.
+- **Qué sí debes razonar:** que h₀(t) se cancela en el HR, y que por eso el Cox es *semiparamétrico* (β paramétrico + base libre).
+- **Intuición mínima:** "comparo, en cada muerte, al que murió contra los que seguían vivos" → el ranking, no los tiempos exactos.
+- **Cuándo reabrir la caja:** al estudiar residuos de martingala/Schoenfeld formalmente.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (PH se sostiene):** efecto multiplicativo estable → un HR resume todo; curvas log-log paralelas.
+- **Contraejemplo (PH violado):** un tratamiento quirúrgico que mata al principio (riesgo operatorio) y protege después → los hazards se cruzan; un HR único miente.
+- **Caso borde (HR≈1, IC amplio):** no es "no hay efecto", es **faltan eventos** (potencia); la incertidumbre, no la nulidad, manda.
+
+## Errores típicos
+
+- **Conceptual:** interpretar el HR como un *riesgo* o una *razón de tiempos* — es una razón de **tasas instantáneas**.
+- **De supuestos:** reportar el HR sin verificar PH (log-log / Schoenfeld / X×t).
+- **Técnico:** estratificar por la variable de interés y luego buscar su HR (el Cox estratificado no lo da).
+
+## Transferencia isomorfa
+
+El Cox es un modelo multiplicativo con un supuesto de estabilidad temporal — patrón que reaparece:
+
+- **HR constante ↔ efecto relativo estable en A/B:** asumir que un tratamiento multiplica la tasa por un factor fijo en el tiempo es el mismo "PH" implícito en muchos análisis de experimentos longitudinales.
+- **Residuos de Schoenfeld ↔ chequear estabilidad de un coeficiente:** "¿el efecto de esta feature deriva con el tiempo?" es el mismo diagnóstico que el de PH (conecta con drift de modelo, [[arena-dmls4]]).
+- **Verosimilitud parcial por ranking ↔ pérdidas de ranking (pairwise):** estimar usando solo el orden de los eventos es pariente de las pérdidas tipo ranking en ML.
+
+Moraleja de la arista: *el Cox da un HR limpio porque el hazard base se cancela; ese regalo depende de que el efecto no derive con el tiempo (PH) — siempre verifícalo.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

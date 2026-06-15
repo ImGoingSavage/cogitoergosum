@@ -25,6 +25,38 @@ El **mismo paquete** estandarizado se corre en **muchas bases** (cada una en su 
 
 ---
 
+## Mini-ejemplo trabajado: qué revela un control negativo
+
+Eliges **50 pares exposición–outcome** que *sabes* no tienen relación causal (verdadero RR=1): fármacos y desenlaces sin conexión plausible. Corres exactamente tu mismo análisis sobre los 50. Si el método fuera perfecto, los RR estimados se repartirían **alrededor de 1** y ~5% saldrían "significativos" por azar.
+
+Pero observas que la **mediana** de los 50 RR es **1.4** y que el 30% son "significativos". Eso no es azar: es **error sistemático residual** (confundimiento/selección/medición) que tu diseño no quitó. La **calibración empírica** usa esa distribución de negativos para **reajustar** tus p-valores e IC del efecto real: como hay un sesgo de fondo, los IC **se ensanchan** y muchos falsos positivos desaparecen. Los IC clásicos solo cuentan el azar; la calibración añade el sesgo sistemático que sí existe en datos observacionales.
+
+**Predicción antes de seguir:** tras calibrar, tu efecto de interés (antes p=0.03) pasa a p=0.20. ¿Lo "perdiste"? No: descubriste que era del tamaño del ruido sistemático que el propio método genera sobre nulos conocidos — un hallazgo honesto, no una pérdida.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** controles negativos centrados en 1 + diagnósticos de balance que pasan → confías en el efecto.
+- **Contraejemplo (IC clásico observacional):** reportar un IC 95% "normal" en datos de claims como si solo importara el azar — ignora el sesgo sistemático que los negativos revelan.
+- **Caso borde (controles positivos sintéticos):** como rara vez hay pares con efecto *conocido*, se inyectan outcomes sintéticos con RR conocido para medir **potencia**.
+
+## Errores típicos
+
+- **Conceptual:** creer que "estadísticamente significativo" en observacional = real; sin controles negativos no sabes cuánto sesgo systemático queda.
+- **De método:** saltarse los diagnósticos de diseño (balance, equipoise/positividad, MDRR) antes de interpretar.
+- **De reporte:** publicar solo el resultado bonito (cherry-picking) en vez de toda la generación (estilo LEGEND).
+
+## Transferencia isomorfa
+
+Estas salvaguardas son control de calidad estadístico de propósito general:
+
+- **Controles negativos ↔ A/A tests / placebo tests:** correr el pipeline sobre casos donde *sabes* que no hay efecto, para medir el sesgo del propio sistema, es el A/A test del experimentador (conecta con [[arena-ads4]]).
+- **Calibración empírica ↔ corrección por comparaciones múltiples / ajuste de p-valores:** ajustar la inferencia por un error sistemático conocido es pariente de controlar el FDR cuando corres miles de tests.
+- **Estudio en red ↔ aprendizaje federado:** el código va a los datos y solo salen agregados — exactamente el patrón de federated learning y privacidad por diseño (conecta con [[arena-h11]]).
+
+Moraleja de la arista: *en datos observacionales el IC clásico miente por optimista; los controles negativos miden el sesgo del método y la calibración lo descuenta — y compartir código, no pacientes, da escala con privacidad.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |

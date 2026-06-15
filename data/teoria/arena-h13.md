@@ -25,6 +25,42 @@ Efectos causales de una exposición. Dos familias:
 
 ---
 
+## Mini-ejemplo trabajado: por qué hay que validar el fenotipo (y es Bayes)
+
+Tu definición de "diabetes" tiene **sensibilidad 90%** y **especificidad 95%**, números que suenan excelentes. Pero el PPV —"si la definición marca a alguien, ¿de verdad es diabético?"— depende de la **prevalencia**. Con prevalencia del **5%** en la base, sobre 10 000 pacientes:
+
+- Diabéticos reales: 500 → detectados: 0.90·500 = **450** verdaderos positivos.
+- Sanos: 9 500 → falsos positivos: 0.05·9 500 = **475**.
+- **PPV = 450 / (450+475) ≈ 49%.**
+
+Casi **la mitad** de tu cohorte "diabética" no lo es, pese a sens/espec altísimas. Es la misma tasa-base que engaña en los tests diagnósticos (conecta con [[arena-q2]]): un clasificador bueno sobre una condición rara aún produce muchos falsos positivos. Por eso un fenotipo sin validar mete **misclasificación** que sesga todo el estudio.
+
+**Predicción antes de seguir:** ¿qué pasa con el PPV si subes la especificidad a 99%? Falsos positivos = 0.01·9 500 = 95 → PPV = 450/545 ≈ **83%**. Sobre condiciones raras, **la especificidad manda** más que la sensibilidad.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (estimación, causa):** new-user + comparador activo + PS a gran escala con balance verificado → efecto causal de una exposición.
+- **Contraejemplo (predicción disfrazada de causa):** un modelo PLP con AUC 0.85 cuyas features "predictivas" se presentan como factores *causales* — pronóstico ≠ etiología. Una variable puede predecir sin causar.
+- **Caso borde (fenotipo probabilístico):** condiciones difíciles de definir con reglas → PheValuator da un gold standard probabilístico en vez de chart review caro.
+
+## Errores típicos
+
+- **Conceptual:** confundir **estimación** (causa, requiere desconfundir) con **predicción** (pronóstico, solo necesita asociación estable) — distinto objetivo, distinta validación.
+- **Técnico:** evaluar un PLP solo con AUC y olvidar la **calibración** (un modelo puede discriminar bien y dar probabilidades mal escaladas).
+- **De método:** no validar el fenotipo → misclasificación sistemática aguas abajo.
+
+## Transferencia isomorfa
+
+El marco de cohortes/PLP es ML aplicado con etiquetas imperfectas:
+
+- **Validar fenotipo ↔ calidad de etiquetas / weak supervision:** medir sens/espec/PPV de una definición es exactamente auditar la calidad de las labels antes de entrenar (conecta con [[arena-dmls2]]).
+- **Estimación vs predicción ↔ ML causal vs ML predictivo:** la frontera causa/pronóstico es la misma que separa "¿qué pasa si intervengo?" de "¿quién tiene alto riesgo?" (conecta con [[arena-h15]], la escalera).
+- **PS a gran escala ↔ regresión logística regularizada de alta dimensión:** miles de covariables + LASSO para la propensión es un modelo de ML estándar puesto al servicio del desconfundimiento.
+
+Moraleja de la arista: *define la cohorte con cuidado, valida el fenotipo (PPV depende de la tasa base) y nunca confundas predecir con causar.*
+
+---
+
 ## Disparadores
 
 | Señal | Jugada |
