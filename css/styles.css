@@ -1582,6 +1582,38 @@ button.secundario.peligro:hover:not(:disabled) {
   white-space: nowrap;
 }
 
+/* Enlace a otra unidad (arena-xxx): navegable. Hereda el chip pero con afordancia
+   de click (cursor, subrayado al pasar, flecha) — la navegación la cablea study.js. */
+.leccion .enlace-unidad {
+  color: var(--acento);
+  background: var(--acento-suave);
+  border-radius: 5px;
+  padding: 0 5px 0 4px;
+  font-style: normal;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.leccion .enlace-unidad::before {
+  content: '↗';
+  font-size: 0.78em;
+  opacity: 0.7;
+  margin-right: 2px;
+}
+.leccion .enlace-unidad:hover,
+.leccion .enlace-unidad:focus-visible {
+  border-color: var(--acento);
+  background: color-mix(in srgb, var(--acento) 18%, transparent);
+  outline: none;
+}
+/* Enlace cuyo destino no existe: degrada a texto inerte, sin afordancia de click. */
+.leccion .enlace-unidad.enlace-roto {
+  cursor: default;
+  opacity: 0.75;
+}
+.leccion .enlace-unidad.enlace-roto::before { content: ''; margin: 0; }
+
 .leccion hr {
   border: none;
   border-top: 1px solid var(--borde);

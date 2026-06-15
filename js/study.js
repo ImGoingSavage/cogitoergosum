@@ -304,6 +304,45 @@ async function alternarLeccion(u) {
     '<p class="leccion-error">La lección no está disponible ahora mismo — revisa la conexión e inténtalo de nuevo (una vez cargada queda guardada para leer sin red).</p>';
   cont.hidden = false;
   btn.textContent = 'Cerrar la lección';
+  cablearEnlacesLeccion(cont);
+}
+
+// Hace navegables los enlaces [[arena-xxx]] de una lección ya renderizada:
+// pone el título real de la unidad (cuando el enlace no traía etiqueta propia),
+// marca los rotos y abre la unidad destino al hacer click.
+function cablearEnlacesLeccion(cont) {
+  cont.querySelectorAll('.enlace-unidad').forEach((el) => {
+    const id = el.dataset.unidad;
+    const u = unidad(id);
+    if (!u) {
+      el.classList.add('enlace-roto');
+      el.removeAttribute('role');
+      el.removeAttribute('tabindex');
+      return;
+    }
+    if (el.dataset.auto) el.textContent = u.titulo;
+    el.addEventListener('click', () => navegarAUnidad(id));
+    el.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        navegarAUnidad(id);
+      }
+    });
+  });
+}
+
+// Navega a otra unidad desde un enlace de concepto y abre su lección directamente
+// (el lector venía leyendo). Si la unidad vive en otro bloque, lo hace visible.
+function navegarAUnidad(id) {
+  const u = unidad(id);
+  if (!u) return;
+  const b = datos.bloques.find((x) => x.id === u.bloque);
+  if (b && b.id !== bloqueVisibleObj().id) {
+    bloqueVisible = b;
+    renderizar();
+  }
+  abrirUnidad(id);
+  alternarLeccion(u); // el panel nace con la lección cerrada → esto la abre
 }
 
 /* ===================== Render: unidad y su quiz ======================= */

@@ -5,9 +5,10 @@
  *
  * Soportado: #/##/### encabezados, párrafos, **negrita**, *cursiva*,
  * `código`, listas - y 1., > citas, --- separador y tablas con pipes.
- * Además: matemáticas $…$ (en línea) y $$…$$ (bloque), y enlaces de
- * concepto [[slug]] (chips no navegables; el resolver llegará en otra
- * oleada). El render de matemáticas es un traductor ligero LaTeX→Unicode
+ * Además: matemáticas $…$ (en línea) y $$…$$ (bloque), y enlaces [[slug]]:
+ * los que apuntan a una unidad real (arena-xxx) se renderizan navegables
+ * (.enlace-unidad, el click lo cablea js/study.js); el resto queda como chip
+ * informativo (.enlace-concepto). El render de matemáticas es un traductor ligero LaTeX→Unicode
  * (sin librerías, convención del proyecto): legible, no tipográficamente
  * perfecto.
  * Todo el texto se escapa ANTES de transformar: una lección jamás puede
@@ -111,10 +112,18 @@ function inline(texto) {
 
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  // Enlaces de concepto [[slug]] o [[slug|etiqueta]] → chip (aún sin navegación)
+  // Enlaces [[slug]] o [[slug|etiqueta]]. Los que apuntan a una unidad real
+  // (arena-xxx) se vuelven navegables; el click lo cablea js/study.js. El resto
+  // queda como chip informativo. Cuando no hay etiqueta explícita, data-auto="1"
+  // pide a study.js que ponga el título real de la unidad como texto del enlace.
   s = s.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, slug, etq) => {
+    const id = slug.trim();
     const label = (etq ?? slug).trim().replace(/-/g, ' ');
-    return `<span class="enlace-concepto" data-concepto="${slug.trim()}">${label}</span>`;
+    if (/^arena-[a-z0-9]+$/i.test(id)) {
+      const auto = etq ? '' : ' data-auto="1"';
+      return `<a class="enlace-unidad" data-unidad="${id}"${auto} role="button" tabindex="0">${label}</a>`;
+    }
+    return `<span class="enlace-concepto" data-concepto="${id}">${label}</span>`;
   });
 
   s = s.replace(/ (\d+) /g, (_, i) => tokens[Number(i)]);
