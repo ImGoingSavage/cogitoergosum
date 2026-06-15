@@ -91,6 +91,25 @@ Aquí sí aparece la covarianza. Si te piden varianza, sí necesitas informació
 
 ---
 
+## Errores típicos
+
+- **Conceptual:** declarar "no puedo calcular E[X] porque X e Y no son independientes" — la independencia afecta la varianza (vía la covarianza), no la media.
+- **Técnico:** intentar derivar la distribución conjunta de una suma larga en vez de sumar esperanzas de indicadores.
+- **De interpretación:** olvidar que cada indicador aporta su P(Iₖ=1) aunque los indicadores estén correlacionados entre sí.
+
+## Transferencia isomorfa
+
+La linealidad de la esperanza es una de las aristas más reutilizables de toda la Fase 7:
+
+- **Indicadores ↔ conteo de eventos en cualquier dominio:** "¿cuántos de n cumplen X?" resuelve coincidencias, puntos fijos, patrones en una secuencia y colisiones de hash, todos con la misma suma de probabilidades sin pelear con la dependencia (conecta con [[arena-q9]] y [[arena-b1]]).
+- **Independencia afecta la varianza, no la media ↔ Var(X+Y)=Var X+Var Y+2Cov:** la covarianza solo entra cuando piden dispersión; para la media, da igual (conecta con [[arena-q6]]).
+- **E[máx] vía Σ P(M≥k) ↔ estadísticos de orden:** descomponer el máximo en indicadores de cola es el mismo gesto que la densidad del k-ésimo orden (conecta con [[arena-q10]]).
+- **Sombrero (P=1/n) ↔ permutación aleatoria y derangements:** el problema de coincidencias reaparece en barajas, asignaciones y archivos leídos al azar.
+
+Moraleja de la arista: *cuando algo enredado pide una media, parte en indicadores y suma — la dependencia no le estorba a la esperanza.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |

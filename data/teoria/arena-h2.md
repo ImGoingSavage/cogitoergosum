@@ -114,6 +114,37 @@ Un estudio incluye a pacientes que ya llevan tiempo en tratamiento (usuarios pre
 
 ---
 
+## Mini-ejemplo trabajado: el tiempo inmortal del trasplante, contado
+
+100 pacientes entran a lista de espera. A los 30 trasplantados les cuentas el seguimiento **desde la entrada a la lista**. Pero para *llegar* al trasplante (digamos a los 6 meses) hubo que **sobrevivir** esos 6 meses: quien murió antes nunca fue trasplantado y cayó en el grupo "lista". Así, el grupo trasplantado acumula 6 meses "inmortales" de seguimiento donde, por construcción, nadie podía morir como trasplantado.
+
+Resultado: el grupo trasplantado "vive más" aunque el trasplante no haga nada — el sesgo viene de regalarle tiempo durante el cual era invulnerable. La corrección: **t=0 igual para todos**, alineado con el momento de asignación (o clonar + censurar + ponderar, o sequential trials).
+
+**Predicción antes de seguir:** ¿el immortal time bias infla o desinfla el beneficio del tratamiento? Respuesta: lo **infla** sistemáticamente — el grupo tratado se enriquece de supervivientes. Es el mismo mecanismo que el "prevalent user bias" (incluir usuarios que ya sobrevivieron al período de adversos) y, en ML, que evaluar con un split que mira el futuro. Quien define mal el tiempo cero, regala supervivencia.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** el grupo tratado se define por *completar* algo (N ciclos, ≥2 años) → sospecha tiempo inmortal; alinea t=0 con la asignación.
+- **Contraejemplo (no es immortal time):** si la clasificación tratado/control se fija en t=0 sin requerir supervivencia previa, no hay tiempo inmortal aunque los grupos difieran.
+- **Caso borde (retención de usuarios):** "los que usan más la app retienen mejor" puede ser que los heavy users simplemente sobrevivieron al onboarding — immortal time disfrazado de engagement.
+
+## Errores típicos
+
+- **Conceptual:** empezar el seguimiento en un evento (diagnóstico, entrada a lista) distinto del momento de asignación al tratamiento.
+- **Técnico:** incluir usuarios prevalentes en vez de new users (active comparator new user design lo corrige).
+- **De supuestos:** analizar datos observacionales sin escribir antes los 7 componentes del target trial.
+
+## Transferencia isomorfa
+
+- **Immortal time bias ↔ leakage temporal en ML:** contar tiempo que el sujeto debía sobrevivir es "ver el futuro", el mismo pecado que un split de evaluación que no respeta el tiempo (conecta con [[arena-s1]] y [[arena-cds1]]).
+- **Prevalent user bias ↔ sesgo de supervivencia / selección:** estudiar a los que ya sobrevivieron sesga hacia los robustos, como condicionar en un collider (conecta con [[arena-h1]]).
+- **Definir t=0 ↔ "definir tiempo cero" del arsenal:** alinear el origen del tiempo con la asignación es la heurística que ordena todo análisis longitudinal.
+- **Target trial (7 componentes) ↔ plantilla de diseño de sistemas:** especificar elegibilidad, estrategia, outcome y estimando antes de analizar es la misma disciplina que la plantilla de diseño antes de proponer arquitectura (conecta con [[arena-s1]]).
+
+Moraleja de la arista: *quien define mal el tiempo cero regala supervivencia al grupo tratado; alinea t=0 con la asignación, como en ML alineas el split con el tiempo.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |

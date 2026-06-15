@@ -108,6 +108,41 @@ Preguntas a hacerse antes de incluir una variable:
 
 ---
 
+## Mini-ejemplo trabajado: la paradoja de Berkson con números
+
+En la población general, tener gripe (A) y tener una fractura (B) son **independientes**. Inventemos 100 personas: 10 con gripe, 10 con fractura, y por independencia 1 con ambas. Ahora estudias solo a los **hospitalizados** (collider), y supón que se hospitaliza a quien tiene A *o* B:
+
+- Hospitalizados: 10 (gripe) + 10 (fractura) − 1 (ambas) = 19.
+- Entre ellos, de los 10 con gripe, solo 1 tiene fractura → 10%.
+- Entre los hospitalizados **sin** gripe (9), todos están por su fractura → 100% tiene fractura.
+
+Condicionar en "hospitalizado" creó una correlación **negativa** espuria entre gripe y fractura que no existe en la población. Las flechas A→Hosp←B se "abrieron" al filtrar por el collider.
+
+**Predicción antes de seguir:** tu instinto dice "controla por más variables para reducir sesgo". ¿Siempre ayuda? Respuesta: **no** — ajustar por un confounder cierra un camino espurio (bien), pero ajustar por un *collider* lo **abre** (mal). "Controlar por todo" no es prudencia: puede fabricar el sesgo que creías evitar. El grafo, no la disponibilidad de datos, decide qué ajustar.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo (confounder):** C→X y C→Y → ajustar cierra el back-door y desconfunde.
+- **Contraejemplo (collider):** X→C←Y → NO ajustar; condicionar abre una asociación falsa (Berkson).
+- **Caso borde (mediador):** X→M→Y → ajustar estima el efecto *directo* pero borra el indirecto; si querías el efecto total, no lo ajustes. El mismo nodo puede pedir ajuste o no según la pregunta causal.
+
+## Errores típicos
+
+- **Conceptual:** "ajustar por todo reduce ruido" — ajustar un collider o un mediador introduce sesgo, no lo elimina.
+- **Técnico:** incluir variables post-tratamiento (causadas por X) en la regresión sin querer el efecto directo.
+- **De supuestos:** elegir el conjunto de ajuste por disponibilidad de datos en vez de por el DAG.
+
+## Transferencia isomorfa
+
+- **Ajustar un collider ↔ data leakage y sesgo de selección:** condicionar en una variable posterior (hospitalización, una feature filtrada) abre asociaciones espurias igual que el leakage infla el desempeño (conecta con [[arena-h17]] y [[arena-cds1]]).
+- **Confounder no ajustado ↔ variable omitida en regresión:** el coeficiente con signo absurdo nace de no cerrar el back-door (conecta con [[arena-pst4]]).
+- **Selección por outcome ↔ efectos de red / muestreo sesgado:** filtrar la cohorte por algo que X e Y causan reaparece como contaminación de control en A/B tests (conecta con [[arena-ads4]]).
+- **do(x) ↔ borrar las flechas hacia X:** el back-door es la receta observacional cuando no puedes intervenir (conecta con [[arena-h17]]).
+
+Moraleja de la arista: *el grafo decide qué ajustar: cierra confounders, nunca toques colliders; "controlar por todo" puede fabricar el sesgo que querías evitar.*
+
+---
+
 ## Señales de reconocimiento y jugadas
 
 | Señal | Jugada |
