@@ -9771,7 +9771,7 @@
         "Además, cada una de esas 24 puede componerse con una reflexión (que invierte la orientación), duplicando el conteo.",
         "24 que preservan la orientación + 24 que la invierten $= 48$ automorfismos en total."
       ],
-      "solucion": "El grafo del cubo tiene 48 automorfismos. Un automorfismo se determina por la imagen de una cara: hay 6 caras destino y 4 rotaciones por cara, dando 24 simetrías que preservan la orientación; componiendo cada una con una reflexión se obtienen otras 24 que la invierten. En total $6\\cdot 4\\cdot 2 = 48$ (el grupo de simetría del cubo, isomorfo a S₄ × ℤ₂).",
+      "solucion": "El grafo del cubo tiene 48 automorfismos. Un automorfismo se determina por la imagen de una cara: hay 6 caras destino y 4 rotaciones por cara, dando 24 simetrías que preservan la orientación; componiendo cada una con una reflexión se obtienen otras 24 que la invierten. En total $6\\cdot 4\\cdot 2 = 48$ (el grupo de simetría del cubo, isomorfo a $S_4 \\times \\mathbb{Z}_2$).",
       "explicacion": "Contar simetrías geométricas del cubo: orientación (24) por reflexión $(\\times 2)$. Verificado con Python: un contador exhaustivo de automorfismos del grafo $Q_3$ (vértices $=$ cadenas de 3 bits, aristas a distancia de Hamming 1) da exactamente 48.",
       "tiempo_estimado": 28,
       "conceptos": [
@@ -9799,7 +9799,7 @@
       "titulo": "Ciclos hamiltonianos del cubo",
       "estrategia": "patrones",
       "dificultad": 3,
-      "enunciado": "Demuestra que el grafo del cubo Q₃ (8 vértices, las cadenas de 3 bits, con aristas entre cadenas que difieren en un bit) tiene exactamente 6 ciclos hamiltonianos.",
+      "enunciado": "Demuestra que el grafo del cubo $Q_3$ (8 vértices, las cadenas de 3 bits, con aristas entre cadenas que difieren en un bit) tiene exactamente 6 ciclos hamiltonianos.",
       "hints": [
         "Un ciclo hamiltoniano recorre los 8 vértices del cubo. Aprovecha la simetría (48 automorfismos) para no contar a ciegas.",
         "Cuenta primero por enumeración o por simetría: fija una arista inicial y extiende, o usa que los 48 automorfismos permutan los ciclos hamiltonianos.",
@@ -9874,12 +9874,12 @@
       "enunciado": "Encuentra todas las cuádruplas de enteros positivos distintos a $< b < c < d$ tales que $1/a + 1/b + 1/c + 1/d = 1$.",
       "hints": [
         "Acota a: como es la variable más pequeña, $1/a$ domina la suma. ¿Entre qué valores está a?",
-        "Como hay cuatro términos decrecientes que suman 1, se tiene $1/4 < 1/a < 1$, así que a ∈ {2, 3} (a=1 ya excede 1).",
+        "Como hay cuatro términos decrecientes que suman 1, se tiene $1/4 < 1/a < 1$, así que $a \\in \\{2, 3\\}$ ($a=1$ ya excede 1).",
         "Para cada a, queda $1/b + 1/c + 1/d = 1 - 1/a$ con $b > a$, y se acota b del mismo modo. Luego c y d quedan en rangos finitos.",
         "Recorre los casos a $\\in {2,3}$, luego b, luego c, despejando d. Solo cuenta las soluciones con a $< b < c < d$.",
         "Resultan exactamente seis cuádruplas: (2,3,7,42), (2,3,8,24), (2,3,9,18), (2,3,10,15), (2,4,5,20), (2,4,6,12)."
       ],
-      "solucion": "Las cuádruplas son (2,3,7,42), (2,3,8,24), (2,3,9,18), (2,3,10,15), (2,4,5,20) y (2,4,6,12). Acotando la variable más pequeña ($1/4 < 1/a < 1 \\Rightarrow$ a ∈ {2,3}) y, fijada a, acotando sucesivamente b y c, el problema se reduce a un rango finito que se barre por casos; la búsqueda exhaustiva da exactamente esas seis soluciones con a $< b < c < d$.",
+      "solucion": "Las cuádruplas son (2,3,7,42), (2,3,8,24), (2,3,9,18), (2,3,10,15), (2,4,5,20) y (2,4,6,12). Acotando la variable más pequeña ($1/4 < 1/a < 1 \\Rightarrow a \\in \\{2,3\\}$) y, fijada $a$, acotando sucesivamente $b$ y $c$, el problema se reduce a un rango finito que se barre por casos; la búsqueda exhaustiva da exactamente esas seis soluciones con $a < b < c < d$.",
       "explicacion": "Acotar variables en cascada con el principio del extremo y barrer el rango finito resultante. Verificado con Python: las únicas seis cuádruplas distintas con suma 1 son las listadas.",
       "tiempo_estimado": 26,
       "conceptos": [
@@ -9951,7 +9951,7 @@
         "Con $n = 4$ y $x = 2: 2^4 - 2 = 14$, que NO es divisible por 4. Así que la generalización es FALSA para n compuesto."
       ],
       "solucion": "$x^3 - x = x(x-1)(x+1)$ es producto de tres consecutivos, divisible por 3; y $x^5 - x \\equiv 0$ (mód 5) por el pequeño teorema de Fermat ($x^p \\equiv x$ mód p para p primo). La generalización $x^n - x$ divisible por n NO es cierta para todo n: falla para n compuesto, por ejemplo $2^4 - 2 = 14$ no es divisible por 4.",
-      "explicacion": "Invariante modular vía el pequeño teorema de Fermat (válido solo para módulos primos). El contraejemplo $n=4$ muestra que el patrón se rompe fuera de los primos. Verificado con Python: $3 | x^3-x$ y $5 | x^5-x$ para todo x; 4 ∤ 2⁴−2.",
+      "explicacion": "Invariante modular vía el pequeño teorema de Fermat (válido solo para módulos primos). El contraejemplo $n=4$ muestra que el patrón se rompe fuera de los primos. Verificado con Python: $3 \\mid x^3-x$ y $5 \\mid x^5-x$ para todo $x$; $4 \\nmid 2^4-2$.",
       "tiempo_estimado": 18,
       "conceptos": [
         "pequeño teorema de Fermat",
@@ -10094,7 +10094,7 @@
         "Entonces $3^{4n} + 4^{3n+2} \\equiv (-4)^n + 16\\cdot (-4)^n = (1 + 16)(-4)^n = 17\\cdot (-4)^n$ (mód 17).",
         "$17\\cdot (-4)^n \\equiv 0$ (mód 17), así que 17 divide a la suma."
       ],
-      "solucion": "17 divide a la suma. Reescribiendo $3^{4n} = 81^n$ y $4^{3n+2} = 16\\cdot 64^n$, y reduciendo módulo 17 (81 ≡ −4 y $64 \\equiv -4$), se obtiene $3^{4n} + 4^{3n+2} \\equiv (-4)^n + 16(-4)^n = 17(-4)^n \\equiv 0$ (mód 17).",
+      "solucion": "17 divide a la suma. Reescribiendo $3^{4n} = 81^n$ y $4^{3n+2} = 16\\cdot 64^n$, y reduciendo módulo 17 ($81 \\equiv -4$ y $64 \\equiv -4$), se obtiene $3^{4n} + 4^{3n+2} \\equiv (-4)^n + 16(-4)^n = 17(-4)^n \\equiv 0$ (mód 17).",
       "explicacion": "Invariante modular: agrupar exponentes y descubrir que ambas bases coinciden módulo $17 (-4)$ hace que la suma factorice 17. Verificado con Python: $17 | 3^{4n}+4^{3n+2}$ para $n = 0..29$.",
       "tiempo_estimado": 18,
       "conceptos": [
@@ -10203,7 +10203,7 @@
         "Esto generaliza: divisible por 2ᵏ ⟺ los últimos k dígitos lo son, porque $10^k = 2^k\\cdot 5^k$."
       ],
       "solucion": "N es divisible por 8 sii sus tres últimos dígitos lo son. Escribiendo N = 1000q + r (r = tres últimos dígitos), como $1000 = 8\\cdot 125 \\equiv 0$ (mód 8), se tiene $N \\equiv r$ (mód 8). Luego 8 | N ⟺ 8 | r. (En general, 2ᵏ | N ⟺ 2ᵏ divide a los últimos k dígitos, pues $10^k = 2^k5^k$.)",
-      "explicacion": "Invariante posicional: como $10^3 \\equiv 0$ (mód 8), la 'parte alta' del número no afecta su residuo módulo 8. Verificado con Python: para N ∈ [0,5000], 8|N ⟺ 8|(N mód 1000).",
+      "explicacion": "Invariante posicional: como $10^3 \\equiv 0$ (mód 8), la 'parte alta' del número no afecta su residuo módulo 8. Verificado con Python: para $N \\in [0,5000]$, $8\\mid N \\Leftrightarrow 8\\mid(N \\bmod 1000)$.",
       "tiempo_estimado": 14,
       "conceptos": [
         "aritmética modular posicional",
@@ -10274,7 +10274,7 @@
         "Para la coprimalidad: si un primo p divide a $F_j$ y $a F_l$ con $j < l$, entonces p divide al producto $F_0\\cdots F_{l-1} = F_l - 2$.",
         "Como $p | F_l$ y $p | (F_l - 2), p$ divide a su diferencia 2; pero los $F_n$ son impares, así que $p \\ne 2$. Contradicción: gcd$(F_j, F_l) = 1$."
       ],
-      "solucion": "Primero, $\\prod _{k=0}^n F_k = F_{n+1} - 2$ por inducción: el paso usa $(F_{n+1} - 2)\\cdot F_{n+1} = (2^{2^{n+1}} - 1)(2^{2^{n+1}} + 1) = 2^{2^{n+2}} - 1 = F_{n+2} - 2$. Para la coprimalidad: si un primo p divide a $F_j$ y $F_l (j<l)$, entonces p divide a $F_0\\cdots F_{l-1} = F_l - 2$, luego $p | (F_l - (F_l - 2)) = 2$; pero todo $F_n$ es impar, así que p ≠ 2 — contradicción. Por tanto gcd$(F_j, F_l) = 1$.",
+      "solucion": "Primero, $\\prod_{k=0}^n F_k = F_{n+1} - 2$ por inducción: el paso usa $(F_{n+1} - 2)\\cdot F_{n+1} = (2^{2^{n+1}} - 1)(2^{2^{n+1}} + 1) = 2^{2^{n+2}} - 1 = F_{n+2} - 2$. Para la coprimalidad: si un primo $p$ divide a $F_j$ y $F_l$ ($j<l$), entonces $p$ divide a $F_0\\cdots F_{l-1} = F_l - 2$, luego $p \\mid (F_l - (F_l - 2)) = 2$; pero todo $F_n$ es impar, así que $p \\ne 2$ — contradicción. Por tanto $\\gcd(F_j, F_l) = 1$.",
       "explicacion": "Identidad telescópica (diferencia de cuadrados) más un argumento de divisor común que colapsa en 2. Da una prueba elegante de la infinitud de primos (cada $F_n$ aporta un primo nuevo). Verificado con Python: $\\prod F_k = F_{n+1}-2$ y gcd$(F_j,F_l)=1$.",
       "tiempo_estimado": 30,
       "conceptos": [
@@ -10593,7 +10593,7 @@
       "enunciado": "Sea $x_1 = 3, x_2 = 5$ y $x_n = 3x_{n-1} - 2x_{n-2}$ para $n \\ge 3$. Demuestra que $x_n = 2^n + 1$ para todo $n \\ge 1$.",
       "hints": [
         "Como la recurrencia usa los DOS términos anteriores, emplea inducción fuerte con dos casos base.",
-        "Bases: x₁ = 3 = 2¹ + 1 ✓ y x₂ = 5 = 2² + 1 ✓. Supón la fórmula para $k-1$ y k.",
+        "Bases: $x_1 = 3 = 2^1 + 1$ ✓ y $x_2 = 5 = 2^2 + 1$ ✓. Supón la fórmula para $k-1$ y $k$.",
         "Sustituye en la recurrencia: $x_{k+1} = 3x_k - 2x_{k-1} = 3(2^k + 1) - 2(2^{k-1} + 1)$.",
         "Desarrolla: $3\\cdot 2^k + 3 - 2\\cdot 2^{k-1} - 2 = 3\\cdot 2^k - 2^k + 1 = 2\\cdot 2^k + 1 = 2^{k+1} + 1$.",
         "Eso es la fórmula para $k+1$, completando la inducción fuerte."
@@ -10634,7 +10634,7 @@
         "Ambos sumandos, $x(x^k - 1)$ y $(x - 1)$, son divisibles por $x - 1$, así que su suma también. Inducción completa."
       ],
       "solucion": "$x - 1$ divide a $x^n - 1$. Por inducción: base $x^1 - 1 = x - 1$. Paso: $x^{k+1} - 1 = x(x^k - 1) + (x - 1)$; ambos términos son divisibles por $x - 1$ (el primero por hipótesis), así que $x^{k+1} - 1$ también. (Equivalente: $x^n - 1 = (x-1)(x^{n-1} + \\cdots + x + 1)$.)",
-      "explicacion": "Inducción por descomposición $x^{k+1}-1 = x(x^k-1)+(x-1)$; equivale a la factorización geométrica $x^n-1 = (x-1)$Σx$^i$. Verificado con Python: $(x-1) | (x^n-1)$ para $x \\in [2,14], n \\in [1,11]$.",
+      "explicacion": "Inducción por descomposición $x^{k+1}-1 = x(x^k-1)+(x-1)$; equivale a la factorización geométrica $x^n-1 = (x-1)\\sum x^i$. Verificado con Python: $(x-1) \\mid (x^n-1)$ para $x \\in [2,14], n \\in [1,11]$.",
       "tiempo_estimado": 12,
       "conceptos": [
         "inducción",
@@ -10664,7 +10664,7 @@
       "enunciado": "Demuestra que la suma de los ángulos interiores de un polígono convexo de n lados es $180(n - 2)$ grados, para todo $n \\ge 3$.",
       "hints": [
         "Inducción sobre n. ¿Cuál es el caso base y cómo pasas de un n-gono a un $(n+1)-$gono?",
-        "Base $n = 3$: los ángulos de un triángulo suman 180 = 180(3−2). ✓. Supón el resultado para n.",
+        "Base $n = 3$: los ángulos de un triángulo suman $180 = 180(3-2)$. ✓. Supón el resultado para $n$.",
         "Para el paso, toma un $(n+1)-$gono y 'córtale' un triángulo trazando una diagonal que una dos vértices con uno intermedio.",
         "La diagonal divide el $(n+1)-$gono en un n-gono y un triángulo. La suma de ángulos del $(n+1)-$gono $=$ suma del n-gono + suma del triángulo.",
         "$= 180(n-2) + 180 = 180(n-1) = 180((n+1)-2)$. Inducción completa."
@@ -10736,12 +10736,12 @@
       "enunciado": "Demuestra que $n^2 \\le 2^{n-1}$ para todo entero $n \\ge 7$.",
       "hints": [
         "Inducción a partir de $n = 7$ (el resultado es falso para $n = 2,\\dots ,6$). Verifica la base.",
-        "Base n=7: 7² = 49 ≤ 64 = 2⁶ = 2^{7−1}. ✓. Supón $n^2 \\le 2^{n-1}$ para algún $n \\ge 7$.",
+        "Base $n=7$: $7^2 = 49 \\le 64 = 2^6 = 2^{7-1}$. ✓. Supón $n^2 \\le 2^{n-1}$ para algún $n \\ge 7$.",
         "Para el paso, multiplica la meta: quieres $(n+1)^2 \\le 2^n = 2\\cdot 2^{n-1}$. Usa la hipótesis y acota $(n+1)^2/n^2$.",
         "$(n+1)^2 = n^2\\cdot (1 + 1/n)^2$. Para $n \\ge 7, (1+1/n)^2 \\le (8/7)^2 = 64/49 < 2$.",
         "Entonces $(n+1)^2 = n^2(1+1/n)^2 \\le 2n^2 \\le 2\\cdot 2^{n-1} = 2^n = 2^{(n+1)-1}$. Inducción completa."
       ],
-      "solucion": "$n^2 \\le 2^{n-1}$ para $n \\ge 7$. Por inducción: base $7^2 = 49 \\le 64 = 2^6$. Paso: $(n+1)^2 = n^2(1+1/n)^2 \\le 2n^2$ (pues $(1+1/n)^2 \\le (8/7)^2 < 2$ para n ≥ 7) ≤ 2·2^{n−1} = 2^{(n+1)−1}.",
+      "solucion": "$n^2 \\le 2^{n-1}$ para $n \\ge 7$. Por inducción: base $7^2 = 49 \\le 64 = 2^6$. Paso: $(n+1)^2 = n^2(1+1/n)^2 \\le 2n^2$ (pues $(1+1/n)^2 \\le (8/7)^2 < 2$ para $n \\ge 7$) $\\le 2\\cdot 2^{n-1} = 2^{(n+1)-1}$.",
       "explicacion": "Inducción con caso base desplazado (el enunciado falla para $n=2..6$) y paso que acota $(1+1/n)^2 < 2$. Verificado con Python: $n^2 \\le 2^{n-1}$ para $n = 7..39$.",
       "tiempo_estimado": 18,
       "conceptos": [
@@ -10772,7 +10772,7 @@
       "enunciado": "Demuestra que $2^n < n$! para todo entero $n \\ge 4$.",
       "hints": [
         "Inducción desde $n = 4$ (es falso para $n = 1,2,3$). Verifica la base.",
-        "Base n=4: 2⁴ = 16 < 24 = 4!. ✓. Supón $2^n < n$! para algún $n \\ge 4$.",
+        "Base $n=4$: $2^4 = 16 < 24 = 4!$. ✓. Supón $2^n < n!$ para algún $n \\ge 4$.",
         "Para el paso, multiplica: $2^{n+1} = 2\\cdot 2^n$ y $(n+1)! = (n+1)\\cdot n$!. Compara los factores que multiplican.",
         "Como $n \\ge 4$, el factor $n+1 \\ge 5 > 2$. Por la hipótesis $2^n < n$!, multiplicando por $2 < n+1$:",
         "$2^{n+1} = 2\\cdot 2^n < (n+1)\\cdot n! = (n+1)$!. Inducción completa."
@@ -10808,10 +10808,10 @@
       "enunciado": "Sea $x_1 = 1, x_2 = 3$ y $x_n = x_{n-1} + x_{n-2}$ para $n \\ge 3$. Demuestra que $x_n < (7/4)^n$ para todo $n \\ge 1$.",
       "hints": [
         "Como la recurrencia usa los dos términos anteriores, usa inducción fuerte con dos bases.",
-        "Bases: x₁ = 1 < 7/4 ✓ y x₂ = 3 < (7/4)² = 49/16 ≈ 3.06 ✓. Supón $x_k < (7/4)^k$ para todo $k \\le n$.",
+        "Bases: $x_1 = 1 < 7/4$ ✓ y $x_2 = 3 < (7/4)^2 = 49/16 \\approx 3.06$ ✓. Supón $x_k < (7/4)^k$ para todo $k \\le n$.",
         "Acota $x_{n+1} = x_n + x_{n-1} < (7/4)^n + (7/4)^{n-1}$ usando la hipótesis.",
         "Factoriza $(7/4)^{n-1}: (7/4)^n + (7/4)^{n-1} = (7/4)^{n-1}\\cdot (7/4 + 1) = (7/4)^{n-1}\\cdot (11/4)$.",
-        "Basta ver que $11/4 \\le (7/4)^2 = 49/16$, es decir 44/16 ≤ 49/16. ✓. Luego $x_{n+1} < (7/4)^{n+1}$."
+        "Basta ver que $11/4 \\le (7/4)^2 = 49/16$, es decir $44/16 \\le 49/16$. ✓. Luego $x_{n+1} < (7/4)^{n+1}$."
       ],
       "solucion": "$x_n < (7/4)^n$. Por inducción fuerte con bases $x_1 = 1 < 7/4$ y $x_2 = 3 < 49/16$. Paso: $x_{n+1} = x_n + x_{n-1} < (7/4)^n + (7/4)^{n-1} = (7/4)^{n-1}(7/4 + 1) = (7/4)^{n-1}\\cdot (11/4) \\le (7/4)^{n-1}\\cdot (7/4)^2 = (7/4)^{n+1}$, porque $11/4 = 44/16 \\le 49/16$.",
       "explicacion": "Inducción fuerte donde el paso se reduce a la desigualdad numérica $7/4 + 1 \\le (7/4)^2$ (es decir, $7/4$ es mayor que la razón áurea $\\approx 1.618$). Verificado con Python: $x_n < (7/4)^n$ para $n = 1..39$.",
@@ -10844,13 +10844,13 @@
       "enunciado": "Demuestra que para cualesquiera números reales $x_1, x_2, \\dots , x_n$ se cumple $|x_1 + x_2 + \\cdots + x_n| \\le |x_1| + |x_2| + \\cdots + |x_n|$.",
       "hints": [
         "Inducción sobre n, apoyándote en la desigualdad triangular para DOS números: $|a + b| \\le |a| + |b|$.",
-        "Base n=1: |x₁| ≤ |x₁|. ✓. Supón $|x_1+\\cdots +x_n| \\le |x_1|+\\cdots +|x_n|$.",
+        "Base $n=1$: $|x_1| \\le |x_1|$. ✓. Supón $|x_1+\\cdots+x_n| \\le |x_1|+\\cdots+|x_n|$.",
         "Para el paso, agrupa la suma de $n+1$ términos como $(x_1+\\cdots +x_n) + x_{n+1}$ y aplica la desigualdad triangular de dos términos.",
         "$|x_1+\\cdots +x_n+x_{n+1}| \\le |x_1+\\cdots +x_n| + |x_{n+1}|$.",
         "Por la hipótesis, $\\le (|x_1|+\\cdots +|x_n|) + |x_{n+1}|$. Inducción completa."
       ],
-      "solucion": "|Σx$_i| \\le \\sum |x_i|$. Por inducción: base $|x_1| \\le |x_1|$. Paso: $|x_1+\\cdots +x_n+x_{n+1}| \\le |x_1+\\cdots +x_n| + |x_{n+1}|$ (triangular de dos términos) ≤ |x₁|+⋯+|xₙ|+|xₙ₊₁| (hipótesis).",
-      "explicacion": "Inducción que reduce el caso general al caso de dos términos (la desigualdad triangular básica). Verificado con Python: 3000 muestras aleatorias cumplen |Σx$_i| \\le \\sum |x_i|$.",
+      "solucion": "$|\\sum x_i| \\le \\sum |x_i|$. Por inducción: base $|x_1| \\le |x_1|$. Paso: $|x_1+\\cdots+x_n+x_{n+1}| \\le |x_1+\\cdots+x_n| + |x_{n+1}|$ (triangular de dos términos) $\\le |x_1|+\\cdots+|x_n|+|x_{n+1}|$ (hipótesis).",
+      "explicacion": "Inducción que reduce el caso general al caso de dos términos (la desigualdad triangular básica). Verificado con Python: 3000 muestras aleatorias cumplen $|\\sum x_i| \\le \\sum |x_i|$.",
       "tiempo_estimado": 12,
       "conceptos": [
         "inducción",
@@ -10877,7 +10877,7 @@
       "titulo": "El máximo común divisor de la suma y la diferencia",
       "estrategia": "optimizacion",
       "dificultad": 3,
-      "enunciado": "Sean a y b enteros positivos coprimos (gcd$(a, b) = 1$). Demuestra que gcd($a + b$, a − b) ≤ 2.",
+      "enunciado": "Sean $a$ y $b$ enteros positivos coprimos ($\\gcd(a, b) = 1$). Demuestra que $\\gcd(a + b, a - b) \\le 2$.",
       "hints": [
         "Sea $g =$ gcd$(a+b, a-b)$. Si g divide a $a+b$ y $a a-b$, ¿qué otras combinaciones divide?",
         "Como $g | (a+b)$ y $g | (a-b), g$ divide a su suma y a su diferencia: $(a+b)+(a-b) = 2a$ y $(a+b)-(a-b) = 2b$.",
@@ -10952,12 +10952,12 @@
       "enunciado": "Demuestra el Lema de la División: dados enteros x e y con y $> 0$, existen enteros q y r tales que $x =$ qy + r con $0 \\le r < y$. (Sugerencia: usa el principio del buen orden.)",
       "hints": [
         "La existencia de r se prueba como un problema de MINIMIZACIÓN: considera todos los valores no negativos de la forma $x -$ sy.",
-        "Considera el conjunto S = {x − sy : s ∈ ℤ y $x -$ sy ≥ 0}. Argumenta primero que S no es vacío.",
+        "Considera el conjunto $S = \\{x - sy : s \\in \\mathbb{Z}$ y $x - sy \\ge 0\\}$. Argumenta primero que $S$ no es vacío.",
         "S es no vacío: si $x \\ge 0, x = x - 0\\cdot y \\in S$; si $x < 0, x -$ xy $= x(1-y) \\ge 0 \\in S$. Por el buen orden, S tiene un MENOR elemento.",
         "Sea r el menor elemento de S, con $r = x -$ qy para cierto q. Por construcción $r \\ge 0$. Falta ver $r < y$.",
         "Si fuera $r \\ge y$, entonces $r -$ y $= x - (q+1)y \\ge 0$ estaría en S y sería menor que r, contradiciendo la minimalidad. Luego $0 \\le r < y$."
       ],
-      "solucion": "Existen tales q, r. Considera S = {x − sy : s ∈ ℤ, x − sy ≥ 0}, que es no vacío (si $x \\ge 0, x \\in S$; si $x < 0, x(1-y) \\in S$). Por el principio del buen orden S tiene un menor elemento $r = x -$ qy $\\ge 0$. Si fuera $r \\ge y$, entonces $r -$ y $= x - (q+1)y \\ge 0$ estaría en S y sería menor que r, contradicción; luego $0 \\le r < y$.",
+      "solucion": "Existen tales $q, r$. Considera $S = \\{x - sy : s \\in \\mathbb{Z}, x - sy \\ge 0\\}$, que es no vacío (si $x \\ge 0$, $x \\in S$; si $x < 0$, $x(1-y) \\in S$). Por el principio del buen orden $S$ tiene un menor elemento $r = x - qy \\ge 0$. Si fuera $r \\ge y$, entonces $r - y = x - (q+1)y \\ge 0$ estaría en $S$ y sería menor que $r$, contradicción; luego $0 \\le r < y$.",
       "explicacion": "Principio del extremo / buen orden: el resto es el MENOR valor no negativo de la forma $x -$ sy, y su minimalidad fuerza $r < y$. La 'solución' es el argumento, tomado del libro. Verificado con Python: el q, r usuales cumplen $0 \\le r <$ y para $x \\in [0,49]$, y $\\in [1,9]$.",
       "tiempo_estimado": 22,
       "conceptos": [
@@ -10988,13 +10988,13 @@
       "enunciado": "Demuestra que $1^2 + 2^2 + \\cdots + n^2 = n(n+1)(2n+1)/6$ para todo entero positivo n.",
       "hints": [
         "Verifica la fórmula para n pequeños y prueba por inducción separando el último término.",
-        "Base n=1: 1² = 1 = 1·2·3/6. ✓. Supón $\\sum _{i=1}^n i^2 = n(n+1)(2n+1)/6$.",
+        "Base $n=1$: $1^2 = 1 = 1\\cdot2\\cdot3/6$. ✓. Supón $\\sum_{i=1}^n i^2 = n(n+1)(2n+1)/6$.",
         "Para el paso, suma $(n+1)^2: \\sum _{i=1}^{n+1} i^2 = n(n+1)(2n+1)/6 + (n+1)^2$.",
         "Factoriza $(n+1)/6: = (n+1)[n(2n+1) + 6(n+1)]/6 = (n+1)(2n^2+7n+6)/6$.",
         "Factoriza $2n^2+7n+6 = (n+2)(2n+3): = (n+1)(n+2)(2n+3)/6$, que es la fórmula para $n+1$."
       ],
       "solucion": "$\\sum _{i=1}^n i^2 = n(n+1)(2n+1)/6$. Por inducción: base $1 = 1\\cdot 2\\cdot 3/6$. Paso: $n(n+1)(2n+1)/6 + (n+1)^2 = (n+1)[n(2n+1)+6(n+1)]/6 = (n+1)(2n^2+7n+6)/6 = (n+1)(n+2)(2n+3)/6$, la fórmula para $n+1$.",
-      "explicacion": "Identidad clásica probada por inducción con factorización cuidadosa del paso. Verificado con Python: Σi$^2 = n(n+1)(2n+1)/6$ para $n = 1..39$.",
+      "explicacion": "Identidad clásica probada por inducción con factorización cuidadosa del paso. Verificado con Python: $\\sum i^2 = n(n+1)(2n+1)/6$ para $n = 1..39$.",
       "tiempo_estimado": 14,
       "conceptos": [
         "inducción",
@@ -11099,9 +11099,9 @@
         "gcd$(51, 21) = 3 (51 = 2\\cdot 21 + 9, 21 = 2\\cdot 9 + 3, 9 = 3\\cdot 3 + 0)$. Como 3 | 18, hay soluciones.",
         "Invierte el algoritmo para escribir 3 como combinación: $3 = 5\\cdot 21 - 2\\cdot 51$. Multiplica por $18/3 = 6$ para obtener una solución particular.",
         "$18 = 30\\cdot 21 - 12\\cdot 51$, así que una solución particular es $x_0 = -12, y_0 = 30$.",
-        "La solución general es $x = -12 + (21/3)t = -12 + 7t$, y $= 30 - (51/3)t = 30 - 17t$, para t ∈ ℤ."
+        "La solución general es $x = -12 + (21/3)t = -12 + 7t$, $y = 30 - (51/3)t = 30 - 17t$, para $t \\in \\mathbb{Z}$."
       ],
-      "solucion": "Las soluciones son $x = -12 + 7t$, y = 30 − 17t (t ∈ ℤ). Como gcd$(51,21) = 3$ divide a 18, hay solución. Invirtiendo Euclides, $3 = 5\\cdot 21 - 2\\cdot 51$, y multiplicando por $6: 18 = 30\\cdot 21 - 12\\cdot 51$, dando la solución particular $(x_0,y_0) = (-12, 30)$. La general se obtiene sumando múltiplos de $(21/3, -51/3) = (7, -17)$.",
+      "solucion": "Las soluciones son $x = -12 + 7t$, $y = 30 - 17t$ ($t \\in \\mathbb{Z}$). Como $\\gcd(51,21) = 3$ divide a 18, hay solución. Invirtiendo Euclides, $3 = 5\\cdot 21 - 2\\cdot 51$, y multiplicando por 6: $18 = 30\\cdot 21 - 12\\cdot 51$, dando la solución particular $(x_0,y_0) = (-12, 30)$. La general se obtiene sumando múltiplos de $(21/3, -51/3) = (7, -17)$.",
       "explicacion": "Teoría de ecuaciones diofantinas lineales: hay solución sii gcd|c, y la solución general es una particular más el núcleo (21/gcd, $-51/$gcd)$\\cdot t$. Verificado con Python: $51(-12+7t) + 21(30-17t) = 18$ para todo t.",
       "tiempo_estimado": 24,
       "conceptos": [
@@ -11133,11 +11133,11 @@
       "hints": [
         "La recurrencia es lineal de orden 2. Halla su ecuación característica y sus raíces.",
         "La ecuación característica de $F_n = F_{n-1} + F_{n-2}$ es $x^2 = x + 1$, o sea $x^2 - x - 1 = 0$.",
-        "Sus raíces son $\\phi = (1+\\sqrt{5})/2$ y ψ = (1−√5)/2. La solución general es $F_n =$ Aφ$^n +$ Bψ$^n$.",
+        "Sus raíces son $\\phi = (1+\\sqrt{5})/2$ y $\\psi = (1-\\sqrt{5})/2$. La solución general es $F_n = A\\phi^n + B\\psi^n$.",
         "Ajusta A y B con las condiciones iniciales $F_1 = 1, F_2 = 1 (o F_0 = 0, F_1 = 1)$.",
-        "Resolviendo, A $= 1/\\sqrt{5}$ y $B = -1/\\sqrt{5}$, dando Fₙ = (φⁿ − ψⁿ)/√5."
+        "Resolviendo, $A = 1/\\sqrt{5}$ y $B = -1/\\sqrt{5}$, dando $F_n = (\\phi^n - \\psi^n)/\\sqrt{5}$."
       ],
-      "solucion": "Fₙ = (φⁿ − ψⁿ)/√5 con φ = (1+√5)/2, ψ = (1−√5)/2. La ecuación característica $x^2 - x - 1 = 0$ tiene esas raíces, así que $F_n =$ Aφ$^n +$ Bψ$^n$; imponiendo $F_0 = 0$ y $F_1 = 1$ se obtiene A $= 1/\\sqrt{5}, B = -1/\\sqrt{5}$, de donde Fₙ = (φⁿ − ψⁿ)/√5.",
+      "solucion": "$F_n = (\\phi^n - \\psi^n)/\\sqrt{5}$ con $\\phi = (1+\\sqrt{5})/2$, $\\psi = (1-\\sqrt{5})/2$. La ecuación característica $x^2 - x - 1 = 0$ tiene esas raíces, así que $F_n = A\\phi^n + B\\psi^n$; imponiendo $F_0 = 0$ y $F_1 = 1$ se obtiene $A = 1/\\sqrt{5}$, $B = -1/\\sqrt{5}$, de donde $F_n = (\\phi^n - \\psi^n)/\\sqrt{5}$.",
       "explicacion": "Resolución de una recurrencia lineal por su ecuación característica; las raíces son la razón áurea y su conjugada. Es notable que la combinación de irracionales dé siempre un entero. Verificado con Python: la fórmula coincide con $F_n$ para $n = 1..24$.",
       "tiempo_estimado": 30,
       "conceptos": [
@@ -11168,7 +11168,7 @@
       "enunciado": "Demuestra que la suma de los números de Fibonacci de índice impar cumple $F_1 + F_3 + F_5 + \\cdots + F_{2n-1} = F_{2n}$, para todo $n \\ge 1$.",
       "hints": [
         "Verifica para n pequeños y prueba por inducción separando el último término.",
-        "Base n=1: F₁ = 1 = F₂. ✓. Supón $F_1 + F_3 + \\cdots + F_{2n-1} = F_{2n}$.",
+        "Base $n=1$: $F_1 = 1 = F_2$. ✓. Supón $F_1 + F_3 + \\cdots + F_{2n-1} = F_{2n}$.",
         "Para el paso, suma el siguiente término de índice impar, $F_{2n+1}$: la suma hasta $F_2(n+1)-1 = F_{2n+1}$ es $F_{2n} + F_{2n+1}$.",
         "Usa la recurrencia de Fibonacci: $F_{2n} + F_{2n+1} = F_{2n+2}$.",
         "$F_{2n+2} = F_2(n+1)$, que es la fórmula para $n+1$. Inducción completa."
@@ -11204,7 +11204,7 @@
       "enunciado": "Demuestra que la suma de los números de Fibonacci de índice par cumple $F_2 + F_4 + F_6 + \\cdots + F_{2n} = F_{2n+1} - 1$, para todo $n \\ge 1$.",
       "hints": [
         "Verifica para n pequeños y prueba por inducción separando el último término.",
-        "Base n=1: F₂ = 1 = F₃ − 1 = 2 − 1. ✓. Supón $F_2 + F_4 + \\cdots + F_{2n} = F_{2n+1} - 1$.",
+        "Base $n=1$: $F_2 = 1 = F_3 - 1 = 2 - 1$. ✓. Supón $F_2 + F_4 + \\cdots + F_{2n} = F_{2n+1} - 1$.",
         "Para el paso, suma el siguiente término de índice par, $F_{2n+2}$: la suma queda $(F_{2n+1} - 1) + F_{2n+2}$.",
         "Usa la recurrencia: $F_{2n+1} + F_{2n+2} = F_{2n+3}$.",
         "Entonces la suma es $F_{2n+3} - 1 = F_2(n+1)+1 - 1$, la fórmula para $n+1$. Inducción completa."
@@ -11349,7 +11349,7 @@
       "hints": [
         "Inducción sobre n, o un argumento directo de elección. ¿Cuántas decisiones tomas para formar un subconjunto?",
         "Para formar un subconjunto, decides por cada elemento si lo incluyes o no: dos opciones por elemento.",
-        "Con n elementos y decisiones independientes, el número total es 2·2·⋯·2 (n factores) $= 2^n$.",
+        "Con $n$ elementos y decisiones independientes, el número total es $2\\cdot2\\cdots2$ ($n$ factores) $= 2^n$.",
         "Por inducción: con 0 elementos hay $2^0 = 1$ subconjunto (el vacío). Al añadir un elemento, cada subconjunto previo da dos nuevos (con o sin el elemento).",
         "Así el número de subconjuntos se duplica al pasar de n a $n+1$: de $2^n$ a $2^{n+1}$. Hay $2^n$ subconjuntos."
       ],
@@ -11387,7 +11387,7 @@
         "Sea $S = 1 + x + x^2 + \\cdots + x^{n-1}$. Calcula $(x - 1)\\cdot S$ desarrollando el producto.",
         "$(x - 1)S = (x + x^2 + \\cdots + x^n) - (1 + x + \\cdots + x^{n-1})$. Casi todos los términos se cancelan.",
         "Solo sobreviven $x^n$ (del primer paréntesis) y $-1$ (del segundo): $(x - 1)S = x^n - 1$.",
-        "Dividiendo por $x - 1$ (que es ≠ 0): S = (xⁿ − 1)/(x − 1)."
+        "Dividiendo por $x - 1$ (que es $\\ne 0$): $S = (x^n - 1)/(x - 1)$."
       ],
       "solucion": "$(x^n - 1)/(x - 1) = 1 + x + \\cdots + x^{n-1}$. Sea S la suma del lado derecho; entonces $(x - 1)S = (x + x^2 + \\cdots + x^n) - (1 + x + \\cdots + x^{n-1}) = x^n - 1$ (telescopaje, todos los términos intermedios se cancelan). Dividiendo por $x - 1 \\ne 0$ se obtiene la identidad.",
       "explicacion": "Suma geométrica finita por telescopaje al multiplicar por $(x-1)$. Es la base de muchas fórmulas de divisibilidad. Verificado con Python: $(x^n-1)/(x-1) = \\sum x^i$ para $x \\in [2,9], n \\in [1,9]$.",
@@ -11423,7 +11423,7 @@
         "$(\\Rightarrow )$ Si hay solución mx + ny $= c$, nota que d divide a m y a n, así que divide a cualquier combinación mx + ny $= c$.",
         "Por tanto, si hay solución, d | c. Esto prueba una dirección.",
         "(⇐) Si d | c, usa la identidad de Bézout: existen k, l con mk + nl $= d$.",
-        "Multiplica por $c/d$ (entero, pues d | c): m(k·c/d) + n(l·c/d) = c, dando una solución explícita $x =$ kc/d, y $=$ lc/d."
+        "Multiplica por $c/d$ (entero, pues $d \\mid c$): $m(k\\cdot c/d) + n(l\\cdot c/d) = c$, dando una solución explícita $x = kc/d$, $y = lc/d$."
       ],
       "solucion": "mx + ny $= c$ tiene solución entera sii gcd$(m,n) | c. (\\Rightarrow )$ Si mx + ny $= c$, como $d =$ gcd(m,n) divide a m y n, divide a mx + ny = c. (⇐) Si d | c, por Bézout existen k, l con mk + nl $= d$; multiplicando por el entero $c/d$ se obtiene m(kc/d) + n(lc/d) = c, una solución.",
       "explicacion": "Criterio de solubilidad de ecuaciones diofantinas lineales, equivalente a la identidad de Bézout. Verificado con Python: para $315x+264y=18/24$ (gcd 3) y $7644x+1386y=84, 1386x+7644y=126$ (gcd 42), en todos gcd | c y hay solución.",
@@ -11456,7 +11456,7 @@
       "enunciado": "Sea $F_n = 2^{2^n} + 1$ el n-ésimo número de Fermat. Demuestra que $F_0\\cdot F_1\\cdot F_2\\cdot \\cdots \\cdot F_n = F_{n+1} - 2$ para todo entero no negativo n.",
       "hints": [
         "Procede por inducción y aprovecha que $F_{k} - 2 = 2^{2^k} - 1$ es una diferencia de cuadrados respecto del siguiente.",
-        "Base n=0: F₀ = 3 = 5 − 2 = F₁ − 2. ✓. Supón $F_0\\cdots F_n = F_{n+1} - 2$.",
+        "Base $n=0$: $F_0 = 3 = 5 - 2 = F_1 - 2$. ✓. Supón $F_0\\cdots F_n = F_{n+1} - 2$.",
         "Multiplica ambos lados por $F_{n+1}: F_0\\cdots F_n\\cdot F_{n+1} = (F_{n+1} - 2)\\cdot F_{n+1}$.",
         "Nota que $F_{n+1} - 2 = 2^{2^{n+1}} - 1$ y $F_{n+1} = 2^{2^{n+1}} + 1$: su producto es una diferencia de cuadrados.",
         "$(2^{2^{n+1}} - 1)(2^{2^{n+1}} + 1) = 2^{2^{n+2}} - 1 = F_{n+2} - 2$. Inducción completa."
@@ -11498,7 +11498,7 @@
         "El término $-(x - 5/2)^2$ es $\\le 0$, máximo 0 cuando $x = 5/2$. Ahí la expresión vale $25/4 - 7 = -3/4$."
       ],
       "solucion": "Completando el cuadrado: $-x^2 + 5x - 7 = -(x - 5/2)^2 - 3/4$. Como $-(x - 5/2)^2 \\le 0$ con igualdad solo en $x = 5/2$, el máximo es $-3/4$, alcanzado en $x = 5/2$. Verificado con Python (vértice en $x = 5/2$, valor $-3/4$).",
-      "explicacion": "La técnica de completar el cuadrado convierte cualquier cuadrática en (vértice) ± (cuadrado), y como un cuadrado real es $\\ge 0$, el óptimo se lee de inmediato. Es la 'desigualdad trivial$' x^2 \\ge 0$ disfrazada.",
+      "explicacion": "La técnica de completar el cuadrado convierte cualquier cuadrática en (vértice) $\\pm$ (cuadrado), y como un cuadrado real es $\\ge 0$, el óptimo se lee de inmediato. Es la 'desigualdad trivial' $x^2 \\ge 0$ disfrazada.",
       "tiempo_estimado": 18,
       "conceptos": [
         "completar el cuadrado",
@@ -11714,7 +11714,7 @@
         "La igualdad ocurre cuando $\\sqrt{x} - 1/\\sqrt{x} = 0$, es decir $x = 1$."
       ],
       "solucion": "Para $x > 0, (\\sqrt{x} - 1/\\sqrt{x})^2 \\ge 0$ desarrolla a $x - 2 + 1/x \\ge 0$, o sea $x + 1/x \\ge 2$, con igualdad solo en $x = 1$. (Es AM-GM aplicado a x y $1/x$.) Verificado con Python.",
-      "explicacion": "$x + 1/x \\ge 2$ es AM-GM entre x y $1/x$, cuyo producto es 1. Reconocer un cuadrado escondido —aquí (√x − 1/√x)²— convierte una desigualdad en algo evidente.",
+      "explicacion": "$x + 1/x \\ge 2$ es AM-GM entre $x$ y $1/x$, cuyo producto es 1. Reconocer un cuadrado escondido —aquí $(\\sqrt{x} - 1/\\sqrt{x})^2$— convierte una desigualdad en algo evidente.",
       "tiempo_estimado": 16,
       "conceptos": [
         "desigualdad trivial",
@@ -12715,7 +12715,7 @@
       "hints": [
         "Cada ecuación es ($w + x +$ y + z) más el doble de una variable. Explota esa simetría.",
         "Suma las cuatro ecuaciones: cada variable aparece con coeficiente total 6.",
-        "6(w + x + y + z) = 20 + 6 + 44 + 2 = 72, así que $w + x +$ y $+ z = 12$.",
+        "$6(w + x + y + z) = 20 + 6 + 44 + 2 = 72$, así que $w + x + y + z = 12$.",
         "Resta esta suma de cada ecuación original: por ejemplo $3w + x +$ y $+ z - (w+x+y+z) = 2w = 20 - 12 = 8$.",
         "Así $2w = 8, 2x = -6, 2y = 32, 2z = -10 \\Rightarrow (w, x, y, z) = (4, -3, 16, -5)$."
       ],
@@ -13081,7 +13081,7 @@
         "Para un polígono de n lados, la suma de los ángulos interiores es siempre $(n - 2)\\cdot 180^\\circ$. Esa fórmula es el invariante.",
         "Si es regular, cada ángulo es esa suma dividida entre $n: (n - 2)\\cdot 180^\\circ /n = 140^\\circ$.",
         "Otra vía: el ángulo exterior es $180^\\circ - 140^\\circ = 40^\\circ$, y los exteriores SIEMPRE suman 360°.",
-        "$360^\\circ \\div 40^\\circ = 9$. Comprueba con la fórmula interior: (9 − 2)·180/9 = 140. ✓"
+        "$360^\\circ \\div 40^\\circ = 9$. Comprueba con la fórmula interior: $(9 - 2)\\cdot180/9 = 140$. ✓"
       ],
       "solucion": "El ángulo exterior es $180^\\circ - 140^\\circ = 40^\\circ$. Como los ángulos exteriores de cualquier polígono convexo suman exactamente 360° (invariante), el número de lados es $360/40 = 9$. Verificado: $(9 - 2)\\cdot 180/9 = 140^\\circ$.",
       "explicacion": "La suma de ángulos exteriores $= 360^\\circ$ es uno de los invariantes más útiles de la geometría: no depende del número de lados. Convierte un problema de interiores en una simple división.",
@@ -13299,7 +13299,7 @@
         "Como AY $= 3\\cdot$BY, todo el lado AB mide BY + AY $= 4\\cdot$BY, así que BY $=$ AB/4.",
         "[BXY]/[BCA$] =$ (BX/BC)·(BY/BA) $= (1/3)\\cdot (1/4) = 1/12$, luego [BXY$] = 144/12 = 12$."
       ],
-      "solucion": "Ambos triángulos comparten el ángulo B, así que la razón de áreas es el producto de las razones de los lados que lo forman: (BX/BC)·(BY/BA). Con BX $=$ BC/3 y BY $=$ BA/4, la razón es $1/12$ y [BXY$] = 144\\cdot (1/12) = 12$. Verificado con Python.",
+      "solucion": "Ambos triángulos comparten el ángulo B, así que la razón de áreas es el producto de las razones de los lados que lo forman: $(BX/BC)\\cdot(BY/BA)$. Con $BX = BC/3$ y $BY = BA/4$, la razón es $1/12$ y $[BXY] = 144\\cdot(1/12) = 12$. Verificado con Python.",
       "explicacion": "El invariante es sen(B): al compartir el ángulo, la razón de áreas no depende de su valor. Reducir áreas a productos de razones de lados es una de las herramientas más potentes de la geometría de competencia.",
       "tiempo_estimado": 18,
       "conceptos": [
