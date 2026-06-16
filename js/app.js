@@ -1392,6 +1392,7 @@ function configurarNavegacion() {
     Claustro.renderizar();
     cambiarVista('claustro');
   });
+  $('nav-guia').addEventListener('click', () => cambiarVista('guia'));
   $('nav-dashboard').addEventListener('click', () => {
     renderizarDashboard();
     cambiarVista('dashboard');
@@ -1411,7 +1412,7 @@ function configurarNavegacion() {
 
 function cambiarVista(vista) {
   vistaActual = vista;
-  ['sesion', 'estudio', 'claustro', 'dashboard'].forEach((v) => {
+  ['sesion', 'estudio', 'claustro', 'guia', 'dashboard'].forEach((v) => {
     $(`vista-${v}`).hidden = vista !== v;
     $(`nav-${v}`).classList.toggle('activo', vista === v);
   });

@@ -81,6 +81,7 @@
         <button id="nav-sesion" class="activo">Entrenamiento</button>
         <button id="nav-estudio">Estudio</button>
         <button id="nav-claustro">Claustro</button>
+        <button id="nav-guia">Guía</button>
         <button id="nav-dashboard">Dashboard</button>
       </nav>
       <!-- Cerrar sesión: existe solo con sesión activa; los datos locales
@@ -659,6 +660,169 @@
           Útil si el mentor o la sincronización no responden.
         </p>
         <div id="diagnostico-lista" class="lista-estrategias"></div>
+      </article>
+
+    </section>
+
+    <!-- ============================ GUÍA ============================ -->
+    <section id="vista-guia" hidden>
+
+      <article class="tarjeta">
+        <h2>Filosofía y objetivo</h2>
+        <p>
+          CogitoErgoSum no busca que resuelvas muchos problemas: busca que desarrolles
+          <strong>capacidad transferible de resolución de problemas</strong> mediante práctica
+          deliberada y metacognición. La diferencia es enorme: puedes memorizar soluciones sin
+          aprender a pensar, y puedes aprender a pensar resolviendo muy pocos problemas si los
+          procesas con profundidad.
+        </p>
+        <p>
+          La app se inspira en el marco de <strong>George Pólya</strong> (Comprender → Planear
+          → Ejecutar → Reflexionar), en la idea de <em>dificultad deseable</em> (Bjork) —
+          el esfuerzo que se siente difícil es el que consolida— y en el <em>productive struggle</em>
+          que practica el entrenamiento olímpico: forcejear primero, ver la solución después.
+        </p>
+        <p>
+          El motor adaptativo intenta mantenerte en una zona donde resuelves entre el 30 % y el
+          50 % de los problemas sin ayuda. Por debajo: frustración. Por encima: estancamiento.
+          La zona incómoda del medio es donde ocurre el crecimiento real.
+        </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>El entrenamiento diario — Camino 1</h2>
+        <p>Cada día la app te asigna un problema. El flujo es siempre el mismo:</p>
+        <ol>
+          <li>
+            <strong>Lee el enunciado.</strong> No hay categoría ni estrategia visible; debes
+            decidir tú cómo atacarlo. Eso es el entrenamiento.
+          </li>
+          <li>
+            <strong>Forcejea.</strong> El temporizador corre. Durante ese tiempo la solución está
+            bloqueada a propósito: mirarla antes de tiempo elimina casi todo el aprendizaje.
+          </li>
+          <li>
+            <strong>Escribe "Mi Desconstrucción".</strong> Es obligatoria (mínimo 200 caracteres)
+            y debe responder: ¿qué sé?, ¿qué falta?, ¿qué restricciones hay?, ¿qué estrategias
+            probaré? Escribir activa el procesamiento profundo; releer pasivamente no.
+          </li>
+          <li>
+            <strong>Predicción de jugada.</strong> Antes de ver la solución, declara si crees
+            que la resolverás. No penaliza: el objetivo es calibrar tu autoconciencia.
+          </li>
+          <li>
+            <strong>Pistas (hints).</strong> Si te bloqueas, puedes pedir hasta 5 pistas
+            graduadas — de la más indirecta a la más directa. Cada pista que pides reduce
+            tu puntuación de la sesión, así que úsalas con moderación.
+          </li>
+          <li>
+            <strong>Revela la solución</strong> cuando hayas agotado tu esfuerzo honesto.
+            Compara tu camino con el propuesto.
+          </li>
+          <li>
+            <strong>Cierra la ficha.</strong> Escribe la <em>moraleja</em> (el patrón que
+            extraes) y el <em>disparador</em> (la señal que debería activar ese patrón en el
+            futuro). Esta ficha es el artefacto más valioso del entrenamiento: es tu propia
+            enciclopedia de estrategias, escrita con tus palabras.
+          </li>
+        </ol>
+      </article>
+
+      <article class="tarjeta">
+        <h2>El Modo Estudio — Camino 2</h2>
+        <p>
+          El Modo Estudio organiza el material en bloques y <em>clusters</em> temáticos.
+          Dentro de cada unidad puedes <strong>leer la lección</strong> y luego hacer el
+          <strong>quiz de recuperación</strong>.
+        </p>
+        <p>
+          <strong>¿Por qué hay cuestionarios en vez de solo leer?</strong> Porque
+          <em>releer da la ilusión de saber</em>: el texto te resulta familiar y confundes
+          familiaridad con conocimiento. En cambio, intentar <em>recordar desde la memoria</em>
+          (retrieval practice) activa una reconstrucción activa que consolida el aprendizaje
+          dos o tres veces más que releer el mismo tiempo. Si fallas una pregunta, esa
+          señal de error guía el reestudio de forma precisa.
+        </p>
+        <p>
+          Puedes filtrar las preguntas del quiz por dificultad (Fácil / Medio / Difícil / Mixto)
+          y, al terminar todas las lecciones de un cluster, desbloqueas el
+          <strong>Examen final del cluster</strong> — un set de preguntas de todas las unidades,
+          mezcladas, que fuerza la recuperación interleaved (intercalada).
+        </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Dashboard</h2>
+        <p>
+          Aquí viven tus métricas: problemas resueltos, tasa de éxito, tiempo promedio,
+          hints usados, racha actual y mejor racha histórica. Las <em>estrategias dominadas</em>
+          son las que tienes con ≥ 5 sesiones y score ≥ 70; las <em>en desarrollo</em> son las
+          que necesitan más trabajo.
+        </p>
+        <p>
+          El <strong>Cuaderno de moralejas</strong> lista todas las fichas que has destilado.
+          Releerlas es el equivalente cognitivo de revisar tus notas antes de un examen, pero
+          con mucha más densidad: cada ficha es un patrón que ya procesaste en profundidad.
+          Desde aquí también puedes <strong>descargar e imprimir</strong> el cuaderno completo
+          en PDF con todas las soluciones y tus reflexiones (ver sección siguiente).
+        </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Pizarra</h2>
+        <p>
+          La burbuja de lápiz que aparece en el margen inferior derecho durante el Entrenamiento
+          y el Modo Estudio abre la <strong>pizarra a mano alzada</strong>. Úsala para dibujar
+          diagramas, probar casos pequeños o bocetar ideas que no caben bien en texto. La pizarra
+          persiste por sesión y se guarda en el dispositivo.
+        </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Descargar fichas en PDF</h2>
+        <p>
+          En el Dashboard encontrarás el botón <em>"⬇ Descargar / imprimir cuaderno"</em>.
+          Al pulsarlo se abre una ventana con todas tus fichas formateadas para impresión:
+          el enunciado (con LaTeX renderizado), tu predicción, tu desconstrucción, la moraleja,
+          el disparador, y la solución de referencia. Desde el diálogo de impresión del navegador
+          elige <em>"Guardar como PDF"</em>.
+        </p>
+        <p>
+          Tener el cuaderno impreso te da una lista de moralejas y estrategias que puedes
+          consultar en cualquier momento, sin abrir la app. Muchos entrenadores olímpicos
+          recomiendan releer ese tipo de resúmenes personales justo antes de dormir — el
+          proceso de consolidación nocturna los integra mejor.
+        </p>
+      </article>
+
+      <article class="tarjeta">
+        <h2>Cómo sacarle provecho</h2>
+        <ul>
+          <li>
+            <strong>Forcejea antes de mirar.</strong> Los primeros 15–20 minutos sin pistas
+            valen más que una hora con solución en mano. Si te bloqueas, cambia de ángulo
+            (caso más simple, trabajar hacia atrás, buscar invariantes) en vez de rendirte.
+          </li>
+          <li>
+            <strong>Usa pocas pistas.</strong> Cada pista que pides adelanta la solución y
+            acorta tu zona de aprendizaje. La regla informal: si llevas más de 30 minutos sin
+            avanzar nada, pide una sola pista y vuelve a forcejear.
+          </li>
+          <li>
+            <strong>Escribe la ficha siempre.</strong> Incluso cuando fallas. La moraleja de
+            un fallo («me olvidé de considerar el caso límite») es tan valiosa como la de un éxito.
+          </li>
+          <li>
+            <strong>Haz el quiz sin releer primero.</strong> La incomodidad de no recordar es
+            la señal de que el quiz está funcionando. Regresar a la lección después de fallar
+            tiene mucho más impacto que leerla antes.
+          </li>
+          <li>
+            <strong>Vuelve a los repasos.</strong> El sistema programa revisiones espaciadas
+            de los problemas que fallaste. No los saltes: son el mecanismo que convierte
+            conocimiento frágil en conocimiento duradero.
+          </li>
+        </ul>
       </article>
 
     </section>
