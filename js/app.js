@@ -808,6 +808,7 @@ function completarSesion() {
     moraleja,
     disparador,
     // Datos de proceso (alimentan sellos y Dashboard; jamás penalizan)
+    desconstruccion: a.desconstruccion,   // texto completo para el cuaderno imprimible
     desconstruccionLen: a.desconstruccion.length,
     duracionMin: a.duracionMin ?? Timer.DURACION_DEFECTO_MIN,
     pausas: a.pausas ?? 0,
@@ -1186,6 +1187,99 @@ function renderizarCuaderno() {
   });
 }
 
+/**
+ * Abre una ventana de impresión con el cuaderno de moralejas completo.
+ * LaTeX se renderiza en la ventana padre (donde KaTeX ya está cargado) y el
+ * HTML producido se inyecta en la ventana hija junto al CSS de KaTeX.
+ */
+function imprimirCuaderno() {
+  const fichas = Analytics.cuadernoMoralejas();
+  if (fichas.length === 0) {
+    alert('Aún no hay fichas en el cuaderno. Completa al menos una sesión con moraleja o disparador.');
+    return;
+  }
+
+  const katexCssHref = document.querySelector('link[href*="katex.min.css"]')?.href ?? '';
+  const hoy = Storage.hoy();
+
+  const fichasHtml = fichas.map((f) => {
+    const p = problemas.find((x) => x.id === f.problemId);
+    const nombreEstrategia = Analytics.NOMBRES_ESTRATEGIA[f.estrategia] ?? f.estrategia ?? '—';
+    const titulo = p?.titulo ?? `Problema #${f.problemId}`;
+
+    const campo = (rotulo, valor, esHtml = false) => {
+      if (!valor) return '';
+      const contenido = esHtml ? valor : valor.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return `<div class="campo"><strong>${rotulo}</strong><div class="cuerpo-campo">${contenido}</div></div>`;
+    };
+
+    const enunciadoHtml = p ? renderInline(p.enunciado ?? '') : '';
+    const solucionHtml  = p ? renderInline(p.solucion ?? '')  : '';
+
+    return `
+<div class="ficha">
+  <div class="ficha-cabecera">
+    <span class="ficha-titulo">${titulo}</span>
+    <span class="ficha-estrategia">${nombreEstrategia}</span>
+    <span class="ficha-fecha">${f.fecha ?? ''}</span>
+  </div>
+  ${campo('Enunciado', enunciadoHtml, true)}
+  ${campo('Tu predicción', f.prediccion)}
+  ${campo('Autoevaluación', f.autoevaluacion)}
+  ${campo('Mi desconstrucción', f.desconstruccion || '(no registrada)')}
+  ${campo('★ Moraleja', f.moraleja)}
+  ${campo('★ Disparador', f.disparador)}
+  ${campo('Comparación con solución', f.reflexion?.comparacion)}
+  ${campo('Transferencia', f.reflexion?.transferencia)}
+  ${campo('Solución de referencia', solucionHtml, true)}
+</div>`;
+  }).join('\n');
+
+  const ventana = window.open('', '_blank');
+  if (!ventana) {
+    alert('El navegador bloqueó la ventana emergente. Permite ventanas emergentes para esta página.');
+    return;
+  }
+
+  ventana.document.write(`<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cuaderno de moralejas — ${hoy}</title>
+  ${katexCssHref ? `<link rel="stylesheet" href="${katexCssHref}" />` : ''}
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Georgia, serif; font-size: 13px; color: #111; margin: 0; padding: 24px 32px; }
+    h1 { font-size: 1.5rem; margin-bottom: 4px; }
+    .subtitulo { color: #555; margin-bottom: 24px; font-size: 0.9rem; }
+    .ficha { border: 1px solid #ccc; border-radius: 6px; padding: 16px; margin-bottom: 24px;
+             break-inside: avoid; page-break-inside: avoid; }
+    .ficha-cabecera { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline;
+                      margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+    .ficha-titulo  { font-weight: bold; font-size: 1.05rem; flex: 1; }
+    .ficha-estrategia { background: #f0f0f0; border-radius: 4px; padding: 2px 8px;
+                        font-size: 0.8rem; white-space: nowrap; }
+    .ficha-fecha   { color: #888; font-size: 0.8rem; white-space: nowrap; }
+    .campo { margin-bottom: 10px; }
+    .campo > strong { display: block; font-size: 0.78rem; text-transform: uppercase;
+                      letter-spacing: 0.05em; color: #555; margin-bottom: 3px; }
+    .cuerpo-campo { white-space: pre-wrap; }
+    @media print {
+      body { padding: 10mm 14mm; }
+      .ficha { border-color: #999; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Cuaderno de moralejas</h1>
+  <p class="subtitulo">Generado el ${hoy} · ${fichas.length} ficha(s)</p>
+  ${fichasHtml}
+  <script>window.onload = () => window.print();<\/script>
+</body>
+</html>`);
+  ventana.document.close();
+}
+
 function renderizarDashboard() {
   const r = Analytics.resumen();
   const perfil = Storage.load('perfil');
@@ -1302,6 +1396,7 @@ function configurarNavegacion() {
     renderizarDashboard();
     cambiarVista('dashboard');
   });
+  $('btn-imprimir-cuaderno').addEventListener('click', imprimirCuaderno);
 
   $('desconstruccion').addEventListener('input', autoguardarDesconstruccion);
   $('btn-hint').addEventListener('click', pedirHint);
