@@ -35,6 +35,8 @@ Confundidor edad con dos estratos. Tasa de recuperación (con − sin tratamient
 - **Jóvenes** (60% de la población): 0.80 − 0.70 = **+0.10**.
 - **Viejos** (40% de la población): 0.50 − 0.30 = **+0.20**.
 
+**Predicción antes de seguir:** el tratamiento ayuda +0.10 a los jóvenes y +0.20 a los viejos. ¿El "efecto promedio" será un único número, idéntico sin importar sobre quién promedies? Apuesta antes de calcular ATE y ATT abajo.
+
 - **ATE** (pondera por la población P(z)): 0.6·0.10 + 0.4·0.20 = **+0.14**.
 - **ATT** (pondera por la composición de los *tratados*; supón que el 80% de los tratados son viejos): 0.2·0.10 + 0.8·0.20 = **+0.18**.
 

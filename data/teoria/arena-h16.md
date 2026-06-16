@@ -30,7 +30,11 @@ Regla: condicionar un **mediador o confundidor cierra** el flujo; condicionar un
 
 ## Mini-ejemplo trabajado: un collider fabrica correlación de la nada
 
-Dos rasgos **independientes** entre sí: *talento* y *suerte*, cada uno 0 o 1 con probabilidad ½, sin ninguna relación. A un actor lo **admiten** si talento + suerte ≥ 1 (tiene al menos uno). Mira solo a los admitidos:
+Dos rasgos **independientes** entre sí: *talento* y *suerte*, cada uno 0 o 1 con probabilidad ½, sin ninguna relación. A un actor lo **admiten** si talento + suerte ≥ 1 (tiene al menos uno).
+
+**Predicción antes de seguir:** en la población, talento y suerte no tienen ninguna relación (conocer uno no dice nada del otro). Si ahora miras *solo a los actores admitidos*, ¿seguirán sin relación, o aparecerá una correlación entre ellos? Apuesta sí/no antes de contar los casos.
+
+Mira solo a los admitidos:
 
 - (talento=1, suerte=1), (1,0), (0,1) entran; (0,0) queda fuera.
 - Entre los admitidos, si ves talento=0, entonces forzosamente suerte=1. Si ves talento=1, la suerte puede ser 0 o 1.
