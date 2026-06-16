@@ -179,17 +179,17 @@ function registrarServiceWorker() {
   navigator.serviceWorker.register('sw.js').catch(() => {
     // Sin SW (p. ej. file:// o navegador antiguo) la app funciona igual.
   });
-  // Cuando una versión nueva del SW toma el control (VERSION cambió en
-  // sw.js), recargar UNA vez para servir el shell fresco. Solo aplica si ya
-  // había un SW controlando: la primera instalación no recarga nada.
-  if (navigator.serviceWorker.controller) {
-    let recargado = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (recargado) return;
-      recargado = true;
-      window.location.reload();
-    });
-  }
+  // Recarga automática cuando una nueva versión del SW toma el control.
+  // Sin el guard de 'controller': con hard-refresh el navegador carga la
+  // página sin SW activo (controller === null), así que el guard impedía
+  // registrar el listener justo cuando más falta hace. El flag 'recargado'
+  // ya evita bucles.
+  let recargado = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (recargado) return;
+    recargado = true;
+    window.location.reload();
+  });
 }
 
 /** Cita curada del día (rotación determinista; serif, con autor). */
