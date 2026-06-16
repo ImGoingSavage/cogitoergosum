@@ -7938,89 +7938,89 @@
     "ruta": "quant"
    },
    "ideas_clave": [
-    "La suma 1+2+…+n = n(n+1)/2; la señal es 'suma de enteros' → pairing de Gauss.",
-    "Velocidades: minutero = 6°/min, horario = 0.5°/min; diferencia relativa = 5.5°/min.",
-    "Bombilla n encendida ⟺ n es cuadrado perfecto (número impar de divisores).",
-    "Capa exterior de cubo n³ = n³ − (n−2)³; crece cuadráticamente con n.",
-    "Principio del palomar: k colores → k+1 calcetines garantizan un par."
+    "La suma $1+2+\\dots+n = n(n+1)/2$; la señal es 'suma de enteros' → pairing de Gauss.",
+    "Velocidades: minutero $= 6^\\circ/\\text{min}$, horario $= 0.5^\\circ/\\text{min}$; diferencia relativa $= 5.5^\\circ/\\text{min}$.",
+    "Bombilla $n$ encendida $\\iff n$ es cuadrado perfecto (número impar de divisores).",
+    "Capa exterior de cubo $n^3 = n^3 - (n-2)^3$; crece cuadráticamente con $n$.",
+    "Principio del palomar: $k$ colores → $k+1$ calcetines garantizan un par."
    ],
    "banco": [
     {
      "id": "arq3-q1",
      "tipo": "quiz",
      "enunciado": "¿Cuál es la suma de los enteros del 1 al 100? Generaliza: da la fórmula para la suma del 1 al n y explica el razonamiento sin memorizar la fórmula.",
-     "solucion": "S = n(n+1)/2. Para n=100: S = 100×101/2 = 5050. Truco de Gauss: empareja el primero con el último (1+100=101), el segundo con el penúltimo (2+99=101), … hay 50 pares, cada uno suma 101 → 50×101 = 5050.",
-     "explicacion": "Señal: 'suma de primeros n enteros'. Jugada: pairing/simetría. Fórmulas útiles: Σk² = n(n+1)(2n+1)/6; Σk³ = [n(n+1)/2]²."
+     "solucion": "$S = n(n+1)/2$. Para $n=100$: $S = 100\\times101/2 = 5050$. Truco de Gauss: empareja el primero con el último ($1+100=101$), el segundo con el penúltimo ($2+99=101$), … hay 50 pares, cada uno suma 101 → $50\\times101 = 5050$.",
+     "explicacion": "Señal: 'suma de primeros $n$ enteros'. Jugada: pairing/simetría. Fórmulas útiles: $\\sum k^2 = n(n+1)(2n+1)/6$; $\\sum k^3 = [n(n+1)/2]^2$."
     },
     {
      "id": "arq3-q2",
      "tipo": "quiz",
      "enunciado": "¿Cuántos grados hay entre el minutero y el horario de un reloj analógico cuando marca las 3:15?",
-     "solucion": "7.5°. El minutero apunta a las 3 → 90°. El horario arranca en las 3 (90°) y avanza 0.5°/min × 15 min = 7.5°, quedando en 97.5°. Diferencia = |97.5 − 90| = 7.5°.",
-     "explicacion": "Error clásico: olvidar que el horario se mueve mientras transcurren los 15 minutos. Velocidades: minutero 6°/min, horario 0.5°/min."
+     "solucion": "$7.5^\\circ$. El minutero apunta a las 3 → $90^\\circ$. El horario arranca en las 3 ($90^\\circ$) y avanza $0.5^\\circ/\\text{min} \\times 15\\text{ min} = 7.5^\\circ$, quedando en $97.5^\\circ$. Diferencia $= |97.5 - 90| = 7.5^\\circ$.",
+     "explicacion": "Error clásico: olvidar que el horario se mueve mientras transcurren los 15 minutos. Velocidades: minutero $6^\\circ/\\text{min}$, horario $0.5^\\circ/\\text{min}$."
     },
     {
      "id": "arq3-q3",
      "tipo": "quiz",
      "enunciado": "¿Cuándo es la primera vez después de las 3:00 PM que el minutero y el horario quedan exactamente superpuestos?",
-     "solucion": "A los 180/11 ≈ 16 min 21.8 seg → aproximadamente las 3:16:22. A las 3PM el horario lleva 90° de ventaja. El minutero gana 5.5°/min. Tiempo de alcance = 90/5.5 = 180/11 min.",
-     "explicacion": "Ecuación: 6t = 90 + 0.5t → 5.5t = 90 → t = 180/11. En general, la k-ésima superposición tras las 12:00 ocurre a los k × (720/11) minutos."
+     "solucion": "A los $180/11 \\approx 16$ min 21.8 seg → aproximadamente las 3:16:22. A las 3PM el horario lleva $90^\\circ$ de ventaja. El minutero gana $5.5^\\circ/\\text{min}$. Tiempo de alcance $= 90/5.5 = 180/11$ min.",
+     "explicacion": "Ecuación: $6t = 90 + 0.5t$ → $5.5t = 90$ → $t = 180/11$. En general, la $k$-ésima superposición tras las 12:00 ocurre a los $k \\times (720/11)$ minutos."
     },
     {
      "id": "arq3-q4",
      "tipo": "quiz",
      "enunciado": "100 bombillas en fila, apagadas. La persona k (k=1…100) activa/desactiva cada k-ésima bombilla. ¿En qué estado queda la bombilla 64? ¿Por qué?",
-     "solucion": "ENCENDIDA. La bombilla n recibe un toque por cada divisor de n. Los divisores vienen en pares (d, n/d) excepto cuando d = n/d, es decir n = d². Solo los cuadrados perfectos tienen número impar de divisores. 64 = 8² → 7 divisores (1,2,4,8,16,32,64) → 7 toques, impar → encendida.",
+     "solucion": "ENCENDIDA. La bombilla $n$ recibe un toque por cada divisor de $n$. Los divisores vienen en pares $(d, n/d)$ excepto cuando $d = n/d$, es decir $n = d^2$. Solo los cuadrados perfectos tienen número impar de divisores. $64 = 8^2$ → 7 divisores (1,2,4,8,16,32,64) → 7 toques, impar → encendida.",
      "explicacion": "Invariante: paridad del número de divisores. Los cuadrados perfectos son los únicos números con número impar de divisores."
     },
     {
      "id": "arq3-q5",
      "tipo": "quiz",
      "enunciado": "Con las mismas 100 bombillas y 100 personas: ¿cuántas bombillas quedan encendidas al final, y cuáles son?",
-     "solucion": "10 bombillas: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 (los cuadrados perfectos del 1 al 100). Con n bombillas quedan ⌊√n⌋ encendidas; para n=100: ⌊√100⌋ = 10.",
-     "explicacion": "Generalización directa de Q4: las bombillas encendidas son exactamente los cuadrados perfectos ≤ n."
+     "solucion": "10 bombillas: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 (los cuadrados perfectos del 1 al 100). Con $n$ bombillas quedan $\\lfloor\\sqrt n\\rfloor$ encendidas; para $n=100$: $\\lfloor\\sqrt{100}\\rfloor = 10$.",
+     "explicacion": "Generalización directa de Q4: las bombillas encendidas son exactamente los cuadrados perfectos $\\le n$."
     },
     {
      "id": "arq3-q6",
      "tipo": "quiz",
      "enunciado": "Una rana duplica su área cada día y cubre un estanque en 30 días. Si empiezas con 8 ranas idénticas, ¿en cuántos días cubrirán el estanque?",
-     "solucion": "27 días. 8 = 2³ representa 3 días de ventaja. Necesitas 2^d × 8 = 2^30, es decir 2^(d+3) = 2^30 → d = 27. Error clásico: dividir 30 entre 8.",
-     "explicacion": "Pensamiento exponencial inverso: multiplicar el punto de partida por 2^k es equivalente a adelantar k días. La duplicación opera sobre las áreas, no sobre el tiempo."
+     "solucion": "27 días. $8 = 2^3$ representa 3 días de ventaja. Necesitas $2^d \\times 8 = 2^{30}$, es decir $2^{d+3} = 2^{30}$ → $d = 27$. Error clásico: dividir 30 entre 8.",
+     "explicacion": "Pensamiento exponencial inverso: multiplicar el punto de partida por $2^k$ es equivalente a adelantar $k$ días. La duplicación opera sobre las áreas, no sobre el tiempo."
     },
     {
      "id": "arq3-q7",
      "tipo": "quiz",
      "enunciado": "¿Cuántos ceros finales tiene 100! (100 factorial)? Explica el método general.",
-     "solucion": "24 ceros. Cada cero final proviene de un factor 10 = 2×5. Los factores de 2 son abundantes; el cuello de botella son los 5: ⌊100/5⌋ + ⌊100/25⌋ = 20 + 4 = 24.",
-     "explicacion": "Método de Legendre: el exponente del primo p en n! es Σₖ₌₁^∞ ⌊n/pᵏ⌋. Para 5 en 100!: ⌊100/5⌋+⌊100/25⌋+⌊100/125⌋ = 20+4+0 = 24."
+     "solucion": "24 ceros. Cada cero final proviene de un factor $10 = 2\\times5$. Los factores de 2 son abundantes; el cuello de botella son los 5: $\\lfloor100/5\\rfloor + \\lfloor100/25\\rfloor = 20 + 4 = 24$.",
+     "explicacion": "Método de Legendre: el exponente del primo $p$ en $n!$ es $\\sum_{k=1}^\\infty \\lfloor n/p^k\\rfloor$. Para 5 en $100!$: $\\lfloor100/5\\rfloor+\\lfloor100/25\\rfloor+\\lfloor100/125\\rfloor = 20+4+0 = 24$."
     },
     {
      "id": "arq3-q8",
      "tipo": "quiz",
      "enunciado": "Un macro-cubo de 10×10×10 microcubos flota en el aire. La capa exterior se desprende y cae. ¿Cuántos microcubos caen?",
-     "solucion": "488. La capa exterior = total − núcleo interior = 10³ − 8³ = 1000 − 512 = 488. El núcleo interior tiene dimensiones (n−2)³ = 8×8×8.",
-     "explicacion": "Técnica: exterior = n³ − (n−2)³. Para cualquier cubo de lado n: exterior = 6n² − 12n + 8 = 6(n−1)² − 6 + 2. Para n=10: 488."
+     "solucion": "488. La capa exterior $=$ total $-$ núcleo interior $= 10^3 - 8^3 = 1000 - 512 = 488$. El núcleo interior tiene dimensiones $(n-2)^3 = 8\\times8\\times8$.",
+     "explicacion": "Técnica: exterior $= n^3 - (n-2)^3$. Para cualquier cubo de lado $n$: exterior $= 6n^2 - 12n + 8 = 6(n-1)^2 - 6 + 2$. Para $n=10$: 488."
     },
     {
      "id": "arq3-q9",
      "tipo": "quiz",
-     "enunciado": "En un tablero 20×20 la casilla (i,j) tiene i+j−1 cubos (i,j ∈ {1,…,20}). ¿Cuántos cubos hay en total en el tablero?",
-     "solucion": "8000. Σᵢ Σⱼ (i+j−1) = Σᵢ [Σⱼ j + 20i − 20] = Σᵢ [210 + 20i − 20] = 20×190 + 20×(20×21/2) = 3800 + 4200 = 8000.",
-     "explicacion": "Suma fila a fila: fija i, Σⱼ₌₁²⁰(i+j−1) = 20i + (1+…+20) − 20 = 20i + 190. Luego Σᵢ₌₁²⁰(20i+190) = 20×210 + 20×190 = 8000."
+     "enunciado": "En un tablero $20\\times20$ la casilla $(i,j)$ tiene $i+j-1$ cubos ($i,j \\in \\{1,\\dots,20\\}$). ¿Cuántos cubos hay en total en el tablero?",
+     "solucion": "8000. $\\sum_i \\sum_j (i+j-1) = \\sum_i [\\sum_j j + 20i - 20] = \\sum_i [210 + 20i - 20] = 20\\times190 + 20\\times(20\\times21/2) = 3800 + 4200 = 8000$.",
+     "explicacion": "Suma fila a fila: fija $i$, $\\sum_{j=1}^{20}(i+j-1) = 20i + (1+\\dots+20) - 20 = 20i + 190$. Luego $\\sum_{i=1}^{20}(20i+190) = 20\\times210 + 20\\times190 = 8000$."
     },
     {
      "id": "arq3-q10",
      "tipo": "quiz",
      "enunciado": "Un cajón tiene 8 calcetines rojos y 11 azules. Con la luz apagada, ¿cuántos calcetines debes sacar para GARANTIZAR un par del mismo color?",
      "solucion": "3 calcetines. En el peor caso sacas 1 rojo y 1 azul (2 calcetines, ningún par). El tercero, sea del color que sea, completa un par. Principio del palomar: 3 calcetines, 2 colores → al menos 2 iguales.",
-     "explicacion": "Generalización: con k colores distintos necesitas k+1 calcetines. La cantidad de calcetines de cada color es irrelevante siempre que haya al menos k+1 en total."
+     "explicacion": "Generalización: con $k$ colores distintos necesitas $k+1$ calcetines. La cantidad de calcetines de cada color es irrelevante siempre que haya al menos $k+1$ en total."
     },
     {
      "id": "arq3-q11",
      "tipo": "quiz",
      "enunciado": "Juego de números: por turnos se dicen enteros. El primero en decir '50' gana. Reglas: el primer jugador empieza entre 1 y 10; cada número nuevo debe superar al anterior en 1 a 10. ¿Juegas primero o segundo? ¿Cuál es tu estrategia?",
-     "solucion": "Jugas PRIMERO. Llama '6' y luego siempre responde x del rival con 11−x. Posiciones ganadoras: 6, 17, 28, 39, 50 (diferencias de 11). Desde 6, siempre puedes forzar estos hitos.",
-     "explicacion": "Patrón: el primer jugador que ocupa 50 gana; los puntos clave son {50−11k}. El jugador que controla los hitos desde el inicio gana. Estrategia: tu número + número del rival = 11 (constante)."
+     "solucion": "Juegas PRIMERO. Llama '6' y luego siempre responde $x$ del rival con $11-x$. Posiciones ganadoras: 6, 17, 28, 39, 50 (diferencias de 11). Desde 6, siempre puedes forzar estos hitos.",
+     "explicacion": "Patrón: el primer jugador que ocupa 50 gana; los puntos clave son $\\{50-11k\\}$. El jugador que controla los hitos desde el inicio gana. Estrategia: tu número $+$ número del rival $= 11$ (constante)."
     }
    ]
   },
@@ -8516,117 +8516,117 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Sumas telescópicas: 1/(k(k+1)) = 1/k − 1/(k+1).",
-    "Identidades de cuadrados: (a−b)(a+b)=a²−b², (a±b)²=a²±2ab+b².",
-    "Para potencias mod m: reduce la base mod m, halla el período, reduce el exponente mod período.",
-    "El problema del cumpleaños: umbral ~√(2N·ln2), no N/2.",
+    "Sumas telescópicas: $1/(k(k+1)) = 1/k - 1/(k+1)$.",
+    "Identidades de cuadrados: $(a-b)(a+b)=a^2-b^2$, $(a\\pm b)^2=a^2\\pm2ab+b^2$.",
+    "Para potencias mod $m$: reduce la base mod $m$, halla el período, reduce el exponente mod período.",
+    "El problema del cumpleaños: umbral $\\sim\\sqrt{2N\\ln2}$, no $N/2$.",
     "Inducción y simetría colapsan conteos difíciles."
    ],
    "banco": [
     {
      "id": "arp1-q1",
      "tipo": "calculo",
-     "enunciado": "Calcula la suma S = 1/(1×2) + 1/(2×3) + 1/(3×4) + … + 1/(99×100). Busca un patrón antes de sumar término a término.",
-     "solucion": "S = 99/100. Descomposición parcial: 1/(k(k+1)) = 1/k − 1/(k+1). La suma telescopa: (1 − 1/2) + (1/2 − 1/3) + … + (1/99 − 1/100) = 1 − 1/100 = 99/100.",
-     "explicacion": "Señal: denominador producto de consecutivos. Jugada: fracciones parciales A/(k) + B/(k+1) → telescopio. Generalización: Σ_{k=1}^{n} 1/(k(k+1)) = n/(n+1)."
+     "enunciado": "Calcula la suma $S = 1/(1\\times2) + 1/(2\\times3) + 1/(3\\times4) + \\dots + 1/(99\\times100)$. Busca un patrón antes de sumar término a término.",
+     "solucion": "$S = 99/100$. Descomposición parcial: $1/(k(k+1)) = 1/k - 1/(k+1)$. La suma telescopa: $(1 - 1/2) + (1/2 - 1/3) + \\dots + (1/99 - 1/100) = 1 - 1/100 = 99/100$.",
+     "explicacion": "Señal: denominador producto de consecutivos. Jugada: fracciones parciales $A/k + B/(k+1)$ → telescopio. Generalización: $\\sum_{k=1}^{n} 1/(k(k+1)) = n/(n+1)$."
     },
     {
      "id": "arp1-q2",
      "tipo": "quiz",
      "enunciado": "Tienes 8 bolas idénticas a la vista; una pesa levemente diferente (puedes asumir más pesada). Con una balanza de platillos (sin pesas), ¿cuál es el número mínimo de pesadas para identificar la bola diferente?",
      "solucion": "2 pesadas. Divide en grupos de 3-3-2. Pesada 1: pon 3 vs 3. Si la balanza se inclina, la más pesada está en el grupo más pesado; si balancea, está entre las 2 restantes. Pesada 2: dentro del grupo sospechoso de 3, pon 1 vs 1 (deja 1 aparte); si balancea, es la dejada aparte; si se inclina, es la más pesada.",
-     "explicacion": "Estrategia de búsqueda binaria en árbol ternario: cada pesada tiene 3 resultados (izquierda más pesada, derecha más pesada, equilibrio). Con k pesadas puedes distinguir hasta 3^k bolas. Para 8 < 9 = 3², bastan 2 pesadas."
+     "explicacion": "Estrategia de búsqueda binaria en árbol ternario: cada pesada tiene 3 resultados (izquierda más pesada, derecha más pesada, equilibrio). Con $k$ pesadas puedes distinguir hasta $3^k$ bolas. Para $8 < 9 = 3^2$, bastan 2 pesadas."
     },
     {
      "id": "arp1-q3",
      "tipo": "calculo",
-     "enunciado": "Calcula S = 1 − 2 + 3 − 4 + 5 − 6 + … + 99 − 100. ¿Hay un atajo sin sumar término a término?",
-     "solucion": "S = −50. Agrupa en pares: (1−2) + (3−4) + … + (99−100) = 50 pares de (−1) = −50.",
-     "explicacion": "Señal: serie alternante de la forma Σ(−1)^{k+1}·k. La agrupación en pares es el atajo. Variante: 1−2+3−4+…+(2n−1)−2n = −n. Para n=50: S = −50."
+     "enunciado": "Calcula $S = 1 - 2 + 3 - 4 + 5 - 6 + \\dots + 99 - 100$. ¿Hay un atajo sin sumar término a término?",
+     "solucion": "$S = -50$. Agrupa en pares: $(1-2) + (3-4) + \\dots + (99-100) = 50$ pares de $(-1) = -50$.",
+     "explicacion": "Señal: serie alternante de la forma $\\sum(-1)^{k+1} k$. La agrupación en pares es el atajo. Variante: $1-2+3-4+\\dots+(2n-1)-2n = -n$. Para $n=50$: $S = -50$."
     },
     {
      "id": "arp1-q4",
      "tipo": "calculo",
-     "enunciado": "Calcula mentalmente 97 × 103 sin hacer multiplicación larga. ¿Cuál es la estrategia? ¿Y 98²?",
-     "solucion": "97×103 = (100−3)(100+3) = 100²−3² = 10000−9 = 9991. Para 98²: (100−2)² = 10000−400+4 = 9604.",
-     "explicacion": "Identidades útiles: (a−b)(a+b) = a²−b²; (a−b)² = a²−2ab+b². Elige a = múltiplo de 10 más cercano. Error frecuente: calcular 97×103 directamente. El atajo algebraico es siempre más rápido en entrevista."
+     "enunciado": "Calcula mentalmente $97 \\times 103$ sin hacer multiplicación larga. ¿Cuál es la estrategia? ¿Y $98^2$?",
+     "solucion": "$97\\times103 = (100-3)(100+3) = 100^2-3^2 = 10000-9 = 9991$. Para $98^2$: $(100-2)^2 = 10000-400+4 = 9604$.",
+     "explicacion": "Identidades útiles: $(a-b)(a+b) = a^2-b^2$; $(a-b)^2 = a^2-2ab+b^2$. Elige $a =$ múltiplo de 10 más cercano. Error frecuente: calcular $97\\times103$ directamente. El atajo algebraico es siempre más rápido en entrevista."
     },
     {
      "id": "arp1-q5",
      "tipo": "calculo",
      "enunciado": "¿Cuántas veces aparece el dígito 1 al escribir todos los enteros del 1 al 100?",
-     "solucion": "21 veces. Posición de unidades: 1,11,21,31,41,51,61,71,81,91 → 10 unos. Posición de decenas: 10,11,12,…,19 → 10 unos. Posición de centenas: 100 → 1 uno. Total: 10+10+1 = 21.",
+     "solucion": "21 veces. Posición de unidades: 1,11,21,31,41,51,61,71,81,91 → 10 unos. Posición de decenas: 10,11,12,…,19 → 10 unos. Posición de centenas: 100 → 1 uno. Total: $10+10+1 = 21$.",
      "explicacion": "Señal: 'contar apariciones de un dígito'. Método: cuenta por posición, no por número. Cuidado con 11 (contribuye a unidades Y decenas). Generalización: para dígito d en 1..n, contar para cada posición cuántas veces aparece d en esa posición."
     },
     {
      "id": "arp1-q6",
      "tipo": "calculo",
-     "enunciado": "¿Cuánto es 4444^4444 mod 9? Resuelve sin calculadora.",
-     "solucion": "7. Paso 1: 4444 mod 9 = (4+4+4+4) mod 9 = 16 mod 9 = 7. Paso 2: ciclo de 7^k mod 9 — 7¹=7, 7²=4, 7³=1, 7⁴=7, … período 3. Paso 3: exponente 4444 mod 3 = (4+4+4+4) mod 3 = 16 mod 3 = 1. Entonces 7^4444 mod 9 = 7^1 mod 9 = 7.",
-     "explicacion": "Señal: 'potencia grande mod m'. Jugada: (1) reduce la base mod m, (2) encuentra el período del ciclo, (3) reduce el exponente mod período. Herramienta: teorema de Euler / Fermat pequeño. Para mod 9 el truco de suma de dígitos es el primer paso."
+     "enunciado": "¿Cuánto es $4444^{4444} \\bmod 9$? Resuelve sin calculadora.",
+     "solucion": "7. Paso 1: $4444 \\bmod 9 = (4+4+4+4) \\bmod 9 = 16 \\bmod 9 = 7$. Paso 2: ciclo de $7^k \\bmod 9$ — $7^1=7, 7^2=4, 7^3=1, 7^4=7, \\dots$ período 3. Paso 3: exponente $4444 \\bmod 3 = (4+4+4+4) \\bmod 3 = 16 \\bmod 3 = 1$. Entonces $7^{4444} \\bmod 9 = 7^1 \\bmod 9 = 7$.",
+     "explicacion": "Señal: 'potencia grande mod $m$'. Jugada: (1) reduce la base mod $m$, (2) encuentra el período del ciclo, (3) reduce el exponente mod período. Herramienta: teorema de Euler / Fermat pequeño. Para mod 9 el truco de suma de dígitos es el primer paso."
     },
     {
      "id": "arp1-q7",
      "tipo": "calculo",
-     "enunciado": "n puntos en una circunferencia; cada par está unido por una cuerda. ¿Cuántas cuerdas hay? ¿Cuántas intersecciones tienen (en posición general, sin 3 cuerdas concurrentes)?",
-     "solucion": "Cuerdas: C(n,2) = n(n−1)/2. Intersecciones interiores: cada intersección es determinada por exactamente 4 puntos (las dos cuerdas que se cortan); C(n,4) = n(n−1)(n−2)(n−3)/24. Para n=6: 15 cuerdas, C(6,4)=15 intersecciones.",
+     "enunciado": "$n$ puntos en una circunferencia; cada par está unido por una cuerda. ¿Cuántas cuerdas hay? ¿Cuántas intersecciones tienen (en posición general, sin 3 cuerdas concurrentes)?",
+     "solucion": "Cuerdas: $\\binom{n}{2} = n(n-1)/2$. Intersecciones interiores: cada intersección es determinada por exactamente 4 puntos (las dos cuerdas que se cortan); $\\binom{n}{4} = n(n-1)(n-2)(n-3)/24$. Para $n=6$: 15 cuerdas, $\\binom{6}{4}=15$ intersecciones.",
      "explicacion": "Señal: 'contar pares/grupos de puntos'. Cuerdas = pares de puntos. Intersecciones = cuartetos de puntos. La biyección entre combinaciones y objetos geométricos es la clave."
     },
     {
      "id": "arp1-q8",
      "tipo": "calculo",
-     "enunciado": "Calcula el producto P = (1−1/4)(1−1/9)(1−1/16)⋯(1−1/n²). ¿Cuál es el valor para n→∞?",
-     "solucion": "P_n = (n+1)/(2n). Para n→∞: P → 1/2. Demostración: 1−1/k² = (k−1)(k+1)/k². Producto telescópico: [1·3/(2²)] × [2·4/(3²)] × [3·5/(4²)] × ⋯ = [1×2×3×⋯×(n−1)] / [2×3×⋯×n] × [3×4×⋯×(n+1)] / [2×3×⋯×n] = (1/n) × (n+1)/2 = (n+1)/(2n).",
-     "explicacion": "Señal: 'producto de términos de la forma 1−1/k²'. Factoriza con diferencia de cuadrados y busca el telescopio. Muchos productos con factores (k±c)/k son telescópicos."
+     "enunciado": "Calcula el producto $P = (1-1/4)(1-1/9)(1-1/16)\\cdots(1-1/n^2)$. ¿Cuál es el valor para $n\\to\\infty$?",
+     "solucion": "$P_n = (n+1)/(2n)$. Para $n\\to\\infty$: $P \\to 1/2$. Demostración: $1-1/k^2 = (k-1)(k+1)/k^2$. Producto telescópico: $\\dfrac{1\\cdot3}{2^2} \\times \\dfrac{2\\cdot4}{3^2} \\times \\dfrac{3\\cdot5}{4^2} \\times \\cdots = \\dfrac{1\\times2\\times\\cdots\\times(n-1)}{2\\times3\\times\\cdots\\times n} \\times \\dfrac{3\\times4\\times\\cdots\\times(n+1)}{2\\times3\\times\\cdots\\times n} = \\dfrac1n \\times \\dfrac{n+1}{2} = \\dfrac{n+1}{2n}$.",
+     "explicacion": "Señal: 'producto de términos de la forma $1-1/k^2$'. Factoriza con diferencia de cuadrados y busca el telescopio. Muchos productos con factores $(k\\pm c)/k$ son telescópicos."
     },
     {
      "id": "arp1-q9",
      "tipo": "calculo",
      "enunciado": "Suma todos los dígitos de todos los enteros del 1 al 100 (por ejemplo, 99 contribuye 9+9=18). ¿Cuánto es la suma total?",
-     "solucion": "901. Rango 1–9: suma dígitos = 1+2+…+9 = 45. Rango 10–99 (decenas d, unidades u): dígito de decenas d∈{1..9} aparece 10 veces cada uno → 10×45 = 450; dígito de unidades u∈{0..9} aparece 9 veces cada uno → 9×45 = 405; subtotal = 855. Número 100: 1+0+0 = 1. Total: 45+855+1 = 901.",
+     "solucion": "901. Rango 1–9: suma dígitos $= 1+2+\\dots+9 = 45$. Rango 10–99 (decenas $d$, unidades $u$): dígito de decenas $d\\in\\{1..9\\}$ aparece 10 veces cada uno → $10\\times45 = 450$; dígito de unidades $u\\in\\{0..9\\}$ aparece 9 veces cada uno → $9\\times45 = 405$; subtotal $= 855$. Número 100: $1+0+0 = 1$. Total: $45+855+1 = 901$.",
      "explicacion": "Señal: 'suma de dígitos de todos los enteros en un rango'. Aborda por posición, no por número. Para 1–999 el mismo método: cada posición cubre dígitos 0–9 uniformemente en bloques de 100."
     },
     {
      "id": "arp1-q10",
      "tipo": "calculo",
-     "enunciado": "Simplifica (√6 + √5) / (√6 − √5). ¿Cuál es la forma más simple sin raíz en el denominador?",
-     "solucion": "(√6+√5)² / ((√6)²−(√5)²) = (6 + 2√30 + 5) / 1 = 11 + 2√30.",
-     "explicacion": "Racionalización: multiplica numerador y denominador por el conjugado (√6+√5). Forma general: (a+b)/(a−b) × (a+b)/(a+b) = (a+b)² / (a²−b²). Si a²−b² ∈ ℤ, el denominador se elimina."
+     "enunciado": "Simplifica $(\\sqrt6 + \\sqrt5) / (\\sqrt6 - \\sqrt5)$. ¿Cuál es la forma más simple sin raíz en el denominador?",
+     "solucion": "$(\\sqrt6+\\sqrt5)^2 / ((\\sqrt6)^2-(\\sqrt5)^2) = (6 + 2\\sqrt{30} + 5) / 1 = 11 + 2\\sqrt{30}$.",
+     "explicacion": "Racionalización: multiplica numerador y denominador por el conjugado $(\\sqrt6+\\sqrt5)$. Forma general: $\\dfrac{a+b}{a-b} \\times \\dfrac{a+b}{a+b} = \\dfrac{(a+b)^2}{a^2-b^2}$. Si $a^2-b^2 \\in \\mathbb Z$, el denominador se elimina."
     },
     {
      "id": "arp1-q11",
      "tipo": "conceptual",
-     "enunciado": "Para |x| < 1, ¿cuánto es Σ_{k=0}^{∞} x^k? ¿Y Σ_{k=1}^{∞} k·x^{k−1}? Aplica esto a calcular Σ_{k=0}^{∞} k·(1/2)^k.",
-     "solucion": "Σ x^k = 1/(1−x). Derivando respecto a x: Σ k·x^{k−1} = 1/(1−x)². Multiplicando por x: Σ k·x^k = x/(1−x)². Para x=1/2: Σ k·(1/2)^k = (1/2)/(1/2)² = 2.",
-     "explicacion": "La derivación término a término de series de potencias es legítima dentro del radio de convergencia. El resultado Σ k·x^k = x/(1−x)² aparece en cálculos de esperanza de distribuciones geométricas y en valoración de perpetuidades crecientes."
+     "enunciado": "Para $|x| < 1$, ¿cuánto es $\\sum_{k=0}^{\\infty} x^k$? ¿Y $\\sum_{k=1}^{\\infty} k x^{k-1}$? Aplica esto a calcular $\\sum_{k=0}^{\\infty} k(1/2)^k$.",
+     "solucion": "$\\sum x^k = 1/(1-x)$. Derivando respecto a $x$: $\\sum k x^{k-1} = 1/(1-x)^2$. Multiplicando por $x$: $\\sum k x^k = x/(1-x)^2$. Para $x=1/2$: $\\sum k(1/2)^k = (1/2)/(1/2)^2 = 2$.",
+     "explicacion": "La derivación término a término de series de potencias es legítima dentro del radio de convergencia. El resultado $\\sum k x^k = x/(1-x)^2$ aparece en cálculos de esperanza de distribuciones geométricas y en valoración de perpetuidades crecientes."
     },
     {
      "id": "arp1-q12",
      "tipo": "calculo",
-     "enunciado": "¿Cuántos cuadrados (de todos los tamaños) hay en un tablero de ajedrez de 8×8?",
-     "solucion": "204. Un cuadrado de lado k ocupa una posición (i,j) con i ∈ {1,…,9−k} y j ∈ {1,…,9−k}: hay (9−k)² posiciones. Total = Σ_{k=1}^{8} (9−k)² = 8²+7²+…+1² = n(n+1)(2n+1)/6 con n=8 = 8×9×17/6 = 204.",
-     "explicacion": "Señal: 'contar objetos anidados'. Parametriza por el tamaño y cuenta posiciones para cada tamaño. La suma de cuadrados Σk² = n(n+1)(2n+1)/6 aparece frecuentemente en conteo y análisis de algoritmos."
+     "enunciado": "¿Cuántos cuadrados (de todos los tamaños) hay en un tablero de ajedrez de $8\\times8$?",
+     "solucion": "204. Un cuadrado de lado $k$ ocupa una posición $(i,j)$ con $i \\in \\{1,\\dots,9-k\\}$ y $j \\in \\{1,\\dots,9-k\\}$: hay $(9-k)^2$ posiciones. Total $= \\sum_{k=1}^{8} (9-k)^2 = 8^2+7^2+\\dots+1^2 = n(n+1)(2n+1)/6$ con $n=8$ $= 8\\times9\\times17/6 = 204$.",
+     "explicacion": "Señal: 'contar objetos anidados'. Parametriza por el tamaño y cuenta posiciones para cada tamaño. La suma de cuadrados $\\sum k^2 = n(n+1)(2n+1)/6$ aparece frecuentemente en conteo y análisis de algoritmos."
     },
     {
      "id": "arp1-q13",
      "tipo": "calculo",
-     "enunciado": "¿Cuál es el menor n tal que n! > 10^6? Estima primero, luego verifica.",
-     "solucion": "n = 10. Estimación: log₁₀(n!) ≈ n·log₁₀(n/e) (Stirling) → para n=10: 10·log(10/e) ≈ 10×0.568 ≈ 5.68 < 6; necesitamos un poco más. 9! = 362 880 < 10^6. 10! = 3 628 800 > 10^6. El primer n es 10.",
-     "explicacion": "Para estimaciones de n!: la fórmula de Stirling da n! ≈ √(2πn)·(n/e)^n. Más fácil en entrevista: multiplica hasta pasar el umbral. Otra ruta: Σlog(k) para k=1..n — log(10!) = log(1)+…+log(10) ≈ 6.56 > 6."
+     "enunciado": "¿Cuál es el menor $n$ tal que $n! > 10^6$? Estima primero, luego verifica.",
+     "solucion": "$n = 10$. Estimación: $\\log_{10}(n!) \\approx n\\log_{10}(n/e)$ (Stirling) → para $n=10$: $10\\log(10/e) \\approx 10\\times0.568 \\approx 5.68 < 6$; necesitamos un poco más. $9! = 362\\,880 < 10^6$. $10! = 3\\,628\\,800 > 10^6$. El primer $n$ es 10.",
+     "explicacion": "Para estimaciones de $n!$: la fórmula de Stirling da $n! \\approx \\sqrt{2\\pi n}(n/e)^n$. Más fácil en entrevista: multiplica hasta pasar el umbral. Otra ruta: $\\sum\\log(k)$ para $k=1..n$ — $\\log(10!) = \\log(1)+\\dots+\\log(10) \\approx 6.56 > 6$."
     },
     {
      "id": "arp1-q14",
      "tipo": "calculo",
      "enunciado": "Tres hormigas se ubican en los vértices de un triángulo equilátero. Cada hormiga elige al azar (p=1/2) caminar en sentido horario o antihorario. ¿Cuál es la probabilidad de que ninguna pareja colisione?",
-     "solucion": "P = 1/4. Colisión ocurre si dos hormigas se mueven hacia cada otro. No hay colisión si y solo si TODAS van horario o TODAS van antihorario: P = 2 × (1/2)³ = 2/8 = 1/4.",
-     "explicacion": "Señal: 'objetos en movimiento simétrico'. El evento de no-colisión es 'todas en la misma dirección'. Generalización con n vértices y n hormigas: P(no colisión) = 2/2^n = 2^{1−n}."
+     "solucion": "$P = 1/4$. Colisión ocurre si dos hormigas se mueven hacia cada otra. No hay colisión si y solo si TODAS van horario o TODAS van antihorario: $P = 2 \\times (1/2)^3 = 2/8 = 1/4$.",
+     "explicacion": "Señal: 'objetos en movimiento simétrico'. El evento de no-colisión es 'todas en la misma dirección'. Generalización con $n$ vértices y $n$ hormigas: $P(\\text{no colisión}) = 2/2^n = 2^{1-n}$."
     },
     {
      "id": "arp1-q15",
      "tipo": "calculo",
      "enunciado": "El problema del cumpleaños: ¿cuántas personas se necesitan para que P(al menos 2 compartan cumpleaños) > 50%? Estima con la aproximación exponencial.",
-     "solucion": "n = 23. Aproximación: P(no coincidencia) ≈ e^{−n(n−1)/(2×365)}. Igualando a 0.5: n(n−1)/730 ≈ ln2 ≈ 0.693 → n(n−1) ≈ 506 → n ≈ 23. Valor exacto: con n=23, P(≥1 coincidencia) ≈ 50.7%.",
-     "explicacion": "La raíz es que el número de pares crece como n²/2, por eso el umbral es √(730·ln2) ≈ 22.5, no 183 (la mitad de 365). Contraintuitivo pero exacto. La aproximación e^{−k(k−1)/(2×365)} es válida para k << 365."
+     "solucion": "$n = 23$. Aproximación: $P(\\text{no coincidencia}) \\approx e^{-n(n-1)/(2\\times365)}$. Igualando a 0.5: $n(n-1)/730 \\approx \\ln2 \\approx 0.693$ → $n(n-1) \\approx 506$ → $n \\approx 23$. Valor exacto: con $n=23$, $P(\\ge1\\text{ coincidencia}) \\approx 50.7\\%$.",
+     "explicacion": "La raíz es que el número de pares crece como $n^2/2$, por eso el umbral es $\\sqrt{730\\ln2} \\approx 22.5$, no 183 (la mitad de 365). Contraintuitivo pero exacto. La aproximación $e^{-k(k-1)/(2\\times365)}$ es válida para $k \\ll 365$."
     }
    ]
   },
@@ -11125,9 +11125,9 @@
    },
    "ideas_clave": [
     "Conservación: si las cantidades finales son fijas, el resultado se sigue sin álgebra.",
-    "Cada rotura/corte cambia el conteo de piezas en exactamente 1 → n−1 roturas.",
-    "Pesas: un platillo = binario {1,2,4,…}; dos platillos = ternario {1,3,9,…}.",
-    "Desdobla una superficie 3D a un plano y usa Pitágoras (hormiga en cubo = √5).",
+    "Cada rotura/corte cambia el conteo de piezas en exactamente 1 → $n-1$ roturas.",
+    "Pesas: un platillo = binario $\\{1,2,4,\\dots\\}$; dos platillos = ternario $\\{1,3,9,\\dots\\}$.",
+    "Desdobla una superficie 3D a un plano y usa Pitágoras (hormiga en cubo $= \\sqrt5$).",
     "Velocidad media sobre distancia fija = media armónica, no aritmética."
    ],
    "banco": [
@@ -11149,42 +11149,42 @@
      "id": "arena-q12-q3",
      "tipo": "acertijo",
      "enunciado": "Una tableta de chocolate de n cuadritos. ¿Cuántas roturas (siempre por una línea recta de una sola pieza) necesitas para separar los n cuadritos? ¿Depende de la forma?",
-     "solucion": "n−1 roturas, independientemente de la forma. Cada rotura convierte una pieza en dos, aumentando el número de piezas en exactamente 1; de 1 pieza a n piezas hacen falta n−1.",
+     "solucion": "$n-1$ roturas, independientemente de la forma. Cada rotura convierte una pieza en dos, aumentando el número de piezas en exactamente 1; de 1 pieza a $n$ piezas hacen falta $n-1$.",
      "explicacion": "Invariante puro: el conteo de piezas sube en 1 por rotura. La forma de la tableta es irrelevante."
     },
     {
      "id": "arena-q12-q4",
      "tipo": "acertijo",
      "enunciado": "Una hormiga va de un vértice a su opuesto sobre la SUPERFICIE de un cubo de volumen 1 m³. ¿Cuál es la distancia mínima?",
-     "solucion": "√5 m. Desdobla el cubo en el plano: el camino más corto entre vértices opuestos se convierte en la diagonal de un rectángulo 1×2, de longitud √(1²+2²)=√5≈2.236 m.",
-     "explicacion": "Desdoblar la geometría convierte un problema 3D en uno 2D resoluble con Pitágoras. La diagonal recta interna (√3) no vale: la hormiga va por la superficie."
+     "solucion": "$\\sqrt5$ m. Desdobla el cubo en el plano: el camino más corto entre vértices opuestos se convierte en la diagonal de un rectángulo $1\\times2$, de longitud $\\sqrt{1^2+2^2}=\\sqrt5\\approx2.236$ m.",
+     "explicacion": "Desdoblar la geometría convierte un problema 3D en uno 2D resoluble con Pitágoras. La diagonal recta interna ($\\sqrt3$) no vale: la hormiga va por la superficie."
     },
     {
      "id": "arena-q12-q5",
      "tipo": "quiz",
      "enunciado": "¿Cuál es el número mínimo de pesas enteras para equilibrar exactamente cualquier peso entero de 1 a 40 usando UN solo platillo? ¿Y si puedes ponerlas en AMBOS platillos?",
-     "solucion": "Un platillo: 6 pesas {1,2,4,8,16,32} (sistema binario; cada pesa entra o no). Dos platillos: 4 pesas {1,3,9,27} (sistema ternario; cada pesa suma, resta o no participa, y 3⁴=81≥2·40+1).",
-     "explicacion": "Un platillo = base 2 (presente/ausente). Dos platillos = base 3 balanceada (+1/0/−1). Con 5 pesas binarias solo cubres 2⁵=32<40."
+     "solucion": "Un platillo: 6 pesas $\\{1,2,4,8,16,32\\}$ (sistema binario; cada pesa entra o no). Dos platillos: 4 pesas $\\{1,3,9,27\\}$ (sistema ternario; cada pesa suma, resta o no participa, y $3^4=81\\ge2\\cdot40+1$).",
+     "explicacion": "Un platillo = base 2 (presente/ausente). Dos platillos = base 3 balanceada ($+1/0/-1$). Con 5 pesas binarias solo cubres $2^5=32<40$."
     },
     {
      "id": "arena-q12-q6",
      "tipo": "acertijo",
      "enunciado": "Tú y yo bebemos una pinta: yo tomo la mitad, tú la mitad de lo que queda, yo la mitad del nuevo resto, y así indefinidamente. ¿Cuánto bebe cada uno?",
-     "solucion": "Yo bebo 2/3 de la pinta y tú 1/3. Yo bebo Σ_{k≥0} 1/2^{2k+1} y tú la mitad de esa suma, así que bebo el doble que tú; como entre los dos consumimos la pinta entera (Σ1/2^k=1), me toca 2/3 y a ti 1/3.",
+     "solucion": "Yo bebo $2/3$ de la pinta y tú $1/3$. Yo bebo $\\sum_{k\\ge0} 1/2^{2k+1}$ y tú la mitad de esa suma, así que bebo el doble que tú; como entre los dos consumimos la pinta entera ($\\sum 1/2^k=1$), me toca $2/3$ y a ti $1/3$.",
      "explicacion": "No hace falta sumar las series: basta ver que en cada ronda yo bebo el doble que tú, y que el total es 1."
     },
     {
      "id": "arena-q12-q7",
      "tipo": "quiz",
      "enunciado": "Un conejo sube una escalera de n peldaños dando saltos de 1 o 2 peldaños. ¿De cuántas formas distintas puede llegar arriba?",
-     "solucion": "F_{n+1} (Fibonacci). Si p(n) es el número de formas: p(n)=p(n−1)+p(n−2) (el último salto fue de 1 o de 2), con p(1)=1, p(2)=2. Da 1,2,3,5,8,13,… para n=1,2,3,4,5,6.",
+     "solucion": "$F_{n+1}$ (Fibonacci). Si $p(n)$ es el número de formas: $p(n)=p(n-1)+p(n-2)$ (el último salto fue de 1 o de 2), con $p(1)=1, p(2)=2$. Da $1,2,3,5,8,13,\\dots$ para $n=1,2,3,4,5,6$.",
      "explicacion": "La recurrencia 'el último paso es de un tipo u otro' genera Fibonacci. Aparece siempre que una construcción se arma pegando un bloque de tamaño 1 o 2."
     },
     {
      "id": "arena-q12-q8",
      "tipo": "quiz",
      "enunciado": "¿De cuántas formas se puede embaldosar un tablero 2×n con fichas de dominó 2×1?",
-     "solucion": "F_{n+1} (Fibonacci), con F(0)=1, F(1)=1… aquí p(n)=p(n−1)+p(n−2): la primera columna es un dominó vertical (deja 2×(n−1)) o dos horizontales (deja 2×(n−2)). p(1)=1, p(2)=2.",
+     "solucion": "$F_{n+1}$ (Fibonacci), con $F(0)=1, F(1)=1$… aquí $p(n)=p(n-1)+p(n-2)$: la primera columna es un dominó vertical (deja $2\\times(n-1)$) o dos horizontales (deja $2\\times(n-2)$). $p(1)=1, p(2)=2$.",
      "explicacion": "Misma recurrencia que el conejo: Fibonacci. La clave es que dos dominós horizontales ocupan un bloque 2×2 completo."
     },
     {
@@ -11198,8 +11198,8 @@
      "id": "arena-q12-q10",
      "tipo": "acertijo",
      "enunciado": "Empieza a nevar a ritmo constante en algún momento antes del mediodía. Un quitanieves arranca a las 12:00 con velocidad inversamente proporcional al tiempo transcurrido desde que empezó a nevar. Recorre el doble de distancia entre 12 y 1 que entre 1 y 2. ¿Cuándo empezó a nevar?",
-     "solucion": "½(√5−1) horas antes del mediodía (≈0.618 h ≈ 37 min). Con velocidad α/t, la distancia entre t₁ y t₂ es α·ln(t₂/t₁). La condición d(x,x+1)=2·d(x+1,x+2) da ln((x+1)/x)=2ln((x+2)/(x+1)), o (x+1)/x=((x+2)/(x+1))², cuya raíz positiva es x=½(−1+√5).",
-     "explicacion": "Aparece la razón áurea. El truco: la distancia es la integral de la velocidad α/t, que da un logaritmo; la condición se vuelve una ecuación cuadrática."
+     "solucion": "$\\tfrac12(\\sqrt5-1)$ horas antes del mediodía ($\\approx0.618$ h $\\approx37$ min). Con velocidad $\\alpha/t$, la distancia entre $t_1$ y $t_2$ es $\\alpha\\ln(t_2/t_1)$. La condición $d(x,x+1)=2\\,d(x+1,x+2)$ da $\\ln((x+1)/x)=2\\ln((x+2)/(x+1))$, o $(x+1)/x=((x+2)/(x+1))^2$, cuya raíz positiva es $x=\\tfrac12(-1+\\sqrt5)$.",
+     "explicacion": "Aparece la razón áurea. El truco: la distancia es la integral de la velocidad $\\alpha/t$, que da un logaritmo; la condición se vuelve una ecuación cuadrática."
     }
    ]
   },
@@ -11232,16 +11232,16 @@
    "ideas_clave": [
     "Inducción: empieza en 0/1/2 y sube; muchas respuestas dependen de la paridad.",
     "Báscula de platillos: tres resultados por pesada → cubres 3^k candidatos.",
-    "Juegos por turnos: identifica posiciones perdedoras (Nim: deja 4j+1).",
+    "Juegos por turnos: identifica posiciones perdedoras (Nim: deja $4j+1$).",
     "Simetría: en mesas/tableros, juega el reflejo del rival respecto al centro.",
-    "Cuenta el complemento: cuadritos pintados = n³−(n−2)³."
+    "Cuenta el complemento: cuadritos pintados $= n^3-(n-2)^3$."
    ],
    "banco": [
     {
      "id": "arena-q13-q1",
      "tipo": "acertijo",
      "enunciado": "Hay n leones hambrientos y un trozo de carne. Un león puede comerlo, pero al hacerlo se duerme y se vuelve presa de los demás. Todos son perfectamente lógicos y prefieren vivir a comer. ¿Qué ocurre?",
-     "solucion": "Si n es par, ningún león come; si n es impar, uno come. Por inducción: 1 león come (nadie lo amenaza); 2 leones, nadie come (comer te vuelve presa del único rival, que entonces no comería); 3, el más cercano come (sabe que con 2 nadie comería), etc.",
+     "solucion": "Si $n$ es par, ningún león come; si $n$ es impar, uno come. Por inducción: 1 león come (nadie lo amenaza); 2 leones, nadie come (comer te vuelve presa del único rival, que entonces no comería); 3, el más cercano come (sabe que con 2 nadie comería), etc.",
      "explicacion": "Inducción desde el caso base. La paridad emerge: cada león razona '¿qué haría el grupo si yo desaparezco como amenaza?'."
     },
     {
@@ -11256,21 +11256,21 @@
      "tipo": "acertijo",
      "enunciado": "Tienes 9 canicas idénticas salvo una más pesada, y una báscula de dos platillos. ¿En cuántas pesadas garantizas hallar la pesada, y cómo?",
      "solucion": "2 pesadas. Pesa 3 contra 3 (deja 3 fuera): si equilibran, la pesada está entre las 3 de fuera; si no, en el grupo más pesado. En cualquier caso te quedan 3 candidatas; pesa 1 contra 1 (deja 1 fuera) para hallarla.",
-     "explicacion": "Cada pesada tiene TRES resultados (izquierda/derecha/equilibrio), no dos: por eso cubres 3²=9 con dos pesadas. El error es razonar en binario y dividir en mitades."
+     "explicacion": "Cada pesada tiene TRES resultados (izquierda/derecha/equilibrio), no dos: por eso cubres $3^2=9$ con dos pesadas. El error es razonar en binario y dividir en mitades."
     },
     {
      "id": "arena-q13-q4",
      "tipo": "acertijo",
      "enunciado": "Cuatro cartas muestran 7, 6, A, C. La afirmación es: 'si una carta tiene una vocal en una cara, tiene un número par en la otra'. ¿Qué cartas debes girar para comprobarla?",
      "solucion": "La A y el 7. La A (vocal) debe tener par detrás; el 7 (impar) no debe tener vocal detrás. No giras el 6 (la regla no exige nada sobre cartas con par) ni la C (no es vocal).",
-     "explicacion": "Tarea de selección de Wason. Para comprobar 'P→Q' giras los casos que pueden falsarla: P (vocal) y ¬Q (impar). El error común es girar el 6 (afirmar el consecuente)."
+     "explicacion": "Tarea de selección de Wason. Para comprobar '$P\\to Q$' giras los casos que pueden falsarla: $P$ (vocal) y $\\neg Q$ (impar). El error común es girar el 6 (afirmar el consecuente)."
     },
     {
      "id": "arena-q13-q5",
      "tipo": "acertijo",
      "enunciado": "Juego de Nim: hay n cerillas; por turnos cada jugador toma 1, 2 o 3; el que toma la ÚLTIMA cerilla pierde. ¿Cuál es la estrategia óptima?",
-     "solucion": "Deja siempre al rival un número de la forma 4j+1 cerillas. Si puedes hacerlo en tu primer turno, ve primero; si no, ve segundo. Cuando el rival toma x, tú tomas 4−x para mantener el patrón. Así él se queda con 1 al final y pierde.",
-     "explicacion": "Las posiciones perdedoras (para quien va a mover) son ≡1 (mód 4). Si 'el que toma la última GANA', deja múltiplos de 4 (4j) en su lugar."
+     "solucion": "Deja siempre al rival un número de la forma $4j+1$ cerillas. Si puedes hacerlo en tu primer turno, ve primero; si no, ve segundo. Cuando el rival toma $x$, tú tomas $4-x$ para mantener el patrón. Así él se queda con 1 al final y pierde.",
+     "explicacion": "Las posiciones perdedoras (para quien va a mover) son $\\equiv1 \\pmod 4$. Si 'el que toma la última GANA', deja múltiplos de 4 ($4j$) en su lugar."
     },
     {
      "id": "arena-q13-q6",
@@ -11297,15 +11297,15 @@
      "id": "arena-q13-q9",
      "tipo": "quiz",
      "enunciado": "¿Cuántos cuadritos 1×1×1 de un cubo 4×4×4 tienen pintura, si se pinta toda la superficie exterior del cubo grande?",
-     "solucion": "56. El truco es contar los SIN pintura: forman un cubo interior 2×2×2 = 8 cuadritos. Los pintados son 4³−8 = 64−8 = 56.",
-     "explicacion": "Contar el complemento (los del núcleo (n−2)³) es mucho más limpio que sumar caras y restar solapamientos. Para n×n×n: n³−(n−2)³ pintados."
+     "solucion": "56. El truco es contar los SIN pintura: forman un cubo interior $2\\times2\\times2 = 8$ cuadritos. Los pintados son $4^3-8 = 64-8 = 56$.",
+     "explicacion": "Contar el complemento (los del núcleo $(n-2)^3$) es mucho más limpio que sumar caras y restar solapamientos. Para $n\\times n\\times n$: $n^3-(n-2)^3$ pintados."
     },
     {
      "id": "arena-q13-q10",
      "tipo": "acertijo",
      "enunciado": "Calcula mentalmente 15³ y estima su magnitud antes de dar el número exacto.",
-     "solucion": "15³=3375. Estimación: 15 está entre 10 (cubo 1000) y 20 (cubo 8000); como elevar al cubo es convexo, el resultado está por debajo del promedio (4500) → algo menor que 4000 es buen ancla. Exacto: 15²·15=225·15=3375.",
-     "explicacion": "Cálculo mental: descompón 225·15=225·10+225·5=2250+1125=3375. Entrenar cubos pequeños y cuadrados acelera la aritmética de entrevista."
+     "solucion": "$15^3=3375$. Estimación: 15 está entre 10 (cubo 1000) y 20 (cubo 8000); como elevar al cubo es convexo, el resultado está por debajo del promedio (4500) → algo menor que 4000 es buen ancla. Exacto: $15^2\\cdot15=225\\cdot15=3375$.",
+     "explicacion": "Cálculo mental: descompón $225\\cdot15=225\\cdot10+225\\cdot5=2250+1125=3375$. Entrenar cubos pequeños y cuadrados acelera la aritmética de entrevista."
     }
    ]
   },
