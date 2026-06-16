@@ -1,5 +1,11 @@
 # Deuda técnica oculta en ML III: anti-patrones de sistema y configuración
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+La imagen mental que reordena prioridades: en un sistema de ML real, la caja "ML code" es **diminuta** en el centro de una infraestructura vasta —el resto, ≥95%, es fontanería (*plumbing*)—. Esta lección construye, desde cero, los anti-patrones de sistema donde de verdad vive la deuda: el **glue code** (envolver paquetes genéricos), las **pipeline jungles**, los **dead experimental codepaths** (que costaron a Knight Capital \$465M) y la **configuration debt** (que puede tener más líneas que el código).
+
+Al terminar podrás: (1) reconocer el glue code y mitigarlo con APIs comunes; (2) identificar una pipeline jungle y su raíz organizacional (research vs engineering separados); (3) entender por qué los dead codepaths son catastróficos y cómo arrancarlos; y (4) aplicar los principios de buena configuración (diff pequeño, verificación automática, code review). La Figura 1 del paper hace de hilo. Continúa [[arena-htd2]].
+
 Solo una **fracción diminuta** del código de un sistema ML real se dedica a aprender/predecir (la famosa Figura 1: una cajita negra en medio de una infraestructura vasta); el resto es **"plumbing"** (fontanería). Es común que los sistemas con ML acaben con anti-patrones de alta deuda.
 
 ## Glue code

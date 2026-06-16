@@ -453,10 +453,12 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   `sre4` (releases/simplicidad/sobrecarga/cascada). **Lote 5 (v104):** `rml4` (respuesta a
   incidentes ML: Public/Fuzzy/Unbounded), `obs1` (monitoreo vs observabilidad, cardinalidad),
   `obs2` (eventos anchos/trazas/Core Analysis Loop), `obs3` (SLO alerts/burn alerts), `obs4`
-  (escala: columnar/muestreo/OMM). **23/32. Pendiente (9):** `htd1-4` (lote 6, deuda técnica
-  ML), `mldp4, iml1-4` (lote 7, reproducibilidad + interpretabilidad). Trabajar en lotes de
-  4-5, validar render+KaTeX, subir VERSION, push, marcar backlog+HANDOFF cada lote. Al cerrar
-  ml-systems quedan solo los clusters cortos `dsa` (6), `system-design` (4), `conductual` (4).
+  (escala: columnar/muestreo/OMM). **Lote 6 (v105):** `htd1` (deuda ML: CACE/cascadas/
+  undeclared consumers), `htd2` (dependencias de datos/feedback loops), `htd3` (anti-patrones:
+  glue code/pipeline jungles/dead codepaths/config), `htd4` (mundo externo/prediction bias).
+  **27/32. Pendiente (5):** `mldp4, iml1, iml2, iml3, iml4` (lote 7 FINAL: reproducibilidad +
+  interpretabilidad) — cierra ml-systems. Tras él quedan solo los clusters cortos `dsa` (6),
+  `system-design` (4), `conductual` (4).
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

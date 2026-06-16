@@ -21,10 +21,10 @@
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
-| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 23/32 (lotes 1-5 v100-v104) |
+| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 27/32 (lotes 1-6 v100-v105) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **95 / 118 hechas** |
+| | **118** | **99 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -140,10 +140,10 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-obs2` — Eventos, trazas y Core Analysis Loop
 - [x] `arena-obs3` — SLOs, alertas por síntoma y burn alerts
 - [x] `arena-obs4` — Escala: almacenamiento, muestreo y madurez
-- [ ] `arena-htd1` — Deuda técnica ML: fundamentos y erosión de fronteras
-- [ ] `arena-htd2` — Dependencias de datos y feedback loops
-- [ ] `arena-htd3` — Anti-patrones de sistema y configuración
-- [ ] `arena-htd4` — Mundo externo, otras deudas y medición
+- [x] `arena-htd1` — Deuda técnica ML: fundamentos y erosión de fronteras
+- [x] `arena-htd2` — Dependencias de datos y feedback loops
+- [x] `arena-htd3` — Anti-patrones de sistema y configuración
+- [x] `arena-htd4` — Mundo externo, otras deudas y medición
 - [ ] `arena-mldp4` — Patrones de reproducibilidad e IA responsable
 - [ ] `arena-iml1` — Interpretabilidad: conceptos, taxonomía y buenas explicaciones
 - [ ] `arena-iml2` — Modelos interpretables (intrínsecos)

@@ -1,5 +1,11 @@
 # Deuda técnica oculta en ML I: fundamentos y erosión de fronteras
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Los sistemas de ML tienen una capacidad **especial** de acumular deuda técnica: además de todos los problemas del código normal, sufren una clase propia que vive a nivel de **sistema, no de código** —porque los datos corrompen sutilmente las abstracciones—. Esta lección construye, desde cero, los tres mecanismos que erosionan las fronteras de un sistema de ML: el **entanglement** (principio CACE), las **correction cascades** y los **undeclared consumers**.
+
+Al terminar podrás: (1) entender por qué la deuda de ML no se paga como la de código (refactor+tests no bastan); (2) enunciar el principio CACE (*Changing Anything Changes Everything*) y a qué aplica; (3) reconocer una correction cascade y por qué crea deadlock de mejora; y (4) prevenir los undeclared consumers con SLAs y control de acceso. El ejemplo de CACE con tres features hace de hilo. Es el primero de cuatro sobre el clásico paper de Google "Hidden Technical Debt in ML".
+
 ## ¿Qué es la deuda técnica y por qué el ML tiene una capacidad especial?
 
 **Deuda técnica** (metáfora de Ward Cunningham, 1992): los costes de largo plazo de moverse rápido. No toda deuda es mala, pero **toda deuda debe servirse**. Se paga refactorizando código, mejorando tests, borrando código muerto, reduciendo dependencias, ajustando APIs y mejorando documentación. La meta **no es añadir funcionalidad** sino permitir mejoras futuras, reducir errores y mejorar mantenibilidad. La **deuda oculta es peligrosa porque se compone silenciosamente**.

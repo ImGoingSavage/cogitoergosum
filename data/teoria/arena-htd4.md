@@ -1,5 +1,11 @@
 # Deuda técnica oculta en ML IV: mundo externo, otras deudas y cómo medirla
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un sistema de ML toca el mundo externo, y el mundo **rara vez se queda quieto** —ese cambio de fondo genera un coste de mantenimiento perpetuo—. Esta lección cierra el paper de deuda técnica construyendo, desde cero: por qué los umbrales fijos caducan (y cómo aprenderlos), qué monitorear cuando el sistema se adapta (con el **prediction bias** como centinela sorprendentemente útil), las "otras" deudas (data testing, reproducibility, process management, cultural) y cómo medir la deuda con cinco preguntas.
+
+Al terminar podrás: (1) explicar por qué un umbral fijado a mano se invalida al reentrenar y cómo aprenderlo en held-out; (2) usar el prediction bias (distribución predicha ≈ observada) para detectar que el mundo cambió; (3) nombrar las otras áreas de deuda; y (4) evaluar deuda con las cinco preguntas, sabiendo que "moverse rápido" no es evidencia de poca deuda —suele introducirla—. Cierra los cuatro de [[arena-htd3]].
+
 ## Lidiar con cambios en el mundo externo
 
 Los sistemas ML interactúan directamente con el mundo externo, que **rara vez es estable**: ese **background rate of change** crea coste de mantenimiento continuo.

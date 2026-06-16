@@ -1,5 +1,11 @@
 # Deuda técnica oculta en ML II: dependencias de datos y feedback loops
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+En código, un compilador te avisa de las dependencias rotas; en ML, las **dependencias de datos** son igual de peligrosas pero **invisibles** —no hay análisis estático equivalente—. Esta lección construye, desde cero, esa deuda silenciosa: las dependencias de datos **inestables** (un input que cambia bajo tus pies, donde hasta una "mejora" upstream puede romperte), las **infrautilizadas** (legacy, bundled, ε, correlated), y los **feedback loops** donde un modelo influye en su propio futuro.
+
+Al terminar podrás: (1) entender por qué las dependencias de datos cuestan más que las de código; (2) mitigar una dependencia inestable con una copia versionada (frozen); (3) detectar features infrautilizadas con leave-one-feature-out periódico y reconocer el riesgo de las correlated no causales; y (4) distinguir feedback loops directos de ocultos. El caso de la señal mis-calibrada "corregida" hace de hilo. Continúa el paper de [[arena-htd1]].
+
 ## Las dependencias de DATOS cuestan más que las de código
 
 En código, la *dependency debt* contribuye a la complejidad, pero las dependencias de código se identifican con **análisis estático** (compiladores, linkers). Las **dependencias de DATOS** tienen la misma capacidad de generar deuda pero son **más difíciles de detectar**: sin tooling equivalente, es demasiado fácil construir grandes cadenas de dependencias de datos difíciles de desenredar.
