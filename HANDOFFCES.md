@@ -3063,3 +3063,30 @@ balance perfecto). Builder idempotente en `scripts/_build_aops_vol2.py`.
 **Siguiente** — ÚLTIMO de la serie AoPS: `Calculus.pdf` (AoPS Calculus, David Patrick). Mismo
 esquema §4.1 (ids 673+, sin huecos). Verificar SIEMPRE con Python. Tras Calculus, solo queda en
 el ledger *A Mind for Numbers* (Sector B, soporte teórico).
+
+## Bitácora 2026-06-16 (Arena tanda 41) — SECTOR C: AoPS *Calculus* (Patrick, Rusczyk, Zawitz) + cierre de *A Mind for Numbers* — 44 problemas
+
+**IDs creados:** 673–716 (44 problemas). **KaTeX calidad libro** en todos los campos: enunciado,
+5 hints por problema, solución y explicación. Backslashes dobles en JSON para LaTeX correcta.
+
+**Distribución por estrategia (tanda):** inversion 11 (673-683), optimizacion 11 (684-694),
+invariantes 11 (695-705), patrones 11 (706-716).
+
+**Distribución total problems.json:** inversion 179, optimizacion 179, invariantes 179,
+patrones 179 — **716 problemas en total, balance perfecto**.
+
+**Fuentes de problemas:** AoPS Calculus (David Patrick, Rusczyk, Zawitz) — capítulos 4-9.
+Fuentes secundarias citadas: HMMT, Putnam. PDF image-only → reformulación propia §1.2.
+Todos los valores numéricos verificados con Python.
+
+**A Mind for Numbers** (libros[27]): marcado `completado` con `preguntas_agregadas = 0`.
+Cuota mínima = 0. Es libro de soporte cognitivo sin problemas extraíbles directamente.
+
+**Ledger:** libros[27] completado (0 probs), libros[42] completado (44 probs, ids 673-716).
+**Sin libros pendientes en el ledger.** La serie AoPS está íntegramente ingresada.
+
+**Verificación §9:** `verificar-shell.py` OK (234 archivos); 716 ids únicos (1-716) sin huecos;
+schema §4.1 correcto para 673-716; sw.js sin bump (problems.json no está en SHELL precache).
+
+**Solo se tocó `data/problems.json` y `data/arena-ingesta-ledger.json`.** Script idempotente en
+`scripts/generar_aops_calculus.py`.
