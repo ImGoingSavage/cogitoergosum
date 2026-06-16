@@ -19,7 +19,7 @@
 
 import { load, update, hoy, encolarEvento } from './storage.js';
 import * as Badges from './badges.js';
-import { renderMarkdown } from './markdown.js';
+import { renderMarkdown, renderInline } from './markdown.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -759,7 +759,7 @@ function renderPreguntaQuiz() {
 
   const enunciado = document.createElement('p');
   enunciado.className = 'quiz-enunciado';
-  enunciado.textContent = q.enunciado;
+  enunciado.innerHTML = renderInline(q.enunciado); // markdown + KaTeX
   cont.appendChild(enunciado);
 
   const ta = document.createElement('textarea');
@@ -805,12 +805,12 @@ function renderPreguntaQuiz() {
     const sol = document.createElement('div');
     sol.className = 'quiz-solucion';
     const st = document.createElement('p');
-    st.textContent = q.solucion;
+    st.innerHTML = renderInline(q.solucion); // markdown + KaTeX
     sol.appendChild(st);
     if (q.explicacion) {
       const ex = document.createElement('p');
       ex.className = 'quiz-explicacion';
-      ex.textContent = q.explicacion;
+      ex.innerHTML = renderInline(q.explicacion);
       sol.appendChild(ex);
     }
     cont.appendChild(sol);
@@ -929,7 +929,7 @@ function mostrarCierreUnidad(u, registro) {
     ul.className = 'ideas-clave';
     u.ideas_clave.forEach((idea) => {
       const li = document.createElement('li');
-      li.textContent = idea;
+      li.innerHTML = renderInline(idea); // markdown + KaTeX
       ul.appendChild(li);
     });
     cierre.appendChild(ul);
@@ -1049,7 +1049,7 @@ function renderExamen() {
 
   const enunciado = document.createElement('p');
   enunciado.className = 'quiz-enunciado';
-  enunciado.textContent = item.enunciado;
+  enunciado.innerHTML = renderInline(item.enunciado); // markdown + KaTeX
   cont.appendChild(enunciado);
 
   if (ex.paso === 'prediccion') renderPasoPrediccion(cont, item, ex);
@@ -1174,7 +1174,9 @@ function renderPasoForcejeo(cont, item, ex) {
       nivel.className = 'pista-nivel';
       nivel.textContent = `Pista ${nivelActual + 1}/${item.pistas.length}: `;
       div.appendChild(nivel);
-      div.appendChild(document.createTextNode(item.pistas[nivelActual]));
+      const txt = document.createElement('span');
+      txt.innerHTML = renderInline(item.pistas[nivelActual]); // markdown + KaTeX
+      div.appendChild(txt);
       pistasContainer.insertBefore(div, btnPistas);
       nivelActual++;
       if (registrar) {
@@ -1205,7 +1207,7 @@ function renderPasoForcejeo(cont, item, ex) {
       btnPista.hidden = true;
       const div = document.createElement('div');
       div.className = 'hint-item';
-      div.textContent = item.pista;
+      div.innerHTML = renderInline(item.pista); // markdown + KaTeX
       cont.insertBefore(div, btnPista);
       update('estudio', (st) => {
         st.examenEnCurso.registros.at(-1).pistaUsada = true;
@@ -1262,14 +1264,16 @@ function renderPasoForcejeo(cont, item, ex) {
     }
 
     const p2 = document.createElement('p');
-    p2.textContent = item.solucion;
+    p2.innerHTML = renderInline(item.solucion); // markdown + KaTeX
     sol.appendChild(p2);
 
     const p3 = document.createElement('p');
     p3.className = 'quiz-explicacion';
     const b3 = document.createElement('strong');
     b3.textContent = '★ Disparador: ';
-    p3.append(b3, item.disparador);
+    const disp = document.createElement('span');
+    disp.innerHTML = renderInline(item.disparador);
+    p3.append(b3, disp);
     sol.appendChild(p3);
     cont.appendChild(sol);
 

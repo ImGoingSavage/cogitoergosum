@@ -149,6 +149,10 @@ function inline(texto) {
   s = s.replace(/\$([^$\n]+?)\$/g, (_, m) =>
     proteger(katexHTML(desescapar(m), false) ?? `<span class="matematica">${texAUnicode(m)}</span>`)
   );
+  // Escapes con backslash: \* \_ \[ → carácter literal (para notación tipo θ*, x*,
+  // *_concept_id, o cantidades que no son énfasis). Va tras extraer matemáticas, así
+  // que el \\ de LaTeX dentro de $…$ no se toca. (\$ ya se trató arriba.)
+  s = s.replace(/\\([*_\[])/g, (_, c) => proteger(c));
 
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
@@ -176,6 +180,18 @@ function esFilaTabla(linea) {
 
 function celdas(linea) {
   return linea.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
+}
+
+/**
+ * Render INLINE de un texto corto (sin envolver en <p>): negrita, cursiva,
+ * código, matemáticas $…$/$$…$$ (KaTeX) y enlaces. Para textos de una sola
+ * "línea lógica" como las preguntas/respuestas del quiz y las ideas clave, que
+ * antes se imprimían en texto plano. Escapa primero, así que es seguro.
+ * @param {string} texto
+ * @returns {string}
+ */
+export function renderInline(texto) {
+  return inline(escapar(texto ?? ''));
 }
 
 /**
