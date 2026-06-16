@@ -2,6 +2,12 @@
 
 > Diseños que rompen la dependencia del **CIA** ([[supuesto-seleccion-en-observables-cia]]) con variación **como-si exógena**.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+¿Y si no mediste todos los confundidores —ni puedes? Esta lección construye, desde cero, los dos diseños que estiman efectos causales **sin** depender del CIA, aprovechando variación "como-si aleatoria" que el mundo regala: la **variable instrumental** (2SLS) y la **regresión discontinua** (RDD). La idea unificadora: ambos cambian el supuesto incómodo ("medí los confundidores") por otro más defendible (un instrumento limpio, o un umbral que nadie manipula), a cambio de un efecto **local**.
+
+Al terminar podrás: (1) ejecutar las dos etapas de 2SLS y verificar sus tres condiciones (relevancia, exclusión, independencia); (2) reconocer un instrumento débil (F<10) y por qué es peligroso; (3) distinguir RDD sharp de fuzzy y leer el salto en el cutoff; y (4) saber qué detecta el test de McCrary. El estimador de Wald entra por un ejemplo numérico. Es la salida cuando el CIA de [[arena-h20]] no es creíble.
+
 ## Variables instrumentales (2SLS)
 
 Para un tratamiento **endógeno** (confundidor no medido o causalidad inversa), un **instrumento Z** aporta variación exógena. Ver [[variable-instrumental]].

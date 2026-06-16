@@ -421,8 +421,11 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   **Lote 2 (v96):** `h3` (resultados potenciales, 3 condiciones de identificación),
   `h19` (Mixtape: sesgo de selección, ATE/ATT/ATU, SUTVA), `h4` (sesgos estructurales:
   confundimiento/selección/medición, d-separación), `h18` (contrafactuales/SCM, mediación
-  NDE/NIE, PN/PS). Validado: smoke threw=0, KaTeX 0 throws. **Pendiente:** lotes 3-5
-  (`h5,h20,h21,h22` / `h2,h6,h7,h8` / `h9,h10,h11,h12,h13,h14`); orden en el backlog.
+  NDE/NIE, PN/PS). **Lote 3 (v97):** `h5` (IP weighting/g-fórmula/PS/IV/doble robustez),
+  `h20` (Mixtape: matching/subclasificación/PS, CIA), `h21` (IV/2SLS y RDD), `h22`
+  (panel/efectos fijos, DiD, control sintético). Validado: smoke threw=0, KaTeX 0 throws.
+  **Pendiente:** lotes 4-5 (`h2,h6,h7,h8` / `h9,h10,h11,h12,h13,h14` — supervivencia/Cox/
+  OHDSI); orden en el backlog.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

@@ -1,5 +1,11 @@
 # The Mixtape IV: panel/efectos fijos, DiD y control sintético
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando observas las mismas unidades a lo largo del tiempo, el tiempo mismo se vuelve tu aliado contra el confundimiento. Esta lección construye, desde cero, los diseños que lo explotan: los **efectos fijos** (que barren todo lo estable no observado de cada unidad), las **diferencias en diferencias** (que restan la tendencia común) y el **control sintético** (que fabrica un "gemelo" cuando solo hay una unidad tratada). El hilo: cada uno cambia el CIA por un supuesto sobre *trayectorias* más fácil de defender.
+
+Al terminar podrás: (1) saber qué controlan los efectos fijos y qué no (lo que varía en el tiempo se les escapa); (2) calcular un DiD 2×2 y entender que su supuesto es **tendencias paralelas**, no niveles iguales; (3) apoyar ese supuesto con event studies y placebos, y evitar el TWFE ingenuo con adopción escalonada; y (4) construir un control sintético con inferencia por permutación. El DiD entra por un ejemplo numérico. Cierra el toolkit cuasi-experimental ([[arena-h21]]).
+
 ## Datos de panel y efectos fijos
 
 Con **panel** (mismas unidades en varios periodos), los **efectos fijos de unidad** controlan TODO lo **invariante en el tiempo**, observado o **no** (cultura, habilidad, geografía): el estimador **within** usa solo la variación dentro de cada unidad. Se añaden **FE de tiempo** para shocks comunes.

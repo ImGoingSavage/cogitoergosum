@@ -1,5 +1,11 @@
 # Inferencia causal III: estimación con modelos (IP weighting, g-fórmula, PS, IV)
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Identificar un efecto es saber que *se puede* estimar; esta lección construye, desde cero, *cómo* se estima cuando hay **muchos** confundidores y los estratos a mano ya no alcanzan. La idea central es que hay dos rutas duales —modelar el **tratamiento** (IP weighting) o modelar el **outcome** (g-fórmula)— que llegan al mismo sitio, y que combinarlas compra robustez. Y cuando el confundidor **no está medido**, queda el último recurso: la variable instrumental.
+
+Al terminar podrás: (1) construir la pseudo-población del IP weighting y entender por qué los pesos estabilizados existen; (2) ver IP weighting y g-fórmula como dos caras de la misma identificación; (3) usar el propensity score como balancing score que vence la dimensionalidad; y (4) saber qué ataca una variable instrumental (confundimiento no medido) y qué entrega a cambio (el LATE, solo en compliers). Profundiza la estimación que [[arena-h3]] dejó planteada.
+
 ## ¿Por qué modelar?
 
 Los estimadores no paramétricos por estratos solo sirven con **pocos** confundidores discretos; con muchos o continuos los estratos quedan vacíos (**maldición de la dimensionalidad**). Los **modelos** (paramétricos o ML) suavizan entre estratos para estimar E[Y|A,L] o P(A|L), a costa del supuesto de especificación.

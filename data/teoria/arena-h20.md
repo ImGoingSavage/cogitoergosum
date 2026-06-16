@@ -1,5 +1,11 @@
 # The Mixtape II: matching, subclasificación y propensity score
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando crees haber medido todos los confundidores, ¿cómo comparas tratados con controles "parecidos"? Esta lección construye, desde cero, la familia de métodos que lo hace —matching, subclasificación, propensity score— todos apoyados en un único supuesto fuerte e **indemostrable**: el CIA ("selección en observables"). La joya es el **propensity score**, que colapsa muchas covariables en un solo número y así vence la maldición de la dimensionalidad.
+
+Al terminar podrás: (1) enunciar el CIA y entender por qué no se puede testear; (2) explicar por qué el matching exacto fracasa con covariables continuas y cómo lo rescata el propensity score; (3) verificar overlap (soporte común) y balance (SMD<0.1); y (4) distinguir matching (no extrapola) de regresión (extrapola e impone forma). La fragilidad compartida: ninguno arregla un confundidor que no mediste. Hereda ATE/ATT de [[arena-h19]].
+
 ## Selección en observables (CIA)
 
 El **supuesto de independencia condicional (CIA)** —ignorabilidad, unconfoundedness, "selección en observables"—: **(Y¹,Y⁰) ⊥ D | X**. Condicionando en las covariables observadas X, el tratamiento es independiente de los resultados potenciales (X cierra todos los caminos traseros; no hay confundimiento no observado). Es lo que justifica matching, subclasificación, propensity score y regresión. Es **fuerte y NO testeable**: si hay un confundidor no medido, todos fallan → de ahí los diseños IV/RDD/DiD. Ver [[supuesto-seleccion-en-observables-cia]].
