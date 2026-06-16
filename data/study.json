@@ -7668,17 +7668,17 @@
     "ruta": "maang"
    },
    "ideas_clave": [
-    "Hash map: O(1) amortizado para insert, lookup y delete. El costo: O(n) espacio adicional.",
+    "Hash map: $O(1)$ amortizado para insert, lookup y delete. El costo: $O(n)$ espacio adicional.",
     "Patrón 'complemento': para cada elemento x, busca si su complemento (target − x, −x, etc.) ya fue visto. Almacena los vistos en un set.",
     "Patrón 'frecuencia': cuenta apariciones de cada elemento en una sola pasada. dict/Counter en Python.",
-    "Worst case con colisiones: O(n) por operación. Con hash functions de calidad (Python dict), O(1) esperado en práctica.",
+    "Worst case con colisiones: $O(n)$ por operación. Con hash functions de calidad (Python dict), $O(1)$ esperado en práctica.",
     "Señal de reconocimiento: 'para cada elemento, ¿existe algo relacionado entre los ya vistos?' → store-and-lookup. La clave es el orden: primero busca, luego inserta (o viceversa, según si se permiten self-pairs)."
    ],
    "banco": [
     {
      "id": "arm1-q1",
      "tipo": "quiz",
-     "enunciado": "Describe el algoritmo two-sum en O(n) tiempo y O(n) espacio. ¿Por qué el orden 'buscar antes de insertar' importa cuando el array puede tener duplicados?",
+     "enunciado": "Describe el algoritmo two-sum en $O(n)$ tiempo y $O(n)$ espacio. ¿Por qué el orden 'buscar antes de insertar' importa cuando el array puede tener duplicados?",
      "solucion": "Recorre el array. Para cada elemento x: busca (target − x) en el hash set. Si lo encuentras, retorna el par. Luego inserta x. Orden importa: si insertaras x ANTES de buscar, el primer 0 buscaría 0 y lo encontraría en sí mismo (self-pair), produciendo el índice equivocado. Al buscar antes de insertar, solo los elementos ANTERIORES están disponibles.",
      "explicacion": "El orden de operaciones es la diferencia entre un par de índices distintos y un bug. En entrevistas: menciona este caso borde explícitamente antes de que el entrevistador lo señale."
     },
@@ -7686,21 +7686,21 @@
      "id": "arm1-q2",
      "tipo": "quiz",
      "enunciado": "¿Cuál es la complejidad de encontrar todos los tripletes que suman cero en un array de n enteros? Describe el algoritmo más eficiente que conozcas.",
-     "solucion": "O(n²) tiempo, O(n) espacio (o O(1) extra con sort in-place). Método: ordena O(n log n), luego para cada elemento arr[i], usa dos punteros (izquierda = i+1, derecha = n-1) que se mueven hacia el centro buscando arr[j]+arr[k] = −arr[i]. Cada iteración exterior es O(n) y el inner loop también O(n). También O(n²) con hashing: fija arr[i] y aplica two-sum al resto.",
-     "explicacion": "O(n²) es óptimo para el caso general (demostrable). Si el entrevistador pregunta por algo mejor: no existe para el caso general, pero con restricciones (valores acotados, etc.) pueden existir soluciones O(n) con hash tricks."
+     "solucion": "$O(n^2)$ tiempo, $O(n)$ espacio (o $O(1)$ extra con sort in-place). Método: ordena $O(n\\log n)$, luego para cada elemento $\\text{arr}[i]$, usa dos punteros (izquierda $=i+1$, derecha $=n-1$) que se mueven hacia el centro buscando $\\text{arr}[j]+\\text{arr}[k]=-\\text{arr}[i]$. Cada iteración exterior es $O(n)$ y el inner loop también $O(n)$. También $O(n^2)$ con hashing: fija $\\text{arr}[i]$ y aplica two-sum al resto.",
+     "explicacion": "$O(n^2)$ es óptimo para el caso general (demostrable). Si el entrevistador pregunta por algo mejor: no existe para el caso general, pero con restricciones (valores acotados, etc.) pueden existir soluciones $O(n)$ con hash tricks."
     },
     {
      "id": "arm1-q3",
      "tipo": "acertijo",
-     "enunciado": "Un array tiene n+1 enteros, todos entre 1 y n. Por tanto hay al menos un duplicado. Encuentra UN duplicado en O(n) tiempo y O(1) espacio extra (sin modificar el array).",
+     "enunciado": "Un array tiene $n+1$ enteros, todos entre $1$ y $n$. Por tanto hay al menos un duplicado. Encuentra UN duplicado en $O(n)$ tiempo y $O(1)$ espacio extra (sin modificar el array).",
      "solucion": "Floyd's cycle detection (tortoise and hare): trata el array como una lista enlazada donde arr[i] apunta al nodo arr[i]. El duplicado crea un ciclo. Fase 1: slow = arr[arr[0]], fast = arr[arr[arr[0]]] hasta que coincidan. Fase 2: slow = arr[0], ambos a paso 1 hasta coincidir: ese es el duplicado.",
-     "explicacion": "Este problema está diseñado para eliminar a quienes piensan solo en hash map (O(n) espacio). El O(1) espacio fuerza pensar en invariantes del ciclo. Señal → jugada: 'duplicado en array de rango acotado, sin espacio extra' → ciclo de Floyd."
+     "explicacion": "Este problema está diseñado para eliminar a quienes piensan solo en hash map ($O(n)$ espacio). El $O(1)$ espacio fuerza pensar en invariantes del ciclo. Señal → jugada: 'duplicado en array de rango acotado, sin espacio extra' → ciclo de Floyd."
     },
     {
      "id": "arm1-q4",
      "tipo": "disparador",
      "enunciado": "Ves un problema: 'dado un array de strings, agrupa los anagramas juntos'. ¿Qué estructura de datos usas y cuál es la clave del hash map?",
-     "solucion": "Hash map donde la clave es la 'firma canónica' del anagrama: los caracteres ordenados alfabéticamente (o un conteo de caracteres como tupla). Valor: lista de palabras con esa firma. Una sola pasada O(n·k log k) donde k es la longitud máxima de palabra.",
+     "solucion": "Hash map donde la clave es la 'firma canónica' del anagrama: los caracteres ordenados alfabéticamente (o un conteo de caracteres como tupla). Valor: lista de palabras con esa firma. Una sola pasada $O(n\\cdot k\\log k)$ donde $k$ es la longitud máxima de palabra.",
      "explicacion": "Señal → jugada: 'agrupar por equivalencia' → hash map con una representación canónica como clave. El diseño de la clave es la decisión creativa; el resto es mecánico."
     }
    ]
@@ -13291,7 +13291,7 @@
      "id": "arcds1-q7",
      "tipo": "calculo",
      "enunciado": "Da la fórmula del min-max scaling y del z-score scaling, y di a qué rango lleva cada uno.",
-     "solucion": "Min-max: X' = (X − X_min)/(X_max − X_min), lleva al rango [0,1]. Z-score: X' = (X − μ)/σ, centra en media 0 y desviación 1 (típicamente cae entre −3 y 3).",
+     "solucion": "Min-max: $X' = (X - X_{\\min})/(X_{\\max} - X_{\\min})$, lleva al rango $[0,1]$. Z-score: $X' = (X - \\mu)/\\sigma$, centra en media 0 y desviación 1 (típicamente cae entre $-3$ y $3$).",
      "explicacion": "Min-max reescala a un intervalo fijo; z-score estandariza relativo a la media y la dispersión, sin acotar a un rango fijo."
     },
     {
@@ -14305,7 +14305,7 @@
      "id": "ardmls1-q3",
      "tipo": "concepto",
      "enunciado": "Explica el desacople de objetivos (decoupling objectives) y el problema que resuelve.",
-     "solucion": "Cuando un sistema persigue objetivos en conflicto (p.ej. engagement vs calidad), meterlos en una sola loss ponderada α·calidad + β·engagement obliga a reentrenar cada vez que reajustas los pesos. Desacoplar = entrenar un modelo por objetivo y combinar sus scores al rankear; así reajustar la prioridad es solo cambiar la combinación, sin reentrenar.",
+     "solucion": "Cuando un sistema persigue objetivos en conflicto (p.ej. engagement vs calidad), meterlos en una sola loss ponderada $\\alpha\\cdot\\text{calidad} + \\beta\\cdot\\text{engagement}$ obliga a reentrenar cada vez que reajustas los pesos. Desacoplar = entrenar un modelo por objetivo y combinar sus scores al rankear; así reajustar la prioridad es solo cambiar la combinación, sin reentrenar.",
      "explicacion": "Separar los objetivos desliga el ajuste de prioridades del entrenamiento y permite razonar sobre cada meta por separado."
     },
     {
@@ -14436,7 +14436,7 @@
      "id": "ardmls2-q3",
      "tipo": "algoritmo",
      "enunciado": "Describe el algoritmo de reservoir sampling y qué garantiza.",
-     "solucion": "Para tomar k muestras de un stream de tamaño desconocido: 1) mete los primeros k elementos en el reservorio; 2) para el n-ésimo elemento entrante, genera un aleatorio i con 1≤i≤n; 3) si i≤k, reemplaza el i-ésimo del reservorio por el nuevo; si no, descártalo. Garantiza que en cualquier instante en que pares, cada elemento visto tiene probabilidad k/n de estar en el reservorio (igual probabilidad para todos).",
+     "solucion": "Para tomar $k$ muestras de un stream de tamaño desconocido: 1) mete los primeros $k$ elementos en el reservorio; 2) para el $n$-ésimo elemento entrante, genera un aleatorio $i$ con $1\\le i\\le n$; 3) si $i\\le k$, reemplaza el $i$-ésimo del reservorio por el nuevo; si no, descártalo. Garantiza que en cualquier instante en que pares, cada elemento visto tiene probabilidad $k/n$ de estar en el reservorio (igual probabilidad para todos).",
      "explicacion": "Resuelve muestrear uniformemente sin conocer el tamaño total ni guardar todo en memoria, ideal para datos en streaming."
     },
     {
@@ -14450,7 +14450,7 @@
      "id": "ardmls2-q5",
      "tipo": "concepto",
      "enunciado": "¿Qué es importance sampling y cuándo se usa?",
-     "solucion": "Permite muestrear de una distribución P(x) cara, lenta o imposible de muestrear, sacando muestras de otra Q(x) fácil (la proposal/importance distribution) y reponderando cada muestra por P(x)/Q(x). Requiere Q(x)>0 siempre que P(x)≠0. En RL basado en políticas estima la política nueva reponderando recompensas de la vieja.",
+     "solucion": "Permite muestrear de una distribución $P(x)$ cara, lenta o imposible de muestrear, sacando muestras de otra $Q(x)$ fácil (la proposal/importance distribution) y reponderando cada muestra por $P(x)/Q(x)$. Requiere $Q(x)>0$ siempre que $P(x)\\ne0$. En RL basado en políticas estima la política nueva reponderando recompensas de la vieja.",
      "explicacion": "Reponderar corrige el sesgo de muestrear de Q en lugar de P, dejando la esperanza invariante; sirve cuando P es inaccesible pero Q es tratable."
     },
     {
@@ -15553,7 +15553,7 @@
      "id": "armldp2-q12",
      "tipo": "concepto",
      "enunciado": "¿Por qué el accuracy es engañoso en datasets desbalanceados y qué métricas usar?",
-     "solucion": "Porque con 5% de positivos un modelo puede llegar al 95% de accuracy simplemente prediciendo siempre la clase mayoritaria, sin aprender nada de la minoritaria. Conviene mirar la matriz de confusión por clase y usar precision, recall y F-measure (2·P·R/(P+R)). Para todos los umbrales, la precision-recall promedio es más informativa que el AUC en datos desbalanceados.",
+     "solucion": "Porque con 5% de positivos un modelo puede llegar al 95% de accuracy simplemente prediciendo siempre la clase mayoritaria, sin aprender nada de la minoritaria. Conviene mirar la matriz de confusión por clase y usar precision, recall y F-measure ($2\\cdot P\\cdot R/(P+R)$). Para todos los umbrales, la precision-recall promedio es más informativa que el AUC en datos desbalanceados.",
      "explicacion": "El test set debe mantener el desbalance original (sin remuestrear) para evaluar de forma representativa."
     },
     {
@@ -15623,7 +15623,7 @@
      "tipo": "concepto",
      "enunciado": "¿Qué es el patrón Checkpoints y por qué guardar el estado COMPLETO, no solo el modelo exportado?",
      "solucion": "Checkpointing guarda periódicamente (típicamente al final de cada epoch) el estado completo del modelo para poder reanudar el entrenamiento tras un fallo. El modelo EXPORTADO solo tiene lo necesario para predecir (pesos, arquitectura), pero no el epoch/batch actual, el estado del learning rate (que decae por schedule), la aleatoriedad (dropout) ni el historial (RNN). El estado completo puede ser varias veces el tamaño del exportado.",
-     "explicacion": "Sin el estado completo no se puede continuar el entrenamiento de forma consistente; por eso el checkpoint ≠ modelo exportado."
+     "explicacion": "Sin el estado completo no se puede continuar el entrenamiento de forma consistente; por eso el checkpoint $\\ne$ modelo exportado."
     },
     {
      "id": "armldp3-q4",
@@ -15993,7 +15993,7 @@
     "nivel": 2
    },
    "ideas_clave": [
-    "Toil = manual, repetitivo, automatizable, táctico, sin valor, O(n)",
+    "Toil = manual, repetitivo, automatizable, táctico, sin valor, $O(n)$",
     "SRE limita el toil a <50% del tiempo; el resto es ingeniería",
     "Cuatro señales doradas: latencia, tráfico, errores, saturación",
     "Alerta por síntomas (black-box); white-box para diagnosticar"
@@ -16003,7 +16003,7 @@
      "id": "arsre2-q1",
      "tipo": "concepto",
      "enunciado": "Define toil y sus características.",
-     "solucion": "Toil es el trabajo ligado a operar un servicio en producción que tiende a ser: manual, repetitivo, automatizable, táctico (interrupt-driven, reactivo), sin valor perdurable (el servicio queda igual tras hacerlo) y que escala O(n) linealmente con el tamaño del servicio. No todo el toil tiene todas estas propiedades, pero cuantas más cumple, más es toil.",
+     "solucion": "Toil es el trabajo ligado a operar un servicio en producción que tiende a ser: manual, repetitivo, automatizable, táctico (interrupt-driven, reactivo), sin valor perdurable (el servicio queda igual tras hacerlo) y que escala $O(n)$ linealmente con el tamaño del servicio. No todo el toil tiene todas estas propiedades, pero cuantas más cumple, más es toil.",
      "explicacion": "Toil no es 'trabajo que no me gusta'; algunos disfrutan tareas repetitivas. Tampoco es overhead ni grunt work con valor a largo plazo."
     },
     {
@@ -16758,7 +16758,7 @@
      "tipo": "concepto",
      "enunciado": "Compara los dos modelos para disparar una burn alert por encima del nivel cero.",
      "solucion": "(1) Umbral no-cero: alertar cuando el budget restante cae bajo un valor fijo (p.ej. < 30%). Es simple, pero solo 'mueve el poste': tras cruzar el umbral el equipo actúa como si el budget estuviera agotado, sacrificando tiempo de features y quedándose en feature-freeze hasta que el budget vuelva a subir. (2) Burn alert PREDICTIVA (forecast): pronostica si las condiciones actuales agotarán todo el budget en el futuro y alerta según la trayectoria de quema, no según un umbral arbitrario.",
-     "explicacion": "Las burn alerts predictivas funcionan mejor para SLOs ≤ 99.95%."
+     "explicacion": "Las burn alerts predictivas funcionan mejor para SLOs $\\le 99.95\\%$."
     },
     {
      "id": "arobs3-q15",
@@ -18111,7 +18111,7 @@
    "ideas_clave": [
     "Propiedades clave: linealidad, monotonicidad e interacción (o su ausencia)",
     "Lineal: peso = cambio por unidad ceteris paribus; importancia = t-statistic",
-    "Logística: interpreta el ODDS RATIO exp(βⱼ), no la probabilidad lineal",
+    "Logística: interpreta el ODDS RATIO $\\exp(\\beta_j)$, no la probabilidad lineal",
     "GAM añade no linealidad (splines) conservando la aditividad legible",
     "Árbol/RuleFit capturan interacciones; RuleFit = reglas de árboles + LASSO"
    ],
@@ -18126,8 +18126,8 @@
     {
      "id": "ariml2-q2",
      "tipo": "concepto",
-     "enunciado": "En una regresión lineal ŷ=β₀+Σβⱼxⱼ, ¿cómo se interpreta el peso βⱼ de una feature numérica?",
-     "solucion": "Si xⱼ aumenta en UNA unidad y todo lo demás se mantiene fijo (ceteris paribus), la predicción cambia en βⱼ unidades. El signo da la dirección y la magnitud el tamaño del efecto, en las unidades de la feature.",
+     "enunciado": "En una regresión lineal $\\hat y = \\beta_0 + \\sum \\beta_j x_j$, ¿cómo se interpreta el peso $\\beta_j$ de una feature numérica?",
+     "solucion": "Si $x_j$ aumenta en UNA unidad y todo lo demás se mantiene fijo (ceteris paribus), la predicción cambia en $\\beta_j$ unidades. El signo da la dirección y la magnitud el tamaño del efecto, en las unidades de la feature.",
      "explicacion": "La condición 'manteniendo lo demás fijo' es esencial y se rompe si hay multicolinealidad."
     },
     {
@@ -18141,7 +18141,7 @@
      "id": "ariml2-q4",
      "tipo": "concepto",
      "enunciado": "¿Cómo se mide la IMPORTANCIA de una feature dentro de una regresión lineal?",
-     "solucion": "Con el t-statistic: |β̂ⱼ / SE(β̂ⱼ)|, es decir el peso estimado dividido por su error estándar. Una feature es más importante cuanto mayor es su peso EN RELACIÓN a su incertidumbre. No basta con el tamaño del peso, porque depende de la escala de la feature y de su error estándar.",
+     "solucion": "Con el t-statistic: $|\\hat\\beta_j / \\text{SE}(\\hat\\beta_j)|$, es decir el peso estimado dividido por su error estándar. Una feature es más importante cuanto mayor es su peso EN RELACIÓN a su incertidumbre. No basta con el tamaño del peso, porque depende de la escala de la feature y de su error estándar.",
      "explicacion": "Equivale a cuán lejos de cero está el coeficiente en unidades de su propio error."
     },
     {
@@ -18162,42 +18162,42 @@
      "id": "ariml2-q7",
      "tipo": "concepto",
      "enunciado": "¿Qué diferencia hay entre un WEIGHT PLOT y un EFFECT PLOT en regresión lineal?",
-     "solucion": "El weight plot muestra los pesos β̂ⱼ con sus intervalos de confianza (cuánto y en qué dirección influye cada feature, pero depende de la escala). El effect plot muestra el EFECTO = peso × valor de la feature para cada instancia (típicamente como boxplots): refleja cuánto contribuye realmente cada feature dada la DISTRIBUCIÓN de sus valores en los datos.",
+     "solucion": "El weight plot muestra los pesos $\\hat\\beta_j$ con sus intervalos de confianza (cuánto y en qué dirección influye cada feature, pero depende de la escala). El effect plot muestra el EFECTO $=$ peso $\\times$ valor de la feature para cada instancia (típicamente como boxplots): refleja cuánto contribuye realmente cada feature dada la DISTRIBUCIÓN de sus valores en los datos.",
      "explicacion": "El effect plot corrige que un peso grande sobre una feature con valores diminutos puede tener poco efecto real."
     },
     {
      "id": "ariml2-q8",
      "tipo": "concepto",
      "enunciado": "¿Por qué en regresión logística NO se interpreta el peso como un cambio lineal sobre la probabilidad?",
-     "solucion": "Porque la combinación lineal se pasa por la función LOGÍSTICA para acotar la salida a (0,1), que es no lineal: el mismo Δβ cambia la probabilidad de forma distinta según el punto de partida (mucho cerca de 0.5, poco cerca de 0 o 1). El peso es lineal sobre los LOG-ODDS, no sobre la probabilidad.",
+     "solucion": "Porque la combinación lineal se pasa por la función LOGÍSTICA para acotar la salida a $(0,1)$, que es no lineal: el mismo $\\Delta\\beta$ cambia la probabilidad de forma distinta según el punto de partida (mucho cerca de $0.5$, poco cerca de 0 o 1). El peso es lineal sobre los LOG-ODDS, no sobre la probabilidad.",
      "explicacion": "Por eso se interpreta vía odds ratio en lugar de 'puntos de probabilidad por unidad'."
     },
     {
      "id": "ariml2-q9",
      "tipo": "concepto",
      "enunciado": "Interpreta el ODDS RATIO de una feature en regresión logística.",
-     "solucion": "Al aumentar xⱼ en una unidad (manteniendo lo demás fijo), los ODDS del evento se multiplican por exp(βⱼ). Si exp(β)=2 los odds se duplican; si =1 no hay efecto; si <1 los reduce. Para una categórica, exp(βⱼ) es el factor sobre los odds frente a la categoría de referencia.",
+     "solucion": "Al aumentar $x_j$ en una unidad (manteniendo lo demás fijo), los ODDS del evento se multiplican por $\\exp(\\beta_j)$. Si $\\exp(\\beta)=2$ los odds se duplican; si $=1$ no hay efecto; si $<1$ los reduce. Para una categórica, $\\exp(\\beta_j)$ es el factor sobre los odds frente a la categoría de referencia.",
      "explicacion": "Odds = p/(1−p); el odds ratio es multiplicativo, no aditivo sobre la probabilidad."
     },
     {
      "id": "ariml2-q10",
      "tipo": "concepto",
      "enunciado": "¿Qué generaliza un GLM respecto a la regresión lineal?",
-     "solucion": "Un Generalized Linear Model conecta el valor esperado E(y) con la combinación lineal mediante una LINK FUNCTION y permite que el error siga otras DISTRIBUCIONES de la familia exponencial (no solo normal): p. ej. Poisson para conteos, binomial para clasificación. Conserva la estructura aditiva, por lo que sigue siendo interpretable.",
+     "solucion": "Un Generalized Linear Model conecta el valor esperado $E(y)$ con la combinación lineal mediante una LINK FUNCTION y permite que el error siga otras DISTRIBUCIONES de la familia exponencial (no solo normal): p. ej. Poisson para conteos, binomial para clasificación. Conserva la estructura aditiva, por lo que sigue siendo interpretable.",
      "explicacion": "La regresión lineal y la logística son casos particulares de GLM (link identidad y logit)."
     },
     {
      "id": "ariml2-q11",
      "tipo": "concepto",
      "enunciado": "¿Qué es un GAM y qué problema de la regresión lineal resuelve?",
-     "solucion": "Un Generalized Additive Model reemplaza cada término lineal βⱼxⱼ por una FUNCIÓN NO LINEAL flexible fⱼ(xⱼ) (típicamente splines). Resuelve que la relación real con una feature puede no ser lineal, capturando la no linealidad SIN perder la estructura ADITIVA: sigues pudiendo graficar y leer el efecto de cada feature por separado.",
+     "solucion": "Un Generalized Additive Model reemplaza cada término lineal $\\beta_j x_j$ por una FUNCIÓN NO LINEAL flexible $f_j(x_j)$ (típicamente splines). Resuelve que la relación real con una feature puede no ser lineal, capturando la no linealidad SIN perder la estructura ADITIVA: sigues pudiendo graficar y leer el efecto de cada feature por separado.",
      "explicacion": "Sigue sin modelar interacciones salvo que se añadan términos de interacción explícitos."
     },
     {
      "id": "ariml2-q12",
      "tipo": "concepto",
      "enunciado": "¿Cómo se interpreta una predicción de un árbol de decisión y qué capta de forma natural?",
-     "solucion": "Se sigue el camino desde la raíz hasta la hoja: una conjunción de condiciones del tipo 'si x≤a Y z>b entonces predice c'. La predicción de la hoja es el promedio (regresión) o la clase mayoritaria (clasificación) de las instancias que caen ahí. Capta de forma natural INTERACCIONES (un split depende del valor alcanzado en splits anteriores) y no requiere linealidad ni monotonicidad.",
+     "solucion": "Se sigue el camino desde la raíz hasta la hoja: una conjunción de condiciones del tipo 'si $x\\le a$ Y $z>b$ entonces predice $c$'. La predicción de la hoja es el promedio (regresión) o la clase mayoritaria (clasificación) de las instancias que caen ahí. Capta de forma natural INTERACCIONES (un split depende del valor alcanzado en splits anteriores) y no requiere linealidad ni monotonicidad.",
      "explicacion": "La interpretación es muy intuitiva, pero solo para árboles poco profundos."
     },
     {
@@ -18247,7 +18247,7 @@
     "PDP = efecto promedio (supone independencia, oculta heterogeneidad)",
     "ICE = una línea por instancia; líneas no paralelas = interacción",
     "ALE corrige el sesgo por correlación acumulando efectos locales sobre datos reales",
-    "H-statistic de Friedman cuantifica la interacción (H²∈[0,1])",
+    "H-statistic de Friedman cuantifica la interacción ($H^2 \\in [0,1]$)",
     "Importancia por permutación: ΔError al barajar; mídela en TEST y repite"
    ],
    "banco": [
@@ -18311,14 +18311,14 @@
      "id": "ariml3-q9",
      "tipo": "concepto",
      "enunciado": "¿Cómo se interpreta el eje y de un ALE plot (que está centrado en 0)?",
-     "solucion": "El ALE está centrado en 0, así que el valor en x=v se lee COMPARADO CON LA PREDICCIÓN MEDIA: 'cuando la feature vale v, la predicción es, en promedio, ±k respecto a la predicción media del dataset, debido a esta feature'. No es la predicción absoluta sino la desviación relativa atribuible a la feature.",
+     "solucion": "El ALE está centrado en 0, así que el valor en $x=v$ se lee COMPARADO CON LA PREDICCIÓN MEDIA: 'cuando la feature vale $v$, la predicción es, en promedio, $\\pm k$ respecto a la predicción media del dataset, debido a esta feature'. No es la predicción absoluta sino la desviación relativa atribuible a la feature.",
      "explicacion": "Por eso un ALE puede ser positivo o negativo alrededor de cero."
     },
     {
      "id": "ariml3-q10",
      "tipo": "concepto",
      "enunciado": "¿Qué mide la H-statistic de Friedman y cuál es su rango?",
-     "solucion": "Mide la fuerza de la INTERACCIÓN: qué proporción de la varianza de la predicción (conjunta) NO se explica por los efectos individuales de las features, sino por su interacción. H² ∈ [0,1]: 0 significa SIN interacción (el efecto conjunto es la suma de los individuales) y 1 significa que el efecto es PURAMENTE de interacción.",
+     "solucion": "Mide la fuerza de la INTERACCIÓN: qué proporción de la varianza de la predicción (conjunta) NO se explica por los efectos individuales de las features, sino por su interacción. $H^2 \\in [0,1]$: 0 significa SIN interacción (el efecto conjunto es la suma de los individuales) y 1 significa que el efecto es PURAMENTE de interacción.",
      "explicacion": "Se puede calcular para un par de features o para una feature contra todas las demás."
     },
     {
