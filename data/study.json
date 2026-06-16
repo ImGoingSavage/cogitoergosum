@@ -11336,7 +11336,7 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Factorización: f(x|θ)=g(T(x),θ)·h(x) ↔ T suficiente.",
+    "Factorización: $f(x\\mid\\theta)=g(T(x),\\theta)\\cdot h(x) \\Leftrightarrow T$ suficiente.",
     "Familias exponenciales de rango completo tienen T suficiente completo.",
     "Basu: T completo suficiente ⊥ V ancilario → X̄ ⊥ S² en la normal.",
     "No completo: parámetro natural restringido a curva (no abierto de ℝᵏ).",
@@ -11346,51 +11346,51 @@
     {
      "id": "arena-cb1-q1",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. con f(xᵢ|θ) = e^{iθ−xᵢ} · I(xᵢ≥iθ), i=1,…,n. Muestra que T = min(Xᵢ/i) es suficiente para θ usando el criterio de factorización.",
-     "solucion": "T = min(Xᵢ/i). La densidad conjunta es ∏e^{iθ−xᵢ}·I(xᵢ≥iθ) = exp(nθ·(n+1)/2−Σxᵢ)·I(min(xᵢ/i)≥θ). Esto es g(T,θ)·h(x) con g=exp(θΣi·I(T≥θ)) y h=exp(−Σxᵢ).",
-     "explicacion": "El indicador I(xᵢ≥iθ) para todo i equivale a I(min(xᵢ/i)≥θ), así que T colapsa todos los indicadores en uno solo que involucra a θ. Por factorización, T es suficiente."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. con $f(x_i\\mid\\theta) = e^{i\\theta - x_i}\\cdot I(x_i\\ge i\\theta)$, $i=1,\\dots,n$. Muestra que $T = \\min(X_i/i)$ es suficiente para $\\theta$ usando el criterio de factorización.",
+     "solucion": "$T = \\min(X_i/i)$. La densidad conjunta es $\\prod e^{i\\theta - x_i}\\cdot I(x_i\\ge i\\theta) = \\exp(n\\theta\\cdot(n+1)/2 - \\sum x_i)\\cdot I(\\min(x_i/i)\\ge\\theta)$. Esto es $g(T,\\theta)\\cdot h(x)$ con $g=\\exp(\\theta\\sum i\\cdot I(T\\ge\\theta))$ y $h=\\exp(-\\sum x_i)$.",
+     "explicacion": "El indicador $I(x_i\\ge i\\theta)$ para todo $i$ equivale a $I(\\min(x_i/i)\\ge\\theta)$, así que $T$ colapsa todos los indicadores en uno solo que involucra a $\\theta$. Por factorización, $T$ es suficiente."
     },
     {
      "id": "arena-cb1-q2",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Geométrica: P(X=x|θ)=θ(1−θ)^{x−1}, x=1,2,… Muestra que ΣXᵢ es suficiente. ¿Es la familia completa?",
-     "solucion": "Suficiencia: la función de masa conjunta es θⁿ(1−θ)^{Σxᵢ−n} = g(ΣXᵢ,θ)·1 (h=1). Por factorización, T=ΣXᵢ es suficiente. Completitud: E_θ[g(T)]=Σ_{t=n}^∞ g(t)θⁿ(1−θ)^{t−n}·C(t,n)=0 para todo θ∈(0,1) implica g(t)=0 para todo t≥n (es una familia exponencial de rango completo).",
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Geométrica: $P(X=x\\mid\\theta)=\\theta(1-\\theta)^{x-1}$, $x=1,2,\\dots$ Muestra que $\\sum X_i$ es suficiente. ¿Es la familia completa?",
+     "solucion": "Suficiencia: la función de masa conjunta es $\\theta^n(1-\\theta)^{\\sum x_i - n} = g(\\sum X_i,\\theta)\\cdot 1$ ($h=1$). Por factorización, $T=\\sum X_i$ es suficiente. Completitud: $E_\\theta[g(T)]=\\sum_{t=n}^\\infty g(t)\\theta^n(1-\\theta)^{t-n}\\cdot\\binom{t}{n}=0$ para todo $\\theta\\in(0,1)$ implica $g(t)=0$ para todo $t\\ge n$ (es una familia exponencial de rango completo).",
      "explicacion": "Toda familia de un parámetro en la forma exponencial con rango de parámetro natural abierto tiene estadístico suficiente completo. La geométrica cumple esto."
     },
     {
      "id": "arena-cb1-q3",
      "tipo": "quiz",
-     "enunciado": "Demuestra que para X₁,…,Xₙ i.i.d. N(θ, aθ²) con a>0 conocido, T=(ΣXᵢ, ΣXᵢ²) es suficiente pero NO completo.",
-     "solucion": "Suficiente: la familia exponencial bivariada tiene T=(ΣXᵢ, ΣXᵢ²). No completo: el parámetro natural (θ/σ², 1/(2σ²)) = (1/(aθ), 1/(2aθ²)) está en una curva (no un abierto de ℝ²). La función g(T)=ΣXᵢ²−a(ΣXᵢ)²/n − aθ² satisface E[g(T)]=0 para todo θ pero g≢0.",
-     "explicacion": "La completitud falla cuando el espacio paramétrico natural no contiene un abierto: las restricciones entre parámetros crean funciones g≠0 con esperanza cero. Es el contraejemplo estándar de Casella & Berger §6.2."
+     "enunciado": "Demuestra que para $X_1,\\dots,X_n$ i.i.d. $N(\\theta, a\\theta^2)$ con $a>0$ conocido, $T=(\\sum X_i, \\sum X_i^2)$ es suficiente pero NO completo.",
+     "solucion": "Suficiente: la familia exponencial bivariada tiene $T=(\\sum X_i, \\sum X_i^2)$. No completo: el parámetro natural $(\\theta/\\sigma^2, 1/(2\\sigma^2)) = (1/(a\\theta), 1/(2a\\theta^2))$ está en una curva (no un abierto de $\\mathbb{R}^2$). La función $g(T)=\\sum X_i^2 - a(\\sum X_i)^2/n - a\\theta^2$ satisface $E[g(T)]=0$ para todo $\\theta$ pero $g\\not\\equiv 0$.",
+     "explicacion": "La completitud falla cuando el espacio paramétrico natural no contiene un abierto: las restricciones entre parámetros crean funciones $g\\ne 0$ con esperanza cero. Es el contraejemplo estándar de Casella & Berger §6.2."
     },
     {
      "id": "arena-cb1-q4",
      "tipo": "quiz",
-     "enunciado": "Sea f(x|θ) = (1/2θ)·I(−θ<x<θ), θ>0. Encuentra el estadístico minimal suficiente para θ.",
-     "solucion": "T = max(|X₁|,…,|Xₙ|) = X₍ₙ₎^{|·|}. El cociente L(θ|x)/L(θ|y)=(1/2θ)ⁿ/(1/2θ)ⁿ=1 (constante) si y solo si max|xᵢ|=max|yᵢ|, luego T=max|Xᵢ| es minimal suficiente.",
-     "explicacion": "Para familias uniformes sobre intervalos que dependen de θ, el estadístico de orden extremo (o una función de él) es el candidato natural. El criterio de cociente de verosimilitudes confirma la minimalidad."
+     "enunciado": "Sea $f(x\\mid\\theta) = (1/2\\theta)\\cdot I(-\\theta<x<\\theta)$, $\\theta>0$. Encuentra el estadístico minimal suficiente para $\\theta$.",
+     "solucion": "$T = \\max(|X_1|,\\dots,|X_n|) = X_{(n)}^{|\\cdot|}$. El cociente $L(\\theta\\mid x)/L(\\theta\\mid y)=(1/2\\theta)^n/(1/2\\theta)^n=1$ (constante) si y solo si $\\max|x_i|=\\max|y_i|$, luego $T=\\max|X_i|$ es minimal suficiente.",
+     "explicacion": "Para familias uniformes sobre intervalos que dependen de $\\theta$, el estadístico de orden extremo (o una función de él) es el candidato natural. El criterio de cociente de verosimilitudes confirma la minimalidad."
     },
     {
      "id": "arena-cb1-q5",
      "tipo": "quiz",
-     "enunciado": "Enuncia el teorema de Basu y aplícalo: X₁,…,Xₙ i.i.d. N(μ,σ²) con ambos parámetros desconocidos. Muestra que X̄ y S² son independientes.",
-     "solucion": "Basu: si T es completo suficiente y V es ancilario, entonces T⊥V. Con σ² conocida: T=ΣXᵢ es completo suficiente para μ; V=S²=(1/(n−1))Σ(Xᵢ−X̄)² es ancilario para μ (distribución σ²χ²_{n−1}/(n−1), no depende de μ). Por Basu, X̄⊥S² — y esto se mantiene cuando σ² es desconocida.",
-     "explicacion": "El argumento requiere T completo (no solo suficiente). La distribución de S² depende de σ² pero no de μ, lo que lo hace ancilario para μ. Basu entonces da la independencia sin cálculo directo."
+     "enunciado": "Enuncia el teorema de Basu y aplícalo: $X_1,\\dots,X_n$ i.i.d. $N(\\mu,\\sigma^2)$ con ambos parámetros desconocidos. Muestra que $\\bar X$ y $S^2$ son independientes.",
+     "solucion": "Basu: si $T$ es completo suficiente y $V$ es ancilario, entonces $T\\perp V$. Con $\\sigma^2$ conocida: $T=\\sum X_i$ es completo suficiente para $\\mu$; $V=S^2=(1/(n-1))\\sum(X_i-\\bar X)^2$ es ancilario para $\\mu$ (distribución $\\sigma^2\\chi^2_{n-1}/(n-1)$, no depende de $\\mu$). Por Basu, $\\bar X\\perp S^2$ — y esto se mantiene cuando $\\sigma^2$ es desconocida.",
+     "explicacion": "El argumento requiere $T$ completo (no solo suficiente). La distribución de $S^2$ depende de $\\sigma^2$ pero no de $\\mu$, lo que lo hace ancilario para $\\mu$. Basu entonces da la independencia sin cálculo directo."
     },
     {
      "id": "arena-cb1-q6",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Uniform(θ, 2θ), θ>0. Encuentra el estadístico minimal suficiente y discute su completitud.",
-     "solucion": "Minimal suficiente: T=(X₍₁₎, X₍ₙ₎) = (min, max). El cociente de verosimilitudes es 1 ↔ min(x)/min(y)=max(x)/max(y), que equivale a T(x)=T(y) (comprueba la condición de Lehmann-Scheffé). Para completitud: el espacio paramétrico es {θ>0}, que forma una curva en el espacio de (X₍₁₎,X₍ₙ₎) pues ambos deben tener la razón max/min. La familia NO es de rango completo en ℝ².",
-     "explicacion": "La uniforme U(θ,2θ) es un caso clásico donde el estadístico minimal suficiente es bidimensional pero la familia no es completa porque los parámetros naturales están restringidos a una curva."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Uniform$(\\theta, 2\\theta)$, $\\theta>0$. Encuentra el estadístico minimal suficiente y discute su completitud.",
+     "solucion": "Minimal suficiente: $T=(X_{(1)}, X_{(n)}) = (\\min, \\max)$. El cociente de verosimilitudes es 1 $\\Leftrightarrow \\min(x)/\\min(y)=\\max(x)/\\max(y)$, que equivale a $T(x)=T(y)$ (comprueba la condición de Lehmann-Scheffé). Para completitud: el espacio paramétrico es $\\{\\theta>0\\}$, que forma una curva en el espacio de $(X_{(1)},X_{(n)})$ pues ambos deben tener la razón max/min. La familia NO es de rango completo en $\\mathbb{R}^2$.",
+     "explicacion": "La uniforme $U(\\theta,2\\theta)$ es un caso clásico donde el estadístico minimal suficiente es bidimensional pero la familia no es completa porque los parámetros naturales están restringidos a una curva."
     },
     {
      "id": "arena-cb1-q7",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. con f(x|θ) = θx^{θ−1}, 0<x<1, θ>0. (a) Encuentra el estadístico suficiente completo. (b) ¿Qué función de T es el UMVUE de 1/θ?",
-     "solucion": "(a) T=ΣlogXᵢ es suficiente y completo (familia exponencial, un parámetro). (b) Para encontrar el UMVUE de 1/θ: T~Gamma(n,1/θ) (suma de exponenciales con parámetro θ). Necesitamos φ(T) insesgada: E[φ(T)]=1/θ. Prueba φ(T)=−T/n: E[−T/n]=−(1/θ)·n/n=−1/θ... no. Correcto: E[T]=n/θ, así que E[T/n]=1/θ pero T/n=ΣlogXᵢ/n... Espera: −Σlog Xᵢ ~ Gamma(n,1/θ), con E[−ΣlogXᵢ]=n/θ. Así φ(T)=−T/n = −ΣlogXᵢ/n es insesgado para 1/θ y función de T completo suficiente → es el UMVUE.",
-     "explicacion": "Usamos que si T~Gamma(n,β), E[T]=nβ, y aquí T=−ΣlogXᵢ~Gamma(n,1/θ), así que E[T/n]=1/θ. El UMVUE de 1/θ es −ΣlogXᵢ/n."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. con $f(x\\mid\\theta) = \\theta x^{\\theta-1}$, $0<x<1$, $\\theta>0$. (a) Encuentra el estadístico suficiente completo. (b) ¿Qué función de $T$ es el UMVUE de $1/\\theta$?",
+     "solucion": "(a) $T=\\sum\\log X_i$ es suficiente y completo (familia exponencial, un parámetro). (b) Para encontrar el UMVUE de $1/\\theta$: $T\\sim\\text{Gamma}(n,1/\\theta)$ (suma de exponenciales con parámetro $\\theta$). Necesitamos $\\varphi(T)$ insesgada: $E[\\varphi(T)]=1/\\theta$. Prueba $\\varphi(T)=-T/n$: $E[-T/n]=-(1/\\theta)\\cdot n/n=-1/\\theta$... no. Correcto: $E[T]=n/\\theta$, así que $E[T/n]=1/\\theta$ pero $T/n=\\sum\\log X_i/n$... Espera: $-\\sum\\log X_i \\sim \\text{Gamma}(n,1/\\theta)$, con $E[-\\sum\\log X_i]=n/\\theta$. Así $\\varphi(T)=-T/n = -\\sum\\log X_i/n$ es insesgado para $1/\\theta$ y función de $T$ completo suficiente → es el UMVUE.",
+     "explicacion": "Usamos que si $T\\sim\\text{Gamma}(n,\\beta)$, $E[T]=n\\beta$, y aquí $T=-\\sum\\log X_i\\sim\\text{Gamma}(n,1/\\theta)$, así que $E[T/n]=1/\\theta$. El UMVUE de $1/\\theta$ es $-\\sum\\log X_i/n$."
     }
    ]
   },
@@ -11423,60 +11423,60 @@
    },
    "ideas_clave": [
     "MLE de doble exponencial = mediana muestral (minimiza distancias absolutas).",
-    "Cota CR: Var(τ̂)≥[τ'(θ)]²/(n·I(θ)); se alcanza ↔ puntuación lineal en τ̂.",
+    "Cota CR: $\\text{Var}(\\hat\\tau)\\ge[\\tau'(\\theta)]^2/(n\\cdot I(\\theta))$; se alcanza $\\Leftrightarrow$ puntuación lineal en $\\hat\\tau$.",
     "UMVUE: cualquier función insesgada de T completo suficiente es el UMVUE.",
-    "Rao-Blackwell: E[δ|T] siempre es ≥ tan bueno como δ.",
-    "El UMVUE puede NO alcanzar la cota CR (ej: θ² en N(θ,1))."
+    "Rao-Blackwell: $E[\\delta\\mid T]$ siempre es $\\ge$ tan bueno como $\\delta$.",
+    "El UMVUE puede NO alcanzar la cota CR (ej: $\\theta^2$ en $N(\\theta,1)$)."
    ],
    "banco": [
     {
      "id": "arena-cb2-q1",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Uniform[0,θ]. (a) Halla el MLE θ̂. (b) Calcula su sesgo. (c) Da un estimador insesgado basado en θ̂. (d) Compara los MSE del MLE y del estimador insesgado.",
-     "solucion": "(a) θ̂=X₍ₙ₎=max(Xᵢ). (b) E[X₍ₙ₎]=nθ/(n+1), Sesgo=−θ/(n+1). (c) θ\\*=[(n+1)/n]X₍ₙ₎. (d) MSE(θ̂)=2θ²/((n+1)(n+2)), MSE(θ\\*)=θ²/(n(n+2)). Comparando: 2/(n+1) vs 1/n para el factor en θ². Para n≥1: θ\\* tiene menor MSE que θ̂.",
-     "explicacion": "El MLE de la uniforme no es insesgado pero tiene menor varianza que el estimador insesgado por método de momentos. El estimador insesgado θ* tampoco domina a θ̂ en MSE para n pequeño — ahí el sesgo del MLE es relativamente grande."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Uniform$[0,\\theta]$. (a) Halla el MLE $\\hat\\theta$. (b) Calcula su sesgo. (c) Da un estimador insesgado basado en $\\hat\\theta$. (d) Compara los MSE del MLE y del estimador insesgado.",
+     "solucion": "(a) $\\hat\\theta=X_{(n)}=\\max(X_i)$. (b) $E[X_{(n)}]=n\\theta/(n+1)$, Sesgo $=-\\theta/(n+1)$. (c) $\\theta^*=[(n+1)/n]X_{(n)}$. (d) $\\text{MSE}(\\hat\\theta)=2\\theta^2/((n+1)(n+2))$, $\\text{MSE}(\\theta^*)=\\theta^2/(n(n+2))$. Comparando: $2/(n+1)$ vs $1/n$ para el factor en $\\theta^2$. Para $n\\ge1$: $\\theta^*$ tiene menor MSE que $\\hat\\theta$.",
+     "explicacion": "El MLE de la uniforme no es insesgado pero tiene menor varianza que el estimador insesgado por método de momentos. El estimador insesgado $\\theta^*$ tampoco domina a $\\hat\\theta$ en MSE para $n$ pequeño — ahí el sesgo del MLE es relativamente grande."
     },
     {
      "id": "arena-cb2-q2",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. con f(x|θ) = θx^{θ−1}, 0<x<1, θ>0. Halla el MLE de θ y muestra que su varianza → 0 conforme n→∞.",
-     "solucion": "MLE: ℓ(θ)=n log θ+(θ−1)Σlog xᵢ. Derivando: n/θ+Σlog xᵢ=0 → θ̂=−n/Σlog Xᵢ. Varianza: I(θ)=1/θ², así que Var(θ̂) ≈ θ²/n → 0 por la eficiencia asintótica del MLE.",
-     "explicacion": "Como T=−ΣlogXᵢ~Gamma(n,1/θ), el MLE es θ̂=n/T. Por el método delta con g(t)=n/t: Var(θ̂)≈(n/T)²·Var(T)/n → θ²/n conforme n→∞."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. con $f(x\\mid\\theta) = \\theta x^{\\theta-1}$, $0<x<1$, $\\theta>0$. Halla el MLE de $\\theta$ y muestra que su varianza $\\to 0$ conforme $n\\to\\infty$.",
+     "solucion": "MLE: $\\ell(\\theta)=n\\log\\theta+(\\theta-1)\\sum\\log x_i$. Derivando: $n/\\theta+\\sum\\log x_i=0 \\Rightarrow \\hat\\theta=-n/\\sum\\log X_i$. Varianza: $I(\\theta)=1/\\theta^2$, así que $\\text{Var}(\\hat\\theta) \\approx \\theta^2/n \\to 0$ por la eficiencia asintótica del MLE.",
+     "explicacion": "Como $T=-\\sum\\log X_i\\sim\\text{Gamma}(n,1/\\theta)$, el MLE es $\\hat\\theta=n/T$. Por el método delta con $g(t)=n/t$: $\\text{Var}(\\hat\\theta)\\approx(n/T)^2\\cdot\\text{Var}(T)/n \\to \\theta^2/n$ conforme $n\\to\\infty$."
     },
     {
      "id": "arena-cb2-q3",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. con densidad doble exponencial f(x|θ)=(1/2)e^{−|x−θ|}. Muestra que el MLE de θ es la mediana muestral.",
-     "solucion": "ℓ(θ)=−n log 2−Σ|xᵢ−θ|. Maximizar ℓ equivale a minimizar Σ|xᵢ−θ|. Esta función (suma de distancias absolutas) alcanza su mínimo en la mediana muestral. Para n par, en el intervalo [x₍n/2₎, x₍n/2+1₎]; para n impar, en x₍(n+1)/2₎.",
-     "explicacion": "La log-verosimilitud de la doble exponencial no es diferenciable en los puntos de dato. El argumento de minimización de suma de distancias absolutas es el estándar: la derivada vale Σ sign(xᵢ−θ), que cambia de signo en la mediana."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. con densidad doble exponencial $f(x\\mid\\theta)=(1/2)e^{-|x-\\theta|}$. Muestra que el MLE de $\\theta$ es la mediana muestral.",
+     "solucion": "$\\ell(\\theta)=-n\\log 2-\\sum|x_i-\\theta|$. Maximizar $\\ell$ equivale a minimizar $\\sum|x_i-\\theta|$. Esta función (suma de distancias absolutas) alcanza su mínimo en la mediana muestral. Para $n$ par, en el intervalo $[x_{(n/2)}, x_{(n/2+1)}]$; para $n$ impar, en $x_{((n+1)/2)}$.",
+     "explicacion": "La log-verosimilitud de la doble exponencial no es diferenciable en los puntos de dato. El argumento de minimización de suma de distancias absolutas es el estándar: la derivada vale $\\sum\\operatorname{sign}(x_i-\\theta)$, que cambia de signo en la mediana."
     },
     {
      "id": "arena-cb2-q4",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Bernoulli(p). Demuestra que X̄ alcanza la cota de Cramér-Rao para p. ¿Cuál es la cota CR para Var(θ̂) de cualquier estimador insesgado de p?",
-     "solucion": "I(p)=1/(p(1−p)), cota CR para n obs: 1/(n·I(p))=p(1−p)/n. Var(X̄)=p(1−p)/n = cota CR → X̄ es eficiente. La cota se alcanza porque la Bernoulli pertenece a la familia exponencial y ∂ log f/∂p = (x−p)/(p(1−p)) = [1/(p(1−p))](x−p) es lineal en x−p, condición exacta de la cota CR.",
-     "explicacion": "Para cualquier estimador insesgado de p con n Bernoulli, Var(estimador) ≥ p(1−p)/n. X̄ es el único estimador eficiente (alcanza la cota) y es el UMVUE."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Bernoulli$(p)$. Demuestra que $\\bar X$ alcanza la cota de Cramér-Rao para $p$. ¿Cuál es la cota CR para $\\text{Var}(\\hat\\theta)$ de cualquier estimador insesgado de $p$?",
+     "solucion": "$I(p)=1/(p(1-p))$, cota CR para $n$ obs: $1/(n\\cdot I(p))=p(1-p)/n$. $\\text{Var}(\\bar X)=p(1-p)/n =$ cota CR → $\\bar X$ es eficiente. La cota se alcanza porque la Bernoulli pertenece a la familia exponencial y $\\partial\\log f/\\partial p = (x-p)/(p(1-p)) = [1/(p(1-p))](x-p)$ es lineal en $x-p$, condición exacta de la cota CR.",
+     "explicacion": "Para cualquier estimador insesgado de $p$ con $n$ Bernoulli, $\\text{Var}(\\text{estimador}) \\ge p(1-p)/n$. $\\bar X$ es el único estimador eficiente (alcanza la cota) y es el UMVUE."
     },
     {
      "id": "arena-cb2-q5",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. N(θ,1). Halla el UMVUE de θ² y calcula su varianza. ¿Supera la cota CR para θ²?",
-     "solucion": "T=ΣXᵢ es completo suficiente. Como E[X̄²]=θ²+1/n, el UMVUE de θ² es φ(T)=X̄²−1/n. Varianza: Var(X̄²−1/n)=Var(X̄²)=E[X̄⁴]−(θ²+1/n)². Con X̄~N(θ,1/n), se obtiene Var=4θ²/n+2/n². Cota CR para τ(θ)=θ²: [τ'(θ)]²/(n·I(θ))=(2θ)²/(n·1)=4θ²/n. La varianza del UMVUE es 4θ²/n+2/n² > 4θ²/n — NO alcanza la cota CR.",
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. $N(\\theta,1)$. Halla el UMVUE de $\\theta^2$ y calcula su varianza. ¿Supera la cota CR para $\\theta^2$?",
+     "solucion": "$T=\\sum X_i$ es completo suficiente. Como $E[\\bar X^2]=\\theta^2+1/n$, el UMVUE de $\\theta^2$ es $\\varphi(T)=\\bar X^2-1/n$. Varianza: $\\text{Var}(\\bar X^2-1/n)=\\text{Var}(\\bar X^2)=E[\\bar X^4]-(\\theta^2+1/n)^2$. Con $\\bar X\\sim N(\\theta,1/n)$, se obtiene $\\text{Var}=4\\theta^2/n+2/n^2$. Cota CR para $\\tau(\\theta)=\\theta^2$: $[\\tau'(\\theta)]^2/(n\\cdot I(\\theta))=(2\\theta)^2/(n\\cdot 1)=4\\theta^2/n$. La varianza del UMVUE es $4\\theta^2/n+2/n^2 > 4\\theta^2/n$ — NO alcanza la cota CR.",
      "explicacion": "Este es el ejemplo clave de C&B: el UMVUE puede no alcanzar la cota CR. La cota CR es una cota inferior para TODOS los estimadores insesgados, pero solo la alcanza cuando la familia exponencial lo permite (i.e., cuando la ecuación de puntuación es lineal en τ̂)."
     },
     {
      "id": "arena-cb2-q6",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Bernoulli(p). Usa Rao-Blackwell para mejorar el estimador δ(X₁)=X₁ de p y obtener el UMVUE. ¿Qué estimador resulta?",
-     "solucion": "T=ΣXᵢ es completo suficiente. E[X₁|T=t] = P(X₁=1|ΣXᵢ=t) = t/n (por la simetría de la distribución multinomial condicional: dado que hay t éxitos entre n ensayos, la probabilidad de que el primero sea éxito es t/n). Luego φ(T)=T/n=X̄ es el UMVUE.",
-     "explicacion": "Rao-Blackwell en acción: el estimador mejorado E[δ(X₁)|T] resulta ser X̄, que ya sabíamos era el UMVUE. Este cálculo confirma que X̄ es el mejor insesgado no por inspección sino por el teorema."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Bernoulli$(p)$. Usa Rao-Blackwell para mejorar el estimador $\\delta(X_1)=X_1$ de $p$ y obtener el UMVUE. ¿Qué estimador resulta?",
+     "solucion": "$T=\\sum X_i$ es completo suficiente. $E[X_1\\mid T=t] = P(X_1=1\\mid\\sum X_i=t) = t/n$ (por la simetría de la distribución multinomial condicional: dado que hay $t$ éxitos entre $n$ ensayos, la probabilidad de que el primero sea éxito es $t/n$). Luego $\\varphi(T)=T/n=\\bar X$ es el UMVUE.",
+     "explicacion": "Rao-Blackwell en acción: el estimador mejorado $E[\\delta(X_1)\\mid T]$ resulta ser $\\bar X$, que ya sabíamos era el UMVUE. Este cálculo confirma que $\\bar X$ es el mejor insesgado no por inspección sino por el teorema."
     },
     {
      "id": "arena-cb2-q7",
      "tipo": "quiz",
-     "enunciado": "Para la distribución Gamma(α,β) con α conocido, halla el MLE de β y verifica que alcanza la cota de Cramér-Rao.",
-     "solucion": "f(x|β)=(1/Γ(α)βᵅ)xᵅ⁻¹e^{−x/β}. Log-verosimilitud: ℓ(β)=−nα log β−(1/β)Σxᵢ+cte. Ecuación de puntuación: −nα/β+Σxᵢ/β²=0 → β̂=X̄/α. Info de Fisher: I(β)=α/β². Var(β̂)=Var(X̄/α)=β²/(nα). Cota CR: 1/(n·I(β))=β²/(nα). Coinciden → β̂ alcanza la cota CR.",
-     "explicacion": "La Gamma pertenece a la familia exponencial y el estadístico suficiente T=ΣXᵢ permite que la ecuación de puntuación sea lineal en T: ∂ℓ/∂β = −nα/β + T/β² = (α/β²)(T/α−β). La linealidad en T es la condición exacta de la cota CR."
+     "enunciado": "Para la distribución Gamma$(\\alpha,\\beta)$ con $\\alpha$ conocido, halla el MLE de $\\beta$ y verifica que alcanza la cota de Cramér-Rao.",
+     "solucion": "$f(x\\mid\\beta)=(1/\\Gamma(\\alpha)\\beta^\\alpha)x^{\\alpha-1}e^{-x/\\beta}$. Log-verosimilitud: $\\ell(\\beta)=-n\\alpha\\log\\beta-(1/\\beta)\\sum x_i+\\text{cte}$. Ecuación de puntuación: $-n\\alpha/\\beta+\\sum x_i/\\beta^2=0 \\Rightarrow \\hat\\beta=\\bar X/\\alpha$. Info de Fisher: $I(\\beta)=\\alpha/\\beta^2$. $\\text{Var}(\\hat\\beta)=\\text{Var}(\\bar X/\\alpha)=\\beta^2/(n\\alpha)$. Cota CR: $1/(n\\cdot I(\\beta))=\\beta^2/(n\\alpha)$. Coinciden → $\\hat\\beta$ alcanza la cota CR.",
+     "explicacion": "La Gamma pertenece a la familia exponencial y el estadístico suficiente $T=\\sum X_i$ permite que la ecuación de puntuación sea lineal en $T$: $\\partial\\ell/\\partial\\beta = -n\\alpha/\\beta + T/\\beta^2 = (\\alpha/\\beta^2)(T/\\alpha-\\beta)$. La linealidad en $T$ es la condición exacta de la cota CR."
     }
    ]
   },
@@ -11509,61 +11509,61 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "NP Lemma: rechaza si L(θ₁|x)/L(θ₀|x)>k; la región es función de T suficiente.",
+    "NP Lemma: rechaza si $L(\\theta_1\\mid x)/L(\\theta_0\\mid x)>k$; la región es función de $T$ suficiente.",
     "MLR → UMP unilateral: rechaza si T>c (o T<c según el sentido).",
     "No existe UMP bilateral en general; sí UMP entre tests no sesgados.",
-    "LRT: −2 log λ →_d χ²_r (r = diferencia de dimensiones).",
-    "Diseño: n=(z_α+z_{β\\*})²σ²/δ² para detectar diferencia δ con potencia β\\*."
+    "LRT: $-2\\log\\lambda \\xrightarrow{d}\\chi^2_r$ ($r$ = diferencia de dimensiones).",
+    "Diseño: $n=(z_\\alpha+z_{\\beta^*})^2\\sigma^2/\\delta^2$ para detectar diferencia $\\delta$ con potencia $\\beta^*$."
    ],
    "banco": [
     {
      "id": "arena-cb3-q1",
      "tipo": "quiz",
      "enunciado": "En 1000 lanzamientos de una moneda salen 560 caras. ¿Es razonable que la moneda sea justa? Plantea un test de hipótesis formal y calcula el p-valor.",
-     "solucion": "H₀: p=0.5 vs H₁: p≠0.5. Estadístico: z=(560−500)/√(1000·0.5·0.5)=(60/√250)≈3.79. p-valor=2P(Z>3.79)≈0.00015. Rechazamos H₀ a cualquier nivel razonable; hay evidencia fuerte de que la moneda no es justa.",
-     "explicacion": "Con n=1000 por el TLC: p̂~N(0.5, 0.25/1000). El z-score de 3.79 supera z_{0.025}=1.96 con creces. Un p-valor de 0.015% indica que si la moneda fuera justa, 560+ caras sería extremadamente improbable."
+     "solucion": "$H_0$: $p=0.5$ vs $H_1$: $p\\ne0.5$. Estadístico: $z=(560-500)/\\sqrt{1000\\cdot0.5\\cdot0.5}=(60/\\sqrt{250})\\approx3.79$. p-valor $=2P(Z>3.79)\\approx0.00015$. Rechazamos $H_0$ a cualquier nivel razonable; hay evidencia fuerte de que la moneda no es justa.",
+     "explicacion": "Con $n=1000$ por el TLC: $\\hat p\\sim N(0.5, 0.25/1000)$. El z-score de 3.79 supera $z_{0.025}=1.96$ con creces. Un p-valor de 0.015% indica que si la moneda fuera justa, 560+ caras sería extremadamente improbable."
     },
     {
      "id": "arena-cb3-q2",
      "tipo": "quiz",
-     "enunciado": "Enuncia el Lema de Neyman-Pearson y aplícalo: X₁,…,Xₙ i.i.d. N(μ,1). Test H₀: μ=0 vs H₁: μ=1. ¿Cuál es el test más potente de nivel α=0.05?",
-     "solucion": "NP: rechaza H₀ cuando L(1|x)/L(0|x)>k. El cociente es exp(−n/2+Σxᵢ), creciente en Σxᵢ=nX̄. Rechaza si X̄>k'. Con H₀, nX̄~N(0,n), así que X̄~N(0,1/n). P(X̄>k')=0.05 → k'=z_{0.05}/√n. Test: rechaza si X̄ > 1.645/√n. Potencia: β(1)=P_{μ=1}(X̄>1.645/√n)=P(Z>1.645−√n).",
-     "explicacion": "El cociente de verosimilitudes para la normal con varianza conocida siempre resulta en un test basado en X̄. El Lema NP garantiza que no hay test de nivel α con mayor potencia contra μ=1."
+     "enunciado": "Enuncia el Lema de Neyman-Pearson y aplícalo: $X_1,\\dots,X_n$ i.i.d. $N(\\mu,1)$. Test $H_0$: $\\mu=0$ vs $H_1$: $\\mu=1$. ¿Cuál es el test más potente de nivel $\\alpha=0.05$?",
+     "solucion": "NP: rechaza $H_0$ cuando $L(1\\mid x)/L(0\\mid x)>k$. El cociente es $\\exp(-n/2+\\sum x_i)$, creciente en $\\sum x_i=n\\bar X$. Rechaza si $\\bar X>k'$. Con $H_0$, $n\\bar X\\sim N(0,n)$, así que $\\bar X\\sim N(0,1/n)$. $P(\\bar X>k')=0.05 \\Rightarrow k'=z_{0.05}/\\sqrt n$. Test: rechaza si $\\bar X > 1.645/\\sqrt n$. Potencia: $\\beta(1)=P_{\\mu=1}(\\bar X>1.645/\\sqrt n)=P(Z>1.645-\\sqrt n)$.",
+     "explicacion": "El cociente de verosimilitudes para la normal con varianza conocida siempre resulta en un test basado en $\\bar X$. El Lema NP garantiza que no hay test de nivel $\\alpha$ con mayor potencia contra $\\mu=1$."
     },
     {
      "id": "arena-cb3-q3",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Poisson(λ). Encuentra el test UMP de nivel α para H₀: λ≤λ₀ vs H₁: λ>λ₀.",
-     "solucion": "La familia Poisson tiene MLR en ΣXᵢ (la densidad conjunta es proporional a λ^{Σxᵢ}e^{−nλ}, creciente en ΣXᵢ para λ₂>λ₁). Por el corolario del MLR, el test UMP rechaza si ΣXᵢ>c, donde P_{λ₀}(ΣXᵢ>c)=α. Como ΣXᵢ~Poisson(nλ₀), c se encuentra con tablas Poisson.",
-     "explicacion": "Para la Poisson con MLR en ΣXᵢ, el test UMP para hipótesis unilateral es simplemente 'rechaza si ΣXᵢ demasiado grande'. Para niveles exactos en distribuciones discretas, se usa a veces un test aleatorizado: rechaza con probabilidad γ cuando ΣXᵢ=c."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Poisson$(\\lambda)$. Encuentra el test UMP de nivel $\\alpha$ para $H_0$: $\\lambda\\le\\lambda_0$ vs $H_1$: $\\lambda>\\lambda_0$.",
+     "solucion": "La familia Poisson tiene MLR en $\\sum X_i$ (la densidad conjunta es proporcional a $\\lambda^{\\sum x_i}e^{-n\\lambda}$, creciente en $\\sum X_i$ para $\\lambda_2>\\lambda_1$). Por el corolario del MLR, el test UMP rechaza si $\\sum X_i>c$, donde $P_{\\lambda_0}(\\sum X_i>c)=\\alpha$. Como $\\sum X_i\\sim\\text{Poisson}(n\\lambda_0)$, $c$ se encuentra con tablas Poisson.",
+     "explicacion": "Para la Poisson con MLR en $\\sum X_i$, el test UMP para hipótesis unilateral es simplemente 'rechaza si $\\sum X_i$ demasiado grande'. Para niveles exactos en distribuciones discretas, se usa a veces un test aleatorizado: rechaza con probabilidad $\\gamma$ cuando $\\sum X_i=c$."
     },
     {
      "id": "arena-cb3-q4",
      "tipo": "quiz",
-     "enunciado": "X~Beta(θ,1), f(x|θ)=θx^{θ−1}, 0<x<1, θ>0. Encuentra el test UMP de nivel α para H₀: θ≤1 vs H₁: θ>1 basado en UNA observación.",
-     "solucion": "La densidad tiene MLR en logX: f(x|θ₂)/f(x|θ₁)=(θ₂/θ₁)x^{θ₂−θ₁} es creciente en log x cuando θ₂>θ₁. Test UMP: rechaza si log X > c, i.e., si X > e^c. Tamaño: P_{θ=1}(X > c) = 1−c (bajo θ=1, f(x|1)=1, uniforme[0,1]). Así c=1−α. Test: rechaza si X > 1−α.",
-     "explicacion": "El truco es reconocer que logX juega el papel del estadístico suficiente ordenador. Bajo H₀: θ=1, X~Uniform[0,1], así que calibrar el nivel es trivial."
+     "enunciado": "$X\\sim\\text{Beta}(\\theta,1)$, $f(x\\mid\\theta)=\\theta x^{\\theta-1}$, $0<x<1$, $\\theta>0$. Encuentra el test UMP de nivel $\\alpha$ para $H_0$: $\\theta\\le1$ vs $H_1$: $\\theta>1$ basado en UNA observación.",
+     "solucion": "La densidad tiene MLR en $\\log X$: $f(x\\mid\\theta_2)/f(x\\mid\\theta_1)=(\\theta_2/\\theta_1)x^{\\theta_2-\\theta_1}$ es creciente en $\\log x$ cuando $\\theta_2>\\theta_1$. Test UMP: rechaza si $\\log X > c$, i.e., si $X > e^c$. Tamaño: $P_{\\theta=1}(X > c) = 1-c$ (bajo $\\theta=1$, $f(x\\mid1)=1$, uniforme$[0,1]$). Así $c=1-\\alpha$. Test: rechaza si $X > 1-\\alpha$.",
+     "explicacion": "El truco es reconocer que $\\log X$ juega el papel del estadístico suficiente ordenador. Bajo $H_0$: $\\theta=1$, $X\\sim\\text{Uniform}[0,1]$, así que calibrar el nivel es trivial."
     },
     {
      "id": "arena-cb3-q5",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. N(μ,σ²) con σ² desconocida. Deriva el LRT para H₀: μ=μ₀ vs H₁: μ≠μ₀ y muestra que equivale al test t.",
-     "solucion": "LRT: λ(x)=sup_{μ=μ₀}L/(sup_μ L). Numerador: MLE bajo H₀ son μ=μ₀, σ̂₀²=(1/n)Σ(xᵢ−μ₀)². Denominador: μ̂=X̄, σ̂²=(1/n)Σ(xᵢ−X̄)². El cociente λ=(σ̂²/σ̂₀²)^{n/2}=(1+t²/(n−1))^{−n/2} donde t=(X̄−μ₀)/(S/√n). Rechaza si λ<k ↔ |t|>c. Bajo H₀, T~t_{n−1}.",
-     "explicacion": "El álgebra muestra que Σ(xᵢ−μ₀)²=Σ(xᵢ−X̄)²+n(X̄−μ₀)²=(n−1)S²+nT̄², y el cociente simplifica en función de T. Este es el test t de Student derivado formalmente desde primeros principios."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. $N(\\mu,\\sigma^2)$ con $\\sigma^2$ desconocida. Deriva el LRT para $H_0$: $\\mu=\\mu_0$ vs $H_1$: $\\mu\\ne\\mu_0$ y muestra que equivale al test t.",
+     "solucion": "LRT: $\\lambda(x)=\\sup_{\\mu=\\mu_0}L/(\\sup_\\mu L)$. Numerador: MLE bajo $H_0$ son $\\mu=\\mu_0$, $\\hat\\sigma_0^2=(1/n)\\sum(x_i-\\mu_0)^2$. Denominador: $\\hat\\mu=\\bar X$, $\\hat\\sigma^2=(1/n)\\sum(x_i-\\bar X)^2$. El cociente $\\lambda=(\\hat\\sigma^2/\\hat\\sigma_0^2)^{n/2}=(1+t^2/(n-1))^{-n/2}$ donde $t=(\\bar X-\\mu_0)/(S/\\sqrt n)$. Rechaza si $\\lambda<k \\Leftrightarrow |t|>c$. Bajo $H_0$, $T\\sim t_{n-1}$.",
+     "explicacion": "El álgebra muestra que $\\sum(x_i-\\mu_0)^2=\\sum(x_i-\\bar X)^2+n(\\bar X-\\mu_0)^2=(n-1)S^2+n\\bar T^2$, y el cociente simplifica en función de $T$. Este es el test t de Student derivado formalmente desde primeros principios."
     },
     {
      "id": "arena-cb3-q6",
      "tipo": "quiz",
-     "enunciado": "Dos muestras independientes: X₁,…,Xₙ~N(μ_X,σ²) y Y₁,…,Yₘ~N(μ_Y,σ²) con σ² desconocida y común. Indica el LRT para H₀: μ_X=μ_Y y da su distribución bajo H₀.",
-     "solucion": "El LRT conduce al estadístico t de dos muestras: T=(X̄−Ȳ)/[Sₚ√(1/n+1/m)], donde Sₚ²=[(n−1)S_X²+(m−1)S_Y²]/(n+m−2) es la varianza pooled. Bajo H₀, T~t_{n+m−2}. Rechaza H₀ si |T|>t_{n+m−2,α/2}.",
-     "explicacion": "La derivación del LRT para dos medias con varianza común pooled conduce exactamente al test t de Welch/Student de dos muestras. La varianza pooled Sₚ² combina las dos estimaciones de σ² ponderando por sus grados de libertad."
+     "enunciado": "Dos muestras independientes: $X_1,\\dots,X_n\\sim N(\\mu_X,\\sigma^2)$ y $Y_1,\\dots,Y_m\\sim N(\\mu_Y,\\sigma^2)$ con $\\sigma^2$ desconocida y común. Indica el LRT para $H_0$: $\\mu_X=\\mu_Y$ y da su distribución bajo $H_0$.",
+     "solucion": "El LRT conduce al estadístico t de dos muestras: $T=(\\bar X-\\bar Y)/[S_p\\sqrt{1/n+1/m}]$, donde $S_p^2=[(n-1)S_X^2+(m-1)S_Y^2]/(n+m-2)$ es la varianza pooled. Bajo $H_0$, $T\\sim t_{n+m-2}$. Rechaza $H_0$ si $|T|>t_{n+m-2,\\alpha/2}$.",
+     "explicacion": "La derivación del LRT para dos medias con varianza común pooled conduce exactamente al test t de Welch/Student de dos muestras. La varianza pooled $S_p^2$ combina las dos estimaciones de $\\sigma^2$ ponderando por sus grados de libertad."
     },
     {
      "id": "arena-cb3-q7",
      "tipo": "quiz",
-     "enunciado": "Se desea un test de nivel α=0.05 para H₀: μ=μ₀ vs H₁: μ=μ₁>μ₀ en N(μ,σ²) con σ² conocida, con potencia β*=0.90 en μ=μ₁=μ₀+δ. ¿Cuántas observaciones se necesitan?",
-     "solucion": "El test es: rechaza si Z=(X̄−μ₀)/(σ/√n)>z_α=1.645. La potencia en μ₁: β(μ₁)=P_{μ₁}(Z>z_α)=P(Z>z_α−δ√n/σ)=1−Φ(z_α−δ√n/σ)=0.90. Entonces z_α−δ√n/σ=−z_{0.10}=−1.282. Despejando: n=σ²(z_α+z_{0.10})²/δ²=σ²(1.645+1.282)²/δ²≈σ²·8.56/δ².",
-     "explicacion": "La fórmula n=(z_α+z_{β*})²σ²/δ² es la estándar para el diseño del tamaño de muestra. Aquí δ=μ₁−μ₀ es el efecto a detectar. Con α=0.05 y potencia=0.90: n≈(2.927)²σ²/δ²≈8.57σ²/δ²."
+     "enunciado": "Se desea un test de nivel $\\alpha=0.05$ para $H_0$: $\\mu=\\mu_0$ vs $H_1$: $\\mu=\\mu_1>\\mu_0$ en $N(\\mu,\\sigma^2)$ con $\\sigma^2$ conocida, con potencia $\\beta^*=0.90$ en $\\mu=\\mu_1=\\mu_0+\\delta$. ¿Cuántas observaciones se necesitan?",
+     "solucion": "El test es: rechaza si $Z=(\\bar X-\\mu_0)/(\\sigma/\\sqrt n)>z_\\alpha=1.645$. La potencia en $\\mu_1$: $\\beta(\\mu_1)=P_{\\mu_1}(Z>z_\\alpha)=P(Z>z_\\alpha-\\delta\\sqrt n/\\sigma)=1-\\Phi(z_\\alpha-\\delta\\sqrt n/\\sigma)=0.90$. Entonces $z_\\alpha-\\delta\\sqrt n/\\sigma=-z_{0.10}=-1.282$. Despejando: $n=\\sigma^2(z_\\alpha+z_{0.10})^2/\\delta^2=\\sigma^2(1.645+1.282)^2/\\delta^2\\approx\\sigma^2\\cdot8.56/\\delta^2$.",
+     "explicacion": "La fórmula $n=(z_\\alpha+z_{\\beta^*})^2\\sigma^2/\\delta^2$ es la estándar para el diseño del tamaño de muestra. Aquí $\\delta=\\mu_1-\\mu_0$ es el efecto a detectar. Con $\\alpha=0.05$ y potencia $=0.90$: $n\\approx(2.927)^2\\sigma^2/\\delta^2\\approx8.57\\sigma^2/\\delta^2$."
     }
    ]
   },
@@ -11594,61 +11594,61 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Pivot: Q(X,θ) con distribución conocida → despeja θ de P(a≤Q≤b)=1−α.",
-    "IC por inversión: C(x)={θ₀: test de H₀:θ=θ₀ no rechaza x} → UMA si inviertes UMP.",
-    "Delta method: Var(g(θ̂))≈[g'(θ)]²·Var(θ̂) asintóticamente.",
-    "Logit(p̂) ± 1.96/√(n·p̂(1−p̂)) acota el logit; arctanh(r̂) ± z/√(n−3) para correlación.",
-    "Tamaño muestral: n=(z_{α/2}·σ/(δ/2))² para longitud de IC ≤ δ."
+    "Pivot: $Q(X,\\theta)$ con distribución conocida → despeja $\\theta$ de $P(a\\le Q\\le b)=1-\\alpha$.",
+    "IC por inversión: $C(x)=\\{\\theta_0: \\text{test de } H_0:\\theta=\\theta_0 \\text{ no rechaza } x\\}$ → UMA si inviertes UMP.",
+    "Delta method: $\\text{Var}(g(\\hat\\theta))\\approx[g'(\\theta)]^2\\cdot\\text{Var}(\\hat\\theta)$ asintóticamente.",
+    "$\\text{Logit}(\\hat p) \\pm 1.96/\\sqrt{n\\cdot\\hat p(1-\\hat p)}$ acota el logit; $\\operatorname{arctanh}(\\hat r) \\pm z/\\sqrt{n-3}$ para correlación.",
+    "Tamaño muestral: $n=(z_{\\alpha/2}\\cdot\\sigma/(\\delta/2))^2$ para longitud de IC $\\le \\delta$."
    ],
    "banco": [
     {
      "id": "arena-cb4-q1",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. N(μ,σ²) con σ² desconocida. Construye un IC de nivel 95% para μ identificando el pivote y despejando μ.",
-     "solucion": "Pivote: T=(X̄−μ)/(S/√n)~t_{n−1} (no depende de μ ni σ²). P(−t_{n−1,0.025}≤T≤t_{n−1,0.025})=0.95. Despejando μ: X̄−t_{n−1,0.025}·S/√n ≤ μ ≤ X̄+t_{n−1,0.025}·S/√n. IC: [X̄ ± t_{n−1,0.025}·S/√n].",
-     "explicacion": "La clave es que T no depende del parámetro desconocido σ². El t-estadístico es el pivote correcto para la media normal cuando σ² es desconocida; con σ² conocida, usaríamos Z~N(0,1)."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. $N(\\mu,\\sigma^2)$ con $\\sigma^2$ desconocida. Construye un IC de nivel 95% para $\\mu$ identificando el pivote y despejando $\\mu$.",
+     "solucion": "Pivote: $T=(\\bar X-\\mu)/(S/\\sqrt n)\\sim t_{n-1}$ (no depende de $\\mu$ ni $\\sigma^2$). $P(-t_{n-1,0.025}\\le T\\le t_{n-1,0.025})=0.95$. Despejando $\\mu$: $\\bar X-t_{n-1,0.025}\\cdot S/\\sqrt n \\le \\mu \\le \\bar X+t_{n-1,0.025}\\cdot S/\\sqrt n$. IC: $[\\bar X \\pm t_{n-1,0.025}\\cdot S/\\sqrt n]$.",
+     "explicacion": "La clave es que $T$ no depende del parámetro desconocido $\\sigma^2$. El t-estadístico es el pivote correcto para la media normal cuando $\\sigma^2$ es desconocida; con $\\sigma^2$ conocida, usaríamos $Z\\sim N(0,1)$."
     },
     {
      "id": "arena-cb4-q2",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Uniform[0,θ]. (a) Muestra que Q=X₍ₙ₎/θ es un pivote. (b) Halla el IC de nivel 1−α más corto posible.",
-     "solucion": "(a) Q=X₍ₙ₎/θ~Beta(n,1), densidad nq^{n−1} en (0,1): no depende de θ. (b) Intervalo de nivel 1−α: P(a≤Q≤1)=1−α → a^n=α → a=α^{1/n}. El IC es [X₍ₙ₎, X₍ₙ₎/α^{1/n}]. Es el más corto porque la densidad de Beta(n,1) es monótona creciente: la región de máxima densidad está concentrada cerca de 1.",
-     "explicacion": "El pivot Beta(n,1) tiene densidad creciente, así que el intervalo más corto de nivel 1−α es el del extremo derecho: [α^{1/n}, 1]. Inversamente, θ∈[X₍ₙ₎, X₍ₙ₎/α^{1/n}]. Para n=10, α=0.05: α^{1/n}≈0.741 → IC de longitud relativa ≈35%."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Uniform$[0,\\theta]$. (a) Muestra que $Q=X_{(n)}/\\theta$ es un pivote. (b) Halla el IC de nivel $1-\\alpha$ más corto posible.",
+     "solucion": "(a) $Q=X_{(n)}/\\theta\\sim\\text{Beta}(n,1)$, densidad $nq^{n-1}$ en $(0,1)$: no depende de $\\theta$. (b) Intervalo de nivel $1-\\alpha$: $P(a\\le Q\\le1)=1-\\alpha \\Rightarrow a^n=\\alpha \\Rightarrow a=\\alpha^{1/n}$. El IC es $[X_{(n)}, X_{(n)}/\\alpha^{1/n}]$. Es el más corto porque la densidad de $\\text{Beta}(n,1)$ es monótona creciente: la región de máxima densidad está concentrada cerca de 1.",
+     "explicacion": "El pivot $\\text{Beta}(n,1)$ tiene densidad creciente, así que el intervalo más corto de nivel $1-\\alpha$ es el del extremo derecho: $[\\alpha^{1/n}, 1]$. Inversamente, $\\theta\\in[X_{(n)}, X_{(n)}/\\alpha^{1/n}]$. Para $n=10$, $\\alpha=0.05$: $\\alpha^{1/n}\\approx0.741 \\Rightarrow$ IC de longitud relativa $\\approx35\\%$."
     },
     {
      "id": "arena-cb4-q3",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. Exponencial(λ). Construye un IC de nivel 1−α para λ invirtiendo el test UMP de H₀: λ=λ₀.",
-     "solucion": "El test UMP para H₀: λ≤λ₀ rechaza si 2λ₀ΣXᵢ>χ²_{2n,α}. El IC se obtiene invirtiendo: el conjunto de λ₀ que NO rechazarían los datos es [χ²_{2n,1−α/2}/(2ΣXᵢ), χ²_{2n,α/2}/(2ΣXᵢ)]. Pivot: 2λΣXᵢ~χ²_{2n} (pues ΣXᵢ~Gamma(n,1/λ)).",
-     "explicacion": "La inversión del test UMP da automáticamente el IC UMA (Uniformly Most Accurate), que tiene la menor longitud media entre todos los IC de nivel 1−α. El pivot chi-cuadrado con 2n grados de libertad aparece porque ΣXᵢ~Gamma(n,1/λ) y 2λΣXᵢ~Gamma(n,1)=χ²_{2n}."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. Exponencial$(\\lambda)$. Construye un IC de nivel $1-\\alpha$ para $\\lambda$ invirtiendo el test UMP de $H_0$: $\\lambda=\\lambda_0$.",
+     "solucion": "El test UMP para $H_0$: $\\lambda\\le\\lambda_0$ rechaza si $2\\lambda_0\\sum X_i>\\chi^2_{2n,\\alpha}$. El IC se obtiene invirtiendo: el conjunto de $\\lambda_0$ que NO rechazarían los datos es $[\\chi^2_{2n,1-\\alpha/2}/(2\\sum X_i), \\chi^2_{2n,\\alpha/2}/(2\\sum X_i)]$. Pivot: $2\\lambda\\sum X_i\\sim\\chi^2_{2n}$ (pues $\\sum X_i\\sim\\text{Gamma}(n,1/\\lambda)$).",
+     "explicacion": "La inversión del test UMP da automáticamente el IC UMA (Uniformly Most Accurate), que tiene la menor longitud media entre todos los IC de nivel $1-\\alpha$. El pivot chi-cuadrado con $2n$ grados de libertad aparece porque $\\sum X_i\\sim\\text{Gamma}(n,1/\\lambda)$ y $2\\lambda\\sum X_i\\sim\\text{Gamma}(n,1)=\\chi^2_{2n}$."
     },
     {
      "id": "arena-cb4-q4",
      "tipo": "quiz",
-     "enunciado": "Enuncia el método delta y aplícalo: X₁,…,Xₙ i.i.d. Bernoulli(p) y queremos un IC de nivel 95% para el logit log(p/(1−p)).",
-     "solucion": "Delta method: si √n(p̂−p)→N(0,p(1−p)) y g(p)=log(p/(1−p)), entonces √n(g(p̂)−g(p))→N(0,p(1−p)·[g'(p)]²). Derivada: g'(p)=1/(p(1−p)). Varianza asintótica de g(p̂): p(1−p)·[1/(p(1−p))]²=1/(p(1−p)). IC: g(p̂) ± 1.96/√(n·p̂(1−p̂)) = log(p̂/(1−p̂)) ± 1.96/√(n·p̂(1−p̂)).",
+     "enunciado": "Enuncia el método delta y aplícalo: $X_1,\\dots,X_n$ i.i.d. Bernoulli$(p)$ y queremos un IC de nivel 95% para el logit $\\log(p/(1-p))$.",
+     "solucion": "Delta method: si $\\sqrt n(\\hat p-p)\\to N(0,p(1-p))$ y $g(p)=\\log(p/(1-p))$, entonces $\\sqrt n(g(\\hat p)-g(p))\\to N(0,p(1-p)\\cdot[g'(p)]^2)$. Derivada: $g'(p)=1/(p(1-p))$. Varianza asintótica de $g(\\hat p)$: $p(1-p)\\cdot[1/(p(1-p))]^2=1/(p(1-p))$. IC: $g(\\hat p) \\pm 1.96/\\sqrt{n\\cdot\\hat p(1-\\hat p)} = \\log(\\hat p/(1-\\hat p)) \\pm 1.96/\\sqrt{n\\cdot\\hat p(1-\\hat p)}$.",
      "explicacion": "La transformación logit estabiliza la varianza en los extremos (p cerca de 0 o 1), donde el IC normal para p puede salir de [0,1]. El IC en escala logit se retrotransforma con la función logística para obtener un IC para p acotado en (0,1)."
     },
     {
      "id": "arena-cb4-q5",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. N(μ,σ²) con σ² conocida. ¿Cuál es el mínimo n para garantizar que un IC del 95% para μ tenga longitud no mayor que δ?",
-     "solucion": "IC 95%: longitud=2·z_{0.025}·σ/√n=2·1.96σ/√n. Para longitud ≤ δ: n ≥ (2·1.96σ/δ)² = (3.92σ/δ)². Fórmula: n ≥ ⌈(3.92σ)²/δ²⌉. Si σ desconocida: usa σ̂ del piloto o el bound peor caso con rango/4 (para muestras pequeñas de normal).",
-     "explicacion": "En diseño de estudios, antes de recolectar datos se especifica la precisión deseada δ (semi-longitud) y se calcula n. Si σ es desconocida, se usa S de un piloto o la regla de Stein en dos etapas."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. $N(\\mu,\\sigma^2)$ con $\\sigma^2$ conocida. ¿Cuál es el mínimo $n$ para garantizar que un IC del 95% para $\\mu$ tenga longitud no mayor que $\\delta$?",
+     "solucion": "IC 95%: longitud $=2\\cdot z_{0.025}\\cdot\\sigma/\\sqrt n=2\\cdot1.96\\sigma/\\sqrt n$. Para longitud $\\le \\delta$: $n \\ge (2\\cdot1.96\\sigma/\\delta)^2 = (3.92\\sigma/\\delta)^2$. Fórmula: $n \\ge \\lceil(3.92\\sigma)^2/\\delta^2\\rceil$. Si $\\sigma$ desconocida: usa $\\hat\\sigma$ del piloto o el bound peor caso con rango/4 (para muestras pequeñas de normal).",
+     "explicacion": "En diseño de estudios, antes de recolectar datos se especifica la precisión deseada $\\delta$ (semi-longitud) y se calcula $n$. Si $\\sigma$ es desconocida, se usa $S$ de un piloto o la regla de Stein en dos etapas."
     },
     {
      "id": "arena-cb4-q6",
      "tipo": "quiz",
-     "enunciado": "El coeficiente de correlación muestral r̂ de una muestra de tamaño n tiene la propiedad de que su distribución es complicada cuando ρ≠0. Aplica el método delta a la transformación de Fisher z=arctanh(r̂) para dar un IC asintótico para ρ.",
-     "solucion": "Por el método delta con g(r)=arctanh(r) y g'(r)=1/(1−r²): √n(z−ρ\\*)→N(0,1) donde ρ\\*=arctanh(ρ). De hecho, la varianza exacta de arctanh(r̂) es ≈1/(n−3) (Fisher 1921). IC para arctanh(ρ): arctanh(r̂) ± z_{α/2}/√(n−3). Retrotransforma: ρ ∈ [tanh(L), tanh(U)].",
-     "explicacion": "La transformación de Fisher estabiliza la varianza de r̂ de forma que arctanh(r̂) es aproximadamente N(arctanh(ρ), 1/(n−3)) para cualquier ρ. Sin esto, el IC de r̂ sería muy inexacto, especialmente para |ρ| grande."
+     "enunciado": "El coeficiente de correlación muestral $\\hat r$ de una muestra de tamaño $n$ tiene la propiedad de que su distribución es complicada cuando $\\rho\\ne0$. Aplica el método delta a la transformación de Fisher $z=\\operatorname{arctanh}(\\hat r)$ para dar un IC asintótico para $\\rho$.",
+     "solucion": "Por el método delta con $g(r)=\\operatorname{arctanh}(r)$ y $g'(r)=1/(1-r^2)$: $\\sqrt n(z-\\rho^*)\\to N(0,1)$ donde $\\rho^*=\\operatorname{arctanh}(\\rho)$. De hecho, la varianza exacta de $\\operatorname{arctanh}(\\hat r)$ es $\\approx1/(n-3)$ (Fisher 1921). IC para $\\operatorname{arctanh}(\\rho)$: $\\operatorname{arctanh}(\\hat r) \\pm z_{\\alpha/2}/\\sqrt{n-3}$. Retrotransforma: $\\rho \\in [\\tanh(L), \\tanh(U)]$.",
+     "explicacion": "La transformación de Fisher estabiliza la varianza de $\\hat r$ de forma que $\\operatorname{arctanh}(\\hat r)$ es aproximadamente $N(\\operatorname{arctanh}(\\rho), 1/(n-3))$ para cualquier $\\rho$. Sin esto, el IC de $\\hat r$ sería muy inexacto, especialmente para $|\\rho|$ grande."
     },
     {
      "id": "arena-cb4-q7",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ i.i.d. N(μ,σ²) con ambos desconocidos. Usa la desigualdad de Bonferroni para construir un IC simultáneo de nivel 90% para (μ, σ²).",
-     "solucion": "Construye ICs individuales de nivel 95% (α/2=5%) para cada parámetro. IC para μ: X̄ ± t_{n−1,0.025}·S/√n. IC para σ²: [(n−1)S²/χ²_{n−1,0.025}, (n−1)S²/χ²_{n−1,0.975}]. Por Bonferroni: P(ambos contienen) ≥ 1−0.05−0.05=0.90.",
-     "explicacion": "La desigualdad de Bonferroni: P(∩Aᵢ) ≥ 1−Σ P(Aᵢᶜ). Usar α/k=0.05 en cada uno de k=2 ICs garantiza nivel conjunto ≥ 1−k·(α/k)=1−α=0.90. Los ICs individuales son independientes en la normal (por el teorema de Fisher), así que el nivel conjunto exacto es 0.95²≈0.9025."
+     "enunciado": "$X_1,\\dots,X_n$ i.i.d. $N(\\mu,\\sigma^2)$ con ambos desconocidos. Usa la desigualdad de Bonferroni para construir un IC simultáneo de nivel 90% para $(\\mu, \\sigma^2)$.",
+     "solucion": "Construye ICs individuales de nivel 95% ($\\alpha/2=5\\%$) para cada parámetro. IC para $\\mu$: $\\bar X \\pm t_{n-1,0.025}\\cdot S/\\sqrt n$. IC para $\\sigma^2$: $[(n-1)S^2/\\chi^2_{n-1,0.025}, (n-1)S^2/\\chi^2_{n-1,0.975}]$. Por Bonferroni: $P(\\text{ambos contienen}) \\ge 1-0.05-0.05=0.90$.",
+     "explicacion": "La desigualdad de Bonferroni: $P(\\cap A_i) \\ge 1-\\sum P(A_i^c)$. Usar $\\alpha/k=0.05$ en cada uno de $k=2$ ICs garantiza nivel conjunto $\\ge 1-k\\cdot(\\alpha/k)=1-\\alpha=0.90$. Los ICs individuales son independientes en la normal (por el teorema de Fisher), así que el nivel conjunto exacto es $0.95^2\\approx0.9025$."
     }
    ]
   },
