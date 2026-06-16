@@ -5454,10 +5454,10 @@
         "Con un montón es trivial; con dos, copias al rival para igualarlos. Con tres necesitas la magia del Nim: piensa en BINARIO.",
         "Escribe cada montón en binario y considera el «o-exclusivo» (XOR) bit a bit, también llamado suma de Nim. ¿Qué valor da?",
         "$17 = 10001_2, 11 = 01011_2, 8 = 01000_2$. Calcula el XOR de los tres: las posiciones perdedoras son las de XOR $= 0$.",
-        "17 ⊕ 11 ⊕ 8 = 18 ≠ 0, así que la posición es ganadora para quien mueve. Debes mover para volver el XOR a 0.",
-        "$18 = 10010_2$. Para anular el XOR, modifica el montón cuyo bit líder coincide: 17 ⊕ 18 = 3, así que reduce el montón de 17 a 3, dejando (3, 11, 8) con XOR 0. El primer jugador gana."
+        "$17 \\oplus 11 \\oplus 8 = 18 \\ne 0$, así que la posición es ganadora para quien mueve. Debes mover para volver el XOR a 0.",
+        "$18 = 10010_2$. Para anular el XOR, modifica el montón cuyo bit líder coincide: $17 \\oplus 18 = 3$, así que reduce el montón de 17 a 3, dejando $(3, 11, 8)$ con XOR 0. El primer jugador gana."
       ],
-      "solucion": "El primer jugador gana. La teoría de Nim dice que una posición es perdedora (para quien mueve) sii la suma de Nim (XOR binario) de los montones es 0. Aquí 17 ⊕ 11 ⊕ 8 = 18 ≠ 0, así que es ganadora. La jugada correcta lleva el XOR a 0: como 17 ⊕ (11 ⊕ 8) = 17 ⊕ 3 = … en concreto 17 ⊕ 18 = 3, el primer jugador reduce el montón de 17 a 3, dejando (3, 11, 8) con suma de Nim 0.",
+      "solucion": "El primer jugador gana. La teoría de Nim dice que una posición es perdedora (para quien mueve) sii la suma de Nim (XOR binario) de los montones es 0. Aquí $17 \\oplus 11 \\oplus 8 = 18 \\ne 0$, así que es ganadora. La jugada correcta lleva el XOR a 0: como $17 \\oplus (11 \\oplus 8) = 17 \\oplus 3$ = … en concreto $17 \\oplus 18 = 3$, el primer jugador reduce el montón de 17 a 3, dejando $(3, 11, 8)$ con suma de Nim 0.",
       "explicacion": "El teorema de Bouton: invertir el juego revela que XOR $= 0$ son las P-posiciones, porque desde XOR$=0$ toda jugada lo vuelve $\\ne 0$, y desde $\\ne 0$ siempre puedes restaurarlo a 0. Verificado con Python: $17^11^8 = 18$, y existe jugada que lo anula (reducir $17\\to 3$).",
       "tiempo_estimado": 28,
       "conceptos": [
@@ -5530,7 +5530,7 @@
         "Para $6\\times 8$: mn$-1 = 47$, impar. La última ruptura es de número impar, hecha por el primer jugador. El primer jugador gana. En general gana el primero sii mn es par."
       ],
       "solucion": "Para $6 \\times 8$ gana el primer jugador. Clave: cada ruptura aumenta el número de piezas en 1, así que la partida SIEMPRE dura exactamente mn $- 1$ rupturas, sin importar cómo se juegue (es un monovariante determinista). Quien hace la ruptura mn$-1$ gana. Para $6\\times 8$, mn$-1 = 47$ (impar), hecha por el primer jugador. En general, el primer jugador gana sii mn $- 1$ es impar, es decir, sii mn es par.",
-      "explicacion": "Monovariante invariante: el resultado no depende de la estrategia, solo de la paridad de una cantidad fija. Trabajar hacia atrás desde «¿quién hace la última jugada?» con un conteo invariante resuelve toda la familia $m\\times n$ de un golpe. Verificado con Python: el número de rupturas es siempre mn$-1$ (probado para m,n ≤ 4); 6×8 da 47, impar.",
+      "explicacion": "Monovariante invariante: el resultado no depende de la estrategia, solo de la paridad de una cantidad fija. Trabajar hacia atrás desde «¿quién hace la última jugada?» con un conteo invariante resuelve toda la familia $m\\times n$ de un golpe. Verificado con Python: el número de rupturas es siempre $mn-1$ (probado para $m,n \\le 4$); $6\\times8$ da 47, impar.",
       "tiempo_estimado": 18,
       "conceptos": [
         "monovariante",
@@ -5596,13 +5596,13 @@
       "enunciado": "Coloca una ficha en cada punto de coordenadas enteras del plano con ordenada y $\\le 0$ (el semiplano inferior, lleno). El único movimiento legal es un «salto»: una ficha brinca sobre una ficha vecina (horizontal o verticalmente) a la casilla inmediatamente siguiente, que debe estar vacía; la ficha saltada se retira. ¿Es posible, con un número finito de saltos, llevar una ficha hasta la línea y $= 5$?",
       "hints": [
         "Experimenta: llegar a $y=2$ es fácil, $y=3$ cuesta. Pero los ejemplos no revelan el límite. Necesitas un MONOVARIANTE que solo decrezca.",
-        "Asigna a cada casilla un peso ζ^d, donde d es la distancia «de taxi» (en pasos de rejilla) hasta el objetivo $C=(0,5)$, y ζ es una constante por elegir.",
-        "Elige ζ como la raíz positiva de ζ² + ζ − 1 = 0 (es decir ζ = (√5−1)/2 ≈ 0.618). Verifica que con esa ζ, un salto que ACERCA al objetivo no aumenta la suma total.",
+        "Asigna a cada casilla un peso $\\zeta^d$, donde $d$ es la distancia «de taxi» (en pasos de rejilla) hasta el objetivo $C=(0,5)$, y $\\zeta$ es una constante por elegir.",
+        "Elige $\\zeta$ como la raíz positiva de $\\zeta^2 + \\zeta - 1 = 0$ (es decir $\\zeta = (\\sqrt{5}-1)/2 \\approx 0.618$). Verifica que con esa $\\zeta$, un salto que ACERCA al objetivo no aumenta la suma total.",
         "Calcula la «suma de Conway» de la configuración inicial (semiplano lleno): con ζ²+ζ=1 la serie geométrica colapsa y la suma vale exactamente 1.",
-        "Si una ficha alcanzara C, su sola contribución sería ζ⁰ = 1, y con otras fichas presentes la suma superaría 1. Pero la suma nunca crece de su valor inicial 1. Contradicción: $y=5$ es INALCANZABLE."
+        "Si una ficha alcanzara $C$, su sola contribución sería $\\zeta^0 = 1$, y con otras fichas presentes la suma superaría 1. Pero la suma nunca crece de su valor inicial 1. Contradicción: $y=5$ es INALCANZABLE."
       ],
-      "solucion": "No es posible alcanzar y $= 5$. Asigna a cada ficha el peso ζ^d (d = distancia de taxi al objetivo $C=(0,5)$) con ζ = (√5−1)/2, la raíz positiva de ζ²+ζ−1 = 0. La «suma de Conway» de todas las fichas es un monovariante: ningún salto la aumenta (la relación ζ²+ζ=1 está diseñada para ello). La configuración inicial (semiplano lleno) tiene suma exactamente 1. Si una ficha llegara a C aportaría ζ⁰=1 y, con las demás fichas, la suma total excedería 1 — imposible, pues nunca crece. Luego $y=5$ es inalcanzable ($y=4$ sí lo es).",
-      "explicacion": "Monovariante con razón áurea: el peso ζ se elige para que la operación lo deje fijo o lo reduzca, convirtiendo «¿se puede llegar?» en una desigualdad de sumas. Es uno de los argumentos más elegantes de invariancia. Verificado con Python: ζ²+ζ−1=0 y el cómputo de la suma del semiplano $= 1$.",
+      "solucion": "No es posible alcanzar $y = 5$. Asigna a cada ficha el peso $\\zeta^d$ ($d$ = distancia de taxi al objetivo $C=(0,5)$) con $\\zeta = (\\sqrt{5}-1)/2$, la raíz positiva de $\\zeta^2+\\zeta-1 = 0$. La «suma de Conway» de todas las fichas es un monovariante: ningún salto la aumenta (la relación $\\zeta^2+\\zeta=1$ está diseñada para ello). La configuración inicial (semiplano lleno) tiene suma exactamente 1. Si una ficha llegara a $C$ aportaría $\\zeta^0=1$ y, con las demás fichas, la suma total excedería 1 — imposible, pues nunca crece. Luego $y=5$ es inalcanzable ($y=4$ sí lo es).",
+      "explicacion": "Monovariante con razón áurea: el peso $\\zeta$ se elige para que la operación lo deje fijo o lo reduzca, convirtiendo «¿se puede llegar?» en una desigualdad de sumas. Es uno de los argumentos más elegantes de invariancia. Verificado con Python: $\\zeta^2+\\zeta-1=0$ y el cómputo de la suma del semiplano $= 1$.",
       "tiempo_estimado": 40,
       "conceptos": [
         "monovariante",
@@ -5961,7 +5961,7 @@
         "Hay n términos «1» y $(n^2-n)/2$ pares, cada par $\\ge 2$. Suma las cotas.",
         "Total $\\ge n\\cdot 1 + ((n^2-n)/2)\\cdot 2 = n + (n^2-n) = n^2$. Igualdad cuando cada $a_j/a_k = 1$, es decir, todos los $a_i$ iguales."
       ],
-      "solucion": "Al desarrollar (Σaⱼ)(Σ1/aₖ) se obtienen $n^2$ términos de la forma $a_j/a_k$. De ellos, n valen 1 (cuando $j=k$) y los restantes $n^2-n$ se agrupan en $(n^2-n)/2$ pares $a_j/a_k + a_k/a_j$. Por AM-GM, cada par cumple $a_j/a_k + a_k/a_j \\ge 2$. Sumando: el producto $\\ge n\\cdot 1 + ((n^2-n)/2)\\cdot 2 = n^2$. La igualdad exige $a_j/a_k = 1$ para todo par, es decir, todos los $a_i$ iguales.",
+      "solucion": "Al desarrollar $(\\sum a_j)(\\sum 1/a_k)$ se obtienen $n^2$ términos de la forma $a_j/a_k$. De ellos, $n$ valen 1 (cuando $j=k$) y los restantes $n^2-n$ se agrupan en $(n^2-n)/2$ pares $a_j/a_k + a_k/a_j$. Por AM-GM, cada par cumple $a_j/a_k + a_k/a_j \\ge 2$. Sumando: el producto $\\ge n\\cdot 1 + ((n^2-n)/2)\\cdot 2 = n^2$. La igualdad exige $a_j/a_k = 1$ para todo par, es decir, todos los $a_i$ iguales.",
       "explicacion": "AM-GM aplicada por pares, tras agrupar los términos del desarrollo. La desigualdad auxiliar $x+1/x\\ge 2$ es la pieza reutilizable. Verificado con Python: 2000 sucesiones aleatorias (n entre 2 y 8) siempre cumplen el producto $\\ge n^2$.",
       "tiempo_estimado": 20,
       "conceptos": [
@@ -5989,7 +5989,7 @@
       "titulo": "La parte entera de una suma de raíces",
       "estrategia": "optimizacion",
       "dificultad": 4,
-      "enunciado": "Sea A $= 1/\\sqrt{1} + 1/\\sqrt{2} + 1/\\sqrt{3} + \\cdots + 1/\\sqrt{10000}$. Encuentra ⌊A⌋ (la parte entera de A) sin calculadora.",
+      "enunciado": "Sea $A = 1/\\sqrt{1} + 1/\\sqrt{2} + 1/\\sqrt{3} + \\cdots + 1/\\sqrt{10000}$. Encuentra $\\lfloor A\\rfloor$ (la parte entera de $A$) sin calculadora.",
       "hints": [
         "No sumes los 10000 términos: ACÓTALOS por algo que se telescope. Busca dos expresiones que encierren a $1/\\sqrt{n}$.",
         "Racionaliza: $2(\\sqrt{(n+1)} - \\sqrt{n}) = 2/(\\sqrt{(n+1)}+\\sqrt{n})$ y $2(\\sqrt{n} - \\sqrt{(n-1)}) = 2/(\\sqrt{n}+\\sqrt{(n-1)})$. Compara cada una con $1/\\sqrt{n} = 2/(2\\sqrt{n})$.",
@@ -6061,15 +6061,15 @@
       "titulo": "Producto de dos sumas cíclicas",
       "estrategia": "optimizacion",
       "dificultad": 4,
-      "enunciado": "Sean a, b, c números reales positivos. Demuestra que $(a^2b + b^2c + c^2a)$(ab$^2 +$ bc$^2 +$ ca²) ≥ 9a²b²c².",
+      "enunciado": "Sean $a, b, c$ números reales positivos. Demuestra que $(a^2b + b^2c + c^2a)(ab^2 + bc^2 + ca^2) \\ge 9a^2b^2c^2$.",
       "hints": [
         "El lado derecho es 9(abc)$^2$. El 9 sugiere AM-GM sobre TRES términos en cada factor. ¿Qué media usar?",
-        "Para tres positivos x,y,z, AM-GM da x+y+z ≥ 3·∛(xyz). Aplícala a cada factor por separado.",
+        "Para tres positivos $x,y,z$, AM-GM da $x+y+z \\ge 3\\cdot\\sqrt[3]{xyz}$. Aplícala a cada factor por separado.",
         "Primer factor: $a^2b + b^2c + c^2a \\ge 3\\cdot \\sqrt[3]{(a^2b \\cdot b^2c \\cdot c^2a)} = 3\\cdot \\sqrt[3]{(a^3b^3c^3)} = 3$abc.",
-        "Segundo factor: ab$^2 +$ bc$^2 +$ ca² ≥ 3·∛(ab$^2\\cdot$bc$^2\\cdot$ca²) = 3abc por el mismo cálculo.",
-        "Multiplicando ambas cotas: $(a^2b+b^2c+c^2a)$(ab$^2+$bc$^2+$ca²) ≥ 3abc $\\cdot 3$abc $= 9a^2b^2c^2$. Igualdad si $a=b=c$."
+        "Segundo factor: $ab^2 + bc^2 + ca^2 \\ge 3\\cdot\\sqrt[3]{ab^2\\cdot bc^2\\cdot ca^2} = 3abc$ por el mismo cálculo.",
+        "Multiplicando ambas cotas: $(a^2b+b^2c+c^2a)(ab^2+bc^2+ca^2) \\ge 3abc \\cdot 3abc = 9a^2b^2c^2$. Igualdad si $a=b=c$."
       ],
-      "solucion": "Por AM-GM con tres términos: $a^2b + b^2c + c^2a \\ge 3\\sqrt[3]{(a^2b\\cdot b^2c\\cdot c^2a)} = 3\\sqrt[3]{(a^3b^3c^3)} = 3$abc, e igualmente ab$^2 +$ bc$^2 +$ ca² ≥ 3∛(ab$^2\\cdot$bc$^2\\cdot$ca²) = 3abc. Multiplicando las dos desigualdades (ambos lados positivos) se obtiene $(a^2b+b^2c+c^2a)$(ab$^2+$bc$^2+$ca²) ≥ 9a²b²c², con igualdad cuando a $= b = c$.",
+      "solucion": "Por AM-GM con tres términos: $a^2b + b^2c + c^2a \\ge 3\\sqrt[3]{a^2b\\cdot b^2c\\cdot c^2a} = 3\\sqrt[3]{a^3b^3c^3} = 3abc$, e igualmente $ab^2 + bc^2 + ca^2 \\ge 3\\sqrt[3]{ab^2\\cdot bc^2\\cdot ca^2} = 3abc$. Multiplicando las dos desigualdades (ambos lados positivos) se obtiene $(a^2b+b^2c+c^2a)(ab^2+bc^2+ca^2) \\ge 9a^2b^2c^2$, con igualdad cuando $a = b = c$.",
       "explicacion": "AM-GM por factor: el exponente buscado $(9 = 3\\cdot 3)$ indica cuántos términos agrupar. Los productos dentro de las raíces colapsan a potencias de abc por la simetría cíclica. Verificado con Python: 3000 ternas aleatorias positivas cumplen la desigualdad, con igualdad solo en $a=b=c$.",
       "tiempo_estimado": 22,
       "conceptos": [
@@ -6100,12 +6100,12 @@
       "enunciado": "Sean $a, b, c \\ge 0$. Demuestra que $\\sqrt (3(a + b + c)) \\ge \\sqrt{a} + \\sqrt{b} + \\sqrt{c}$.",
       "hints": [
         "Ambos lados son no negativos, así que elevar al cuadrado preserva la desigualdad. Hazlo y compara.",
-        "Al cuadrado, hay que probar 3(a+b+c) ≥ (√a+√b+√c)² = a+b+c + 2(√(ab)+√(bc)+√(ca)).",
-        "Eso equivale a 2(a+b+c) ≥ 2(√(ab)+√(bc)+√(ca)), es decir a+b+c ≥ √(ab)+√(bc)+√(ca).",
-        "Para cada par usa AM-GM: (x+y)/2 ≥ √(xy). Suma las tres desigualdades √(ab) $\\le (a+b)/2$, etc.",
-        "Sumando: √(ab)+√(bc)+√(ca) $\\le (a+b)/2+(b+c)/2+(c+a)/2 = a+b+c$. Esto cierra la prueba."
+        "Al cuadrado, hay que probar $3(a+b+c) \\ge (\\sqrt{a}+\\sqrt{b}+\\sqrt{c})^2 = a+b+c + 2(\\sqrt{ab}+\\sqrt{bc}+\\sqrt{ca})$.",
+        "Eso equivale a $2(a+b+c) \\ge 2(\\sqrt{ab}+\\sqrt{bc}+\\sqrt{ca})$, es decir $a+b+c \\ge \\sqrt{ab}+\\sqrt{bc}+\\sqrt{ca}$.",
+        "Para cada par usa AM-GM: $(x+y)/2 \\ge \\sqrt{xy}$. Suma las tres desigualdades $\\sqrt{ab} \\le (a+b)/2$, etc.",
+        "Sumando: $\\sqrt{ab}+\\sqrt{bc}+\\sqrt{ca} \\le (a+b)/2+(b+c)/2+(c+a)/2 = a+b+c$. Esto cierra la prueba."
       ],
-      "solucion": "Como ambos lados son $\\ge 0$, basta probar la versión al cuadrado: 3(a+b+c) ≥ (√a+√b+√c)² = (a+b+c) + 2(√(ab)+√(bc)+√(ca)). Eso se reduce a a+b+c ≥ √(ab)+√(bc)+√(ca). Y esto sale de AM-GM par a par: √(ab) ≤ (a+b)/2, √(bc) ≤ (b+c)/2, √(ca) $\\le (c+a)/2$; sumando, el lado derecho $\\le a+b+c$. Igualdad cuando $a=b=c$.",
+      "solucion": "Como ambos lados son $\\ge 0$, basta probar la versión al cuadrado: $3(a+b+c) \\ge (\\sqrt{a}+\\sqrt{b}+\\sqrt{c})^2 = (a+b+c) + 2(\\sqrt{ab}+\\sqrt{bc}+\\sqrt{ca})$. Eso se reduce a $a+b+c \\ge \\sqrt{ab}+\\sqrt{bc}+\\sqrt{ca}$. Y esto sale de AM-GM par a par: $\\sqrt{ab} \\le (a+b)/2$, $\\sqrt{bc} \\le (b+c)/2$, $\\sqrt{ca} \\le (c+a)/2$; sumando, el lado derecho $\\le a+b+c$. Igualdad cuando $a=b=c$.",
       "explicacion": "Es un caso de Cauchy-Schwarz $((\\sqrt{a}+\\sqrt{b}+\\sqrt{c})^2 \\le 3(a+b+c))$ pero se prueba elementalmente elevando al cuadrado y aplicando AM-GM por pares. Verificado con Python: 3000 ternas no negativas cumplen la desigualdad.",
       "tiempo_estimado": 16,
       "conceptos": [
@@ -6141,7 +6141,7 @@
         "Con $p=1, q=1, r=2, s=4$ y denominadores a,b,c,d, el numerador del lado derecho es $(1+1+2+4)^2$.",
         "$(1+1+2+4)^2 = 8^2 = 64$, y el denominador es $a+b+c+d$. Así $1/a+1/b+4/c+16/d \\ge 64/(a+b+c+d)$. Listo."
       ],
-      "solucion": "Por la desigualdad de Cauchy-Schwarz en forma de Engel (Titu): 1²/a + 1²/b + 2²/c + 4²/d ≥ (1+1+2+4)²/(a+b+c+d). Como $1+1+2+4 = 8$ y $8^2 = 64$, el lado derecho es $64/(a+b+c+d)$. Por tanto $1/a + 1/b + 4/c + 16/d \\ge 64/(a+b+c+d)$, con igualdad cuando $a/1 = b/1 = c/2 = d/4$.",
+      "solucion": "Por la desigualdad de Cauchy-Schwarz en forma de Engel (Titu): $1^2/a + 1^2/b + 2^2/c + 4^2/d \\ge (1+1+2+4)^2/(a+b+c+d)$. Como $1+1+2+4 = 8$ y $8^2 = 64$, el lado derecho es $64/(a+b+c+d)$. Por tanto $1/a + 1/b + 4/c + 16/d \\ge 64/(a+b+c+d)$, con igualdad cuando $a/1 = b/1 = c/2 = d/4$.",
       "explicacion": "Reconocer cuadrados perfectos en los numeradores activa la forma de Engel de Cauchy-Schwarz, donde el numerador del lado derecho es el cuadrado de la suma de las raíces. Verificado con Python: 4000 cuádruplas positivas aleatorias cumplen la desigualdad.",
       "tiempo_estimado": 18,
       "conceptos": [
@@ -6173,11 +6173,11 @@
       "hints": [
         "Tienes dos «potencias» de los mismos números: grado 1 y grado 2. ¿Qué desigualdad relaciona medias de potencias?",
         "La desigualdad de medias de potencias (o de la media cuadrática) da $(x^2+y^2+z^2)/3 \\ge ((x+y+z)/3)^2$. Pero necesitas una pieza más.",
-        "Por AM-GM, x+y+z ≥ 3∛(xyz) = 3 (usando xyz$=1$). Guarda este hecho: la suma es al menos 3.",
+        "Por AM-GM, $x+y+z \\ge 3\\sqrt[3]{xyz} = 3$ (usando $xyz=1$). Guarda este hecho: la suma es al menos 3.",
         "Sea $s = x+y+z$. Media cuadrática $\\ge$ media aritmética da $x^2+y^2+z^2 \\ge s^2/3$. Basta probar $s^2/3 \\ge s$, o sea $s \\ge 3$.",
         "$Y s \\ge 3$ ya lo tienes por AM-GM. Entonces $x^2+y^2+z^2 \\ge s^2/3 \\ge 3s/3 = s = x+y+z$."
       ],
-      "solucion": "Sea $s = x+y+z$. Por la desigualdad entre media cuadrática y aritmética, $x^2+y^2+z^2 \\ge s^2/3$. Por AM-GM, s = x+y+z ≥ 3∛(xyz) = 3 (pues xyz$=1$). Combinando: $x^2+y^2+z^2 \\ge s^2/3 = s\\cdot (s/3) \\ge s\\cdot 1 = s = x+y+z$. Igualdad cuando $x=y=z=1$.",
+      "solucion": "Sea $s = x+y+z$. Por la desigualdad entre media cuadrática y aritmética, $x^2+y^2+z^2 \\ge s^2/3$. Por AM-GM, $s = x+y+z \\ge 3\\sqrt[3]{xyz} = 3$ (pues $xyz=1$). Combinando: $x^2+y^2+z^2 \\ge s^2/3 = s\\cdot (s/3) \\ge s\\cdot 1 = s = x+y+z$. Igualdad cuando $x=y=z=1$.",
       "explicacion": "Encadenar dos desigualdades clásicas: media cuadrática $\\ge$ aritmética para pasar de grado 1 a grado 2, y AM-GM con la restricción xyz$=1$ para garantizar $s \\ge 3$. Verificado con Python: 5000 ternas con xyz$=1$ cumplen $x+y+z \\le x^2+y^2+z^2$.",
       "tiempo_estimado": 20,
       "conceptos": [
@@ -6285,7 +6285,7 @@
         "$(1+2+\\cdots +n)/n = [n(n+1)/2]/n = (n+1)/2$. Por AM-GM, $^n\\sqrt{(n!)} \\le (n+1)/2$, y la desigualdad es ESTRICTA porque los factores no son todos iguales $(n\\ge 2)$.",
         "Elevando a la $n: n! < ((n+1)/2)^n$. La desigualdad es estricta porque $1,2,\\dots ,n$ no son todos iguales."
       ],
-      "solucion": "Aplica AM-GM a los n factores $1, 2, \\dots , n$: su media geométrica $^n\\sqrt{(n!)}$ es menor que su media aritmética (1+2+⋯+n)/n = (n+1)/2 — estrictamente menor porque los factores no son todos iguales $(n \\ge 2)$. Elevando a la potencia $n: n! < ((n+1)/2)^n$.",
+      "solucion": "Aplica AM-GM a los $n$ factores $1, 2, \\dots, n$: su media geométrica $\\sqrt[n]{n!}$ es menor que su media aritmética $(1+2+\\cdots+n)/n = (n+1)/2$ — estrictamente menor porque los factores no son todos iguales ($n \\ge 2$). Elevando a la potencia $n$: $n! < ((n+1)/2)^n$.",
       "explicacion": "AM-GM aplicada directamente a $1,2,\\dots ,n$: la media aritmética es la conocida $(n+1)/2$, y la desigualdad estricta proviene de que los términos no son iguales. Verificado con Python: $n! < ((n+1)/2)^n$ para todo n de 2 a 39.",
       "tiempo_estimado": 16,
       "conceptos": [
@@ -6393,7 +6393,7 @@
         "$(t+d^2)^2 = t^2 + 2d^2t + d^4$. Así que el producto es $(t+d^2)^2 - d^4$. ¡Le falta exactamente $d^4$ para ser cuadrado!",
         "Por tanto: el producto de cuatro términos en progresión aritmética de diferencia d, MÁS $d^4$, es un cuadrado perfecto: ($a^2+3$ad+d²)². Para enteros consecutivos $d=1$, recuperando «producto $+ 1 =$ cuadrado»."
       ],
-      "solucion": "Para cuatro términos $a, a+d, a+2d, a+3d$ en progresión aritmética, el producto MÁS $d^4$ es un cuadrado perfecto: (a)(a+d)(a+2d)(a+3d) + d⁴ = (a² + 3ad + d²)². En efecto, agrupando extremos y centrales con $t = a^2+3$ad, el producto es $t(t+2d^2) = t^2 + 2d^2t = (t+d^2)^2 - d^4$. El caso de enteros consecutivos $(d=1)$ da el conocido «producto $+ 1 =$ cuadrado».",
+      "solucion": "Para cuatro términos $a, a+d, a+2d, a+3d$ en progresión aritmética, el producto MÁS $d^4$ es un cuadrado perfecto: $(a)(a+d)(a+2d)(a+3d) + d^4 = (a^2 + 3ad + d^2)^2$. En efecto, agrupando extremos y centrales con $t = a^2+3ad$, el producto es $t(t+2d^2) = t^2 + 2d^2t = (t+d^2)^2 - d^4$. El caso de enteros consecutivos ($d=1$) da el conocido «producto $+ 1 =$ cuadrado».",
       "explicacion": "Patrón estructural revelado por un emparejamiento astuto (extremos $\\times$ centrales) que reduce cuatro factores a una cuadrática en t, y luego completar el cuadrado. El término correctivo $d^4$ generaliza el «+1». Verificado con Python: $(a)(a+d)(a+2d)(a+3d)+d^4$ es cuadrado para $a\\in [-5,7], d\\in [1,6]$.",
       "tiempo_estimado": 22,
       "conceptos": [
@@ -6499,9 +6499,9 @@
         "$T = (x+y)^2 + (y-z)^2 = x^2 + 2$xy $+ y^2 + y^2 - 2$yz $+ z^2 = x^2 + 2y^2 + z^2 + 2$xy $- 2$yz. Promedia término a término.",
         "Por simetría de la esfera, los promedios de los términos CRUZADOS (xy, yz) son 0. Y por simetría, ⟨x²⟩ = ⟨y²⟩ = ⟨z²⟩. ¿Cuánto vale cada uno?",
         "Como $x^2+y^2+z^2 = R^2$ en toda la superficie, ⟨x²+y²+z²⟩ = R², y por simetría ⟨x²⟩ = ⟨y²⟩ = ⟨z²⟩ = R²/3.",
-        "⟨T⟩ = ⟨x²⟩ + 2⟨y²⟩ + ⟨z²⟩ + 0 + 0 = (1+2+1)·R²/3 = 4R²/3. Con $R=20: 4\\cdot 400/3 = 1600/3 \\approx 533.33$."
+        "$\\langle T\\rangle = \\langle x^2\\rangle + 2\\langle y^2\\rangle + \\langle z^2\\rangle + 0 + 0 = (1+2+1)\\cdot R^2/3 = 4R^2/3$. Con $R=20$: $4\\cdot 400/3 = 1600/3 \\approx 533.33$."
       ],
-      "solucion": "La temperatura promedio es $4R^2/3 = 1600/3 \\approx 533.33$ grados. Desarrollando, $T = x^2 + 2y^2 + z^2 + 2$xy $- 2$yz. Sobre la esfera, los promedios de los términos cruzados ⟨xy⟩ y ⟨yz⟩ son 0 por simetría, y ⟨x²⟩ = ⟨y²⟩ = ⟨z²⟩ = R²/3 (porque ⟨x²+y²+z²⟩ = R²). Entonces ⟨T⟩ = (1 + 2 + 1)·R²/3 = 4R²/3, y con $R = 20$ da $1600/3$.",
+      "solucion": "La temperatura promedio es $4R^2/3 = 1600/3 \\approx 533.33$ grados. Desarrollando, $T = x^2 + 2y^2 + z^2 + 2xy - 2yz$. Sobre la esfera, los promedios de los términos cruzados $\\langle xy\\rangle$ y $\\langle yz\\rangle$ son 0 por simetría, y $\\langle x^2\\rangle = \\langle y^2\\rangle = \\langle z^2\\rangle = R^2/3$ (porque $\\langle x^2+y^2+z^2\\rangle = R^2$). Entonces $\\langle T\\rangle = (1 + 2 + 1)\\cdot R^2/3 = 4R^2/3$, y con $R = 20$ da $1600/3$.",
       "explicacion": "Explotar la simetría esférica: los cruzados promedian 0 y los cuadrados se reparten por igual la energía $R^2$. Reconocer ese patrón evita integrar. Verificado con Python: muestreo de 300 000 puntos uniformes sobre la esfera de radio 20 da un promedio $\\approx 534$, consistente con $1600/3$ dentro del error Monte Carlo.",
       "tiempo_estimado": 28,
       "conceptos": [
@@ -6640,9 +6640,9 @@
       "enunciado": "Encuentra todos los enteros positivos x, y que satisfacen 7ˣ − 3ʸ = 4.",
       "hints": [
         "Prueba valores pequeños: $x=1, y=1$ da $7 - 3 = 4$. ¿Hay más? Usa congruencias para descartar.",
-        "Mira la ecuación módulo $4: 7 \\equiv -1$ (mód 4), así que 7ˣ ≡ (−1)ˣ. Y 3ʸ ≡ (−1)ʸ. La ecuación dice 7ˣ − 3ʸ ≡ 0 (mód 4).",
-        "(−1)ˣ − (−1)ʸ ≡ 0 (mód 4) obliga a que x e y tengan la misma paridad. Ahora mira módulo otro número, como 9 o 7, para restringir más.",
-        "Módulo 9: si y ≥ 2, 3ʸ ≡ 0, así que 7ˣ ≡ 4 (mód 9). Las potencias de 7 módulo 9 son 7, 4, 1, 7, 4, 1…; 7ˣ ≡ 4 fuerza $x \\equiv 2$ (mód 3). Combina con las cotas.",
+        "Mira la ecuación módulo 4: $7 \\equiv -1$ (mód 4), así que $7^x \\equiv (-1)^x$. Y $3^y \\equiv (-1)^y$. La ecuación dice $7^x - 3^y \\equiv 0$ (mód 4).",
+        "$(-1)^x - (-1)^y \\equiv 0$ (mód 4) obliga a que $x$ e $y$ tengan la misma paridad. Ahora mira módulo otro número, como 9 o 7, para restringir más.",
+        "Módulo 9: si $y \\ge 2$, $3^y \\equiv 0$, así que $7^x \\equiv 4$ (mód 9). Las potencias de 7 módulo 9 son 7, 4, 1, 7, 4, 1…; $7^x \\equiv 4$ fuerza $x \\equiv 2$ (mód 3). Combina con las cotas.",
         "El análisis modular fuerza la solución pequeña; la búsqueda confirma que $(x, y) = (1, 1)$ es la única."
       ],
       "solucion": "La única solución en enteros positivos es $(x, y) = (1, 1)$, pues $7^1 - 3^1 = 4$. El análisis módulo $4 (7 \\equiv -1, 3 \\equiv -1)$ obliga a que x e y tengan la misma paridad, y módulos adicionales (9 para acotar y, 7 para x) descartan toda solución con exponentes mayores, dejando solo (1,1).",
@@ -6678,7 +6678,7 @@
         "Esto es un conteo por inclusión-exclusión: |divisores de A $\\cup$ divisores de $B| = d(A) + d(B) - |$divisores comunes|. Factoriza A y B en primos.",
         "$10^{40} = (2\\cdot 5)^{40} = 2^{40}\\cdot 5^{40}$. Y $20^{30} = (2^2\\cdot 5)^{30} = 2^{60}\\cdot 5^{30}$. Cuenta los divisores de cada uno con la fórmula de exponentes + 1.",
         "$d(10^{40}) = (40+1)(40+1) = 41^2. d(20^{30}) = (60+1)(30+1) = 61\\cdot 31$. Ahora los divisores COMUNES son los del máximo común divisor.",
-        "mcd(10⁴⁰, 20³⁰) = 2^{mín(40,60)}·5^{mín(40,30)} = 2⁴⁰·5³⁰, con $(40+1)(30+1) = 41\\cdot 31$ divisores.",
+        "$\\gcd(10^{40}, 20^{30}) = 2^{\\min(40,60)}\\cdot 5^{\\min(40,30)} = 2^{40}\\cdot 5^{30}$, con $(40+1)(30+1) = 41\\cdot 31$ divisores.",
         "Por inclusión-exclusión: $41^2 + 61\\cdot 31 - 41\\cdot 31 = 1681 + 1891 - 1271 = 2301$."
       ],
       "solucion": "Hay 2301 divisores. Factorizando, $10^{40} = 2^{40}5^{40}$ (con $41^2$ divisores) y $20^{30} = 2^{60}5^{30}$ (con $61\\cdot 31$ divisores). Los divisores comunes son los del mcd $= 2^{40}5^{30}$, que tiene $41\\cdot 31$ divisores. Por inclusión-exclusión, el número de divisores de al menos uno es $41^2 + 61\\cdot 31 - 41\\cdot 31 = 1681 + 1891 - 1271 = 2301$.",
@@ -6750,10 +6750,10 @@
         "Supón lo contrario ($\\sqrt{2}+\\sqrt{3}+\\sqrt{5} = r$ racional) y busca una contradicción aislando radicales y elevando al cuadrado.",
         "Aísla uno: $\\sqrt{2}+\\sqrt{3} = r - \\sqrt{5}$. Eleva al cuadrado ambos lados para reducir el número de raíces sueltas.",
         "Al cuadrado: $5 + 2\\sqrt{6} = r^2 - 2r\\sqrt{5} + 5$, o sea $2\\sqrt{6} + 2r\\sqrt{5} = r^2$. Sigue aislando y elevando para eliminar $\\sqrt{5}$ y $\\sqrt{6}$.",
-        "Repitiendo el proceso llegas a una ecuación donde un √(entero no cuadrado) queda igualado a una expresión racional — contradicción, pues $\\sqrt{6}, \\sqrt{5}$, etc., son irracionales.",
+        "Repitiendo el proceso llegas a una ecuación donde un $\\sqrt{\\text{entero no cuadrado}}$ queda igualado a una expresión racional — contradicción, pues $\\sqrt{6}, \\sqrt{5}$, etc., son irracionales.",
         "Cada vez que aíslas un radical y elevas al cuadrado reduces los radicales; al final obtienes $\\sqrt{k}$ racional con k no cuadrado, lo cual es falso. Luego la suma es irracional."
       ],
-      "solucion": "Es irracional. Supón √2+√3+√5 = r ∈ ℚ. Aislando y elevando al cuadrado sucesivamente (primero $\\sqrt{2}+\\sqrt{3} = r-\\sqrt{5}$, luego se elimina $\\sqrt{5}$, después $\\sqrt{6}$) se llega a una igualdad de la forma $\\sqrt{k} =$ (expresión racional) con k entero no cuadrado, lo cual es imposible porque $\\sqrt{k}$ es irracional. La contradicción prueba que √2+√3+√5 ∉ ℚ.",
+      "solucion": "Es irracional. Supón $\\sqrt{2}+\\sqrt{3}+\\sqrt{5} = r \\in \\mathbb{Q}$. Aislando y elevando al cuadrado sucesivamente (primero $\\sqrt{2}+\\sqrt{3} = r-\\sqrt{5}$, luego se elimina $\\sqrt{5}$, después $\\sqrt{6}$) se llega a una igualdad de la forma $\\sqrt{k} =$ (expresión racional) con $k$ entero no cuadrado, lo cual es imposible porque $\\sqrt{k}$ es irracional. La contradicción prueba que $\\sqrt{2}+\\sqrt{3}+\\sqrt{5} \\notin \\mathbb{Q}$.",
       "explicacion": "Argumento por contradicción combinado con eliminación iterativa de radicales. Su polinomio mínimo sobre ℚ tiene grado 8 y carece de raíz racional. Verificado con Python: el número $5.38233\\dots$ no coincide con ninguna fracción de denominador $\\le 10^6$ (evidencia numérica de irracionalidad).",
       "tiempo_estimado": 25,
       "conceptos": [
