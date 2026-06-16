@@ -7909,7 +7909,7 @@
      "id": "arh2-q3",
      "tipo": "quiz",
      "enunciado": "Enuncia los 7 componentes del protocolo de un target trial, usando como ejemplo el estudio de una app de meditación para reducir burnout.",
-     "solucion": "(1) Elegibilidad: empleados activos al 1 de enero, sin uso previo de la app. (2) Estrategias de tratamiento: 'usar la app ≥30 min/semana por 3 meses' vs 'no usar la app'. (3) Asignación: aleatorización hipotética en t=0. (4) Inicio del seguimiento (t=0): 1 de enero, mismo para todos. (5) Outcome: burnout diagnosticado antes del 31 de diciembre. (6) Final del seguimiento: 31 de diciembre o primer evento. (7) Estimando: diferencia de riesgo o razón de riesgos del efecto per-protocol.",
+     "solucion": "(1) Elegibilidad: empleados activos al 1 de enero, sin uso previo de la app. (2) Estrategias de tratamiento: 'usar la app $\\ge30$ min/semana por 3 meses' vs 'no usar la app'. (3) Asignación: aleatorización hipotética en $t=0$. (4) Inicio del seguimiento ($t=0$): 1 de enero, mismo para todos. (5) Outcome: burnout diagnosticado antes del 31 de diciembre. (6) Final del seguimiento: 31 de diciembre o primer evento. (7) Estimando: diferencia de riesgo o razón de riesgos del efecto per-protocol.",
      "explicacion": "Enunciar todos los componentes es el paso que distingue al analista riguroso: es imposible diseñar el análisis sin decidir explícitamente cada uno. La vaguedad en t=0 o en el estimando es la fuente de la mayoría de los sesgos."
     },
     {
@@ -19053,8 +19053,8 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "Efecto = E[Y^{a=1}]−E[Y^{a=0}] (toda la población) ≠ asociación E[Y|A=1]−E[Y|A=0]",
-    "Aleatorizar ⇒ intercambiabilidad (Y^a⊥A): la asociación SÍ es causación",
+    "Efecto $= E[Y^{a=1}]-E[Y^{a=0}]$ (toda la población) $\\ne$ asociación $E[Y\\mid A=1]-E[Y\\mid A=0]$",
+    "Aleatorizar $\\Rightarrow$ intercambiabilidad ($Y^a\\perp A$): la asociación SÍ es causación",
     "Identificación observacional: intercambiabilidad|L + positividad + consistencia",
     "Medidas marginales: diferencia/razón de riesgos, odds ratio (según escala)",
     "Modificación = efecto de A varía por V; interacción = efecto conjunto de A y E"
@@ -19064,35 +19064,35 @@
      "id": "arh3-q1",
      "tipo": "concepto",
      "enunciado": "¿Qué son los resultados POTENCIALES (contrafactuales) y qué es el efecto causal INDIVIDUAL?",
-     "solucion": "Para cada individuo se definen los resultados que tendría bajo cada tratamiento: Y^{a=1} si recibiera el tratamiento y Y^{a=0} si no. Hay efecto causal individual si Y^{a=1} ≠ Y^{a=0}. El PROBLEMA FUNDAMENTAL es que solo observamos UNO de los dos (el correspondiente al tratamiento que de hecho recibió), así que el efecto individual es, en general, INOBSERVABLE.",
+     "solucion": "Para cada individuo se definen los resultados que tendría bajo cada tratamiento: $Y^{a=1}$ si recibiera el tratamiento y $Y^{a=0}$ si no. Hay efecto causal individual si $Y^{a=1} \\ne Y^{a=0}$. El PROBLEMA FUNDAMENTAL es que solo observamos UNO de los dos (el correspondiente al tratamiento que de hecho recibió), así que el efecto individual es, en general, INOBSERVABLE.",
      "explicacion": "Por eso la inferencia causal se centra en efectos promedio de poblaciones, no individuales."
     },
     {
      "id": "arh3-q2",
      "tipo": "concepto",
      "enunciado": "Define el efecto causal PROMEDIO en una población y por qué es identificable cuando el individual no lo es.",
-     "solucion": "Hay efecto causal promedio si E[Y^{a=1}] ≠ E[Y^{a=0}] (con outcomes binarios, P(Y^{a=1}=1) ≠ P(Y^{a=0}=1)): el resultado medio si TODA la población recibiera el tratamiento vs si NADIE lo recibiera. Aunque no observemos ambos contrafactuales por individuo, sí podemos estimar las MEDIAS poblacionales bajo cada tratamiento (con aleatorización o con las condiciones de identificación), porque promediar no requiere ver los dos valores de la misma persona.",
+     "solucion": "Hay efecto causal promedio si $E[Y^{a=1}] \\ne E[Y^{a=0}]$ (con outcomes binarios, $P(Y^{a=1}=1) \\ne P(Y^{a=0}=1)$): el resultado medio si TODA la población recibiera el tratamiento vs si NADIE lo recibiera. Aunque no observemos ambos contrafactuales por individuo, sí podemos estimar las MEDIAS poblacionales bajo cada tratamiento (con aleatorización o con las condiciones de identificación), porque promediar no requiere ver los dos valores de la misma persona.",
      "explicacion": "El efecto promedio nulo no implica ausencia de efectos individuales (pueden cancelarse)."
     },
     {
      "id": "arh3-q3",
      "tipo": "concepto",
      "enunciado": "Explica por qué 'la asociación no es causación' en términos contrafactuales.",
-     "solucion": "La ASOCIACIÓN compara el outcome entre dos SUBPOBLACIONES distintas realmente observadas: E[Y|A=1] vs E[Y|A=0] (los tratados vs los no tratados). La CAUSACIÓN compara la MISMA población entera bajo dos intervenciones: E[Y^{a=1}] vs E[Y^{a=0}]. Coinciden solo si los grupos son intercambiables (p. ej. por aleatorización). En observacional, tratados y no tratados difieren en otras cosas (confundidores), así que la asociación incluye esas diferencias y no es el efecto causal.",
+     "solucion": "La ASOCIACIÓN compara el outcome entre dos SUBPOBLACIONES distintas realmente observadas: $E[Y\\mid A=1]$ vs $E[Y\\mid A=0]$ (los tratados vs los no tratados). La CAUSACIÓN compara la MISMA población entera bajo dos intervenciones: $E[Y^{a=1}]$ vs $E[Y^{a=0}]$. Coinciden solo si los grupos son intercambiables (p. ej. por aleatorización). En observacional, tratados y no tratados difieren en otras cosas (confundidores), así que la asociación incluye esas diferencias y no es el efecto causal.",
      "explicacion": "Asociación = condicionar en A observado; causación = intervenir A en toda la población."
     },
     {
      "id": "arh3-q4",
      "tipo": "concepto",
      "enunciado": "¿Qué garantiza un experimento aleatorizado y cómo se llama esa propiedad?",
-     "solucion": "La aleatorización asigna el tratamiento por azar, independientemente de los resultados potenciales, lo que produce INTERCAMBIABILIDAD (exchangeability) marginal: Y^a ⊥ A. Los grupos de tratamiento son comparables en todo (medido y no medido), de modo que E[Y|A=a] = E[Y^a] y la asociación observada SÍ estima el efecto causal. Por eso el ECA es el patrón de referencia.",
+     "solucion": "La aleatorización asigna el tratamiento por azar, independientemente de los resultados potenciales, lo que produce INTERCAMBIABILIDAD (exchangeability) marginal: $Y^a \\perp A$. Los grupos de tratamiento son comparables en todo (medido y no medido), de modo que $E[Y\\mid A=a] = E[Y^a]$ y la asociación observada SÍ estima el efecto causal. Por eso el ECA es el patrón de referencia.",
      "explicacion": "Intercambiabilidad: el grupo no tratado representa lo que les habría pasado a los tratados sin tratamiento."
     },
     {
      "id": "arh3-q5",
      "tipo": "concepto",
      "enunciado": "Enuncia las TRES condiciones para identificar un efecto causal en un estudio observacional.",
-     "solucion": "(1) INTERCAMBIABILIDAD condicional: dentro de cada estrato de los confundidores medidos L, tratados y no tratados son comparables (Y^a ⊥ A | L), es decir, no hay confundimiento no medido. (2) POSITIVIDAD: en cada estrato de L presente en la población hay probabilidad positiva de recibir cada nivel de tratamiento (0 < P(A=a|L=l) < 1). (3) CONSISTENCIA: el tratamiento está bien definido (intervenciones precisas) y, si A=a, entonces Y^a = Y. Con las tres, el efecto se identifica y se estima por estandarización o IP weighting.",
+     "solucion": "(1) INTERCAMBIABILIDAD condicional: dentro de cada estrato de los confundidores medidos L, tratados y no tratados son comparables ($Y^a \\perp A \\mid L$), es decir, no hay confundimiento no medido. (2) POSITIVIDAD: en cada estrato de L presente en la población hay probabilidad positiva de recibir cada nivel de tratamiento ($0 < P(A=a\\mid L=l) < 1$). (3) CONSISTENCIA: el tratamiento está bien definido (intervenciones precisas) y, si $A=a$, entonces $Y^a = Y$. Con las tres, el efecto se identifica y se estima por estandarización o IP weighting.",
      "explicacion": "Solo la positividad es parcialmente verificable en los datos; las otras dos son supuestos."
     },
     {
@@ -19106,14 +19106,14 @@
      "id": "arh3-q7",
      "tipo": "concepto",
      "enunciado": "¿Qué es la condición de CONSISTENCIA y por qué exige 'intervenciones bien definidas'?",
-     "solucion": "Consistencia significa que el resultado potencial bajo el tratamiento que la persona efectivamente recibió coincide con el observado: si A=a entonces Y^a=Y. Exige que el tratamiento esté BIEN DEFINIDO (intervenciones precisas y sin múltiples versiones con efectos distintos); si 'obesidad' o 'ejercicio' admiten muchas versiones (dieta vs cirugía), el contrafactual Y^a es ambiguo y la consistencia se vuelve dudosa. 'No causation without manipulation': definir bien la intervención es parte del planteamiento causal.",
+     "solucion": "Consistencia significa que el resultado potencial bajo el tratamiento que la persona efectivamente recibió coincide con el observado: si $A=a$ entonces $Y^a=Y$. Exige que el tratamiento esté BIEN DEFINIDO (intervenciones precisas y sin múltiples versiones con efectos distintos); si 'obesidad' o 'ejercicio' admiten muchas versiones (dieta vs cirugía), el contrafactual $Y^a$ es ambiguo y la consistencia se vuelve dudosa. 'No causation without manipulation': definir bien la intervención es parte del planteamiento causal.",
      "explicacion": "Por eso se prefieren preguntas sobre intervenciones concretas (un fármaco a una dosis) y no sobre atributos vagos."
     },
     {
      "id": "arh3-q8",
      "tipo": "concepto",
      "enunciado": "Define las medidas de efecto causal: diferencia de riesgos, razón de riesgos y razón de momios (odds ratio).",
-     "solucion": "Sobre los riesgos contrafactuales marginales: la DIFERENCIA DE RIESGOS causal = P(Y^{a=1}=1) − P(Y^{a=0}=1) (escala aditiva, 0 = sin efecto); la RAZÓN DE RIESGOS causal = P(Y^{a=1}=1) / P(Y^{a=0}=1) (multiplicativa, 1 = nulo); la RAZÓN DE MOMIOS causal = odds(Y^{a=1}) / odds(Y^{a=0}). Todas son MARGINALES (en toda la población bajo cada tratamiento) y miden lo mismo (presencia de efecto) pero en escalas distintas; la magnitud y la modificación de efecto dependen de la escala elegida.",
+     "solucion": "Sobre los riesgos contrafactuales marginales: la DIFERENCIA DE RIESGOS causal $= P(Y^{a=1}=1) - P(Y^{a=0}=1)$ (escala aditiva, 0 = sin efecto); la RAZÓN DE RIESGOS causal $= P(Y^{a=1}=1) / P(Y^{a=0}=1)$ (multiplicativa, 1 = nulo); la RAZÓN DE MOMIOS causal $= \\text{odds}(Y^{a=1}) / \\text{odds}(Y^{a=0})$. Todas son MARGINALES (en toda la población bajo cada tratamiento) y miden lo mismo (presencia de efecto) pero en escalas distintas; la magnitud y la modificación de efecto dependen de la escala elegida.",
      "explicacion": "Diferencia de riesgos para impacto absoluto/salud pública; razones para magnitud relativa."
     },
     {
@@ -19127,7 +19127,7 @@
      "id": "arh3-q10",
      "tipo": "concepto",
      "enunciado": "¿En qué se diferencia la INTERACCIÓN de la modificación de efecto?",
-     "solucion": "La interacción se refiere al efecto causal CONJUNTO de DOS tratamientos A y E sobre los que se INTERVIENE a ambos; se formaliza con contrafactuales a dos índices Y^{a,e} y se analiza con el marco de causas suficientes (sinergismo/antagonismo). La modificación de efecto, en cambio, describe cómo varía el efecto de UN tratamiento A según los estratos de una variable V que es solo un MARCADOR (no necesariamente intervenible y posiblemente sin efecto causal propio). Diferencia clave: la interacción requiere intervenir sobre ambos factores; la modificación, no.",
+     "solucion": "La interacción se refiere al efecto causal CONJUNTO de DOS tratamientos A y E sobre los que se INTERVIENE a ambos; se formaliza con contrafactuales a dos índices $Y^{a,e}$ y se analiza con el marco de causas suficientes (sinergismo/antagonismo). La modificación de efecto, en cambio, describe cómo varía el efecto de UN tratamiento A según los estratos de una variable V que es solo un MARCADOR (no necesariamente intervenible y posiblemente sin efecto causal propio). Diferencia clave: la interacción requiere intervenir sobre ambos factores; la modificación, no.",
      "explicacion": "Una variable puede modificar el efecto sin interactuar causalmente (p. ej. por ser proxy de otra)."
     },
     {
@@ -19141,14 +19141,14 @@
      "id": "arh3-q12",
      "tipo": "concepto",
      "enunciado": "¿Por qué el efecto causal promedio puede ser nulo aunque haya efectos en individuos?",
-     "solucion": "Porque el efecto promedio compara medias poblacionales: si en algunos individuos el tratamiento ayuda (Y^{a=1}<Y^{a=0}) y en otros perjudica en igual medida, los efectos individuales se CANCELAN y E[Y^{a=1}]=E[Y^{a=0}]. La ausencia de efecto promedio (sharp null se viola pero el average null se cumple) no implica que el tratamiento no haga nada a nadie. Distinguir el null 'agudo' (ningún efecto individual) del null promedio es importante.",
+     "solucion": "Porque el efecto promedio compara medias poblacionales: si en algunos individuos el tratamiento ayuda ($Y^{a=1}<Y^{a=0}$) y en otros perjudica en igual medida, los efectos individuales se CANCELAN y $E[Y^{a=1}]=E[Y^{a=0}]$. La ausencia de efecto promedio (sharp null se viola pero el average null se cumple) no implica que el tratamiento no haga nada a nadie. Distinguir el null 'agudo' (ningún efecto individual) del null promedio es importante.",
      "explicacion": "Efecto promedio = 0 no equivale a 'sin efecto individual'; pueden compensarse."
     },
     {
      "id": "arh3-q13",
      "tipo": "concepto",
      "enunciado": "¿Qué significa estimar un efecto causal por ESTANDARIZACIÓN, a nivel intuitivo?",
-     "solucion": "Estandarizar es calcular el outcome medio dentro de cada estrato de confundidores L y luego PROMEDIARLO usando la distribución de L de toda la población (no la de cada grupo de tratamiento). Así se comparan tratados y no tratados como si tuvieran la MISMA mezcla de confundidores, neutralizando el confundimiento: E[Y^a] = Σ_l E[Y|A=a,L=l]·P(L=l). Es una de las dos formas estándar de usar la intercambiabilidad condicional.",
+     "solucion": "Estandarizar es calcular el outcome medio dentro de cada estrato de confundidores L y luego PROMEDIARLO usando la distribución de L de toda la población (no la de cada grupo de tratamiento). Así se comparan tratados y no tratados como si tuvieran la MISMA mezcla de confundidores, neutralizando el confundimiento: $E[Y^a] = \\sum_l E[Y\\mid A=a,L=l]\\cdot P(L=l)$. Es una de las dos formas estándar de usar la intercambiabilidad condicional.",
      "explicacion": "Es el complemento del IP weighting; ambas requieren las 3 condiciones de identificación."
     },
     {
@@ -19162,7 +19162,7 @@
      "id": "arh3-q15",
      "tipo": "concepto",
      "enunciado": "¿Por qué a veces se dice que la inferencia causal es 'un problema de datos faltantes'?",
-     "solucion": "Porque para cada individuo falta uno de los dos resultados potenciales (el del tratamiento que NO recibió): observamos Y^{a} solo para el a que ocurrió y el otro es un dato faltante. Estimar el efecto causal equivale a 'imputar' (en promedio) esos contrafactuales faltantes, lo que requiere supuestos (intercambiabilidad, positividad, consistencia) análogos a los de los datos faltantes (p. ej. MAR). Esta lente conecta la inferencia causal con la teoría de missing data.",
+     "solucion": "Porque para cada individuo falta uno de los dos resultados potenciales (el del tratamiento que NO recibió): observamos $Y^a$ solo para el $a$ que ocurrió y el otro es un dato faltante. Estimar el efecto causal equivale a 'imputar' (en promedio) esos contrafactuales faltantes, lo que requiere supuestos (intercambiabilidad, positividad, consistencia) análogos a los de los datos faltantes (p. ej. MAR). Esta lente conecta la inferencia causal con la teoría de missing data.",
      "explicacion": "Los contrafactuales no observados son los 'valores faltantes' que las condiciones permiten recuperar en promedio."
     }
    ]
@@ -19274,7 +19274,7 @@
      "id": "arh4-q12",
      "tipo": "concepto",
      "enunciado": "¿Qué es un 'noncausal diagram' y por qué los diagramas de medición incluyen flechas no causales?",
-     "solucion": "Para representar el error de medición, el DAG incluye las variables REALES (A, Y, L) y sus versiones MEDIDAS (A\\*, Y\\*, L\\*) con flechas desde la real (y desde nodos de error U) hacia la medida: A→A\\*←U_A. Esas flechas modelan cómo se genera el dato observado. Permiten razonar estructuralmente el sesgo de medición: dónde está el collider/causa común que introduce el error y si la misclasificación es diferencial (cuando, p. ej., Y influye en A\\*).",
+     "solucion": "Para representar el error de medición, el DAG incluye las variables REALES (A, Y, L) y sus versiones MEDIDAS ($A^*, Y^*, L^*$) con flechas desde la real (y desde nodos de error U) hacia la medida: $A\\to A^*\\leftarrow U_A$. Esas flechas modelan cómo se genera el dato observado. Permiten razonar estructuralmente el sesgo de medición: dónde está el collider/causa común que introduce el error y si la misclasificación es diferencial (cuando, p. ej., $Y$ influye en $A^*$).",
      "explicacion": "Modelar explícitamente la variable medida vs la real revela el mecanismo del sesgo de información."
     },
     {
@@ -19295,8 +19295,8 @@
      "id": "arh4-q15",
      "tipo": "concepto",
      "enunciado": "¿Qué son los Single-World Intervention Graphs (SWIGs) y para qué sirven?",
-     "solucion": "Los SWIGs son DAGs que incorporan explícitamente el TRATAMIENTO INTERVENIDO escindiendo el nodo de tratamiento en su valor natural y su valor fijado por intervención (a), de modo que aparecen los nodos contrafactuales Y^a en el propio grafo. Sirven para LEER la intercambiabilidad condicional (Y^a ⊥ A | L) directamente como d-separación en el grafo intervenido, unificando el lenguaje de contrafactuales con el de diagramas causales y verificando con qué conjunto L se identifica el efecto.",
-     "explicacion": "Permiten chequear gráficamente la intercambiabilidad: ¿está Y^a d-separado de A dado L en el SWIG?"
+     "solucion": "Los SWIGs son DAGs que incorporan explícitamente el TRATAMIENTO INTERVENIDO escindiendo el nodo de tratamiento en su valor natural y su valor fijado por intervención (a), de modo que aparecen los nodos contrafactuales $Y^a$ en el propio grafo. Sirven para LEER la intercambiabilidad condicional ($Y^a \\perp A \\mid L$) directamente como d-separación en el grafo intervenido, unificando el lenguaje de contrafactuales con el de diagramas causales y verificando con qué conjunto L se identifica el efecto.",
+     "explicacion": "Permiten chequear gráficamente la intercambiabilidad: ¿está $Y^a$ d-separado de $A$ dado $L$ en el SWIG?"
     }
    ]
   },
@@ -19323,7 +19323,7 @@
    "ideas_clave": [
     "IP weighting modela el TRATAMIENTO (pseudo-población); estandarización el OUTCOME",
     "Pesos estabilizados SW=P(A)/P(A|L) son más estables; cuida la positividad",
-    "Propensity score π(L)=P(A=1|L): balancing score (estratificar/emparejar/ponderar)",
+    "Propensity score $\\pi(L)=P(A=1\\mid L)$: balancing score (estratificar/emparejar/ponderar)",
     "Doblemente robusto: consistente si UNO de los dos modelos es correcto (AIPW/TMLE)",
     "IV (relevancia+exclusión+no confundir Z-Y) +monotonicidad ⇒ LATE en compliers"
    ],
@@ -19332,7 +19332,7 @@
      "id": "arh5-q1",
      "tipo": "concepto",
      "enunciado": "¿Por qué hace falta MODELAR en inferencia causal (Parte II) si en la Parte I se estimaba sin modelos?",
-     "solucion": "Porque los estimadores no paramétricos (estandarización/IP weighting calculados por estratos) solo funcionan con POCOS confundidores discretos: con muchos confundidores o continuos, los estratos quedan vacíos (maldición de la dimensionalidad) y no se pueden estimar las medias condicionales. Los modelos (paramétricos o ML) SUAVIZAN/interpolan entre estratos para estimar E[Y|A,L] o P(A|L), a costa del supuesto de especificación correcta. Es el trade-off sesgo-varianza aplicado a inferencia causal.",
+     "solucion": "Porque los estimadores no paramétricos (estandarización/IP weighting calculados por estratos) solo funcionan con POCOS confundidores discretos: con muchos confundidores o continuos, los estratos quedan vacíos (maldición de la dimensionalidad) y no se pueden estimar las medias condicionales. Los modelos (paramétricos o ML) SUAVIZAN/interpolan entre estratos para estimar $E[Y\\mid A,L]$ o $P(A\\mid L)$, a costa del supuesto de especificación correcta. Es el trade-off sesgo-varianza aplicado a inferencia causal.",
      "explicacion": "Modelar permite ajustar por confundidores de alta dimensión que el enfoque por estratos no maneja."
     },
     {
@@ -19346,7 +19346,7 @@
      "id": "arh5-q3",
      "tipo": "concepto",
      "enunciado": "¿Qué es un Modelo Estructural Marginal (MSM)?",
-     "solucion": "Un MSM es un modelo para la MEDIA de los resultados CONTRAFACTUALES marginales como función del tratamiento, p. ej. E[Y^a] = β0 + β1·a (o logit P(Y^a=1)=β0+β1·a). Es 'marginal' porque modela E[Y^a] en toda la población (no condicional a L) y 'estructural' porque es sobre contrafactuales. Se estima ajustando ese modelo en la PSEUDO-POBLACIÓN creada por IP weighting; β1 es el efecto causal (diferencia o log-razón según el enlace).",
+     "solucion": "Un MSM es un modelo para la MEDIA de los resultados CONTRAFACTUALES marginales como función del tratamiento, p. ej. $E[Y^a] = \\beta_0 + \\beta_1\\cdot a$ (o logit $P(Y^a=1)=\\beta_0+\\beta_1\\cdot a$). Es 'marginal' porque modela $E[Y^a]$ en toda la población (no condicional a L) y 'estructural' porque es sobre contrafactuales. Se estima ajustando ese modelo en la PSEUDO-POBLACIÓN creada por IP weighting; $\\beta_1$ es el efecto causal (diferencia o log-razón según el enlace).",
      "explicacion": "El MSM da el parámetro causal de interés; IP weighting es la herramienta para ajustarlo."
     },
     {
@@ -19360,14 +19360,14 @@
      "id": "arh5-q5",
      "tipo": "concepto",
      "enunciado": "Explica la ESTANDARIZACIÓN / g-fórmula y su relación con el IP weighting.",
-     "solucion": "La estandarización estima E[Y^a] = Σ_l E[Y|A=a,L=l]·P(L=l): se ajusta un modelo del OUTCOME E[Y|A,L], se predice para cada individuo bajo a=1 y a=0 y se promedia sobre la distribución de L (g-fórmula paramétrica). Modela el OUTCOME, mientras que el IP weighting modela el TRATAMIENTO. Son DOS CARAS de la misma identificación: bajo modelos correctos y las 3 condiciones, dan el mismo efecto. La elección depende de cuál modelo se especifique mejor.",
+     "solucion": "La estandarización estima $E[Y^a] = \\sum_l E[Y\\mid A=a,L=l]\\cdot P(L=l)$: se ajusta un modelo del OUTCOME $E[Y\\mid A,L]$, se predice para cada individuo bajo $a=1$ y $a=0$ y se promedia sobre la distribución de L (g-fórmula paramétrica). Modela el OUTCOME, mientras que el IP weighting modela el TRATAMIENTO. Son DOS CARAS de la misma identificación: bajo modelos correctos y las 3 condiciones, dan el mismo efecto. La elección depende de cuál modelo se especifique mejor.",
      "explicacion": "Estandarización = predecir y promediar (outcome); IP weighting = ponderar (tratamiento)."
     },
     {
      "id": "arh5-q6",
      "tipo": "concepto",
      "enunciado": "¿Qué es el PROPENSITY SCORE y por qué es un 'balancing score'?",
-     "solucion": "El propensity score es π(L)=P(A=1|L), la probabilidad de recibir el tratamiento dados los confundidores. Es un BALANCING SCORE porque, condicionando solo en π(L), la distribución de L queda EQUILIBRADA entre tratados y no tratados: resume todos los confundidores medidos en UNA dimensión. Bajo intercambiabilidad dado L, también hay intercambiabilidad dado π(L), así que ajustar por el PS basta para controlar el confundimiento medido.",
+     "solucion": "El propensity score es $\\pi(L)=P(A=1\\mid L)$, la probabilidad de recibir el tratamiento dados los confundidores. Es un BALANCING SCORE porque, condicionando solo en $\\pi(L)$, la distribución de L queda EQUILIBRADA entre tratados y no tratados: resume todos los confundidores medidos en UNA dimensión. Bajo intercambiabilidad dado L, también hay intercambiabilidad dado $\\pi(L)$, así que ajustar por el PS basta para controlar el confundimiento medido.",
      "explicacion": "Reduce un problema multivariado de confundidores a uno unidimensional."
     },
     {
@@ -19388,7 +19388,7 @@
      "id": "arh5-q9",
      "tipo": "concepto",
      "enunciado": "¿Cómo combina la inferencia causal moderna el MACHINE LEARNING con la doble robustez?",
-     "solucion": "Usando ML flexible (random forests, boosting, etc.) para estimar AMBOS modelos —el de propensión P(A|L) y el de outcome E[Y|A,L]— dentro de un estimador DOBLEMENTE ROBUSTO (AIPW/TMLE) y con CROSS-FITTING para evitar sesgo por overfitting. Esto (double/debiased machine learning) permite ajustar por confundidores de alta dimensión sin imponer una forma paramétrica, manteniendo estimaciones e intervalos de confianza válidos para el efecto causal. El ML predice; la estructura doblemente robusta da la inferencia causal.",
+     "solucion": "Usando ML flexible (random forests, boosting, etc.) para estimar AMBOS modelos —el de propensión $P(A\\mid L)$ y el de outcome $E[Y\\mid A,L]$— dentro de un estimador DOBLEMENTE ROBUSTO (AIPW/TMLE) y con CROSS-FITTING para evitar sesgo por overfitting. Esto (double/debiased machine learning) permite ajustar por confundidores de alta dimensión sin imponer una forma paramétrica, manteniendo estimaciones e intervalos de confianza válidos para el efecto causal. El ML predice; la estructura doblemente robusta da la inferencia causal.",
      "explicacion": "El ML maneja la alta dimensión de L; la doble robustez + cross-fitting preservan la validez inferencial."
     },
     {
@@ -19409,7 +19409,7 @@
      "id": "arh5-q12",
      "tipo": "concepto",
      "enunciado": "¿Cuál es el estimando IV usual y por qué las 3 condiciones no bastan para un efecto puntual?",
-     "solucion": "El estimando IV estándar es (E[Y|Z=1]−E[Y|Z=0]) / (E[A|Z=1]−E[A|Z=0]): la asociación Z-Y dividida por la asociación Z-A. Pero las 3 condiciones solo identifican LÍMITES (bounds) del efecto, no un valor puntual; para un punto se necesita una CUARTA condición: HOMOGENEIDAD (el efecto es constante entre individuos) o MONOTONICIDAD (no existen 'defiers'). Sin alguna de ellas, el cociente IV no equivale a un efecto causal interpretable.",
+     "solucion": "El estimando IV estándar es $(E[Y\\mid Z=1]-E[Y\\mid Z=0]) / (E[A\\mid Z=1]-E[A\\mid Z=0])$: la asociación Z-Y dividida por la asociación Z-A. Pero las 3 condiciones solo identifican LÍMITES (bounds) del efecto, no un valor puntual; para un punto se necesita una CUARTA condición: HOMOGENEIDAD (el efecto es constante entre individuos) o MONOTONICIDAD (no existen 'defiers'). Sin alguna de ellas, el cociente IV no equivale a un efecto causal interpretable.",
      "explicacion": "El numerador y denominador se estiman de los datos; la 4ª condición da significado causal al cociente."
     },
     {
@@ -19423,7 +19423,7 @@
      "id": "arh5-q14",
      "tipo": "concepto",
      "enunciado": "¿Qué es un INSTRUMENTO DÉBIL y por qué es peligroso?",
-     "solucion": "Un instrumento débil es aquel con relevancia BAJA: poca asociación con el tratamiento (denominador E[A|Z=1]−E[A|Z=0] cercano a 0). Es peligroso porque dividir por un número casi nulo AMPLIFICA enormemente la varianza y cualquier pequeña violación de las otras condiciones (exclusión, no confundimiento Z-Y), produciendo estimaciones muy INESTABLES y SESGADAS. Por eso se exige un instrumento fuertemente asociado al tratamiento (p. ej. F-statistic alto en la primera etapa).",
+     "solucion": "Un instrumento débil es aquel con relevancia BAJA: poca asociación con el tratamiento (denominador $E[A\\mid Z=1]-E[A\\mid Z=0]$ cercano a 0). Es peligroso porque dividir por un número casi nulo AMPLIFICA enormemente la varianza y cualquier pequeña violación de las otras condiciones (exclusión, no confundimiento Z-Y), produciendo estimaciones muy INESTABLES y SESGADAS. Por eso se exige un instrumento fuertemente asociado al tratamiento (p. ej. F-statistic alto en la primera etapa).",
      "explicacion": "Con relevancia baja, el sesgo por violaciones menores se magnifica y los IC explotan."
     },
     {
@@ -19456,7 +19456,7 @@
    },
    "ideas_clave": [
     "HR arrastra selección por depleción; prefiere riesgo/supervivencia a tiempo fijo",
-    "Feedback: L_t es confundidor y mediador ⇒ la regresión tradicional falla → g-métodos",
+    "Feedback: $L_t$ es confundidor y mediador $\\Rightarrow$ la regresión tradicional falla → g-métodos",
     "Censura = tratamiento tiempo-variable → IP weighting de censura (IPCW)",
     "ITT = efecto de asignar (diluye con no adherencia); per-protocol necesita g-métodos",
     "Target trial: alinea t=0 (evita immortal time + usuario prevalente); new-user/comparador activo"
@@ -19487,28 +19487,28 @@
      "id": "arh6-q4",
      "tipo": "concepto",
      "enunciado": "¿Qué es la INTERCAMBIABILIDAD SECUENCIAL y por qué se necesita con tratamientos tiempo-variables?",
-     "solucion": "Con un tratamiento que se da repetidamente en el tiempo, la identificación requiere que, en CADA momento, los que continúan/inician el tratamiento sean comparables a los que no, DADA toda la historia previa de tratamiento y covariables: Y^ā ⊥ A_t | Ā_{t-1}, L̄_t para cada t. Es la versión longitudinal de la intercambiabilidad condicional; sin ella (confundimiento tiempo-variable no medido) el efecto de la estrategia completa ā no se identifica.",
+     "solucion": "Con un tratamiento que se da repetidamente en el tiempo, la identificación requiere que, en CADA momento, los que continúan/inician el tratamiento sean comparables a los que no, DADA toda la historia previa de tratamiento y covariables: $Y^{\\bar a} \\perp A_t \\mid \\bar A_{t-1}, \\bar L_t$ para cada $t$. Es la versión longitudinal de la intercambiabilidad condicional; sin ella (confundimiento tiempo-variable no medido) el efecto de la estrategia completa $\\bar a$ no se identifica.",
      "explicacion": "Hay que controlar el confundimiento en cada tiempo, condicionando en el pasado de tratamiento y covariables."
     },
     {
      "id": "arh6-q5",
      "tipo": "concepto",
      "enunciado": "¿Qué es el FEEDBACK TRATAMIENTO-CONFUNDIDOR y por qué hace fallar a los métodos tradicionales?",
-     "solucion": "Ocurre cuando una covariable tiempo-variable L_t es a la vez CONFUNDIDOR del tratamiento futuro A_t (L_t → A_t y L_t → Y) y está AFECTADA por el tratamiento pasado (A_{t-1} → L_t), o sea también es un MEDIADOR. Los métodos tradicionales (regresión ajustando por L_t) fallan porque: si AJUSTAS por L_t bloqueas parte del efecto (es mediador) y puedes abrir sesgo de collider; si NO ajustas, queda confundimiento. No hay forma de ajustar correctamente con regresión estándar.",
-     "explicacion": "L_t es confundidor y mediador a la vez: condicionar o no condicionar, ambas sesgan."
+     "solucion": "Ocurre cuando una covariable tiempo-variable $L_t$ es a la vez CONFUNDIDOR del tratamiento futuro $A_t$ ($L_t \\to A_t$ y $L_t \\to Y$) y está AFECTADA por el tratamiento pasado ($A_{t-1} \\to L_t$), o sea también es un MEDIADOR. Los métodos tradicionales (regresión ajustando por $L_t$) fallan porque: si AJUSTAS por $L_t$ bloqueas parte del efecto (es mediador) y puedes abrir sesgo de collider; si NO ajustas, queda confundimiento. No hay forma de ajustar correctamente con regresión estándar.",
+     "explicacion": "$L_t$ es confundidor y mediador a la vez: condicionar o no condicionar, ambas sesgan."
     },
     {
      "id": "arh6-q6",
      "tipo": "concepto",
      "enunciado": "Si los métodos tradicionales 'no se pueden arreglar' ante el feedback, ¿cuál es la solución?",
-     "solucion": "Los G-MÉTODOS: la g-fórmula (estandarización secuencial sobre la historia de covariables), el IP weighting de modelos estructurales marginales (ponderando por la probabilidad del tratamiento en cada tiempo dado el pasado) y la g-estimación de modelos estructurales anidados. Estos ajustan por la historia de confundidores SIN bloquear el efecto que pasa por el mediador, porque tratan a L_t como confundidor del futuro pero no condicionan de forma que corten el efecto del pasado.",
+     "solucion": "Los G-MÉTODOS: la g-fórmula (estandarización secuencial sobre la historia de covariables), el IP weighting de modelos estructurales marginales (ponderando por la probabilidad del tratamiento en cada tiempo dado el pasado) y la g-estimación de modelos estructurales anidados. Estos ajustan por la historia de confundidores SIN bloquear el efecto que pasa por el mediador, porque tratan a $L_t$ como confundidor del futuro pero no condicionan de forma que corten el efecto del pasado.",
      "explicacion": "Solo los g-métodos manejan correctamente el confundimiento tiempo-variable con feedback."
     },
     {
      "id": "arh6-q7",
      "tipo": "concepto",
      "enunciado": "¿Qué hace el IP weighting en el caso de tratamientos tiempo-variables (MSM longitudinal)?",
-     "solucion": "Calcula, para cada individuo, el PRODUCTO de los pesos en cada tiempo: la inversa de la probabilidad de haber recibido su secuencia de tratamiento dado el pasado de covariables (con pesos estabilizados). Eso crea una pseudo-población donde el tratamiento en cada tiempo es independiente de los confundidores pasados, eliminando el confundimiento tiempo-variable, y permite ajustar un MSM para E[Y^ā] como función de la estrategia ā. Maneja el feedback porque no condiciona en L_t, lo pondera.",
+     "solucion": "Calcula, para cada individuo, el PRODUCTO de los pesos en cada tiempo: la inversa de la probabilidad de haber recibido su secuencia de tratamiento dado el pasado de covariables (con pesos estabilizados). Eso crea una pseudo-población donde el tratamiento en cada tiempo es independiente de los confundidores pasados, eliminando el confundimiento tiempo-variable, y permite ajustar un MSM para $E[Y^{\\bar a}]$ como función de la estrategia $\\bar a$. Maneja el feedback porque no condiciona en $L_t$, lo pondera.",
      "explicacion": "Pondera (no condiciona) por la historia de confundidores, evitando bloquear el efecto vía el mediador."
     },
     {
@@ -19557,7 +19557,7 @@
      "id": "arh6-q14",
      "tipo": "concepto",
      "enunciado": "¿Cómo se estima el efecto PER-PROTOCOL al emular un target trial de una estrategia SOSTENIDA?",
-     "solucion": "Definiendo la estrategia sostenida (p. ej. 'iniciar y continuar el tratamiento, quizá con un grace period'), censurando a quienes se DESVÍAN de la estrategia, y ajustando el confundimiento TIEMPO-VARIABLE que esa censura/desviación induce mediante G-MÉTODOS — típicamente IP weighting de censura por desviación (IPCW) más IP weighting/ g-fórmula para los confundidores en cada tiempo. Así se estima E[Y^ā] bajo seguir la estrategia, no bajo solo asignarla.",
+     "solucion": "Definiendo la estrategia sostenida (p. ej. 'iniciar y continuar el tratamiento, quizá con un grace period'), censurando a quienes se DESVÍAN de la estrategia, y ajustando el confundimiento TIEMPO-VARIABLE que esa censura/desviación induce mediante G-MÉTODOS — típicamente IP weighting de censura por desviación (IPCW) más IP weighting/ g-fórmula para los confundidores en cada tiempo. Así se estima $E[Y^{\\bar a}]$ bajo seguir la estrategia, no bajo solo asignarla.",
      "explicacion": "Censurar por desviación + ponderar/estandarizar por la historia de confundidores = per-protocol válido."
     },
     {
@@ -19589,9 +19589,9 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "S(t)=P(T>t) cae de 1 a 0; h(t)=tasa instantánea; S(t)=exp(−∫h)",
+    "$S(t)=P(T>t)$ cae de 1 a 0; $h(t)=$ tasa instantánea; $S(t)=\\exp(-\\int h)$",
     "Censura (derecha la común): usa info parcial; supuesto de censura no informativa",
-    "Kaplan-Meier: Ŝ(t)=∏(n_j−d_j)/n_j, escalones en eventos; mediana en Ŝ=0.5",
+    "Kaplan-Meier: $\\hat S(t)=\\prod(n_j-d_j)/n_j$, escalones en eventos; mediana en $\\hat S=0.5$",
     "Log-rank: H0 curvas iguales; observado vs esperado; óptimo bajo PH (Wilcoxon pesa lo temprano)",
     "Necesitas tiempo + indicador evento/censura por individuo"
    ],
@@ -19614,7 +19614,7 @@
      "id": "arh7-q3",
      "tipo": "concepto",
      "enunciado": "¿Qué relación matemática conecta S(t), h(t) y el hazard acumulado H(t)?",
-     "solucion": "Están unívocamente relacionadas: h(t) = f(t)/S(t) = −d/dt [ln S(t)]; el hazard acumulado H(t)=∫₀ᵗ h(u)du; y S(t)=exp(−H(t)). Conocer cualquiera determina las demás. Por eso modelar el hazard (como en Cox) equivale a determinar la supervivencia.",
+     "solucion": "Están unívocamente relacionadas: $h(t) = f(t)/S(t) = -d/dt [\\ln S(t)]$; el hazard acumulado $H(t)=\\int_0^t h(u)\\,du$; y $S(t)=\\exp(-H(t))$. Conocer cualquiera determina las demás. Por eso modelar el hazard (como en Cox) equivale a determinar la supervivencia.",
      "explicacion": "S(t)=exp(−H(t)) es la identidad clave: integrar el hazard da el hazard acumulado, y exponenciar lo negativo da la supervivencia."
     },
     {
@@ -19635,7 +19635,7 @@
      "id": "arh7-q6",
      "tipo": "concepto",
      "enunciado": "Explica cómo se construye el estimador de KAPLAN-MEIER de S(t).",
-     "solucion": "Es el estimador PRODUCT-LIMIT, no paramétrico: se ordenan los tiempos de evento y Ŝ(t) = ∏ sobre los tiempos de evento tⱼ ≤ t de (nⱼ − dⱼ)/nⱼ, donde nⱼ = número EN RIESGO justo antes de tⱼ y dⱼ = número de eventos en tⱼ. En cada tiempo de evento se multiplica la supervivencia previa por la fracción que sobrevive ese instante. No asume ninguna distribución.",
+     "solucion": "Es el estimador PRODUCT-LIMIT, no paramétrico: se ordenan los tiempos de evento y $\\hat S(t) = \\prod$ sobre los tiempos de evento $t_j \\le t$ de $(n_j - d_j)/n_j$, donde $n_j =$ número EN RIESGO justo antes de $t_j$ y $d_j =$ número de eventos en $t_j$. En cada tiempo de evento se multiplica la supervivencia previa por la fracción que sobrevive ese instante. No asume ninguna distribución.",
      "explicacion": "Es un producto acumulado de probabilidades condicionales de sobrevivir cada tiempo de evento."
     },
     {
@@ -19649,7 +19649,7 @@
      "id": "arh7-q8",
      "tipo": "concepto",
      "enunciado": "¿Cómo se obtiene la MEDIANA de supervivencia de una curva KM y por qué a veces la media no se reporta?",
-     "solucion": "La mediana es el menor tiempo t para el cual Ŝ(t) ≤ 0.5: se lee bajando desde 0.5 en el eje vertical hasta la curva y proyectando al eje del tiempo. La MEDIA suele no reportarse porque, si hay censura en los tiempos finales, la curva KM no llega a 0 y la media (área bajo la curva) quedaría subestimada/indeterminada. La mediana es más robusta a la censura de la cola.",
+     "solucion": "La mediana es el menor tiempo $t$ para el cual $\\hat S(t) \\le 0.5$: se lee bajando desde 0.5 en el eje vertical hasta la curva y proyectando al eje del tiempo. La MEDIA suele no reportarse porque, si hay censura en los tiempos finales, la curva KM no llega a 0 y la media (área bajo la curva) quedaría subestimada/indeterminada. La mediana es más robusta a la censura de la cola.",
      "explicacion": "La cola censurada impide estimar bien la media; la mediana es la medida de tendencia estándar."
     },
     {
@@ -19664,7 +19664,7 @@
      "tipo": "concepto",
      "enunciado": "¿Cómo se construye el estadístico de log-rank?",
      "solucion": "En cada tiempo de evento se calcula, para cada grupo, el número de eventos OBSERVADOS y los ESPERADOS bajo H0 (proporcionales al tamaño en riesgo de ese grupo en ese instante). Se SUMAN las diferencias observado−esperado a lo largo de todos los tiempos de evento y se combinan en un estadístico CHI-CUADRADO (gl = número de grupos − 1). Un valor grande (p pequeño) indica diferencia entre las curvas.",
-     "explicacion": "Es esencialmente una suma de tablas 2×k en cada tiempo de evento (tipo Mantel-Haenszel)."
+     "explicacion": "Es esencialmente una suma de tablas $2\\times k$ en cada tiempo de evento (tipo Mantel-Haenszel)."
     },
     {
      "id": "arh7-q11",
@@ -19722,46 +19722,46 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "Cox: h(t,X)=h₀(t)exp(βX); HR=exp(β); semiparamétrico; verosimilitud parcial",
+    "Cox: $h(t,X)=h_0(t)\\exp(\\beta X)$; $HR=\\exp(\\beta)$; semiparamétrico; verosimilitud parcial",
     "PH = HR constante en el tiempo (curvas log-log paralelas)",
-    "Evaluar PH: log-log + GOF Schoenfeld + interacción covariable×tiempo",
+    "Evaluar PH: log-log + GOF Schoenfeld + interacción covariable$\\times$tiempo",
     "Si se viola PH: Cox estratificado (controlar) o Cox extendido (modelar)",
-    "Cox estratificado: h₀ por estrato, β compartidos, sin HR del estratificador"
+    "Cox estratificado: $h_0$ por estrato, $\\beta$ compartidos, sin HR del estratificador"
    ],
    "banco": [
     {
      "id": "arh8-q1",
      "tipo": "concepto",
      "enunciado": "Escribe el modelo de Cox de hazards proporcionales e interpreta sus componentes.",
-     "solucion": "h(t,X) = h₀(t)·exp(β₁X₁ + β₂X₂ + … + βₚXₚ). h₀(t) es el HAZARD BASE (el hazard cuando todas las X=0), que queda SIN especificar (depende del tiempo). El factor exp(ΣβⱼXⱼ) escala ese baseline según las covariables y NO depende del tiempo. Los βⱼ miden el efecto de cada covariable sobre el log-hazard.",
+     "solucion": "$h(t,X) = h_0(t)\\cdot\\exp(\\beta_1 X_1 + \\beta_2 X_2 + \\dots + \\beta_p X_p)$. $h_0(t)$ es el HAZARD BASE (el hazard cuando todas las $X=0$), que queda SIN especificar (depende del tiempo). El factor $\\exp(\\sum\\beta_j X_j)$ escala ese baseline según las covariables y NO depende del tiempo. Los $\\beta_j$ miden el efecto de cada covariable sobre el log-hazard.",
      "explicacion": "El modelo separa el tiempo (en h₀(t)) de las covariables (en el exponencial)."
     },
     {
      "id": "arh8-q2",
      "tipo": "concepto",
      "enunciado": "¿Por qué el modelo de Cox se llama SEMIPARAMÉTRICO y por qué es tan popular?",
-     "solucion": "Semiparamétrico porque tiene una parte PARAMÉTRICA (exp(ΣβⱼXⱼ), con los β a estimar) y una parte NO PARAMÉTRICA: el hazard base h₀(t) NO se asume con ninguna forma funcional. Es popular porque, sin comprometerse con una distribución del tiempo, da estimaciones de HR robustas y cercanas a las de los modelos paramétricos correctos, y permite manejar covariables, estratificación y términos tiempo-dependientes.",
+     "solucion": "Semiparamétrico porque tiene una parte PARAMÉTRICA ($\\exp(\\sum\\beta_j X_j)$, con los $\\beta$ a estimar) y una parte NO PARAMÉTRICA: el hazard base $h_0(t)$ NO se asume con ninguna forma funcional. Es popular porque, sin comprometerse con una distribución del tiempo, da estimaciones de HR robustas y cercanas a las de los modelos paramétricos correctos, y permite manejar covariables, estratificación y términos tiempo-dependientes.",
      "explicacion": "No modelar h₀(t) lo hace flexible y robusto frente a la mala especificación de la distribución."
     },
     {
      "id": "arh8-q3",
      "tipo": "concepto",
      "enunciado": "¿Cómo se interpreta el HAZARD RATIO en un modelo de Cox?",
-     "solucion": "El HR entre dos individuos con covariables X\\* y X es exp(Σβⱼ(X\\*ⱼ − Xⱼ)). Para una covariable binaria (1 vs 0), HR = exp(β): HR>1 indica MAYOR hazard (peor pronóstico) para el grupo expuesto, HR=1 sin efecto, HR<1 protector. Bajo el supuesto PH, ese HR es CONSTANTE a lo largo del tiempo. El h₀(t) se cancela al tomar el cociente, por eso no hace falta conocerlo.",
+     "solucion": "El HR entre dos individuos con covariables $X^*$ y $X$ es $\\exp(\\sum\\beta_j(X^*_j - X_j))$. Para una covariable binaria (1 vs 0), $HR = \\exp(\\beta)$: $HR>1$ indica MAYOR hazard (peor pronóstico) para el grupo expuesto, $HR=1$ sin efecto, $HR<1$ protector. Bajo el supuesto PH, ese HR es CONSTANTE a lo largo del tiempo. El $h_0(t)$ se cancela al tomar el cociente, por eso no hace falta conocerlo.",
      "explicacion": "El HR compara hazards momentáneos; bajo PH es el mismo en todo t."
     },
     {
      "id": "arh8-q4",
      "tipo": "concepto",
      "enunciado": "¿Qué es la VEROSIMILITUD PARCIAL y por qué es clave para el Cox?",
-     "solucion": "Es la función que el Cox maximiza para estimar los β SIN estimar h₀(t). En cada tiempo de EVENTO, considera la probabilidad de que el individuo que falló sea precisamente ese, entre todos los que estaban EN RIESGO en ese instante (depende solo de las covariables y del ORDEN de los eventos, no de los tiempos exactos ni de h₀). El producto de esas contribuciones es la verosimilitud parcial. Por eso el Cox da HR sin asumir distribución del tiempo.",
+     "solucion": "Es la función que el Cox maximiza para estimar los $\\beta$ SIN estimar $h_0(t)$. En cada tiempo de EVENTO, considera la probabilidad de que el individuo que falló sea precisamente ese, entre todos los que estaban EN RIESGO en ese instante (depende solo de las covariables y del ORDEN de los eventos, no de los tiempos exactos ni de $h_0$). El producto de esas contribuciones es la verosimilitud parcial. Por eso el Cox da HR sin asumir distribución del tiempo.",
      "explicacion": "Usa solo el orden de los fallos y los risk sets; h₀(t) se cancela."
     },
     {
      "id": "arh8-q5",
      "tipo": "concepto",
      "enunciado": "¿Cuál es el supuesto central del modelo de Cox?",
-     "solucion": "El supuesto de HAZARDS PROPORCIONALES (PH): el hazard ratio entre dos individuos (con covariables fijas) es CONSTANTE en el tiempo; equivalentemente, los hazards de distintos grupos son proporcionales entre sí (sus curvas log(−log S) son paralelas). Esto se debe a que el efecto de las covariables (exp(ΣβⱼXⱼ)) no depende del tiempo. Si el efecto de una covariable cambia con el tiempo, se viola PH.",
+     "solucion": "El supuesto de HAZARDS PROPORCIONALES (PH): el hazard ratio entre dos individuos (con covariables fijas) es CONSTANTE en el tiempo; equivalentemente, los hazards de distintos grupos son proporcionales entre sí (sus curvas $\\log(-\\log S)$ son paralelas). Esto se debe a que el efecto de las covariables ($\\exp(\\sum\\beta_j X_j)$) no depende del tiempo. Si el efecto de una covariable cambia con el tiempo, se viola PH.",
      "explicacion": "PH = el efecto multiplicativo de las covariables no cambia con el tiempo."
     },
     {
@@ -19782,35 +19782,35 @@
      "id": "arh8-q8",
      "tipo": "concepto",
      "enunciado": "¿Cómo se evalúa PH usando una VARIABLE DEPENDIENTE DEL TIEMPO?",
-     "solucion": "Se AÑADE al modelo un término de INTERACCIÓN entre la covariable y una función del tiempo (p. ej. X·t o X·ln t) y se prueba la significancia de su coeficiente. Si ese coeficiente es SIGNIFICATIVO, el efecto de la covariable depende del tiempo (el HR no es constante) y se VIOLA PH; si no es significativo, no hay evidencia contra PH. Es la base del Cox EXTENDIDO y permite además modelar la no proporcionalidad.",
-     "explicacion": "Interacción covariable×tiempo significativa ⇒ HR cambia con el tiempo ⇒ no-PH."
+     "solucion": "Se AÑADE al modelo un término de INTERACCIÓN entre la covariable y una función del tiempo (p. ej. $X\\cdot t$ o $X\\cdot\\ln t$) y se prueba la significancia de su coeficiente. Si ese coeficiente es SIGNIFICATIVO, el efecto de la covariable depende del tiempo (el HR no es constante) y se VIOLA PH; si no es significativo, no hay evidencia contra PH. Es la base del Cox EXTENDIDO y permite además modelar la no proporcionalidad.",
+     "explicacion": "Interacción covariable$\\times$tiempo significativa $\\Rightarrow$ HR cambia con el tiempo $\\Rightarrow$ no-PH."
     },
     {
      "id": "arh8-q9",
      "tipo": "concepto",
      "enunciado": "Si se VIOLA el supuesto de hazards proporcionales, ¿qué opciones hay?",
-     "solucion": "(1) COX ESTRATIFICADO: estratificar por la variable que viola PH (cada estrato con su propio hazard base), si no interesa su HR. (2) COX EXTENDIDO con una variable TIEMPO-DEPENDIENTE: incluir la interacción covariable×función-del-tiempo para MODELAR cómo cambia el HR. (3) Analizar por INTERVALOS de tiempo (HR distinto por periodo) o usar un modelo PARAMÉTRICO/AFT adecuado. La elección depende de si interesa estimar el efecto de esa variable o solo controlarlo.",
+     "solucion": "(1) COX ESTRATIFICADO: estratificar por la variable que viola PH (cada estrato con su propio hazard base), si no interesa su HR. (2) COX EXTENDIDO con una variable TIEMPO-DEPENDIENTE: incluir la interacción covariable$\\times$función-del-tiempo para MODELAR cómo cambia el HR. (3) Analizar por INTERVALOS de tiempo (HR distinto por periodo) o usar un modelo PARAMÉTRICO/AFT adecuado. La elección depende de si interesa estimar el efecto de esa variable o solo controlarlo.",
      "explicacion": "Estratificar si solo se controla; modelar con tiempo-dependiente si interesa su efecto."
     },
     {
      "id": "arh8-q10",
      "tipo": "concepto",
      "enunciado": "¿Qué es el COX ESTRATIFICADO y qué limitación tiene?",
-     "solucion": "Es una variante que controla una variable que NO cumple PH ESTRATIFICANDO por sus categorías: cada estrato g recibe su PROPIO hazard base h₀g(t), pero los coeficientes β de las DEMÁS covariables se comparten (modelo sin interacción). Limitación: NO produce un hazard ratio para la variable de estratificación (su efecto se absorbe en los baselines), así que no se puede estimar/testear su efecto directamente.",
+     "solucion": "Es una variante que controla una variable que NO cumple PH ESTRATIFICANDO por sus categorías: cada estrato g recibe su PROPIO hazard base $h_{0g}(t)$, pero los coeficientes $\\beta$ de las DEMÁS covariables se comparten (modelo sin interacción). Limitación: NO produce un hazard ratio para la variable de estratificación (su efecto se absorbe en los baselines), así que no se puede estimar/testear su efecto directamente.",
      "explicacion": "Controla la variable problemática sin estimar su HR; ideal para confundidores que violan PH."
     },
     {
      "id": "arh8-q11",
      "tipo": "concepto",
      "enunciado": "En el Cox estratificado, ¿qué diferencia hay entre el modelo de NO INTERACCIÓN y el de INTERACCIÓN?",
-     "solucion": "El modelo de NO INTERACCIÓN asume que el efecto (β) de las demás covariables es el MISMO en todos los estratos (solo cambia el hazard base). El modelo de INTERACCIÓN permite coeficientes DISTINTOS por estrato (la covariable de estratificación modifica el efecto de las otras). Se decide entre ambos con una PRUEBA DE RAZÓN DE VEROSIMILITUD: si el de interacción no mejora significativamente, se prefiere el de no interacción (más parsimonioso).",
+     "solucion": "El modelo de NO INTERACCIÓN asume que el efecto ($\\beta$) de las demás covariables es el MISMO en todos los estratos (solo cambia el hazard base). El modelo de INTERACCIÓN permite coeficientes DISTINTOS por estrato (la covariable de estratificación modifica el efecto de las otras). Se decide entre ambos con una PRUEBA DE RAZÓN DE VEROSIMILITUD: si el de interacción no mejora significativamente, se prefiere el de no interacción (más parsimonioso).",
      "explicacion": "Prueba de razón de verosimilitud: ¿hace falta permitir efectos distintos por estrato?"
     },
     {
      "id": "arh8-q12",
      "tipo": "concepto",
      "enunciado": "¿Cómo se obtienen CURVAS DE SUPERVIVENCIA AJUSTADAS a partir de un modelo de Cox?",
-     "solucion": "A partir del hazard base estimado y de los coeficientes, se calcula Ŝ(t,X) = [Ŝ₀(t)]^exp(ΣβⱼXⱼ) para un patrón de covariables X especificado (p. ej. el valor medio de los ajustes, o cada nivel de la variable de interés). Así se obtienen curvas de supervivencia comparables que ya CONTROLAN las demás covariables, a diferencia de las KM crudas que no ajustan.",
+     "solucion": "A partir del hazard base estimado y de los coeficientes, se calcula $\\hat S(t,X) = [\\hat S_0(t)]^{\\exp(\\sum\\beta_j X_j)}$ para un patrón de covariables $X$ especificado (p. ej. el valor medio de los ajustes, o cada nivel de la variable de interés). Así se obtienen curvas de supervivencia comparables que ya CONTROLAN las demás covariables, a diferencia de las KM crudas que no ajustan.",
      "explicacion": "Las curvas ajustadas del Cox controlan covariables; las KM no."
     },
     {
@@ -19831,7 +19831,7 @@
      "id": "arh8-q15",
      "tipo": "concepto",
      "enunciado": "¿Cómo se prueba la significancia global y de coeficientes en un modelo de Cox?",
-     "solucion": "Con las tres pruebas habituales basadas en la verosimilitud (parcial): la PRUEBA DE RAZÓN DE VEROSIMILITUD (compara −2logL entre el modelo con y sin la(s) covariable(s); preferida), la prueba de WALD (β̂/SE, para coeficientes individuales) y la prueba de SCORE. Para comparar modelos anidados (p. ej. evaluar un bloque de covariables o el modelo interacción vs no-interacción) se usa la razón de verosimilitud con gl = diferencia en número de parámetros.",
+     "solucion": "Con las tres pruebas habituales basadas en la verosimilitud (parcial): la PRUEBA DE RAZÓN DE VEROSIMILITUD (compara $-2\\log L$ entre el modelo con y sin la(s) covariable(s); preferida), la prueba de WALD ($\\hat\\beta/\\text{SE}$, para coeficientes individuales) y la prueba de SCORE. Para comparar modelos anidados (p. ej. evaluar un bloque de covariables o el modelo interacción vs no-interacción) se usa la razón de verosimilitud con gl = diferencia en número de parámetros.",
      "explicacion": "Razón de verosimilitud para bloques/modelos anidados; Wald para coeficientes sueltos."
     }
    ]
@@ -19855,10 +19855,10 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "Cox extendido: h₀(t)exp[ΣβX+ΣδX(t)] para variables cambiantes o no-PH; HR depende de t",
+    "Cox extendido: $h_0(t)\\exp[\\sum\\beta X+\\sum\\delta X(t)]$ para variables cambiantes o no-PH; HR depende de $t$",
     "Variables tiempo-dependientes: solo info hasta t (evita immortal time bias)",
     "Paramétricos: exponencial (hazard cte), Weibull (monótono), log-logística (no monótono)",
-    "AFT modela el TIEMPO: factor de aceleración γ estira (>1) o encoge (<1) la supervivencia",
+    "AFT modela el TIEMPO: factor de aceleración $\\gamma$ estira ($>1$) o encoge ($<1$) la supervivencia",
     "Weibull es la única a la vez PH y AFT; paramétricos permiten extrapolar"
    ],
    "banco": [
@@ -19873,14 +19873,14 @@
      "id": "arh9-q2",
      "tipo": "concepto",
      "enunciado": "Escribe el modelo de Cox EXTENDIDO y sus dos usos principales.",
-     "solucion": "h(t,X(t)) = h₀(t)·exp[Σ βᵢXᵢ + Σ δⱼXⱼ(t)], donde Xⱼ(t) son términos que dependen del tiempo. Usos: (1) modelar covariables genuinamente TIEMPO-DEPENDIENTES (su valor cambia); (2) MODELAR LA NO PROPORCIONALIDAD incluyendo interacciones covariable×función-del-tiempo (p. ej. X·ln t) para capturar un HR que cambia con el tiempo. Con estos términos, el HR ya NO es constante.",
-     "explicacion": "El mismo mecanismo (X·g(t)) sirve para variables cambiantes y para arreglar/diagnosticar la no-PH."
+     "solucion": "$h(t,X(t)) = h_0(t)\\cdot\\exp[\\sum \\beta_i X_i + \\sum \\delta_j X_j(t)]$, donde $X_j(t)$ son términos que dependen del tiempo. Usos: (1) modelar covariables genuinamente TIEMPO-DEPENDIENTES (su valor cambia); (2) MODELAR LA NO PROPORCIONALIDAD incluyendo interacciones covariable$\\times$función-del-tiempo (p. ej. $X\\cdot\\ln t$) para capturar un HR que cambia con el tiempo. Con estos términos, el HR ya NO es constante.",
+     "explicacion": "El mismo mecanismo ($X\\cdot g(t)$) sirve para variables cambiantes y para arreglar/diagnosticar la no-PH."
     },
     {
      "id": "arh9-q3",
      "tipo": "concepto",
      "enunciado": "¿Por qué con covariables tiempo-dependientes el hazard ratio ya no es constante?",
-     "solucion": "Porque al incluir términos que dependen del tiempo (Xⱼ(t) o X·g(t)), el factor exponencial cambia a lo largo del seguimiento, de modo que el cociente de hazards entre dos individuos varía con t. El supuesto PH ya no aplica; el HR debe interpretarse en un INSTANTE específico (o como función del tiempo), no como un único número para todo el seguimiento.",
+     "solucion": "Porque al incluir términos que dependen del tiempo ($X_j(t)$ o $X\\cdot g(t)$), el factor exponencial cambia a lo largo del seguimiento, de modo que el cociente de hazards entre dos individuos varía con $t$. El supuesto PH ya no aplica; el HR debe interpretarse en un INSTANTE específico (o como función del tiempo), no como un único número para todo el seguimiento.",
      "explicacion": "El HR pasa a ser una función del tiempo; se reporta a tiempos concretos."
     },
     {
@@ -19901,15 +19901,15 @@
      "id": "arh9-q6",
      "tipo": "concepto",
      "enunciado": "Compara los hazards de los modelos EXPONENCIAL, WEIBULL y LOG-LOGÍSTICO.",
-     "solucion": "EXPONENCIAL: hazard CONSTANTE h(t)=λ (sin memoria), supervivencia S(t)=exp(−λt). WEIBULL: hazard MONÓTONO, creciente o decreciente según el parámetro de forma p (p>1 crece, p<1 decrece, p=1 → exponencial). LOG-LOGÍSTICO (y log-normal): hazard NO monótono (puede subir y luego bajar). La elección se guía por la forma esperada del riesgo en el tiempo.",
+     "solucion": "EXPONENCIAL: hazard CONSTANTE $h(t)=\\lambda$ (sin memoria), supervivencia $S(t)=\\exp(-\\lambda t)$. WEIBULL: hazard MONÓTONO, creciente o decreciente según el parámetro de forma $p$ ($p>1$ crece, $p<1$ decrece, $p=1 \\to$ exponencial). LOG-LOGÍSTICO (y log-normal): hazard NO monótono (puede subir y luego bajar). La elección se guía por la forma esperada del riesgo en el tiempo.",
      "explicacion": "Exponencial=plano, Weibull=monótono, log-logística=joroba; elegir según la dinámica del riesgo."
     },
     {
      "id": "arh9-q7",
      "tipo": "concepto",
      "enunciado": "¿Qué es el marco de ACCELERATED FAILURE TIME (AFT) y cómo se interpreta?",
-     "solucion": "El AFT modela el efecto de las covariables sobre el TIEMPO de supervivencia (no sobre el hazard): describe cómo una covariable ESTIRA o ENCOGE el eje del tiempo mediante un FACTOR DE ACELERACIÓN γ. Si γ>1, la covariable ALARGA la supervivencia (los eventos ocurren 'más lento', como ver la película en cámara lenta); γ<1 la acorta. Es una interpretación intuitiva en escala de tiempo (p. ej. 'el tratamiento duplica el tiempo mediano hasta el evento').",
-     "explicacion": "AFT: la covariable multiplica el tiempo de supervivencia por el factor de aceleración γ."
+     "solucion": "El AFT modela el efecto de las covariables sobre el TIEMPO de supervivencia (no sobre el hazard): describe cómo una covariable ESTIRA o ENCOGE el eje del tiempo mediante un FACTOR DE ACELERACIÓN $\\gamma$. Si $\\gamma>1$, la covariable ALARGA la supervivencia (los eventos ocurren 'más lento', como ver la película en cámara lenta); $\\gamma<1$ la acorta. Es una interpretación intuitiva en escala de tiempo (p. ej. 'el tratamiento duplica el tiempo mediano hasta el evento').",
+     "explicacion": "AFT: la covariable multiplica el tiempo de supervivencia por el factor de aceleración $\\gamma$."
     },
     {
      "id": "arh9-q8",
@@ -19943,7 +19943,7 @@
      "id": "arh9-q12",
      "tipo": "concepto",
      "enunciado": "¿Qué relación hay entre el coeficiente AFT y el factor de aceleración?",
-     "solucion": "En un modelo AFT log-lineal ln T = α + γᵀX + error, el FACTOR DE ACELERACIÓN para una covariable es exp(coeficiente correspondiente): multiplica el tiempo de supervivencia. Un coeficiente positivo (factor >1) alarga el tiempo hasta el evento (efecto protector en términos de tiempo); negativo (factor <1) lo acorta. Es el análogo, en escala de tiempo, de lo que el HR es en escala de hazard.",
+     "solucion": "En un modelo AFT log-lineal $\\ln T = \\alpha + \\gamma^\\top X + \\text{error}$, el FACTOR DE ACELERACIÓN para una covariable es $\\exp(\\text{coeficiente correspondiente})$: multiplica el tiempo de supervivencia. Un coeficiente positivo (factor $>1$) alarga el tiempo hasta el evento (efecto protector en términos de tiempo); negativo (factor $<1$) lo acorta. Es el análogo, en escala de tiempo, de lo que el HR es en escala de hazard.",
      "explicacion": "Factor de aceleración = exp(coef AFT); >1 alarga la supervivencia, <1 la acorta."
     },
     {
