@@ -1,5 +1,11 @@
 # Análisis de supervivencia IV: eventos recurrentes y riesgos competitivos
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+El análisis de supervivencia básico asume un evento único y "censura" todo lo demás. Pero el mundo real tiene dos complicaciones frecuentes: eventos que se **repiten** en el mismo sujeto (recaídas, hospitalizaciones) y eventos que **compiten** —uno impide al otro (morir de una causa impide morir de otra)—. Esta lección construye, desde cero, cómo manejar ambos sin sesgar, y revela el error más común: tratar un evento competidor como censura, lo que hace que **1−KM sobrestime** la incidencia.
+
+Al terminar podrás: (1) saber por qué los eventos recurrentes exigen varianza robusta y elegir entre AG/PWP/WLW; (2) explicar por qué 1−KM miente con riesgos competitivos y usar la **CIF** en su lugar; (3) distinguir el hazard específico de causa (etiología) del de subdistribución/Fine-Gray (riesgo absoluto); y (4) comparar grupos con la prueba de Gray. El gemelo en producto —churn vs conversión— hace todo concreto. Cierra la mecánica de supervivencia ([[arena-h7]]). *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## Eventos recurrentes
 
 El **mismo** evento ocurre **varias veces** por sujeto (recaídas, hospitalizaciones, infecciones). Los eventos intra-sujeto están **correlacionados** → los métodos que asumen independencia subestiman los SE. Enfoques (todos con **varianza robusta** por sujeto):

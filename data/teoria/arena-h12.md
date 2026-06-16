@@ -1,5 +1,11 @@
 # OHDSI II: vocabularios, ETL y calidad de datos
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+El OMOP CDM estandariza la *estructura* de los datos, pero falta lo más difícil: el **significado**. ICD-10 `E11.9`, ICD-9 `250.00` y un código local pueden significar lo mismo ("diabetes tipo 2") y hay que hacerlos converger. Esta lección construye, desde cero, la capa semántica: los **vocabularios estandarizados** (conceptos estándar vs fuente, jerarquías de descendientes), el **ETL** que transforma y mapea cada fuente, y el marco de **calidad de datos** que evita que datos malos sesguen todo aguas abajo.
+
+Al terminar podrás: (1) distinguir un concepto estándar de uno fuente y usar 'Maps to' para unificarlos; (2) capturar una idea clínica completa con CONCEPT_ANCESTOR (descendientes) y concept sets; (3) ubicar las herramientas de ETL (WhiteRabbit/Rabbit-in-a-Hat/Usagi); y (4) auditar calidad con el marco de Kahn (conformance/completeness/plausibility) y el DQD. El ejemplo de los tres códigos de diabetes hace de hilo. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## Vocabularios estandarizados
 
 Cada evento clínico se representa con un **CONCEPT_ID**. Distinción clave:

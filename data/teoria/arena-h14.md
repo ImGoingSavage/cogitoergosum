@@ -1,5 +1,11 @@
 # OHDSI IV: calidad de la evidencia, validez de método y estudios en red
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un resultado "estadísticamente significativo" sobre datos observacionales puede ser puro sesgo sistemático, y el intervalo de confianza clásico no lo delata —solo cuenta el azar—. Esta lección construye, desde cero, las salvaguardas que vuelven creíble la evidencia del mundo real: las **cuatro validez**, los **controles negativos** que *miden* el sesgo del propio método, la **calibración empírica** que lo descuenta de los p-valores, y los **estudios en red** que dan escala y privacidad corriendo el mismo código en muchas bases sin mover datos de pacientes.
+
+Al terminar podrás: (1) enumerar las cuatro validez (datos, clínica, software, método); (2) entender qué revela un control negativo (si los RR de nulos conocidos no se centran en 1, hay sesgo residual); (3) explicar por qué la calibración empírica ensancha los IC; y (4) ver por qué un estudio en red es a la vez reproducible y privado. El control negativo entra por un ejemplo. Cierra el cluster causal-health. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## Las cuatro validez
 
 La evidencia es creíble solo si se sostienen:

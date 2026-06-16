@@ -22,9 +22,9 @@
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
-| 7. causal-health (Causalidad y Health AI / RWE) | 22 | 🟡 16/22 (lotes 1-4 v95-v98) |
+| 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **66 / 118 hechas** |
+| | **118** | **72 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -150,7 +150,7 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [ ] `arena-iml3` — Métodos agnósticos: efectos e importancia
 - [ ] `arena-iml4` — LIME, Shapley/SHAP y ejemplos
 
-### 7. causal-health — Causalidad y Health AI / RWE (22) — 🟡 4/22 (lote 1 v95)
+### 7. causal-health — Causalidad y Health AI / RWE (22) — ✅ COMPLETO (v95–v99)
 
 - [x] `arena-h15` — La escalera de la causalidad (Pearl)
 - [x] `arena-h16` — Diagramas, junciones y paradojas (Pearl)
@@ -168,12 +168,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-h6` — Longitudinal, supervivencia y target trial
 - [x] `arena-h7` — Supervivencia: fundamentos, Kaplan-Meier y log-rank
 - [x] `arena-h8` — Modelo de Cox y supuesto PH
-- [ ] `arena-h9` — Cox extendido y modelos paramétricos/AFT
-- [ ] `arena-h10` — Eventos recurrentes y riesgos competitivos
-- [ ] `arena-h11` — OHDSI: comunidad, datos observacionales y OMOP CDM
-- [ ] `arena-h12` — OHDSI: vocabularios, ETL y calidad de datos
-- [ ] `arena-h13` — OHDSI: analítica estandarizada
-- [ ] `arena-h14` — OHDSI: calidad de la evidencia, validez y estudios en red
+- [x] `arena-h9` — Cox extendido y modelos paramétricos/AFT
+- [x] `arena-h10` — Eventos recurrentes y riesgos competitivos
+- [x] `arena-h11` — OHDSI: comunidad, datos observacionales y OMOP CDM
+- [x] `arena-h12` — OHDSI: vocabularios, ETL y calidad de datos
+- [x] `arena-h13` — OHDSI: analítica estandarizada
+- [x] `arena-h14` — OHDSI: calidad de la evidencia, validez y estudios en red
 
 ### 8. conductual — Conductual y comunicación bajo presión (4) — ⬜
 

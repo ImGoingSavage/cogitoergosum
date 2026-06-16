@@ -2,6 +2,12 @@
 
 > La **capa operacional/de estandarización** de la RWE. Complementa [[arena-h3]] (teoría causal) y [[arena-h7]] (métodos de supervivencia) con el "cómo" a escala.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Toda la teoría causal y de supervivencia anterior necesita **datos** — y los datos de salud del mundo real (historias clínicas, claims) son enormes, sucios, incompatibles entre sistemas y recolectados para *facturar*, no para investigar. Esta lección construye, desde cero, la respuesta de la comunidad **OHDSI**: estandarizar la *estructura* de los datos con el **OMOP Common Data Model** para escribir un análisis una sola vez y correrlo en muchas bases. Es la capa de ingeniería que hace posible la evidencia del mundo real (RWE) a escala.
+
+Al terminar podrás: (1) entender qué problema resuelve estandarizar datos y métodos; (2) leer el OMOP CDM (persona-céntrico) y por qué OBSERVATION_PERIOD distingue "no ocurrió" de "no observado"; (3) separar los tres casos de uso (caracterización, estimación, predicción); y (4) ubicar ATLAS/HADES. La distinción NULL-vs-cero entra por un ejemplo. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## ¿Qué es OHDSI?
 
 **OHDSI** (Observational Health Data Sciences and Informatics) es una colaboración internacional de **ciencia abierta** que genera evidencia a partir de **datos observacionales** (no de ensayos):

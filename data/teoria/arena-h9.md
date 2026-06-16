@@ -1,5 +1,11 @@
 # Análisis de supervivencia III: Cox extendido y modelos paramétricos/AFT
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+El Cox básico asume un efecto que no cambia con el tiempo y deja el riesgo base sin especificar. ¿Qué haces cuando una covariable **sí cambia** (un trasplante ocurre a mitad del seguimiento) o cuando quieres **predecir y extrapolar** la supervivencia más allá de tus datos? Esta lección construye, desde cero, las extensiones: el **Cox extendido** (covariables tiempo-dependientes), los **modelos paramétricos** (que asumen una forma del tiempo a cambio de poder extrapolar) y el marco **AFT**, que mide el efecto sobre el *tiempo de vida* en vez de sobre el hazard —a menudo más intuitivo—.
+
+Al terminar podrás: (1) usar el Cox extendido para covariables cambiantes o para modelar la no-PH, cuidando no mirar el futuro; (2) elegir una distribución paramétrica (exponencial/Weibull/log-logística) según la forma del hazard; (3) interpretar un factor de aceleración AFT ("duplica el tiempo típico"); y (4) entender por qué la Weibull es la única a la vez PH y AFT. Continúa el Cox de [[arena-h8]]. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## Cox extendido (covariables tiempo-dependientes)
 
 **h(t,X(t)) = h₀(t)·exp[Σ βᵢXᵢ + Σ δⱼXⱼ(t)].** Dos usos:

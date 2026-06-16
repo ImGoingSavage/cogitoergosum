@@ -1,5 +1,11 @@
 # OHDSI III: analítica estandarizada (cohortes, caracterización, estimación, predicción)
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Con datos estandarizados (OMOP) y vocabularios mapeados, ¿cómo *analizas*? Todo empieza definiendo una **cohorte** —y ahí acecha una trampa de tasa base: un fenotipo con sensibilidad y especificidad altísimas puede aun así estar lleno de falsos positivos—. Esta lección construye, desde cero, la analítica estandarizada de OHDSI: cómo definir y **validar** cohortes/fenotipos, y los tres tipos de análisis que nunca deben confundirse —**caracterización** (describir), **estimación** (causa) y **predicción** (pronóstico)—.
+
+Al terminar podrás: (1) definir una cohorte por sus tres componentes (entry/inclusión/exit); (2) entender por qué validar un fenotipo es Bayes puro (el PPV depende de la prevalencia); (3) distinguir cohort method/PS a gran escala de los diseños autocontrolados; y (4) evaluar un modelo de predicción (PLP) con AUC **y** calibración. La validación del fenotipo entra por números. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## Definir cohortes y fenotipos
 
 **Cohorte** = "un conjunto de personas que satisfacen uno o más criterios de inclusión durante un periodo de tiempo". Tres componentes:
