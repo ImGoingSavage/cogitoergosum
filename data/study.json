@@ -8137,81 +8137,81 @@
     "ruta": "quant"
    },
    "ideas_clave": [
-    "Con σ=0 la call vale S−K·e^(−rT) y delta=1: el precio del subyacente es determinístico.",
-    "Put-call parity: C−P = S−K·e^(−rT). Con r=0 y ATM: C=P siempre.",
+    "Con $\\sigma=0$ la call vale $S-K e^{-rT}$ y delta$=1$: el precio del subyacente es determinístico.",
+    "Put-call parity: $C-P = S-K e^{-rT}$. Con $r=0$ y ATM: $C=P$ siempre.",
     "Straddle break-even: Strike ± Prima; apuesta pura a volatilidad.",
     "Black-Scholes usa tasa libre de riesgo porque el portafolio delta-hedged es libre de riesgo.",
-    "Regla √T: para retornos i.i.d., σ(T años) = σ(anual)×√T."
+    "Regla $\\sqrt T$: para retornos i.i.d., $\\sigma(T\\text{ años}) = \\sigma(\\text{anual})\\times\\sqrt T$."
    ],
    "banco": [
     {
      "id": "arq5-q1",
      "tipo": "quiz",
-     "enunciado": "Black-Scholes con σ=0, S=K=$100, r=5%, T=1 año. ¿Cuánto vale la call europea? ¿Cómo la cubres si la vendiste?",
-     "solucion": "C = S − K·e^(−rT) = 100 − 100·e^(−0.05) ≈ $4.88. Delta = 1 (el subyacente crece deterministamente a S·e^(rT) > K, así que siempre vence in-the-money). Cobertura: compra 1 acción por cada call vendida.",
-     "explicacion": "Con σ=0, S(T) = S·e^(rT) = 100·e^(0.05) ≈ $105.13 con certeza. La call siempre paga 5.13. Su PV = 5.13·e^(−0.05) ≈ 4.88. Resultado = C = S − K·e^(−rT)."
+     "enunciado": "Black-Scholes con $\\sigma=0$, $S=K=\\$100$, $r=5\\%$, $T=1$ año. ¿Cuánto vale la call europea? ¿Cómo la cubres si la vendiste?",
+     "solucion": "$C = S - K e^{-rT} = 100 - 100 e^{-0.05} \\approx \\$4.88$. Delta $= 1$ (el subyacente crece deterministamente a $S e^{rT} > K$, así que siempre vence in-the-money). Cobertura: compra 1 acción por cada call vendida.",
+     "explicacion": "Con $\\sigma=0$, $S(T) = S e^{rT} = 100 e^{0.05} \\approx \\$105.13$ con certeza. La call siempre paga 5.13. Su PV $= 5.13 e^{-0.05} \\approx 4.88$. Resultado $= C = S - K e^{-rT}$."
     },
     {
      "id": "arq5-q2",
      "tipo": "quiz",
-     "enunciado": "Bajo Black-Scholes con r=0, sin dividendos, una call ATM europea y una put ATM europea (mismos S, K, T). ¿Cuál vale más?",
-     "solucion": "Valen lo mismo: C = P. Put-call parity: C = P + S − K·e^(−rT). Con r=0 y S=K: C = P + K − K = P. La paridad garantiza igualdad aunque el upside de la call sea ilimitado.",
-     "explicacion": "La 'paradoja' (call ilimitada vs put limitada a K) se resuelve porque el put-call parity refleja la simetría de la distribución log-normal alrededor del forward F = S cuando r=0."
+     "enunciado": "Bajo Black-Scholes con $r=0$, sin dividendos, una call ATM europea y una put ATM europea (mismos $S, K, T$). ¿Cuál vale más?",
+     "solucion": "Valen lo mismo: $C = P$. Put-call parity: $C = P + S - K e^{-rT}$. Con $r=0$ y $S=K$: $C = P + K - K = P$. La paridad garantiza igualdad aunque el upside de la call sea ilimitado.",
+     "explicacion": "La 'paradoja' (call ilimitada vs put limitada a $K$) se resuelve porque el put-call parity refleja la simetría de la distribución log-normal alrededor del forward $F = S$ cuando $r=0$."
     },
     {
      "id": "arq5-q3",
      "tipo": "quiz",
      "enunciado": "Compras un straddle ATM: call + put con strike \\$25, costo total \\$5. ¿En qué precios al vencimiento ganas dinero? ¿Qué movimiento mínimo necesitas?",
-     "solucion": "Ganas si S(T) < \\$20 o S(T) > \\$30. Necesitas un movimiento de más de \\$5 en cualquier dirección. Break-even = \\$25 ± \\$5 = \\$20 y \\$30. Payoff = |S(T) − 25| − 5.",
+     "solucion": "Ganas si $S(T) < \\$20$ o $S(T) > \\$30$. Necesitas un movimiento de más de \\$5 en cualquier dirección. Break-even $= \\$25 \\pm \\$5 = \\$20$ y \\$30. Payoff $= |S(T) - 25| - 5$.",
      "explicacion": "El straddle es la apuesta pura a volatilidad: ganas si el subyacente se mueve más que la prima total, sin importar la dirección."
     },
     {
      "id": "arq5-q4",
      "tipo": "quiz",
      "enunciado": "¿Cuántas acciones debes tener (delta) para cubrir una call europea at-the-money?",
-     "solucion": "Δ ≈ 0.5 (exactamente N(d₁) ≈ N(0.05) ≈ 0.52 con r>0, pero para ATM con r→0: d₁→0, N(d₁)→0.5). Intuitivamente: hay ~50% de probabilidad de que la call termine in-the-money, así que una variación de \\$1 en S mueve la call ~\\$0.50.",
-     "explicacion": "Delta = N(d₁) donde d₁ = [ln(S/K) + (r+σ²/2)T]/(σ√T). Para S=K (ATM), el término ln(S/K)=0 y d₁ = (r+σ²/2)√T/σ ≈ 0 para tasas bajas → delta ≈ 0.5."
+     "solucion": "$\\Delta \\approx 0.5$ (exactamente $N(d_1) \\approx N(0.05) \\approx 0.52$ con $r>0$, pero para ATM con $r\\to0$: $d_1\\to0$, $N(d_1)\\to0.5$). Intuitivamente: hay ~50% de probabilidad de que la call termine in-the-money, así que una variación de \\$1 en $S$ mueve la call $\\approx$\\$0.50.",
+     "explicacion": "Delta $= N(d_1)$ donde $d_1 = [\\ln(S/K) + (r+\\sigma^2/2)T]/(\\sigma\\sqrt T)$. Para $S=K$ (ATM), el término $\\ln(S/K)=0$ y $d_1 = (r+\\sigma^2/2)\\sqrt T/\\sigma \\approx 0$ para tasas bajas → delta $\\approx 0.5$."
     },
     {
      "id": "arq5-q5",
      "tipo": "quiz",
      "enunciado": "¿Por qué theta y gamma tienen signos opuestos para opciones vainilla? ¿Es siempre así?",
-     "solucion": "Sí (para opciones sin dividendos en condiciones normales). De la ecuación de B-S: Θ + ½σ²S²Γ + rSΔ − rC = 0. Una posición long gamma (Γ>0) exige Θ<0 (pérdida de tiempo value). Short gamma: Θ>0 (cobras tiempo). Intercambias convexidad por tiempo.",
+     "solucion": "Sí (para opciones sin dividendos en condiciones normales). De la ecuación de B-S: $\\Theta + \\tfrac12\\sigma^2 S^2\\Gamma + rS\\Delta - rC = 0$. Una posición long gamma ($\\Gamma>0$) exige $\\Theta<0$ (pérdida de tiempo value). Short gamma: $\\Theta>0$ (cobras tiempo). Intercambias convexidad por tiempo.",
      "explicacion": "Intuición: long gamma significa que el portafolio gana con movimientos grandes en cualquier dirección (gamma scalping), pero paga un 'alquiler' en forma de theta negativa (el tiempo trabaja en tu contra)."
     },
     {
      "id": "arq5-q6",
      "tipo": "quiz",
      "enunciado": "La tasa spot a 5 años es 10% y la tasa spot a 10 años es 15% (anual). ¿Cuál es la tasa forward implícita del año 5 al año 10?",
-     "solucion": "≈20.23% exacto (aprox. lineal: 20%). Exacto: (1+f)^5 = (1.15)^10/(1.10)^5 → f ≈ 20.23%. Aprox. lineal: (15%×10 − 10%×5)/5 = 20%. La aproximación subestima el exacto por la composición.",
-     "explicacion": "No-arbitraje: invertir 10 años directamente debe equivaler a invertir 5 años y luego reinvertir los 5 siguientes a la tasa forward: (1+r₁₀)^10 = (1+r₅)^5·(1+f₅₋₁₀)^5."
+     "solucion": "$\\approx20.23\\%$ exacto (aprox. lineal: 20%). Exacto: $(1+f)^5 = (1.15)^{10}/(1.10)^5$ → $f \\approx 20.23\\%$. Aprox. lineal: $(15\\%\\times10 - 10\\%\\times5)/5 = 20\\%$. La aproximación subestima el exacto por la composición.",
+     "explicacion": "No-arbitraje: invertir 10 años directamente debe equivaler a invertir 5 años y luego reinvertir los 5 siguientes a la tasa forward: $(1+r_{10})^{10} = (1+r_5)^5(1+f_{5\\to10})^5$."
     },
     {
      "id": "arq5-q7",
      "tipo": "quiz",
-     "enunciado": "Juego de San Petersburgo: lanzas una moneda hasta que salga cara; en el lanzamiento k ganas $2^k. ¿Cuánto pagarías por jugar?",
-     "solucion": "El valor esperado es infinito (E = Σₖ₌₁^∞ 2^k·(1/2)^k = Σ1 = ∞), pero nadie pagaría arbitrariamente. La paradoja de San Petersburgo: E[payoff] = ∞ pero la disposición real a pagar es pequeña. Razones: utilidad logarítmica, capital finito del banquero, tiempo de vida finito.",
-     "explicacion": "Bernoulli resolvió la paradoja con utilidad logarítmica: E[log(W+payoff)] es finito. La lección financiera: valor esperado ≠ precio justo cuando la distribución tiene colas pesadas."
+     "enunciado": "Juego de San Petersburgo: lanzas una moneda hasta que salga cara; en el lanzamiento $k$ ganas $\\$2^k$. ¿Cuánto pagarías por jugar?",
+     "solucion": "El valor esperado es infinito ($E = \\sum_{k=1}^\\infty 2^k(1/2)^k = \\sum 1 = \\infty$), pero nadie pagaría arbitrariamente. La paradoja de San Petersburgo: $E[\\text{payoff}] = \\infty$ pero la disposición real a pagar es pequeña. Razones: utilidad logarítmica, capital finito del banquero, tiempo de vida finito.",
+     "explicacion": "Bernoulli resolvió la paradoja con utilidad logarítmica: $E[\\log(W+\\text{payoff})]$ es finito. La lección financiera: valor esperado $\\ne$ precio justo cuando la distribución tiene colas pesadas."
     },
     {
      "id": "arq5-q8",
      "tipo": "quiz",
      "enunciado": "Si la desviación estándar de los retornos anuales continuamente compuestos es 10%, ¿cuál es la desviación estándar de los retornos de 4 años?",
-     "solucion": "20% = 10%×√4. Para retornos i.i.d.: Var(r₁+r₂+r₃+r₄) = 4·Var(r). SD(4 años) = SD(anual)×√4 = 10%×2 = 20%.",
-     "explicacion": "La regla √T es fundamental en finanzas: σ(T) = σ(1)×√T. Vale solo para retornos i.i.d. (sin autocorrelación). Con reversión a la media, la volatilidad de largo plazo es menor que σ×√T."
+     "solucion": "$20\\% = 10\\%\\times\\sqrt4$. Para retornos i.i.d.: $\\text{Var}(r_1+r_2+r_3+r_4) = 4\\,\\text{Var}(r)$. SD(4 años) $=$ SD(anual)$\\times\\sqrt4 = 10\\%\\times2 = 20\\%$.",
+     "explicacion": "La regla $\\sqrt T$ es fundamental en finanzas: $\\sigma(T) = \\sigma(1)\\times\\sqrt T$. Vale solo para retornos i.i.d. (sin autocorrelación). Con reversión a la media, la volatilidad de largo plazo es menor que $\\sigma\\times\\sqrt T$."
     },
     {
      "id": "arq5-q9",
      "tipo": "quiz",
-     "enunciado": "Call europea ATM: S=K=\\$100, r=0, T=1 año. La SD del precio al vencimiento es \\$10 (≈10% vol). ¿El precio de la call es más cercano a \\$1, \\$5 o \\$10?",
-     "solucion": "≈\\$4, más cercano a \\$5. Con σ=10%, r=0, S=K: d₁=d₂=0+0.05=0.05 y -0.05. C = 100·(N(0.05)−N(−0.05)) ≈ 100×0.04 ≈ \\$4. Regla de dedo: C ≈ 0.4·S·σ·√T = 0.4×100×0.10×1 = \\$4.",
-     "explicacion": "Fórmula de Brenner-Subrahmanyam (ATM, r≈0): C ≈ S·σ·√(T/2π) ≈ S·σ·√T/2.507. Para S=100, σ=0.1, T=1: C ≈ 100×0.1/2.507 ≈ $3.99."
+     "enunciado": "Call europea ATM: $S=K=\\$100$, $r=0$, $T=1$ año. La SD del precio al vencimiento es \\$10 ($\\approx10\\%$ vol). ¿El precio de la call es más cercano a \\$1, \\$5 o \\$10?",
+     "solucion": "$\\approx\\$4$, más cercano a \\$5. Con $\\sigma=10\\%$, $r=0$, $S=K$: $d_1, d_2 = \\pm0.05$. $C = 100(N(0.05)-N(-0.05)) \\approx 100\\times0.04 \\approx \\$4$. Regla de dedo: $C \\approx 0.4\\,S\\sigma\\sqrt T = 0.4\\times100\\times0.10\\times1 = \\$4$.",
+     "explicacion": "Fórmula de Brenner-Subrahmanyam (ATM, $r\\approx0$): $C \\approx S\\sigma\\sqrt{T/2\\pi} \\approx S\\sigma\\sqrt T/2.507$. Para $S=100$, $\\sigma=0.1$, $T=1$: $C \\approx 100\\times0.1/2.507 \\approx \\$3.99$."
     },
     {
      "id": "arq5-q10",
      "tipo": "quiz",
      "enunciado": "¿Por qué Black-Scholes usa la tasa libre de riesgo y no el retorno esperado μ del activo para valorar opciones?",
-     "solucion": "Porque el portafolio delta-hedgeado (long opción + short Δ acciones) no tiene riesgo de mercado: must earn r (no-arbitraje). El μ desaparece en la derivación de la EDP de B-S porque se cancela al eliminar el riesgo. La valoración es neutral al riesgo.",
+     "solucion": "Porque el portafolio delta-hedgeado (long opción + short $\\Delta$ acciones) no tiene riesgo de mercado: debe rendir $r$ (no-arbitraje). El $\\mu$ desaparece en la derivación de la EDP de B-S porque se cancela al eliminar el riesgo. La valoración es neutral al riesgo.",
      "explicacion": "Intuición: dos activos con el mismo payoff en todos los estados deben valer lo mismo hoy (no-arbitraje). El precio de la opción no depende de lo optimistas o pesimistas que seamos sobre el activo; el delta hedge elimina esa dependencia."
     }
    ]
@@ -8385,30 +8385,30 @@
    "ideas_clave": [
     "Duración = sensibilidad del precio del bono a tasas; mayor cupón = menor duración.",
     "CAPM: solo β (riesgo sistemático) es compensado; el idiosincrásico se diversifica.",
-    "Vega > 0 para calls y puts: más volatilidad → más valor para ambas opciones.",
-    "E[e^X] = e^(μ+σ²/2) — el 'drift de Jensen' de la lognormal.",
-    "Lema de Itô: d(ln S) = (μ − σ²/2)dt + σdW (el −σ²/2 es el drift de Itô)."
+    "Vega $> 0$ para calls y puts: más volatilidad → más valor para ambas opciones.",
+    "$E[e^X] = e^{\\mu+\\sigma^2/2}$ — el 'drift de Jensen' de la lognormal.",
+    "Lema de Itô: $d(\\ln S) = (\\mu - \\sigma^2/2)dt + \\sigma\\,dW$ (el $-\\sigma^2/2$ es el drift de Itô)."
    ],
    "banco": [
     {
      "id": "arq7-q1",
      "tipo": "conceptual",
      "enunciado": "¿Qué mide la duración de un bono? ¿Cuál es la duración de un bono cupón-cero con vencimiento en 5 años? ¿Y de un bono con cupón pagado a perpetuidad?",
-     "solucion": "Duración de Macaulay: media ponderada del tiempo hasta cada flujo de caja, con pesos = VP del flujo / precio del bono. Bono cupón-cero: toda la duración es el vencimiento → D = 5 años. Perpetuidad con tasa y: D = (1+y)/y. Para y=10%: D = 11 años.",
+     "solucion": "Duración de Macaulay: media ponderada del tiempo hasta cada flujo de caja, con pesos = VP del flujo / precio del bono. Bono cupón-cero: toda la duración es el vencimiento → $D = 5$ años. Perpetuidad con tasa $y$: $D = (1+y)/y$. Para $y=10\\%$: $D = 11$ años.",
      "explicacion": "Señal: 'sensibilidad del bono a tasas' o 'vida media de flujos'. Bono cupón-cero: el único flujo es al vencimiento. Perpetuidad: flujos infinitos pero los lejanos se descuentan fuertemente."
     },
     {
      "id": "arq7-q2",
      "tipo": "calculo",
-     "enunciado": "Un bono tiene duración modificada D_mod = 6.5 años. Si la tasa de interés sube 50 puntos base (0.50%), ¿cuánto cambia el precio del bono aproximadamente? ¿Sube o baja?",
-     "solucion": "ΔP/P ≈ −D_mod·Δy = −6.5 × 0.005 = −0.0325 = −3.25%. El precio baja porque la tasa subió. Para un bono de \\$1 000: ΔP ≈ −\\$32.50. La relación es inversa: tasas suben → precios bajan.",
-     "explicacion": "Señal: 'impacto de tasa en precio de bono'. Duración modificada D_mod = D_Macaulay / (1+y). La convexidad añade una corrección positiva de segundo orden: ΔP/P ≈ −D_mod·Δy + ½·Convexidad·(Δy)²."
+     "enunciado": "Un bono tiene duración modificada $D_\\text{mod} = 6.5$ años. Si la tasa de interés sube 50 puntos base (0.50%), ¿cuánto cambia el precio del bono aproximadamente? ¿Sube o baja?",
+     "solucion": "$\\Delta P/P \\approx -D_\\text{mod}\\,\\Delta y = -6.5 \\times 0.005 = -0.0325 = -3.25\\%$. El precio baja porque la tasa subió. Para un bono de \\$1000: $\\Delta P \\approx -\\$32.50$. La relación es inversa: tasas suben → precios bajan.",
+     "explicacion": "Señal: 'impacto de tasa en precio de bono'. Duración modificada $D_\\text{mod} = D_\\text{Macaulay}/(1+y)$. La convexidad añade una corrección positiva de segundo orden: $\\Delta P/P \\approx -D_\\text{mod}\\,\\Delta y + \\tfrac12\\,C\\,(\\Delta y)^2$."
     },
     {
      "id": "arq7-q3",
      "tipo": "conceptual",
      "enunciado": "Explica la convexidad de un bono. ¿Por qué un bono con mayor convexidad es preferible (con precio igual)? ¿Qué instrumento tiene convexidad negativa?",
-     "solucion": "Convexidad = ∂²P/∂y²/P. Mide la curvatura de la relación precio-tasa. Con mayor convexidad: cuando las tasas bajan el precio sube más de lo que predice la duración; cuando suben cae menos → ganancia asimétrica. Igual precio → mayor convexidad es mejor. Convexidad negativa: hipotecas prepagables (MBS callable), bonos callable — el emisor prepaga cuando bajan las tasas, limitando la ganancia del tenedor.",
+     "solucion": "Convexidad $= (\\partial^2 P/\\partial y^2)/P$. Mide la curvatura de la relación precio-tasa. Con mayor convexidad: cuando las tasas bajan el precio sube más de lo que predice la duración; cuando suben cae menos → ganancia asimétrica. Igual precio → mayor convexidad es mejor. Convexidad negativa: hipotecas prepagables (MBS callable), bonos callable — el emisor prepaga cuando bajan las tasas, limitando la ganancia del tenedor.",
      "explicacion": "La convexidad es gratis si el precio es igual; por eso los bonos con mayor convexidad se compran a prima cuando los inversores anticipan movimientos de tasas grandes."
     },
     {
@@ -8422,70 +8422,70 @@
      "id": "arq7-q5",
      "tipo": "calculo",
      "enunciado": "El portafolio A tiene retorno esperado 12%, desviación estándar 15%, tasa libre de riesgo 3%. El portafolio B tiene retorno esperado 9%, desviación estándar 8%. ¿Cuál tiene mejor ratio de Sharpe?",
-     "solucion": "Sharpe(A) = (12% − 3%) / 15% = 0.60. Sharpe(B) = (9% − 3%) / 8% = 0.75. B tiene mejor Sharpe aunque tiene menor retorno absoluto: genera más retorno por unidad de riesgo.",
+     "solucion": "Sharpe(A) $= (12\\% - 3\\%)/15\\% = 0.60$. Sharpe(B) $= (9\\% - 3\\%)/8\\% = 0.75$. B tiene mejor Sharpe aunque tiene menor retorno absoluto: genera más retorno por unidad de riesgo.",
      "explicacion": "Señal: 'comparar portafolios ajustando por riesgo'. Sharpe mide exceso de retorno por unidad de volatilidad total. Limitación: asume volatilidad = riesgo, lo que penaliza injustamente estrategias con retornos positivos asimétricos."
     },
     {
      "id": "arq7-q6",
      "tipo": "calculo",
-     "enunciado": "Según CAPM, una acción con β = 1.5, tasa libre de riesgo 2% y prima de mercado (E[R_m] − r_f) = 6%. ¿Cuál es el retorno esperado? ¿Qué significa β = 1.5 intuitivamente?",
-     "solucion": "E[R] = r_f + β·(E[R_m] − r_f) = 2% + 1.5 × 6% = 11%. β = 1.5 significa que cuando el mercado sube 1%, la acción sube ~1.5%; cuando el mercado baja 1%, la acción baja ~1.5%. La acción amplifica los movimientos del mercado.",
-     "explicacion": "CAPM: solo el riesgo sistemático (β) se compensa; el riesgo idiosincrásico se diversifica. β = Cov(R_acción, R_mercado) / Var(R_mercado). Una acción defensiva (β < 1) oscila menos que el mercado; una cíclica (β > 1) oscila más."
+     "enunciado": "Según CAPM, una acción con $\\beta = 1.5$, tasa libre de riesgo 2% y prima de mercado $(E[R_m] - r_f) = 6\\%$. ¿Cuál es el retorno esperado? ¿Qué significa $\\beta = 1.5$ intuitivamente?",
+     "solucion": "$E[R] = r_f + \\beta(E[R_m] - r_f) = 2\\% + 1.5 \\times 6\\% = 11\\%$. $\\beta = 1.5$ significa que cuando el mercado sube 1%, la acción sube ~1.5%; cuando el mercado baja 1%, la acción baja ~1.5%. La acción amplifica los movimientos del mercado.",
+     "explicacion": "CAPM: solo el riesgo sistemático ($\\beta$) se compensa; el riesgo idiosincrásico se diversifica. $\\beta = \\text{Cov}(R_\\text{acción}, R_\\text{mercado})/\\text{Var}(R_\\text{mercado})$. Una acción defensiva ($\\beta < 1$) oscila menos que el mercado; una cíclica ($\\beta > 1$) oscila más."
     },
     {
      "id": "arq7-q7",
      "tipo": "calculo",
-     "enunciado": "Una acción tiene correlación 0.6 con el mercado, desviación estándar del 20% y el mercado tiene σ_m = 15%. Calcula β. Si el mercado cae 2%, ¿cuánto se espera que caiga la acción?",
-     "solucion": "β = Cov(R, R_m) / Var(R_m) = ρ·σ·σ_m / σ_m² = ρ·σ/σ_m = 0.6 × 20% / 15% = 0.8. Si el mercado cae 2%: caída esperada ≈ 0.8 × 2% = 1.6%.",
-     "explicacion": "Descomposición: β = ρ·(σ/σ_m). Una acción con baja correlación y alta volatilidad puede tener β moderado. La parte no sistemática (σ idiosincrásico) no aparece en β porque se puede diversificar."
+     "enunciado": "Una acción tiene correlación 0.6 con el mercado, desviación estándar del 20% y el mercado tiene $\\sigma_m = 15\\%$. Calcula $\\beta$. Si el mercado cae 2%, ¿cuánto se espera que caiga la acción?",
+     "solucion": "$\\beta = \\text{Cov}(R, R_m)/\\text{Var}(R_m) = \\rho\\,\\sigma\\,\\sigma_m/\\sigma_m^2 = \\rho\\,\\sigma/\\sigma_m = 0.6 \\times 20\\%/15\\% = 0.8$. Si el mercado cae 2%: caída esperada $\\approx 0.8 \\times 2\\% = 1.6\\%$.",
+     "explicacion": "Descomposición: $\\beta = \\rho(\\sigma/\\sigma_m)$. Una acción con baja correlación y alta volatilidad puede tener $\\beta$ moderado. La parte no sistemática ($\\sigma$ idiosincrásico) no aparece en $\\beta$ porque se puede diversificar."
     },
     {
      "id": "arq7-q8",
      "tipo": "conceptual",
      "enunciado": "¿Cuál es el signo de vega para una call y para una put? ¿Por qué ambas opciones valen más con mayor volatilidad implícita?",
-     "solucion": "Vega = ∂C/∂σ > 0 para calls y puts. Razón: una opción es un derecho asimétrico — te beneficias de los movimientos grandes (captura el upside), mientras que el downside está limitado a la prima pagada. Mayor volatilidad → mayor probabilidad de que la opción expire in-the-money → mayor valor. Esto aplica tanto a calls como a puts.",
-     "explicacion": "Intuición: si σ = 0, call ATM vale max(S−K,0) = 0; put ATM = 0. Al aumentar σ, ambas valen más porque hay más dispersión alrededor del strike. El valor de una opción nunca puede ser negativo (es un derecho, no obligación)."
+     "solucion": "Vega $= \\partial C/\\partial\\sigma > 0$ para calls y puts. Razón: una opción es un derecho asimétrico — te beneficias de los movimientos grandes (captura el upside), mientras que el downside está limitado a la prima pagada. Mayor volatilidad → mayor probabilidad de que la opción expire in-the-money → mayor valor. Esto aplica tanto a calls como a puts.",
+     "explicacion": "Intuición: si $\\sigma = 0$, call ATM vale $\\max(S-K,0) = 0$; put ATM $= 0$. Al aumentar $\\sigma$, ambas valen más porque hay más dispersión alrededor del strike. El valor de una opción nunca puede ser negativo (es un derecho, no obligación)."
     },
     {
      "id": "arq7-q9",
      "tipo": "quiz",
      "enunciado": "¿Cuál es el signo de rho (∂C/∂r) para una call europea vs una put europea? Explica la intuición.",
-     "solucion": "Rho_call > 0: mayor tasa de interés → el strike K·e^{-rT} tiene menor valor presente → la call vale más (cuesta menos financiar el equivalente en acciones). Rho_put < 0: mayor tasa → el derecho a vender a K vale menos porque K descontado es menor.",
-     "explicacion": "Rho es el menos importante de los Greeks en la práctica habitual (las tasas cambian más lento que el precio o la vol). Sin embargo, en opciones sobre divisas o de largo plazo, rho puede ser significativo. En general |rho| > 0 para vencimientos largos."
+     "solucion": "Rho$_\\text{call} > 0$: mayor tasa de interés → el strike $K e^{-rT}$ tiene menor valor presente → la call vale más (cuesta menos financiar el equivalente en acciones). Rho$_\\text{put} < 0$: mayor tasa → el derecho a vender a $K$ vale menos porque $K$ descontado es menor.",
+     "explicacion": "Rho es el menos importante de los Greeks en la práctica habitual (las tasas cambian más lento que el precio o la vol). Sin embargo, en opciones sobre divisas o de largo plazo, rho puede ser significativo. En general $|\\text{rho}| > 0$ para vencimientos largos."
     },
     {
      "id": "arq7-q10",
      "tipo": "conceptual",
      "enunciado": "Enuncia la Paridad de Tasas de Interés Cubierta (CIP). Si la tasa USD a 1 año es 5% y la tasa EUR es 2%, ¿qué tipo de cambio forward EUR/USD implica CIP si el spot es 1.10?",
-     "solucion": "CIP: (1 + r_dom) = F/S · (1 + r_ext), donde F es el tipo forward, S el spot. Reordenando: F = S · (1 + r_dom)/(1 + r_ext) = 1.10 × 1.05/1.02 ≈ 1.1324. El EUR está a descuento forward (se espera que el USD se aprecie) porque la tasa USD es más alta.",
+     "solucion": "CIP: $(1 + r_\\text{dom}) = (F/S)(1 + r_\\text{ext})$, donde $F$ es el tipo forward, $S$ el spot. Reordenando: $F = S(1 + r_\\text{dom})/(1 + r_\\text{ext}) = 1.10 \\times 1.05/1.02 \\approx 1.1324$. El EUR está a descuento forward (se espera que el USD se aprecie) porque la tasa USD es más alta.",
      "explicacion": "CIP es una condición de no-arbitraje entre el mercado de divisas y los mercados de tasas. Si se viola, hay arbitraje: pedir prestado en EUR, convertir a USD, invertir y cubrir con un forward. Durante la crisis financiera 2008 y COVID-2020 la CIP se violó significativamente."
     },
     {
      "id": "arq7-q11",
      "tipo": "calculo",
-     "enunciado": "Si X ~ N(μ, σ²), calcula E[e^X]. ¿Cuál es la media de una distribución lognormal con parámetros μ=0, σ=0.2? ¿Y la mediana?",
-     "solucion": "E[e^X] = e^(μ + σ²/2). Esta es la función generatriz de momentos de la normal evaluada en t=1. Para μ=0, σ=0.2: E[e^X] = e^(0 + 0.02) ≈ 1.0202. Mediana = e^μ = e^0 = 1. La media siempre > mediana para lognormal (distribución sesgada a la derecha).",
-     "explicacion": "Señal: 'retornos log-normales'. En finanzas: si log(S_T/S_0) ~ N(μT, σ²T), entonces E[S_T] = S_0·e^(μT + σ²T/2). La diferencia μ vs μ+σ²/2 explica por qué el retorno esperado de las acciones difiere del retorno del log-precio."
+     "enunciado": "Si $X \\sim N(\\mu, \\sigma^2)$, calcula $E[e^X]$. ¿Cuál es la media de una distribución lognormal con parámetros $\\mu=0, \\sigma=0.2$? ¿Y la mediana?",
+     "solucion": "$E[e^X] = e^{\\mu + \\sigma^2/2}$. Esta es la función generatriz de momentos de la normal evaluada en $t=1$. Para $\\mu=0, \\sigma=0.2$: $E[e^X] = e^{0 + 0.02} \\approx 1.0202$. Mediana $= e^\\mu = e^0 = 1$. La media siempre $>$ mediana para lognormal (distribución sesgada a la derecha).",
+     "explicacion": "Señal: 'retornos log-normales'. En finanzas: si $\\log(S_T/S_0) \\sim N(\\mu T, \\sigma^2 T)$, entonces $E[S_T] = S_0 e^{\\mu T + \\sigma^2 T/2}$. La diferencia $\\mu$ vs $\\mu+\\sigma^2/2$ explica por qué el retorno esperado de las acciones difiere del retorno del log-precio."
     },
     {
      "id": "arq7-q12",
      "tipo": "conceptual",
-     "enunciado": "Enuncia el Lema de Itô para f(t, S_t) donde dS_t = μS_t dt + σS_t dW_t. Aplícalo para calcular df si f = ln(S_t).",
-     "solucion": "Lema de Itô: df = (∂f/∂t + μS·∂f/∂S + ½σ²S²·∂²f/∂S²) dt + σS·∂f/∂S dW. Para f = ln(S): ∂f/∂t = 0, ∂f/∂S = 1/S, ∂²f/∂S² = −1/S². Entonces d(ln S) = (μ − σ²/2) dt + σ dW. Integrando: ln(S_T/S_0) = (μ − σ²/2)T + σW_T ~ N((μ−σ²/2)T, σ²T).",
-     "explicacion": "El término −σ²/2 es el 'drift de Itô' y no aparece en el cálculo clásico. Es la fuente de la distinción entre retorno esperado μ y crecimiento del logaritmo μ−σ²/2. Para μ=10%, σ=20%: el precio log crece al 10%−2% = 8% por año en media."
+     "enunciado": "Enuncia el Lema de Itô para $f(t, S_t)$ donde $dS_t = \\mu S_t\\,dt + \\sigma S_t\\,dW_t$. Aplícalo para calcular $df$ si $f = \\ln(S_t)$.",
+     "solucion": "Lema de Itô: $df = (\\partial f/\\partial t + \\mu S\\,\\partial f/\\partial S + \\tfrac12\\sigma^2 S^2\\,\\partial^2 f/\\partial S^2)\\,dt + \\sigma S\\,\\partial f/\\partial S\\,dW$. Para $f = \\ln S$: $\\partial f/\\partial t = 0$, $\\partial f/\\partial S = 1/S$, $\\partial^2 f/\\partial S^2 = -1/S^2$. Entonces $d(\\ln S) = (\\mu - \\sigma^2/2)\\,dt + \\sigma\\,dW$. Integrando: $\\ln(S_T/S_0) = (\\mu - \\sigma^2/2)T + \\sigma W_T \\sim N((\\mu-\\sigma^2/2)T, \\sigma^2 T)$.",
+     "explicacion": "El término $-\\sigma^2/2$ es el 'drift de Itô' y no aparece en el cálculo clásico. Es la fuente de la distinción entre retorno esperado $\\mu$ y crecimiento del logaritmo $\\mu-\\sigma^2/2$. Para $\\mu=10\\%, \\sigma=20\\%$: el precio log crece al $10\\%-2\\% = 8\\%$ por año en media."
     },
     {
      "id": "arq7-q13",
      "tipo": "calculo",
-     "enunciado": "El precio de una acción sigue GBM: S(0)=100, μ=10%, σ=20%, T=1 año. ¿Cuál es la distribución de S(1)? Calcula E[S(1)] y P(S(1) > 110).",
-     "solucion": "S(1) ~ Lognormal con ln(S(1)) ~ N(ln(100) + (μ−σ²/2)·1, σ²·1) = N(ln(100) + 0.08, 0.04). E[S(1)] = 100·e^(0.10) ≈ 110.52. P(S(1) > 110) = P(ln S(1) > ln 110) = P(Z > (ln 1.10 − 0.08)/0.20) = P(Z > (0.0953−0.08)/0.20) = P(Z > 0.0765) ≈ 1 − Φ(0.0765) ≈ 46.9%.",
+     "enunciado": "El precio de una acción sigue GBM: $S(0)=100, \\mu=10\\%, \\sigma=20\\%, T=1$ año. ¿Cuál es la distribución de $S(1)$? Calcula $E[S(1)]$ y $P(S(1) > 110)$.",
+     "solucion": "$S(1) \\sim$ Lognormal con $\\ln(S(1)) \\sim N(\\ln 100 + (\\mu-\\sigma^2/2)\\cdot1, \\sigma^2\\cdot1) = N(\\ln 100 + 0.08, 0.04)$. $E[S(1)] = 100 e^{0.10} \\approx 110.52$. $P(S(1) > 110) = P(Z > (\\ln 1.10 - 0.08)/0.20) = P(Z > (0.0953-0.08)/0.20) = P(Z > 0.0765) \\approx 1 - \\Phi(0.0765) \\approx 46.9\\%$.",
      "explicacion": "La probabilidad real (world measure) de que el precio suba 10% es ~47%. Bajo la medida de riesgo neutral, μ se reemplaza por r, y se obtiene el precio de opciones. Estas son medidas diferentes: la física predice retornos esperados, la neutral al riesgo fija precios."
     },
     {
      "id": "arq7-q14",
      "tipo": "conceptual",
      "enunciado": "¿Por qué la volatilidad diaria se escala por √252 para obtener volatilidad anual? ¿Cuáles son los supuestos implícitos? ¿Cuándo falla esta escalación?",
-     "solucion": "Si los retornos diarios son i.i.d. con varianza σ_d², la varianza anual = 252·σ_d² (hay ~252 días de trading), entonces σ_anual = σ_d·√252. Supuestos: retornos i.i.d. (sin autocorrelación), distribución estacionaria, varianza finita. Falla cuando: hay autocorrelación (momentum o reversión a la media), la volatilidad es estocástica (GARCH, vol clustering), o la distribución cambia (crisis).",
+     "solucion": "Si los retornos diarios son i.i.d. con varianza $\\sigma_d^2$, la varianza anual $= 252\\,\\sigma_d^2$ (hay ~252 días de trading), entonces $\\sigma_\\text{anual} = \\sigma_d\\sqrt{252}$. Supuestos: retornos i.i.d. (sin autocorrelación), distribución estacionaria, varianza finita. Falla cuando: hay autocorrelación (momentum o reversión a la media), la volatilidad es estocástica (GARCH, vol clustering), o la distribución cambia (crisis).",
      "explicacion": "Señal: 'convertir vol diaria a anual'. El factor √252 (no 252) es el que escala desviaciones estándar. En práctica: la volatilidad real de largo plazo crece menos que √T si hay reversión a la media, y más si hay clustering de alta volatilidad persistente."
     }
    ]
@@ -10693,80 +10693,80 @@
    },
    "ideas_clave": [
     "Parada óptima: resuelve hacia atrás; quédate si el inmediato > E(continuar).",
-    "Geométrica: E(tiros a 1.ª cara)=1/p; con moneda justa E(N)=Var(N)=2.",
-    "n caras seguidas (moneda justa): 2^{n+1}−2 tiros esperados (martingala).",
+    "Geométrica: $E(\\text{tiros a la primera cara})=1/p$; con moneda justa $E(N)=\\text{Var}(N)=2$.",
+    "$n$ caras seguidas (moneda justa): $2^{n+1}-2$ tiros esperados (martingala).",
     "Juego justo: iguala E(coste)=E(premio) bajo la estrategia óptima.",
-    "Diana uniforme en área: densidad radial 2s/R², E(distancia)=2R/3."
+    "Diana uniforme en área: densidad radial $2s/R^2$, $E(\\text{distancia})=2R/3$."
    ],
    "banco": [
     {
      "id": "arena-q8-q1",
      "tipo": "quiz",
      "enunciado": "Tiras un dado justo hasta 3 veces; en cada tiro puedes quedarte con el número (en dólares) o volver a tirar. ¿Cuál es tu ganancia esperada bajo la estrategia óptima?",
-     "solucion": "14/3 ≈ 4.67. Resuelve hacia atrás: con 1 tiro E=3.5. Con 2 tiros te quedas con el primero si sale 4,5 o 6: E(2)=(6+5+4)/6+(3/6)·3.5=4.25. Con 3 tiros te quedas si sale 5 o 6: E(3)=(6+5)/6+(4/6)·4.25=14/3.",
+     "solucion": "$14/3 \\approx 4.67$. Resuelve hacia atrás: con 1 tiro $E=3.5$. Con 2 tiros te quedas con el primero si sale 4,5 o 6: $E(2)=(6+5+4)/6+(3/6)\\cdot3.5=4.25$. Con 3 tiros te quedas si sale 5 o 6: $E(3)=(6+5)/6+(4/6)\\cdot4.25=14/3$.",
      "explicacion": "Es valorar una opción americana sobre un árbol multinomial. La regla: en cada nodo te quedas con el valor inmediato solo si supera la esperanza de continuar."
     },
     {
      "id": "arena-q8-q2",
      "tipo": "quiz",
-     "enunciado": "Cuatro cajas selladas; una contiene $100 y el resto están vacías. Pagas X por abrir una caja y tomar su contenido; puedes seguir jugando. ¿Qué X hace el juego justo?",
-     "solucion": "X=40. Bajo la estrategia óptima sigues abriendo hasta encontrar los \\$100, así que siempre ganas \\$100. E(coste)=X·(1·¼+2·¼+3·¼+4·¼) con las probabilidades condicionales = 2.5X. Igualando 100=2.5X → X=40.",
+     "enunciado": "Cuatro cajas selladas; una contiene \\$100 y el resto están vacías. Pagas $X$ por abrir una caja y tomar su contenido; puedes seguir jugando. ¿Qué $X$ hace el juego justo?",
+     "solucion": "$X=40$. Bajo la estrategia óptima sigues abriendo hasta encontrar los \\$100, así que siempre ganas \\$100. $E(\\text{coste})=X(1\\cdot\\tfrac14+2\\cdot\\tfrac14+3\\cdot\\tfrac14+4\\cdot\\tfrac14)$ con las probabilidades condicionales $= 2.5X$. Igualando $100=2.5X$ → $X=40$.",
      "explicacion": "El número esperado de cajas abiertas hasta acertar (sin reposición sobre 4) es 2.5. Juego justo: E(coste)=E(premio)."
     },
     {
      "id": "arena-q8-q3",
      "tipo": "acertijo",
-     "enunciado": "Yo elijo un número n de 1 a 100. Si lo adivinas te pago $n; si no, nada. ¿Cuánto pagarías por jugar?",
-     "solucion": "≈ $0.193 = (Σ_{j=1}^{100} 1/j)^{-1}. Es teoría de juegos: la estrategia óptima elige k con probabilidad ∝ 1/k, lo que hace la ganancia esperada independiente de la jugada del rival e igual a 1/H₁₀₀, con H₁₀₀≈5.187.",
+     "enunciado": "Yo elijo un número $n$ de 1 a 100. Si lo adivinas te pago \\$$n$; si no, nada. ¿Cuánto pagarías por jugar?",
+     "solucion": "$\\approx \\$0.193 = \\left(\\sum_{j=1}^{100} 1/j\\right)^{-1}$. Es teoría de juegos: la estrategia óptima elige $k$ con probabilidad $\\propto 1/k$, lo que hace la ganancia esperada independiente de la jugada del rival e igual a $1/H_{100}$, con $H_{100}\\approx5.187$.",
      "explicacion": "El valor decrece al crecer el rango. Elegir proporcional a 1/k equilibra 'pago pequeño' contra 'más probable de coincidir'."
     },
     {
      "id": "arena-q8-q4",
      "tipo": "quiz",
-     "enunciado": "Empiezas con $1. Lanzas una moneda justa infinitas veces: en cara tu posición se duplica, en cruz se reduce a la mitad. ¿Cuál es el valor esperado del dinero?",
-     "solucion": "Diverge a infinito. Por tiro, E(factor)=½·2+½·½=5/4>1, y por independencia E(producto)=(5/4)ⁿ → ∞.",
+     "enunciado": "Empiezas con \\$1. Lanzas una moneda justa infinitas veces: en cara tu posición se duplica, en cruz se reduce a la mitad. ¿Cuál es el valor esperado del dinero?",
+     "solucion": "Diverge a infinito. Por tiro, $E(\\text{factor})=\\tfrac12\\cdot2+\\tfrac12\\cdot\\tfrac12=5/4>1$, y por independencia $E(\\text{producto})=(5/4)^n \\to \\infty$.",
      "explicacion": "Paradoja: casi toda trayectoria tiende a 0 (la mediana baja), pero la media la dominan trayectorias raras con muchísimas caras. Media ≠ comportamiento típico."
     },
     {
      "id": "arena-q8-q5",
      "tipo": "quiz",
      "enunciado": "Lanzas una moneda justa hasta que sale cara; N es el número de tiros (incluyendo la cara final). Calcula E(N) y Var(N).",
-     "solucion": "E(N)=2 y Var(N)=2. N es geométrica con P(N=k)=0.5ᵏ. E(N)=Σk·0.5ᵏ=2 (suma por diferencias); E(N²)=6 → Var=E(N²)−E(N)²=6−4=2.",
-     "explicacion": "El truco 'multiplica la serie por 0.5 y resta' evita memorizar fórmulas. Geométrica: E=1/p, Var=(1−p)/p²; con p=½ ambas valen 2."
+     "solucion": "$E(N)=2$ y $\\text{Var}(N)=2$. $N$ es geométrica con $P(N=k)=0.5^k$. $E(N)=\\sum k\\cdot0.5^k=2$ (suma por diferencias); $E(N^2)=6$ → $\\text{Var}=E(N^2)-E(N)^2=6-4=2$.",
+     "explicacion": "El truco 'multiplica la serie por 0.5 y resta' evita memorizar fórmulas. Geométrica: $E=1/p$, $\\text{Var}=(1-p)/p^2$; con $p=\\tfrac12$ ambas valen 2."
     },
     {
      "id": "arena-q8-q6",
      "tipo": "quiz",
      "enunciado": "Con una moneda justa, el juego para cuando aparecen dos caras (CC) o dos cruces (XX) consecutivas. ¿Tiempo esperado hasta que para?",
-     "solucion": "3 tiros. Tras el primer tiro, faltan k−1 tiros 'determinados' para parar: P(N=k)=0.5^{k−1} para k≥2, y E(N)=Σ k·0.5^{k−1}=3.",
-     "explicacion": "Equivale a: tira la primera, y luego cada tiro tiene prob ½ de repetir el anterior y parar → 1 + (tiros extra geométricos con p=½) = 1 + 2 = 3."
+     "solucion": "3 tiros. Tras el primer tiro, faltan $k-1$ tiros 'determinados' para parar: $P(N=k)=0.5^{k-1}$ para $k\\ge2$, y $E(N)=\\sum k\\cdot0.5^{k-1}=3$.",
+     "explicacion": "Equivale a: tira la primera, y luego cada tiro tiene prob $\\tfrac12$ de repetir el anterior y parar → $1 + (\\text{tiros extra geométricos con }p=\\tfrac12) = 1 + 2 = 3$."
     },
     {
      "id": "arena-q8-q7",
      "tipo": "quiz",
      "enunciado": "¿Número esperado de lanzamientos de una moneda justa para obtener tres caras seguidas?",
-     "solucion": "14. Construye una apuesta-martingala que tras una cruz en el tiro n deje tu posición en −n; tras tres caras vale 14−n. Como es martingala y el tiempo de tres caras es un tiempo de parada finito, E(14−n)=0 → E=14.",
-     "explicacion": "Fórmula general (moneda justa, n caras seguidas): 2^{n+1}−2. Para n=1:2, n=2:6, n=3:14. La técnica de la martingala generaliza al instante."
+     "solucion": "14. Construye una apuesta-martingala que tras una cruz en el tiro $n$ deje tu posición en $-n$; tras tres caras vale $14-n$. Como es martingala y el tiempo de tres caras es un tiempo de parada finito, $E(14-n)=0$ → $E=14$.",
+     "explicacion": "Fórmula general (moneda justa, $n$ caras seguidas): $2^{n+1}-2$. Para $n=1$: 2, $n=2$: 6, $n=3$: 14. La técnica de la martingala generaliza al instante."
     },
     {
      "id": "arena-q8-q8",
      "tipo": "quiz",
      "enunciado": "Una moneda sesgada tiene probabilidad p de cara. ¿Tiempo esperado hasta la primera cara?",
-     "solucion": "1/p. La cara aparece por primera vez en el tiro j con probabilidad p(1−p)^{j−1}; E=p·Σ j(1−p)^{j−1}=p·1/p²=1/p.",
-     "explicacion": "Derivando 1/(1−x)=Σxʲ se obtiene Σj·x^{j−1}=1/(1−x)². Con x=1−p sale 1/p²; multiplica por p."
+     "solucion": "$1/p$. La cara aparece por primera vez en el tiro $j$ con probabilidad $p(1-p)^{j-1}$; $E=p\\sum j(1-p)^{j-1}=p\\cdot1/p^2=1/p$.",
+     "explicacion": "Derivando $1/(1-x)=\\sum x^j$ se obtiene $\\sum j\\cdot x^{j-1}=1/(1-x)^2$. Con $x=1-p$ sale $1/p^2$; multiplica por $p$."
     },
     {
      "id": "arena-q8-q9",
      "tipo": "quiz",
      "enunciado": "Lanzas un dardo a una diana circular de radio R acertando el área uniformemente. ¿Distancia esperada al centro?",
-     "solucion": "2R/3. P(radio ≤ s)=(s/R)², así que la densidad del radio es 2s/R² (no uniforme). E(dist)=∫₀ᴿ s·(2s/R²)ds=2R/3.",
+     "solucion": "$2R/3$. $P(\\text{radio}\\le s)=(s/R)^2$, así que la densidad del radio es $2s/R^2$ (no uniforme). $E(\\text{dist})=\\int_0^R s\\cdot(2s/R^2)\\,ds=2R/3$.",
      "explicacion": "Error típico: suponer densidad uniforme en el radio (daría R/2). Hay más área cuanto más lejos del centro, por eso la densidad crece linealmente con s."
     },
     {
      "id": "arena-q8-q10",
      "tipo": "quiz",
      "enunciado": "Un dado de n caras justo. ¿Cuál es la esperanza de un tiro y la del 4.º día hábil del mes siendo jueves (semana de lunes a viernes)?",
-     "solucion": "Esperanza del dado de n caras: (n+1)/2. El 4.º día hábil es jueves si el día 1 cae sábado, domingo o lunes → 3/7.",
+     "solucion": "Esperanza del dado de $n$ caras: $(n+1)/2$. El 4.º día hábil es jueves si el día 1 cae sábado, domingo o lunes → $3/7$.",
      "explicacion": "Dos clásicos de calentamiento. El segundo enseña a contar 'hacia atrás' qué día 1 produce el día hábil objetivo; ignora festivos para el modelo base."
     }
    ]
@@ -11010,88 +11010,88 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Browniano: incrementos independientes Wₜ−Wₛ~N(0,t−s); E(WₛWₜ)=mín(s,t).",
+    "Browniano: incrementos independientes $W_t-W_s\\sim N(0,t-s)$; $E(W_s W_t)=\\min(s,t)$.",
     "Muestreo opcional: P(absorción) lineal en el punto de partida (paso justo).",
-    "Itô: d log S=(μ−σ²/2)dt+σdW; la corrección −σ²/2 es central.",
+    "Itô: $d\\log S=(\\mu-\\sigma^2/2)dt+\\sigma\\,dW$; la corrección $-\\sigma^2/2$ es central.",
     "Un proceso f(Wₜ) es martingala solo si Itô deja deriva cero.",
-    "Cociente de dos normales = Cauchy; OU revierte a μ con velocidad θ."
+    "Cociente de dos normales = Cauchy; OU revierte a $\\mu$ con velocidad $\\theta$."
    ],
    "banco": [
     {
      "id": "arena-q11-q1",
      "tipo": "quiz",
-     "enunciado": "Define el movimiento browniano estándar Wₜ y da el valor de E(Wₛ·Wₜ).",
-     "solucion": "Wₜ es browniano si W₀=0, tiene incrementos independientes y Wₜ−Wₛ ~ N(0,t−s). Entonces, para s≤t, E(Wₛ·Wₜ)=mín(s,t)=s, usando Wₜ=Wₛ+(Wₜ−Wₛ) y la independencia de incrementos.",
-     "explicacion": "El truco x=x+y−y con incrementos independientes: E(Wₛ(Wₛ+(Wₜ−Wₛ)))=E(Wₛ²)+E(Wₛ)E(Wₜ−Wₛ)=s+0."
+     "enunciado": "Define el movimiento browniano estándar $W_t$ y da el valor de $E(W_s W_t)$.",
+     "solucion": "$W_t$ es browniano si $W_0=0$, tiene incrementos independientes y $W_t-W_s \\sim N(0,t-s)$. Entonces, para $s\\le t$, $E(W_s W_t)=\\min(s,t)=s$, usando $W_t=W_s+(W_t-W_s)$ y la independencia de incrementos.",
+     "explicacion": "El truco $x=x+y-y$ con incrementos independientes: $E(W_s(W_s+(W_t-W_s)))=E(W_s^2)+E(W_s)E(W_t-W_s)=s+0$."
     },
     {
      "id": "arena-q11-q2",
      "tipo": "quiz",
-     "enunciado": "Un paseo aleatorio simétrico en {0,…,1000} arranca en 80; ±1 con prob ½; para al tocar 0 o 1000. ¿Probabilidad de tocar 0 antes que 1000?",
-     "solucion": "0.92. La posición es una martingala; el tiempo de salida es un tiempo de parada de esperanza finita, así que E(posición al parar)=80. Si p=P(tocar 1000): 1000p=80 → p=0.08, luego P(tocar 0)=0.92.",
-     "explicacion": "El muestreo opcional convierte la probabilidad de absorción en una ecuación lineal. Con paso justo, P(tocar la barrera superior)=inicio/altura."
+     "enunciado": "Un paseo aleatorio simétrico en $\\{0,\\dots,1000\\}$ arranca en 80; $\\pm1$ con prob $\\tfrac12$; para al tocar 0 o 1000. ¿Probabilidad de tocar 0 antes que 1000?",
+     "solucion": "0.92. La posición es una martingala; el tiempo de salida es un tiempo de parada de esperanza finita, así que $E(\\text{posición al parar})=80$. Si $p=P(\\text{tocar }1000)$: $1000p=80$ → $p=0.08$, luego $P(\\text{tocar }0)=0.92$.",
+     "explicacion": "El muestreo opcional convierte la probabilidad de absorción en una ecuación lineal. Con paso justo, $P(\\text{tocar la barrera superior})=\\text{inicio}/\\text{altura}$."
     },
     {
      "id": "arena-q11-q3",
      "tipo": "quiz",
-     "enunciado": "Si Sₜ sigue un browniano geométrico dSₜ=μSₜdt+σSₜdWₜ, ¿qué proceso sigue (Sₜ)²?",
-     "solucion": "Otro browniano geométrico, con deriva (2μ+σ²) y difusión 2σ. Por Itô con f(x)=x²: d(S²)=2S dS+(dS)²=(2μ+σ²)S²dt+2σS²dWₜ.",
-     "explicacion": "También se ve desde la solución Sₜ=S₀exp((μ−σ²/2)t+σWₜ): al elevar al cuadrado, (Sₜ)²=S₀²exp((2μ−σ²)t+2σWₜ), de nuevo lognormal."
+     "enunciado": "Si $S_t$ sigue un browniano geométrico $dS_t=\\mu S_t\\,dt+\\sigma S_t\\,dW_t$, ¿qué proceso sigue $(S_t)^2$?",
+     "solucion": "Otro browniano geométrico, con deriva $(2\\mu+\\sigma^2)$ y difusión $2\\sigma$. Por Itô con $f(x)=x^2$: $d(S^2)=2S\\,dS+(dS)^2=(2\\mu+\\sigma^2)S^2\\,dt+2\\sigma S^2\\,dW_t$.",
+     "explicacion": "También se ve desde la solución $S_t=S_0\\exp((\\mu-\\sigma^2/2)t+\\sigma W_t)$: al elevar al cuadrado, $(S_t)^2=S_0^2\\exp((2\\mu-\\sigma^2)t+2\\sigma W_t)$, de nuevo lognormal."
     },
     {
      "id": "arena-q11-q4",
      "tipo": "quiz",
-     "enunciado": "Dado dSₜ=μSₜdt+σSₜdWₜ, deriva la SDE de log(Sₜ).",
-     "solucion": "d log Sₜ=(μ−σ²/2)dt+σdWₜ. Por Itô con f(x)=log x: df=(1/S)dS−(1/2S²)(dS)²=(μ−σ²/2)dt+σdWₜ.",
-     "explicacion": "El término −σ²/2 es la corrección de Itô: la diferencia entre la media aritmética y la geométrica de los retornos. Origen de innumerables errores en valoración."
+     "enunciado": "Dado $dS_t=\\mu S_t\\,dt+\\sigma S_t\\,dW_t$, deriva la SDE de $\\log(S_t)$.",
+     "solucion": "$d\\log S_t=(\\mu-\\sigma^2/2)\\,dt+\\sigma\\,dW_t$. Por Itô con $f(x)=\\log x$: $df=(1/S)\\,dS-(1/2S^2)(dS)^2=(\\mu-\\sigma^2/2)\\,dt+\\sigma\\,dW_t$.",
+     "explicacion": "El término $-\\sigma^2/2$ es la corrección de Itô: la diferencia entre la media aritmética y la geométrica de los retornos. Origen de innumerables errores en valoración."
     },
     {
      "id": "arena-q11-q5",
      "tipo": "quiz",
-     "enunciado": "Demuestra que Xₜ=cosh(λWₜ)·exp(−λ²t/2) es una martingala.",
-     "solucion": "Aplica Itô: ∂g/∂t=−(λ²/2)g, ∂g/∂x=λ·senh(λx)e^{−λ²t/2}, ∂²g/∂x²=λ²g. dXₜ=[−(λ²/2)X + ½λ²X]dt + λ·senh(λWₜ)e^{−λ²t/2}dWₜ = λ·senh(λWₜ)e^{−λ²t/2}dWₜ. Sin deriva → martingala.",
-     "explicacion": "El factor exp(−λ²t/2) está calibrado justo para cancelar el término dt de Itô. Misma familia que exp(σWₜ−σ²t/2)."
+     "enunciado": "Demuestra que $X_t=\\cosh(\\lambda W_t)\\,e^{-\\lambda^2 t/2}$ es una martingala.",
+     "solucion": "Aplica Itô: $\\partial g/\\partial t=-(\\lambda^2/2)g$, $\\partial g/\\partial x=\\lambda\\sinh(\\lambda x)e^{-\\lambda^2 t/2}$, $\\partial^2 g/\\partial x^2=\\lambda^2 g$. $dX_t=[-(\\lambda^2/2)X + \\tfrac12\\lambda^2 X]dt + \\lambda\\sinh(\\lambda W_t)e^{-\\lambda^2 t/2}\\,dW_t = \\lambda\\sinh(\\lambda W_t)e^{-\\lambda^2 t/2}\\,dW_t$. Sin deriva → martingala.",
+     "explicacion": "El factor $e^{-\\lambda^2 t/2}$ está calibrado justo para cancelar el término $dt$ de Itô. Misma familia que $e^{\\sigma W_t-\\sigma^2 t/2}$."
     },
     {
      "id": "arena-q11-q6",
      "tipo": "quiz",
-     "enunciado": "Si Wₜ es browniano estándar, ¿es Wₜ³ una martingala?",
-     "solucion": "No. Por Itô: d(Wₜ³)=3Wₜ²dWₜ+3Wₜ(dWₜ)²=3Wₜ dt+3Wₜ²dWₜ. El término de deriva 3Wₜ dt no es nulo, así que Wₜ³ no es martingala.",
-     "explicacion": "Test de martingala: aplica Itô y exige deriva cero. En cambio, Wₜ³−3tWₜ SÍ es martingala (la resta cancela la deriva)."
+     "enunciado": "Si $W_t$ es browniano estándar, ¿es $W_t^3$ una martingala?",
+     "solucion": "No. Por Itô: $d(W_t^3)=3W_t^2\\,dW_t+3W_t(dW_t)^2=3W_t\\,dt+3W_t^2\\,dW_t$. El término de deriva $3W_t\\,dt$ no es nulo, así que $W_t^3$ no es martingala.",
+     "explicacion": "Test de martingala: aplica Itô y exige deriva cero. En cambio, $W_t^3-3tW_t$ SÍ es martingala (la resta cancela la deriva)."
     },
     {
      "id": "arena-q11-q7",
      "tipo": "quiz",
-     "enunciado": "Aplica Itô a 2^{Wₜ}. ¿Es martingala?",
-     "solucion": "No. Con f(x)=2ˣ=e^{x ln2}: f'=ln2·2ˣ, f''=(ln2)²2ˣ. d(2^{Wₜ})=ln2·2^{Wₜ}dWₜ+½(ln2)²2^{Wₜ}dt. La deriva ½(ln2)²2^{Wₜ}dt≠0 → no es martingala.",
-     "explicacion": "Cualquier f(Wₜ) estrictamente convexa adquiere deriva positiva por el término ½f''(dW)². Solo las funciones afines (o con corrección temporal) son martingala."
+     "enunciado": "Aplica Itô a $2^{W_t}$. ¿Es martingala?",
+     "solucion": "No. Con $f(x)=2^x=e^{x\\ln2}$: $f'=\\ln2\\cdot2^x$, $f''=(\\ln2)^2 2^x$. $d(2^{W_t})=\\ln2\\cdot2^{W_t}\\,dW_t+\\tfrac12(\\ln2)^2 2^{W_t}\\,dt$. La deriva $\\tfrac12(\\ln2)^2 2^{W_t}\\,dt\\ne0$ → no es martingala.",
+     "explicacion": "Cualquier $f(W_t)$ estrictamente convexa adquiere deriva positiva por el término $\\tfrac12 f''(dW)^2$. Solo las funciones afines (o con corrección temporal) son martingala."
     },
     {
      "id": "arena-q11-q8",
      "tipo": "quiz",
-     "enunciado": "Wₜ y Zₜ son dos movimientos brownianos independientes. ¿Cuál es la distribución del cociente Wₜ/Zₜ?",
-     "solucion": "Cauchy estándar, densidad 1/(π(1+u²)). Es el cociente de dos normales centradas con la misma varianza; el resultado no depende de t.",
-     "explicacion": "Por eso Wₜ/Zₜ no tiene media ni varianza: el cociente de normales genera colas pesadas. Es la fuente clásica de la Cauchy."
+     "enunciado": "$W_t$ y $Z_t$ son dos movimientos brownianos independientes. ¿Cuál es la distribución del cociente $W_t/Z_t$?",
+     "solucion": "Cauchy estándar, densidad $1/(\\pi(1+u^2))$. Es el cociente de dos normales centradas con la misma varianza; el resultado no depende de $t$.",
+     "explicacion": "Por eso $W_t/Z_t$ no tiene media ni varianza: el cociente de normales genera colas pesadas. Es la fuente clásica de la Cauchy."
     },
     {
      "id": "arena-q11-q9",
      "tipo": "quiz",
-     "enunciado": "Para un browniano con X₀=0 y X₁>0, ¿cuál es la probabilidad de que X₂<0?",
-     "solucion": "1/4. Necesitas que el incremento X₂−X₁ sea negativo (prob ½) y de magnitud mayor que X₁ (prob ½, pues X₂−X₁ y X₁ tienen la misma distribución). Producto: ¼.",
+     "enunciado": "Para un browniano con $X_0=0$ y $X_1>0$, ¿cuál es la probabilidad de que $X_2<0$?",
+     "solucion": "$1/4$. Necesitas que el incremento $X_2-X_1$ sea negativo (prob $\\tfrac12$) y de magnitud mayor que $X_1$ (prob $\\tfrac12$, pues $X_2-X_1$ y $X_1$ tienen la misma distribución). Producto: $\\tfrac14$.",
      "explicacion": "La clave es la simetría e idéntica distribución de los incrementos independientes en intervalos de igual longitud."
     },
     {
      "id": "arena-q11-q10",
      "tipo": "quiz",
-     "enunciado": "Resuelve la SDE del proceso de Ornstein-Uhlenbeck dXₜ=θ(μ−Xₜ)dt+σdWₜ.",
-     "solucion": "Xₜ=X₀e^{−θt}+μ(1−e^{−θt})+∫₀ᵗ σe^{θ(s−t)}dWₛ. Se usa el factor integrante e^{θt}: d(e^{θt}Xₜ)=θμe^{θt}dt+σe^{θt}dWₜ; integra y multiplica por e^{−θt}.",
-     "explicacion": "θ es la velocidad de reversión hacia μ. E(Xₜ)=X₀e^{−θt}+μ(1−e^{−θt}); Var(Xₜ)=σ²/(2θ)·(1−e^{−2θt}). Es el modelo Vasicek de tasas."
+     "enunciado": "Resuelve la SDE del proceso de Ornstein-Uhlenbeck $dX_t=\\theta(\\mu-X_t)\\,dt+\\sigma\\,dW_t$.",
+     "solucion": "$X_t=X_0 e^{-\\theta t}+\\mu(1-e^{-\\theta t})+\\int_0^t \\sigma e^{\\theta(s-t)}\\,dW_s$. Se usa el factor integrante $e^{\\theta t}$: $d(e^{\\theta t}X_t)=\\theta\\mu e^{\\theta t}\\,dt+\\sigma e^{\\theta t}\\,dW_t$; integra y multiplica por $e^{-\\theta t}$.",
+     "explicacion": "$\\theta$ es la velocidad de reversión hacia $\\mu$. $E(X_t)=X_0 e^{-\\theta t}+\\mu(1-e^{-\\theta t})$; $\\text{Var}(X_t)=\\sigma^2/(2\\theta)\\cdot(1-e^{-2\\theta t})$. Es el modelo Vasicek de tasas."
     },
     {
      "id": "arena-q11-q11",
      "tipo": "quiz",
-     "enunciado": "¿Qué significa la regla dt=(dWₜ)² y por qué importa en el lema de Itô?",
-     "solucion": "Expresa que la variación cuadrática del browniano crece a razón 1 por unidad de tiempo: el cuadrado de los incrementos NO es despreciable en el límite. Por eso, al hacer Taylor de f(Wₜ), el término ½f''(dW)² sobrevive como ½f''dt.",
+     "enunciado": "¿Qué significa la regla $dt=(dW_t)^2$ y por qué importa en el lema de Itô?",
+     "solucion": "Expresa que la variación cuadrática del browniano crece a razón 1 por unidad de tiempo: el cuadrado de los incrementos NO es despreciable en el límite. Por eso, al hacer Taylor de $f(W_t)$, el término $\\tfrac12 f''(dW)^2$ sobrevive como $\\tfrac12 f''\\,dt$.",
      "explicacion": "En cálculo ordinario (dx)² se descarta; en el estocástico no, porque el browniano no es diferenciable y su variación cuadrática es finita y positiva."
     }
    ]
