@@ -1782,6 +1782,47 @@ button.secundario.peligro:hover:not(:disabled) {
 .cluster-exam-wrap { margin-top: 8px; }
 .cluster-exam-launch { width: 100%; }
 
+/* Mini-proyecto (capstone) de cada cluster */
+.cluster-miniproyecto {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.05);
+}
+.cluster-mp-titulo {
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+.cluster-mp-desc {
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.cluster-mp-entregable {
+  font-size: 0.88rem;
+  margin: 0 0 8px;
+}
+.cluster-mp-rubrica-titulo {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  margin: 0 0 4px;
+}
+.cluster-mp-rubrica {
+  margin: 0;
+  padding-left: 18px;
+  list-style: decimal;
+}
+.cluster-mp-rubrica li {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+  line-height: 1.5;
+  margin-bottom: 3px;
+}
+
 /* Referencias bibliográficas de cada cluster */
 .cluster-referencias {
   margin-top: 16px;

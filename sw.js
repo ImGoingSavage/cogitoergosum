@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v144';
+const VERSION = 'cogitoergosum-v145';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -255,11 +255,17 @@ const SHELL = [
   'data/teoria/aime-alg.md',
   'data/teoria/aime-geo.md',
   'data/teoria/aime-cnt.md',
-  // Fase 8 · Ciberseguridad (Oleada 1: 2 lecciones por cluster)
+  // Fase 8 · Ciberseguridad (Oleadas 1-2)
   'data/teoria/cyber-ms1.md',
   'data/teoria/cyber-ms2.md',
+  'data/teoria/cyber-ms3.md',
+  'data/teoria/cyber-ms4.md',
+  'data/teoria/cyber-ms5.md',
   'data/teoria/cyber-sys1.md',
   'data/teoria/cyber-sys2.md',
+  'data/teoria/cyber-sys3.md',
+  'data/teoria/cyber-sys4.md',
+  'data/teoria/cyber-sys5.md',
   'data/teoria/cyber-web1.md',
   'data/teoria/cyber-web2.md',
   'data/teoria/cyber-dp1.md',

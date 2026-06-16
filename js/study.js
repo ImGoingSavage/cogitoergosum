@@ -562,6 +562,48 @@ function crearClusterAcordeon(c, unidades, b) {
     cuerpo.appendChild(examWrap);
   }
 
+  // Mini-proyecto del cluster (capstone con rúbrica): produce un artefacto
+  // (threat model, checklist, auditoría…). Solo informativo: el usuario lo
+  // realiza fuera de la app y lo autoevalúa con la rúbrica de 5 criterios.
+  if (c.id !== '__otras' && c.miniProyecto?.titulo) {
+    const mp = c.miniProyecto;
+    const wrap = document.createElement('div');
+    wrap.className = 'cluster-miniproyecto';
+    const tit = document.createElement('p');
+    tit.className = 'cluster-mp-titulo';
+    tit.textContent = `🛠️ Mini-proyecto: ${mp.titulo}`;
+    wrap.appendChild(tit);
+    if (mp.descripcion) {
+      const desc = document.createElement('p');
+      desc.className = 'cluster-mp-desc';
+      desc.textContent = mp.descripcion;
+      wrap.appendChild(desc);
+    }
+    if (mp.entregable) {
+      const ent = document.createElement('p');
+      ent.className = 'cluster-mp-entregable';
+      const eb = document.createElement('strong');
+      eb.textContent = 'Entregable: ';
+      ent.append(eb, document.createTextNode(mp.entregable));
+      wrap.appendChild(ent);
+    }
+    if (Array.isArray(mp.rubrica) && mp.rubrica.length) {
+      const rb = document.createElement('p');
+      rb.className = 'cluster-mp-rubrica-titulo';
+      rb.textContent = 'Rúbrica (0 ausente · 1 superficial · 2 correcto pero incompleto · 3 sólido):';
+      wrap.appendChild(rb);
+      const ul2 = document.createElement('ul');
+      ul2.className = 'cluster-mp-rubrica';
+      mp.rubrica.forEach((cri) => {
+        const li2 = document.createElement('li');
+        li2.textContent = cri;
+        ul2.appendChild(li2);
+      });
+      wrap.appendChild(ul2);
+    }
+    cuerpo.appendChild(wrap);
+  }
+
   // Referencias bibliográficas: fuentes que sirvieron de base para el cluster.
   if (c.id !== '__otras' && Array.isArray(c.referencias) && c.referencias.length) {
     const refWrap = document.createElement('div');

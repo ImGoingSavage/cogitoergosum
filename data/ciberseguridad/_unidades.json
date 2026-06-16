@@ -11,7 +11,10 @@
       "dosis": 25,
       "objetivo": "Nombrar con precisión activo, amenaza, vulnerabilidad, impacto y control; aplicar la tríada CIA; y traducir un sistema de datos a ese vocabulario en vez de hablar de hackeos en general.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 1 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 1
+      },
       "ideas_clave": [
         "La seguridad es propiedad del sistema, no un producto que se instala",
         "Vocabulario: activo · amenaza · vulnerabilidad · impacto · control",
@@ -19,12 +22,54 @@
         "Tríada CIA: confidencialidad, integridad, disponibilidad — checklist por activo"
       ],
       "banco": [
-        { "id": "cms1-q1", "tipo": "concepto", "enunciado": "¿Qué diferencia hay entre una vulnerabilidad y un riesgo?", "solucion": "La vulnerabilidad es una debilidad concreta (p. ej. un secreto en un repo público); el riesgo combina la probabilidad de que una amenaza la explote con el impacto resultante (≈ probabilidad × impacto). Una vulnerabilidad sin amenaza creíble ni impacto serio aporta poco riesgo.", "explicacion": "Contar vulnerabilidades sin activos/impacto no mide riesgo.", "difficulty": "easy" },
-        { "id": "cms1-q2", "tipo": "concepto", "enunciado": "Nombra las tres garantías de la tríada CIA y un ejemplo de cómo se rompe cada una.", "solucion": "Confidencialidad (solo quien debe ve el dato; se rompe con una fuga del dataset), Integridad (el dato no se altera sin autorización; se rompe al envenenar etiquetas de entrenamiento) y Disponibilidad (el servicio está accesible; se rompe al saturar la API).", "explicacion": "CIA es un checklist de imaginación por activo.", "difficulty": "easy" },
-        { "id": "cms1-q3", "tipo": "concepto", "enunciado": "Un científico de datos guarda clientes.csv y pega la API key de la BD en un notebook de un repo público. Clasifica activos, vulnerabilidad e impacto.", "solucion": "Activos: clientes.csv (personas) y la API key (acceso a la BD). Vulnerabilidad: repo público + secreto en texto plano. Impacto: fuga de datos personales (rompe C) y, con la key, alteración/borrado de la BD (rompe I y A).", "explicacion": "Nombrar qué se pierde y por qué supera a decir 'lo hackearon'.", "difficulty": "medium" },
-        { "id": "cms1-q4", "tipo": "concepto", "enunciado": "¿Por qué 'nadie va a entrar a esto' es un error de razonamiento de seguridad?", "solucion": "Asume la probabilidad de amenaza en cero sin evidencia, ignorando atacantes oportunistas, internos o automatizados que escanean indiscriminadamente. El riesgo se evalúa con activos, amenazas creíbles e impacto, no con la intuición de que 'a nadie le interesa'.", "explicacion": "La amenaza se argumenta, no se descarta por comodidad.", "difficulty": "medium" },
-        { "id": "cms1-q5", "tipo": "concepto", "enunciado": "Un dataset es público (sin confidencialidad que proteger). ¿Sigue teniendo riesgo de seguridad? Justifica con CIA.", "solucion": "Sí: aunque la C no aplique, su Integridad importa. Si alguien lo altera y entrenas con la versión corrupta, el daño es real. También su Disponibilidad si tu pipeline depende de él. La ausencia de C no elimina el riesgo.", "explicacion": "Caso borde: C nula no implica riesgo nulo.", "difficulty": "hard" },
-        { "id": "cms1-q6", "tipo": "concepto", "enunciado": "¿Por qué poner una contraseña de 40 caracteres en una cuenta sin activos valiosos es un error de asignación de seguridad?", "solucion": "Es esfuerzo de control gastado sobre un no-activo: mucho control donde el impacto de un fallo es nulo, mientras activos reales pueden quedar desprotegidos. La seguridad es economía: el control debe ser proporcional al riesgo del activo que protege.", "explicacion": "Defensa proporcional: invertir donde el riesgo lo justifica.", "difficulty": "hard" }
+        {
+          "id": "cms1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué diferencia hay entre una vulnerabilidad y un riesgo?",
+          "solucion": "La vulnerabilidad es una debilidad concreta (p. ej. un secreto en un repo público); el riesgo combina la probabilidad de que una amenaza la explote con el impacto resultante (≈ probabilidad × impacto). Una vulnerabilidad sin amenaza creíble ni impacto serio aporta poco riesgo.",
+          "explicacion": "Contar vulnerabilidades sin activos/impacto no mide riesgo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms1-q2",
+          "tipo": "concepto",
+          "enunciado": "Nombra las tres garantías de la tríada CIA y un ejemplo de cómo se rompe cada una.",
+          "solucion": "Confidencialidad (solo quien debe ve el dato; se rompe con una fuga del dataset), Integridad (el dato no se altera sin autorización; se rompe al envenenar etiquetas de entrenamiento) y Disponibilidad (el servicio está accesible; se rompe al saturar la API).",
+          "explicacion": "CIA es un checklist de imaginación por activo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms1-q3",
+          "tipo": "concepto",
+          "enunciado": "Un científico de datos guarda clientes.csv y pega la API key de la BD en un notebook de un repo público. Clasifica activos, vulnerabilidad e impacto.",
+          "solucion": "Activos: clientes.csv (personas) y la API key (acceso a la BD). Vulnerabilidad: repo público + secreto en texto plano. Impacto: fuga de datos personales (rompe C) y, con la key, alteración/borrado de la BD (rompe I y A).",
+          "explicacion": "Nombrar qué se pierde y por qué supera a decir 'lo hackearon'.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'nadie va a entrar a esto' es un error de razonamiento de seguridad?",
+          "solucion": "Asume la probabilidad de amenaza en cero sin evidencia, ignorando atacantes oportunistas, internos o automatizados que escanean indiscriminadamente. El riesgo se evalúa con activos, amenazas creíbles e impacto, no con la intuición de que 'a nadie le interesa'.",
+          "explicacion": "La amenaza se argumenta, no se descarta por comodidad.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms1-q5",
+          "tipo": "concepto",
+          "enunciado": "Un dataset es público (sin confidencialidad que proteger). ¿Sigue teniendo riesgo de seguridad? Justifica con CIA.",
+          "solucion": "Sí: aunque la C no aplique, su Integridad importa. Si alguien lo altera y entrenas con la versión corrupta, el daño es real. También su Disponibilidad si tu pipeline depende de él. La ausencia de C no elimina el riesgo.",
+          "explicacion": "Caso borde: C nula no implica riesgo nulo.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cms1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué poner una contraseña de 40 caracteres en una cuenta sin activos valiosos es un error de asignación de seguridad?",
+          "solucion": "Es esfuerzo de control gastado sobre un no-activo: mucho control donde el impacto de un fallo es nulo, mientras activos reales pueden quedar desprotegidos. La seguridad es economía: el control debe ser proporcional al riesgo del activo que protege.",
+          "explicacion": "Defensa proporcional: invertir donde el riesgo lo justifica.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
@@ -37,7 +82,10 @@
       "dosis": 25,
       "objetivo": "Construir un threat model simple con cuatro preguntas; aplicar least privilege, defense in depth y fail-safe defaults; reconocer el factor humano; y razonar tradeoffs y riesgo residual.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 1 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 1
+      },
       "ideas_clave": [
         "Threat model en 4 preguntas: qué construyes, qué falla, qué haces, lo hiciste bien",
         "El corazón del threat modeling es cazar el supuesto de confianza roto",
@@ -45,25 +93,283 @@
         "El factor humano y el riesgo residual: no hay riesgo cero, se gestiona"
       ],
       "banco": [
-        { "id": "cms2-q1", "tipo": "concepto", "enunciado": "Enuncia las cuatro preguntas del threat modeling.", "solucion": "(1) ¿Qué estamos construyendo? (2) ¿Qué puede salir mal? (3) ¿Qué vamos a hacer al respecto? (4) ¿Lo hicimos bien (riesgo residual aceptable)? La pregunta 2 busca el supuesto de confianza que se rompe.", "explicacion": "Marco de Shostack, adaptado.", "difficulty": "easy" },
-        { "id": "cms2-q2", "tipo": "concepto", "enunciado": "Define least privilege, defense in depth y fail-safe defaults.", "solucion": "Least privilege: cada parte recibe el mínimo permiso necesario. Defense in depth: varias capas, si una falla otra contiene. Fail-safe defaults: ante la duda, negar (lo nuevo nace cerrado, no abierto).", "explicacion": "Tres principios base del diseño defensivo.", "difficulty": "easy" },
-        { "id": "cms2-q3", "tipo": "concepto", "enunciado": "¿Por qué un control que la gente evade puede reducir la seguridad real aunque parezca robusto?", "solucion": "Porque la seguridad efectiva incluye el comportamiento humano: si el control es tan molesto que provoca atajos (contraseñas en post-its, claves por chat), el sistema queda peor que con un control más usable. La pregunta no es solo '¿es seguro?' sino '¿es seguro Y la gente lo usará así?'.", "explicacion": "Factor humano: los sistemas fallan donde personas e incentivos se cruzan.", "difficulty": "medium" },
-        { "id": "cms2-q4", "tipo": "concepto", "enunciado": "Diseñas el acceso de 10 analistas a un dataset sensible. ¿Por qué una cuenta compartida con permiso total es mala y qué propones?", "solucion": "La cuenta compartida viola least privilege y separation of duties y elimina la trazabilidad (no sabes quién accedió). Mejor: cuentas individuales, solo lectura sobre lo necesario, acceso que caduca, y log por consulta. Tiene más costo, justificado por el impacto de una fuga.", "explicacion": "Tradeoff explícito costo↔riesgo.", "difficulty": "medium" },
-        { "id": "cms2-q5", "tipo": "concepto", "enunciado": "¿Qué es el riesgo residual y por qué ignorarlo es peligroso?", "solucion": "Es el riesgo que queda tras aplicar los controles; ningún control lo lleva a cero. Ignorarlo lleva a creer que el problema desapareció, dejar de monitorear y ser sorprendido. Se acepta conscientemente y se vigila.", "explicacion": "No hay riesgo cero; se gestiona y documenta.", "difficulty": "hard" },
-        { "id": "cms2-q6", "tipo": "concepto", "enunciado": "Da un ejemplo de cómo un default deja de ser fail-safe sin que nadie lo decida, y por qué importa.", "solucion": "Abrir un puerto 'temporalmente' para una demo y dejarlo abierto: el sistema pasó de cerrado-por-defecto a abierto sin una decisión consciente. Importa porque las aberturas temporales se vuelven permanentes y amplían la superficie de ataque silenciosamente.", "explicacion": "Los defaults inseguros se acumulan por descuido.", "difficulty": "hard" }
+        {
+          "id": "cms2-q1",
+          "tipo": "concepto",
+          "enunciado": "Enuncia las cuatro preguntas del threat modeling.",
+          "solucion": "(1) ¿Qué estamos construyendo? (2) ¿Qué puede salir mal? (3) ¿Qué vamos a hacer al respecto? (4) ¿Lo hicimos bien (riesgo residual aceptable)? La pregunta 2 busca el supuesto de confianza que se rompe.",
+          "explicacion": "Marco de Shostack, adaptado.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms2-q2",
+          "tipo": "concepto",
+          "enunciado": "Define least privilege, defense in depth y fail-safe defaults.",
+          "solucion": "Least privilege: cada parte recibe el mínimo permiso necesario. Defense in depth: varias capas, si una falla otra contiene. Fail-safe defaults: ante la duda, negar (lo nuevo nace cerrado, no abierto).",
+          "explicacion": "Tres principios base del diseño defensivo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un control que la gente evade puede reducir la seguridad real aunque parezca robusto?",
+          "solucion": "Porque la seguridad efectiva incluye el comportamiento humano: si el control es tan molesto que provoca atajos (contraseñas en post-its, claves por chat), el sistema queda peor que con un control más usable. La pregunta no es solo '¿es seguro?' sino '¿es seguro Y la gente lo usará así?'.",
+          "explicacion": "Factor humano: los sistemas fallan donde personas e incentivos se cruzan.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms2-q4",
+          "tipo": "concepto",
+          "enunciado": "Diseñas el acceso de 10 analistas a un dataset sensible. ¿Por qué una cuenta compartida con permiso total es mala y qué propones?",
+          "solucion": "La cuenta compartida viola least privilege y separation of duties y elimina la trazabilidad (no sabes quién accedió). Mejor: cuentas individuales, solo lectura sobre lo necesario, acceso que caduca, y log por consulta. Tiene más costo, justificado por el impacto de una fuga.",
+          "explicacion": "Tradeoff explícito costo↔riesgo.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el riesgo residual y por qué ignorarlo es peligroso?",
+          "solucion": "Es el riesgo que queda tras aplicar los controles; ningún control lo lleva a cero. Ignorarlo lleva a creer que el problema desapareció, dejar de monitorear y ser sorprendido. Se acepta conscientemente y se vigila.",
+          "explicacion": "No hay riesgo cero; se gestiona y documenta.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cms2-q6",
+          "tipo": "concepto",
+          "enunciado": "Da un ejemplo de cómo un default deja de ser fail-safe sin que nadie lo decida, y por qué importa.",
+          "solucion": "Abrir un puerto 'temporalmente' para una demo y dejarlo abierto: el sistema pasó de cerrado-por-defecto a abierto sin una decisión consciente. Importa porque las aberturas temporales se vuelven permanentes y amplían la superficie de ataque silenciosamente.",
+          "explicacion": "Los defaults inseguros se acumulan por descuido.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "cyber-ms3",
+      "bloque": "fase-8",
+      "orden": 803,
+      "titulo": "Ciber · Economía de la seguridad: incentivos, externalidades y descuido de la defensa",
+      "libro": "Security Engineering, 3rd ed. (Ross Anderson)",
+      "lectura": "data/teoria/cyber-ms3.md",
+      "dosis": 25,
+      "objetivo": "Explicar por qué la seguridad es un problema de incentivos; reconocer externalidades; entender riesgo moral y el mercado de limones; y ubicar quién debería pagar por una defensa.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Mucha inseguridad es económica, no técnica: incentivos desalineados",
+        "Externalidad: el daño recae en quien no tomó la decisión",
+        "Riesgo moral: quien está cubierto se relaja; mercado de limones sin señales verificables",
+        "Pregunta rectora: ¿quién paga el control y quién sufre el daño?"
+      ],
+      "banco": [
+        {
+          "id": "cms3-q1",
+          "tipo": "concepto",
+          "enunciado": "Según Anderson, ¿por qué siguen existiendo sistemas inseguros aunque sepamos hacerlos seguros?",
+          "solucion": "Porque los incentivos están desalineados: quien puede prevenir el fallo no siempre es quien sufre el daño. La seguridad se descuida donde la economía la abandona, no por ignorancia técnica.",
+          "explicacion": "El fallo es de incentivos, no de conocimiento.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una externalidad de seguridad? Da un ejemplo.",
+          "solucion": "Es cuando el costo de una decisión de seguridad recae en alguien que no la tomó. Ejemplo: un dispositivo IoT inseguro cuyo fabricante no invierte en seguridad y que, comprometido, ataca a terceros; el daño lo sufren otros, no el fabricante ni su cliente.",
+          "explicacion": "Análoga a la contaminación.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms3-q3",
+          "tipo": "concepto",
+          "enunciado": "Un gerente dice: 'nunca nos han hackeado, no invirtamos esa semana en cifrar el dataset de clientes'. Analiza el sesgo de incentivos.",
+          "solucion": "El costo del control es visible e inmediato (una semana); el daño de una fuga es incierto y diferido, y lo sufren sobre todo los clientes (externalidad), no la empresa de inmediato. El incentivo empuja a no invertir aunque socialmente valga la pena. Se corrige haciendo visible el costo del daño (responsabilidad, reputación, personas afectadas).",
+          "explicacion": "Costo seguro/ahora vs daño incierto/después.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el riesgo moral aplicado a la seguridad?",
+          "solucion": "Que quien está protegido del daño toma más riesgos. Si 'la nube', un seguro o un proveedor absorben las pérdidas, el equipo baja la guardia. La protección frente a las consecuencias relaja la conducta defensiva.",
+          "explicacion": "Cubierto del daño → menos cuidado.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms3-q5",
+          "tipo": "concepto",
+          "enunciado": "Explica el 'mercado de limones' aplicado al software seguro y su remedio.",
+          "solucion": "Si el comprador no puede distinguir software seguro de inseguro, no pagará más por el seguro; entonces el seguro no compite y desaparece del mercado. El remedio son señales verificables (certificaciones, SBOM, auditorías) que permitan distinguir y premiar lo seguro.",
+          "explicacion": "Sin información, el seguro no se valora.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cms3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'es un problema de concientización' suele ser un diagnóstico equivocado, y qué funciona mejor?",
+          "solucion": "Porque capacitar no corrige un incentivo torcido: si quien paga el control no sufre el daño, seguirá sin invertir aunque 'esté concientizado'. Funciona mejor alinear responsabilidades (hacer responsable a quien guarda los datos), que cambia el cálculo económico.",
+          "explicacion": "Alinear incentivos > concientizar.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "cyber-ms4",
+      "bloque": "fase-8",
+      "orden": 804,
+      "titulo": "Ciber · Sistemas sociotécnicos: confianza, abuso y el eslabón humano",
+      "libro": "Security Engineering, 3rd ed. (Ross Anderson)",
+      "lectura": "data/teoria/cyber-ms4.md",
+      "dosis": 25,
+      "objetivo": "Razonar la confianza como decisión explícita; construir casos de abuso; entender ingeniería social e insider como propiedades del sistema; y ubicar el eslabón humano en el threat model.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "La seguridad es sociotécnica: personas y procesos están en el modelo de amenaza",
+        "Hacer la confianza explícita y minimizar la base de confianza",
+        "Casos de abuso: el reverso de los casos de uso",
+        "El patrón 'autoridad falsa que induce una acción' = ingeniería social = prompt injection"
+      ],
+      "banco": [
+        {
+          "id": "cms4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa que la seguridad sea 'sociotécnica'?",
+          "solucion": "Que un sistema es técnico + humano + organizativo, y su seguridad es tan fuerte como su eslabón social más débil. Modelar solo lo técnico deja fuera a las personas y procesos, que son donde caen los ataques más efectivos.",
+          "explicacion": "El humano está dentro del sistema.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un caso de abuso y en qué se diferencia de un caso de uso?",
+          "solucion": "Un caso de uso describe qué debe hacer el sistema; un caso de abuso describe cómo un actor malicioso (o uno legítimo descuidado) usaría lo mismo para dañar. Por cada 'el usuario sube su foto' se pregunta '¿y si sube un script, un archivo enorme, la foto de otro?'.",
+          "explicacion": "Threat model por funcionalidad.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué conviene hacer la confianza explícita y minimizar la 'base de confianza'?",
+          "solucion": "Porque confiar implícitamente esconde supuestos que, al traicionarse, comprometen todo. Hacer explícito en quién/qué se confía y qué pasa si falla permite planear; minimizar cuántas partes deben portarse bien reduce las formas en que el sistema puede caer.",
+          "explicacion": "Menos confianza requerida = más robusto.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms4-q4",
+          "tipo": "concepto",
+          "enunciado": "Llega un correo 'del CEO' pidiendo con urgencia exportar la base de usuarios a un externo. ¿Qué confianza se explota y qué defensas sociotécnicas aplican?",
+          "solucion": "Explota la autoridad aparente y la urgencia (ingeniería social). Defensas: verificación por canal independiente para acciones sensibles, separación de funciones (una segunda aprobación para exportar), least privilege (la cuenta no puede exportar toda la base) y auditoría. Ninguna es criptográfica.",
+          "explicacion": "Proceso humano, no solo tecnología.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms4-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un insider es difícil de detectar y cómo se aborda?",
+          "solucion": "Porque ya tiene acceso legítimo: no 'entra', así que no dispara alertas de acceso no autorizado. Se aborda con separación de funciones, mínimo privilegio, auditoría y detección por comportamiento anómalo (volumen, horario, recursos inusuales).",
+          "explicacion": "Detección por anomalía, no por permiso.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cms4-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Qué paralelo hay entre la ingeniería social a un humano y la prompt injection a un LLM?",
+          "solucion": "Ambas inyectan una 'autoridad falsa' que induce una acción: el empleado crédulo obedece la nota del atacante; el LLM obedece la instrucción escondida en el contenido. En ambos, la defensa es limitar lo que el engañado puede hacer (least privilege / agencia mínima) y verificar acciones sensibles.",
+          "explicacion": "Mismo patrón, distinto 'empleado crédulo'.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "cyber-ms5",
+      "bloque": "fase-8",
+      "orden": 805,
+      "titulo": "Ciber · Resiliencia y comunicación del riesgo: defensa proporcional y hablar con el equipo",
+      "libro": "Security Engineering, 3rd ed. (Ross Anderson)",
+      "lectura": "data/teoria/cyber-ms5.md",
+      "dosis": 25,
+      "objetivo": "Diseñar para resiliencia (detectar, contener, recuperar); elegir defensa proporcional; comunicar riesgo a un equipo técnico sin alarmismo; y ejecutar el mini-proyecto del cluster.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Resiliencia: detectar, contener, recuperar — reduce el impacto, no solo la probabilidad",
+        "Defensa proporcional: el control guarda relación con el riesgo del activo",
+        "Comunicar riesgo por activos e impacto, priorizado y sobrio",
+        "Nombrar siempre el riesgo residual aceptado"
+      ],
+      "banco": [
+        {
+          "id": "cms5-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué tres capacidades define la resiliencia y qué aporta frente a la prevención?",
+          "solucion": "Detectar (ver el fallo a tiempo), contener (que no se propague) y recuperar (respaldos, plan de respuesta, revertir). La prevención reduce la probabilidad; la resiliencia reduce el impacto. Como la prevención perfecta no existe, se invierte en ambas.",
+          "explicacion": "Impacto, no solo probabilidad.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms5-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la defensa proporcional?",
+          "solucion": "Que el costo y la fricción de un control guarden relación con el riesgo (probabilidad × impacto) del activo que protege. Sobre-proteger un no-activo desperdicia recursos; sub-proteger un activo crítico es negligencia. Es asignar un presupuesto finito donde más rinde.",
+          "explicacion": "Proporcional al riesgo del activo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cms5-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo comunicarías a un equipo que el dataset de pacientes está en un bucket con acceso amplio y sin logs?",
+          "solucion": "En términos de impacto: 'cualquier cuenta puede descargar datos de pacientes y no quedaría registro; una fuga sería invisible y nos expone a daño a personas y a sanción'. Luego 3 acciones priorizadas (acceso mínimo, logs, alerta por descarga anómala) con su costo, y el riesgo residual aceptado. Tono sobrio, sin culpar.",
+          "explicacion": "Impacto + acción + residual.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms5-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un reporte de riesgo con 200 ítems o lleno de jerga (p. ej. 'CVSS 9.8') suele fracasar?",
+          "solucion": "Porque ahoga la señal y no le dice al equipo qué está en juego ni qué hacer. La gente actúa sobre 'qué se pierde' (activos e impacto), no sobre un puntaje técnico, y solo puede priorizar unos pocos riesgos. Comunicar es seleccionar y traducir, no listar todo.",
+          "explicacion": "Priorizar y traducir a impacto.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cms5-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué invertir todo en prevención y nada en detección/recuperación es frágil?",
+          "solucion": "Porque ninguna prevención es perfecta (riesgo residual): cuando el primer control falle, sin detección el fallo será invisible y sin recuperación será permanente. La resiliencia asume que algo entrará y prepara verlo y revertirlo.",
+          "explicacion": "La prevención sola no contiene el primer fallo.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cms5-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se aplica la proporcionalidad también a la comunicación del riesgo?",
+          "solucion": "Escalar cada riesgo menor a la gerencia genera fatiga y termina ignorándose todo (como la fatiga de alertas). Se comunica con la intensidad proporcional al riesgo: los pocos críticos con detalle y acción, los menores por canales rutinarios.",
+          "explicacion": "Proporcionalidad también al comunicar.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-sys1",
       "bloque": "fase-8",
-      "orden": 803,
+      "orden": 806,
       "titulo": "Ciber · Cómo fallan los sistemas: permisos, memoria, redes y web",
       "libro": "Computer Security — CS 161 (UC Berkeley)",
       "lectura": "data/teoria/cyber-sys1.md",
       "dosis": 30,
       "objetivo": "Explicar el modelo de amenaza técnico; entender permisos, aislamiento y el peligro de la memoria; leer una traza HTTP básica; y reconocer dónde una frontera de confianza puede romperse.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 2 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
       "ideas_clave": [
         "Los sistemas fallan en las fronteras de confianza (dato no confiable tratado como confiable)",
         "'Es seguro' no significa nada sin un modelo de amenaza (qué controla el atacante)",
@@ -71,25 +377,70 @@
         "Toda entrada es hostil hasta validarse"
       ],
       "banco": [
-        { "id": "csy1-q1", "tipo": "concepto", "enunciado": "¿Por qué 'es seguro' no significa nada sin un modelo de amenaza?", "solucion": "Porque la seguridad es relativa a qué puede hacer el atacante. Un cifrado que resiste a quien espía la red es irrelevante si el atacante ya ejecuta código en el servidor. Sin definir las capacidades del adversario, la afirmación es vacía.", "explicacion": "El modelo de amenaza define contra quién/qué proteges.", "difficulty": "easy" },
-        { "id": "csy1-q2", "tipo": "concepto", "enunciado": "¿Qué contienen los permisos y el aislamiento de procesos, y qué pasa si un proceso corre como root?", "solucion": "Los permisos limitan qué puede leer/escribir/ejecutar cada proceso; el aislamiento separa la memoria entre procesos. Si un proceso corre como root, cualquier bug en él se convierte en control total del sistema (no hay contención).", "explicacion": "Least privilege a nivel de SO.", "difficulty": "easy" },
-        { "id": "csy1-q3", "tipo": "concepto", "enunciado": "Nombra tres campos de una petición HTTP y un riesgo asociado a cada uno.", "solucion": "Método/URL con parámetros (un id manipulable → acceso indebido); cabecera Authorization/Bearer (si viaja por http:// se roba); Cookie de sesión (quien la roba suplanta al usuario). Si no va por HTTPS, todo viaja a la vista.", "explicacion": "Cada campo es una frontera de confianza.", "difficulty": "medium" },
-        { "id": "csy1-q4", "tipo": "concepto", "enunciado": "¿Qué frontera de confianza se rompe cuando el servidor confía en un id (o un precio) que envía el cliente?", "solucion": "La frontera cliente↔servidor: el cliente es manipulable, así que cualquier valor que mande (id de recurso, precio, rol) puede ser falsificado. El servidor debe verificar/derivar esos valores de fuentes confiables, no confiar en el dato del cliente.", "explicacion": "El cliente nunca es confiable.", "difficulty": "medium" },
-        { "id": "csy1-q5", "tipo": "concepto", "enunciado": "Tu código Python es seguro, pero usas una librería con componentes en C. ¿Por qué puede heredar fallos de memoria?", "solucion": "Python te protege de muchos errores de memoria, pero las dependencias nativas (en C/C++) no: un buffer overflow en esa librería puede sobreescribir memoria o permitir ejecución de código, y corre con los permisos de tu proceso. La seguridad de memoria depende de toda la cadena, no solo de tu lenguaje.", "explicacion": "El riesgo de memoria se hereda de dependencias nativas.", "difficulty": "hard" },
-        { "id": "csy1-q6", "tipo": "concepto", "enunciado": "Un servicio solo escucha en localhost. ¿Por qué no es automáticamente seguro?", "solucion": "Porque la frontera 'solo local' se rompe si otro proceso del mismo host está comprometido, o si un SSRF hace que el servidor mismo le envíe peticiones desde dentro. 'Interno/local' no equivale a 'inaccesible para un atacante'.", "explicacion": "La red interna también tiene adversarios.", "difficulty": "hard" }
+        {
+          "id": "csy1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'es seguro' no significa nada sin un modelo de amenaza?",
+          "solucion": "Porque la seguridad es relativa a qué puede hacer el atacante. Un cifrado que resiste a quien espía la red es irrelevante si el atacante ya ejecuta código en el servidor. Sin definir las capacidades del adversario, la afirmación es vacía.",
+          "explicacion": "El modelo de amenaza define contra quién/qué proteges.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué contienen los permisos y el aislamiento de procesos, y qué pasa si un proceso corre como root?",
+          "solucion": "Los permisos limitan qué puede leer/escribir/ejecutar cada proceso; el aislamiento separa la memoria entre procesos. Si un proceso corre como root, cualquier bug en él se convierte en control total del sistema (no hay contención).",
+          "explicacion": "Least privilege a nivel de SO.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy1-q3",
+          "tipo": "concepto",
+          "enunciado": "Nombra tres campos de una petición HTTP y un riesgo asociado a cada uno.",
+          "solucion": "Método/URL con parámetros (un id manipulable → acceso indebido); cabecera Authorization/Bearer (si viaja por http:// se roba); Cookie de sesión (quien la roba suplanta al usuario). Si no va por HTTPS, todo viaja a la vista.",
+          "explicacion": "Cada campo es una frontera de confianza.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué frontera de confianza se rompe cuando el servidor confía en un id (o un precio) que envía el cliente?",
+          "solucion": "La frontera cliente↔servidor: el cliente es manipulable, así que cualquier valor que mande (id de recurso, precio, rol) puede ser falsificado. El servidor debe verificar/derivar esos valores de fuentes confiables, no confiar en el dato del cliente.",
+          "explicacion": "El cliente nunca es confiable.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy1-q5",
+          "tipo": "concepto",
+          "enunciado": "Tu código Python es seguro, pero usas una librería con componentes en C. ¿Por qué puede heredar fallos de memoria?",
+          "solucion": "Python te protege de muchos errores de memoria, pero las dependencias nativas (en C/C++) no: un buffer overflow en esa librería puede sobreescribir memoria o permitir ejecución de código, y corre con los permisos de tu proceso. La seguridad de memoria depende de toda la cadena, no solo de tu lenguaje.",
+          "explicacion": "El riesgo de memoria se hereda de dependencias nativas.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "csy1-q6",
+          "tipo": "concepto",
+          "enunciado": "Un servicio solo escucha en localhost. ¿Por qué no es automáticamente seguro?",
+          "solucion": "Porque la frontera 'solo local' se rompe si otro proceso del mismo host está comprometido, o si un SSRF hace que el servidor mismo le envíe peticiones desde dentro. 'Interno/local' no equivale a 'inaccesible para un atacante'.",
+          "explicacion": "La red interna también tiene adversarios.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-sys2",
       "bloque": "fase-8",
-      "orden": 804,
+      "orden": 807,
       "titulo": "Ciber · Criptografía aplicada: hash, cifrado, firma, MAC y TLS",
       "libro": "Computer Security — CS 161 (UC Berkeley)",
       "lectura": "data/teoria/cyber-sys2.md",
       "dosis": 30,
       "objetivo": "Distinguir hash, cifrado, firma y MAC y cuándo usar cada uno; entender qué garantiza TLS; reconocer una mala suposición criptográfica; y aplicar la regla de no inventar cripto.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 2 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
       "ideas_clave": [
         "Elige la herramienta por la garantía: hash, cifrado, MAC, firma",
         "Un hash NO prueba el origen frente a un adversario; eso requiere MAC o firma",
@@ -97,25 +448,283 @@
         "TLS da confidencialidad + integridad + autenticación del servidor; nunca inventes cripto"
       ],
       "banco": [
-        { "id": "csy2-q1", "tipo": "concepto", "enunciado": "¿Qué garantiza cada uno: hash, cifrado, MAC y firma?", "solucion": "Hash: integridad/huella (irreversible, sin llave). Cifrado: confidencialidad (reversible con llave). MAC: integridad + autenticidad con secreto compartido. Firma: integridad + autenticidad + no repudio (llave privada/pública).", "explicacion": "La garantía determina la herramienta.", "difficulty": "easy" },
-        { "id": "csy2-q2", "tipo": "concepto", "enunciado": "¿Cómo se deben guardar las contraseñas y por qué NO cifradas?", "solucion": "Con un hash lento y salado (bcrypt, Argon2). No cifradas porque el cifrado es reversible: quien obtenga la llave recupera todas las contraseñas. El hash lento + salt evita recuperación y frena ataques de fuerza bruta y tablas precomputadas.", "explicacion": "Confidencialidad reversible = robable.", "difficulty": "easy" },
-        { "id": "csy2-q3", "tipo": "concepto", "enunciado": "Un equipo quiere verificar el origen de un webhook hasheando el cuerpo con SHA-256. ¿Funciona? ¿Qué deben usar?", "solucion": "No: cualquiera puede hashear su propio cuerpo falso; el hash no prueba quién lo envió. Deben usar un HMAC con un secreto compartido entre proveedor y receptor, de modo que solo quien conoce el secreto produzca un sello válido.", "explicacion": "Hash ≠ autenticidad; se necesita MAC.", "difficulty": "medium" },
-        { "id": "csy2-q4", "tipo": "concepto", "enunciado": "¿Qué tres garantías ofrece TLS sobre una red hostil?", "solucion": "Confidencialidad (cifrado del tráfico), integridad (MAC para detectar alteraciones) y autenticación del servidor (su certificado firmado). Por eso datos sensibles sobre http:// viajan desnudos y sobre https:// van en un sobre verificado.", "explicacion": "El certificado evita conectarte al impostor.", "difficulty": "medium" },
-        { "id": "csy2-q5", "tipo": "concepto", "enunciado": "Si todo el dato está cifrado con un algoritmo fuerte, ¿dónde se concentra ahora el riesgo y por qué?", "solucion": "En el manejo de llaves. El cifrado más fuerte es inútil si la llave está hardcodeada en el repo o mal protegida. La seguridad se muda al ciclo de vida de las llaves (generación, almacenamiento, rotación, acceso).", "explicacion": "Cripto fuerte + llave expuesta = sin protección.", "difficulty": "hard" },
-        { "id": "csy2-q6", "tipo": "concepto", "enunciado": "Cifrar un dato, ¿garantiza también su integridad? ¿Qué se usa para tener ambas?", "solucion": "No: el cifrado garantiza confidencialidad (C), no integridad (I); un atacante puede no leerlo y aun así corromperlo. Para C e I a la vez se usan modos de cifrado autenticado (p. ej. AES-GCM), que combinan cifrado y verificación de integridad.", "explicacion": "C ≠ I; usar cifrado autenticado.", "difficulty": "hard" }
+        {
+          "id": "csy2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué garantiza cada uno: hash, cifrado, MAC y firma?",
+          "solucion": "Hash: integridad/huella (irreversible, sin llave). Cifrado: confidencialidad (reversible con llave). MAC: integridad + autenticidad con secreto compartido. Firma: integridad + autenticidad + no repudio (llave privada/pública).",
+          "explicacion": "La garantía determina la herramienta.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se deben guardar las contraseñas y por qué NO cifradas?",
+          "solucion": "Con un hash lento y salado (bcrypt, Argon2). No cifradas porque el cifrado es reversible: quien obtenga la llave recupera todas las contraseñas. El hash lento + salt evita recuperación y frena ataques de fuerza bruta y tablas precomputadas.",
+          "explicacion": "Confidencialidad reversible = robable.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy2-q3",
+          "tipo": "concepto",
+          "enunciado": "Un equipo quiere verificar el origen de un webhook hasheando el cuerpo con SHA-256. ¿Funciona? ¿Qué deben usar?",
+          "solucion": "No: cualquiera puede hashear su propio cuerpo falso; el hash no prueba quién lo envió. Deben usar un HMAC con un secreto compartido entre proveedor y receptor, de modo que solo quien conoce el secreto produzca un sello válido.",
+          "explicacion": "Hash ≠ autenticidad; se necesita MAC.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué tres garantías ofrece TLS sobre una red hostil?",
+          "solucion": "Confidencialidad (cifrado del tráfico), integridad (MAC para detectar alteraciones) y autenticación del servidor (su certificado firmado). Por eso datos sensibles sobre http:// viajan desnudos y sobre https:// van en un sobre verificado.",
+          "explicacion": "El certificado evita conectarte al impostor.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy2-q5",
+          "tipo": "concepto",
+          "enunciado": "Si todo el dato está cifrado con un algoritmo fuerte, ¿dónde se concentra ahora el riesgo y por qué?",
+          "solucion": "En el manejo de llaves. El cifrado más fuerte es inútil si la llave está hardcodeada en el repo o mal protegida. La seguridad se muda al ciclo de vida de las llaves (generación, almacenamiento, rotación, acceso).",
+          "explicacion": "Cripto fuerte + llave expuesta = sin protección.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "csy2-q6",
+          "tipo": "concepto",
+          "enunciado": "Cifrar un dato, ¿garantiza también su integridad? ¿Qué se usa para tener ambas?",
+          "solucion": "No: el cifrado garantiza confidencialidad (C), no integridad (I); un atacante puede no leerlo y aun así corromperlo. Para C e I a la vez se usan modos de cifrado autenticado (p. ej. AES-GCM), que combinan cifrado y verificación de integridad.",
+          "explicacion": "C ≠ I; usar cifrado autenticado.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "cyber-sys3",
+      "bloque": "fase-8",
+      "orden": 808,
+      "titulo": "Ciber · Autenticación y gestión de identidad: contraseñas, MFA, tokens y sesiones",
+      "libro": "Computer Security — CS 161 (UC Berkeley)",
+      "lectura": "data/teoria/cyber-sys3.md",
+      "dosis": 30,
+      "objetivo": "Razonar los tres factores y por qué MFA ayuda; explicar cómo se guardan y prueban contraseñas; entender tokens y sesiones y su robo; y reconocer fallos comunes de autenticación.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Tres factores: algo que sabes / tienes / eres; MFA combina dos independientes",
+        "Contraseñas: hash lento y salado + rate limiting, nunca cifradas",
+        "Tokens/sesiones son tu identidad: quien los roba te suplanta",
+        "La recuperación de cuenta suele ser el eslabón débil"
+      ],
+      "banco": [
+        {
+          "id": "csy3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son los tres factores de autenticación y por qué MFA aumenta la seguridad?",
+          "solucion": "Algo que sabes (contraseña), algo que tienes (teléfono/llave) y algo que eres (biometría). MFA combina dos factores independientes, así que robar uno solo no basta para entrar; es de los controles de mayor impacto por su costo.",
+          "explicacion": "Dos pruebas independientes.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el salt y la lentitud del hash importan al guardar contraseñas?",
+          "solucion": "El salt (único por usuario) evita que contraseñas iguales tengan el mismo hash y frustra tablas precomputadas; la lentitud (bcrypt/Argon2) encarece la fuerza bruta. Juntos hacen inviable recuperar contraseñas de un volcado de hashes.",
+          "explicacion": "Salt contra precomputación, lentitud contra brute force.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un token o cookie de sesión robado permite suplantar sin conocer la contraseña?",
+          "solucion": "Porque tras el login el token ES la identidad del usuario ante el servidor: acompaña cada petición y el servidor confía en él. Quien lo roba (por XSS, red en claro, etc.) actúa como el usuario sin necesitar su contraseña. Por eso se protege con HttpOnly/Secure/SameSite, expiración y revocación.",
+          "explicacion": "El token equivale a la identidad.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy3-q4",
+          "tipo": "concepto",
+          "enunciado": "Un servicio usa SHA-256 sin salt, sin límite de intentos y cookies sin HttpOnly ni expiración. Enumera los fallos y su corrección.",
+          "solucion": "(1) Hash rápido sin salt → fuerza bruta/tablas; usar bcrypt/Argon2 con salt. (2) Sin rate limit → fuerza bruta en línea; añadir límite/bloqueo. (3) Cookie sin HttpOnly → robo por XSS; añadir HttpOnly/Secure/SameSite. (4) Sin expiración → token robado eterno; añadir expiración y revocación. Y ofrecer MFA.",
+          "explicacion": "Auditoría de login.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy3-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué no todos los segundos factores son igual de fuertes (p. ej. SMS vs llave de seguridad)?",
+          "solucion": "Porque algunos son interceptables o phishables: los códigos por SMS pueden capturarse (SIM swapping, intercepción) y un código TOTP puede phishearse en un sitio falso, mientras que una llave de seguridad/passkey está ligada al dominio y resiste phishing. MFA ayuda siempre, pero el tipo de segundo factor cambia la fuerza.",
+          "explicacion": "Resistencia a phishing varía por factor.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "csy3-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la recuperación de cuenta ('olvidé mi contraseña') puede ser el eslabón débil de toda la autenticación?",
+          "solucion": "Porque un atacante puede evitar contraseña y MFA si el reset se hace por un canal comprometido (un correo tomado) o con preguntas de seguridad adivinables. La autenticación es tan fuerte como su camino de recuperación; este debe protegerse al mismo nivel.",
+          "explicacion": "El reset puede sortear todo lo demás.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "cyber-sys4",
+      "bloque": "fase-8",
+      "orden": 809,
+      "titulo": "Ciber · Aislamiento en profundidad: procesos, sandboxing y contenedores",
+      "libro": "Computer Security — CS 161 (UC Berkeley)",
+      "lectura": "data/teoria/cyber-sys4.md",
+      "dosis": 30,
+      "objetivo": "Explicar por qué el aislamiento contiene el daño; distinguir procesos, sandboxes y contenedores; entender qué aísla (y qué no) un contenedor; y aplicar aislamiento a notebooks y jobs.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "El aislamiento contiene el daño: compartimentos estancos (defense in depth)",
+        "Fuerza creciente: proceso < sandbox < contenedor < VM",
+        "Un contenedor comparte el kernel; root/--privileged/secretos en imagen rompen su aislamiento",
+        "A mayor desconfianza del código, más fuerte el aislamiento"
+      ],
+      "banco": [
+        {
+          "id": "csy4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el aislamiento es una defensa aunque no impida la entrada?",
+          "solucion": "Porque contiene el daño: si cada componente corre separado y con mínimo privilegio, comprometer uno no entrega el resto. Son compartimentos estancos —como en un submarino— que confinan la 'inundación' a una celda en vez de hundir todo el sistema.",
+          "explicacion": "Defense in depth + least privilege.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy4-q2",
+          "tipo": "concepto",
+          "enunciado": "Ordena de menor a mayor fuerza de aislamiento: contenedor, proceso, VM, sandbox. ¿Qué los guía?",
+          "solucion": "Proceso < sandbox < contenedor < VM/microVM. La guía: a mayor desconfianza del código, más fuerte el aislamiento. Ejecutar código arbitrario (p. ej. el que genera un agente LLM) exige sandbox o VM, no solo un proceso.",
+          "explicacion": "Desconfianza ↑ → aislamiento ↑.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué aísla bien un contenedor y qué NO, frente a una VM?",
+          "solucion": "Empaqueta y reproduce (mismas dependencias) y aísla razonablemente vista de archivos/red/procesos, pero comparte el kernel del host, así que no es una barrera tan fuerte como una VM. Un escape del kernel desde el contenedor llega al host.",
+          "explicacion": "Comparte kernel = barrera más débil.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy4-q4",
+          "tipo": "concepto",
+          "enunciado": "Menciona tres configuraciones que rompen el aislamiento de un contenedor.",
+          "solucion": "Correrlo como root o con --privileged (un escape llega al host); montar el socket de Docker o directorios sensibles del host; e incrustar secretos en la imagen (quedan en sus capas). También usar imágenes base sin actualizar hereda CVEs.",
+          "explicacion": "La config puede anular el aislamiento.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy4-q5",
+          "tipo": "concepto",
+          "enunciado": "Notebooks de analistas y código de terceros corren como el mismo usuario con acceso al dataset y a las llaves del cloud. Rediseña con aislamiento.",
+          "solucion": "Cada job/notebook en su contenedor con usuario no-root, montando solo los datos necesarios (least privilege), sin las llaves del cloud salvo las imprescindibles y de alcance estrecho, y con red restringida; el código no confiable en un sandbox más fuerte. Así comprometer un notebook no entrega el dataset completo ni las llaves.",
+          "explicacion": "Confinar el radio de daño.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "csy4-q6",
+          "tipo": "concepto",
+          "enunciado": "Dos contenedores 'aislados' comparten un volumen o una red sin restricción. ¿Por qué importa?",
+          "solucion": "Porque el aislamiento se evalúa también en lo que comparten: un volumen o red común permite que el compromiso de uno se propague al otro, anulando la separación. Hay que revisar lo compartido, no solo lo separado.",
+          "explicacion": "Lo compartido es una vía de propagación.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "cyber-sys5",
+      "bloque": "fase-8",
+      "orden": 810,
+      "titulo": "Ciber · Anatomía de un ataque de red: DNS, MITM y por qué TLS importa",
+      "libro": "Computer Security — CS 161 (UC Berkeley)",
+      "lectura": "data/teoria/cyber-sys5.md",
+      "dosis": 30,
+      "objetivo": "Describir un ataque MITM; entender el envenenamiento de DNS y por qué redirige al impostor; explicar cómo TLS frustra ambos; y modelar la amenaza de red de un entorno de datos.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Atacante de red: espía (rompe C) y altera/inyecta (rompe I); MITM se pone en medio",
+        "Envenenamiento de DNS te redirige a un impostor → entrada al MITM",
+        "TLS da cifrado + MAC + certificado: frustra espionaje, alteración y DNS envenenado",
+        "TLS protege el tránsito, no los extremos comprometidos"
+      ],
+      "banco": [
+        {
+          "id": "csy5-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué puede hacer un atacante de red pasivo y uno activo?",
+          "solucion": "El pasivo espía: lee todo lo que va en claro (rompe confidencialidad). El activo altera o inyecta mensajes (rompe integridad) y puede hacer MITM, colocándose entre cliente y servidor hablando con ambos como si fuera el otro.",
+          "explicacion": "Leer vs modificar el tráfico.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy5-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo redirige el envenenamiento de DNS y a qué conduce?",
+          "solucion": "Falsifica la traducción de un nombre (api.dominio.com) a IP, de modo que te conectas al servidor del atacante creyendo que es el tuyo. Es una puerta clásica al MITM: no rompe la conexión, solo te engaña sobre a quién te conectas.",
+          "explicacion": "Engaña el 'a quién', no el 'cómo'.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "csy5-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo frustra TLS un MITM, incluso si el DNS está envenenado?",
+          "solucion": "TLS da cifrado (el espía solo ve ruido), MAC (una alteración se detecta y corta la conexión) y autenticación del servidor por certificado firmado: aunque el DNS te mande al impostor, su certificado no será válido para ese dominio y el cliente lo rechaza, convirtiendo la trampa silenciosa en un error visible.",
+          "explicacion": "El certificado delata al impostor.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy5-q4",
+          "tipo": "concepto",
+          "enunciado": "Un analista sube un dataset por http:// con la API key en la cabecera desde un café. ¿Qué riesgos hay y cómo se corrigen?",
+          "solucion": "Un atacante de red ve la API key y el dataset en claro (C rota), puede alterar el dataset (I rota) o redirigir vía DNS (MITM). Corrección: usar https:// de extremo a extremo, rechazar certificados inválidos, rotar la key si viajó en claro, y no exponer el endpoint a redes no confiables (VPN/allow-list).",
+          "explicacion": "'Interno' no protege en red hostil.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "csy5-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué saltarse un aviso de 'certificado inválido' es peligroso?",
+          "solucion": "Porque ese aviso es a menudo exactamente la señal de un MITM (un impostor cuyo certificado no es válido para el dominio). Ignorarlo desactiva justo la defensa que delata al atacante y le entregas la conexión.",
+          "explicacion": "El aviso suele ser el MITM en acción.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "csy5-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué TLS no basta si tu laptop o el servidor están comprometidos?",
+          "solucion": "Porque TLS protege el dato en tránsito, no en los extremos: en un host comprometido el dato se lee antes de cifrarse o después de descifrarse. La seguridad de la red complementa, no sustituye, la seguridad de los endpoints (aislamiento, [[cyber-sys4]]).",
+          "explicacion": "Tránsito ≠ extremos.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-web1",
       "bloque": "fase-8",
-      "orden": 805,
+      "orden": 811,
       "titulo": "Ciber · Web I: inyección, XSS y la frontera del servidor",
       "libro": "Web Security Academy (PortSwigger)",
       "lectura": "data/teoria/cyber-web1.md",
       "dosis": 30,
       "objetivo": "Explicar SQL injection y XSS como el mismo patrón; distinguir validar, sanear, parametrizar y codificar; ubicar la frontera de confianza del servidor; y elegir la mitigación correcta.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 2 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
       "ideas_clave": [
         "Inyección y XSS son la misma falla: una entrada cruza de dato a instrucción",
         "SQLi se previene parametrizando; XSS, codificando la salida — no con listas negras",
@@ -123,25 +732,70 @@
         "El XSS almacenado es peor que el reflejado: vive en tus datos"
       ],
       "banco": [
-        { "id": "cwe1-q1", "tipo": "concepto", "enunciado": "¿Qué patrón comparten SQL injection y XSS?", "solucion": "Ambos ocurren cuando una entrada del usuario cruza de 'dato' a 'instrucción': en SQLi el dato se interpreta como parte de la consulta; en XSS el dato se ejecuta como código en el navegador de quien lo ve. Es la misma falla en dos contextos.", "explicacion": "Dato tratado como instrucción.", "difficulty": "easy" },
-        { "id": "cwe1-q2", "tipo": "concepto", "enunciado": "¿Cuál es la defensa robusta contra SQL injection y por qué no basta filtrar comillas?", "solucion": "Consultas parametrizadas (prepared statements): el dato y la estructura van por canales separados, así el driver nunca interpreta el dato como SQL. Filtrar comillas es una lista negra evadible (codificaciones, otras sintaxis); la parametrización elimina la categoría del bug.", "explicacion": "Separar instrucción de dato vence a sanear.", "difficulty": "easy" },
-        { "id": "cwe1-q3", "tipo": "concepto", "enunciado": "Un dashboard inserta el nombre del usuario con innerHTML. ¿Qué riesgo hay y cómo se corrige?", "solucion": "XSS: si el nombre es <script>...</script> u otro payload, el navegador lo ejecuta en la sesión de quien lo vea (puede robar cookies). Se corrige codificando la salida según el contexto o usando textContent/binding seguro en vez de innerHTML.", "explicacion": "Codificar salida neutraliza el código.", "difficulty": "medium" },
-        { "id": "cwe1-q4", "tipo": "concepto", "enunciado": "¿Por qué la validación en el cliente no es una defensa de seguridad y dónde está la frontera real?", "solucion": "Porque el JavaScript del navegador se puede saltar enviando peticiones directas al servidor; el atacante controla el cliente. La frontera de confianza real está en el servidor, que debe validar y parametrizar/codificar siempre.", "explicacion": "El cliente es manipulable.", "difficulty": "medium" },
-        { "id": "cwe1-q5", "tipo": "concepto", "enunciado": "¿Por qué el XSS almacenado suele ser más grave que el reflejado?", "solucion": "Porque el payload se guarda en tu base de datos (p. ej. un campo de texto libre) y se ejecuta para cada usuario que vea ese contenido, sin necesidad de engañar a cada víctima con un enlace. Un dataset de texto que luego renderizas es un vector silencioso.", "explicacion": "Persistencia multiplica el alcance.", "difficulty": "hard" },
-        { "id": "cwe1-q6", "tipo": "concepto", "enunciado": "Usar un ORM, ¿garantiza inmunidad a SQL injection?", "solucion": "No: si usas consultas crudas (raw) concatenando strings, vuelves a ser vulnerable. La herramienta segura usada de forma insegura reintroduce el bug; hay que parametrizar incluso dentro del ORM.", "explicacion": "La herramienta no sustituye la práctica correcta.", "difficulty": "hard" }
+        {
+          "id": "cwe1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué patrón comparten SQL injection y XSS?",
+          "solucion": "Ambos ocurren cuando una entrada del usuario cruza de 'dato' a 'instrucción': en SQLi el dato se interpreta como parte de la consulta; en XSS el dato se ejecuta como código en el navegador de quien lo ve. Es la misma falla en dos contextos.",
+          "explicacion": "Dato tratado como instrucción.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cwe1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la defensa robusta contra SQL injection y por qué no basta filtrar comillas?",
+          "solucion": "Consultas parametrizadas (prepared statements): el dato y la estructura van por canales separados, así el driver nunca interpreta el dato como SQL. Filtrar comillas es una lista negra evadible (codificaciones, otras sintaxis); la parametrización elimina la categoría del bug.",
+          "explicacion": "Separar instrucción de dato vence a sanear.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cwe1-q3",
+          "tipo": "concepto",
+          "enunciado": "Un dashboard inserta el nombre del usuario con innerHTML. ¿Qué riesgo hay y cómo se corrige?",
+          "solucion": "XSS: si el nombre es <script>...</script> u otro payload, el navegador lo ejecuta en la sesión de quien lo vea (puede robar cookies). Se corrige codificando la salida según el contexto o usando textContent/binding seguro en vez de innerHTML.",
+          "explicacion": "Codificar salida neutraliza el código.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cwe1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la validación en el cliente no es una defensa de seguridad y dónde está la frontera real?",
+          "solucion": "Porque el JavaScript del navegador se puede saltar enviando peticiones directas al servidor; el atacante controla el cliente. La frontera de confianza real está en el servidor, que debe validar y parametrizar/codificar siempre.",
+          "explicacion": "El cliente es manipulable.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cwe1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el XSS almacenado suele ser más grave que el reflejado?",
+          "solucion": "Porque el payload se guarda en tu base de datos (p. ej. un campo de texto libre) y se ejecuta para cada usuario que vea ese contenido, sin necesidad de engañar a cada víctima con un enlace. Un dataset de texto que luego renderizas es un vector silencioso.",
+          "explicacion": "Persistencia multiplica el alcance.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cwe1-q6",
+          "tipo": "concepto",
+          "enunciado": "Usar un ORM, ¿garantiza inmunidad a SQL injection?",
+          "solucion": "No: si usas consultas crudas (raw) concatenando strings, vuelves a ser vulnerable. La herramienta segura usada de forma insegura reintroduce el bug; hay que parametrizar incluso dentro del ORM.",
+          "explicacion": "La herramienta no sustituye la práctica correcta.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-web2",
       "bloque": "fase-8",
-      "orden": 806,
+      "orden": 812,
       "titulo": "Ciber · Web II: autenticación, control de acceso, CSRF y SSRF",
       "libro": "Web Security Academy (PortSwigger)",
       "lectura": "data/teoria/cyber-web2.md",
       "dosis": 30,
       "objetivo": "Distinguir autenticación de autorización; reconocer broken access control (IDOR); entender sesiones, JWT y OAuth lo suficiente para no romperlos; y explicar CSRF y SSRF con su mitigación.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 2 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
       "ideas_clave": [
         "Autenticación (quién eres) ≠ autorización (qué puedes)",
         "Broken access control / IDOR: verificar permiso por recurso en el servidor",
@@ -149,25 +803,70 @@
         "Firmar un JWT no autoriza: re-verifica permisos por recurso"
       ],
       "banco": [
-        { "id": "cwe2-q1", "tipo": "concepto", "enunciado": "Distingue autenticación de autorización con un ejemplo.", "solucion": "Autenticación establece identidad (login: ¿eres quien dices?). Autorización decide permisos tras autenticarte (¿puedes ver ESTE registro?). Ejemplo: iniciar sesión te autentica, pero ver la factura 43 que no es tuya es un fallo de autorización.", "explicacion": "Identidad vs permisos.", "difficulty": "easy" },
-        { "id": "cwe2-q2", "tipo": "concepto", "enunciado": "¿Qué es IDOR y cómo se previene?", "solucion": "Insecure Direct Object Reference: el servidor sirve un recurso (GET /factura/42) sin verificar que pertenece al solicitante, así que cambiar el id muestra datos ajenos. Se previene verificando permiso por recurso en el servidor y derivando la identidad de la sesión, no del parámetro.", "explicacion": "Broken access control, categoría #1 de OWASP.", "difficulty": "easy" },
-        { "id": "cwe2-q3", "tipo": "concepto", "enunciado": "Diferencia CSRF de SSRF según 'de quién se abusa la confianza'.", "solucion": "En CSRF el atacante abusa de la confianza del servidor en tu navegador: hace que tu navegador (con tu sesión) envíe una petición no deseada. En SSRF abusa de la confianza de la red interna en su propio servidor: engaña al servidor para que pida un destino interno (p. ej. el metadata del cloud).", "explicacion": "Navegador vs servidor como víctima.", "difficulty": "medium" },
-        { "id": "cwe2-q4", "tipo": "concepto", "enunciado": "Un endpoint POST /fetch?url=... previsualiza una URL que manda el usuario. ¿Qué riesgo hay y cómo se mitiga?", "solucion": "SSRF: el usuario puede apuntar a servicios internos o al endpoint de metadatos del cloud (169.254.169.254) y filtrar credenciales. Se mitiga con allow-list de destinos permitidos y no reenviar URLs del usuario a ciegas.", "explicacion": "Validar destinos del lado servidor.", "difficulty": "medium" },
-        { "id": "cwe2-q5", "tipo": "concepto", "enunciado": "Un JWT está firmado y su payload dice role=admin. ¿Es seguro confiar en ese rol? ¿Qué cuidados aplican?", "solucion": "Firmado significa que no fue alterado, no que el portador esté autorizado para cada acción. Hay que verificar la firma correctamente (rechazar alg:none), no meter datos sensibles en el payload (es legible, solo va firmado) y re-verificar permisos por recurso en el servidor.", "explicacion": "Firmado ≠ autorizado.", "difficulty": "hard" },
-        { "id": "cwe2-q6", "tipo": "concepto", "enunciado": "¿Por qué un endpoint interno sin autenticación ('solo lo llamamos nosotros') puede volverse crítico?", "solucion": "Porque un SSRF puede alcanzarlo desde fuera usando al propio servidor como puente, y la red interna deja de ser una frontera confiable. Un servicio interno sin auth se convierte en un blanco accesible indirectamente.", "explicacion": "La confianza en 'lo interno' es frágil.", "difficulty": "hard" }
+        {
+          "id": "cwe2-q1",
+          "tipo": "concepto",
+          "enunciado": "Distingue autenticación de autorización con un ejemplo.",
+          "solucion": "Autenticación establece identidad (login: ¿eres quien dices?). Autorización decide permisos tras autenticarte (¿puedes ver ESTE registro?). Ejemplo: iniciar sesión te autentica, pero ver la factura 43 que no es tuya es un fallo de autorización.",
+          "explicacion": "Identidad vs permisos.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cwe2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es IDOR y cómo se previene?",
+          "solucion": "Insecure Direct Object Reference: el servidor sirve un recurso (GET /factura/42) sin verificar que pertenece al solicitante, así que cambiar el id muestra datos ajenos. Se previene verificando permiso por recurso en el servidor y derivando la identidad de la sesión, no del parámetro.",
+          "explicacion": "Broken access control, categoría #1 de OWASP.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cwe2-q3",
+          "tipo": "concepto",
+          "enunciado": "Diferencia CSRF de SSRF según 'de quién se abusa la confianza'.",
+          "solucion": "En CSRF el atacante abusa de la confianza del servidor en tu navegador: hace que tu navegador (con tu sesión) envíe una petición no deseada. En SSRF abusa de la confianza de la red interna en su propio servidor: engaña al servidor para que pida un destino interno (p. ej. el metadata del cloud).",
+          "explicacion": "Navegador vs servidor como víctima.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cwe2-q4",
+          "tipo": "concepto",
+          "enunciado": "Un endpoint POST /fetch?url=... previsualiza una URL que manda el usuario. ¿Qué riesgo hay y cómo se mitiga?",
+          "solucion": "SSRF: el usuario puede apuntar a servicios internos o al endpoint de metadatos del cloud (169.254.169.254) y filtrar credenciales. Se mitiga con allow-list de destinos permitidos y no reenviar URLs del usuario a ciegas.",
+          "explicacion": "Validar destinos del lado servidor.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cwe2-q5",
+          "tipo": "concepto",
+          "enunciado": "Un JWT está firmado y su payload dice role=admin. ¿Es seguro confiar en ese rol? ¿Qué cuidados aplican?",
+          "solucion": "Firmado significa que no fue alterado, no que el portador esté autorizado para cada acción. Hay que verificar la firma correctamente (rechazar alg:none), no meter datos sensibles en el payload (es legible, solo va firmado) y re-verificar permisos por recurso en el servidor.",
+          "explicacion": "Firmado ≠ autorizado.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cwe2-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un endpoint interno sin autenticación ('solo lo llamamos nosotros') puede volverse crítico?",
+          "solucion": "Porque un SSRF puede alcanzarlo desde fuera usando al propio servidor como puente, y la red interna deja de ser una frontera confiable. Un servicio interno sin auth se convierte en un blanco accesible indirectamente.",
+          "explicacion": "La confianza en 'lo interno' es frágil.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-dp1",
       "bloque": "fase-8",
-      "orden": 807,
+      "orden": 813,
       "titulo": "Ciber · Privacidad ≠ seguridad: proteger personas, no solo tablas",
       "libro": "NIST Privacy Framework 1.1 (IPD)",
       "lectura": "data/teoria/cyber-dp1.md",
       "dosis": 25,
       "objetivo": "Separar privacidad de seguridad; definir riesgo de privacidad y distinguir datos personales de sensibles; aplicar minimización y limitación de finalidad; y razonar la retención como riesgo.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 2 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
       "ideas_clave": [
         "Seguridad: ¿puede acceder un no autorizado? Privacidad: ¿es apropiado tener/usar el dato?",
         "Minimización (solo lo necesario) y limitación de finalidad (solo para lo declarado)",
@@ -175,25 +874,70 @@
         "La identificabilidad es combinatoria; sensible ≠ personal"
       ],
       "banco": [
-        { "id": "cdp1-q1", "tipo": "concepto", "enunciado": "¿En qué se diferencian el riesgo de seguridad y el de privacidad?", "solucion": "La seguridad pregunta si un no autorizado puede acceder al dato; la privacidad pregunta si es apropiado tener y usar ese dato, y si se usa como la persona esperaría. Un sistema puede ser perfectamente seguro y aun así dañar la privacidad (p. ej. recolectar de más o reutilizar datos).", "explicacion": "Son dos riesgos independientes.", "difficulty": "easy" },
-        { "id": "cdp1-q2", "tipo": "concepto", "enunciado": "Define minimización y limitación de finalidad.", "solucion": "Minimización: recolectar y conservar solo lo necesario para la finalidad declarada. Limitación de finalidad: usar el dato solo para lo que se recolectó, no reutilizarlo para fines nuevos no esperados por el titular.", "explicacion": "Dos principios que reducen el riesgo por diseño.", "difficulty": "easy" },
-        { "id": "cdp1-q3", "tipo": "concepto", "enunciado": "Un equipo quiere incluir historial médico para predecir abandono escolar 'porque está disponible'. ¿Qué principios viola?", "solucion": "Minimización (el historial médico no es necesario para la finalidad) y limitación de finalidad (se recolectó para otra cosa). Además es dato sensible y puede introducir discriminación. La decisión profesional es excluirlo.", "explicacion": "'Más datos es mejor' choca con la privacidad.", "difficulty": "medium" },
-        { "id": "cdp1-q4", "tipo": "concepto", "enunciado": "¿Por qué la retención indefinida de datos es un riesgo y no una ventaja?", "solucion": "Cada día que conservas un dato sensible es un día de exposición a brechas, abuso o reutilización indebida; el pasivo crece sin aportar valor proporcional. Por eso se define un calendario de borrado en vez de guardar 'para siempre'.", "explicacion": "Retención = exposición acumulada.", "difficulty": "medium" },
-        { "id": "cdp1-q5", "tipo": "concepto", "enunciado": "¿Por qué un dato puede ser identificante aunque ninguna columna sea 'un identificador'?", "solucion": "Porque la identificabilidad es combinatoria: la unión de cuasi-identificadores (p. ej. código postal + fecha de nacimiento + sexo) señala a una persona aunque cada uno por separado no lo haga. La privacidad no se evalúa columna por columna.", "explicacion": "Anticipa reidentificación (cyber-dp2).", "difficulty": "hard" },
-        { "id": "cdp1-q6", "tipo": "concepto", "enunciado": "Datos agregados parecen sin riesgo de privacidad. Da un caso donde sí lo tienen.", "solucion": "Una estadística sobre un grupo muy pequeño revela al individuo: p. ej. 'el promedio salarial del único empleado de 60 años del área X' expone su salario. La agregación protege solo si los grupos son suficientemente grandes.", "explicacion": "Grupos pequeños rompen la protección por agregación.", "difficulty": "hard" }
+        {
+          "id": "cdp1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿En qué se diferencian el riesgo de seguridad y el de privacidad?",
+          "solucion": "La seguridad pregunta si un no autorizado puede acceder al dato; la privacidad pregunta si es apropiado tener y usar ese dato, y si se usa como la persona esperaría. Un sistema puede ser perfectamente seguro y aun así dañar la privacidad (p. ej. recolectar de más o reutilizar datos).",
+          "explicacion": "Son dos riesgos independientes.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cdp1-q2",
+          "tipo": "concepto",
+          "enunciado": "Define minimización y limitación de finalidad.",
+          "solucion": "Minimización: recolectar y conservar solo lo necesario para la finalidad declarada. Limitación de finalidad: usar el dato solo para lo que se recolectó, no reutilizarlo para fines nuevos no esperados por el titular.",
+          "explicacion": "Dos principios que reducen el riesgo por diseño.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cdp1-q3",
+          "tipo": "concepto",
+          "enunciado": "Un equipo quiere incluir historial médico para predecir abandono escolar 'porque está disponible'. ¿Qué principios viola?",
+          "solucion": "Minimización (el historial médico no es necesario para la finalidad) y limitación de finalidad (se recolectó para otra cosa). Además es dato sensible y puede introducir discriminación. La decisión profesional es excluirlo.",
+          "explicacion": "'Más datos es mejor' choca con la privacidad.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cdp1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la retención indefinida de datos es un riesgo y no una ventaja?",
+          "solucion": "Cada día que conservas un dato sensible es un día de exposición a brechas, abuso o reutilización indebida; el pasivo crece sin aportar valor proporcional. Por eso se define un calendario de borrado en vez de guardar 'para siempre'.",
+          "explicacion": "Retención = exposición acumulada.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cdp1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un dato puede ser identificante aunque ninguna columna sea 'un identificador'?",
+          "solucion": "Porque la identificabilidad es combinatoria: la unión de cuasi-identificadores (p. ej. código postal + fecha de nacimiento + sexo) señala a una persona aunque cada uno por separado no lo haga. La privacidad no se evalúa columna por columna.",
+          "explicacion": "Anticipa reidentificación (cyber-dp2).",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cdp1-q6",
+          "tipo": "concepto",
+          "enunciado": "Datos agregados parecen sin riesgo de privacidad. Da un caso donde sí lo tienen.",
+          "solucion": "Una estadística sobre un grupo muy pequeño revela al individuo: p. ej. 'el promedio salarial del único empleado de 60 años del área X' expone su salario. La agregación protege solo si los grupos son suficientemente grandes.",
+          "explicacion": "Grupos pequeños rompen la protección por agregación.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-dp2",
       "bloque": "fase-8",
-      "orden": 808,
+      "orden": 814,
       "titulo": "Ciber · Reidentificación, anonimización y gobernanza de datos",
       "libro": "NIST Privacy Framework 1.1 (IPD)",
       "lectura": "data/teoria/cyber-dp2.md",
       "dosis": 25,
       "objetivo": "Explicar la reidentificación por cuasi-identificadores; distinguir seudonimización de anonimización; nombrar técnicas reales (k-anonimato, agregación, differential privacy); y diseñar gobernanza de un dataset.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Quitar el nombre no anonimiza: los cuasi-identificadores reidentifican",
         "Seudonimización (reversible, sigue siendo dato personal) ≠ anonimización (irreversible)",
@@ -201,25 +945,70 @@
         "Gobernanza: acceso, auditoría, retención, procedencia/finalidad"
       ],
       "banco": [
-        { "id": "cdp2-q1", "tipo": "concepto", "enunciado": "¿Qué son los cuasi-identificadores y por qué importan?", "solucion": "Atributos que por separado no identifican pero combinados sí (código postal, fecha de nacimiento, sexo). Importan porque su combinación, cruzada con datos auxiliares públicos, reidentifica a las personas aunque se hayan quitado los identificadores directos.", "explicacion": "La base de la reidentificación.", "difficulty": "easy" },
-        { "id": "cdp2-q2", "tipo": "concepto", "enunciado": "Distingue seudonimización de anonimización.", "solucion": "Seudonimización reemplaza identificadores por seudónimos pero es reversible con la tabla de mapeo, y el dato sigue siendo personal. Anonimización elimina (bien hecha) la posibilidad de reidentificar, y entonces deja de ser dato personal. Tratar lo seudonimizado como anónimo es una fuga.", "explicacion": "Reversibilidad y estatus legal distintos.", "difficulty": "easy" },
-        { "id": "cdp2-q3", "tipo": "concepto", "enunciado": "Un dataset hospitalario quita nombre y DNI pero deja fecha exacta de nacimiento, código postal y diagnóstico. ¿Es anónimo? ¿Qué harías?", "solucion": "No: los cuasi-identificadores reidentifican cruzando con padrones. Generalizar fecha → año/rango y código postal → región (buscando k-anonimato), revisar diagnósticos raros, y compartir bajo acuerdo con acceso y auditoría; para estadística, agregar o aplicar differential privacy.", "explicacion": "Anonimización es propiedad del dataset frente a un atacante.", "difficulty": "medium" },
-        { "id": "cdp2-q4", "tipo": "concepto", "enunciado": "¿Qué garantiza la differential privacy y a costa de qué?", "solucion": "Garantiza que la salida casi no cambie esté o no una persona en los datos (añadiendo ruido calibrado), ofreciendo una garantía cuantificable de privacidad. El costo es algo de exactitud: hay un tradeoff utilidad↔privacidad que se decide explícitamente.", "explicacion": "Estándar moderno con garantía formal.", "difficulty": "medium" },
-        { "id": "cdp2-q5", "tipo": "concepto", "enunciado": "¿Qué cuatro elementos definen la gobernanza de un dataset y por qué la técnica sin proceso no basta?", "solucion": "Acceso (quién, con qué permiso mínimo), auditoría (registro de quién accedió y para qué), retención (cuándo se borra) y procedencia/finalidad (de dónde vino, con qué consentimiento, para qué se permite). Sin proceso, la mejor de-identificación se filtra por mal manejo.", "explicacion": "Técnica + gobernanza.", "difficulty": "hard" },
-        { "id": "cdp2-q6", "tipo": "concepto", "enunciado": "¿Por qué los outliers son un problema incluso si el dataset cumple k-anonimato?", "solucion": "Porque un individuo con un valor único o rarísimo (una enfermedad muy poco común, un patrón de compra único) suele ser reidentificable aunque el resto del dataset comparta combinaciones con k-1 personas. Requieren supresión o agregación más agresiva.", "explicacion": "Lo raro es señalable.", "difficulty": "hard" }
+        {
+          "id": "cdp2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué son los cuasi-identificadores y por qué importan?",
+          "solucion": "Atributos que por separado no identifican pero combinados sí (código postal, fecha de nacimiento, sexo). Importan porque su combinación, cruzada con datos auxiliares públicos, reidentifica a las personas aunque se hayan quitado los identificadores directos.",
+          "explicacion": "La base de la reidentificación.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cdp2-q2",
+          "tipo": "concepto",
+          "enunciado": "Distingue seudonimización de anonimización.",
+          "solucion": "Seudonimización reemplaza identificadores por seudónimos pero es reversible con la tabla de mapeo, y el dato sigue siendo personal. Anonimización elimina (bien hecha) la posibilidad de reidentificar, y entonces deja de ser dato personal. Tratar lo seudonimizado como anónimo es una fuga.",
+          "explicacion": "Reversibilidad y estatus legal distintos.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cdp2-q3",
+          "tipo": "concepto",
+          "enunciado": "Un dataset hospitalario quita nombre y DNI pero deja fecha exacta de nacimiento, código postal y diagnóstico. ¿Es anónimo? ¿Qué harías?",
+          "solucion": "No: los cuasi-identificadores reidentifican cruzando con padrones. Generalizar fecha → año/rango y código postal → región (buscando k-anonimato), revisar diagnósticos raros, y compartir bajo acuerdo con acceso y auditoría; para estadística, agregar o aplicar differential privacy.",
+          "explicacion": "Anonimización es propiedad del dataset frente a un atacante.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cdp2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué garantiza la differential privacy y a costa de qué?",
+          "solucion": "Garantiza que la salida casi no cambie esté o no una persona en los datos (añadiendo ruido calibrado), ofreciendo una garantía cuantificable de privacidad. El costo es algo de exactitud: hay un tradeoff utilidad↔privacidad que se decide explícitamente.",
+          "explicacion": "Estándar moderno con garantía formal.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cdp2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cuatro elementos definen la gobernanza de un dataset y por qué la técnica sin proceso no basta?",
+          "solucion": "Acceso (quién, con qué permiso mínimo), auditoría (registro de quién accedió y para qué), retención (cuándo se borra) y procedencia/finalidad (de dónde vino, con qué consentimiento, para qué se permite). Sin proceso, la mejor de-identificación se filtra por mal manejo.",
+          "explicacion": "Técnica + gobernanza.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cdp2-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué los outliers son un problema incluso si el dataset cumple k-anonimato?",
+          "solucion": "Porque un individuo con un valor único o rarísimo (una enfermedad muy poco común, un patrón de compra único) suele ser reidentificable aunque el resto del dataset comparta combinaciones con k-1 personas. Requieren supresión o agregación más agresiva.",
+          "explicacion": "Lo raro es señalable.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-dev1",
       "bloque": "fase-8",
-      "orden": 809,
+      "orden": 815,
       "titulo": "Ciber · Desarrollo seguro: requisitos, validación y secretos",
       "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
       "lectura": "data/teoria/cyber-dev1.md",
       "dosis": 30,
       "objetivo": "Tratar la seguridad como requisito; aplicar validación de entradas y manejo de errores sin filtrar; gestionar secretos correctamente; y reconocer leakage por logs.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 2 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 2
+      },
       "ideas_clave": [
         "La seguridad es un requisito de diseño, no un parche final",
         "Validar con allow-list en el servidor; fallar hacia el lado seguro",
@@ -227,25 +1016,70 @@
         "Leakage por logs: no loguear payloads ni datos sensibles"
       ],
       "banco": [
-        { "id": "cde1-q1", "tipo": "concepto", "enunciado": "Diferencia allow-list de deny-list en validación de entradas y di cuál es más robusta.", "solucion": "Deny-list intenta bloquear lo malo conocido (frágil: el atacante encuentra lo no listado). Allow-list define exactamente lo válido y rechaza el resto. La allow-list es más robusta porque no depende de anticipar todos los ataques.", "explicacion": "Definir lo válido > adivinar lo malo.", "difficulty": "easy" },
-        { "id": "cde1-q2", "tipo": "concepto", "enunciado": "¿Por qué borrar un secreto del repositorio no basta?", "solucion": "Porque queda en el historial de git: cualquiera con acceso al historial lo recupera. Una vez subido, el secreto debe considerarse comprometido y rotarse, no solo borrarse del archivo actual.", "explicacion": "El historial conserva todo.", "difficulty": "easy" },
-        { "id": "cde1-q3", "tipo": "concepto", "enunciado": "¿Qué es el leakage por logs y por qué es peligroso?", "solucion": "Es la fuga de datos sensibles (payloads, PII, secretos) a través de mensajes de log o prints de depuración. Es peligroso porque los logs suelen tener menos protección, se conservan, y se comparten para diagnóstico; un print de depuración olvidado puede exponer datos en producción.", "explicacion": "Loguear metadatos, no contenido sensible.", "difficulty": "medium" },
-        { "id": "cde1-q4", "tipo": "concepto", "enunciado": "¿Cómo se debe manejar un error de autorización y por qué un stack trace al usuario es peligroso?", "solucion": "Se debe fallar hacia el lado seguro: negar la acción. Un stack trace en producción revela rutas, versiones, consultas y a veces secretos, dándole al atacante un mapa del sistema; al usuario va un mensaje genérico y el detalle queda solo en logs internos (sin datos sensibles).", "explicacion": "Fail-safe + no filtrar en errores.", "difficulty": "medium" },
-        { "id": "cde1-q5", "tipo": "concepto", "enunciado": "Revisa: API_KEY hardcodeada, URL armada con input del usuario y print del payload completo. Nombra el problema de cada uno y su corrección.", "solucion": "(1) Secreto hardcodeado → moverlo a variable de entorno/secret manager y rotarlo (ya comprometido). (2) Input concatenado en URL → validar/codificar; riesgo de SSRF/inyección. (3) print del payload → leakage por logs; loguear metadatos, no contenido.", "explicacion": "Tres bugs cotidianos de un DS.", "difficulty": "hard" },
-        { "id": "cde1-q6", "tipo": "concepto", "enunciado": "Un mensaje de error distingue 'usuario no encontrado' de 'contraseña incorrecta'. ¿Por qué puede ser una fuga?", "solucion": "Permite enumeración de cuentas: un atacante descubre qué emails/usuarios existen probando el login y leyendo cuál de los dos mensajes recibe. Conviene un mensaje genérico ('credenciales inválidas') que no revele si la cuenta existe.", "explicacion": "Incluso errores 'amables' pueden filtrar.", "difficulty": "hard" }
+        {
+          "id": "cde1-q1",
+          "tipo": "concepto",
+          "enunciado": "Diferencia allow-list de deny-list en validación de entradas y di cuál es más robusta.",
+          "solucion": "Deny-list intenta bloquear lo malo conocido (frágil: el atacante encuentra lo no listado). Allow-list define exactamente lo válido y rechaza el resto. La allow-list es más robusta porque no depende de anticipar todos los ataques.",
+          "explicacion": "Definir lo válido > adivinar lo malo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cde1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué borrar un secreto del repositorio no basta?",
+          "solucion": "Porque queda en el historial de git: cualquiera con acceso al historial lo recupera. Una vez subido, el secreto debe considerarse comprometido y rotarse, no solo borrarse del archivo actual.",
+          "explicacion": "El historial conserva todo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cde1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el leakage por logs y por qué es peligroso?",
+          "solucion": "Es la fuga de datos sensibles (payloads, PII, secretos) a través de mensajes de log o prints de depuración. Es peligroso porque los logs suelen tener menos protección, se conservan, y se comparten para diagnóstico; un print de depuración olvidado puede exponer datos en producción.",
+          "explicacion": "Loguear metadatos, no contenido sensible.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cde1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se debe manejar un error de autorización y por qué un stack trace al usuario es peligroso?",
+          "solucion": "Se debe fallar hacia el lado seguro: negar la acción. Un stack trace en producción revela rutas, versiones, consultas y a veces secretos, dándole al atacante un mapa del sistema; al usuario va un mensaje genérico y el detalle queda solo en logs internos (sin datos sensibles).",
+          "explicacion": "Fail-safe + no filtrar en errores.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cde1-q5",
+          "tipo": "concepto",
+          "enunciado": "Revisa: API_KEY hardcodeada, URL armada con input del usuario y print del payload completo. Nombra el problema de cada uno y su corrección.",
+          "solucion": "(1) Secreto hardcodeado → moverlo a variable de entorno/secret manager y rotarlo (ya comprometido). (2) Input concatenado en URL → validar/codificar; riesgo de SSRF/inyección. (3) print del payload → leakage por logs; loguear metadatos, no contenido.",
+          "explicacion": "Tres bugs cotidianos de un DS.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cde1-q6",
+          "tipo": "concepto",
+          "enunciado": "Un mensaje de error distingue 'usuario no encontrado' de 'contraseña incorrecta'. ¿Por qué puede ser una fuga?",
+          "solucion": "Permite enumeración de cuentas: un atacante descubre qué emails/usuarios existen probando el login y leyendo cuál de los dos mensajes recibe. Conviene un mensaje genérico ('credenciales inválidas') que no revele si la cuenta existe.",
+          "explicacion": "Incluso errores 'amables' pueden filtrar.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-dev2",
       "bloque": "fase-8",
-      "orden": 810,
+      "orden": 816,
       "titulo": "Ciber · Dependencias y supply chain: SBOM, SCA y CI/CD seguro",
       "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
       "lectura": "data/teoria/cyber-dev2.md",
       "dosis": 30,
       "objetivo": "Explicar el riesgo de dependencias y supply chain; entender SBOM, SCA y SAST; reconocer typosquatting y paquetes maliciosos; y razonar un CI/CD seguro con permisos mínimos.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Tu software incluye muchísimo código ajeno, incluido el transitivo",
         "SBOM (qué llevas dentro) + SCA (detectar dependencias vulnerables)",
@@ -253,25 +1087,70 @@
         "CI/CD con permisos mínimos; actualizar por explotabilidad e impacto"
       ],
       "banco": [
-        { "id": "cde2-q1", "tipo": "concepto", "enunciado": "¿Por qué las dependencias transitivas son especialmente peligrosas?", "solucion": "Porque no las eliges tú: vienen arrastradas por tus dependencias directas, así que corren con tus permisos sin que sepas que están ahí. No puedes proteger ni parchear lo que no sabes que incluyes.", "explicacion": "Lo invisible no se gestiona.", "difficulty": "easy" },
-        { "id": "cde2-q2", "tipo": "concepto", "enunciado": "Define SBOM, SCA y SAST.", "solucion": "SBOM (Software Bill of Materials): inventario completo de todo lo que incluye tu software, incluidas las transitivas. SCA (Software Composition Analysis): escanea tus dependencias contra bases de vulnerabilidades. SAST (Static Application Security Testing): analiza tu propio código fuente buscando patrones inseguros.", "explicacion": "Inventario, dependencias, código propio.", "difficulty": "easy" },
-        { "id": "cde2-q3", "tipo": "concepto", "enunciado": "¿Qué es typosquatting y por qué la popularidad de un paquete no garantiza su seguridad?", "solucion": "Typosquatting es publicar un paquete con un nombre parecido al real (reqeusts por requests) para que alguien lo instale por error. La popularidad no garantiza seguridad porque paquetes legítimos pueden ser secuestrados o abandonados e inyectados; la procedencia verificada importa más que la fama.", "explicacion": "Confiar por fama es frágil.", "difficulty": "medium" },
-        { "id": "cde2-q4", "tipo": "concepto", "enunciado": "¿Por qué un SBOM te salva ante un CVE masivo como Log4Shell?", "solucion": "Porque cuando se anuncia una vulnerabilidad crítica en una librería, el SBOM te dice de inmediato si la incluyes (directa o transitivamente) y dónde, permitiéndote responder rápido. Sin SBOM quedas a ciegas sobre si te afecta.", "explicacion": "Saber qué llevas dentro acelera la respuesta.", "difficulty": "medium" },
-        { "id": "cde2-q5", "tipo": "concepto", "enunciado": "¿Cómo decides si actualizar una dependencia vulnerable, en vez de 'siempre actualizar ya'?", "solucion": "Razonas por explotabilidad (¿usas la función afectada?) e impacto sobre tus activos, y consideras si rompe compatibilidad. Parcheas rápido lo crítico y explotable, planificas lo demás, pero nunca ignoras un CVE de severidad alta en una dependencia expuesta.", "explicacion": "Ni a ciegas ni nunca: por riesgo.", "difficulty": "hard" },
-        { "id": "cde2-q6", "tipo": "concepto", "enunciado": "¿Por qué tener SAST impecable sobre tu código no basta, y por qué el pipeline de CI/CD es un activo crítico?", "solucion": "SAST cubre tu código pero no las dependencias (necesitas SCA): puedes pasar todas las revisiones y aun así desplegar una librería con un CVE. El CI/CD es crítico porque tiene acceso a secretos y a producción, así que debe correr con permisos mínimos, versiones fijadas y verificadas, y ejecución aislada.", "explicacion": "Asegurar lo propio no asegura lo importado.", "difficulty": "hard" }
+        {
+          "id": "cde2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las dependencias transitivas son especialmente peligrosas?",
+          "solucion": "Porque no las eliges tú: vienen arrastradas por tus dependencias directas, así que corren con tus permisos sin que sepas que están ahí. No puedes proteger ni parchear lo que no sabes que incluyes.",
+          "explicacion": "Lo invisible no se gestiona.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cde2-q2",
+          "tipo": "concepto",
+          "enunciado": "Define SBOM, SCA y SAST.",
+          "solucion": "SBOM (Software Bill of Materials): inventario completo de todo lo que incluye tu software, incluidas las transitivas. SCA (Software Composition Analysis): escanea tus dependencias contra bases de vulnerabilidades. SAST (Static Application Security Testing): analiza tu propio código fuente buscando patrones inseguros.",
+          "explicacion": "Inventario, dependencias, código propio.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cde2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es typosquatting y por qué la popularidad de un paquete no garantiza su seguridad?",
+          "solucion": "Typosquatting es publicar un paquete con un nombre parecido al real (reqeusts por requests) para que alguien lo instale por error. La popularidad no garantiza seguridad porque paquetes legítimos pueden ser secuestrados o abandonados e inyectados; la procedencia verificada importa más que la fama.",
+          "explicacion": "Confiar por fama es frágil.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cde2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un SBOM te salva ante un CVE masivo como Log4Shell?",
+          "solucion": "Porque cuando se anuncia una vulnerabilidad crítica en una librería, el SBOM te dice de inmediato si la incluyes (directa o transitivamente) y dónde, permitiéndote responder rápido. Sin SBOM quedas a ciegas sobre si te afecta.",
+          "explicacion": "Saber qué llevas dentro acelera la respuesta.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cde2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo decides si actualizar una dependencia vulnerable, en vez de 'siempre actualizar ya'?",
+          "solucion": "Razonas por explotabilidad (¿usas la función afectada?) e impacto sobre tus activos, y consideras si rompe compatibilidad. Parcheas rápido lo crítico y explotable, planificas lo demás, pero nunca ignoras un CVE de severidad alta en una dependencia expuesta.",
+          "explicacion": "Ni a ciegas ni nunca: por riesgo.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cde2-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué tener SAST impecable sobre tu código no basta, y por qué el pipeline de CI/CD es un activo crítico?",
+          "solucion": "SAST cubre tu código pero no las dependencias (necesitas SCA): puedes pasar todas las revisiones y aun así desplegar una librería con un CVE. El CI/CD es crítico porque tiene acceso a secretos y a producción, así que debe correr con permisos mínimos, versiones fijadas y verificadas, y ejecución aislada.",
+          "explicacion": "Asegurar lo propio no asegura lo importado.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-blue1",
       "bloque": "fase-8",
-      "orden": 811,
+      "orden": 817,
       "titulo": "Ciber · Blue team I: MITRE ATT&CK, tácticas, técnicas y logs",
       "libro": "Getting Started with MITRE ATT&CK",
       "lectura": "data/teoria/cyber-blue1.md",
       "dosis": 30,
       "objetivo": "Usar ATT&CK como mapa; distinguir táctica de técnica; leer logs y mapearlos a conductas adversarias; y distinguir evento, alerta, indicador e incidente.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "La prevención falla: el blue team detecta lo que entra",
         "ATT&CK: tácticas (qué busca el adversario) vs técnicas (cómo lo logra)",
@@ -279,25 +1158,70 @@
         "Cadena evento → alerta → incidente; el triaje es el trabajo central"
       ],
       "banco": [
-        { "id": "cbl1-q1", "tipo": "concepto", "enunciado": "En MITRE ATT&CK, ¿qué diferencia hay entre una táctica y una técnica?", "solucion": "La táctica es el objetivo del adversario (p. ej. Acceso inicial, Persistencia, Exfiltración); la técnica es la forma concreta de lograr ese objetivo (p. ej. volcado de credenciales para lograr Credential Access). Tácticas = el qué; técnicas = el cómo.", "explicacion": "Columnas (tácticas) y celdas (técnicas).", "difficulty": "easy" },
-        { "id": "cbl1-q2", "tipo": "concepto", "enunciado": "¿Por qué 'no detectas lo que no registras'?", "solucion": "Porque cada técnica deja huellas en alguna fuente de log (autenticación, acceso a almacenamiento, procesos, red). Si esa fuente no se registra, la conducta es invisible para la detección por más reglas que tengas. La cobertura empieza por tener el log adecuado.", "explicacion": "Sin telemetría no hay detección.", "difficulty": "easy" },
-        { "id": "cbl1-q3", "tipo": "concepto", "enunciado": "Define evento, indicador, alerta e incidente.", "solucion": "Evento: cualquier cosa registrada (un login). Indicador (IoC): una señal asociada a actividad maliciosa (una IP/hash conocidos). Alerta: un evento o patrón que una regla marcó como sospechoso y merece revisión. Incidente: una alerta confirmada como actividad maliciosa real que dispara respuesta.", "explicacion": "Cadena de refinamiento del ruido.", "difficulty": "medium" },
-        { "id": "cbl1-q4", "tipo": "concepto", "enunciado": "Un log muestra login OK desde una geo inusual a las 3 a.m., listado de un bucket y descarga de 4.2 GB de datos de pacientes. Mapea a tácticas ATT&CK y di si es incidente.", "solucion": "Posible Credential Access (login con credenciales robadas), Discovery (listar el bucket) y Collection/Exfiltration (descargar 4.2 GB). Aún es alerta, no incidente: para confirmarlo falta saber si el usuario viajó, usa VPN o si esa descarga es parte de su trabajo. El dato que falta define el triaje.", "explicacion": "Patrón clásico; confirmar antes de declarar incidente.", "difficulty": "medium" },
-        { "id": "cbl1-q5", "tipo": "concepto", "enunciado": "¿Por qué un SIEM que ingiere todo puede aun así no detectar nada?", "solucion": "Porque recolectar telemetría no es detectar: sin reglas/hipótesis mapeadas a conductas (ATT&CK), la telemetría es solo costo de almacenamiento. La detección requiere convertir logs en señales accionables, no solo acumularlos.", "explicacion": "Recolectar ≠ detectar.", "difficulty": "hard" },
-        { "id": "cbl1-q6", "tipo": "concepto", "enunciado": "¿Por qué un insider autorizado es difícil de detectar por permisos, y cómo se aborda?", "solucion": "Porque usa accesos legítimos, así que no dispara alertas de 'acceso no autorizado'. Se aborda por comportamiento anómalo: volumen inusual, horarios atípicos, acceso a recursos que normalmente no toca — es decir, líneas base por entidad en vez de reglas de permiso.", "explicacion": "Detección por anomalía, no por permiso.", "difficulty": "hard" }
+        {
+          "id": "cbl1-q1",
+          "tipo": "concepto",
+          "enunciado": "En MITRE ATT&CK, ¿qué diferencia hay entre una táctica y una técnica?",
+          "solucion": "La táctica es el objetivo del adversario (p. ej. Acceso inicial, Persistencia, Exfiltración); la técnica es la forma concreta de lograr ese objetivo (p. ej. volcado de credenciales para lograr Credential Access). Tácticas = el qué; técnicas = el cómo.",
+          "explicacion": "Columnas (tácticas) y celdas (técnicas).",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cbl1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'no detectas lo que no registras'?",
+          "solucion": "Porque cada técnica deja huellas en alguna fuente de log (autenticación, acceso a almacenamiento, procesos, red). Si esa fuente no se registra, la conducta es invisible para la detección por más reglas que tengas. La cobertura empieza por tener el log adecuado.",
+          "explicacion": "Sin telemetría no hay detección.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cbl1-q3",
+          "tipo": "concepto",
+          "enunciado": "Define evento, indicador, alerta e incidente.",
+          "solucion": "Evento: cualquier cosa registrada (un login). Indicador (IoC): una señal asociada a actividad maliciosa (una IP/hash conocidos). Alerta: un evento o patrón que una regla marcó como sospechoso y merece revisión. Incidente: una alerta confirmada como actividad maliciosa real que dispara respuesta.",
+          "explicacion": "Cadena de refinamiento del ruido.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cbl1-q4",
+          "tipo": "concepto",
+          "enunciado": "Un log muestra login OK desde una geo inusual a las 3 a.m., listado de un bucket y descarga de 4.2 GB de datos de pacientes. Mapea a tácticas ATT&CK y di si es incidente.",
+          "solucion": "Posible Credential Access (login con credenciales robadas), Discovery (listar el bucket) y Collection/Exfiltration (descargar 4.2 GB). Aún es alerta, no incidente: para confirmarlo falta saber si el usuario viajó, usa VPN o si esa descarga es parte de su trabajo. El dato que falta define el triaje.",
+          "explicacion": "Patrón clásico; confirmar antes de declarar incidente.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cbl1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un SIEM que ingiere todo puede aun así no detectar nada?",
+          "solucion": "Porque recolectar telemetría no es detectar: sin reglas/hipótesis mapeadas a conductas (ATT&CK), la telemetría es solo costo de almacenamiento. La detección requiere convertir logs en señales accionables, no solo acumularlos.",
+          "explicacion": "Recolectar ≠ detectar.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cbl1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un insider autorizado es difícil de detectar por permisos, y cómo se aborda?",
+          "solucion": "Porque usa accesos legítimos, así que no dispara alertas de 'acceso no autorizado'. Se aborda por comportamiento anómalo: volumen inusual, horarios atípicos, acceso a recursos que normalmente no toca — es decir, líneas base por entidad en vez de reglas de permiso.",
+          "explicacion": "Detección por anomalía, no por permiso.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-blue2",
       "bloque": "fase-8",
-      "orden": 812,
+      "orden": 818,
       "titulo": "Ciber · Blue team II: detection engineering e hipótesis",
       "libro": "Getting Started with MITRE ATT&CK",
       "lectura": "data/teoria/cyber-blue2.md",
       "dosis": 30,
       "objetivo": "Formular una hipótesis de detección; razonar el tradeoff falsos positivos↔negativos; usar emulación adversaria controlada; y cerrar brechas de cobertura en un ciclo de mejora continua.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Una hipótesis de detección define conducta, fuente de datos, lógica y salida",
         "Tradeoff falsos positivos ↔ negativos; la fatiga de alertas vuelve ciego al equipo",
@@ -305,25 +1229,70 @@
         "Mejora continua: cerrar brechas de cobertura con líneas base por entidad"
       ],
       "banco": [
-        { "id": "cbl2-q1", "tipo": "concepto", "enunciado": "¿Qué es una hipótesis de detección y qué componentes tiene?", "solucion": "Una afirmación comprobable sobre cómo se vería un ataque en tus datos. Componentes: la conducta (técnica ATT&CK), la fuente de datos (qué log), la lógica (la condición/umbral que la evidencia) y la salida (alerta para triaje, no bloqueo ciego).", "explicacion": "Es como plantear un clasificador.", "difficulty": "easy" },
-        { "id": "cbl2-q2", "tipo": "concepto", "enunciado": "Explica el tradeoff entre falsos positivos y falsos negativos y qué es la fatiga de alertas.", "solucion": "Una detección muy sensible genera muchos falsos positivos (alertas que no son ataques) y el equipo termina ignorándolas: fatiga de alertas. Una muy laxa genera falsos negativos (no detecta ataques reales). El objetivo no es perfección sino calibración para el contexto y la capacidad de respuesta.", "explicacion": "Precision/recall aplicado a seguridad.", "difficulty": "easy" },
-        { "id": "cbl2-q3", "tipo": "concepto", "enunciado": "¿Qué es la emulación adversaria controlada y cuál es su límite ético/legal?", "solucion": "Ejecutar, en un entorno seguro y autorizado, las técnicas ATT&CK que te preocupan para verificar si tus reglas las detectan; lo que pasa sin disparar es una brecha de cobertura. Su límite: se hace solo sobre sistemas propios o con autorización explícita, jamás contra terceros.", "explicacion": "Validar defensas sin esperar al ataque real.", "difficulty": "medium" },
-        { "id": "cbl2-q4", "tipo": "concepto", "enunciado": "¿Por qué un umbral por entidad (línea base) supera a un umbral global fijo?", "solucion": "Porque lo normal para una cuenta puede ser anómalo para otra (un job de respaldo descarga mucho legítimamente; un analista no). Un umbral global genera ruido o ceguera; una línea base por entidad detecta desviaciones relativas a lo habitual de cada una.", "explicacion": "Contexto reduce FP sin perder al atacante.", "difficulty": "medium" },
-        { "id": "cbl2-q5", "tipo": "concepto", "enunciado": "Tu detección solo alertaba por 'login fallido' y no vio una exfiltración de 4.2 GB. Describe el ciclo de mejora.", "solucion": "Identificas la brecha (sin detección de exfiltración por volumen); formulas la hipótesis (descarga anómala vs línea base por cuenta + horario); construyes la regla calibrada; la validas por emulación controlada ajustando para no marcar respaldos legítimos; documentas la nueva cobertura y el riesgo residual.", "explicacion": "Brecha → hipótesis → regla → validación → cierre.", "difficulty": "hard" },
-        { "id": "cbl2-q6", "tipo": "concepto", "enunciado": "Un atacante exfiltra 'lento y bajo' (poco volumen durante muchos días). ¿Por qué evade los umbrales de volumen y qué implica?", "solucion": "Porque cada evento individual queda por debajo del umbral; el daño solo es visible acumulado en el tiempo. Implica que toda detección tiene puntos ciegos que el adversario buscará, y que se necesitan detecciones de patrones acumulados, no solo por evento.", "explicacion": "Ninguna detección es completa.", "difficulty": "hard" }
+        {
+          "id": "cbl2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es una hipótesis de detección y qué componentes tiene?",
+          "solucion": "Una afirmación comprobable sobre cómo se vería un ataque en tus datos. Componentes: la conducta (técnica ATT&CK), la fuente de datos (qué log), la lógica (la condición/umbral que la evidencia) y la salida (alerta para triaje, no bloqueo ciego).",
+          "explicacion": "Es como plantear un clasificador.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cbl2-q2",
+          "tipo": "concepto",
+          "enunciado": "Explica el tradeoff entre falsos positivos y falsos negativos y qué es la fatiga de alertas.",
+          "solucion": "Una detección muy sensible genera muchos falsos positivos (alertas que no son ataques) y el equipo termina ignorándolas: fatiga de alertas. Una muy laxa genera falsos negativos (no detecta ataques reales). El objetivo no es perfección sino calibración para el contexto y la capacidad de respuesta.",
+          "explicacion": "Precision/recall aplicado a seguridad.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cbl2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la emulación adversaria controlada y cuál es su límite ético/legal?",
+          "solucion": "Ejecutar, en un entorno seguro y autorizado, las técnicas ATT&CK que te preocupan para verificar si tus reglas las detectan; lo que pasa sin disparar es una brecha de cobertura. Su límite: se hace solo sobre sistemas propios o con autorización explícita, jamás contra terceros.",
+          "explicacion": "Validar defensas sin esperar al ataque real.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cbl2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un umbral por entidad (línea base) supera a un umbral global fijo?",
+          "solucion": "Porque lo normal para una cuenta puede ser anómalo para otra (un job de respaldo descarga mucho legítimamente; un analista no). Un umbral global genera ruido o ceguera; una línea base por entidad detecta desviaciones relativas a lo habitual de cada una.",
+          "explicacion": "Contexto reduce FP sin perder al atacante.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cbl2-q5",
+          "tipo": "concepto",
+          "enunciado": "Tu detección solo alertaba por 'login fallido' y no vio una exfiltración de 4.2 GB. Describe el ciclo de mejora.",
+          "solucion": "Identificas la brecha (sin detección de exfiltración por volumen); formulas la hipótesis (descarga anómala vs línea base por cuenta + horario); construyes la regla calibrada; la validas por emulación controlada ajustando para no marcar respaldos legítimos; documentas la nueva cobertura y el riesgo residual.",
+          "explicacion": "Brecha → hipótesis → regla → validación → cierre.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cbl2-q6",
+          "tipo": "concepto",
+          "enunciado": "Un atacante exfiltra 'lento y bajo' (poco volumen durante muchos días). ¿Por qué evade los umbrales de volumen y qué implica?",
+          "solucion": "Porque cada evento individual queda por debajo del umbral; el daño solo es visible acumulado en el tiempo. Implica que toda detección tiene puntos ciegos que el adversario buscará, y que se necesitan detecciones de patrones acumulados, no solo por evento.",
+          "explicacion": "Ninguna detección es completa.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-mls1",
       "bloque": "fase-8",
-      "orden": 813,
+      "orden": 819,
       "titulo": "Ciber · Seguridad de ML I: por qué la IA cambia la superficie de ataque",
       "libro": "MITRE SAFE-AI / MITRE ATLAS",
       "lectura": "data/teoria/cyber-mls1.md",
       "dosis": 30,
       "objetivo": "Explicar por qué la IA amplía la superficie de ataque; distinguir ataques al entrenamiento vs a la inferencia; entender data poisoning, backdoors y data leakage; y ubicar SAFE-AI/ATLAS/NIST AI RMF.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Un modelo añade superficies de ataque porque su conducta vive en datos y pesos",
         "Entrenamiento (poisoning, backdoors) vs inferencia (evasion, extraction, etc.)",
@@ -331,25 +1300,70 @@
         "Un modelo entrenado con datos sensibles es un activo de privacidad (memorización)"
       ],
       "banco": [
-        { "id": "cml1-q1", "tipo": "concepto", "enunciado": "¿Por qué un sistema de ML amplía la superficie de ataque respecto a un programa tradicional?", "solucion": "Porque su conducta no está solo en el código sino en los datos de los que aprende y en los pesos aprendidos. Se puede corromper sin tocar el código: mintiéndole durante el entrenamiento (poisoning) o mostrándole entradas engañosas en inferencia (evasion).", "explicacion": "La superficie se muda a datos y modelo.", "difficulty": "easy" },
-        { "id": "cml1-q2", "tipo": "concepto", "enunciado": "Distingue ataques al entrenamiento de ataques a la inferencia con un ejemplo de cada uno.", "solucion": "Entrenamiento: el atacante controla datos de los que se aprende (data poisoning, backdoors). Inferencia: el atacante controla las entradas en producción (evasion/adversarial, extraction, inversion, membership inference). Ej.: envenenar etiquetas (entrenamiento) vs una imagen adversaria que burla un clasificador (inferencia).", "explicacion": "Dos ventanas, dos superficies.", "difficulty": "easy" },
-        { "id": "cml1-q3", "tipo": "concepto", "enunciado": "¿Qué es un backdoor en un modelo y por qué es sigiloso?", "solucion": "Es un patrón disparador insertado durante el entrenamiento que hace que el modelo se comporte normal salvo cuando ve el disparador, momento en que hace lo que el atacante quiere. Es sigiloso porque en validación normal (sin el disparador) el modelo parece perfecto y pasa todas las pruebas.", "explicacion": "No baja la exactitud agregada.", "difficulty": "medium" },
-        { "id": "cml1-q4", "tipo": "concepto", "enunciado": "Un detector de fraude se reentrena con transacciones etiquetadas por reportes de usuarios. ¿Cómo lo envenena un atacante sin tocar el código?", "solucion": "Crea muchas cuentas y reporta sistemáticamente sus transacciones fraudulentas como 'legítimas'; con el tiempo el modelo aprende que su patrón es benigno (data poisoning por el canal de etiquetado), e incluso podría inducir un backdoor (cierto monto+hora siempre pasa).", "explicacion": "El canal de etiquetas no confiable es vector.", "difficulty": "medium" },
-        { "id": "cml1-q5", "tipo": "concepto", "enunciado": "¿Por qué 'el dataset es privado' no implica 'el modelo es privado'?", "solucion": "Porque un modelo puede memorizar ejemplos del entrenamiento y filtrarlos en sus salidas (base de membership inference y model inversion). Aunque el dataset nunca se publique, el modelo entrenado con datos sensibles es en sí mismo un activo de privacidad.", "explicacion": "La memorización filtra a las personas.", "difficulty": "hard" },
-        { "id": "cml1-q6", "tipo": "concepto", "enunciado": "¿Por qué confiar en la exactitud agregada puede ocultar un ataque, y qué controles reducen el poisoning?", "solucion": "Porque un backdoor no baja la exactitud general (solo actúa ante el disparador) y un envenenamiento dirigido puede afectar un subgrupo sin mover la métrica global. Controles: validar y rastrear la procedencia de fuentes, limitar el peso de contribuciones no confiables, testear con hold-out curado y detectar deriva en etiquetas.", "explicacion": "La métrica global no ve el sabotaje dirigido.", "difficulty": "hard" }
+        {
+          "id": "cml1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un sistema de ML amplía la superficie de ataque respecto a un programa tradicional?",
+          "solucion": "Porque su conducta no está solo en el código sino en los datos de los que aprende y en los pesos aprendidos. Se puede corromper sin tocar el código: mintiéndole durante el entrenamiento (poisoning) o mostrándole entradas engañosas en inferencia (evasion).",
+          "explicacion": "La superficie se muda a datos y modelo.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cml1-q2",
+          "tipo": "concepto",
+          "enunciado": "Distingue ataques al entrenamiento de ataques a la inferencia con un ejemplo de cada uno.",
+          "solucion": "Entrenamiento: el atacante controla datos de los que se aprende (data poisoning, backdoors). Inferencia: el atacante controla las entradas en producción (evasion/adversarial, extraction, inversion, membership inference). Ej.: envenenar etiquetas (entrenamiento) vs una imagen adversaria que burla un clasificador (inferencia).",
+          "explicacion": "Dos ventanas, dos superficies.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cml1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es un backdoor en un modelo y por qué es sigiloso?",
+          "solucion": "Es un patrón disparador insertado durante el entrenamiento que hace que el modelo se comporte normal salvo cuando ve el disparador, momento en que hace lo que el atacante quiere. Es sigiloso porque en validación normal (sin el disparador) el modelo parece perfecto y pasa todas las pruebas.",
+          "explicacion": "No baja la exactitud agregada.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cml1-q4",
+          "tipo": "concepto",
+          "enunciado": "Un detector de fraude se reentrena con transacciones etiquetadas por reportes de usuarios. ¿Cómo lo envenena un atacante sin tocar el código?",
+          "solucion": "Crea muchas cuentas y reporta sistemáticamente sus transacciones fraudulentas como 'legítimas'; con el tiempo el modelo aprende que su patrón es benigno (data poisoning por el canal de etiquetado), e incluso podría inducir un backdoor (cierto monto+hora siempre pasa).",
+          "explicacion": "El canal de etiquetas no confiable es vector.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cml1-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'el dataset es privado' no implica 'el modelo es privado'?",
+          "solucion": "Porque un modelo puede memorizar ejemplos del entrenamiento y filtrarlos en sus salidas (base de membership inference y model inversion). Aunque el dataset nunca se publique, el modelo entrenado con datos sensibles es en sí mismo un activo de privacidad.",
+          "explicacion": "La memorización filtra a las personas.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cml1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué confiar en la exactitud agregada puede ocultar un ataque, y qué controles reducen el poisoning?",
+          "solucion": "Porque un backdoor no baja la exactitud general (solo actúa ante el disparador) y un envenenamiento dirigido puede afectar un subgrupo sin mover la métrica global. Controles: validar y rastrear la procedencia de fuentes, limitar el peso de contribuciones no confiables, testear con hold-out curado y detectar deriva en etiquetas.",
+          "explicacion": "La métrica global no ve el sabotaje dirigido.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-mls2",
       "bloque": "fase-8",
-      "orden": 814,
+      "orden": 820,
       "titulo": "Ciber · Seguridad de ML II: inferencia, supply chain y controles",
       "libro": "MITRE SAFE-AI / MITRE ATLAS",
       "lectura": "data/teoria/cyber-mls2.md",
       "dosis": 30,
       "objetivo": "Nombrar evasion, model extraction, model inversion y membership inference; razonar el riesgo de compartir un modelo o sus embeddings; evaluar supply chain y provenance de modelos; y elegir controles proporcionales con riesgo residual.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Inferencia: evasion (engañar), extraction (clonar), inversion y membership inference (sacar datos)",
         "Compartir modelos o embeddings filtra más de lo que parece",
@@ -357,25 +1371,70 @@
         "Controles proporcionales (auth, rate limit, baja resolución, DP, monitoreo) y riesgo residual"
       ],
       "banco": [
-        { "id": "cml2-q1", "tipo": "concepto", "enunciado": "Define evasion, model extraction, model inversion y membership inference.", "solucion": "Evasion: entrada con perturbación mínima que el modelo clasifica mal. Extraction: consultar masivamente para clonar el modelo. Inversion: reconstruir rasgos de los datos de entrenamiento. Membership inference: determinar si un individuo estuvo en el entrenamiento.", "explicacion": "Cuatro ataques de inferencia.", "difficulty": "easy" },
-        { "id": "cml2-q2", "tipo": "concepto", "enunciado": "¿Por qué compartir embeddings no es 'compartir solo números anónimos'?", "solucion": "Porque los embeddings a menudo permiten reconstruir el texto/imagen original o inferir atributos sensibles; no son anónimos por ser vectores. Exponer un store de embeddings puede filtrar el contenido fuente o información sobre las personas.", "explicacion": "Un vector puede ser invertible.", "difficulty": "easy" },
-        { "id": "cml2-q3", "tipo": "concepto", "enunciado": "¿Qué preguntas de provenance haces antes de usar un modelo preentrenado?", "solucion": "¿De dónde viene el checkpoint? ¿Quién lo publicó? ¿Puedo verificar su integridad (hash/firma)? ¿El dataset de origen pudo estar envenenado? Un modelo de origen desconocido es un binario no confiable que ejecutarás con tus datos.", "explicacion": "Supply chain de modelos = dependencia con esteroides.", "difficulty": "medium" },
-        { "id": "cml2-q4", "tipo": "concepto", "enunciado": "Vas a exponer una API que predice riesgo clínico entrenada con datos de pacientes. ¿Qué ataques de inferencia te preocupan y qué controles aplicas?", "solucion": "Membership inference (¿estuvo este paciente?) e inversion (reconstruir rasgos). Controles: autenticación + rate limiting, devolver categorías de riesgo en vez de probabilidades exactas, entrenamiento con differential privacy, monitoreo de consultas anómalas y verificación de procedencia de componentes preentrenados.", "explicacion": "Privacidad alta → controles proporcionales.", "difficulty": "medium" },
-        { "id": "cml2-q5", "tipo": "concepto", "enunciado": "¿Por qué el objetivo es 'riesgo residual aceptable' y no 'modelo invulnerable'?", "solucion": "Porque no existe un modelo invulnerable: un adversario decidido con suficientes consultas siempre puede inferir algo. El enfoque profesional aplica controles proporcionales, acepta explícitamente el riesgo que queda, lo monitorea y lo documenta, en vez de perseguir un cero imposible.", "explicacion": "Gestión, no perfección.", "difficulty": "hard" },
-        { "id": "cml2-q6", "tipo": "concepto", "enunciado": "Un modelo se despliega on-device (en el dispositivo del usuario). ¿Por qué cambian los controles aplicables?", "solucion": "Porque el adversario tiene acceso total a los pesos: los controles de 'limitar consultas/rate limiting' no aplican. Debes asumir extraction e inversion como posibles y diseñar para ese supuesto (p. ej. minimizar lo que el modelo memoriza, no exponer secretos en él).", "explicacion": "Acceso a pesos invalida controles de servidor.", "difficulty": "hard" }
+        {
+          "id": "cml2-q1",
+          "tipo": "concepto",
+          "enunciado": "Define evasion, model extraction, model inversion y membership inference.",
+          "solucion": "Evasion: entrada con perturbación mínima que el modelo clasifica mal. Extraction: consultar masivamente para clonar el modelo. Inversion: reconstruir rasgos de los datos de entrenamiento. Membership inference: determinar si un individuo estuvo en el entrenamiento.",
+          "explicacion": "Cuatro ataques de inferencia.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cml2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué compartir embeddings no es 'compartir solo números anónimos'?",
+          "solucion": "Porque los embeddings a menudo permiten reconstruir el texto/imagen original o inferir atributos sensibles; no son anónimos por ser vectores. Exponer un store de embeddings puede filtrar el contenido fuente o información sobre las personas.",
+          "explicacion": "Un vector puede ser invertible.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cml2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué preguntas de provenance haces antes de usar un modelo preentrenado?",
+          "solucion": "¿De dónde viene el checkpoint? ¿Quién lo publicó? ¿Puedo verificar su integridad (hash/firma)? ¿El dataset de origen pudo estar envenenado? Un modelo de origen desconocido es un binario no confiable que ejecutarás con tus datos.",
+          "explicacion": "Supply chain de modelos = dependencia con esteroides.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cml2-q4",
+          "tipo": "concepto",
+          "enunciado": "Vas a exponer una API que predice riesgo clínico entrenada con datos de pacientes. ¿Qué ataques de inferencia te preocupan y qué controles aplicas?",
+          "solucion": "Membership inference (¿estuvo este paciente?) e inversion (reconstruir rasgos). Controles: autenticación + rate limiting, devolver categorías de riesgo en vez de probabilidades exactas, entrenamiento con differential privacy, monitoreo de consultas anómalas y verificación de procedencia de componentes preentrenados.",
+          "explicacion": "Privacidad alta → controles proporcionales.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cml2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el objetivo es 'riesgo residual aceptable' y no 'modelo invulnerable'?",
+          "solucion": "Porque no existe un modelo invulnerable: un adversario decidido con suficientes consultas siempre puede inferir algo. El enfoque profesional aplica controles proporcionales, acepta explícitamente el riesgo que queda, lo monitorea y lo documenta, en vez de perseguir un cero imposible.",
+          "explicacion": "Gestión, no perfección.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cml2-q6",
+          "tipo": "concepto",
+          "enunciado": "Un modelo se despliega on-device (en el dispositivo del usuario). ¿Por qué cambian los controles aplicables?",
+          "solucion": "Porque el adversario tiene acceso total a los pesos: los controles de 'limitar consultas/rate limiting' no aplican. Debes asumir extraction e inversion como posibles y diseñar para ese supuesto (p. ej. minimizar lo que el modelo memoriza, no exponer secretos en él).",
+          "explicacion": "Acceso a pesos invalida controles de servidor.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-llm1",
       "bloque": "fase-8",
-      "orden": 815,
+      "orden": 821,
       "titulo": "Ciber · Seguridad de LLMs I: prompt injection directa e indirecta",
       "libro": "OWASP Top 10 for LLM Applications 2025",
       "lectura": "data/teoria/cyber-llm1.md",
       "dosis": 30,
       "objetivo": "Explicar prompt injection directa e indirecta; ver su isomorfismo con la inyección web; entender por qué filtrar no basta; y aplicar la separación de instrucciones confiables y contenido no confiable.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Un LLM no separa instrucciones de contenido: prompt injection (LLM01)",
         "Directa la pone el usuario; indirecta viene en contenido externo y hace víctima al usuario",
@@ -383,25 +1442,70 @@
         "Defensa arquitectónica: contenido no confiable + reducir capacidades del modelo"
       ],
       "banco": [
-        { "id": "cll1-q1", "tipo": "concepto", "enunciado": "¿Por qué un LLM es vulnerable a prompt injection por diseño?", "solucion": "Porque no distingue de forma fiable entre las instrucciones de su desarrollador y el texto que procesa: para el modelo todo es texto en la misma ventana de contexto. Si el contenido incluye una orden, el modelo puede obedecerla.", "explicacion": "Instrucción y dato comparten canal.", "difficulty": "easy" },
-        { "id": "cll1-q2", "tipo": "concepto", "enunciado": "Distingue prompt injection directa de indirecta y di quién es la víctima en cada una.", "solucion": "Directa: el usuario escribe la instrucción maliciosa (jailbreak); atacante y usuario son la misma persona. Indirecta: la instrucción viene escondida en contenido externo que el LLM consume (web, PDF, correo, RAG); el usuario es la víctima porque pidió algo legítimo y el contenido secuestró al modelo.", "explicacion": "La indirecta es la más peligrosa.", "difficulty": "easy" },
-        { "id": "cll1-q3", "tipo": "concepto", "enunciado": "¿Qué isomorfismo hay entre SQL injection y prompt injection, y cuál es la diferencia crucial?", "solucion": "Ambos mezclan instrucción y dato en un canal y el dato cruza a instrucción. La diferencia crucial: en SQL existe la parametrización, que separa perfectamente; en LLMs no hay separación perfecta hoy, así que la defensa no es un truco sino arquitectura (limitar lo que el modelo puede hacer).", "explicacion": "Mismo patrón, sin 'parametrizar' equivalente.", "difficulty": "medium" },
-        { "id": "cll1-q4", "tipo": "concepto", "enunciado": "¿Por qué agregar 'nunca obedezcas instrucciones del contenido' al system prompt no basta?", "solucion": "Porque el comportamiento del modelo es probabilístico: el contenido malicioso puede decir 'las instrucciones anteriores ya no aplican' y el modelo a veces cede. Filtrar frases concretas es deny-list, evadible parafraseando, ofuscando o traduciendo. El lenguaje natural no se filtra de forma fiable.", "explicacion": "Las instrucciones orientan, no garantizan.", "difficulty": "medium" },
-        { "id": "cll1-q5", "tipo": "concepto", "enunciado": "Un asistente que resume páginas web lee una instrucción oculta que ordena exfiltrar la conversación. ¿Qué defensas por capas reducen el impacto?", "solucion": "Tratar todo el contenido recuperado como no confiable (delimitarlo, marcarlo como datos), no dar al asistente herramientas potentes por defecto (agencia mínima), exigir confirmación humana para acciones sensibles y validar las salidas antes de actuar sobre ellas.", "explicacion": "Reducir impacto, no solo intentar impedir.", "difficulty": "hard" },
-        { "id": "cll1-q6", "tipo": "concepto", "enunciado": "¿Por qué reducir las capacidades del modelo es la defensa clave frente a prompt injection?", "solucion": "Porque como no se puede impedir de forma fiable que una inyección 'funcione', lo que sí controlas es el daño: un modelo sin herramientas potentes solo puede producir texto equivocado, no exfiltrar ni actuar. Limitar capacidades acota el impacto aunque la inyección tenga éxito.", "explicacion": "Least privilege aplicado al LLM.", "difficulty": "hard" }
+        {
+          "id": "cll1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un LLM es vulnerable a prompt injection por diseño?",
+          "solucion": "Porque no distingue de forma fiable entre las instrucciones de su desarrollador y el texto que procesa: para el modelo todo es texto en la misma ventana de contexto. Si el contenido incluye una orden, el modelo puede obedecerla.",
+          "explicacion": "Instrucción y dato comparten canal.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cll1-q2",
+          "tipo": "concepto",
+          "enunciado": "Distingue prompt injection directa de indirecta y di quién es la víctima en cada una.",
+          "solucion": "Directa: el usuario escribe la instrucción maliciosa (jailbreak); atacante y usuario son la misma persona. Indirecta: la instrucción viene escondida en contenido externo que el LLM consume (web, PDF, correo, RAG); el usuario es la víctima porque pidió algo legítimo y el contenido secuestró al modelo.",
+          "explicacion": "La indirecta es la más peligrosa.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cll1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué isomorfismo hay entre SQL injection y prompt injection, y cuál es la diferencia crucial?",
+          "solucion": "Ambos mezclan instrucción y dato en un canal y el dato cruza a instrucción. La diferencia crucial: en SQL existe la parametrización, que separa perfectamente; en LLMs no hay separación perfecta hoy, así que la defensa no es un truco sino arquitectura (limitar lo que el modelo puede hacer).",
+          "explicacion": "Mismo patrón, sin 'parametrizar' equivalente.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cll1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué agregar 'nunca obedezcas instrucciones del contenido' al system prompt no basta?",
+          "solucion": "Porque el comportamiento del modelo es probabilístico: el contenido malicioso puede decir 'las instrucciones anteriores ya no aplican' y el modelo a veces cede. Filtrar frases concretas es deny-list, evadible parafraseando, ofuscando o traduciendo. El lenguaje natural no se filtra de forma fiable.",
+          "explicacion": "Las instrucciones orientan, no garantizan.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cll1-q5",
+          "tipo": "concepto",
+          "enunciado": "Un asistente que resume páginas web lee una instrucción oculta que ordena exfiltrar la conversación. ¿Qué defensas por capas reducen el impacto?",
+          "solucion": "Tratar todo el contenido recuperado como no confiable (delimitarlo, marcarlo como datos), no dar al asistente herramientas potentes por defecto (agencia mínima), exigir confirmación humana para acciones sensibles y validar las salidas antes de actuar sobre ellas.",
+          "explicacion": "Reducir impacto, no solo intentar impedir.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cll1-q6",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué reducir las capacidades del modelo es la defensa clave frente a prompt injection?",
+          "solucion": "Porque como no se puede impedir de forma fiable que una inyección 'funcione', lo que sí controlas es el daño: un modelo sin herramientas potentes solo puede producir texto equivocado, no exfiltrar ni actuar. Limitar capacidades acota el impacto aunque la inyección tenga éxito.",
+          "explicacion": "Least privilege aplicado al LLM.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
       "id": "cyber-llm2",
       "bloque": "fase-8",
-      "orden": 816,
+      "orden": 822,
       "titulo": "Ciber · Seguridad de LLMs II: RAG, agentes y agencia excesiva",
       "libro": "OWASP Top 10 for LLM Applications 2025",
       "lectura": "data/teoria/cyber-llm2.md",
       "dosis": 30,
       "objetivo": "Hacer threat modeling de un sistema RAG; reconocer debilidades de embeddings (LLM08) y poisoning (LLM04); entender manejo inseguro de salidas (LLM05), fuga de info (LLM02) y agencia excesiva (LLM06); y diseñar permisos mínimos para agentes.",
       "heuristicas": [],
-      "metadata": { "ruta": "cyber", "nivel": 3 },
+      "metadata": {
+        "ruta": "cyber",
+        "nivel": 3
+      },
       "ideas_clave": [
         "RAG y agentes convierten una inyección en acciones reales",
         "Documentos del RAG = entrada no confiable (LLM01/04); sin acceso por documento filtran (LLM02)",
@@ -409,12 +1513,54 @@
         "Agencia mínima (LLM06): mínimas herramientas, permisos estrechos, humano en el lazo"
       ],
       "banco": [
-        { "id": "cll2-q1", "tipo": "concepto", "enunciado": "¿Por qué un documento recuperado por un RAG debe tratarse como entrada no confiable?", "solucion": "Porque entra al contexto del modelo igual que cualquier texto, así que puede contener una prompt injection indirecta (LLM01) o ser un documento envenenado colocado por un atacante (RAG poisoning, LLM04). Es entrada hostil, exactamente como el contenido web.", "explicacion": "El RAG amplía la superficie de inyección.", "difficulty": "easy" },
-        { "id": "cll2-q2", "tipo": "concepto", "enunciado": "¿Qué es la agencia excesiva (LLM06) y cómo se acota?", "solucion": "Es cuando un agente puede hacer más de lo necesario: demasiadas herramientas, permisos amplios o autonomía sin supervisión. Se acota con el mínimo de herramientas, permisos estrechos por herramienta (p. ej. solo lectura), humano en el lazo para acciones sensibles/irreversibles y aislamiento (sandbox, allow-list de red).", "explicacion": "Least privilege para agentes.", "difficulty": "easy" },
-        { "id": "cll2-q3", "tipo": "concepto", "enunciado": "¿Por qué la salida de un LLM debe tratarse como entrada no confiable (LLM05)?", "solucion": "Porque si tu código toma esa salida y la ejecuta como SQL, la inserta con innerHTML o la pasa a un shell, reintroduces las inyecciones clásicas (SQLi, XSS, inyección de comandos). La salida del LLM es entrada no confiable para el siguiente componente y debe validarse/codificarse.", "explicacion": "Manejo inseguro de salidas reabre viejos bugs.", "difficulty": "medium" },
-        { "id": "cll2-q4", "tipo": "concepto", "enunciado": "Un asistente RAG sobre documentos internos puede enviar correos y crear tickets. Haz su threat model con las 4 preguntas.", "solucion": "(1) Usuario → LLM → recupera docs → puede mandar correo/crear ticket. (2) Un correo indexado trae una inyección que ordena exfiltrar docs de RRHH (LLM01); el RAG recupera datos que el usuario no debería ver (LLM02); la salida se usa sin validar (LLM05). (3) Control de acceso por documento, contenido marcado como no confiable, agencia mínima (correo solo interno + confirmación), validar salida, rate limiting (LLM10). (4) Queda riesgo residual que se acepta, monitorea y documenta.", "explicacion": "Integra toda la ruta.", "difficulty": "medium" },
-        { "id": "cll2-q5", "tipo": "concepto", "enunciado": "¿Por qué un RAG sin control de acceso por documento puede filtrar información (LLM02)?", "solucion": "Porque recupera y mete en el contexto cualquier documento relevante a la consulta, sin verificar si el usuario actual tiene permiso de verlo; entonces el modelo puede revelar contenido que esa persona no debería ver. El control de acceso debe aplicarse a la recuperación, por usuario y documento.", "explicacion": "El acceso se verifica también en el retrieval.", "difficulty": "hard" },
-        { "id": "cll2-q6", "tipo": "concepto", "enunciado": "En sistemas multi-agente (un agente llama a otro), ¿cómo se propaga una inyección y qué implica para las fronteras de confianza?", "solucion": "El contenido no confiable (y la instrucción inyectada) puede saltar de un agente al siguiente a través de sus mensajes, propagando el ataque por la cadena. Implica que la frontera de confianza debe revisarse en cada salto entre agentes, no solo en la entrada del usuario.", "explicacion": "Cada salto es una nueva frontera.", "difficulty": "hard" }
+        {
+          "id": "cll2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un documento recuperado por un RAG debe tratarse como entrada no confiable?",
+          "solucion": "Porque entra al contexto del modelo igual que cualquier texto, así que puede contener una prompt injection indirecta (LLM01) o ser un documento envenenado colocado por un atacante (RAG poisoning, LLM04). Es entrada hostil, exactamente como el contenido web.",
+          "explicacion": "El RAG amplía la superficie de inyección.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cll2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la agencia excesiva (LLM06) y cómo se acota?",
+          "solucion": "Es cuando un agente puede hacer más de lo necesario: demasiadas herramientas, permisos amplios o autonomía sin supervisión. Se acota con el mínimo de herramientas, permisos estrechos por herramienta (p. ej. solo lectura), humano en el lazo para acciones sensibles/irreversibles y aislamiento (sandbox, allow-list de red).",
+          "explicacion": "Least privilege para agentes.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "cll2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la salida de un LLM debe tratarse como entrada no confiable (LLM05)?",
+          "solucion": "Porque si tu código toma esa salida y la ejecuta como SQL, la inserta con innerHTML o la pasa a un shell, reintroduces las inyecciones clásicas (SQLi, XSS, inyección de comandos). La salida del LLM es entrada no confiable para el siguiente componente y debe validarse/codificarse.",
+          "explicacion": "Manejo inseguro de salidas reabre viejos bugs.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cll2-q4",
+          "tipo": "concepto",
+          "enunciado": "Un asistente RAG sobre documentos internos puede enviar correos y crear tickets. Haz su threat model con las 4 preguntas.",
+          "solucion": "(1) Usuario → LLM → recupera docs → puede mandar correo/crear ticket. (2) Un correo indexado trae una inyección que ordena exfiltrar docs de RRHH (LLM01); el RAG recupera datos que el usuario no debería ver (LLM02); la salida se usa sin validar (LLM05). (3) Control de acceso por documento, contenido marcado como no confiable, agencia mínima (correo solo interno + confirmación), validar salida, rate limiting (LLM10). (4) Queda riesgo residual que se acepta, monitorea y documenta.",
+          "explicacion": "Integra toda la ruta.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "cll2-q5",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un RAG sin control de acceso por documento puede filtrar información (LLM02)?",
+          "solucion": "Porque recupera y mete en el contexto cualquier documento relevante a la consulta, sin verificar si el usuario actual tiene permiso de verlo; entonces el modelo puede revelar contenido que esa persona no debería ver. El control de acceso debe aplicarse a la recuperación, por usuario y documento.",
+          "explicacion": "El acceso se verifica también en el retrieval.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "cll2-q6",
+          "tipo": "concepto",
+          "enunciado": "En sistemas multi-agente (un agente llama a otro), ¿cómo se propaga una inyección y qué implica para las fronteras de confianza?",
+          "solucion": "El contenido no confiable (y la instrucción inyectada) puede saltar de un agente al siguiente a través de sus mensajes, propagando el ataque por la cadena. Implica que la frontera de confianza debe revisarse en cada salto entre agentes, no solo en la entrada del usuario.",
+          "explicacion": "Cada salto es una nueva frontera.",
+          "difficulty": "hard"
+        }
       ]
     }
   ]

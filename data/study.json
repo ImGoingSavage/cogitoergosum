@@ -4950,8 +4950,14 @@
    "unidades": [
     "cyber-ms1",
     "cyber-ms2",
+    "cyber-ms3",
+    "cyber-ms4",
+    "cyber-ms5",
     "cyber-sys1",
     "cyber-sys2",
+    "cyber-sys3",
+    "cyber-sys4",
+    "cyber-sys5",
     "cyber-web1",
     "cyber-web2",
     "cyber-dp1",
@@ -24011,9 +24017,222 @@
    ]
   },
   {
-   "id": "cyber-sys1",
+   "id": "cyber-ms3",
    "bloque": "fase-8",
    "orden": 803,
+   "titulo": "Ciber · Economía de la seguridad: incentivos, externalidades y descuido de la defensa",
+   "libro": "Security Engineering, 3rd ed. (Ross Anderson)",
+   "lectura": "data/teoria/cyber-ms3.md",
+   "dosis": 25,
+   "objetivo": "Explicar por qué la seguridad es un problema de incentivos; reconocer externalidades; entender riesgo moral y el mercado de limones; y ubicar quién debería pagar por una defensa.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "Mucha inseguridad es económica, no técnica: incentivos desalineados",
+    "Externalidad: el daño recae en quien no tomó la decisión",
+    "Riesgo moral: quien está cubierto se relaja; mercado de limones sin señales verificables",
+    "Pregunta rectora: ¿quién paga el control y quién sufre el daño?"
+   ],
+   "banco": [
+    {
+     "id": "cms3-q1",
+     "tipo": "concepto",
+     "enunciado": "Según Anderson, ¿por qué siguen existiendo sistemas inseguros aunque sepamos hacerlos seguros?",
+     "solucion": "Porque los incentivos están desalineados: quien puede prevenir el fallo no siempre es quien sufre el daño. La seguridad se descuida donde la economía la abandona, no por ignorancia técnica.",
+     "explicacion": "El fallo es de incentivos, no de conocimiento.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cms3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es una externalidad de seguridad? Da un ejemplo.",
+     "solucion": "Es cuando el costo de una decisión de seguridad recae en alguien que no la tomó. Ejemplo: un dispositivo IoT inseguro cuyo fabricante no invierte en seguridad y que, comprometido, ataca a terceros; el daño lo sufren otros, no el fabricante ni su cliente.",
+     "explicacion": "Análoga a la contaminación.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cms3-q3",
+     "tipo": "concepto",
+     "enunciado": "Un gerente dice: 'nunca nos han hackeado, no invirtamos esa semana en cifrar el dataset de clientes'. Analiza el sesgo de incentivos.",
+     "solucion": "El costo del control es visible e inmediato (una semana); el daño de una fuga es incierto y diferido, y lo sufren sobre todo los clientes (externalidad), no la empresa de inmediato. El incentivo empuja a no invertir aunque socialmente valga la pena. Se corrige haciendo visible el costo del daño (responsabilidad, reputación, personas afectadas).",
+     "explicacion": "Costo seguro/ahora vs daño incierto/después.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms3-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el riesgo moral aplicado a la seguridad?",
+     "solucion": "Que quien está protegido del daño toma más riesgos. Si 'la nube', un seguro o un proveedor absorben las pérdidas, el equipo baja la guardia. La protección frente a las consecuencias relaja la conducta defensiva.",
+     "explicacion": "Cubierto del daño → menos cuidado.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms3-q5",
+     "tipo": "concepto",
+     "enunciado": "Explica el 'mercado de limones' aplicado al software seguro y su remedio.",
+     "solucion": "Si el comprador no puede distinguir software seguro de inseguro, no pagará más por el seguro; entonces el seguro no compite y desaparece del mercado. El remedio son señales verificables (certificaciones, SBOM, auditorías) que permitan distinguir y premiar lo seguro.",
+     "explicacion": "Sin información, el seguro no se valora.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cms3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'es un problema de concientización' suele ser un diagnóstico equivocado, y qué funciona mejor?",
+     "solucion": "Porque capacitar no corrige un incentivo torcido: si quien paga el control no sufre el daño, seguirá sin invertir aunque 'esté concientizado'. Funciona mejor alinear responsabilidades (hacer responsable a quien guarda los datos), que cambia el cálculo económico.",
+     "explicacion": "Alinear incentivos > concientizar.",
+     "difficulty": "hard"
+    }
+   ]
+  },
+  {
+   "id": "cyber-ms4",
+   "bloque": "fase-8",
+   "orden": 804,
+   "titulo": "Ciber · Sistemas sociotécnicos: confianza, abuso y el eslabón humano",
+   "libro": "Security Engineering, 3rd ed. (Ross Anderson)",
+   "lectura": "data/teoria/cyber-ms4.md",
+   "dosis": 25,
+   "objetivo": "Razonar la confianza como decisión explícita; construir casos de abuso; entender ingeniería social e insider como propiedades del sistema; y ubicar el eslabón humano en el threat model.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "La seguridad es sociotécnica: personas y procesos están en el modelo de amenaza",
+    "Hacer la confianza explícita y minimizar la base de confianza",
+    "Casos de abuso: el reverso de los casos de uso",
+    "El patrón 'autoridad falsa que induce una acción' = ingeniería social = prompt injection"
+   ],
+   "banco": [
+    {
+     "id": "cms4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa que la seguridad sea 'sociotécnica'?",
+     "solucion": "Que un sistema es técnico + humano + organizativo, y su seguridad es tan fuerte como su eslabón social más débil. Modelar solo lo técnico deja fuera a las personas y procesos, que son donde caen los ataques más efectivos.",
+     "explicacion": "El humano está dentro del sistema.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cms4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un caso de abuso y en qué se diferencia de un caso de uso?",
+     "solucion": "Un caso de uso describe qué debe hacer el sistema; un caso de abuso describe cómo un actor malicioso (o uno legítimo descuidado) usaría lo mismo para dañar. Por cada 'el usuario sube su foto' se pregunta '¿y si sube un script, un archivo enorme, la foto de otro?'.",
+     "explicacion": "Threat model por funcionalidad.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cms4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué conviene hacer la confianza explícita y minimizar la 'base de confianza'?",
+     "solucion": "Porque confiar implícitamente esconde supuestos que, al traicionarse, comprometen todo. Hacer explícito en quién/qué se confía y qué pasa si falla permite planear; minimizar cuántas partes deben portarse bien reduce las formas en que el sistema puede caer.",
+     "explicacion": "Menos confianza requerida = más robusto.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms4-q4",
+     "tipo": "concepto",
+     "enunciado": "Llega un correo 'del CEO' pidiendo con urgencia exportar la base de usuarios a un externo. ¿Qué confianza se explota y qué defensas sociotécnicas aplican?",
+     "solucion": "Explota la autoridad aparente y la urgencia (ingeniería social). Defensas: verificación por canal independiente para acciones sensibles, separación de funciones (una segunda aprobación para exportar), least privilege (la cuenta no puede exportar toda la base) y auditoría. Ninguna es criptográfica.",
+     "explicacion": "Proceso humano, no solo tecnología.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un insider es difícil de detectar y cómo se aborda?",
+     "solucion": "Porque ya tiene acceso legítimo: no 'entra', así que no dispara alertas de acceso no autorizado. Se aborda con separación de funciones, mínimo privilegio, auditoría y detección por comportamiento anómalo (volumen, horario, recursos inusuales).",
+     "explicacion": "Detección por anomalía, no por permiso.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cms4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué paralelo hay entre la ingeniería social a un humano y la prompt injection a un LLM?",
+     "solucion": "Ambas inyectan una 'autoridad falsa' que induce una acción: el empleado crédulo obedece la nota del atacante; el LLM obedece la instrucción escondida en el contenido. En ambos, la defensa es limitar lo que el engañado puede hacer (least privilege / agencia mínima) y verificar acciones sensibles.",
+     "explicacion": "Mismo patrón, distinto 'empleado crédulo'.",
+     "difficulty": "hard"
+    }
+   ]
+  },
+  {
+   "id": "cyber-ms5",
+   "bloque": "fase-8",
+   "orden": 805,
+   "titulo": "Ciber · Resiliencia y comunicación del riesgo: defensa proporcional y hablar con el equipo",
+   "libro": "Security Engineering, 3rd ed. (Ross Anderson)",
+   "lectura": "data/teoria/cyber-ms5.md",
+   "dosis": 25,
+   "objetivo": "Diseñar para resiliencia (detectar, contener, recuperar); elegir defensa proporcional; comunicar riesgo a un equipo técnico sin alarmismo; y ejecutar el mini-proyecto del cluster.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "Resiliencia: detectar, contener, recuperar — reduce el impacto, no solo la probabilidad",
+    "Defensa proporcional: el control guarda relación con el riesgo del activo",
+    "Comunicar riesgo por activos e impacto, priorizado y sobrio",
+    "Nombrar siempre el riesgo residual aceptado"
+   ],
+   "banco": [
+    {
+     "id": "cms5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué tres capacidades define la resiliencia y qué aporta frente a la prevención?",
+     "solucion": "Detectar (ver el fallo a tiempo), contener (que no se propague) y recuperar (respaldos, plan de respuesta, revertir). La prevención reduce la probabilidad; la resiliencia reduce el impacto. Como la prevención perfecta no existe, se invierte en ambas.",
+     "explicacion": "Impacto, no solo probabilidad.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cms5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la defensa proporcional?",
+     "solucion": "Que el costo y la fricción de un control guarden relación con el riesgo (probabilidad × impacto) del activo que protege. Sobre-proteger un no-activo desperdicia recursos; sub-proteger un activo crítico es negligencia. Es asignar un presupuesto finito donde más rinde.",
+     "explicacion": "Proporcional al riesgo del activo.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cms5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo comunicarías a un equipo que el dataset de pacientes está en un bucket con acceso amplio y sin logs?",
+     "solucion": "En términos de impacto: 'cualquier cuenta puede descargar datos de pacientes y no quedaría registro; una fuga sería invisible y nos expone a daño a personas y a sanción'. Luego 3 acciones priorizadas (acceso mínimo, logs, alerta por descarga anómala) con su costo, y el riesgo residual aceptado. Tono sobrio, sin culpar.",
+     "explicacion": "Impacto + acción + residual.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms5-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un reporte de riesgo con 200 ítems o lleno de jerga (p. ej. 'CVSS 9.8') suele fracasar?",
+     "solucion": "Porque ahoga la señal y no le dice al equipo qué está en juego ni qué hacer. La gente actúa sobre 'qué se pierde' (activos e impacto), no sobre un puntaje técnico, y solo puede priorizar unos pocos riesgos. Comunicar es seleccionar y traducir, no listar todo.",
+     "explicacion": "Priorizar y traducir a impacto.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué invertir todo en prevención y nada en detección/recuperación es frágil?",
+     "solucion": "Porque ninguna prevención es perfecta (riesgo residual): cuando el primer control falle, sin detección el fallo será invisible y sin recuperación será permanente. La resiliencia asume que algo entrará y prepara verlo y revertirlo.",
+     "explicacion": "La prevención sola no contiene el primer fallo.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cms5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se aplica la proporcionalidad también a la comunicación del riesgo?",
+     "solucion": "Escalar cada riesgo menor a la gerencia genera fatiga y termina ignorándose todo (como la fatiga de alertas). Se comunica con la intensidad proporcional al riesgo: los pocos críticos con detalle y acción, los menores por canales rutinarios.",
+     "explicacion": "Proporcionalidad también al comunicar.",
+     "difficulty": "hard"
+    }
+   ]
+  },
+  {
+   "id": "cyber-sys1",
+   "bloque": "fase-8",
+   "orden": 806,
    "titulo": "Ciber · Cómo fallan los sistemas: permisos, memoria, redes y web",
    "libro": "Computer Security — CS 161 (UC Berkeley)",
    "lectura": "data/teoria/cyber-sys1.md",
@@ -24084,7 +24303,7 @@
   {
    "id": "cyber-sys2",
    "bloque": "fase-8",
-   "orden": 804,
+   "orden": 807,
    "titulo": "Ciber · Criptografía aplicada: hash, cifrado, firma, MAC y TLS",
    "libro": "Computer Security — CS 161 (UC Berkeley)",
    "lectura": "data/teoria/cyber-sys2.md",
@@ -24153,9 +24372,222 @@
    ]
   },
   {
+   "id": "cyber-sys3",
+   "bloque": "fase-8",
+   "orden": 808,
+   "titulo": "Ciber · Autenticación y gestión de identidad: contraseñas, MFA, tokens y sesiones",
+   "libro": "Computer Security — CS 161 (UC Berkeley)",
+   "lectura": "data/teoria/cyber-sys3.md",
+   "dosis": 30,
+   "objetivo": "Razonar los tres factores y por qué MFA ayuda; explicar cómo se guardan y prueban contraseñas; entender tokens y sesiones y su robo; y reconocer fallos comunes de autenticación.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "Tres factores: algo que sabes / tienes / eres; MFA combina dos independientes",
+    "Contraseñas: hash lento y salado + rate limiting, nunca cifradas",
+    "Tokens/sesiones son tu identidad: quien los roba te suplanta",
+    "La recuperación de cuenta suele ser el eslabón débil"
+   ],
+   "banco": [
+    {
+     "id": "csy3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son los tres factores de autenticación y por qué MFA aumenta la seguridad?",
+     "solucion": "Algo que sabes (contraseña), algo que tienes (teléfono/llave) y algo que eres (biometría). MFA combina dos factores independientes, así que robar uno solo no basta para entrar; es de los controles de mayor impacto por su costo.",
+     "explicacion": "Dos pruebas independientes.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "csy3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el salt y la lentitud del hash importan al guardar contraseñas?",
+     "solucion": "El salt (único por usuario) evita que contraseñas iguales tengan el mismo hash y frustra tablas precomputadas; la lentitud (bcrypt/Argon2) encarece la fuerza bruta. Juntos hacen inviable recuperar contraseñas de un volcado de hashes.",
+     "explicacion": "Salt contra precomputación, lentitud contra brute force.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "csy3-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un token o cookie de sesión robado permite suplantar sin conocer la contraseña?",
+     "solucion": "Porque tras el login el token ES la identidad del usuario ante el servidor: acompaña cada petición y el servidor confía en él. Quien lo roba (por XSS, red en claro, etc.) actúa como el usuario sin necesitar su contraseña. Por eso se protege con HttpOnly/Secure/SameSite, expiración y revocación.",
+     "explicacion": "El token equivale a la identidad.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csy3-q4",
+     "tipo": "concepto",
+     "enunciado": "Un servicio usa SHA-256 sin salt, sin límite de intentos y cookies sin HttpOnly ni expiración. Enumera los fallos y su corrección.",
+     "solucion": "(1) Hash rápido sin salt → fuerza bruta/tablas; usar bcrypt/Argon2 con salt. (2) Sin rate limit → fuerza bruta en línea; añadir límite/bloqueo. (3) Cookie sin HttpOnly → robo por XSS; añadir HttpOnly/Secure/SameSite. (4) Sin expiración → token robado eterno; añadir expiración y revocación. Y ofrecer MFA.",
+     "explicacion": "Auditoría de login.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csy3-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué no todos los segundos factores son igual de fuertes (p. ej. SMS vs llave de seguridad)?",
+     "solucion": "Porque algunos son interceptables o phishables: los códigos por SMS pueden capturarse (SIM swapping, intercepción) y un código TOTP puede phishearse en un sitio falso, mientras que una llave de seguridad/passkey está ligada al dominio y resiste phishing. MFA ayuda siempre, pero el tipo de segundo factor cambia la fuerza.",
+     "explicacion": "Resistencia a phishing varía por factor.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "csy3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la recuperación de cuenta ('olvidé mi contraseña') puede ser el eslabón débil de toda la autenticación?",
+     "solucion": "Porque un atacante puede evitar contraseña y MFA si el reset se hace por un canal comprometido (un correo tomado) o con preguntas de seguridad adivinables. La autenticación es tan fuerte como su camino de recuperación; este debe protegerse al mismo nivel.",
+     "explicacion": "El reset puede sortear todo lo demás.",
+     "difficulty": "hard"
+    }
+   ]
+  },
+  {
+   "id": "cyber-sys4",
+   "bloque": "fase-8",
+   "orden": 809,
+   "titulo": "Ciber · Aislamiento en profundidad: procesos, sandboxing y contenedores",
+   "libro": "Computer Security — CS 161 (UC Berkeley)",
+   "lectura": "data/teoria/cyber-sys4.md",
+   "dosis": 30,
+   "objetivo": "Explicar por qué el aislamiento contiene el daño; distinguir procesos, sandboxes y contenedores; entender qué aísla (y qué no) un contenedor; y aplicar aislamiento a notebooks y jobs.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "El aislamiento contiene el daño: compartimentos estancos (defense in depth)",
+    "Fuerza creciente: proceso < sandbox < contenedor < VM",
+    "Un contenedor comparte el kernel; root/--privileged/secretos en imagen rompen su aislamiento",
+    "A mayor desconfianza del código, más fuerte el aislamiento"
+   ],
+   "banco": [
+    {
+     "id": "csy4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el aislamiento es una defensa aunque no impida la entrada?",
+     "solucion": "Porque contiene el daño: si cada componente corre separado y con mínimo privilegio, comprometer uno no entrega el resto. Son compartimentos estancos —como en un submarino— que confinan la 'inundación' a una celda en vez de hundir todo el sistema.",
+     "explicacion": "Defense in depth + least privilege.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "csy4-q2",
+     "tipo": "concepto",
+     "enunciado": "Ordena de menor a mayor fuerza de aislamiento: contenedor, proceso, VM, sandbox. ¿Qué los guía?",
+     "solucion": "Proceso < sandbox < contenedor < VM/microVM. La guía: a mayor desconfianza del código, más fuerte el aislamiento. Ejecutar código arbitrario (p. ej. el que genera un agente LLM) exige sandbox o VM, no solo un proceso.",
+     "explicacion": "Desconfianza ↑ → aislamiento ↑.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "csy4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué aísla bien un contenedor y qué NO, frente a una VM?",
+     "solucion": "Empaqueta y reproduce (mismas dependencias) y aísla razonablemente vista de archivos/red/procesos, pero comparte el kernel del host, así que no es una barrera tan fuerte como una VM. Un escape del kernel desde el contenedor llega al host.",
+     "explicacion": "Comparte kernel = barrera más débil.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csy4-q4",
+     "tipo": "concepto",
+     "enunciado": "Menciona tres configuraciones que rompen el aislamiento de un contenedor.",
+     "solucion": "Correrlo como root o con --privileged (un escape llega al host); montar el socket de Docker o directorios sensibles del host; e incrustar secretos en la imagen (quedan en sus capas). También usar imágenes base sin actualizar hereda CVEs.",
+     "explicacion": "La config puede anular el aislamiento.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csy4-q5",
+     "tipo": "concepto",
+     "enunciado": "Notebooks de analistas y código de terceros corren como el mismo usuario con acceso al dataset y a las llaves del cloud. Rediseña con aislamiento.",
+     "solucion": "Cada job/notebook en su contenedor con usuario no-root, montando solo los datos necesarios (least privilege), sin las llaves del cloud salvo las imprescindibles y de alcance estrecho, y con red restringida; el código no confiable en un sandbox más fuerte. Así comprometer un notebook no entrega el dataset completo ni las llaves.",
+     "explicacion": "Confinar el radio de daño.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "csy4-q6",
+     "tipo": "concepto",
+     "enunciado": "Dos contenedores 'aislados' comparten un volumen o una red sin restricción. ¿Por qué importa?",
+     "solucion": "Porque el aislamiento se evalúa también en lo que comparten: un volumen o red común permite que el compromiso de uno se propague al otro, anulando la separación. Hay que revisar lo compartido, no solo lo separado.",
+     "explicacion": "Lo compartido es una vía de propagación.",
+     "difficulty": "hard"
+    }
+   ]
+  },
+  {
+   "id": "cyber-sys5",
+   "bloque": "fase-8",
+   "orden": 810,
+   "titulo": "Ciber · Anatomía de un ataque de red: DNS, MITM y por qué TLS importa",
+   "libro": "Computer Security — CS 161 (UC Berkeley)",
+   "lectura": "data/teoria/cyber-sys5.md",
+   "dosis": 30,
+   "objetivo": "Describir un ataque MITM; entender el envenenamiento de DNS y por qué redirige al impostor; explicar cómo TLS frustra ambos; y modelar la amenaza de red de un entorno de datos.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Atacante de red: espía (rompe C) y altera/inyecta (rompe I); MITM se pone en medio",
+    "Envenenamiento de DNS te redirige a un impostor → entrada al MITM",
+    "TLS da cifrado + MAC + certificado: frustra espionaje, alteración y DNS envenenado",
+    "TLS protege el tránsito, no los extremos comprometidos"
+   ],
+   "banco": [
+    {
+     "id": "csy5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué puede hacer un atacante de red pasivo y uno activo?",
+     "solucion": "El pasivo espía: lee todo lo que va en claro (rompe confidencialidad). El activo altera o inyecta mensajes (rompe integridad) y puede hacer MITM, colocándose entre cliente y servidor hablando con ambos como si fuera el otro.",
+     "explicacion": "Leer vs modificar el tráfico.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "csy5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo redirige el envenenamiento de DNS y a qué conduce?",
+     "solucion": "Falsifica la traducción de un nombre (api.dominio.com) a IP, de modo que te conectas al servidor del atacante creyendo que es el tuyo. Es una puerta clásica al MITM: no rompe la conexión, solo te engaña sobre a quién te conectas.",
+     "explicacion": "Engaña el 'a quién', no el 'cómo'.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "csy5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo frustra TLS un MITM, incluso si el DNS está envenenado?",
+     "solucion": "TLS da cifrado (el espía solo ve ruido), MAC (una alteración se detecta y corta la conexión) y autenticación del servidor por certificado firmado: aunque el DNS te mande al impostor, su certificado no será válido para ese dominio y el cliente lo rechaza, convirtiendo la trampa silenciosa en un error visible.",
+     "explicacion": "El certificado delata al impostor.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csy5-q4",
+     "tipo": "concepto",
+     "enunciado": "Un analista sube un dataset por http:// con la API key en la cabecera desde un café. ¿Qué riesgos hay y cómo se corrigen?",
+     "solucion": "Un atacante de red ve la API key y el dataset en claro (C rota), puede alterar el dataset (I rota) o redirigir vía DNS (MITM). Corrección: usar https:// de extremo a extremo, rechazar certificados inválidos, rotar la key si viajó en claro, y no exponer el endpoint a redes no confiables (VPN/allow-list).",
+     "explicacion": "'Interno' no protege en red hostil.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csy5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué saltarse un aviso de 'certificado inválido' es peligroso?",
+     "solucion": "Porque ese aviso es a menudo exactamente la señal de un MITM (un impostor cuyo certificado no es válido para el dominio). Ignorarlo desactiva justo la defensa que delata al atacante y le entregas la conexión.",
+     "explicacion": "El aviso suele ser el MITM en acción.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "csy5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué TLS no basta si tu laptop o el servidor están comprometidos?",
+     "solucion": "Porque TLS protege el dato en tránsito, no en los extremos: en un host comprometido el dato se lee antes de cifrarse o después de descifrarse. La seguridad de la red complementa, no sustituye, la seguridad de los endpoints (aislamiento, [[cyber-sys4]]).",
+     "explicacion": "Tránsito ≠ extremos.",
+     "difficulty": "hard"
+    }
+   ]
+  },
+  {
    "id": "cyber-web1",
    "bloque": "fase-8",
-   "orden": 805,
+   "orden": 811,
    "titulo": "Ciber · Web I: inyección, XSS y la frontera del servidor",
    "libro": "Web Security Academy (PortSwigger)",
    "lectura": "data/teoria/cyber-web1.md",
@@ -24226,7 +24658,7 @@
   {
    "id": "cyber-web2",
    "bloque": "fase-8",
-   "orden": 806,
+   "orden": 812,
    "titulo": "Ciber · Web II: autenticación, control de acceso, CSRF y SSRF",
    "libro": "Web Security Academy (PortSwigger)",
    "lectura": "data/teoria/cyber-web2.md",
@@ -24297,7 +24729,7 @@
   {
    "id": "cyber-dp1",
    "bloque": "fase-8",
-   "orden": 807,
+   "orden": 813,
    "titulo": "Ciber · Privacidad ≠ seguridad: proteger personas, no solo tablas",
    "libro": "NIST Privacy Framework 1.1 (IPD)",
    "lectura": "data/teoria/cyber-dp1.md",
@@ -24368,7 +24800,7 @@
   {
    "id": "cyber-dp2",
    "bloque": "fase-8",
-   "orden": 808,
+   "orden": 814,
    "titulo": "Ciber · Reidentificación, anonimización y gobernanza de datos",
    "libro": "NIST Privacy Framework 1.1 (IPD)",
    "lectura": "data/teoria/cyber-dp2.md",
@@ -24439,7 +24871,7 @@
   {
    "id": "cyber-dev1",
    "bloque": "fase-8",
-   "orden": 809,
+   "orden": 815,
    "titulo": "Ciber · Desarrollo seguro: requisitos, validación y secretos",
    "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
    "lectura": "data/teoria/cyber-dev1.md",
@@ -24510,7 +24942,7 @@
   {
    "id": "cyber-dev2",
    "bloque": "fase-8",
-   "orden": 810,
+   "orden": 816,
    "titulo": "Ciber · Dependencias y supply chain: SBOM, SCA y CI/CD seguro",
    "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
    "lectura": "data/teoria/cyber-dev2.md",
@@ -24581,7 +25013,7 @@
   {
    "id": "cyber-blue1",
    "bloque": "fase-8",
-   "orden": 811,
+   "orden": 817,
    "titulo": "Ciber · Blue team I: MITRE ATT&CK, tácticas, técnicas y logs",
    "libro": "Getting Started with MITRE ATT&CK",
    "lectura": "data/teoria/cyber-blue1.md",
@@ -24652,7 +25084,7 @@
   {
    "id": "cyber-blue2",
    "bloque": "fase-8",
-   "orden": 812,
+   "orden": 818,
    "titulo": "Ciber · Blue team II: detection engineering e hipótesis",
    "libro": "Getting Started with MITRE ATT&CK",
    "lectura": "data/teoria/cyber-blue2.md",
@@ -24723,7 +25155,7 @@
   {
    "id": "cyber-mls1",
    "bloque": "fase-8",
-   "orden": 813,
+   "orden": 819,
    "titulo": "Ciber · Seguridad de ML I: por qué la IA cambia la superficie de ataque",
    "libro": "MITRE SAFE-AI / MITRE ATLAS",
    "lectura": "data/teoria/cyber-mls1.md",
@@ -24794,7 +25226,7 @@
   {
    "id": "cyber-mls2",
    "bloque": "fase-8",
-   "orden": 814,
+   "orden": 820,
    "titulo": "Ciber · Seguridad de ML II: inferencia, supply chain y controles",
    "libro": "MITRE SAFE-AI / MITRE ATLAS",
    "lectura": "data/teoria/cyber-mls2.md",
@@ -24865,7 +25297,7 @@
   {
    "id": "cyber-llm1",
    "bloque": "fase-8",
-   "orden": 815,
+   "orden": 821,
    "titulo": "Ciber · Seguridad de LLMs I: prompt injection directa e indirecta",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm1.md",
@@ -24936,7 +25368,7 @@
   {
    "id": "cyber-llm2",
    "bloque": "fase-8",
-   "orden": 816,
+   "orden": 822,
    "titulo": "Ciber · Seguridad de LLMs II: RAG, agentes y agencia excesiva",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm2.md",

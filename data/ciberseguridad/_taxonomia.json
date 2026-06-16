@@ -9,11 +9,27 @@
       "secuencia": "Del lenguaje al criterio: vocabulario del riesgo (activo/amenaza/vulnerabilidad/impacto/control) y CIA → threat modeling básico (qué puede salir mal, quién, qué supuesto se rompe) → principios de diseño defensivo (least privilege, defensa en profundidad, fail-safe, factores humanos) → economía del riesgo, tradeoffs y riesgo residual.",
       "referencias": [
         "Anderson, R. (2020). Security engineering: A guide to building dependable distributed systems (3rd ed.). Wiley.",
+        "Anderson, R., & Moore, T. (2006). The economics of information security. Science, 314(5799), 610–613.",
         "National Institute of Standards and Technology. (2018). Framework for improving critical infrastructure cybersecurity (v1.1). https://www.nist.gov/cyberframework"
       ],
+      "miniProyecto": {
+        "titulo": "Threat model de una app de ciencia de datos",
+        "descripcion": "Construye un modelo de amenaza de una app de DS con notebooks, Supabase, API keys, datasets sensibles, modelos entrenados y dashboards: activos, amenazas, supuesto de confianza roto, mitigaciones proporcionales, señales de detección y un párrafo de comunicación al equipo.",
+        "entregable": "Documento de una a dos carillas con el threat model y el párrafo de comunicación.",
+        "rubrica": [
+          "Modelo de amenaza claro (qué se construye y qué puede salir mal)",
+          "Identificación correcta de activos y riesgos",
+          "Mitigaciones proporcionales al riesgo de cada activo",
+          "Señales de detección o verificación para cada riesgo principal",
+          "Comunicación clara y sobria para un equipo técnico"
+        ]
+      },
       "unidades": [
         "cyber-ms1",
-        "cyber-ms2"
+        "cyber-ms2",
+        "cyber-ms3",
+        "cyber-ms4",
+        "cyber-ms5"
       ]
     },
     {
@@ -27,9 +43,24 @@
         "OverTheWire. (n.d.). Bandit wargame. https://overthewire.org/wargames/bandit/",
         "picoCTF. (n.d.). Practice. https://play.picoctf.org/practice"
       ],
+      "miniProyecto": {
+        "titulo": "Checklist de seguridad del entorno personal de un científico de datos",
+        "descripcion": "Arma un checklist de seguridad básica para tu entorno: laptop, GitHub, notebooks, llaves API, entornos Python y nube. Para cada uno indica su amenaza principal, el control (TLS, aislamiento, manejo de secretos, MFA, permisos) y cómo verificarlo.",
+        "entregable": "Checklist accionable (una carilla) con amenaza, control y verificación por componente.",
+        "rubrica": [
+          "Modelo de amenaza claro por componente del entorno",
+          "Identificación correcta de activos y riesgos (credenciales, datos, código)",
+          "Controles proporcionales y concretos (no genéricos)",
+          "Señal de verificación de que cada control está activo",
+          "Comunicación clara y accionable del checklist"
+        ]
+      },
       "unidades": [
         "cyber-sys1",
-        "cyber-sys2"
+        "cyber-sys2",
+        "cyber-sys3",
+        "cyber-sys4",
+        "cyber-sys5"
       ]
     },
     {
@@ -43,6 +74,18 @@
         "OWASP Foundation. (2021). OWASP Top 10:2021. https://owasp.org/Top10/",
         "OWASP Foundation. (n.d.). OWASP Juice Shop. https://owasp.org/www-project-juice-shop/"
       ],
+      "miniProyecto": {
+        "titulo": "Auditoría defensiva de una API educativa ficticia",
+        "descripcion": "Audita (en papel) una API ficticia con login, sesiones, roles, endpoints privados y dashboards: identifica inyección, XSS, broken access control/IDOR, fallos de sesión y SSRF, y propón la mitigación correcta de cada uno en la frontera del servidor.",
+        "entregable": "Reporte de auditoría: vulnerabilidad, dónde, impacto y mitigación, por endpoint.",
+        "rubrica": [
+          "Modelo de amenaza claro de la API (entradas y fronteras de confianza)",
+          "Identificación correcta de vulnerabilidades y activos en riesgo",
+          "Mitigaciones proporcionales y correctas (parametrizar, codificar, control de acceso por recurso)",
+          "Señales de detección o verificación del fallo",
+          "Comunicación clara para el equipo de desarrollo"
+        ]
+      },
       "unidades": [
         "cyber-web1",
         "cyber-web2"
@@ -58,6 +101,18 @@
         "National Institute of Standards and Technology. (2025). NIST Privacy Framework 1.1: Initial public draft (NIST CSWP 40 ipd). https://doi.org/10.6028/NIST.CSWP.40.ipd",
         "National Institute of Standards and Technology. (n.d.). Privacy Framework. https://www.nist.gov/privacy-framework"
       ],
+      "miniProyecto": {
+        "titulo": "Evaluación de privacidad de un dataset antes de entrenar",
+        "descripcion": "Evalúa un dataset ficticio (biomédico, educativo o financiero) antes de entrenar: clasifica datos personales/sensibles, detecta riesgo de reidentificación por cuasi-identificadores, aplica minimización y limitación de finalidad, y define acceso, retención y técnica de de-identificación.",
+        "entregable": "Ficha de evaluación de privacidad: clasificación de columnas, riesgos, decisiones de minimización y gobernanza.",
+        "rubrica": [
+          "Modelo de riesgo de privacidad claro (no confundido con seguridad)",
+          "Identificación correcta de datos sensibles y cuasi-identificadores",
+          "Minimización y de-identificación proporcionales con tradeoff utilidad↔privacidad",
+          "Plan de gobernanza verificable (acceso, auditoría, retención, finalidad)",
+          "Comunicación clara del riesgo a personas no expertas"
+        ]
+      },
       "unidades": [
         "cyber-dp1",
         "cyber-dp2"
@@ -73,6 +128,18 @@
         "Wheeler, D. A. (n.d.). Developing secure software (LFD121): Secure software development fundamentals. Open Source Security Foundation. https://openssf.org/training/courses/",
         "Open Source Security Foundation. (n.d.). OpenSSF training courses. https://openssf.org/training/courses/"
       ],
+      "miniProyecto": {
+        "titulo": "Pipeline ML seguro",
+        "descripcion": "Diseña un pipeline de ML seguro: manejo de secretos (fuera del código, rotación, permiso mínimo), escaneo de dependencias (SBOM + SCA), revisión de permisos del CI/CD, control de las fuentes de datos y un criterio de actualización de dependencias vulnerables.",
+        "entregable": "Plan del pipeline seguro (una carilla) con secretos, supply chain, permisos y criterio de parcheo.",
+        "rubrica": [
+          "Modelo de amenaza claro del pipeline (secretos, dependencias, datos, CI/CD)",
+          "Identificación correcta de activos y riesgos de supply chain",
+          "Controles proporcionales (secretos fuera del código, pinning, SBOM/SCA, least privilege)",
+          "Verificación/detección (escaneo en CI, criterio de actualización por explotabilidad)",
+          "Comunicación clara del plan al equipo"
+        ]
+      },
       "unidades": [
         "cyber-dev1",
         "cyber-dev2"
@@ -89,6 +156,18 @@
         "MITRE. (n.d.). MITRE ATT&CK. https://attack.mitre.org",
         "CyberDefenders. (n.d.). Blue team CTF challenges. https://cyberdefenders.org/blueteam-ctf-challenges/"
       ],
+      "miniProyecto": {
+        "titulo": "Mini SOC: análisis de logs de acceso indebido",
+        "descripcion": "Analiza logs ficticios de acceso indebido a notebooks, buckets de datos, repositorios o dashboards: mapea los eventos a tácticas/técnicas ATT&CK, distingue evento/alerta/incidente, propón una hipótesis de detección y di qué dato faltaría para confirmar el incidente.",
+        "entregable": "Reporte de análisis: línea de tiempo, mapeo ATT&CK, regla de detección propuesta y dato faltante para confirmar.",
+        "rubrica": [
+          "Modelo de amenaza claro (qué conducta adversaria se busca)",
+          "Identificación correcta de la anomalía y los activos afectados",
+          "Hipótesis/regla de detección proporcional y accionable",
+          "Señales de detección y qué evidencia confirmaría el incidente",
+          "Comunicación clara del hallazgo y la recomendación"
+        ]
+      },
       "unidades": [
         "cyber-blue1",
         "cyber-blue2"
@@ -104,6 +183,18 @@
         "Kressel, J., Perrella, R., Reed, E., Naik, N., Sidhu, J., Hu, Q., Booker, L., Cintron, J., & Huffner, L. (2025). SAFE-AI: A framework for securing AI-enabled systems. The MITRE Corporation.",
         "MITRE. (n.d.). MITRE ATLAS. https://atlas.mitre.org"
       ],
+      "miniProyecto": {
+        "titulo": "Threat model y evaluación de controles de un pipeline ML",
+        "descripcion": "Modela amenazas y evalúa controles de un pipeline ML (clasificación médica, scoring financiero, fraude, recomendación educativa o priorización operativa): distingue ataques al entrenamiento (poisoning, backdoors) de los de inferencia (evasion, extraction, inversion, membership inference), evalúa supply chain/provenance del modelo y propón controles proporcionales con su riesgo residual.",
+        "entregable": "Model card de seguridad: activos, ataques relevantes, controles, procedencia y riesgo residual aceptado.",
+        "rubrica": [
+          "Modelo de amenaza claro (entrenamiento vs inferencia, supply chain)",
+          "Identificación correcta de activos (datos, pesos, embeddings) y riesgos",
+          "Controles proporcionales (auth, rate limit, resolución de salida, DP, provenance)",
+          "Señales de detección/monitoreo de consultas o entradas anómalas",
+          "Comunicación clara del riesgo residual aceptado"
+        ]
+      },
       "unidades": [
         "cyber-mls1",
         "cyber-mls2"
@@ -119,6 +210,18 @@
         "OWASP Foundation. (2024). OWASP Top 10 for LLM Applications 2025. https://genai.owasp.org/llm-top-10/",
         "OWASP Foundation. (n.d.). OWASP GenAI Security Project. https://genai.owasp.org/"
       ],
+      "miniProyecto": {
+        "titulo": "Checklist de seguridad para un asistente RAG",
+        "descripcion": "Diseña un checklist de seguridad para un asistente RAG conectado a documentos privados, base de datos, herramientas y acciones externas, cubriendo prompt injection (LLM01), fuga de info (LLM02), poisoning (LLM04), manejo de salidas (LLM05), agencia excesiva (LLM06), debilidades de embeddings (LLM08) y consumo no acotado (LLM10).",
+        "entregable": "Checklist de seguridad del asistente RAG por riesgo OWASP, con la mitigación concreta de cada uno.",
+        "rubrica": [
+          "Modelo de amenaza claro (contenido no confiable, herramientas, fronteras)",
+          "Identificación correcta de riesgos OWASP-LLM relevantes y activos",
+          "Mitigaciones proporcionales (agencia mínima, control de acceso al RAG, validar salidas)",
+          "Señales de detección/monitoreo y límites (rate limiting, confirmación humana)",
+          "Comunicación clara del checklist para el equipo"
+        ]
+      },
       "unidades": [
         "cyber-llm1",
         "cyber-llm2"
