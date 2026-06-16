@@ -1,5 +1,13 @@
 # Bloques distribuidos fundamentales
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Casi todo diseño de sistemas reusa el mismo puñado de **ladrillos distribuidos**: algo que limite el caudal de peticiones, algo que reparta estado sin remapearlo todo al reescalar, una forma de decidir entre consistencia y disponibilidad, y mecanismos para detectar fallos y generar identificadores. Esta lección construye esos ladrillos desde cero y, sobre todo, *cuándo* conviene cada uno.
+
+Al terminar podrás: (1) elegir y razonar un rate limiter (token bucket en Redis) y entender por qué surgen condiciones de carrera al distribuirlo; (2) repartir claves con *consistent hashing* y vnodes minimizando el remapeo; (3) tomar la decisión CP vs AP del teorema CAP y afinar la consistencia con el dial de quórum $W + R > N$; y (4) resolver conflictos y fallos (vector clocks, gossip, hinted handoff, Merkle trees) y generar IDs ordenables con Snowflake. Se apoya en la secuencia de [[arena-sd1]] y reusa el hashing de [[arena-cc1]] y el control de sobrecarga de [[arena-sre4]].
+
+---
+
 ## Rate limiter — controlar el caudal de peticiones
 
 Limita cuántas peticiones puede hacer un cliente en una ventana de tiempo. Beneficios: frena ataques DoS, reduce costo, evita sobrecarga. Devuelve **HTTP 429 (Too Many Requests)**; cabeceras útiles: `X-Ratelimit-Limit`, `X-Ratelimit-Remaining`, `Retry-After`.

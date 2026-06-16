@@ -7,7 +7,7 @@
 > (que solo insertaba secciones): aquí cada lección se reescribe entera —pero
 > **conservando todo el contenido curado**—.
 >
-> Última actualización: 2026-06-15 (cluster 1 completo, sw.js v87).
+> Última actualización: 2026-06-16 (cluster 4 system-design completo, sw.js v135).
 > Lee también: `PROMPT-OLEADA-DESDE-CERO.md` (instrucciones para el agente),
 > `HANDOFF-AUDITORIA-FASE7.md` §7 (registro), `auditoria.md` (contrato de calidad),
 > `CLAUDE.md` → `HANDOFFCES.md` §0 (Constitución, es LEY).
@@ -19,12 +19,12 @@
 | **1. quant-prob** (Probabilidad, esperanza y conteo) | 25 | ✅ **COMPLETO** (v82–v87) |
 | 2. stats-inf (Estadística aplicada e inferencia) | 16 | ✅ **COMPLETO** (v91–v94) |
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ✅ **COMPLETO** (v107) |
-| 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
+| 4. system-design (Diseño de sistemas) | 4 | ✅ **COMPLETO** (v135) |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ✅ **COMPLETO** (v100–v106) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **110 / 118 hechas** |
+| | **118** | **114 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -96,12 +96,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-cc3` — Recursión y programación dinámica
 - [x] `arena-m2` — SQL Window Functions
 
-### 4. system-design — Diseño de sistemas (MAANG) (4) — ⬜
+### 4. system-design — Diseño de sistemas (MAANG) (4) — ✅ COMPLETO (v135)
 
-- [ ] `arena-sd1` — Fundamentos de escalabilidad y estimación
-- [ ] `arena-sd2` — Bloques distribuidos fundamentales
-- [ ] `arena-sd3` — Sistemas de datos a escala
-- [ ] `arena-sd4` — Sistemas en tiempo real y de medios
+- [x] `arena-sd1` — Fundamentos de escalabilidad y estimación
+- [x] `arena-sd2` — Bloques distribuidos fundamentales
+- [x] `arena-sd3` — Sistemas de datos a escala
+- [x] `arena-sd4` — Sistemas en tiempo real y de medios
 
 ### 5. ds-applied — Ciencia de datos aplicada (9) — ✅ COMPLETO (v88–v90)
 

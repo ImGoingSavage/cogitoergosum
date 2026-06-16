@@ -1,5 +1,13 @@
 # Fundamentos de escalabilidad y estimación
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando una app crece de un servidor a millones de usuarios, la pregunta no es *qué tecnología usar* sino *en qué orden mover las piezas* — y, antes de mover nada, cuánto vas a necesitar. Esta lección construye, desde cero, la **secuencia de escalado** (separar la base de datos, volver el tier web *stateless*, balancear carga, replicar, cachear, desacoplar con colas, shardear) y la **estimación a ojo** (back-of-the-envelope) que decide qué diseño hace falta.
+
+Al terminar podrás: (1) recorrer esa secuencia explicando *por qué* cada paso resuelve el cuello del anterior; (2) dimensionar un sistema a orden de magnitud (DAU → QPS → almacenamiento) y leer los números de latencia y los 'nueves' de disponibilidad; (3) aplicar el marco de 4 pasos de la entrevista sin caer en sobre-ingeniería; y (4) reconocer por qué el estado nunca debe vivir en el servidor de aplicación. Es el cimiento sobre el que se montan los bloques de [[arena-sd2]] y los diseños de [[arena-sd3]].
+
+---
+
 ## De un servidor a millones de usuarios
 
 El camino de crecimiento sigue un orden casi siempre igual:

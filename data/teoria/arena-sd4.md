@@ -1,5 +1,13 @@
 # Sistemas en tiempo real y de medios
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+El tiempo real y los medios rompen los supuestos cómodos del diseño web: HTTP es petición-respuesta iniciada por el cliente, pero un chat necesita que el servidor *empuje*, y un video o un archivo enorme necesitan moverse sin saturar la red. Esta lección construye, desde cero, los patrones para ambos mundos: conexiones persistentes (WebSocket, heartbeat) y mover lo mínimo acercando los datos (CDN, transcoding, *delta sync*).
+
+Al terminar podrás: (1) elegir WebSocket frente a polling/long-polling para un chat y manejar presencia con heartbeat; (2) diseñar autocompletado *top-k* (typeahead) con trie y caché; (3) servir video a escala (CDN, transcoding, *adaptive bitrate*); y (4) sincronizar archivos moviendo solo los bloques que cambian y reconciliando conflictos. El *push* del WebSocket es justo lo que necesitaban las notificaciones de [[arena-sd3]], y la CDN reaparece desde [[arena-sd1]].
+
+---
+
 ## Sistema de chat (WhatsApp, Messenger)
 
 **El reto central:** entrega en tiempo real y bidireccional. HTTP normal es petición-respuesta iniciada por el cliente; el servidor no puede "empujar" por sí solo.

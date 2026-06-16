@@ -1,5 +1,13 @@
 # Sistemas de datos a escala
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Los diseños clásicos de entrevista —acortador de URLs, web crawler, sistema de notificaciones, news feed— parecen muy distintos, pero comparten una misma tensión: **a escala el cuello de botella es la lectura**, y la cura es *precomputar y cachear*, lo que a su vez cuesta al escribir. Esta lección construye los cuatro desde cero y expone ese trade-off (*fanout on write* vs *on read*) y su caso patológico: la celebridad (*hotkey*).
+
+Al terminar podrás: (1) diseñar un acortador (base62, 301 vs 302) y estimar el espacio de claves; (2) bosquejar un crawler educado (BFS, robots.txt, dedup de URLs y de contenido); (3) desacoplar un sistema de notificaciones con colas y reintentos; y (4) construir un news feed con *fanout* y resolver el problema de la celebridad con un enfoque híbrido. Aplica los ladrillos de [[arena-sd2]] sobre la secuencia de [[arena-sd1]], y su necesidad de *push* en tiempo real se retoma en [[arena-sd4]].
+
+---
+
 ## Acortador de URLs (TinyURL, bit.ly)
 
 **Dos operaciones:** acortar (`POST` URL larga → URL corta) y redirigir (`GET` corta → 301/302 a la larga).
