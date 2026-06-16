@@ -6573,7 +6573,7 @@
         "Para a fijo, despeja $(1+1/b)(1+1/c) = 2/(1+1/a)$ y acota b igual que acotaste a. Para cada (a,b) válido, c queda determinado por la ecuación.",
         "Resultan exactamente cinco ternas: (2,4,15), (2,5,9), (2,6,7), (3,3,8), (3,4,5)."
       ],
-      "solucion": "Las ternas son (2,4,15), (2,5,9), (2,6,7), (3,3,8) y (3,4,5). Por el orden a $\\le b \\le c$, el factor $(1+1/a)$ es el mayor; a $= 1$ hace el producto $> 2$ y $a \\ge 4$ lo hace $< 2$ (pues $(5/4)^3 < 2$), así que a $\\in {2,3}$. Fijando a y acotando b de la misma forma, c queda determinado, y la búsqueda exhaustiva sobre el rango finito arroja exactamente esas cinco soluciones.",
+      "solucion": "Las ternas son (2,4,15), (2,5,9), (2,6,7), (3,3,8) y (3,4,5). Por el orden $a \\le b \\le c$, el factor $(1+1/a)$ es el mayor; $a = 1$ hace el producto $> 2$ y $a \\ge 4$ lo hace $< 2$ (pues $(5/4)^3 < 2$), así que $a \\in \\{2,3\\}$. Fijando $a$ y acotando $b$ de la misma forma, $c$ queda determinado, y la búsqueda exhaustiva sobre el rango finito arroja exactamente esas cinco soluciones.",
       "explicacion": "Acotar variables con el principio del extremo (la variable más pequeña domina el producto) reduce el problema a un rango finito que se barre por casos. Verificado con Python: las únicas ternas con $a\\le b\\le c$ y producto exactamente 2 son (2,4,15), (2,5,9), (2,6,7), (3,3,8), (3,4,5).",
       "tiempo_estimado": 30,
       "conceptos": [
@@ -7617,7 +7617,7 @@
         "La clave es que $(1+1/n)^n \\to$ e $\\approx 2.718 < 3$, así que $(1+1/n)^n < 3$ para todo n, lo que hace funcionar el paso inductivo de la cota inferior.",
         "Para la cota superior, $(1+1/n)^n > 2$ (de hecho $\\to$ e $> 2$) hace funcionar el paso inductivo con base $n=6$, donde $6! = 720$ está entre $(6/3)^6=64$ y $(6/2)^6=729$."
       ],
-      "solucion": "Para $n \\ge 6$ se cumple $(n/3)^n < n! < (n/2)^n$. Ambas cotas se prueban por inducción a partir de n=6 (6! = 720, con $(6/3)^6 = 64$ y $(6/2)^6 = 729$). El paso inductivo de la cota inferior se reduce a $(1+1/n)^n < 3$ (cierto porque $(1+1/n)^n \\to$ e $< 3$), y el de la cota superior a $(1+1/n)^n > 2$ (cierto porque $(1+1/n)^n \\to$ e $> 2$). En ambos casos la desigualdad se propaga de n a $n+1$.",
+      "solucion": "Para $n \\ge 6$ se cumple $(n/3)^n < n! < (n/2)^n$. Ambas cotas se prueban por inducción a partir de $n=6$ ($6! = 720$, con $(6/3)^6 = 64$ y $(6/2)^6 = 729$). El paso inductivo de la cota inferior se reduce a $(1+1/n)^n < 3$ (cierto porque $(1+1/n)^n \\to e < 3$), y el de la cota superior a $(1+1/n)^n > 2$ (cierto porque $(1+1/n)^n \\to e > 2$). En ambos casos la desigualdad se propaga de $n$ a $n+1$.",
       "explicacion": "Inducción cuyas pasos se reducen a las cotas clásicas $2 < (1+1/n)^n <$ e $< 3$. El número e gobierna ambos lados. Verificado con Python: $(n/3)^n < n! < (n/2)^n$ para $n = 6..39$.",
       "tiempo_estimado": 22,
       "conceptos": [
@@ -7830,7 +7830,7 @@
         "Inducción sobre n. El caso $n=1$ es |sin $x_1| + |$cos $x_1| \\ge 1$. Pruébalo primero.",
         "|sin x| + |cos $x| \\ge$ sin$^2x +$ cos$^2x = 1$ (porque |sin $x| \\ge$ sin$^2x$ y |cos $x| \\ge$ cos$^2x$, ya que cada uno está en [0,1]).",
         "Para el paso, agrupa los primeros n y mira el último. Usa |cos$(S+x_{n+1})|$ con la fórmula de adición del coseno.",
-        "|cos$(S + x_{n+1})| = |$cos S cos $x_{n+1} -$ sin S sin $x_{n+1}| \\ge |$cos $S| - |$sin $x_{n+1}|$ (por la desigualdad triangular y |cos $x_{n+1}| \\le 1$).",
+        "$|\\cos(S + x_{n+1})| = |\\cos S \\cos x_{n+1} - \\sin S \\sin x_{n+1}| \\ge |\\cos S| - |\\sin x_{n+1}|$ (por la desigualdad triangular y $|\\cos x_{n+1}| \\le 1$).",
         "Entonces $\\sum _{i\\le n+1}|$sin $x_i| + |$cos$(S+x_{n+1})| \\ge \\sum _{i\\le n}|$sin $x_i| + |$cos $S| \\ge 1$ por la hipótesis inductiva."
       ],
       "solucion": "Por inducción. Base $n=1: |$sin x| + |cos $x| \\ge$ sin$^2x +$ cos$^2x = 1$ (cada factor está en [0,1], así que |sin $x| \\ge$ sin$^2x$ y |cos $x| \\ge$ cos$^2x$). Paso: con $S = x_1+\\cdots +x_n$, usa |cos$(S+x_{n+1})| = |$cos S cos $x_{n+1} -$ sin S sin $x_{n+1}| \\ge |$cos $S| - |$sin $x_{n+1}|$. Entonces $\\sum _{i=1}^{n+1}|$sin $x_i| + |$cos$(S+x_{n+1})| \\ge \\sum _{i=1}^{n}|$sin $x_i| + |$cos $S| \\ge 1$ por la hipótesis inductiva. Queda probado para todo n.",
@@ -9340,7 +9340,7 @@
         "Un conjunto de 4 vértices con 6 aristas es $K_4$ (el máximo de aristas entre 4 vértices es $C(4,2) = 6$). Ese es el $K_4$ inducido."
       ],
       "solucion": "G contiene un $K_4$ inducido. Sobre los $C(10,4) = 210$ cuádruples de vértices, la suma del número de aristas inducidas es $38\\cdot C(8,2) = 38\\cdot 28 = 1064$ (cada arista está en 28 cuádruples). El promedio es $1064/210 \\approx 5.07$, así que por el principio del casillero algún cuádruple induce $\\ge 6$ aristas; como $6 = C(4,2)$ es el máximo posible, ese cuádruple es un $K_4$.",
-      "explicacion": "Conteo doble (aristas por cuádruple) + casillero: el promedio $> 5$ fuerza un cuádruple con las 6 aristas. Verificado con Python: $\\lceil 1064/210\\rceil = 6 = C(4,2)$.",
+      "explicacion": "Conteo doble (aristas por cuádruple) + casillero: el promedio $> 5$ fuerza un cuádruple con las 6 aristas. Verificado con Python: $\\lceil 1064/210\\rceil = 6 = \\binom{4}{2}$.",
       "tiempo_estimado": 32,
       "conceptos": [
         "conteo doble",
@@ -18700,7 +18700,7 @@
         "La igualdad ocurre cuando a $= b = 5$.",
         "El producto máximo es 25."
       ],
-      "solucion": "Por AM-GM, ab $\\le ((a+b)/2)^2 = 25$, con igualdad en a $= b = 5$. El producto máximo es 25. Verificado con Python.",
+      "solucion": "Por AM-GM, $ab \\le ((a+b)/2)^2 = 25$, con igualdad en $a = b = 5$. El producto máximo es 25. Verificado con Python.",
       "explicacion": "El recíproco de un problema AM-GM: a suma fija, el producto se maximiza con términos iguales. Es el principio isoperimétrico en versión algebraica.",
       "tiempo_estimado": 10,
       "conceptos": [
@@ -18870,8 +18870,8 @@
       "enunciado": "Tres números positivos a, b, c tienen producto $a\\cdot b\\cdot c = 8$. ¿Cuál es el valor mínimo de su suma a $+ b + c$?",
       "hints": [
         "Usa AM-GM para tres variables: la media aritmética $\\ge$ la media geométrica.",
-        "(a + b + c)/3 ≥ ∛(abc).",
-        "∛(abc) $= \\sqrt[3]{8} = 2$.",
+        "$(a + b + c)/3 \\ge \\sqrt[3]{abc}$.",
+        "$\\sqrt[3]{abc} = \\sqrt[3]{8} = 2$.",
         "$a + b + c \\ge 3\\cdot 2 = 6$, con igualdad cuando a $= b = c = 2$.",
         "El mínimo es 6."
       ],
@@ -19051,7 +19051,7 @@
         "$32 = 2^5$.",
         "$x = 5$."
       ],
-      "solucion": "2ˣ = 32 = 2⁵ ⇒ x = 5. Verificado con Python.",
+      "solucion": "$2^x = 32 = 2^5 \\Rightarrow x = 5$. Verificado con Python.",
       "explicacion": "El logaritmo es la función inversa de la exponencial: deshace la potencia para despejar el exponente. Resolver 2ˣ = 32 es leer el exponente de 32 en base 2.",
       "tiempo_estimado": 6,
       "conceptos": [
@@ -19586,7 +19586,7 @@
         "Elige 5 de los 10 huecos: C(10, 5).",
         "$= 252$."
       ],
-      "solucion": "Por estrellas y barras, las formas de repartir 11 paletas entre 6 niños (cada uno $\\ge 1$) son $C(10,5) = 252$. Verificado con Python.",
+      "solucion": "Por estrellas y barras, las formas de repartir 11 paletas entre 6 niños (cada uno $\\ge 1$) son $\\binom{10}{5} = 252$. Verificado con Python.",
       "explicacion": "Cada reparto equivale a elegir dónde poner las barras separadoras entre las paletas. La fórmula $C(n-1, k-1)$ cuenta esas elecciones.",
       "tiempo_estimado": 12,
       "conceptos": [
@@ -19833,7 +19833,7 @@
       "enunciado": "¿Cuántos enteros del 1 al 100 NO son divisibles ni por 2 ni por 5?",
       "hints": [
         "Cuenta el complemento con PIE: los divisibles por 2 o por 5, y resta del total.",
-        "Divisibles por 2 o por $5 = 50 + 20 -$ (divisibles por 10) = 50 + 20 − 10 = 60.",
+        "Divisibles por 2 o por 5 $= 50 + 20 - (\\text{divisibles por 10}) = 50 + 20 - 10 = 60$.",
         "El total es 100.",
         "Los que NO son divisibles ni por 2 ni por $5 = 100 - 60$.",
         "$= 40$."
@@ -19871,7 +19871,7 @@
         "Cuenta el complemento con PIE: las permutaciones que SÍ fijan al menos a alguien.",
         "Total de permutaciones de $4: 4! = 24$. Resta las que tienen algún punto fijo (alguien con su sombrero).",
         "Por PIE: fijos $= C(4,1)\\cdot 3! - C(4,2)\\cdot 2! + C(4,3)\\cdot 1! - C(4,4)\\cdot 0! = 24 - 12 + 4 - 1 = 15$.",
-        "Sin ningún punto fijo $= 24 - 15 = 9$. (Es el número de 'desarreglos$' D_4$.)",
+        "Sin ningún punto fijo $= 24 - 15 = 9$. (Es el número de 'desarreglos' $D_4$.)",
         "La respuesta es 9."
       ],
       "solucion": "Los desarreglos de 4 elementos son $D_4 = 4!(1 - 1/1! + 1/2! - 1/3! + 1/4!) = 9$ (también $24 - 15$ por PIE). Verificado con Python.",
@@ -19942,7 +19942,7 @@
       "hints": [
         "Usa la linealidad de la esperanza: define una variable indicadora por cada posición.",
         "Sea $X_i = 1$ si la posición i tiene al número i, y 0 si no. El total de puntos fijos es $X_1 + \\cdots + X_{10}$.",
-        "$E[X_i] = P$(la posición i tiene al número i) = 1/10.",
+        "$E[X_i] = P(\\text{la posición } i \\text{ tiene al número } i) = 1/10$.",
         "Por linealidad, E[total$] = 10 \\cdot (1/10)$.",
         "$= 1$."
       ],
@@ -20013,7 +20013,7 @@
       "enunciado": "Se lanzan dos dados equilibrados. Dado que el PRIMER dado muestra un número par, ¿cuál es la probabilidad de que la suma sea 7?",
       "hints": [
         "Probabilidad condicional: P(suma 7 | primer par) = P(suma 7 Y primer par)/P(primer par).",
-        "El primer dado par (2, 4, 6) ocurre con probabilidad 1/2 (18 de 36 resultados).",
+        "El primer dado par (2, 4, 6) ocurre con probabilidad $1/2$ (18 de 36 resultados).",
         "Para suma 7 con primer par: $(2,5), (4,3), (6,1) \\to 3$ resultados favorables.",
         "P(suma 7 y primer par) $= 3/36 = 1/12$.",
         "$P = (1/12)/(1/2) = 1/6$."
@@ -20050,8 +20050,8 @@
       "hints": [
         "Usa la ley de la probabilidad total: promedia la probabilidad de verde en cada recipiente, ponderando por elegirlo.",
         "Cada recipiente se elige con probabilidad $1/3$.",
-        "P(verde | I) = 4/12 = 1/3; P(verde | II) = P(verde | III) $= 4/6 = 2/3$.",
-        "P(verde) = (1/3)(1/3) + (1/3)(2/3) + (1/3)(2/3).",
+        "$P(\\text{verde} \\mid I) = 4/12 = 1/3$; $P(\\text{verde} \\mid II) = P(\\text{verde} \\mid III) = 4/6 = 2/3$.",
+        "$P(\\text{verde}) = (1/3)(1/3) + (1/3)(2/3) + (1/3)(2/3)$.",
         "$= 1/9 + 2/9 + 2/9 = 5/9$."
       ],
       "solucion": "Por probabilidad total, P(verde) $= (1/3)(1/3) + (1/3)(2/3) + (1/3)(2/3) = 5/9$. Verificado con Python.",
@@ -20331,7 +20331,7 @@
       "dificultad": 4,
       "enunciado": "Del conjunto ${1, 2, 3, \\dots , 10}$, ¿cuántos números hay que elegir para GARANTIZAR que entre los elegidos uno sea múltiplo de otro?",
       "hints": [
-        "Escribe cada número como (potencia de 2)·(parte impar). Los casilleros son las partes impares.",
+        "Escribe cada número como (potencia de 2)$\\cdot$(parte impar). Los casilleros son las partes impares.",
         "Las partes impares posibles en $1-10$ son 1, 3, 5, 7, 9: cinco casilleros.",
         "Dos números con la misma parte impar cumplen que uno divide al otro (difieren solo en potencias de 2).",
         "En el peor caso eliges 5 números con partes impares distintas; el sexto repite una parte impar.",
@@ -20686,11 +20686,11 @@
       "hints": [
         "Razona hacia atrás con el teorema de Bayes: de la evidencia (positivo) a la causa (enfermo).",
         "P(enfermo) = 0.01, P(+|enfermo) = 0.9, P(+|sano) $= 0.1$.",
-        "P(+ y enfermo) = 0.01·0.9 = 0.009; P(+ y sano) $= 0.99\\cdot 0.1 = 0.099$.",
-        "P(enfermo | +) = 0.009 / (0.009 + 0.099) = 0.009/0.108.",
+        "$P(+ \\text{ y enfermo}) = 0.01\\cdot0.9 = 0.009$; $P(+ \\text{ y sano}) = 0.99\\cdot 0.1 = 0.099$.",
+        "$P(\\text{enfermo} \\mid +) = 0.009 / (0.009 + 0.099) = 0.009/0.108$.",
         "$= 1/12 \\approx 8.3%$."
       ],
-      "solucion": "Por Bayes, P(enfermo|+) = (0.01·0.9)/(0.01·0.9 + 0.99·0.1) = 0.009/0.108 = 1/12 ≈ 8.3%. Verificado con Python.",
+      "solucion": "Por Bayes, $P(\\text{enfermo}\\mid+) = (0.01\\cdot0.9)/(0.01\\cdot0.9 + 0.99\\cdot0.1) = 0.009/0.108 = 1/12 \\approx 8.3\\%$. Verificado con Python.",
       "explicacion": "Bayes invierte la condicional: de P(+|enfermo) a P(enfermo|+). Pese a una prueba 'buena', la baja prevalencia hace que la mayoría de positivos sean falsos (paradoja de la tasa base).",
       "tiempo_estimado": 22,
       "conceptos": [
@@ -20757,9 +20757,9 @@
       "enunciado": "Tienes dos monedas: una normal (cara/cruz) y otra con dos caras. Eliges una al azar, la lanzas y sale cara. ¿Cuál es la probabilidad de que hayas elegido la moneda de dos caras?",
       "hints": [
         "Razona hacia atrás con Bayes: de la evidencia (salió cara) a la causa (cuál moneda).",
-        "P(dos caras) = 1/2, P(normal) = 1/2. P(cara | dos caras) = 1, P(cara | normal) $= 1/2$.",
-        "P(cara y dos caras) = 1/2·1 = 1/2; P(cara y normal) $= 1/2\\cdot 1/2 = 1/4$.",
-        "P(dos caras | cara) = (1/2) / (1/2 + 1/4) = (1/2)/(3/4).",
+        "$P(\\text{dos caras}) = 1/2$, $P(\\text{normal}) = 1/2$. $P(\\text{cara} \\mid \\text{dos caras}) = 1$, $P(\\text{cara} \\mid \\text{normal}) = 1/2$.",
+        "$P(\\text{cara y dos caras}) = 1/2\\cdot1 = 1/2$; $P(\\text{cara y normal}) = 1/2\\cdot 1/2 = 1/4$.",
+        "$P(\\text{dos caras} \\mid \\text{cara}) = (1/2) / (1/2 + 1/4) = (1/2)/(3/4)$.",
         "$= 2/3$."
       ],
       "solucion": "Por Bayes, P(dos caras | cara) $= (1/2\\cdot 1)/(1/2\\cdot 1 + 1/2\\cdot 1/2) = (1/2)/(3/4) = 2/3$. Verificado con Python.",
@@ -21038,12 +21038,12 @@
       "enunciado": "Si $z = 7 - 3i$, calcula z + z̄ (la suma de z con su conjugado).",
       "hints": [
         "El conjugado de a + bi es a $-$ bi; piensa qué pasa con la parte imaginaria al sumarlos.",
-        "z̄ = 7 + 3i.",
-        "z + z̄ = (7 − 3i) + (7 + 3i).",
+        "$\\bar z = 7 + 3i$.",
+        "$z + \\bar z = (7 - 3i) + (7 + 3i)$.",
         "Las partes imaginarias se cancelan: queda $7 + 7$.",
         "$= 14$ (que es $2\\cdot$Re(z))."
       ],
-      "solucion": "z + z̄ = (7 − 3i) + (7 + 3i) = 14 = 2·Re(z). Verificado con Python.",
+      "solucion": "$z + \\bar z = (7 - 3i) + (7 + 3i) = 14 = 2\\cdot\\operatorname{Re}(z)$. Verificado con Python.",
       "explicacion": "Sumar un complejo con su conjugado siempre da un número real ($2\\cdot$parte real): la parte imaginaria es invariante y se anula. Es la base para extraer la parte real.",
       "tiempo_estimado": 8,
       "conceptos": [
@@ -21073,14 +21073,14 @@
       "dificultad": 3,
       "enunciado": "Desde un punto exterior a una circunferencia se traza una recta tangente y una recta secante. La secante corta la circunferencia a distancias 3 y 12 del punto exterior. ¿Cuánto mide el segmento tangente?",
       "hints": [
-        "La 'potencia del punto' es la misma para cualquier recta que pase por el punto: tangente$^2 =$ (segmento externo de la secante)·(secante completa).",
-        "Para la secante, el producto es (distancia al primer corte)·(distancia al segundo corte) $= 3\\cdot 12$.",
+        "La 'potencia del punto' es la misma para cualquier recta que pase por el punto: $\\text{tangente}^2 = (\\text{segmento externo de la secante})\\cdot(\\text{secante completa})$.",
+        "Para la secante, el producto es $(\\text{distancia al primer corte})\\cdot(\\text{distancia al segundo corte}) = 3\\cdot 12$.",
         "$= 36$.",
         "Para la tangente, ese producto es el cuadrado del segmento tangente: $t^2 = 36$.",
         "$t = 6$."
       ],
       "solucion": "Por la potencia de un punto, $t^2 = 3\\cdot 12 = 36$, así que $t = 6$. Verificado con Python.",
-      "explicacion": "La potencia de un punto exterior es invariante: vale $t^2$ para la tangente y (externo)·(total) para cualquier secante. Igualar ambas da la tangente.",
+      "explicacion": "La potencia de un punto exterior es invariante: vale $t^2$ para la tangente y $(\\text{externo})\\cdot(\\text{total})$ para cualquier secante. Igualar ambas da la tangente.",
       "tiempo_estimado": 14,
       "conceptos": [
         "potencia de un punto",
@@ -21257,7 +21257,7 @@
         "Como $8 = 2^3$, log$_8(2) = 1/3$.",
         "$= 5\\cdot (1/3) = 5/3$."
       ],
-      "solucion": "log$_8(32) =$ log(32)/log(8) = (5·log2)/(3·log2) = 5/3. Verificado con Python.",
+      "solucion": "$\\log_8(32) = \\log(32)/\\log(8) = (5\\cdot\\log2)/(3\\cdot\\log2) = 5/3$. Verificado con Python.",
       "explicacion": "La fórmula de cambio de base hace invariante el cociente log(M)/log(N) bajo la base elegida: log$_8(32) = 5/3$ sin importar en qué base se calcule.",
       "tiempo_estimado": 14,
       "conceptos": [
@@ -21284,16 +21284,16 @@
       "titulo": "El cuadrado del módulo",
       "estrategia": "invariantes",
       "dificultad": 2,
-      "enunciado": "Para el número complejo $z = 2 + i$, calcula z·z̄ (el producto de z por su conjugado).",
+      "enunciado": "Para el número complejo $z = 2 + i$, calcula $z\\cdot\\bar z$ (el producto de $z$ por su conjugado).",
       "hints": [
         "El producto de un complejo por su conjugado es siempre un número real: el cuadrado de su módulo.",
-        "z·z̄ = (a + bi)(a − bi) $= a^2 + b^2$.",
+        "$z\\cdot\\bar z = (a + bi)(a - bi) = a^2 + b^2$.",
         "Aquí a $= 2$ y $b = 1$.",
         "$= 2^2 + 1^2 = 4 + 1$.",
         "$= 5$ (que es $|z|^2$)."
       ],
-      "solucion": "z·z̄ = 2² + 1² = 5 = |z|². Verificado con Python.",
-      "explicacion": "z·z̄ = |z|² es real e invariante: elimina la parte imaginaria. Es la base de la división de complejos (racionalizar multiplicando por el conjugado).",
+      "solucion": "$z\\cdot\\bar z = 2^2 + 1^2 = 5 = |z|^2$. Verificado con Python.",
+      "explicacion": "$z\\cdot\\bar z = |z|^2$ es real e invariante: elimina la parte imaginaria. Es la base de la división de complejos (racionalizar multiplicando por el conjugado).",
       "tiempo_estimado": 8,
       "conceptos": [
         "módulo al cuadrado",
@@ -21785,7 +21785,7 @@
       "enunciado": "Dos números positivos suman 20. ¿Cuál es el mayor valor posible de su producto?",
       "hints": [
         "Con suma fija, el producto de dos positivos es máximo cuando son iguales (AM-GM).",
-        "Por AM-GM, √(ab) $\\le (a + b)/2 = 10$.",
+        "Por AM-GM, $\\sqrt{ab} \\le (a + b)/2 = 10$.",
         "Así que ab $\\le 100$.",
         "La igualdad ocurre cuando a $= b = 10$.",
         "El producto máximo es 100."
@@ -21890,7 +21890,7 @@
       "enunciado": "Entre todos los rectángulos de área 100, ¿cuál tiene el menor perímetro y cuánto vale?",
       "hints": [
         "A área fija, el perímetro es mínimo cuando el rectángulo es un cuadrado (AM-GM).",
-        "Si los lados son l y w con $l\\cdot w = 100$, por AM-GM l + w ≥ 2√(lw) $= 2\\sqrt{100} = 20$.",
+        "Si los lados son $l$ y $w$ con $l\\cdot w = 100$, por AM-GM $l + w \\ge 2\\sqrt{lw} = 2\\sqrt{100} = 20$.",
         "El perímetro $2(l + w) \\ge 40$.",
         "La igualdad ocurre cuando $l = w = 10$.",
         "El perímetro mínimo es 40."
@@ -21960,7 +21960,7 @@
       "enunciado": "Dos números positivos x e y cumplen $x\\cdot y = 36$. ¿Cuál es el menor valor posible de $x + y$?",
       "hints": [
         "A producto fijo, la suma es mínima cuando los números son iguales (AM-GM).",
-        "Por AM-GM, x + y ≥ 2√(xy).",
+        "Por AM-GM, $x + y \\ge 2\\sqrt{xy}$.",
         "$= 2\\sqrt{36} = 2\\cdot 6$.",
         "La igualdad ocurre cuando $x =$ y $= 6$.",
         "La suma mínima es 12."
@@ -22100,11 +22100,11 @@
       "hints": [
         "Expresa 625 como potencia de 5 para igualar exponentes (o usa el logaritmo).",
         "$625 = 5^4$.",
-        "Entonces 5ˣ = 5⁴.",
+        "Entonces $5^x = 5^4$.",
         "Como las bases coinciden, $x = 4$.",
         "$x = 4$."
       ],
-      "solucion": "5ˣ = 625 = 5⁴ ⇒ x = 4. Verificado con Python.",
+      "solucion": "$5^x = 625 = 5^4 \\Rightarrow x = 4$. Verificado con Python.",
       "explicacion": "Resolver una ecuación exponencial es deshacer la potencia: igualar exponentes cuando las bases coinciden, o aplicar el logaritmo (su inverso).",
       "tiempo_estimado": 8,
       "conceptos": [
@@ -22277,7 +22277,7 @@
         "Buscas z tal que $z^2 = -9 = 9\\cdot (-1)$.",
         "$z = \\pm \\sqrt{9}\\cdot \\sqrt{(-1)} = \\pm 3i$.",
         "La solución con parte imaginaria positiva es 3i.",
-        "Comprueba: (3i)² = 9·i² = −9. ✓"
+        "Comprueba: $(3i)^2 = 9\\cdot i^2 = -9$. ✓"
       ],
       "solucion": "$z^2 = -9 \\Rightarrow z = \\pm 3i$; la de parte imaginaria positiva es 3i (pues $(3i)^2 = -9$). Verificado con Python.",
       "explicacion": "Los números complejos permiten resolver ecuaciones sin solución real: $\\sqrt{(-9)} = 3i$. Resolver $z^2 = -9$ es invertir el cuadrado en el plano complejo.",
@@ -22912,7 +22912,7 @@
       "dificultad": 3,
       "enunciado": "Usa el teorema de DeMoivre para calcular (cos $30^\\circ + i\\cdot$sen 30°)³.",
       "hints": [
-        "DeMoivre: (cos $\\theta + i$ sen θ)ⁿ = cos(nθ) + i sen(nθ). Elevar una potencia multiplica el ángulo.",
+        "DeMoivre: $(\\cos\\theta + i\\operatorname{sen}\\theta)^n = \\cos(n\\theta) + i\\operatorname{sen}(n\\theta)$. Elevar una potencia multiplica el ángulo.",
         "Aquí $\\theta = 30^\\circ$ y $n = 3$, así que el ángulo se triplica: $3\\cdot 30^\\circ = 90^\\circ$.",
         "Resultado $=$ cos 90° + i sen 90°.",
         "cos $90^\\circ = 0$ y sen $90^\\circ = 1$.",
@@ -23443,8 +23443,8 @@
       "enunciado": "Tres números positivos a, b, c cumplen $a\\cdot b\\cdot c = 27$. ¿Cuál es el menor valor posible de a $+ b + c$?",
       "hints": [
         "Aplica AM-GM con tres variables.",
-        "(a + b + c)/3 ≥ ∛(abc).",
-        "∛(abc) $= \\sqrt[3]{27} = 3$.",
+        "$(a + b + c)/3 \\ge \\sqrt[3]{abc}$.",
+        "$\\sqrt[3]{abc} = \\sqrt[3]{27} = 3$.",
         "$a + b + c \\ge 3\\cdot 3 = 9$, con igualdad cuando a $= b = c = 3$.",
         "El mínimo es 9."
       ],
@@ -23548,8 +23548,8 @@
       "enunciado": "Para un ángulo agudo $\\theta$, ¿cuál es el valor mínimo de tan$^2\\theta +$ cot$^2\\theta$?",
       "hints": [
         "tan $\\theta$ y cot $\\theta$ son recíprocos, así que su producto es 1: aplica AM-GM a sus cuadrados.",
-        "tan$^2\\theta \\cdot$ cot$^2\\theta =$ (tan $\\theta \\cdot$cot θ)² = 1² = 1.",
-        "Por AM-GM, tan$^2\\theta +$ cot²θ ≥ 2·√(tan$^2\\theta \\cdot$cot$^2\\theta$).",
+        "$\\tan^2\\theta \\cdot \\cot^2\\theta = (\\tan\\theta \\cdot \\cot\\theta)^2 = 1^2 = 1$.",
+        "Por AM-GM, $\\tan^2\\theta + \\cot^2\\theta \\ge 2\\cdot\\sqrt{\\tan^2\\theta \\cdot \\cot^2\\theta}$.",
         "$= 2\\cdot \\sqrt{1} = 2$, con igualdad cuando tan$^2\\theta =$ cot$^2\\theta$, es decir $\\theta = 45^\\circ$.",
         "El mínimo es 2."
       ],
@@ -23657,9 +23657,9 @@
         "Recuerda que sen $30^\\circ = 1/2$.",
         "En el rango [0°, 90°] el seno es inyectivo, así que hay una única solución.",
         "$\\theta = 30^\\circ$.",
-        "Comprueba: sen 30° = 1/2. ✓"
+        "Comprueba: $\\operatorname{sen} 30^\\circ = 1/2$. ✓"
       ],
-      "solucion": "sen $\\theta = 1/2$ en [0°, 90°] ⇒ θ = 30° (= arcsen$(1/2)$). Verificado con Python.",
+      "solucion": "$\\operatorname{sen}\\theta = 1/2$ en $[0^\\circ, 90^\\circ] \\Rightarrow \\theta = 30^\\circ$ ($= \\operatorname{arcsen}(1/2)$). Verificado con Python.",
       "explicacion": "Resolver una ecuación trigonométrica es aplicar la función inversa (arcoseno). En [0°, 90°] el seno es inyectivo, así que la solución es única.",
       "tiempo_estimado": 8,
       "conceptos": [
@@ -23694,7 +23694,7 @@
         "$\\theta = 90^\\circ$.",
         "Comprueba: cos 90° = 0. ✓"
       ],
-      "solucion": "cos $\\theta = 0$ en [0°, 180°] ⇒ θ = 90° (= arccos(0)). Verificado con Python.",
+      "solucion": "$\\cos\\theta = 0$ en $[0^\\circ, 180^\\circ] \\Rightarrow \\theta = 90^\\circ$ ($= \\arccos(0)$). Verificado con Python.",
       "explicacion": "El arcocoseno invierte el coseno: cos $\\theta = 0$ corresponde a $\\theta = 90^\\circ$, donde el punto del círculo cruza el eje vertical.",
       "tiempo_estimado": 8,
       "conceptos": [
@@ -23729,7 +23729,7 @@
         "$\\theta = 45^\\circ$.",
         "Comprueba: tan 45° = 1. ✓"
       ],
-      "solucion": "tan $\\theta = 1$ (agudo) ⇒ θ = 45° (= arctan 1). Verificado con Python.",
+      "solucion": "$\\tan\\theta = 1$ (agudo) $\\Rightarrow \\theta = 45^\\circ$ ($= \\arctan 1$). Verificado con Python.",
       "explicacion": "El arcotangente invierte la tangente: tan $\\theta = 1$ ocurre donde seno y coseno coinciden, es decir $\\theta = 45^\\circ$.",
       "tiempo_estimado": 8,
       "conceptos": [
@@ -23904,9 +23904,9 @@
         "$8 = 2^3$.",
         "Entonces 2ˣ = 2³.",
         "$x = 3$.",
-        "$f^{-1}(8) = 3$ (que es log$_2 8$)."
+        "$f^{-1}(8) = 3$ (que es $\\log_2 8$)."
       ],
-      "solucion": "$f^{-1}(8)$ resuelve 2ˣ = 8 = 2³ ⇒ x = 3 (= log$_2 8$). Verificado con Python.",
+      "solucion": "$f^{-1}(8)$ resuelve $2^x = 8 = 2^3 \\Rightarrow x = 3$ ($= \\log_2 8$). Verificado con Python.",
       "explicacion": "La inversa de la exponencial 2ˣ es el logaritmo en base 2. Hallar $f^{-1}(8)$ es resolver hacia atrás la ecuación 2ˣ = 8.",
       "tiempo_estimado": 8,
       "conceptos": [
@@ -23975,7 +23975,7 @@
         "sen $\\theta =$ cos $\\theta \\Rightarrow$ sen $\\theta /$cos $\\theta = 1 \\Rightarrow$ tan $\\theta = 1$.",
         "Busca el ángulo agudo con tangente 1.",
         "$\\theta = 45^\\circ$.",
-        "Comprueba: sen $45^\\circ =$ cos 45° = √2/2. ✓"
+        "Comprueba: $\\operatorname{sen} 45^\\circ = \\cos 45^\\circ = \\sqrt{2}/2$. ✓"
       ],
       "solucion": "sen $\\theta =$ cos $\\theta \\Rightarrow$ tan $\\theta = 1 \\Rightarrow \\theta = 45^\\circ$. Verificado con Python.",
       "explicacion": "Convertir una ecuación de seno y coseno en una de tangente (dividiendo) facilita despejar el ángulo. sen $=$ cos solo en 45° dentro de [0°, 90°].",
@@ -24010,7 +24010,7 @@
         "z debe tener módulo $\\sqrt{1} = 1$ y ángulo $90^\\circ /2 = 45^\\circ$.",
         "$z =$ cos $45^\\circ + i\\cdot$sen $45^\\circ = (\\sqrt{2}/2) + (\\sqrt{2}/2)i$.",
         "También se escribe $z = (1 + i)/\\sqrt{2}$.",
-        "Comprueba: ((1 + i)/√2)² = (1 + i)²/2 = 2i/2 = i. ✓"
+        "Comprueba: $((1 + i)/\\sqrt{2})^2 = (1 + i)^2/2 = 2i/2 = i$. ✓"
       ],
       "solucion": "En polar, $i = 1\\angle 90^\\circ$; su raíz cuadrada es $1\\angle 45^\\circ = (1 + i)/\\sqrt{2}$, y en efecto $((1+i)/\\sqrt{2})^2 = i$. Verificado con Python.",
       "explicacion": "Sacar raíces complejas es invertir DeMoivre: se toma la raíz del módulo y se DIVIDE el ángulo entre n. La raíz de i con parte real positiva es $(1+i)/\\sqrt{2}$.",
