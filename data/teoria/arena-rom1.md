@@ -1,5 +1,11 @@
 # Reglas de ML (Google) I: antes del ML y tu primer pipeline
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+La mayoría de los sistemas de ML que fracasan no lo hacen por un algoritmo malo, sino por mala **ingeniería**: pipelines frágiles, métricas que nadie instrumentó, fallos que no lanzan ninguna alerta. Esta lección destila, desde cero, las primeras Reglas de ML de Google (Zinkevich) en una secuencia accionable: cuándo *no* usar ML todavía, cómo montar tu primer pipeline simple y fiable, y cómo monitorear lo que de verdad se rompe. La consigna que lo gobierna todo: "haz ML como el gran ingeniero que eres, no como el experto en ML que no eres".
+
+Al terminar podrás: (1) decidir cuándo una heurística simple basta y cuándo toca pasar a ML; (2) montar un primer modelo simple con la infraestructura correcta y testearla aparte; (3) reconocer el fallo más traicionero del ML —el **silencioso**, donde el modelo se adapta a datos podridos sin lanzar error—; y (4) saber si un problema merece alerta por email o un page. Cada regla entra por un caso concreto (un filtro de spam).
+
 La consigna de Zinkevich: **«haz machine learning como el gran ingeniero que eres, no como el gran experto en ML que no eres»**. La mayoría de los problemas son de ingeniería; casi todas las ganancias vienen de **buenas features**, no de algoritmos sofisticados. Enfoque básico: (1) pipeline sólido de punta a punta, (2) objetivo razonable, (3) features de sentido común de forma simple, (4) mantener el pipeline sólido. Diverge solo cuando se agoten los trucos simples: **añadir complejidad frena los lanzamientos futuros**.
 
 ## Antes del ML (Reglas 1-3)

@@ -1,5 +1,11 @@
 # Reglas de ML (Google) II: tu primer objetivo y feature engineering
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Con el pipeline ya en pie, las dos decisiones que más determinan tu primer modelo son **qué objetivo optimiza** y **con qué features**. Esta lección destila, desde cero, las Reglas 12-22 de Google en criterios concretos: por qué el primer objetivo debe ser simple y observable (y por qué no debes pedirle al ML que adivine si el usuario "es feliz"), y por qué empezar con features observadas, escaladas al tamaño de tus datos, vence a los embeddings profundos prematuros.
+
+Al terminar podrás: (1) elegir un objetivo simple, observable y atribuible que sea proxy del verdadero, y un modelo interpretable/calibrado para depurar; (2) entender por qué las features observadas van antes que las aprendidas; (3) combinar features por discretización y cruces; y (4) escalar el número de features al tamaño de los datos (R21). Cada regla entra por un caso. Continúa la disciplina de [[arena-rom1]].
+
 ## Tu primer objetivo (Reglas 12-15)
 
 Un **objetivo** es el número que tu algoritmo intenta optimizar; una **métrica** es cualquier número que el sistema reporta (importe o no).

@@ -21,10 +21,10 @@
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
-| 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
+| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 4/32 (lote 1 v100) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **72 / 118 hechas** |
+| | **118** | **76 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -115,12 +115,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-s1` — Del modelo al sistema: skew, drift y rollback
 - [x] `arena-cds4` — Toolkit práctico: visualización, storytelling y Git
 
-### 6. ml-systems — ML Systems y feature pipelines (32) — ⬜
+### 6. ml-systems — ML Systems y feature pipelines (32) — 🟡 4/32 (lote 1 v100)
 
-- [ ] `arena-rom1` — Antes del ML y tu primer pipeline
-- [ ] `arena-dmls1` — Encuadre de problemas de ML: objetivos y tipos de tarea
-- [ ] `arena-rom2` — Tu primer objetivo y feature engineering
-- [ ] `arena-dmls2` — Datos de entrenamiento: muestreo, etiquetas y desbalance
+- [x] `arena-rom1` — Antes del ML y tu primer pipeline
+- [x] `arena-dmls1` — Encuadre de problemas de ML: objetivos y tipos de tarea
+- [x] `arena-rom2` — Tu primer objetivo y feature engineering
+- [x] `arena-dmls2` — Datos de entrenamiento: muestreo, etiquetas y desbalance
 - [ ] `arena-mldp1` — Patrones de representación de datos y de problemas
 - [ ] `arena-rml2` — Datos como pasivo y sistemas de entrenamiento confiables
 - [ ] `arena-mldp2` — Ensembles, cascada, clase neutra y rebalanceo

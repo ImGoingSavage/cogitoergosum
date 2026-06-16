@@ -435,6 +435,17 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   conductual (4) como cortos. Patrón confirmado: clusters narrativos (pst/isl/h*) = solo
   espina; clusters de fichas secas (dg/cb) = reescritura + math a LaTeX. Revisar el estilo
   de cada lección de ml-systems antes de decidir el nivel de trabajo.
+- 🟡 **Cluster 6 (ml-systems) reescrito DESDE CERO — EN CURSO (sw.js v100).** Edgar pidió
+  hacerlo tras causal-health (2026-06-15). Es el cluster **más grande (32)**. Estilo: como
+  pst/isl/h*, ya están bien escritas y narrativas → trabajo from-zero = **solo añadir la
+  espina** "De qué trata… y qué sabrás hacer" (sin reescribir cuerpo; anti-relleno). **Lote 1
+  (v100):** `rom1` (Reglas de ML Google I: antes del ML/primer pipeline), `dmls1` (encuadre
+  de problemas/objetivos), `rom2` (Reglas II: primer objetivo/feature eng), `dmls2` (datos de
+  entrenamiento: muestreo/labels/desbalance). Validado: smoke threw=0, KaTeX 0 throws.
+  **Pendiente (28):** orden didáctico en `BACKLOG-OLEADA-DESDE-CERO.md` — siguen `mldp1,
+  rml2, mldp2, mldp3, rom4, dmls3, rml3, rom3, dmls4, rml1` (lotes 2-3), `sre1-4, rml4,
+  obs1-4` (lotes 4-6), `htd1-4, mldp4, iml1-4` (lotes 7-8). Trabajar en lotes de 4-5,
+  validar render+KaTeX, subir VERSION, push, marcar backlog+HANDOFF cada lote.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

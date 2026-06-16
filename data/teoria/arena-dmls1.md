@@ -1,5 +1,11 @@
 # Encuadre de problemas de ML: objetivos y tipos de tarea
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Antes de elegir un modelo, hay una decisión que decide el destino del proyecto: **cómo encuadras el problema**. Un modelo con accuracy espectacular muere joven si no mueve ninguna métrica de negocio; un sistema con objetivos en conflicto se vuelve inmantenible si los metes en una sola loss. Esta lección construye, desde cero, el arte del encuadre: atar el ML al negocio, desacoplar objetivos que tiran en direcciones opuestas, y elegir el tipo de tarea pensando en cuánto costará *mantener* el sistema.
+
+Al terminar podrás: (1) explicar por qué la métrica de ML debe mapear a una de negocio; (2) desacoplar objetivos en conflicto (un modelo por objetivo, combinados al rankear) para reajustar sin reentrenar; (3) distinguir multiclase de multietiqueta; y (4) reconocer cuándo reformular clasificación como regresión/ranking ahorra reentrenamientos. Cada idea entra por un ejemplo de producto. Conecta con la disciplina de las Reglas de ML ([[arena-rom1]]).
+
 ## Objetivo de negocio vs objetivo de ML
 
 El error más común de los proyectos de ML que mueren jóvenes: optimizar **métricas de ML** (accuracy, F1) sin atarlas a **métricas de negocio** (ingresos, retención). A la dirección solo le importan las de negocio. Antes de modelar hay que responder: *¿cómo mueve este modelo una métrica de negocio?* Cuando el mapeo es directo —click-through de anuncios, detección de fraude— el ML prospera; cuando es difuso, el proyecto se cancela.

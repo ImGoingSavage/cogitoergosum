@@ -1,5 +1,11 @@
 # Datos de entrenamiento: muestreo, etiquetas y desbalance
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un modelo no es mejor que los datos con que se entrena, y construir esos datos esconde tres decisiones difíciles: **cómo muestrear**, **cómo etiquetar** y **qué hacer con el desbalance**. Esta lección las construye desde cero: las familias de muestreo (incluido el reservoir sampling para streams de tamaño desconocido y el importance sampling para distribuciones inaccesibles), las fuentes de etiquetas (de las caras hand labels a las natural labels gratis del comportamiento), y por qué el accuracy miente cuando una clase es rara.
+
+Al terminar podrás: (1) describir el reservoir sampling y por qué garantiza uniformidad sin conocer $n$; (2) usar importance sampling (reponderar por $P/Q$) y reconocerlo como la misma maquinaria del IP weighting causal; (3) aprovechar natural labels y entender el feedback-loop length; y (4) abandonar el accuracy por F1/AUC con resampling o weighted loss ante el desbalance. Cada técnica entra por un ejemplo.
+
 ## Muestreo: dos familias
 
 - **No probabilístico (nonprobability):** la selección no se basa en ninguna probabilidad — por conveniencia, por bola de nieve, por juicio, por cuotas. Es rápido y barato para arrancar, pero las muestras **no son representativas** y arrastran sesgos al modelo. (Muchos datasets famosos se armaron así.)
