@@ -1,5 +1,11 @@
 # Datos como pasivo y principios de sistemas de entrenamiento confiables
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+"Más datos siempre es mejor" es una de las medias verdades más peligrosas del ML. Esta lección construye, desde cero, la cara incómoda: cada dato es también un **pasivo** (legal, ético, de borrado), anonimizar es casi imposible, y los pipelines de ML son **inusualmente sensibles** a pérdidas *sesgadas* de datos. Luego enuncia los principios de confiabilidad que asumen que todo se reentrenará, todo se romperá y todo necesitará rollback.
+
+Al terminar podrás: (1) entender por qué quitar el nombre no anonimiza (Sweeney: 87% identificable con género+edad+CP) y cómo se borra "de verdad" (cifrar y tirar la llave); (2) preguntar si una pérdida de datos es sesgada (MCAR vs MAR/MNAR) antes de ignorarla; (3) saber qué dos problemas resuelve un feature store; y (4) enunciar los principios de entrenamiento confiable (fallback, rollback, versionado). Cada idea entra por un ejemplo.
+
 ## El dato también es un pasivo
 
 "Más datos == mejor" es falso si los datos exponen **riesgo legal/ético**. Recolectar, almacenar y curar expone complejidad: hay que cumplir leyes, restringir el acceso (incluso a empleados), anonimizar y **poder borrar**.

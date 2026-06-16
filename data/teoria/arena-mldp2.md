@@ -1,5 +1,11 @@
 # Ensembles, cascada, clase neutra y rebalanceo
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando un solo modelo no basta, hay patrones probados para combinarlos o reestructurar el problema. Esta lección construye, desde cero, cuatro: los **ensembles** (bagging para varianza, boosting para sesgo), la **cascada** (un modelo para lo típico, otro para lo raro), la **clase neutra** (un "Maybe" para casos ambiguos) y el **rebalanceo** ante clases desbalanceadas —donde el accuracy miente descaradamente—. Todo cuelga del eje sesgo-varianza.
+
+Al terminar podrás: (1) descomponer el error y elegir el ensemble que ataca cada parte; (2) entender por qué una cascada no es solo un ensemble (los modelos posteriores se entrenan sobre predicciones); (3) saber cuándo una clase neutra rescata casos ambiguos; y (4) reconocer la paradoja del accuracy (95% prediciendo siempre "no fraude") y usar precision/recall/F1. Cada patrón entra por un ejemplo, y la tasa base conecta con [[arena-h13]].
+
 ## El error reducible: sesgo y varianza
 
 El error de un modelo = **irreducible** (ruido del dato/encuadre, no reducible) + **sesgo** (no aprende la relación → underfit) + **varianza** (no generaliza → overfit). Sesgo y varianza son el **error reducible**; subir complejidad baja sesgo pero sube varianza.

@@ -1,5 +1,11 @@
 # Patrones de representación de datos y de problemas
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Antes de que un modelo aprenda, alguien decidió **cómo representar** su entrada y su salida —y esa decisión, no el algoritmo, suele marcar la diferencia—. Esta lección construye, desde cero, los *design patterns* de representación: cómo manejar categóricas enormes (Hashed Feature), cómo capturar similitud (Embeddings), cómo darle no linealidad a un modelo lineal (Feature Cross) y cómo reencuadrar la salida (Reframing, Multilabel). Un *design pattern* nombra un problema recurrente y su solución probada, con sus trade-offs.
+
+Al terminar podrás: (1) elegir Hashed Feature para alta cardinalidad/cold-start y entender por qué subir buckets no vence la paradoja del cumpleaños; (2) saber cuándo un embedding (similitud) gana al hashing; (3) reencuadrar regresión↔clasificación según la incertidumbre y la alineación con el negocio; y (4) distinguir multiclase (softmax) de multilabel (sigmoid + multi-hot). Cada patrón entra por el problema que resuelve.
+
 Un *design pattern* de ML nombra un problema recurrente y su solución probada (con sus trade-offs). Estos seis representan la **entrada** y la **salida** del modelo.
 
 ## Hashed Feature — categóricas problemáticas

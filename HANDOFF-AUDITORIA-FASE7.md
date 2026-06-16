@@ -442,10 +442,12 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   (v100):** `rom1` (Reglas de ML Google I: antes del ML/primer pipeline), `dmls1` (encuadre
   de problemas/objetivos), `rom2` (Reglas II: primer objetivo/feature eng), `dmls2` (datos de
   entrenamiento: muestreo/labels/desbalance). Validado: smoke threw=0, KaTeX 0 throws.
-  **Pendiente (28):** orden didáctico en `BACKLOG-OLEADA-DESDE-CERO.md` — siguen `mldp1,
-  rml2, mldp2, mldp3, rom4, dmls3, rml3, rom3, dmls4, rml1` (lotes 2-3), `sre1-4, rml4,
-  obs1-4` (lotes 4-6), `htd1-4, mldp4, iml1-4` (lotes 7-8). Trabajar en lotes de 4-5,
-  validar render+KaTeX, subir VERSION, push, marcar backlog+HANDOFF cada lote.
+  **Lote 2 (v101):** `mldp1` (patrones de representación: hashed/embeddings/cross/reframing),
+  `rml2` (datos como pasivo, anonimización, confiabilidad), `mldp2` (ensembles/cascada/clase
+  neutra/rebalanceo), `mldp3` (patrones de entrenamiento y serving). **Pendiente (24):**
+  `rom4, dmls3, rml3, rom3, dmls4, rml1` (lote 3), `sre1-4, rml4, obs1-4` (lotes 4-6),
+  `htd1-4, mldp4, iml1-4` (lotes 7-8). Trabajar en lotes de 4-6, validar render+KaTeX, subir
+  VERSION, push, marcar backlog+HANDOFF cada lote.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

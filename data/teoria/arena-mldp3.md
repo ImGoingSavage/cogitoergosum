@@ -1,5 +1,11 @@
 # Patrones de entrenamiento y de serving resiliente
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Entrenar y servir un modelo a escala tiene su propio recetario de patrones probados. Esta lección construye, desde cero, los dos lados: en **entrenamiento**, cuándo sobreajustar a propósito (Useful Overfitting, incluido el sanity check de llevar un batch a pérdida 0), cómo guardar el estado completo (Checkpoints), reusar preentrenados (Transfer Learning) y distribuir; en **serving**, cómo exponer el modelo sin estado, por lotes, en dos fases (edge+nube) o con claves para casar salidas desordenadas.
+
+Al terminar podrás: (1) saber cuándo el Useful Overfitting es legítimo y usarlo como diagnóstico de bugs; (2) entender por qué un checkpoint no es el modelo exportado; (3) reusar un preentrenado congelando hasta el bottleneck; y (4) elegir entre stateless serving, batch, two-phase y keyed predictions según la latencia y la escala. Cada patrón entra por su problema. Conecta con la cascada de [[arena-mldp2]].
+
 ## Entrenamiento
 
 - **Useful Overfitting:** renunciar a la generalización y **sobreajustar a propósito** cuando (1) no hay ruido y (2) tienes el dataset **completo** (todas las entradas posibles). Caso típico: aproximar la solución de un **PDE/sistema dinámico** tabulable (sobreajustar = interpolar). También **overfit a un batch** pequeño como *sanity check*: un modelo bien configurado DEBE poder llevar un batch a pérdida ~0; si no, hay un bug.

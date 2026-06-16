@@ -21,10 +21,10 @@
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
-| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 4/32 (lote 1 v100) |
+| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 8/32 (lotes 1-2 v100-v101) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **76 / 118 hechas** |
+| | **118** | **80 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -121,10 +121,10 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-dmls1` — Encuadre de problemas de ML: objetivos y tipos de tarea
 - [x] `arena-rom2` — Tu primer objetivo y feature engineering
 - [x] `arena-dmls2` — Datos de entrenamiento: muestreo, etiquetas y desbalance
-- [ ] `arena-mldp1` — Patrones de representación de datos y de problemas
-- [ ] `arena-rml2` — Datos como pasivo y sistemas de entrenamiento confiables
-- [ ] `arena-mldp2` — Ensembles, cascada, clase neutra y rebalanceo
-- [ ] `arena-mldp3` — Patrones de entrenamiento y de serving resiliente
+- [x] `arena-mldp1` — Patrones de representación de datos y de problemas
+- [x] `arena-rml2` — Datos como pasivo y sistemas de entrenamiento confiables
+- [x] `arena-mldp2` — Ensembles, cascada, clase neutra y rebalanceo
+- [x] `arena-mldp3` — Patrones de entrenamiento y de serving resiliente
 - [ ] `arena-rom4` — Fase III: modelos complejos y trade-offs
 - [ ] `arena-dmls3` — Despliegue y predicción: batch vs online, compresión y edge
 - [ ] `arena-rml3` — Serving, monitoreo y observabilidad de modelos
