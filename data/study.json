@@ -4960,8 +4960,14 @@
     "cyber-sys5",
     "cyber-web1",
     "cyber-web2",
+    "cyber-web3",
+    "cyber-web4",
+    "cyber-web5",
     "cyber-dp1",
     "cyber-dp2",
+    "cyber-dp3",
+    "cyber-dp4",
+    "cyber-dp5",
     "cyber-dev1",
     "cyber-dev2",
     "cyber-blue1",
@@ -24727,9 +24733,222 @@
    ]
   },
   {
+   "id": "cyber-web3",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Seguridad de APIs: BOLA, mass assignment, rate limiting y OWASP Top 10",
+   "libro": "Web Security Academy (PortSwigger)",
+   "lectura": "data/teoria/cyber-web3.md",
+   "dosis": 30,
+   "objetivo": "Usar el OWASP Top 10 como mapa de categorías; reconocer BOLA/IDOR como riesgo #1 de APIs; detectar mass assignment; y aplicar rate limiting y límites de recursos.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "El OWASP Top 10 es un mapa de categorías para interrogar cada endpoint",
+    "BOLA/IDOR (riesgo #1 de APIs): verificar permiso por objeto en el servidor",
+    "Mass assignment: usar allow-list de campos, no enlazar el objeto entero",
+    "Rate limiting/paginación/límites contra fuerza bruta, scraping, extracción y DoS"
+   ],
+   "banco": [
+    {
+     "id": "cwe3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo conviene usar el OWASP Top 10: como lista a memorizar o como mapa?",
+     "solucion": "Como mapa: ejes de categorías de riesgo (control de acceso, inyección, autenticación, mala configuración, exposición de datos) con los que interrogar cada endpoint. Convierte '¿es segura mi API?' en preguntas concretas por categoría, en vez de memorizar diez ítems.",
+     "explicacion": "Mapa para interrogar, no lista que recitar.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cwe3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es BOLA y por qué es el riesgo #1 de APIs?",
+     "solucion": "Broken Object Level Authorization: un endpoint sirve un objeto por su id sin verificar que pertenece al solicitante (GET /orders/1001 → cambias a 1002 y ves la de otro). Es el #1 porque cada endpoint con un id es candidato y la verificación debe repetirse en cada uno, en el servidor, derivando la identidad del token.",
+     "explicacion": "IDOR a escala de API.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cwe3-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es mass assignment y cómo se previene?",
+     "solucion": "Cuando el servidor enlaza automáticamente el JSON entrante a todos los campos de un objeto, el cliente puede establecer campos que no debería (p. ej. {\"role\":\"admin\"}) y escalar. Se previene con una allow-list explícita de campos editables, separando lo que el cliente puede cambiar de lo que decide el servidor.",
+     "explicacion": "Allow-list de campos editables.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe3-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ataques previene el rate limiting en una API?",
+     "solucion": "Fuerza bruta de credenciales, scraping masivo de datos, extracción de modelos (model extraction) y denegación de servicio por agotamiento de recursos. Junto con paginación obligatoria y límites de tamaño, es un control barato de alto impacto.",
+     "explicacion": "Conecta con consumo no acotado (LLM10).",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe3-q5",
+     "tipo": "concepto",
+     "enunciado": "Un endpoint PATCH /students/{id} enlaza el JSON al objeto alumno. ¿Qué riesgos hay y cómo se corrigen?",
+     "solucion": "BOLA si no verifica que {id} es el solicitante (cualquiera edita a otro) y mass assignment si un alumno envía {\"role\":\"teacher\"} y el servidor lo asigna. Corrección: derivar/verificar permiso por objeto desde la sesión y allow-list de campos editables (solo nombre, email).",
+     "explicacion": "Dos riesgos del mismo endpoint.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cwe3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué GraphQL y los endpoints de búsqueda complejos amplían la superficie de riesgo de una API?",
+     "solucion": "Porque una sola consulta puede pedir muchos objetos anidados, multiplicando los puntos donde puede faltar autorización (por campo/objeto) y permitiendo consultas muy costosas (DoS). Requieren control de acceso por campo y límites de complejidad, no solo por endpoint.",
+     "explicacion": "Más expresividad = más superficie.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 813
+  },
+  {
+   "id": "cyber-web4",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Defensa en el navegador: HTTPS/HSTS, cookies, CORS y CSP",
+   "libro": "Web Security Academy (PortSwigger)",
+   "lectura": "data/teoria/cyber-web4.md",
+   "dosis": 30,
+   "objetivo": "Configurar HTTPS/HSTS y cookies seguras; entender CORS (qué permite y qué no); usar CSP para mitigar XSS; y reconocer mala configuración del lado navegador.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "El navegador da defensa en capas activable por cabeceras; sus defaults son inseguros",
+    "Cookies Secure/HttpOnly/SameSite mitigan robo de sesión y CSRF",
+    "CORS protege al usuario del navegador, NO es control de acceso de la API",
+    "CSP es la segunda capa contra XSS; no reemplaza codificar la salida"
+   ],
+   "banco": [
+    {
+     "id": "cwe4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué añade HSTS sobre usar HTTPS?",
+     "solucion": "HSTS (Strict-Transport-Security) indica al navegador que para ese dominio use SIEMPRE HTTPS y nunca HTTP, evitando el degradado a http:// que un atacante de red podría forzar. Cierra la ventana del primer request inseguro.",
+     "explicacion": "Evita el downgrade a HTTP.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cwe4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué tres atributos endurecen una cookie de sesión y contra qué protegen?",
+     "solucion": "Secure (solo se envía por HTTPS), HttpOnly (invisible a JavaScript → un XSS no puede robarla) y SameSite (no se envía en peticiones de otros sitios → mitiga CSRF). Son configuración, no código, y convierten el robo de sesión de trivial a difícil.",
+     "explicacion": "Tres atributos de alto impacto.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cwe4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué CORS NO es un control de acceso de tu API?",
+     "solucion": "Porque CORS protege al usuario del navegador (decide si un sitio puede leer respuestas de otro origen), no a tus datos del servidor. Un atacante con curl ignora CORS por completo; la defensa real de la API sigue siendo la autorización del servidor. CORS solo relaja la política de mismo-origen de forma controlada.",
+     "explicacion": "Protege al navegador, no al servidor.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe4-q4",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo mitiga CSP un XSS y por qué se le llama segunda capa?",
+     "solucion": "CSP (Content-Security-Policy) le dice al navegador de qué orígenes puede cargar/ejecutar recursos; una CSP estricta hace que, aunque se cuele un XSS, el script inyectado no se ejecute o no pueda exfiltrar a un dominio del atacante. Es segunda capa porque la primera es codificar la salida; CSP limita el daño cuando esa falla.",
+     "explicacion": "Red de seguridad, no sustituto.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'Access-Control-Allow-Origin: *' junto con credenciales (o reflejar cualquier origen) es peligroso?",
+     "solucion": "Porque abre tus respuestas autenticadas a ser leídas desde sitios maliciosos en el navegador del usuario, equivaliendo a desactivar la política de mismo-origen. Debe usarse una allow-list de orígenes confiables, nunca el comodín con credenciales.",
+     "explicacion": "Reflejar cualquier origen = abrir las respuestas.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cwe4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué una CSP demasiado laxa puede ser peor que no tener CSP?",
+     "solucion": "Porque da una falsa sensación de protección: figura una CSP (con unsafe-inline o comodines) que permite justo lo que debía bloquear, relajando la vigilancia mientras no protege. Una defensa mal configurada engaña al equipo sobre su postura real.",
+     "explicacion": "Falsa seguridad.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 814
+  },
+  {
+   "id": "cyber-web5",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Subida de archivos, deserialización insegura y mala configuración",
+   "libro": "Web Security Academy (PortSwigger)",
+   "lectura": "data/teoria/cyber-web5.md",
+   "dosis": 30,
+   "objetivo": "Asegurar la subida de archivos; explicar por qué la deserialización insegura (pickle) ejecuta código; reconocer mala configuración de seguridad; y ejecutar la auditoría del cluster.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Recibir archivos/objetos serializados/config son fronteras de confianza",
+    "pickle/yaml.load inseguro sobre datos no confiables = ejecución de código (¡también modelos!)",
+    "Subidas: validar tipo real, renombrar, guardar fuera de la raíz servible, limitar tamaño",
+    "La mala configuración (defaults, buckets públicos) es el riesgo más común"
+   ],
+   "banco": [
+    {
+     "id": "cwe5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cuándo una subida de archivos se vuelve un ataque y cómo se mitiga?",
+     "solucion": "Cuando el archivo se ejecuta (extensión servible), se sirve y dispara XSS (SVG/HTML), escapa de su carpeta (path traversal por el nombre) o agota recursos (archivos enormes). Se mitiga validando el tipo real (no la extensión), renombrando con un id propio, guardando fuera de la raíz servible/en object storage y limitando tamaño.",
+     "explicacion": "El archivo es entrada no confiable.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cwe5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué usar pickle.load sobre datos no confiables es ejecución de código (RCE)?",
+     "solucion": "Porque pickle de Python puede ejecutar código arbitrario durante la reconstrucción del objeto: abrir un .pkl (o un modelo) de origen no confiable ejecuta lo que el atacante incrustó. Por eso nunca se deserializa con pickle datos no confiables; se usan formatos de datos puros (JSON, Parquet) o cargadores seguros.",
+     "explicacion": "Deserializar puede ejecutar.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cwe5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la mala configuración de seguridad y por qué es tan explotada?",
+     "solucion": "Defaults inseguros, paneles admin expuestos, buckets públicos, errores verbosos, cabeceras faltantes, credenciales por defecto sin cambiar. Es tan explotada porque no requiere un exploit sofisticado, solo que alguien encuentre la puerta abierta; se previene con fail-safe defaults y revisando la config como parte del diseño.",
+     "explicacion": "La puerta que dejaste abierta.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe5-q4",
+     "tipo": "concepto",
+     "enunciado": "Un portal acepta archivos por extensión, los guarda en /uploads servible con su nombre original y los carga con pickle.load. Enumera los riesgos y el arreglo.",
+     "solucion": "Subida: un HTML/SVG servido desde tu origen → XSS almacenado; nombre con ../ → path traversal. Deserialización: un .pkl malicioso ejecuta código (RCE). Config: /uploads servible y sin límites → ejecución/agotamiento. Arreglo: validar tipo real + renombrar + guardar fuera de la raíz/object storage con límites; no usar pickle sobre archivos de usuarios (CSV/Parquet validados); revisar la config.",
+     "explicacion": "Tres vectores del mismo cuento.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué validar la extensión de un archivo no basta?",
+     "solucion": "Porque la extensión la controla el cliente y no refleja el contenido real: un .jpg puede ser un script o un HTML con payload. Hay que validar el tipo real del contenido, renombrar y no confiar en el nombre que envía el usuario.",
+     "explicacion": "La extensión es manipulable.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cwe5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un modelo descargado de un repositorio público puede ser un caso de deserialización insegura y supply chain a la vez?",
+     "solucion": "Porque según el formato (p. ej. pickle), cargar el modelo ejecuta código incrustado por quien lo publicó (deserialización insegura), y al ser un componente de terceros sin procedencia verificada es también supply chain de modelos. 'Es solo un modelo' es un supuesto peligroso; se prefieren formatos sin ejecución (safetensors) y verificar integridad/origen.",
+     "explicacion": "Cargar un modelo puede ser ejecutar código.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 815
+  },
+  {
    "id": "cyber-dp1",
    "bloque": "fase-8",
-   "orden": 813,
+   "orden": 816,
    "titulo": "Ciber · Privacidad ≠ seguridad: proteger personas, no solo tablas",
    "libro": "NIST Privacy Framework 1.1 (IPD)",
    "lectura": "data/teoria/cyber-dp1.md",
@@ -24800,7 +25019,7 @@
   {
    "id": "cyber-dp2",
    "bloque": "fase-8",
-   "orden": 814,
+   "orden": 817,
    "titulo": "Ciber · Reidentificación, anonimización y gobernanza de datos",
    "libro": "NIST Privacy Framework 1.1 (IPD)",
    "lectura": "data/teoria/cyber-dp2.md",
@@ -24869,9 +25088,222 @@
    ]
   },
   {
+   "id": "cyber-dp3",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Consentimiento, transparencia y derechos del titular",
+   "libro": "NIST Privacy Framework 1.1 (IPD)",
+   "lectura": "data/teoria/cyber-dp3.md",
+   "dosis": 25,
+   "objetivo": "Explicar transparencia y consentimiento y sus límites; ligar el tratamiento a una finalidad legítima; nombrar los derechos del titular y su impacto en el diseño; y reconocer dark patterns de consentimiento.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "La privacidad es una relación de confianza: transparencia + base + derechos",
+    "Consentimiento válido: informado, específico, libre y revocable",
+    "Derechos (acceder, rectificar, borrar, oponerse) imponen requisitos técnicos",
+    "Dark patterns: casillas pre-marcadas, 'acepta todo o vete', propósitos vagos"
+   ],
+   "banco": [
+    {
+     "id": "cdp3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hace válido a un consentimiento para tratar datos?",
+     "solucion": "Que sea informado (la persona entiende qué pasa), específico (por finalidad, no un cajón de sastre), libre ('acepta todo o no uses el servicio' no es libre) y revocable (puede retirarlo y el sistema debe respetarlo). El consentimiento para una finalidad no habilita otras.",
+     "explicacion": "Informado, específico, libre, revocable.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cdp3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es transparencia real frente a un documento legal largo?",
+     "solucion": "Transparencia es que la persona pueda entender, en términos comprensibles, qué datos tomas, para qué, con quién los compartes y cuánto los conservas. Enterrar todo en 40 páginas de términos no es transparencia; el NIST trata la comunicación clara como un control de privacidad.",
+     "explicacion": "Que se entienda, no que esté escrito.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cdp3-q3",
+     "tipo": "concepto",
+     "enunciado": "Nombra tres derechos del titular y un requisito técnico que impone cada uno.",
+     "solucion": "Acceder (poder localizar y exportar todos los datos de un individuo), rectificar (poder corregir donde estén), suprimir/borrar (saber dónde vive cada dato —incluidos backups, logs, derivados y modelos— para eliminarlo). No son solo legales: exigen diseñar el pipeline para rastrear y operar sobre los datos de una persona.",
+     "explicacion": "Derechos = requisitos de arquitectura.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp3-q4",
+     "tipo": "concepto",
+     "enunciado": "Una app usa una casilla pre-marcada que autoriza 'mejorar el servicio y compartir con socios'. ¿Qué falla?",
+     "solucion": "La casilla pre-marcada no es consentimiento libre (es un dark pattern); agrupar 'mejorar + compartir con socios' no es específico; y 'compartir con socios' excede lo que el usuario espera al registrarse (viola limitación de finalidad). Debe haber opt-in separado por finalidad con lenguaje claro.",
+     "explicacion": "Dark pattern + finalidad violada.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp3-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el derecho al olvido choca con un modelo ya entrenado?",
+     "solucion": "Porque borrar la fila de una persona no borra lo que el modelo memorizó de ella (membership inference, model inversion): el dato sobrevive en los pesos. Cumplir el borrado puede exigir reentrenar o aplicar machine unlearning; es un problema abierto que hay que anticipar al diseñar el pipeline.",
+     "explicacion": "El modelo recuerda tras borrar la tabla.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cdp3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué forzar 'consentimiento' a veces es teatro, y qué lo reemplaza?",
+     "solucion": "Porque a veces el tratamiento se justifica por otra base (un contrato, una obligación legal) y disfrazar eso de consentimiento da una elección falsa (no es libre si no puedes negarte sin perder el servicio esencial). Lo correcto es nombrar la base real del tratamiento y reservar el consentimiento para usos genuinamente opcionales.",
+     "explicacion": "Consentimiento no es la única base válida.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 818
+  },
+  {
+   "id": "cyber-dp4",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Control de acceso, auditoría y ciclo de vida del dato",
+   "libro": "NIST Privacy Framework 1.1 (IPD)",
+   "lectura": "data/teoria/cyber-dp4.md",
+   "dosis": 25,
+   "objetivo": "Aplicar least privilege y modelos de acceso a datos; diseñar auditoría de accesos útil; gestionar el ciclo de vida (retención, borrado); y ligar todo a la detección.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Least privilege sobre datos: por rol, granular (columna/fila), temporal",
+    "Auditoría = registro inalterable de quién accedió a qué (no solo logins)",
+    "Ciclo de vida: retención con borrado real y verificable (incl. backups y derivados)",
+    "Tener política no es tener control"
+   ],
+   "banco": [
+    {
+     "id": "cdp4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué significa least privilege aplicado a los datos?",
+     "solucion": "Que cada persona/servicio accede solo a los datos que necesita, con el permiso mínimo (leer vs escribir), por el tiempo necesario: acceso por rol, granular a nivel de columna/fila cuando importa, temporal y con separación de funciones. Evita que una cuenta comprometida o un insider acceda a todo.",
+     "explicacion": "Mínimo necesario sobre el dato.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cdp4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué auditar accesos a datos y no solo logins?",
+     "solucion": "Porque un insider o una credencial robada ya inició sesión legítimamente; lo revelador es qué datos tocó (qué descargó, cuándo, cuánto). Sin registro de accesos a datos sensibles, una fuga por esa vía es invisible y no se puede investigar.",
+     "explicacion": "El login no muestra el abuso del acceso.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cdp4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hace verificable a un borrado y por qué importa?",
+     "solucion": "Que al vencer la retención el dato se elimine de TODOS lados —incluidos backups, logs y datasets derivados— y se pueda demostrar que se hizo. Importa porque 'borrar' solo la copia principal deja el dato vivo donde no miraste, incumpliendo derechos y manteniendo el riesgo.",
+     "explicacion": "Borrado que alcanza backups y derivados.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp4-q4",
+     "tipo": "concepto",
+     "enunciado": "Un dataset de pacientes está en un bucket con acceso para todo el equipo, sin logs ni política de borrado. Aterriza la gobernanza en lo operativo.",
+     "solucion": "Acceso: roles con solo lectura sobre columnas no sensibles, acceso a columnas clínicas solo justificado, temporal y aprobado (least privilege). Auditoría: logs de acceso inalterables + alerta por volumen anómalo. Ciclo de vida: retención definida con borrado verificable que alcance backups (conservar solo agregados). Así una fuga deja de ser invisible y total.",
+     "explicacion": "Acceso + auditoría + retención.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un log de auditoría que el propio usuario puede borrar no sirve?",
+     "solucion": "Porque pierde integridad: quien abusa puede eliminar su rastro, anulando la rendición de cuentas y la detección. La auditoría debe ser inalterable por quienes podrían querer ocultarse, idealmente en un almacenamiento de solo-anexar separado.",
+     "explicacion": "Auditoría sin integridad no es auditoría.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cdp4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los logs de auditoría son a su vez un riesgo de privacidad?",
+     "solucion": "Porque registran quién hizo qué con qué datos, así que son datos personales con su propio riesgo de exposición y su propia necesidad de retención limitada. Hay que protegerlos y no conservarlos eternamente: auditar sin convertir el log en un nuevo problema de privacidad.",
+     "explicacion": "El registro también es dato personal.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 819
+  },
+  {
+   "id": "cyber-dp5",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Privacidad en ML: differential privacy, fuga por modelos y privacy by design",
+   "libro": "NIST Privacy Framework 1.1 (IPD)",
+   "lectura": "data/teoria/cyber-dp5.md",
+   "dosis": 30,
+   "objetivo": "Explicar la fuga por modelos (memorización, membership inference, inversión); entender differential privacy y su tradeoff; aplicar privacy by design a un pipeline; y ejecutar el mini-proyecto del cluster.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Un modelo entrenado con datos sensibles es un activo de privacidad (memoriza y filtra)",
+    "Differential privacy: garantía formal (ε) con tradeoff utilidad↔privacidad",
+    "Privacy by design: anticipar la privacidad desde el inicio del pipeline",
+    "'El dataset es privado' no basta: hay que evaluar qué filtra el modelo"
+   ],
+   "banco": [
+    {
+     "id": "cdp5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿De qué tres formas un modelo puede filtrar la privacidad de las personas de su entrenamiento?",
+     "solucion": "Memorización (recuerda y puede emitir ejemplos raros, p. ej. datos personales), membership inference (un atacante determina si una persona específica estuvo en el entrenamiento) y model inversion/embeddings (reconstruir rasgos o el original). Por eso un modelo entrenado con datos sensibles es en sí un activo de privacidad.",
+     "explicacion": "La fuga vive en el modelo, no solo en la tabla.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cdp5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué garantiza differential privacy y a costa de qué?",
+     "solucion": "Que la salida casi no cambie esté o no una persona concreta en los datos (mediante ruido calibrado), ofreciendo una garantía cuantificable con un parámetro ε: menor ε, más privacidad y más ruido. El costo es el tradeoff utilidad↔privacidad: más privacidad reduce algo de exactitud, y se decide conscientemente.",
+     "explicacion": "Garantía formal con tradeoff.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cdp5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es privacy by design y nombra dos medidas concretas?",
+     "solucion": "Construir la privacidad desde el inicio del pipeline, no parchearla al final (fail-safe defaults aplicado a privacidad). Medidas: minimizar antes de entrenar (no meter variables sensibles que no aportan), de-identificar/agregar, limitar lo que el modelo expone (salidas de baja resolución, rate limiting), rastrear procedencia/consentimiento por dato, y considerar DP cuando el riesgo lo amerite.",
+     "explicacion": "Anticipar, no remendar.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp5-q4",
+     "tipo": "concepto",
+     "enunciado": "Vas a entrenar y exponer un modelo de deserción escolar con datos de estudiantes. Lista medidas de privacy by design.",
+     "solucion": "Minimización (excluir salud/etnia sin justificación, región amplia en vez de dirección); evaluar membership inference y limitar memorización (regularización; DP si el riesgo es alto); exponer categoría de riesgo en vez de probabilidades finas, con auth y rate limiting; rastrear qué alumno entró al entrenamiento para poder responder borrado. Un modelo útil que no recita a ningún alumno ni revela quién estuvo.",
+     "explicacion": "Privacidad desde el diseño del pipeline.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'el dataset es privado, el modelo da igual' es un error?",
+     "solucion": "Porque el modelo puede memorizar y filtrar a las personas del entrenamiento (membership inference, inversión) aunque el dataset nunca se publique; y los embeddings pueden reconstruir el original. Hay que evaluar qué filtra el modelo y sus salidas, no solo proteger la tabla.",
+     "explicacion": "La privacidad continúa en el modelo.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cdp5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué differential privacy es necesaria pero no suficiente?",
+     "solucion": "Porque protege contra inferencia sobre individuos, pero un ε mal elegido (demasiado grande) da garantía nominal sin protección real, y DP no resuelve el sesgo ni el uso indebido del modelo. Sigue haciendo falta gobernanza (acceso, auditoría, retención, finalidad): la técnica complementa, no reemplaza, la gestión.",
+     "explicacion": "Técnica + gobernanza.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 820
+  },
+  {
    "id": "cyber-dev1",
    "bloque": "fase-8",
-   "orden": 815,
+   "orden": 821,
    "titulo": "Ciber · Desarrollo seguro: requisitos, validación y secretos",
    "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
    "lectura": "data/teoria/cyber-dev1.md",
@@ -24942,7 +25374,7 @@
   {
    "id": "cyber-dev2",
    "bloque": "fase-8",
-   "orden": 816,
+   "orden": 822,
    "titulo": "Ciber · Dependencias y supply chain: SBOM, SCA y CI/CD seguro",
    "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
    "lectura": "data/teoria/cyber-dev2.md",
@@ -25013,7 +25445,7 @@
   {
    "id": "cyber-blue1",
    "bloque": "fase-8",
-   "orden": 817,
+   "orden": 823,
    "titulo": "Ciber · Blue team I: MITRE ATT&CK, tácticas, técnicas y logs",
    "libro": "Getting Started with MITRE ATT&CK",
    "lectura": "data/teoria/cyber-blue1.md",
@@ -25084,7 +25516,7 @@
   {
    "id": "cyber-blue2",
    "bloque": "fase-8",
-   "orden": 818,
+   "orden": 824,
    "titulo": "Ciber · Blue team II: detection engineering e hipótesis",
    "libro": "Getting Started with MITRE ATT&CK",
    "lectura": "data/teoria/cyber-blue2.md",
@@ -25155,7 +25587,7 @@
   {
    "id": "cyber-mls1",
    "bloque": "fase-8",
-   "orden": 819,
+   "orden": 825,
    "titulo": "Ciber · Seguridad de ML I: por qué la IA cambia la superficie de ataque",
    "libro": "MITRE SAFE-AI / MITRE ATLAS",
    "lectura": "data/teoria/cyber-mls1.md",
@@ -25226,7 +25658,7 @@
   {
    "id": "cyber-mls2",
    "bloque": "fase-8",
-   "orden": 820,
+   "orden": 826,
    "titulo": "Ciber · Seguridad de ML II: inferencia, supply chain y controles",
    "libro": "MITRE SAFE-AI / MITRE ATLAS",
    "lectura": "data/teoria/cyber-mls2.md",
@@ -25297,7 +25729,7 @@
   {
    "id": "cyber-llm1",
    "bloque": "fase-8",
-   "orden": 821,
+   "orden": 827,
    "titulo": "Ciber · Seguridad de LLMs I: prompt injection directa e indirecta",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm1.md",
@@ -25368,7 +25800,7 @@
   {
    "id": "cyber-llm2",
    "bloque": "fase-8",
-   "orden": 822,
+   "orden": 828,
    "titulo": "Ciber · Seguridad de LLMs II: RAG, agentes y agencia excesiva",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm2.md",

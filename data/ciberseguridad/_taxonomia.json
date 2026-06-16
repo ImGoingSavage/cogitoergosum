@@ -88,7 +88,10 @@
       },
       "unidades": [
         "cyber-web1",
-        "cyber-web2"
+        "cyber-web2",
+        "cyber-web3",
+        "cyber-web4",
+        "cyber-web5"
       ]
     },
     {
@@ -115,7 +118,10 @@
       },
       "unidades": [
         "cyber-dp1",
-        "cyber-dp2"
+        "cyber-dp2",
+        "cyber-dp3",
+        "cyber-dp4",
+        "cyber-dp5"
       ]
     },
     {
