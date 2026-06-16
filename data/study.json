@@ -9092,11 +9092,11 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "E[puntos fijos de permutación aleatoria] = 1 siempre.",
-    "D(n)/n! → 1/e: ~37% de permutaciones no tienen ningún punto fijo.",
-    "Ballot problem: P(A siempre adelante) = (a−b)/(a+b).",
-    "P(k-ésimo elemento es récord) = 1/k; E[récords en n] = H_n.",
-    "Problema del secretario: rechaza los primeros n/e, luego toma el mejor → P=1/e."
+    "$E[\\text{puntos fijos de permutación aleatoria}] = 1$ siempre.",
+    "$D(n)/n! \\to 1/e$: ~37% de permutaciones no tienen ningún punto fijo.",
+    "Ballot problem: $P(\\text{A siempre adelante}) = (a-b)/(a+b)$.",
+    "$P(k\\text{-ésimo elemento es récord}) = 1/k$; $E[\\text{récords en }n] = H_n$.",
+    "Problema del secretario: rechaza los primeros $n/e$, luego toma el mejor → $P=1/e$."
    ],
    "banco": [
     {
@@ -9104,104 +9104,104 @@
      "tipo": "calculo",
      "enunciado": "Un cajón tiene 10 calcetines: 4 rojos y 6 azules, mezclados en oscuridad. ¿Cuántos debes sacar para garantizar un par del mismo color? ¿Y para garantizar un par rojo?",
      "solucion": "Para garantizar algún par: 3 calcetines (palomar: 2 colores → 3 para garantizar coincidencia). Para garantizar un par rojo: sacar los 6 azules primero (peor caso) + 2 rojos = 8 calcetines.",
-     "explicacion": "Señal: 'garantizar' → principio del palomar en el peor caso. Para k colores necesitas k+1 para garantizar al menos un par. Para garantizar un par específico (rojo), imagina el peor caso: todos los no-rojos salen primero."
+     "explicacion": "Señal: 'garantizar' → principio del palomar en el peor caso. Para $k$ colores necesitas $k+1$ para garantizar al menos un par. Para garantizar un par específico (rojo), imagina el peor caso: todos los no-rojos salen primero."
     },
     {
      "id": "arfc1-q2",
      "tipo": "calculo",
-     "enunciado": "El problema de los sombreros: n personas dejan sus sombreros y se devuelven al azar. ¿Cuál es E[personas que reciben su propio sombrero]? ¿Y P(nadie recibe el suyo) para n→∞?",
-     "solucion": "E[personas con su sombrero] = 1 (por linealidad: E[Xᵢ]=1/n, suma de n términos = 1). P(nadie recibe el suyo) = D(n)/n! → 1/e ≈ 36.79% cuando n→∞. Para n=4: D(4)=9, P = 9/24 = 3/8 = 37.5%.",
-     "explicacion": "Linealidad de la esperanza hace que E[puntos fijos] = 1 siempre, sin importar n. La probabilidad de cero puntos fijos converge rápidamente a 1/e. Para n≥5 la aproximación 1/e tiene error < 1%."
+     "enunciado": "El problema de los sombreros: $n$ personas dejan sus sombreros y se devuelven al azar. ¿Cuál es $E[\\text{personas que reciben su propio sombrero}]$? ¿Y $P(\\text{nadie recibe el suyo})$ para $n\\to\\infty$?",
+     "solucion": "$E[\\text{personas con su sombrero}] = 1$ (por linealidad: $E[X_i]=1/n$, suma de $n$ términos $= 1$). $P(\\text{nadie recibe el suyo}) = D(n)/n! \\to 1/e \\approx 36.79\\%$ cuando $n\\to\\infty$. Para $n=4$: $D(4)=9$, $P = 9/24 = 3/8 = 37.5\\%$.",
+     "explicacion": "Linealidad de la esperanza hace que $E[\\text{puntos fijos}] = 1$ siempre, sin importar $n$. La probabilidad de cero puntos fijos converge rápidamente a $1/e$. Para $n\\ge5$ la aproximación $1/e$ tiene error $< 1\\%$."
     },
     {
      "id": "arfc1-q3",
      "tipo": "calculo",
      "enunciado": "El problema de la boleta electoral (Ballot problem): candidato A recibe a votos y B recibe b votos, con a > b. Los votos se cuentan uno a uno en orden aleatorio. ¿Cuál es la probabilidad de que A esté estrictamente por delante de B durante todo el conteo?",
-     "solucion": "P = (a−b)/(a+b). Para a=7, b=3: P = 4/10 = 2/5. Dem. por reflexión: de los C(a+b,a) secuencias posibles, las 'malas' (donde A no está siempre adelante) se ponen en biyección con los C(a+b,a+1) caminos que empiezan con B adelante → P_buenas = 1 − C(a+b,a+1)/C(a+b,a) = (a−b)/(a+b).",
+     "solucion": "$P = (a-b)/(a+b)$. Para $a=7, b=3$: $P = 4/10 = 2/5$. Dem. por reflexión: de las $\\binom{a+b}{a}$ secuencias posibles, las 'malas' (donde A no está siempre adelante) se ponen en biyección con los $\\binom{a+b}{a+1}$ caminos que empiezan con B adelante → $P_\\text{buenas} = 1 - \\binom{a+b}{a+1}/\\binom{a+b}{a} = (a-b)/(a+b)$.",
      "explicacion": "Señal: 'proceso de conteo que nunca baja a cero'. El principio de reflexión convierte la condición de trayectoria en un conteo combinatorio. Aplicación en finanzas: probabilidad de que el spread nunca cruce cero en un modelo de caminata."
     },
     {
      "id": "arfc1-q4",
      "tipo": "calculo",
      "enunciado": "Barajas adivinación sin retroalimentación: adivinas el palo de cada carta de una baraja de 52 antes de verla. Sin información adicional, ¿cuántas aciertas en expectativa? ¿Y si ves la carta después de cada intento?",
-     "solucion": "Sin feedback: E = n/k = 52/4 = 13 (siempre adivinas con probabilidad 1/4 sin información). Con feedback óptimo: E ≈ 1/4·52 + corrección ≈ 15.5. La ganancia del feedback es pequeña (~2.5 cartas más).",
-     "explicacion": "Señal: 'adivinar con o sin información'. Sin feedback: cada intento es Bernoulli(1/4) independiente → E=n·p. Con feedback: condiciona en cartas vistas; el beneficio marginal del feedback decrece con n."
+     "solucion": "Sin feedback: $E = n/k = 52/4 = 13$ (siempre adivinas con probabilidad $1/4$ sin información). Con feedback óptimo: $E \\approx \\tfrac14\\cdot52 +$ corrección $\\approx 15.5$. La ganancia del feedback es pequeña (~2.5 cartas más).",
+     "explicacion": "Señal: 'adivinar con o sin información'. Sin feedback: cada intento es Bernoulli$(1/4)$ independiente → $E=np$. Con feedback: condiciona en cartas vistas; el beneficio marginal del feedback decrece con $n$."
     },
     {
      "id": "arfc1-q5",
      "tipo": "calculo",
-     "enunciado": "Valores récord: se observan n números i.i.d. de una distribución continua uno a uno. X_k es un récord si es mayor que todos los anteriores. ¿Cuál es P(X_k es récord)? ¿Cuántos récords se esperan en n=100 observaciones?",
-     "solucion": "P(X_k es récord) = 1/k (por simetría: cada uno de los primeros k valores es igualmente probable de ser el máximo). E[récords en n] = H_n = 1 + 1/2 + … + 1/n. Para n=100: H₁₀₀ ≈ 5.187.",
-     "explicacion": "La demostración de P(k-ésimo es récord) = 1/k es elegante: entre los primeros k valores, cualquiera puede ser el máximo con igual probabilidad. Los récords son eventos independientes. Aplicación: cuántas veces bates tu récord personal en secuencias de resultados."
+     "enunciado": "Valores récord: se observan $n$ números i.i.d. de una distribución continua uno a uno. $X_k$ es un récord si es mayor que todos los anteriores. ¿Cuál es $P(X_k\\text{ es récord})$? ¿Cuántos récords se esperan en $n=100$ observaciones?",
+     "solucion": "$P(X_k\\text{ es récord}) = 1/k$ (por simetría: cada uno de los primeros $k$ valores es igualmente probable de ser el máximo). $E[\\text{récords en }n] = H_n = 1 + 1/2 + \\dots + 1/n$. Para $n=100$: $H_{100} \\approx 5.187$.",
+     "explicacion": "La demostración de $P(k\\text{-ésimo es récord}) = 1/k$ es elegante: entre los primeros $k$ valores, cualquiera puede ser el máximo con igual probabilidad. Los récords son eventos independientes. Aplicación: cuántas veces bates tu récord personal en secuencias de resultados."
     },
     {
      "id": "arfc1-q6",
      "tipo": "calculo",
      "enunciado": "Muestreo sin reemplazo: una urna tiene 6 bolas rojas y 4 azules. Sacas 3 sin reemplazo. ¿Cuál es la distribución del número de rojas? ¿Cuál es la media?",
-     "solucion": "X ~ Hipergeométrica(N=10, K=6, n=3). P(X=k) = C(6,k)·C(4,3−k)/C(10,3). E[X] = n·K/N = 3·6/10 = 1.8. Valores: P(X=0)=C(4,3)/120=4/120=1/30; P(X=1)=C(6,1)C(4,2)/120=36/120=3/10; P(X=2)=C(6,2)C(4,1)/120=60/120=1/2; P(X=3)=C(6,3)/120=20/120=1/6.",
-     "explicacion": "Señal: 'muestreo sin reemplazo de población con dos tipos'. La distribución hipergeométrica generaliza a la binomial cuando N→∞. E[X]=nK/N siempre, sin importar si el muestreo es con o sin reemplazo — solo cambia la varianza."
+     "solucion": "$X \\sim \\text{Hipergeométrica}(N=10, K=6, n=3)$. $P(X=k) = \\binom{6}{k}\\binom{4}{3-k}/\\binom{10}{3}$. $E[X] = nK/N = 3\\cdot6/10 = 1.8$. Valores: $P(X=0)=\\binom{4}{3}/120=4/120=1/30$; $P(X=1)=\\binom{6}{1}\\binom{4}{2}/120=36/120=3/10$; $P(X=2)=\\binom{6}{2}\\binom{4}{1}/120=60/120=1/2$; $P(X=3)=\\binom{6}{3}/120=20/120=1/6$.",
+     "explicacion": "Señal: 'muestreo sin reemplazo de población con dos tipos'. La distribución hipergeométrica generaliza a la binomial cuando $N\\to\\infty$. $E[X]=nK/N$ siempre, sin importar si el muestreo es con o sin reemplazo — solo cambia la varianza."
     },
     {
      "id": "arfc1-q7",
      "tipo": "calculo",
      "enunciado": "Problema del cumpleaños con tripletes: ¿aproximadamente cuántas personas necesitas para que P(al menos 3 comparten cumpleaños) > 50%? Compara con el umbral para pares (n≈23).",
-     "solucion": "Para tripletes: n ≈ 83. Intuición: el umbral para k-upletes escala como n ∝ N^{(k-1)/k}. Para pares (k=2): N^{1/2} ≈ √365 ≈ 19; para tripletes (k=3): N^{2/3} ≈ 365^{2/3} ≈ 50; ajuste: ~83.",
-     "explicacion": "El problema generalizado del cumpleaños. El umbral para k coincidencias escala mucho más lento que N/k. Con 83 personas es más probable que tres compartan cumpleaños que no."
+     "solucion": "Para tripletes: $n \\approx 83$. Intuición: el umbral para $k$-upletes escala como $n \\propto N^{(k-1)/k}$. Para pares ($k=2$): $N^{1/2} \\approx \\sqrt{365} \\approx 19$; para tripletes ($k=3$): $N^{2/3} \\approx 365^{2/3} \\approx 50$; ajuste: ~83.",
+     "explicacion": "El problema generalizado del cumpleaños. El umbral para $k$ coincidencias escala mucho más lento que $N/k$. Con 83 personas es más probable que tres compartan cumpleaños que no."
     },
     {
      "id": "arfc1-q8",
      "tipo": "calculo",
-     "enunciado": "Distribución binomial negativa: lanzas una moneda injusta (p=0.3) hasta obtener 3 caras. ¿Cuál es P(exactamente 8 lanzamientos)? ¿Cuál es E[número de lanzamientos]?",
-     "solucion": "X ~ BinomialNeg(r=3, p=0.3). P(X=8) = C(7,2)·(0.3)³·(0.7)⁵ = 21·0.027·0.16807 ≈ 0.0953. E[X] = r/p = 3/0.3 = 10. Var[X] = r(1−p)/p² = 3·0.7/0.09 ≈ 23.3.",
-     "explicacion": "Señal: 'k-ésimo éxito'. La distribución binomial negativa cuenta intentos hasta el r-ésimo éxito. E[X]=r/p: si cada éxito toma 1/p intentos en promedio, r éxitos toman r/p. La fórmula de probabilidad: en los primeros X−1 lanzamientos hay exactamente r−1 caras, y el X-ésimo es cara."
+     "enunciado": "Distribución binomial negativa: lanzas una moneda injusta ($p=0.3$) hasta obtener 3 caras. ¿Cuál es $P(\\text{exactamente 8 lanzamientos})$? ¿Cuál es $E[\\text{número de lanzamientos}]$?",
+     "solucion": "$X \\sim \\text{BinomialNeg}(r=3, p=0.3)$. $P(X=8) = \\binom{7}{2}(0.3)^3(0.7)^5 = 21\\cdot0.027\\cdot0.16807 \\approx 0.0953$. $E[X] = r/p = 3/0.3 = 10$. $\\text{Var}[X] = r(1-p)/p^2 = 3\\cdot0.7/0.09 \\approx 23.3$.",
+     "explicacion": "Señal: '$k$-ésimo éxito'. La distribución binomial negativa cuenta intentos hasta el $r$-ésimo éxito. $E[X]=r/p$: si cada éxito toma $1/p$ intentos en promedio, $r$ éxitos toman $r/p$. La fórmula de probabilidad: en los primeros $X-1$ lanzamientos hay exactamente $r-1$ caras, y el $X$-ésimo es cara."
     },
     {
      "id": "arfc1-q9",
      "tipo": "calculo",
      "enunciado": "¿Cuántos pares de personas en un grupo de n comparten cumpleaños en expectativa? Para n=50, ¿cuál es el número esperado de pares?",
-     "solucion": "E[pares] = C(n,2) × (1/365) = n(n−1)/(2×365). Para n=50: 50×49/(730) ≈ 3.36 pares esperados. Cada par comparte cumpleaños con probabilidad 1/365 (por linealidad de E[]).",
-     "explicacion": "Linealidad de la esperanza permite calcular E[pares] aunque los eventos no sean independientes. El número de pares crece como n², por eso para n=23 ya hay C(23,2)=253 pares, cada uno con P=1/365 → E[pares]≈0.69, lo suficiente para P(alguno)>50%."
+     "solucion": "$E[\\text{pares}] = \\binom{n}{2} \\times (1/365) = n(n-1)/(2\\times365)$. Para $n=50$: $50\\times49/730 \\approx 3.36$ pares esperados. Cada par comparte cumpleaños con probabilidad $1/365$ (por linealidad de $E[]$).",
+     "explicacion": "Linealidad de la esperanza permite calcular $E[\\text{pares}]$ aunque los eventos no sean independientes. El número de pares crece como $n^2$, por eso para $n=23$ ya hay $\\binom{23}{2}=253$ pares, cada uno con $P=1/365$ → $E[\\text{pares}]\\approx0.69$, lo suficiente para $P(\\text{alguno})>50\\%$."
     },
     {
      "id": "arfc1-q10",
      "tipo": "calculo",
      "enunciado": "Barajas coincidentes: tienes dos barajas de 52 cartas barajadas independientemente. Las volteas al mismo tiempo. ¿Cuál es P(alguna posición coincide)? ¿Cuál es E[coincidencias]?",
-     "solucion": "E[coincidencias] = 1 (linealidad: cada posición coincide con P=1/52; 52 posiciones → E=1). P(alguna coincidencia) = 1 − D(52)/52! → 1 − 1/e ≈ 63.2% (mismo que desarreglos).",
-     "explicacion": "Este es el problema de los sombreros disfrazado: ¿en qué posición coincide la permutación de una baraja con la identidad? E=1 y P(alguna)≈63% son resultados contraintuitivos — la gente espera 0 coincidencias o muchas."
+     "solucion": "$E[\\text{coincidencias}] = 1$ (linealidad: cada posición coincide con $P=1/52$; 52 posiciones → $E=1$). $P(\\text{alguna coincidencia}) = 1 - D(52)/52! \\to 1 - 1/e \\approx 63.2\\%$ (mismo que desarreglos).",
+     "explicacion": "Este es el problema de los sombreros disfrazado: ¿en qué posición coincide la permutación de una baraja con la identidad? $E=1$ y $P(\\text{alguna})\\approx63\\%$ son resultados contraintuitivos — la gente espera 0 coincidencias o muchas."
     },
     {
      "id": "arfc1-q11",
      "tipo": "calculo",
      "enunciado": "Problema del secretario (optimal stopping): n candidatos se entrevistan en orden aleatorio. Debes contratar o rechazar inmediatamente. La estrategia óptima es rechazar los primeros k y contratar el siguiente mejor. ¿Cuál es el k óptimo? ¿Cuál es P(contratar al mejor)?",
-     "solucion": "k\\* = ⌊n/e⌋ ≈ n/e. P(contratar al mejor) → 1/e ≈ 36.8%. Para n=100: k\\*=37, rechaza los primeros 37, contrata el próximo mejor.",
+     "solucion": "$k^* = \\lfloor n/e\\rfloor \\approx n/e$. $P(\\text{contratar al mejor}) \\to 1/e \\approx 36.8\\%$. Para $n=100$: $k^*=37$, rechaza los primeros 37, contrata el próximo mejor.",
      "explicacion": "La estrategia óptima de 'n/e y luego el mejor' es un resultado clásico de parada óptima. La probabilidad de éxito 1/e es sorprendentemente alta dado que hay n candidatos. Este modelo aparece en contratación, búsqueda de pareja y diseño de algoritmos de búsqueda."
     },
     {
      "id": "arfc1-q12",
      "tipo": "calculo",
      "enunciado": "Urna de Polya: empiezas con 1 bola roja y 1 azul. En cada paso, sacas una bola y la regresas junto con una nueva del mismo color. Después de n pasos adicionales, ¿cuál es P(k rojas entre las n bolas añadidas)?",
-     "solucion": "P(k rojas en n adiciones) = 1/(n+1) para k = 0, 1, 2, …, n. La distribución es uniforme en {0, 1, …, n}. E[fracción de rojas] = 1/2; Var[fracción] → 1/12 para n grande.",
+     "solucion": "$P(k\\text{ rojas en }n\\text{ adiciones}) = 1/(n+1)$ para $k = 0, 1, 2, \\dots, n$. La distribución es uniforme en $\\{0, 1, \\dots, n\\}$. $E[\\text{fracción de rojas}] = 1/2$; $\\text{Var}[\\text{fracción}] \\to 1/12$ para $n$ grande.",
      "explicacion": "La urna de Polya exhibe 'refuerzo positivo': el rico se hace más rico. Sin embargo, la distribución del número final de rojas es perfectamente uniforme — cada posible resultado es igualmente probable. Este es un modelo de retroalimentación positiva usado en economía y difusión de tecnología."
     },
     {
      "id": "arfc1-q13",
      "tipo": "calculo",
      "enunciado": "Problema de la ocupación: lanzas n bolas en n cajas uniformemente al azar. ¿Cuál es E[cajas vacías]? ¿Y P(al menos una caja vacía)?",
-     "solucion": "E[cajas vacías] = n·(1−1/n)^n → n/e ≈ 0.368n. Para n=10: E = 10·(0.9)^10 ≈ 3.49. P(al menos una vacía) = 1 − P(todas ocupadas) ≈ 1 − n!/n^n (por inclusión-exclusión) → 1 para n grande.",
-     "explicacion": "Linealidad: E[vacías] = n × P(caja específica vacía) = n × (1−1/n)^n → n/e. El valor n/e ≈ 36.8% de las cajas están vacías cuando lanzas n bolas en n cajas. Esto modela hashing con colisiones."
+     "solucion": "$E[\\text{cajas vacías}] = n(1-1/n)^n \\to n/e \\approx 0.368n$. Para $n=10$: $E = 10(0.9)^{10} \\approx 3.49$. $P(\\text{al menos una vacía}) = 1 - P(\\text{todas ocupadas}) \\approx 1 - n!/n^n$ (por inclusión-exclusión) → 1 para $n$ grande.",
+     "explicacion": "Linealidad: $E[\\text{vacías}] = n \\times P(\\text{caja específica vacía}) = n(1-1/n)^n \\to n/e$. El valor $n/e \\approx 36.8\\%$ de las cajas están vacías cuando lanzas $n$ bolas en $n$ cajas. Esto modela hashing con colisiones."
     },
     {
      "id": "arfc1-q14",
      "tipo": "calculo",
      "enunciado": "Distribución hipergeométrica — prueba de calidad: un lote de 100 piezas contiene 5 defectuosas. Inspeccionas 20 al azar sin reemplazo. ¿Cuál es E[defectuosas encontradas]? ¿Cuál es P(0 defectuosas)?",
-     "solucion": "E[X] = n·K/N = 20·5/100 = 1. P(X=0) = C(95,20)/C(100,20) = (95×94×…×76)/(100×99×…×81) ≈ 0.3193.",
-     "explicacion": "Cálculo exacto de P(X=0): ∏_{i=0}^{19} (95−i)/(100−i) = (95/100)·(94/99)·…·(76/81). Aproximación binomial: P(X=0)≈(1−5/100)^{20}=0.95^{20}≈0.358, ligeramente mayor porque el muestreo sin reemplazo reduce la varianza."
+     "solucion": "$E[X] = nK/N = 20\\cdot5/100 = 1$. $P(X=0) = \\binom{95}{20}/\\binom{100}{20} = (95\\times94\\times\\dots\\times76)/(100\\times99\\times\\dots\\times81) \\approx 0.3193$.",
+     "explicacion": "Cálculo exacto de $P(X=0)$: $\\prod_{i=0}^{19} (95-i)/(100-i) = (95/100)(94/99)\\cdots(76/81)$. Aproximación binomial: $P(X=0)\\approx(1-5/100)^{20}=0.95^{20}\\approx0.358$, ligeramente mayor porque el muestreo sin reemplazo reduce la varianza."
     },
     {
      "id": "arfc1-q15",
      "tipo": "conceptual",
      "enunciado": "El problema del intercambio de parejas: en una fiesta, n parejas intercambian parejas al azar (men con women shuffled). ¿Cuál es E[hombres que terminan con su propia pareja]? ¿Y P(al menos una pareja original se forma)?",
-     "solucion": "E[parejas originales] = 1 (linealidad: P(hombre i con pareja original) = 1/n; suma = 1). P(al menos una) = 1 − D(n)/n! → 1 − 1/e ≈ 63.2%.",
+     "solucion": "$E[\\text{parejas originales}] = 1$ (linealidad: $P(\\text{hombre }i\\text{ con pareja original}) = 1/n$; suma $= 1$). $P(\\text{al menos una}) = 1 - D(n)/n! \\to 1 - 1/e \\approx 63.2\\%$.",
      "explicacion": "De nuevo el problema de los sombreros con diferente contexto. La belleza de E=1: sin importar cuántas personas estén en la fiesta, en promedio siempre hay exactamente una pareja original que se forma. La inevitabilidad del punto fijo."
     }
    ]
@@ -9232,117 +9232,117 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Buffon: P(cruce) = 2L/(πd); para L=d estima π.",
+    "Buffon: $P(\\text{cruce}) = 2L/(\\pi d)$; para $L=d$ estima $\\pi$.",
     "Paradoja de Bertrand: 'al azar' no está definido sin especificar el espacio.",
-    "P(|X−Y|<t) = 2t−t² para X,Y ~ Uniform[0,1] con t≤1.",
+    "$P(|X-Y|<t) = 2t-t^2$ para $X,Y \\sim \\text{Uniform}[0,1]$ con $t\\le1$.",
     "Ley del arco seno: la caminata pasa la mayor parte del tiempo en un lado.",
-    "n puntos en círculo en algún semicírculo: P = n/2^{n-1}."
+    "$n$ puntos en círculo en algún semicírculo: $P = n/2^{n-1}$."
    ],
    "banco": [
     {
      "id": "arfc2-q1",
      "tipo": "calculo",
      "enunciado": "La aguja de Buffon: una aguja de longitud L se lanza al azar sobre un piso con líneas paralelas separadas por distancia d (L ≤ d). ¿Cuál es la probabilidad de que la aguja cruce una línea? Para L=d, estima π usando 1000 lanzamientos.",
-     "solucion": "P(cruce) = 2L/(πd). Para L=d: P = 2/π ≈ 0.6366. Con 1000 lanzamientos: ~637 cruces esperados. Estimación de π: π ≈ 2L·n/(d·X) donde X es el número de cruces observados.",
-     "explicacion": "Derivación: el ángulo θ ~ Uniform[0,π/2] y el centro a distancia y ~ Uniform[0,d/2] del centro. Cruce si y ≤ (L/2)sinθ. P = (2/π)∫₀^{π/2} (L/2)sinθ/(d/2) dθ = 2L/(πd). Primer método de Monte Carlo para estimar π (Buffon, 1777)."
+     "solucion": "$P(\\text{cruce}) = 2L/(\\pi d)$. Para $L=d$: $P = 2/\\pi \\approx 0.6366$. Con 1000 lanzamientos: ~637 cruces esperados. Estimación de $\\pi$: $\\pi \\approx 2Ln/(dX)$ donde $X$ es el número de cruces observados.",
+     "explicacion": "Derivación: el ángulo $\\theta \\sim \\text{Uniform}[0,\\pi/2]$ y el centro a distancia $y \\sim \\text{Uniform}[0,d/2]$. Cruce si $y \\le (L/2)\\sin\\theta$. $P = (2/\\pi)\\int_0^{\\pi/2} \\dfrac{(L/2)\\sin\\theta}{d/2}\\,d\\theta = 2L/(\\pi d)$. Primer método de Monte Carlo para estimar $\\pi$ (Buffon, 1777)."
     },
     {
      "id": "arfc2-q2",
      "tipo": "calculo",
-     "enunciado": "Dos puntos X e Y se eligen independientemente en [0,1]. ¿Cuál es P(|X−Y| < 1/3)? ¿Y P(X + Y > 1)?",
-     "solucion": "P(|X−Y| < 1/3): área favorable en el cuadrado [0,1]² donde |x−y| < 1/3. Área = 1 − 2·(1/2)·(2/3)² = 1 − 4/9 = 5/9 ≈ 0.556. P(X+Y > 1): triángulo superior del cuadrado = área 1/2.",
-     "explicacion": "Señal: 'probabilidad de condición sobre dos uniformes'. Dibuja el cuadrado unitario y pinta la región favorable. P(|X−Y|<r) = 1 − (1−r)² = 2r−r² para r≤1. Para r=1/3: 2/3−1/9 = 5/9."
+     "enunciado": "Dos puntos $X$ e $Y$ se eligen independientemente en $[0,1]$. ¿Cuál es $P(|X-Y| < 1/3)$? ¿Y $P(X + Y > 1)$?",
+     "solucion": "$P(|X-Y| < 1/3)$: área favorable en el cuadrado $[0,1]^2$ donde $|x-y| < 1/3$. Área $= 1 - 2\\cdot\\tfrac12\\cdot(2/3)^2 = 1 - 4/9 = 5/9 \\approx 0.556$. $P(X+Y > 1)$: triángulo superior del cuadrado $=$ área $1/2$.",
+     "explicacion": "Señal: 'probabilidad de condición sobre dos uniformes'. Dibuja el cuadrado unitario y pinta la región favorable. $P(|X-Y|<r) = 1 - (1-r)^2 = 2r-r^2$ para $r\\le1$. Para $r=1/3$: $2/3-1/9 = 5/9$."
     },
     {
      "id": "arfc2-q3",
      "tipo": "conceptual",
-     "enunciado": "La paradoja de Bertrand: elige una cuerda 'al azar' en un círculo de radio 1. ¿Cuál es P(cuerda > lado del triángulo equilátero inscrito, l=√3)? Hay tres métodos naturales que dan P = 1/3, 1/4 y 1/2. Explica cada uno.",
-     "solucion": "Método 1 (extremos aleatorios en la circunferencia): P = 1/3. Método 2 (punto medio aleatorio en el disco): P = 1/4 (el punto medio debe estar en el círculo interior de radio 1/2). Método 3 (distancia al centro aleatoria en [0,1]): P = 1/2 (la distancia debe ser < 1/2).",
+     "enunciado": "La paradoja de Bertrand: elige una cuerda 'al azar' en un círculo de radio 1. ¿Cuál es $P(\\text{cuerda} > \\text{lado del triángulo equilátero inscrito}, l=\\sqrt3)$? Hay tres métodos naturales que dan $P = 1/3, 1/4$ y $1/2$. Explica cada uno.",
+     "solucion": "Método 1 (extremos aleatorios en la circunferencia): $P = 1/3$. Método 2 (punto medio aleatorio en el disco): $P = 1/4$ (el punto medio debe estar en el círculo interior de radio $1/2$). Método 3 (distancia al centro aleatoria en $[0,1]$): $P = 1/2$ (la distancia debe ser $< 1/2$).",
      "explicacion": "La paradoja muestra que 'al azar' no está bien definido sin especificar la distribución. Los tres métodos son igualmente válidos matemáticamente pero dan respuestas distintas. Lección: en probabilidad geométrica, siempre especifica el espacio de probabilidad."
     },
     {
      "id": "arfc2-q4",
      "tipo": "calculo",
-     "enunciado": "Se eligen 3 puntos uniformemente en [0,1]. ¿Cuál es P(el mayor − el menor < 1/2)? Generaliza: P(rango de n uniformes < r).",
-     "solucion": "P(rango de 3 uniformes < 1/2) = 3·(1/2)² − 2·(1/2)³ = 3/4 − 1/4 = 1/2. Fórmula: P(rango_n < r) = nr^{n-1} − (n−1)r^n para n=3 simplificado.",
-     "explicacion": "El rango (max−min) mide la dispersión de la muestra. Para n uniformes i.i.d. en [0,1], la distribución del rango es Beta(n−1, 2): E[rango] = (n−1)/(n+1). Para n=3: E[rango]=2/4=1/2."
+     "enunciado": "Se eligen 3 puntos uniformemente en $[0,1]$. ¿Cuál es $P(\\text{el mayor} - \\text{el menor} < 1/2)$? Generaliza: $P(\\text{rango de }n\\text{ uniformes} < r)$.",
+     "solucion": "$P(\\text{rango de 3 uniformes} < 1/2) = 3(1/2)^2 - 2(1/2)^3 = 3/4 - 1/4 = 1/2$. Fórmula: $P(\\text{rango}_n < r) = nr^{n-1} - (n-1)r^n$ para $n=3$ simplificado.",
+     "explicacion": "El rango (max$-$min) mide la dispersión de la muestra. Para $n$ uniformes i.i.d. en $[0,1]$, la distribución del rango es $\\text{Beta}(n-1, 2)$: $E[\\text{rango}] = (n-1)/(n+1)$. Para $n=3$: $E[\\text{rango}]=2/4=1/2$."
     },
     {
      "id": "arfc2-q5",
      "tipo": "calculo",
      "enunciado": "Monte Carlo para π: lanzas dardos al azar en el cuadrado [−1,1]². ¿Cuál es P(caer dentro del círculo unitario)? Si lanzas 10000 dardos y 7854 caen dentro, ¿qué estimación obtienes de π? ¿Cuál es el error estándar?",
-     "solucion": "P(dentro del círculo) = π·1²/2² = π/4. Estimación: π̂ = 4·7854/10000 = 3.1416. Error estándar: SE = √(p(1−p)/n) × 4 = 4√(π/4·(1−π/4)/10000) ≈ 4×0.00396 ≈ 0.0158.",
-     "explicacion": "El método de Monte Carlo estima π/4 como la frecuencia de éxito de una Bernoulli. El error decrece como 1/√n — para 10^6 dardos el error cae a ~0.0016. Histórica e irónicamente, necesitas muchos más lanzamientos de aguja o dardos para estimar π con precisión que con series matemáticas (π/4 = 1 − 1/3 + 1/5 − … converge lento pero los primeros 5 términos ya dan 3.34...)."
+     "solucion": "$P(\\text{dentro del círculo}) = \\pi\\cdot1^2/2^2 = \\pi/4$. Estimación: $\\hat\\pi = 4\\cdot7854/10000 = 3.1416$. Error estándar: $\\text{SE} = \\sqrt{p(1-p)/n} \\times 4 = 4\\sqrt{\\tfrac\\pi4(1-\\tfrac\\pi4)/10000} \\approx 4\\times0.00396 \\approx 0.0158$.",
+     "explicacion": "El método de Monte Carlo estima $\\pi/4$ como la frecuencia de éxito de una Bernoulli. El error decrece como $1/\\sqrt n$ — para $10^6$ dardos el error cae a ~0.0016. Histórica e irónicamente, necesitas muchos más lanzamientos para estimar $\\pi$ con precisión que con series matemáticas ($\\pi/4 = 1 - 1/3 + 1/5 - \\dots$ converge lento)."
     },
     {
      "id": "arfc2-q6",
      "tipo": "calculo",
-     "enunciado": "Problema del palo roto (generalización): se rompe un palo en dos puntos elegidos uniformemente en [0,1]. ¿Cuál es P(los tres segmentos forman un triángulo)? ¿Y E[longitud del segmento del medio]?",
-     "solucion": "P(triángulo) = 1/4. E[segmento del medio]: los tres longitudes tienen distribución de Dirichlet uniforme; el valor esperado de cada fragmento = 1/3, pero E[mediana de 3 uniformes en {x₁,x₂,1−x₁−x₂}] = 1/3 también. El segmento del medio tiene E = 1/3.",
-     "explicacion": "La condición de triángulo: cada trozo < 1/2. En el cuadrado {(x,y): x>0, y>0, x+y<1}, la región donde x<1/2, y<1/2 y 1−x−y<1/2 tiene área 1/4. El espacio muestral tiene área 1/2 → P = (1/4)/(1/2)... Espera, el espacio muestral en términos de (corte₁, corte₂) en [0,1]² tiene área 1 pero solo los casos x<y son el espacio natural → área 1/2. Alternativamente directo: P=1/4."
+     "enunciado": "Problema del palo roto (generalización): se rompe un palo en dos puntos elegidos uniformemente en $[0,1]$. ¿Cuál es $P(\\text{los tres segmentos forman un triángulo})$? ¿Y $E[\\text{longitud del segmento del medio}]$?",
+     "solucion": "$P(\\text{triángulo}) = 1/4$. $E[\\text{segmento del medio}]$: las tres longitudes tienen distribución de Dirichlet uniforme; el valor esperado de cada fragmento $= 1/3$. El segmento del medio tiene $E = 1/3$.",
+     "explicacion": "La condición de triángulo: cada trozo $< 1/2$. En el cuadrado de cortes $(x,y)$, la región donde $x<1/2$, $y<1/2$ y $1-x-y<1/2$ tiene medida $1/4$ del espacio muestral. Resultado: $P=1/4$."
     },
     {
      "id": "arfc2-q7",
      "tipo": "calculo",
      "enunciado": "Dos autobuses llegan a una parada de forma independiente, cada uno uniformemente entre las 12:00 y 13:00. ¿Cuál es P(se encuentran, es decir, llegan con menos de 15 minutos de diferencia)?",
-     "solucion": "P(|X−Y| < 15) con X,Y ~ Uniforme[0,60]. Área favorable: cuadrado 60×60 menos dos triángulos de lado 45. Área favorable = 60² − 2·(1/2)·45² = 3600 − 2025 = 1575. P = 1575/3600 = 7/16 ≈ 0.4375.",
-     "explicacion": "Fórmula general: P(|X−Y| < t) = 1 − (1−t/T)² donde T es el intervalo total. Para t=15, T=60: P = 1 − (45/60)² = 1 − 9/16 = 7/16. Siempre dibuja el cuadrado y los triángulos esquineros."
+     "solucion": "$P(|X-Y| < 15)$ con $X,Y \\sim \\text{Uniforme}[0,60]$. Área favorable: cuadrado $60\\times60$ menos dos triángulos de lado 45. Área favorable $= 60^2 - 2\\cdot\\tfrac12\\cdot45^2 = 3600 - 2025 = 1575$. $P = 1575/3600 = 7/16 \\approx 0.4375$.",
+     "explicacion": "Fórmula general: $P(|X-Y| < t) = 1 - (1-t/T)^2$ donde $T$ es el intervalo total. Para $t=15, T=60$: $P = 1 - (45/60)^2 = 1 - 9/16 = 7/16$. Siempre dibuja el cuadrado y los triángulos esquineros."
     },
     {
      "id": "arfc2-q8",
      "tipo": "calculo",
-     "enunciado": "Un punto P se elige uniformemente dentro de un círculo de radio R. ¿Cuál es E[distancia de P al centro]? ¿Y E[distancia² al centro]?",
-     "solucion": "E[r] = ∫₀^R r · (2r/R²) dr = 2R/3. E[r²] = ∫₀^R r² · (2r/R²) dr = R²/2. La densidad de la distancia al centro es f(r) = 2r/R² para 0≤r≤R (distribución de la raíz de una Uniforme[0,R²]).",
-     "explicacion": "Error frecuente: decir E[r] = R/2. La distribución de r NO es uniforme en [0,R]: puntos más alejados del centro tienen más área. La densidad es f(r)=2r/R² → sesgada hacia R. E[r]=2R/3 > R/2."
+     "enunciado": "Un punto $P$ se elige uniformemente dentro de un círculo de radio $R$. ¿Cuál es $E[\\text{distancia de }P\\text{ al centro}]$? ¿Y $E[\\text{distancia}^2\\text{ al centro}]$?",
+     "solucion": "$E[r] = \\int_0^R r\\cdot(2r/R^2)\\,dr = 2R/3$. $E[r^2] = \\int_0^R r^2\\cdot(2r/R^2)\\,dr = R^2/2$. La densidad de la distancia al centro es $f(r) = 2r/R^2$ para $0\\le r\\le R$ (distribución de la raíz de una $\\text{Uniforme}[0,R^2]$).",
+     "explicacion": "Error frecuente: decir $E[r] = R/2$. La distribución de $r$ NO es uniforme en $[0,R]$: puntos más alejados del centro tienen más área. La densidad es $f(r)=2r/R^2$ → sesgada hacia $R$. $E[r]=2R/3 > R/2$."
     },
     {
      "id": "arfc2-q9",
      "tipo": "calculo",
-     "enunciado": "Se elige un ángulo θ uniformemente en [0°, 360°] y se lanza una flecha en esa dirección desde el centro de un cuadrado de lado 2 (centrado en el origen). ¿Cuál es E[distancia recorrida antes de salir del cuadrado]?",
-     "solucion": "Por simetría considera solo el primer cuadrante [0°, 90°]. Para ángulo θ ∈ [0°, 45°]: sale por la pared derecha (x=1) → distancia = 1/cos(θ). Para θ ∈ [45°, 90°]: sale por la pared superior → distancia = 1/sin(θ). E[d] = (4/π)∫₀^{π/4} 1/cosθ dθ = (4/π)·ln(1+√2) ≈ (4/π)·0.8814 ≈ 1.122.",
-     "explicacion": "El cuadrado tiene simetría 8 (reflexiones y rotaciones de 90°), así que basta integrar sobre [0,π/4]. La integral ∫sec(θ)dθ = ln|sec(θ)+tan(θ)|. Resultado limpio: E[d] = (4/π)·ln(1+√2)."
+     "enunciado": "Se elige un ángulo $\\theta$ uniformemente en $[0,2\\pi)$ y se lanza una flecha en esa dirección desde el centro de un cuadrado de lado 2 (centrado en el origen). ¿Cuál es $E[\\text{distancia recorrida antes de salir del cuadrado}]$?",
+     "solucion": "Por simetría considera solo el primer cuadrante. Para ángulo $\\theta \\in [0,\\pi/4]$: sale por la pared derecha ($x=1$) → distancia $= 1/\\cos\\theta$. Para $\\theta \\in [\\pi/4, \\pi/2]$: sale por la pared superior → distancia $= 1/\\sin\\theta$. $E[d] = (4/\\pi)\\int_0^{\\pi/4} 1/\\cos\\theta\\,d\\theta = (4/\\pi)\\ln(1+\\sqrt2) \\approx (4/\\pi)\\cdot0.8814 \\approx 1.122$.",
+     "explicacion": "El cuadrado tiene simetría 8 (reflexiones y rotaciones de $90^\\circ$), así que basta integrar sobre $[0,\\pi/4]$. La integral $\\int\\sec\\theta\\,d\\theta = \\ln|\\sec\\theta+\\tan\\theta|$. Resultado limpio: $E[d] = (4/\\pi)\\ln(1+\\sqrt2)$."
     },
     {
      "id": "arfc2-q10",
      "tipo": "calculo",
-     "enunciado": "Problema de la aguja corta (generalización de Buffon): líneas horizontales Y también verticales, separadas por d=1. Aguja de longitud L<1. ¿Cuál es E[número de líneas cruzadas]?",
-     "solucion": "E[cruces horizontales] = 2L/π (Buffon para horizontales); E[cruces verticales] = 2L/π. Por linealidad: E[cruces totales] = 4L/π. Para L=1: E = 4/π ≈ 1.273.",
+     "enunciado": "Problema de la aguja corta (generalización de Buffon): líneas horizontales Y también verticales, separadas por $d=1$. Aguja de longitud $L<1$. ¿Cuál es $E[\\text{número de líneas cruzadas}]$?",
+     "solucion": "$E[\\text{cruces horizontales}] = 2L/\\pi$ (Buffon para horizontales); $E[\\text{cruces verticales}] = 2L/\\pi$. Por linealidad: $E[\\text{cruces totales}] = 4L/\\pi$. Para $L=1$: $E = 4/\\pi \\approx 1.273$.",
      "explicacion": "La linealidad de la esperanza permite sumar sin preocuparse de que los cruces horizontal y vertical sean independientes (no lo son). Este resultado extiende Buffon a una cuadrícula. Aplicación: el método de Monte Carlo para estimar π usando la cuadrícula es más eficiente."
     },
     {
      "id": "arfc2-q11",
      "tipo": "calculo",
-     "enunciado": "Tres puntos se eligen uniformemente en un segmento de longitud 1. ¿Cuál es P(el punto del medio está a más de 1/4 de los extremos)?",
-     "solucion": "P(mediana m tal que m > 1/4 y m < 3/4): la mediana de 3 uniformes tiene densidad f(m) = 6m(1−m) en [0,1]. P(1/4 < m < 3/4) = ∫_{1/4}^{3/4} 6m(1−m) dm = 6[m²/2 − m³/3]_{1/4}^{3/4} = 6[(9/32 − 9/64) − (1/32 − 1/192)] = 11/16 ≈ 0.6875.",
-     "explicacion": "La k-ésima estadística de orden de n uniformes tiene densidad f_{(k)}(x) = C(n,k)·k·x^{k-1}·(1-x)^{n-k}... mejor: Beta(k, n-k+1). Para la mediana de 3: Beta(2,2), densidad = 6x(1-x). E[mediana] = 1/2."
+     "enunciado": "Tres puntos se eligen uniformemente en un segmento de longitud 1. ¿Cuál es $P(\\text{el punto del medio está a más de }1/4\\text{ de los extremos})$?",
+     "solucion": "$P(\\text{mediana }m: m > 1/4\\text{ y }m < 3/4)$: la mediana de 3 uniformes tiene densidad $f(m) = 6m(1-m)$ en $[0,1]$. $P(1/4 < m < 3/4) = \\int_{1/4}^{3/4} 6m(1-m)\\,dm = 6[m^2/2 - m^3/3]_{1/4}^{3/4} = 11/16 \\approx 0.6875$.",
+     "explicacion": "La $k$-ésima estadística de orden de $n$ uniformes es $\\text{Beta}(k, n-k+1)$. Para la mediana de 3: $\\text{Beta}(2,2)$, densidad $= 6x(1-x)$. $E[\\text{mediana}] = 1/2$."
     },
     {
      "id": "arfc2-q12",
      "tipo": "calculo",
      "enunciado": "Se eligen 2 puntos al azar en el perímetro de un cuadrado de lado 1. ¿Cuál es E[distancia euclidiana entre ellos]?",
-     "solucion": "El perímetro tiene longitud 4. Parametriza posición en [0,4). Para puntos en el mismo lado: E[d] = 1/3. Para puntos en lados adyacentes: integrar la distancia. Resultado analítico: E[d] = (2+√2+5·ln(1+√2))/9 ≈ 0.869.",
-     "explicacion": "Problema que requiere integración cuidadosa por casos (mismo lado, lados opuestos, lados adyacentes). El resultado exacto involucra ln(1+√2). Para el círculo es más limpio: E[distancia de dos puntos en círculo de radio R] = 4R/π."
+     "solucion": "El perímetro tiene longitud 4. Parametriza posición en $[0,4)$. Para puntos en el mismo lado: $E[d] = 1/3$. Para puntos en lados adyacentes: integrar la distancia. Resultado analítico: $E[d] = (2+\\sqrt2+5\\ln(1+\\sqrt2))/9 \\approx 0.869$.",
+     "explicacion": "Problema que requiere integración cuidadosa por casos (mismo lado, lados opuestos, lados adyacentes). El resultado exacto involucra $\\ln(1+\\sqrt2)$. Para el círculo es más limpio: $E[\\text{distancia de dos puntos en círculo de radio }R] = 4R/\\pi$."
     },
     {
      "id": "arfc2-q13",
      "tipo": "calculo",
      "enunciado": "Cobertura circular: n puntos se eligen uniformemente en un círculo de radio 1. ¿Cuál es P(todos los puntos están en algún semicírculo)?",
-     "solucion": "P(todos en algún semicírculo) = n/2^{n−1}. Para n=3: P = 3/4. Para n=4: P = 4/8 = 1/2. Para n→∞: → 0. Dem.: fija el punto más 'a la izquierda'; el semicírculo que empieza ahí debe contener los demás n−1 puntos → P = n × (1/2)^{n-1}.",
-     "explicacion": "Truco: P(todos en algún semicírculo) = n × P(todos en el semicírculo determinístico que empieza en el punto 1) = n × (1/2)^{n-1}. Aplicación: la envolvente convexa de n puntos en un círculo es siempre un polígono — P(contiene el centro) = 1 − n/2^{n-1}."
+     "solucion": "$P(\\text{todos en algún semicírculo}) = n/2^{n-1}$. Para $n=3$: $P = 3/4$. Para $n=4$: $P = 4/8 = 1/2$. Para $n\\to\\infty$: $\\to 0$. Dem.: fija el punto más 'a la izquierda'; el semicírculo que empieza ahí debe contener los demás $n-1$ puntos → $P = n(1/2)^{n-1}$.",
+     "explicacion": "Truco: $P(\\text{todos en algún semicírculo}) = n \\times P(\\text{todos en el semicírculo que empieza en el punto 1}) = n(1/2)^{n-1}$. Aplicación: la envolvente convexa de $n$ puntos en un círculo es siempre un polígono — $P(\\text{contiene el centro}) = 1 - n/2^{n-1}$."
     },
     {
      "id": "arfc2-q14",
      "tipo": "calculo",
-     "enunciado": "Distancia de Manhattan: X=(X₁,X₂) e Y=(Y₁,Y₂) son puntos aleatorios uniformes en [0,1]². ¿Cuál es E[|X₁−Y₁| + |X₂−Y₂|]?",
-     "solucion": "Por linealidad: E[|X₁−Y₁| + |X₂−Y₂|] = E[|X₁−Y₁|] + E[|X₂−Y₂|] = 2·E[|U−V|] donde U,V ~ Uniforme[0,1]. E[|U−V|] = 1/3. Total: 2/3.",
-     "explicacion": "E[|U−V|] con U,V ~ Uniform[0,1]: ∫₀¹∫₀¹ |u−v| du dv = 2∫₀¹∫₀^v (v−u) du dv = 2∫₀¹ v²/2 dv = 1/3. La distancia Manhattan en d dimensiones entre uniformes en [0,1]^d tiene E = d/3."
+     "enunciado": "Distancia de Manhattan: $X=(X_1,X_2)$ e $Y=(Y_1,Y_2)$ son puntos aleatorios uniformes en $[0,1]^2$. ¿Cuál es $E[|X_1-Y_1| + |X_2-Y_2|]$?",
+     "solucion": "Por linealidad: $E[|X_1-Y_1| + |X_2-Y_2|] = E[|X_1-Y_1|] + E[|X_2-Y_2|] = 2 E[|U-V|]$ donde $U,V \\sim \\text{Uniforme}[0,1]$. $E[|U-V|] = 1/3$. Total: $2/3$.",
+     "explicacion": "$E[|U-V|]$ con $U,V \\sim \\text{Uniform}[0,1]$: $\\int_0^1\\int_0^1 |u-v|\\,du\\,dv = 2\\int_0^1\\int_0^v (v-u)\\,du\\,dv = 2\\int_0^1 v^2/2\\,dv = 1/3$. La distancia Manhattan en $d$ dimensiones entre uniformes en $[0,1]^d$ tiene $E = d/3$."
     },
     {
      "id": "arfc2-q15",
      "tipo": "calculo",
      "enunciado": "Ley del arco seno: en una caminata aleatoria de 2n pasos (n grande), ¿cuál es la distribución aproximada de la fracción de tiempo que el proceso pasa por encima de 0?",
-     "solucion": "La fracción de tiempo por encima de 0 sigue la distribución arco seno: P(fracción ≤ x) = (2/π)·arcsin(√x) para x ∈ [0,1]. La densidad es f(x) = 1/(π√(x(1−x))): pesa fuertemente los extremos 0 y 1. E[fracción] = 1/2 pero los valores cercanos a 0 y 1 son los más probables (no el 1/2).",
-     "explicacion": "Contraintuitivo: una caminata aleatoria pasa la mayor parte del tiempo en un lado o el otro — muy rara vez está balanceada. La ley del arco seno dice que P(fracción > 0.9) = P(fracción < 0.1) = (1/π)·arcsin(√0.9) ≈ 30%. ¡El 60% del tiempo la caminata pasa ≥90% del tiempo en un solo lado!"
+     "solucion": "La fracción de tiempo por encima de 0 sigue la distribución arco seno: $P(\\text{fracción} \\le x) = (2/\\pi)\\arcsin(\\sqrt x)$ para $x \\in [0,1]$. La densidad es $f(x) = 1/(\\pi\\sqrt{x(1-x)})$: pesa fuertemente los extremos 0 y 1. $E[\\text{fracción}] = 1/2$ pero los valores cercanos a 0 y 1 son los más probables (no el $1/2$).",
+     "explicacion": "Contraintuitivo: una caminata aleatoria pasa la mayor parte del tiempo en un lado o el otro — muy rara vez está balanceada. La ley del arco seno dice que $P(\\text{fracción} > 0.9) = P(\\text{fracción} < 0.1) = (1/\\pi)\\arcsin(\\sqrt{0.9}) \\approx 30\\%$. ¡El 60% del tiempo la caminata pasa $\\ge90\\%$ del tiempo en un solo lado!"
     }
    ]
   },
@@ -9372,68 +9372,68 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Caja de Bertrand: P(otro es oro | ves oro) = 2/3, no 1/2.",
+    "Caja de Bertrand: $P(\\text{otro es oro}\\mid\\text{ves oro}) = 2/3$, no $1/2$.",
     "Paradoja de Simpson: una tendencia puede invertirse al agregar subgrupos.",
-    "Paradoja de inspección: llegas en mitad de un intervalo → E[intervalo] = 2×media.",
-    "Falacia del fiscal: P(E|datos) ≠ P(datos|E); siempre incluye la tasa base.",
-    "P(X es par, X geométrico con p=1/2) = 1/3."
+    "Paradoja de inspección: llegas en mitad de un intervalo → $E[\\text{intervalo}] = 2\\times\\text{media}$.",
+    "Falacia del fiscal: $P(E\\mid\\text{datos}) \\ne P(\\text{datos}\\mid E)$; siempre incluye la tasa base.",
+    "$P(X\\text{ es par}, X\\text{ geométrico con }p=1/2) = 1/3$."
    ],
    "banco": [
     {
      "id": "arfc3-q1",
      "tipo": "conceptual",
      "enunciado": "La paradoja de la caja de Bertrand: hay 3 cajas — GG (dos monedas de oro), GP (una de oro y una de plata), PP (dos de plata). Abres una caja al azar y ves una moneda de oro. ¿Cuál es P(la otra moneda también es oro)?",
-     "solucion": "P = 2/3. Hay 3 monedas de oro posibles de ver: las dos de GG y la de GP. De esas, en 2 casos la otra es oro (en GG). P = 2/3.",
-     "explicacion": "Error clásico: 'quedan 2 cajas posibles (GG o GP), P=1/2'. Incorrecto porque no todas las cajas son igualmente probables dado que viste oro: GG es el doble de probable de haber generado ese resultado. Mismo principio que Monty Hall."
+     "solucion": "$P = 2/3$. Hay 3 monedas de oro posibles de ver: las dos de GG y la de GP. De esas, en 2 casos la otra es oro (en GG). $P = 2/3$.",
+     "explicacion": "Error clásico: 'quedan 2 cajas posibles (GG o GP), $P=1/2$'. Incorrecto porque no todas las cajas son igualmente probables dado que viste oro: GG es el doble de probable de haber generado ese resultado. Mismo principio que Monty Hall."
     },
     {
      "id": "arfc3-q2",
      "tipo": "conceptual",
      "enunciado": "El problema de los dos hijos: una familia tiene dos hijos. (a) Dado que al menos uno es niño, ¿P(ambos son niños)? (b) Dado que uno es niño nacido en martes, ¿P(ambos son niños)?",
-     "solucion": "(a) P = 1/3. Espacio: {NN, NM, MN, MM}; dado al menos un N: quedan {NN, NM, MN} → P(NN) = 1/3. (b) P = 13/27. Hay 27 pares (hijo, día) donde al menos uno es niño-martes; de esos, 13 son NN.",
-     "explicacion": "(b) es contraintuitivo: agregar información sobre el día cambia la probabilidad de 1/3 a 13/27 ≈ 48%. La lección: la forma exacta en que se obtuvo la información importa (ver el problema de Monty Hall). El 'niño nacido en martes' no tiene que ver con el martes per se — es que la información adicional reduce la ambigüedad."
+     "solucion": "(a) $P = 1/3$. Espacio: $\\{NN, NM, MN, MM\\}$; dado al menos un N: quedan $\\{NN, NM, MN\\}$ → $P(NN) = 1/3$. (b) $P = 13/27$. Hay 27 pares (hijo, día) donde al menos uno es niño-martes; de esos, 13 son NN.",
+     "explicacion": "(b) es contraintuitivo: agregar información sobre el día cambia la probabilidad de $1/3$ a $13/27 \\approx 48\\%$. La lección: la forma exacta en que se obtuvo la información importa. El 'niño nacido en martes' no tiene que ver con el martes per se — es que la información adicional reduce la ambigüedad."
     },
     {
      "id": "arfc3-q3",
      "tipo": "conceptual",
      "enunciado": "El problema de los tres prisioneros: A, B, C esperan sentencia. Uno será liberado al azar. A le pregunta al guardia el nombre de uno de los otros que será ejecutado. El guardia dice 'B'. ¿Cambia la probabilidad de A de ser liberado?",
-     "solucion": "P(A libre) sigue siendo 1/3. P(C libre) sube a 2/3. Análisis: si A es el libre (P=1/3), el guardia elige B o C aleatoriamente; si C es el libre (P=1/3), el guardia dice B con certeza; si B es libre (P=1/3), el guardia dice C con certeza. Dado que dijo B: P(A libre|guardia dijo B) = (1/3·1/2) / (1/3·1/2 + 1/3·1 + 0) = (1/6)/(1/2) = 1/3.",
+     "solucion": "$P(\\text{A libre})$ sigue siendo $1/3$. $P(\\text{C libre})$ sube a $2/3$. Análisis: si A es el libre ($P=1/3$), el guardia elige B o C aleatoriamente; si C es el libre ($P=1/3$), el guardia dice B con certeza; si B es libre ($P=1/3$), el guardia dice C con certeza. Dado que dijo B: $P(\\text{A libre}\\mid\\text{dijo B}) = \\dfrac{1/3\\cdot1/2}{1/3\\cdot1/2 + 1/3\\cdot1 + 0} = \\dfrac{1/6}{1/2} = 1/3$.",
      "explicacion": "Mismo fenómeno que Monty Hall: el guardia (como Monty) revela información asimétrica. A no gana información sobre sí mismo — sigue en 1/3. C, en cambio, absorbe la probabilidad de B. Si el guardia tuviera que elegir B específicamente (sin la opción de decir C), el análisis cambiaría."
     },
     {
      "id": "arfc3-q4",
      "tipo": "conceptual",
-     "enunciado": "La paradoja de los dos sobres: un sobre tiene el doble que el otro (cantidades X y 2X). Ves que tu sobre tiene $100. ¿Debes cambiar? Argumenta por qué el razonamiento 'E[otro sobre] = 5/4·100 > 100' es falaz.",
-     "solucion": "No hay base para cambiar o quedarte — la ganancia esperada es 0. La falacia: asumir que 2X=100 y X=100 son igualmente probables implica que la distribución de X es impropia (P(X=50)=P(X=100)=P(X=200)=… constante, que no integra a 1). Una distribución de X propia elimina la paradoja.",
+     "enunciado": "La paradoja de los dos sobres: un sobre tiene el doble que el otro (cantidades $X$ y $2X$). Ves que tu sobre tiene \\$100. ¿Debes cambiar? Argumenta por qué el razonamiento '$E[\\text{otro sobre}] = \\tfrac54\\cdot100 > 100$' es falaz.",
+     "solucion": "No hay base para cambiar o quedarte — la ganancia esperada es 0. La falacia: asumir que $2X=100$ y $X=100$ son igualmente probables implica que la distribución de $X$ es impropia ($P(X=50)=P(X=100)=P(X=200)=\\dots$ constante, que no integra a 1). Una distribución de $X$ propia elimina la paradoja.",
      "explicacion": "La paradoja muestra que 'E[otro sobre] > tu sobre' puede ser un artefacto de usar una distribución impropia. Con cualquier distribución propia de X, la decisión óptima es indiferente o depende de tu aversión al riesgo. La lección: cuidado con probabilidades condicionales cuando el espacio no está bien definido."
     },
     {
      "id": "arfc3-q5",
      "tipo": "conceptual",
      "enunciado": "La paradoja de Simpson: en un hospital, el tratamiento A tiene mejor tasa de éxito que B en hombres (80% vs 70%) y en mujeres (60% vs 50%). Sin embargo, en el total, B parece mejor. ¿Cómo es posible? Construye un ejemplo numérico.",
-     "solucion": "Ejemplo: Hombres: A cura 80/100, B cura 70/100. Mujeres: A cura 6/10, B cura 50/100. Total A: 86/110 ≈ 78.2%. Total B: 120/200 = 60%... Ese ejemplo no da paradoja. Ejemplo paradoja: Hombres: A=8/10=80%, B=70/100=70%. Mujeres: A=12/20=60%, B=5/10=50%. Total: A=20/30=66.7%, B=75/110=68.2% → B parece mejor globalmente aunque A es mejor en cada grupo.",
+     "solucion": "Ejemplo (paradoja): Hombres: A$=8/10=80\\%$, B$=70/100=70\\%$. Mujeres: A$=12/20=60\\%$, B$=5/10=50\\%$. Total: A$=20/30=66.7\\%$, B$=75/110=68.2\\%$ → B parece mejor globalmente aunque A es mejor en cada grupo.",
      "explicacion": "La paradoja de Simpson ocurre cuando la variable de confusión (género) está correlacionada con la asignación del tratamiento: el grupo mayoritario en B (mujeres con menor tasa) jala la media global hacia abajo para A. Lección: no mezclar grupos con diferentes tasas base sin ajustar. Fundamental en epidemiología y A/B testing."
     },
     {
      "id": "arfc3-q6",
      "tipo": "conceptual",
      "enunciado": "La paradoja de la inspección: llegan autobuses con intervalo promedio de 10 minutos (proceso de Poisson). Llegas en un momento aleatorio. ¿Cuánto esperas en promedio? ¿Y cuánto llevas esperando el autobús anterior?",
-     "solucion": "Tiempo de espera E[W] = 10 minutos. Tiempo desde último autobús E[B] = 10 minutos. Total E[W+B] = 20 minutos = ¡el doble del intervalo promedio! La paradoja: llegas en medio de un intervalo; los intervalos más largos tienen más probabilidad de 'atrapar' tu llegada.",
-     "explicacion": "Para un proceso de Poisson con tasa λ (intervalos Exp(λ), E[intervalo]=1/λ): el intervalo que contiene tu llegada tiene distribución Gamma(2,λ) con E=2/λ. La mitad esperada de cada lado es 1/λ. Este es el 'inspection paradox' o 'renewal paradox': las muestras se sesgan hacia intervalos largos. Aplica en redes de datos y sistemas de cola."
+     "solucion": "Tiempo de espera $E[W] = 10$ minutos. Tiempo desde último autobús $E[B] = 10$ minutos. Total $E[W+B] = 20$ minutos $=$ ¡el doble del intervalo promedio! La paradoja: llegas en medio de un intervalo; los intervalos más largos tienen más probabilidad de 'atrapar' tu llegada.",
+     "explicacion": "Para un proceso de Poisson con tasa $\\lambda$ (intervalos $\\text{Exp}(\\lambda)$, $E[\\text{intervalo}]=1/\\lambda$): el intervalo que contiene tu llegada tiene distribución $\\text{Gamma}(2,\\lambda)$ con $E=2/\\lambda$. La mitad esperada de cada lado es $1/\\lambda$. Este es el 'inspection paradox': las muestras se sesgan hacia intervalos largos."
     },
     {
      "id": "arfc3-q7",
      "tipo": "calculo",
      "enunciado": "La falacia del fiscal: un acusado tiene tipo de sangre que coincide con el de la escena del crimen (1% de la población). El fiscal dice 'la probabilidad de ser inocente es 1%'. ¿Por qué es incorrecto? Calcula la probabilidad correcta.",
-     "solucion": "Error: confundir P(evidencia|inocente) con P(inocente|evidencia). P(match|inocente) = 0.01 ≠ P(inocente|match). Por Bayes: si ciudad tiene 1M personas y hay 1 culpable: P(match) ≈ 0.01×999999 + 1×1 ≈ 10001 personas con match. P(inocente|match) = 9999/10000 = 99.99%.",
+     "solucion": "Error: confundir $P(\\text{evidencia}\\mid\\text{inocente})$ con $P(\\text{inocente}\\mid\\text{evidencia})$. $P(\\text{match}\\mid\\text{inocente}) = 0.01 \\ne P(\\text{inocente}\\mid\\text{match})$. Por Bayes: si la ciudad tiene 1M personas y hay 1 culpable: $P(\\text{match}) \\approx 0.01\\times999999 + 1 \\approx 10001$ personas con match. $P(\\text{inocente}\\mid\\text{match}) = 9999/10000 = 99.99\\%$.",
      "explicacion": "La tasa base (cuántos sospechosos hay) es fundamental. La falacia del fiscal es la 'transposición del condicional'. Para un crimen en una ciudad de 1 millón, 1% de coincidencia de sangre sigue siendo 10 000 personas — el acusado entre ellas no es 'casi con certeza culpable'."
     },
     {
      "id": "arfc3-q8",
      "tipo": "calculo",
      "enunciado": "¿Cuántos números debes elegir aleatoriamente de {1,…,n} (con reemplazo) para que la probabilidad de obtener algún duplicado supere 50%? Usa el modelo de cumpleaños y aproxima para n=365.",
-     "solucion": "P(no duplicados en k extracciones) = (n/n)·((n−1)/n)·…·((n−k+1)/n) ≈ e^{−k(k−1)/(2n)}. Igualar a 1/2: k(k−1)/(2n) ≈ ln2 → k ≈ √(2n·ln2) ≈ 1.177√n. Para n=365: k ≈ 1.177×√365 ≈ 22.5 → \\*\\*k=23\\*\\*.",
-     "explicacion": "Reformulación del problema de cumpleaños: n=365, números=días. La aproximación k≈1.177√n también aplica a: colisiones en tablas hash (n=tamaño), duplicados en UUIDs, etc. La raíz cuadrada es la esencia: basta con √n muestras para esperar colisiones."
+     "solucion": "$P(\\text{no duplicados en }k\\text{ extracciones}) = \\dfrac{n}{n}\\cdot\\dfrac{n-1}{n}\\cdots\\dfrac{n-k+1}{n} \\approx e^{-k(k-1)/(2n)}$. Igualar a $1/2$: $k(k-1)/(2n) \\approx \\ln2$ → $k \\approx \\sqrt{2n\\ln2} \\approx 1.177\\sqrt n$. Para $n=365$: $k \\approx 1.177\\times\\sqrt{365} \\approx 22.5$ → $k=23$.",
+     "explicacion": "Reformulación del problema de cumpleaños: $n=365$, números$=$días. La aproximación $k\\approx1.177\\sqrt n$ también aplica a: colisiones en tablas hash ($n=$tamaño), duplicados en UUIDs, etc. La raíz cuadrada es la esencia: basta con $\\sqrt n$ muestras para esperar colisiones."
     },
     {
      "id": "arfc3-q9",
@@ -9446,21 +9446,21 @@
      "id": "arfc3-q10",
      "tipo": "calculo",
      "enunciado": "Adivinación de barajas con estrategia: las 52 cartas de una baraja se voltean una a una. Puedes hacer UNA sola apuesta de que la siguiente carta es roja, en cualquier momento. ¿Cuál es la probabilidad máxima de acertar con una estrategia óptima?",
-     "solucion": "P = 1/2, sin importar la estrategia. En cualquier momento, la siguiente carta es igualmente probable de ser roja o negra dado lo que has visto — no porque las probabilidades no cambien, sino porque la ganancia de esperar más es siempre exactamente 1/2.",
-     "explicacion": "Demostración: por simetría, cualquier estrategia determinista o aleatoria da P=1/2. Si hay r rojas y b negras restantes y r > b, apostar da r/(r+b) > 1/2, pero si apostaste en el momento 'equivocado' ya habrías apostado a 1/2. El valor óptimo del juego es 1/2 porque la baraja es simétrica en expectativa."
+     "solucion": "$P = 1/2$, sin importar la estrategia. En cualquier momento, la siguiente carta es igualmente probable de ser roja o negra dado lo que has visto — no porque las probabilidades no cambien, sino porque la ganancia de esperar más es siempre exactamente $1/2$.",
+     "explicacion": "Demostración: por simetría, cualquier estrategia da $P=1/2$. Si hay $r$ rojas y $b$ negras restantes y $r > b$, apostar da $r/(r+b) > 1/2$, pero si apostaste en el momento 'equivocado' ya habrías apostado a $1/2$. El valor óptimo del juego es $1/2$ porque la baraja es simétrica en expectativa."
     },
     {
      "id": "arfc3-q11",
      "tipo": "calculo",
-     "enunciado": "Urna con bolas numeradas: una urna tiene bolas 1, 2, …, N. Sacas una y ves el número k. ¿Cuál es tu estimación de máxima verosimilitud de N? ¿Y la estimación insesgada?",
-     "solucion": "MLE: N̂_MLE = k (el mínimo N compatible con observar k). Insesgada: N̂_unbiased = 2k−1. Derivación insesgada: E[k | N] = (N+1)/2; igualando al valor observado: (N+1)/2 = k → N = 2k−1.",
-     "explicacion": "El problema del tanque alemán: estimas el número total de tanques a partir de los números de serie observados. Con m observaciones: N̂_MLE = k_max (el máximo observado); N̂_unbiased = k_max × (m+1)/m − 1. Esta estimación insesgada funcionó notablemente bien en la WWII para estimar producción alemana."
+     "enunciado": "Urna con bolas numeradas: una urna tiene bolas $1, 2, \\dots, N$. Sacas una y ves el número $k$. ¿Cuál es tu estimación de máxima verosimilitud de $N$? ¿Y la estimación insesgada?",
+     "solucion": "MLE: $\\hat N_\\text{MLE} = k$ (el mínimo $N$ compatible con observar $k$). Insesgada: $\\hat N_\\text{ins} = 2k-1$. Derivación insesgada: $E[k \\mid N] = (N+1)/2$; igualando al valor observado: $(N+1)/2 = k$ → $N = 2k-1$.",
+     "explicacion": "El problema del tanque alemán: estimas el número total de tanques a partir de los números de serie observados. Con $m$ observaciones: $\\hat N_\\text{MLE} = k_{\\max}$ (el máximo observado); $\\hat N_\\text{ins} = k_{\\max}(m+1)/m - 1$. Funcionó notablemente bien en la WWII para estimar producción alemana."
     },
     {
      "id": "arfc3-q12",
      "tipo": "calculo",
-     "enunciado": "Probabilidad condicional con múltiples tests: un test médico tiene sensibilidad 95% y especificidad 95%. La prevalencia de la enfermedad es 1%. Si das positivo, ¿cuál es P(tienes la enfermedad)? ¿Y si das positivo dos veces en tests independientes?",
-     "solucion": "Un positivo: P(E|+) = 0.95×0.01 / (0.95×0.01 + 0.05×0.99) = 0.0095/0.059 ≈ 16.1%. Dos positivos consecutivos: usa el primer resultado como prior (P(E)≈16.1%), aplica Bayes de nuevo: P(E|++)​ ≈ 78.8%.",
+     "enunciado": "Probabilidad condicional con múltiples tests: un test médico tiene sensibilidad 95% y especificidad 95%. La prevalencia de la enfermedad es 1%. Si das positivo, ¿cuál es $P(\\text{tienes la enfermedad})$? ¿Y si das positivo dos veces en tests independientes?",
+     "solucion": "Un positivo: $P(E\\mid+) = \\dfrac{0.95\\times0.01}{0.95\\times0.01 + 0.05\\times0.99} = 0.0095/0.059 \\approx 16.1\\%$. Dos positivos consecutivos: usa el primer resultado como prior ($P(E)\\approx16.1\\%$), aplica Bayes de nuevo: $P(E\\mid++) \\approx 78.8\\%$.",
      "explicacion": "El primer positivo sube la probabilidad de 1% a ~16%. El segundo positivo, ahora con prior 16%, la sube a ~79%. Los tests son más poderosos en secuencia cuando la tasa base es baja. Lección: un solo test con baja prevalencia da muchos falsos positivos; la confirmación es clave."
     },
     {
@@ -9474,15 +9474,15 @@
      "id": "arfc3-q14",
      "tipo": "calculo",
      "enunciado": "Problema del azar y el tiempo: lanzas una moneda justa hasta obtener cara. El tiempo de espera es X (geométrico). ¿Cuál es P(X es par)?",
-     "solucion": "P(X par) = P(X=2) + P(X=4) + … = (1/2)² + (1/2)⁴ + … = (1/4)/(1−1/4) = 1/3.",
-     "explicacion": "Señal: 'suma de geométrica con razón 1/4'. La serie Σ(1/4)^k para k=1..∞ = (1/4)/(1-1/4) = 1/3. Alternativa: sea p = P(X par). En el primer lanzamiento: con P=1/2 obtienes X=1 (impar); con P=1/2 obtienes X=1+Y donde Y es una nueva copia → P(X par) = 0 + (1/2)·P(Y impar) = (1/2)·(1−p) → p=1/3."
+     "solucion": "$P(X\\text{ par}) = P(X=2) + P(X=4) + \\dots = (1/2)^2 + (1/2)^4 + \\dots = (1/4)/(1-1/4) = 1/3$.",
+     "explicacion": "Señal: 'suma de geométrica con razón $1/4$'. La serie $\\sum(1/4)^k$ para $k=1..\\infty = (1/4)/(1-1/4) = 1/3$. Alternativa: sea $p = P(X\\text{ par})$. En el primer lanzamiento: con $P=1/2$ obtienes $X=1$ (impar); con $P=1/2$ obtienes $X=1+Y$ donde $Y$ es una nueva copia → $P(X\\text{ par}) = (1/2)(1-p)$ → $p=1/3$."
     },
     {
      "id": "arfc3-q15",
      "tipo": "calculo",
-     "enunciado": "El cazador y el pato: un cazador dispara y acierta con probabilidad p = 0.4 por disparo. ¿Cuántos disparos necesita para tener >99% de probabilidad de acertar al menos una vez? ¿Y para tener en expectativa ≥2 aciertos?",
-     "solucion": "Al menos 1 acierto con P>0.99: P(al menos 1) = 1−(0.6)^n > 0.99 → (0.6)^n < 0.01 → n > log(0.01)/log(0.6) = 2/log(5/3) ≈ 9.54 → n=10. E[aciertos]=np=2 → n=2/0.4=5.",
-     "explicacion": "1−(1−p)^n > α → n > log(1−α)/log(1−p). Para p=0.4, α=0.99: n=10. La fórmula crece logarítmicamente en 1/p — duplicar la precisión requerida añade pocos disparos extra."
+     "enunciado": "El cazador y el pato: un cazador dispara y acierta con probabilidad $p = 0.4$ por disparo. ¿Cuántos disparos necesita para tener $>99\\%$ de probabilidad de acertar al menos una vez? ¿Y para tener en expectativa $\\ge2$ aciertos?",
+     "solucion": "Al menos 1 acierto con $P>0.99$: $P(\\text{al menos 1}) = 1-(0.6)^n > 0.99$ → $(0.6)^n < 0.01$ → $n > \\log(0.01)/\\log(0.6) \\approx 9.54$ → $n=10$. $E[\\text{aciertos}]=np=2$ → $n=2/0.4=5$.",
+     "explicacion": "$1-(1-p)^n > \\alpha$ → $n > \\log(1-\\alpha)/\\log(1-p)$. Para $p=0.4, \\alpha=0.99$: $n=10$. La fórmula crece logarítmicamente en $1/p$ — duplicar la precisión requerida añade pocos disparos extra."
     }
    ]
   },
@@ -9512,117 +9512,117 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Craps: P(ganar) = 244/495 ≈ 49.3% — uno de los mejores juegos para el jugador.",
-    "Estrategia atrevida gana a la tímida cuando p < 1/2.",
-    "La martingala no 'garantiza' ganar: E[pérdida] = ∞ con bankroll finito.",
-    "Cola M/M/1: L = ρ/(1−ρ); W = 1/(μ−λ); P₀ = 1−ρ.",
-    "E[max de caminata en n pasos] ≈ √(2n/π)."
+    "Craps: $P(\\text{ganar}) = 244/495 \\approx 49.3\\%$ — uno de los mejores juegos para el jugador.",
+    "Estrategia atrevida gana a la tímida cuando $p < 1/2$.",
+    "La martingala no 'garantiza' ganar: $E[\\text{pérdida}] = \\infty$ con bankroll finito.",
+    "Cola M/M/1: $L = \\rho/(1-\\rho)$; $W = 1/(\\mu-\\lambda)$; $P_0 = 1-\\rho$.",
+    "$E[\\max$ de caminata en $n$ pasos$] \\approx \\sqrt{2n/\\pi}$."
    ],
    "banco": [
     {
      "id": "arfc4-q1",
      "tipo": "calculo",
      "enunciado": "En el juego del craps: lanzas dos dados. Ganas si sacas 7 u 11 en el primer lanzamiento; pierdes si sacas 2, 3 o 12. Con otro resultado ('punto'), repites hasta sacar el punto (ganas) o 7 (pierdes). ¿Cuál es P(ganar)?",
-     "solucion": "P(ganar) = 244/495 ≈ 49.29%. P(7u11)=8/36; P(2,3,12)=4/36. Puntos: P(ganar dado punto k) = formas(k)/(formas(k)+6). Suma: 8/36 + Σ_{k∈{4,5,6,8,9,10}} P(k)·P(ganar|k) = 8/36 + 2×[3/36·3/9 + 4/36·4/10 + 5/36·5/11] = 244/495.",
+     "solucion": "$P(\\text{ganar}) = 244/495 \\approx 49.29\\%$. $P(7\\text{ u }11)=8/36$; $P(2,3,12)=4/36$. Puntos: $P(\\text{ganar dado punto }k) = \\text{formas}(k)/(\\text{formas}(k)+6)$. Suma: $8/36 + 2\\times[\\tfrac{3}{36}\\cdot\\tfrac39 + \\tfrac{4}{36}\\cdot\\tfrac4{10} + \\tfrac{5}{36}\\cdot\\tfrac5{11}] = 244/495$.",
      "explicacion": "Craps tiene P(ganar)≈49.3%, la ventaja de la casa es solo 1.4% — uno de los mejores juegos del casino para el jugador. La P exacta de 244/495 se obtiene sumando las probabilidades condicionales por cada punto posible."
     },
     {
      "id": "arfc4-q2",
      "tipo": "calculo",
-     "enunciado": "Chuck-a-luck: tres dados; apuestas a un número (1-6); ganas \\$1 por cada dado que muestra ese número, pierdes \\$1 si no aparece ninguno. ¿Cuál es E[ganancia por \\$1 apostado]?",
-     "solucion": "P(k aparece exactamente j veces) = C(3,j)·(1/6)^j·(5/6)^{3−j}. E[ganancia] = Σ_{j=0}^{3} (j·1−1·[j=0])·P(k aparece j veces) − 1·P(k no aparece). Calcul: E = −1·(5/6)³ + 1·3·(1/6)·(5/6)² + 2·3·(1/6)²·(5/6) + 3·(1/6)³ − 1·(5/6)³... E[ganancia] = −17/216 ≈ −$0.079. La casa gana ~7.9 centavos por dólar.",
-     "explicacion": "E[ganancia] = −1×P(ninguno) + 1×P(uno) + 2×P(dos) + 3×P(tres) − ($1 apostado). Con números: −125/216 + 75/216 + 30/216·2 + (1/216)·3... Simplificando: E = −17/216. El error intuitivo es pensar que con 3 dados la P media de aparecer es 3/6=1/2 — pero los dados comparten la misma probabilidad."
+     "enunciado": "Chuck-a-luck: tres dados; apuestas a un número (1-6); ganas \\$1 por cada dado que muestra ese número, pierdes \\$1 si no aparece ninguno. ¿Cuál es $E[\\text{ganancia por }\\$1\\text{ apostado}]$?",
+     "solucion": "$P(k\\text{ aparece exactamente }j\\text{ veces}) = \\binom{3}{j}(1/6)^j(5/6)^{3-j}$. $E[\\text{ganancia}] = -1\\cdot(5/6)^3 + 1\\cdot3\\cdot\\tfrac16(5/6)^2 + 2\\cdot3\\cdot(\\tfrac16)^2\\tfrac56 + 3(\\tfrac16)^3 = -17/216 \\approx -\\$0.079$. La casa gana ~7.9 centavos por dólar.",
+     "explicacion": "$E[\\text{ganancia}] = -1\\times P(\\text{ninguno}) + 1\\times P(\\text{uno}) + 2\\times P(\\text{dos}) + 3\\times P(\\text{tres}) - \\$1$. Con números: $-125/216 + 75/216 + 2\\cdot30/216 + 3/216 = -17/216$. El error intuitivo es pensar que con 3 dados la $P$ media de aparecer es $3/6=1/2$ — pero los dados comparten la misma probabilidad."
     },
     {
      "id": "arfc4-q3",
      "tipo": "calculo",
-     "enunciado": "La caja de cerillas de Banach: tienes dos cajas con n=20 cerillas cada una. Eliges una al azar con P=1/2 cada vez para sacar una cerilla. ¿Cuál es P(encontrar una caja vacía cuando la otra tiene exactamente k=5 cerillas)?",
-     "solucion": "P(encontrar vacía con k restantes) = C(2n−k, n)·(1/2)^{2n−k}·2. Para n=20, k=5: C(35,20)·(1/2)^{35}·2 = C(35,20)/2^{34} ≈ 3247943160/17179869184 ≈ 0.189. E[cerillas restantes] ≈ √(n·π/2) − 1/2 ≈ √(20π/2) − 0.5 ≈ 5.61.",
-     "explicacion": "El momento exacto en que encuentras la caja vacía es el intento 2n−k+1 donde 2n−k sacadas han ocurrido: n de una caja y n−k de la otra. El factor 2 es porque puede pasar con cualquiera de las dos cajas. La aproximación √(nπ/2) es asintótica para n grande."
+     "enunciado": "La caja de cerillas de Banach: tienes dos cajas con $n=20$ cerillas cada una. Eliges una al azar con $P=1/2$ cada vez para sacar una cerilla. ¿Cuál es $P(\\text{encontrar una caja vacía cuando la otra tiene exactamente }k=5\\text{ cerillas})$?",
+     "solucion": "$P(\\text{encontrar vacía con }k\\text{ restantes}) = \\binom{2n-k}{n}(1/2)^{2n-k}\\cdot2$. Para $n=20, k=5$: $\\binom{35}{20}(1/2)^{35}\\cdot2 = \\binom{35}{20}/2^{34} \\approx 0.189$. $E[\\text{cerillas restantes}] \\approx \\sqrt{n\\pi/2} - 1/2 \\approx \\sqrt{20\\pi/2} - 0.5 \\approx 5.61$.",
+     "explicacion": "El momento exacto en que encuentras la caja vacía es el intento $2n-k+1$ donde $2n-k$ sacadas han ocurrido: $n$ de una caja y $n-k$ de la otra. El factor 2 es porque puede pasar con cualquiera de las dos cajas. La aproximación $\\sqrt{n\\pi/2}$ es asintótica para $n$ grande."
     },
     {
      "id": "arfc4-q4",
      "tipo": "calculo",
-     "enunciado": "Estrategia atrevida vs tímida: tienes \\$1 y quieres llegar a \\$4. Puedes apostar en pasos de \\$1 (tímida) o todo lo que tienes cada vez (atrevida). La moneda es injusta con p=0.4. ¿Cuál da mayor P(llegar a \\$4)?",
-     "solucion": "Atrevida: necesitas ganar dos veces seguidas: P = p² = 0.16. Tímida (ruina con k=1, N=4, p=0.4): ρ=q/p=3/2. P_tímida = (1−(3/2)^1)/(1−(3/2)^4) = (−1/2)/(1−81/16) = (−1/2)/(−65/16) = 8/65 ≈ 0.123. Atrevida gana: 0.16 > 0.123.",
-     "explicacion": "Para p < 1/2, la estrategia atrevida (apostar todo) maximiza P(llegar a la meta). Intuición: cada operación tiene P < 1/2 de ganancia; acumular muchas operaciones empeora exponencialmente las chances. La estrategia óptima es maximizar la varianza cuando estás en desventaja."
+     "enunciado": "Estrategia atrevida vs tímida: tienes \\$1 y quieres llegar a \\$4. Puedes apostar en pasos de \\$1 (tímida) o todo lo que tienes cada vez (atrevida). La moneda es injusta con $p=0.4$. ¿Cuál da mayor $P(\\text{llegar a \\$4})$?",
+     "solucion": "Atrevida: necesitas ganar dos veces seguidas: $P = p^2 = 0.16$. Tímida (ruina con $k=1, N=4, p=0.4$): $\\rho=q/p=3/2$. $P_\\text{tímida} = (1-(3/2)^1)/(1-(3/2)^4) = (-1/2)/(1-81/16) = (-1/2)/(-65/16) = 8/65 \\approx 0.123$. Atrevida gana: $0.16 > 0.123$.",
+     "explicacion": "Para $p < 1/2$, la estrategia atrevida (apostar todo) maximiza $P(\\text{llegar a la meta})$. Intuición: cada operación tiene $P < 1/2$ de ganancia; acumular muchas operaciones empeora exponencialmente las chances. La estrategia óptima es maximizar la varianza cuando estás en desventaja."
     },
     {
      "id": "arfc4-q5",
      "tipo": "conceptual",
-     "enunciado": "La estrategia de duplicar (doubling strategy / martingala): apuestas $1, si pierdes doblas, si ganas empiezas de nuevo. ¿Por qué esta estrategia no 'garantiza' ganar? ¿Cuánto necesitas en el bankroll para aguantar k pérdidas consecutivas?",
-     "solucion": "Para k pérdidas: necesitas 1+2+4+…+2^{k-1} = 2^k − 1 dólares. P(perder k seguidas) = (1/2)^k. El problema: aunque P(pérdida k) → 0, la magnitud de la pérdida (2^k) crece igual de rápido → E[pérdida] = Σ 2^k·(1/2)^k = Σ 1 = ∞. Además, los casinos tienen límites de apuesta.",
-     "explicacion": "La martingala no gana porque la esperanza de la ganancia total es 0 (la estrategia es una martingala matemática — valor justo en cada paso). La ruina es casi segura con bankroll finito: P(no arruinarse con bankroll B) = 1 − 2^{-log₂B} ≈ 1 − 1/B. Con \\$1000 tienes P ≈ 99.9% de ganar \\$1... o perder \\$1000."
+     "enunciado": "La estrategia de duplicar (martingala): apuestas \\$1, si pierdes doblas, si ganas empiezas de nuevo. ¿Por qué esta estrategia no 'garantiza' ganar? ¿Cuánto necesitas en el bankroll para aguantar $k$ pérdidas consecutivas?",
+     "solucion": "Para $k$ pérdidas: necesitas $1+2+4+\\dots+2^{k-1} = 2^k - 1$ dólares. $P(\\text{perder }k\\text{ seguidas}) = (1/2)^k$. El problema: aunque $P(\\text{pérdida }k) \\to 0$, la magnitud de la pérdida ($2^k$) crece igual de rápido → $E[\\text{pérdida}] = \\sum 2^k(1/2)^k = \\sum 1 = \\infty$. Además, los casinos tienen límites de apuesta.",
+     "explicacion": "La martingala no gana porque la esperanza de la ganancia total es 0 (es una martingala matemática — valor justo en cada paso). La ruina es casi segura con bankroll finito: $P(\\text{no arruinarse con bankroll }B) = 1 - 2^{-\\log_2 B} \\approx 1 - 1/B$. Con \\$1000 tienes $P \\approx 99.9\\%$ de ganar \\$1... o perder \\$1000."
     },
     {
      "id": "arfc4-q6",
      "tipo": "calculo",
-     "enunciado": "Rachas en lanzamientos de moneda: en n=20 lanzamientos de moneda justa, ¿cuál es E[longitud de la racha más larga de caras]? Aproxima y compara con la racha más larga esperada de ln(n)/ln(2).",
-     "solucion": "E[racha más larga] ≈ log₂(n) − log₂(ln2) ≈ log₂(20) − 0.47 ≈ 4.32 − 0.47 ≈ 3.85. Aproximación: la racha más larga en n lanzamientos ≈ log₂(n). Para n=20: ≈ 4-5 caras seguidas es lo esperado.",
-     "explicacion": "Contraintuitivo: en 20 lanzamientos esperas ver ~4-5 caras seguidas. En 1024 lanzamientos (2^10): racha esperada ≈ 10. La percepción humana de 'azar' subestima las rachas — vemos patrones donde solo hay azar. Las rachas largas son inevitables en secuencias suficientemente largas."
+     "enunciado": "Rachas en lanzamientos de moneda: en $n=20$ lanzamientos de moneda justa, ¿cuál es $E[\\text{longitud de la racha más larga de caras}]$? Aproxima y compara con la racha más larga esperada de $\\ln(n)/\\ln(2)$.",
+     "solucion": "$E[\\text{racha más larga}] \\approx \\log_2(n) - \\log_2(\\ln2) \\approx \\log_2(20) - 0.47 \\approx 4.32 - 0.47 \\approx 3.85$. Aproximación: la racha más larga en $n$ lanzamientos $\\approx \\log_2(n)$. Para $n=20$: $\\approx 4$-$5$ caras seguidas es lo esperado.",
+     "explicacion": "Contraintuitivo: en 20 lanzamientos esperas ver ~4-5 caras seguidas. En 1024 lanzamientos ($2^{10}$): racha esperada $\\approx 10$. La percepción humana de 'azar' subestima las rachas — vemos patrones donde solo hay azar. Las rachas largas son inevitables en secuencias suficientemente largas."
     },
     {
      "id": "arfc4-q7",
      "tipo": "calculo",
      "enunciado": "Tiempo de retorno a 0 en caminata aleatoria: ¿cuál es P(la caminata aleatoria simple 1D retorna a 0 por primera vez exactamente en el paso 2n)? ¿Cuál es E[primer retorno a 0]?",
-     "solucion": "P(primer retorno en paso 2n) = C(2n,n)·(1/2)^{2n}·1/(2n−1) ≈ 1/(n^{3/2}·√π) para n grande. E[primer retorno a 0] = ∞ (la serie diverge). P(retornar alguna vez) = 1 (la 1D es recurrente).",
+     "solucion": "$P(\\text{primer retorno en paso }2n) = \\binom{2n}{n}(1/2)^{2n}\\dfrac{1}{2n-1} \\approx 1/(n^{3/2}\\sqrt\\pi)$ para $n$ grande. $E[\\text{primer retorno a 0}] = \\infty$ (la serie diverge). $P(\\text{retornar alguna vez}) = 1$ (la 1D es recurrente).",
      "explicacion": "La caminata 1D siempre retorna al origen (recurrente) pero el tiempo esperado para hacerlo es infinito. La paradoja: retorna con probabilidad 1, pero tardará 'en promedio infinito tiempo'. La distribución del tiempo de retorno tiene cola tan pesada que la media diverge."
     },
     {
      "id": "arfc4-q8",
      "tipo": "calculo",
-     "enunciado": "Cola de espera M/M/1: clientes llegan como Poisson(λ=8/hora), servicio toma tiempo Exp(μ=10/hora). ¿Cuál es P(sistema vacío)? ¿Cuál es E[clientes en el sistema]?",
-     "solucion": "ρ = λ/μ = 8/10 = 0.8 < 1 (sistema estable). P(vacío) = 1−ρ = 0.2. E[clientes en sistema] L = ρ/(1−ρ) = 0.8/0.2 = 4. E[tiempo en sistema] W = 1/(μ−λ) = 1/2 hora = 30 minutos.",
-     "explicacion": "La cola M/M/1 es el modelo más simple de teoría de colas. ρ < 1 garantiza estabilidad. Las fórmulas: P₀=1−ρ; Lq=ρ²/(1−ρ)=3.2 (en cola); Ls=ρ/(1−ρ)=4 (en sistema). Ley de Little: L=λW → W=L/λ=4/8=0.5 hora ✓."
+     "enunciado": "Cola de espera M/M/1: clientes llegan como $\\text{Poisson}(\\lambda=8/\\text{hora})$, servicio toma tiempo $\\text{Exp}(\\mu=10/\\text{hora})$. ¿Cuál es $P(\\text{sistema vacío})$? ¿Cuál es $E[\\text{clientes en el sistema}]$?",
+     "solucion": "$\\rho = \\lambda/\\mu = 8/10 = 0.8 < 1$ (sistema estable). $P(\\text{vacío}) = 1-\\rho = 0.2$. $E[\\text{clientes en sistema}]\\ L = \\rho/(1-\\rho) = 0.8/0.2 = 4$. $E[\\text{tiempo en sistema}]\\ W = 1/(\\mu-\\lambda) = 1/2$ hora $= 30$ minutos.",
+     "explicacion": "La cola M/M/1 es el modelo más simple de teoría de colas. $\\rho < 1$ garantiza estabilidad. Las fórmulas: $P_0=1-\\rho$; $L_q=\\rho^2/(1-\\rho)=3.2$ (en cola); $L_s=\\rho/(1-\\rho)=4$ (en sistema). Ley de Little: $L=\\lambda W$ → $W=L/\\lambda=4/8=0.5$ hora ✓."
     },
     {
      "id": "arfc4-q9",
      "tipo": "calculo",
      "enunciado": "El problema del elevador: un edificio de n pisos. El elevador empieza en el piso 1 y sube hasta el piso donde el primer pasajero quiere bajar (todos los pisos igualmente probables). ¿Cuál es E[piso más alto visitado]?",
-     "solucion": "Con m pasajeros, E[max de m uniformes en {1,…,n}] = m(n+1)/(m+1) (ya visto en fc2). Para 1 pasajero: E = (n+1)/2. Para m pasajeros (cada uno elige piso independientemente): E[piso máximo] = n − n·(1−1/n)^m ≈ n(1 − e^{−m/n}) para n y m grandes.",
-     "explicacion": "Señal: 'valor esperado del máximo de m uniformes discretas en {1..n}'. Para m=n: E ≈ n(1−1/e) ≈ 0.632n. El problema tiene aplicación en diseño de hashing y algoritmos de selección."
+     "solucion": "Con $m$ pasajeros, $E[\\max$ de $m$ uniformes en $\\{1,\\dots,n\\}] = m(n+1)/(m+1)$ (ya visto en fc2). Para 1 pasajero: $E = (n+1)/2$. Para $m$ pasajeros (cada uno elige piso independientemente): $E[\\text{piso máximo}] = n - n(1-1/n)^m \\approx n(1 - e^{-m/n})$ para $n$ y $m$ grandes.",
+     "explicacion": "Señal: 'valor esperado del máximo de $m$ uniformes discretas en $\\{1..n\\}$'. Para $m=n$: $E \\approx n(1-1/e) \\approx 0.632n$. El problema tiene aplicación en diseño de hashing y algoritmos de selección."
     },
     {
      "id": "arfc4-q10",
      "tipo": "calculo",
-     "enunciado": "Problema de la ruina con ventaja: juegas en un casino con P(ganar)=0.51 (ligeramente favorable). Empiezas con \\$100, meta \\$200, paras si llegas a 0. ¿Cuál es P(llegar a \\$200)?",
-     "solucion": "ρ = q/p = 0.49/0.51 ≈ 0.9608. P(llegar a 200 | inicio 100) = (1−ρ^100)/(1−ρ^200). ρ^100 ≈ e^{-100×0.04} ≈ e^{-3.9} ≈ 0.020; ρ^200 ≈ 0.0004. P ≈ (1−0.020)/(1−0.0004) ≈ 0.980.",
-     "explicacion": "Con solo 1% de ventaja (p=0.51 vs 0.5), P(doblar bankroll de \\$100 a \\$200) ≈ 98%! La pequeña ventaja se acumula poderosamente con muchas apuestas. Contrasta con p=0.49 donde P(doblar) ≈ 2%."
+     "enunciado": "Problema de la ruina con ventaja: juegas en un casino con $P(\\text{ganar})=0.51$ (ligeramente favorable). Empiezas con \\$100, meta \\$200, paras si llegas a 0. ¿Cuál es $P(\\text{llegar a \\$200})$?",
+     "solucion": "$\\rho = q/p = 0.49/0.51 \\approx 0.9608$. $P(\\text{llegar a 200}\\mid\\text{inicio 100}) = (1-\\rho^{100})/(1-\\rho^{200})$. $\\rho^{100} \\approx e^{-100\\times0.04} \\approx e^{-3.9} \\approx 0.020$; $\\rho^{200} \\approx 0.0004$. $P \\approx (1-0.020)/(1-0.0004) \\approx 0.980$.",
+     "explicacion": "Con solo 1% de ventaja ($p=0.51$ vs $0.5$), $P(\\text{doblar bankroll de \\$100 a \\$200}) \\approx 98\\%$! La pequeña ventaja se acumula poderosamente con muchas apuestas. Contrasta con $p=0.49$ donde $P(\\text{doblar}) \\approx 2\\%$."
     },
     {
      "id": "arfc4-q11",
      "tipo": "calculo",
-     "enunciado": "Distribución de la suma máxima parcial: en una caminata aleatoria de n pasos, ¿cuál es E[max_{0≤k≤n} Sₖ] para la caminata simple simétrica?",
-     "solucion": "E[max Sₖ] ≈ √(2n/π). Para n=100: E[max] ≈ √(200/π) ≈ 7.98. Para n=1000: E[max] ≈ √(2000/π) ≈ 25.2. La distribución del máximo está relacionada con la distribución del valor absoluto del valor final: P(max_{0≤k≤n} Sₖ ≥ a) ≈ 2·P(Sₙ ≥ a) por el principio de reflexión.",
-     "explicacion": "El máximo parcial crece como √n (mismo orden que la desviación estándar). Esto es consecuencia directa del principio de reflexión: P(max S_k ≥ a) = 2·P(S_n ≥ a). En finanzas: el drawdown máximo de un proceso similar crece como √T."
+     "enunciado": "Distribución de la suma máxima parcial: en una caminata aleatoria de $n$ pasos, ¿cuál es $E[\\max_{0\\le k\\le n} S_k]$ para la caminata simple simétrica?",
+     "solucion": "$E[\\max S_k] \\approx \\sqrt{2n/\\pi}$. Para $n=100$: $E[\\max] \\approx \\sqrt{200/\\pi} \\approx 7.98$. Para $n=1000$: $E[\\max] \\approx \\sqrt{2000/\\pi} \\approx 25.2$. La distribución del máximo está relacionada con la del valor absoluto del valor final: $P(\\max_{0\\le k\\le n} S_k \\ge a) \\approx 2 P(S_n \\ge a)$ por el principio de reflexión.",
+     "explicacion": "El máximo parcial crece como $\\sqrt n$ (mismo orden que la desviación estándar). Esto es consecuencia directa del principio de reflexión: $P(\\max S_k \\ge a) = 2 P(S_n \\ge a)$. En finanzas: el drawdown máximo de un proceso similar crece como $\\sqrt T$."
     },
     {
      "id": "arfc4-q12",
      "tipo": "calculo",
-     "enunciado": "Problema de la red de colas (Jackson network): dos servidores en serie, λ=5/hora, μ₁=8/hora, μ₂=10/hora. ¿Es el sistema estable? ¿Cuál es E[tiempo total en el sistema]?",
-     "solucion": "ρ₁=5/8=0.625; ρ₂=5/10=0.5. Ambos <1: sistema estable. E[tiempo en servidor 1] = 1/(μ₁−λ) = 1/3 hora. E[tiempo en servidor 2] = 1/(μ₂−λ) = 1/5 hora. Total: 1/3+1/5 = 8/15 hora ≈ 32 minutos.",
-     "explicacion": "En una red de Jackson (colas en serie con Poisson y servicio exponencial), cada cola se comporta independientemente como M/M/1 con la tasa de llegada del flujo. El tiempo total es la suma de los tiempos en cada subsistema. Válido porque el teorema de Burke asegura que el output de M/M/1 es Poisson(λ)."
+     "enunciado": "Problema de la red de colas (Jackson network): dos servidores en serie, $\\lambda=5/\\text{hora}$, $\\mu_1=8/\\text{hora}$, $\\mu_2=10/\\text{hora}$. ¿Es el sistema estable? ¿Cuál es $E[\\text{tiempo total en el sistema}]$?",
+     "solucion": "$\\rho_1=5/8=0.625$; $\\rho_2=5/10=0.5$. Ambos $<1$: sistema estable. $E[\\text{tiempo en servidor 1}] = 1/(\\mu_1-\\lambda) = 1/3$ hora. $E[\\text{tiempo en servidor 2}] = 1/(\\mu_2-\\lambda) = 1/5$ hora. Total: $1/3+1/5 = 8/15$ hora $\\approx 32$ minutos.",
+     "explicacion": "En una red de Jackson (colas en serie con Poisson y servicio exponencial), cada cola se comporta independientemente como M/M/1 con la tasa de llegada del flujo. El tiempo total es la suma de los tiempos en cada subsistema. Válido porque el teorema de Burke asegura que el output de M/M/1 es $\\text{Poisson}(\\lambda)$."
     },
     {
      "id": "arfc4-q13",
      "tipo": "conceptual",
      "enunciado": "La paradoja del tiempo de espera (bus problem): los autobuses llegan con intervalos exponenciales de media 10 minutos. ¿Cuál es E[tiempo de espera desde tu llegada]? ¿Y E[tiempo desde el último bus]? ¿Cómo se resuelve la paradoja?",
-     "solucion": "E[espera] = 10 minutos; E[desde último bus] = 10 minutos. E[intervalo que atrapa tu llegada] = 20 minutos. Resolución: llegas en mitad de un intervalo; los intervalos más largos 'atrapan' tu llegada con mayor probabilidad. Mathematicamente: el intervalo que contiene tu llegada tiene distribución Gamma(2,λ) con media 2/λ = 20 min.",
-     "explicacion": "Para el proceso de Poisson: la falta de memoria implica que E[espera] = E[intervalo entre buses] = 10 min. Pero E[intervalo total que te atrapa] = 20 min porque el muestreo de longitud sesgado. Paradoja: 'si el intervalo promedio es 10 min, ¿por qué espero 10 min Y el anterior fue 10 min?' — porque estás muestreando con probabilidad proporcional a la longitud."
+     "solucion": "$E[\\text{espera}] = 10$ minutos; $E[\\text{desde último bus}] = 10$ minutos. $E[\\text{intervalo que atrapa tu llegada}] = 20$ minutos. Resolución: llegas en mitad de un intervalo; los intervalos más largos 'atrapan' tu llegada con mayor probabilidad. Matemáticamente: el intervalo que contiene tu llegada tiene distribución $\\text{Gamma}(2,\\lambda)$ con media $2/\\lambda = 20$ min.",
+     "explicacion": "Para el proceso de Poisson: la falta de memoria implica que $E[\\text{espera}] = E[\\text{intervalo entre buses}] = 10$ min. Pero $E[\\text{intervalo total que te atrapa}] = 20$ min por el muestreo de longitud sesgado. Paradoja: estás muestreando intervalos con probabilidad proporcional a su longitud."
     },
     {
      "id": "arfc4-q14",
      "tipo": "calculo",
-     "enunciado": "Tiempo hasta la ruina con apuestas de tamaño variable: empiezas con \\$10, cada apuesta es exactamente \\$1, p=0.5. ¿Cuál es E[duración del juego hasta que llegas a \\$0 o \\$20]?",
-     "solucion": "E[T | k=10, N=20, p=1/2] = k(N−k) = 10×10 = 100 apuestas.",
-     "explicacion": "Fórmula de duración del juego de la ruina: E[T|k] = k(N−k) para moneda justa. El máximo es en el centro (k=N/2): E[T_max] = (N/2)² = N²/4. Para N=20: E_max = 100 en k=10."
+     "enunciado": "Tiempo hasta la ruina con apuestas de tamaño fijo: empiezas con \\$10, cada apuesta es exactamente \\$1, $p=0.5$. ¿Cuál es $E[\\text{duración del juego hasta que llegas a \\$0 o \\$20}]$?",
+     "solucion": "$E[T \\mid k=10, N=20, p=1/2] = k(N-k) = 10\\times10 = 100$ apuestas.",
+     "explicacion": "Fórmula de duración del juego de la ruina: $E[T\\mid k] = k(N-k)$ para moneda justa. El máximo es en el centro ($k=N/2$): $E[T_{\\max}] = (N/2)^2 = N^2/4$. Para $N=20$: $E_{\\max} = 100$ en $k=10$."
     },
     {
      "id": "arfc4-q15",
      "tipo": "calculo",
-     "enunciado": "El problema de la ruleta: juegas ruleta americana (38 números: 1-36, 0, 00). Apuestas \\$1 al rojo (18 números). ¿Cuál es E[ganancia por apuesta]? ¿Cuánto pierdes en expectativa en 100 apuestas de \\$1?",
-     "solucion": "P(rojo) = 18/38 = 9/19. E[ganancia] = 1×(9/19) + (−1)×(10/19) = −1/19 ≈ −\\$0.0526. En 100 apuestas: E[pérdida total] = 100/19 ≈ \\$5.26. La ventaja de la casa es 5.26%.",
-     "explicacion": "Los dos ceros (0 y 00) en la ruleta americana dan a la casa 2/38 = 5.26% de ventaja. La ruleta europea (sin 00) tiene ventaja de solo 1/37 = 2.70%. Para cualquier apuesta en ruleta americana: E[ganancia] = −2/38 × $apostado. La ventaja de la casa es independiente del sistema de apuestas elegido."
+     "enunciado": "El problema de la ruleta: juegas ruleta americana (38 números: 1-36, 0, 00). Apuestas \\$1 al rojo (18 números). ¿Cuál es $E[\\text{ganancia por apuesta}]$? ¿Cuánto pierdes en expectativa en 100 apuestas de \\$1?",
+     "solucion": "$P(\\text{rojo}) = 18/38 = 9/19$. $E[\\text{ganancia}] = 1\\times(9/19) + (-1)\\times(10/19) = -1/19 \\approx -\\$0.0526$. En 100 apuestas: $E[\\text{pérdida total}] = 100/19 \\approx \\$5.26$. La ventaja de la casa es $5.26\\%$.",
+     "explicacion": "Los dos ceros (0 y 00) en la ruleta americana dan a la casa $2/38 = 5.26\\%$ de ventaja. La ruleta europea (sin 00) tiene ventaja de solo $1/37 = 2.70\\%$. Para cualquier apuesta en ruleta americana: $E[\\text{ganancia}] = -2/38 \\times \\$\\text{apostado}$. La ventaja de la casa es independiente del sistema de apuestas elegido."
     }
    ]
   },
@@ -10905,9 +10905,9 @@
    },
    "ideas_clave": [
     "Dos uniformes → un punto en el cuadrado; la probabilidad es un área.",
-    "E(máx de n uniformes)=n/(n+1); E(mín)=1/(n+1).",
+    "$E(\\max$ de $n$ uniformes$)=n/(n+1)$; $E(\\min)=1/(n+1)$.",
     "La densidad de una suma es la convolución de las densidades.",
-    "E(exp(λX))=exp(μλ+σ²λ²/2): la MGF gaussiana, base de lo lognormal.",
+    "$E(e^{\\lambda X})=e^{\\mu\\lambda+\\sigma^2\\lambda^2/2}$: la MGF gaussiana, base de lo lognormal.",
     "El TLC exige segundo momento finito; toda covarianza es PSD."
    ],
    "banco": [
@@ -10915,71 +10915,71 @@
      "id": "arena-q10-q1",
      "tipo": "quiz",
      "enunciado": "Romeo y Julieta llegan independientemente a una hora uniforme entre las 9 y las 10; cada uno espera 15 minutos. ¿Probabilidad de que se encuentren?",
-     "solucion": "7/16. Toma x,y ~ U[0,1]; se encuentran si |x−y|≤¼. El complemento son dos triángulos rectángulos de cateto ¾ que juntan un cuadrado de lado ¾ (área 9/16). P(encuentro)=1−9/16=7/16.",
+     "solucion": "$7/16$. Toma $x,y \\sim U[0,1]$; se encuentran si $|x-y|\\le\\tfrac14$. El complemento son dos triángulos rectángulos de cateto $\\tfrac34$ que juntan un cuadrado de lado $\\tfrac34$ (área $9/16$). $P(\\text{encuentro})=1-9/16=7/16$.",
      "explicacion": "Dos tiempos al azar → un punto en el cuadrado unitario; la pregunta es la fracción del área que cumple la condición. Geometría > integrales."
     },
     {
      "id": "arena-q10-q2",
      "tipo": "quiz",
      "enunciado": "Rompes un palo en dos puntos elegidos uniformemente al azar. ¿Probabilidad de que los tres trozos formen un triángulo?",
-     "solucion": "1/4. Forman triángulo si ningún trozo supera ½, es decir si exactamente uno de x,y es <½ y |x−y|<½. En el cuadrado unitario la región válida tiene área 1/4.",
+     "solucion": "$1/4$. Forman triángulo si ningún trozo supera $\\tfrac12$, es decir si exactamente uno de $x,y$ es $<\\tfrac12$ y $|x-y|<\\tfrac12$. En el cuadrado unitario la región válida tiene área $1/4$.",
      "explicacion": "Condición triangular = ningún lado ≥ semiperímetro. Dibuja la región en el cuadrado y mide: dos medios cuadraditos = ¼."
     },
     {
      "id": "arena-q10-q3",
      "tipo": "acertijo",
      "enunciado": "100 personas abordan un avión de 100 asientos en orden. La primera (la abuela) se sienta al azar; cada siguiente toma su asiento si está libre, si no uno al azar. ¿Probabilidad de que el pasajero 100 acabe en SU asiento?",
-     "solucion": "1/2. Condiciona en el primer pasajero 'desplazado' con elección: acabará en el asiento 1 o en el 100, y ambos son igualmente probables por simetría. Da igual el número de asientos.",
+     "solucion": "$1/2$. Condiciona en el primer pasajero 'desplazado' con elección: acabará en el asiento 1 o en el 100, y ambos son igualmente probables por simetría. Da igual el número de asientos.",
      "explicacion": "El truco es condicionar en el evento que colapsa el problema (asiento 1 vs asiento 100), evitando la recursión algebraica."
     },
     {
      "id": "arena-q10-q4",
      "tipo": "quiz",
-     "enunciado": "X₁,…,Xₙ son uniformes i.i.d. en [0,1]. ¿E(máx), E(mín) y E(máx−mín)?",
-     "solucion": "E(máx)=n/(n+1), E(mín)=1/(n+1), E(máx−mín)=(n−1)/(n+1). De P(máx≤x)=xⁿ sale densidad n·x^{n−1}; integrando x·n·x^{n−1} da n/(n+1). El mín es simétrico.",
-     "explicacion": "El máximo de uniformes tiene CDF xⁿ (producto de CDFs por independencia). La diferencia esperada (rango) tiende a 1 cuando n crece."
+     "enunciado": "$X_1,\\dots,X_n$ son uniformes i.i.d. en $[0,1]$. ¿$E(\\max)$, $E(\\min)$ y $E(\\max-\\min)$?",
+     "solucion": "$E(\\max)=n/(n+1)$, $E(\\min)=1/(n+1)$, $E(\\max-\\min)=(n-1)/(n+1)$. De $P(\\max\\le x)=x^n$ sale densidad $n x^{n-1}$; integrando $x\\cdot n x^{n-1}$ da $n/(n+1)$. El mín es simétrico.",
+     "explicacion": "El máximo de uniformes tiene CDF $x^n$ (producto de CDFs por independencia). La diferencia esperada (rango) tiende a 1 cuando $n$ crece."
     },
     {
      "id": "arena-q10-q5",
      "tipo": "quiz",
-     "enunciado": "Da la función de densidad del k-ésimo estadístico de orden de n variables i.i.d. con densidad f y CDF F.",
-     "solucion": "f_{(k)}(x) = n!/[(k−1)!(n−k)!] · f(x)·F(x)^{k−1}·(1−F(x))^{n−k}. Sale de derivar P(X_{(k)}≤x)=Σ_{j≥k} C(n,j)F(x)ʲ(1−F)^{n−j}; casi todos los términos se cancelan.",
-     "explicacion": "Interpretación: k−1 valores por debajo, uno en x, n−k por encima, con el coeficiente multinomial. Para uniformes es una distribución Beta(k, n−k+1)."
+     "enunciado": "Da la función de densidad del $k$-ésimo estadístico de orden de $n$ variables i.i.d. con densidad $f$ y CDF $F$.",
+     "solucion": "$f_{(k)}(x) = \\dfrac{n!}{(k-1)!(n-k)!} f(x) F(x)^{k-1}(1-F(x))^{n-k}$. Sale de derivar $P(X_{(k)}\\le x)=\\sum_{j\\ge k} \\binom{n}{j}F(x)^j(1-F)^{n-j}$; casi todos los términos se cancelan.",
+     "explicacion": "Interpretación: $k-1$ valores por debajo, uno en $x$, $n-k$ por encima, con el coeficiente multinomial. Para uniformes es una distribución $\\text{Beta}(k, n-k+1)$."
     },
     {
      "id": "arena-q10-q6",
      "tipo": "quiz",
-     "enunciado": "X e Y son uniformes independientes en [0,1]. ¿Cuál es la densidad de X+Y?",
-     "solucion": "Triangular: h(z)=z para 0≤z≤1, h(z)=2−z para 1≤z≤2, y 0 fuera. Es la convolución h(z)=∫f(z−y)g(y)dy partida según los límites de integración.",
+     "enunciado": "$X$ e $Y$ son uniformes independientes en $[0,1]$. ¿Cuál es la densidad de $X+Y$?",
+     "solucion": "Triangular: $h(z)=z$ para $0\\le z\\le1$, $h(z)=2-z$ para $1\\le z\\le2$, y 0 fuera. Es la convolución $h(z)=\\int f(z-y)g(y)\\,dy$ partida según los límites de integración.",
      "explicacion": "La densidad de una suma de independientes es la convolución de sus densidades. El pico en z=1 refleja que hay más formas de sumar 1 que 0 o 2."
     },
     {
      "id": "arena-q10-q7",
      "tipo": "quiz",
-     "enunciado": "Si X ~ N(μ,σ), calcula E(X²) y E(exp(λX)) para λ>0.",
-     "solucion": "E(X²)=σ²+μ² (de Var(X)=E(X²)−(EX)²). E(exp(λX))=exp(μλ+σ²λ²/2): se completa el cuadrado y el integrando se vuelve la densidad de una N(μ+σ²λ, σ).",
-     "explicacion": "E(exp(λX)) es la función generatriz de momentos de la normal y la base de la valoración lognormal (E[Sₜ] con Sₜ lognormal)."
+     "enunciado": "Si $X \\sim N(\\mu,\\sigma)$, calcula $E(X^2)$ y $E(e^{\\lambda X})$ para $\\lambda>0$.",
+     "solucion": "$E(X^2)=\\sigma^2+\\mu^2$ (de $\\text{Var}(X)=E(X^2)-(EX)^2$). $E(e^{\\lambda X})=e^{\\mu\\lambda+\\sigma^2\\lambda^2/2}$: se completa el cuadrado y el integrando se vuelve la densidad de una $N(\\mu+\\sigma^2\\lambda, \\sigma)$.",
+     "explicacion": "$E(e^{\\lambda X})$ es la función generatriz de momentos de la normal y la base de la valoración lognormal ($E[S_t]$ con $S_t$ lognormal)."
     },
     {
      "id": "arena-q10-q8",
      "tipo": "quiz",
-     "enunciado": "M es la Gaussiana acumulada (CDF de N(0,1)) y X ~ N(0,1). ¿Cuánto vale E[M(X)]?",
-     "solucion": "1/2. Por la transformada integral de probabilidad, M(X) ~ U(0,1), cuya media es 1/2. (Alternativa: M(x)−½ es impar y la densidad de X es par, así que su producto integra 0.)",
+     "enunciado": "$M$ es la Gaussiana acumulada (CDF de $N(0,1)$) y $X \\sim N(0,1)$. ¿Cuánto vale $E[M(X)]$?",
+     "solucion": "$1/2$. Por la transformada integral de probabilidad, $M(X) \\sim U(0,1)$, cuya media es $1/2$. (Alternativa: $M(x)-\\tfrac12$ es impar y la densidad de $X$ es par, así que su producto integra 0.)",
      "explicacion": "Aplicar la propia CDF de una variable continua a esa variable la uniformiza. Vale para cualquier X continua, no solo la normal."
     },
     {
      "id": "arena-q10-q9",
      "tipo": "quiz",
      "enunciado": "Enuncia con precisión el Teorema del Límite Central. ¿Qué condición es imprescindible?",
-     "solucion": "Para X₁,…,Xₙ i.i.d. con media μ y varianza σ² FINITA, (Sₙ−μn)/(σ√n) converge en distribución a N(0,1), independientemente de la distribución de partida. La condición clave es el segundo momento finito.",
+     "solucion": "Para $X_1,\\dots,X_n$ i.i.d. con media $\\mu$ y varianza $\\sigma^2$ FINITA, $(S_n-\\mu n)/(\\sigma\\sqrt n)$ converge en distribución a $N(0,1)$, independientemente de la distribución de partida. La condición clave es el segundo momento finito.",
      "explicacion": "Por eso la Cauchy (varianza infinita) no obedece el TLC clásico. Existen variantes (Lindeberg) para variables no idénticas con condiciones extra."
     },
     {
      "id": "arena-q10-q10",
      "tipo": "quiz",
      "enunciado": "Demuestra que toda matriz de covarianzas es semidefinida positiva.",
-     "solucion": "Para cualquier combinación lineal Y=aᵀX, Var(Y)=aᵀΣa. Como la varianza de una variable real es siempre ≥0, se tiene aᵀΣa≥0 para todo a, que es la definición de semidefinida positiva.",
-     "explicacion": "Es 'semidefinida' (no definida): puede haber un vector a≠0 con aᵀΣa=0 si una combinación lineal de las X es constante (degenerada)."
+     "solucion": "Para cualquier combinación lineal $Y=a^\\top X$, $\\text{Var}(Y)=a^\\top\\Sigma a$. Como la varianza de una variable real es siempre $\\ge0$, se tiene $a^\\top\\Sigma a\\ge0$ para todo $a$, que es la definición de semidefinida positiva.",
+     "explicacion": "Es 'semidefinida' (no definida): puede haber un vector $a\\ne0$ con $a^\\top\\Sigma a=0$ si una combinación lineal de las $X$ es constante (degenerada)."
     }
    ]
   },
