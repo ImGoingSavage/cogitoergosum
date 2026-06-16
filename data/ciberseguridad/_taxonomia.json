@@ -148,7 +148,10 @@
       },
       "unidades": [
         "cyber-dev1",
-        "cyber-dev2"
+        "cyber-dev2",
+        "cyber-dev3",
+        "cyber-dev4",
+        "cyber-dev5"
       ]
     },
     {
@@ -176,7 +179,10 @@
       },
       "unidades": [
         "cyber-blue1",
-        "cyber-blue2"
+        "cyber-blue2",
+        "cyber-blue3",
+        "cyber-blue4",
+        "cyber-blue5"
       ]
     },
     {

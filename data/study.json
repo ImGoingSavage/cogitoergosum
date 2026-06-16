@@ -4970,8 +4970,14 @@
     "cyber-dp5",
     "cyber-dev1",
     "cyber-dev2",
+    "cyber-dev3",
+    "cyber-dev4",
+    "cyber-dev5",
     "cyber-blue1",
     "cyber-blue2",
+    "cyber-blue3",
+    "cyber-blue4",
+    "cyber-blue5",
     "cyber-mls1",
     "cyber-mls2",
     "cyber-llm1",
@@ -25443,9 +25449,222 @@
    ]
   },
   {
+   "id": "cyber-dev3",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Diseño seguro: requisitos, principios y modelado de amenazas en el código",
+   "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
+   "lectura": "data/teoria/cyber-dev3.md",
+   "dosis": 30,
+   "objetivo": "Escribir requisitos de seguridad junto a los funcionales; aplicar principios de Saltzer & Schroeder; hacer threat modeling a nivel de componente; y reconocer deuda de seguridad por diseño.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 2
+   },
+   "ideas_clave": [
+    "La seguridad se diseña como requisito, no se parchea al final",
+    "Principios de Saltzer & Schroeder: economía de mecanismo, fail-safe, mediación completa, diseño abierto, privilegio mínimo",
+    "Threat modeling por componente antes de escribir código",
+    "Casi toda vulnerabilidad viola un principio: reconocer cuál dice cómo arreglarla"
+   ],
+   "banco": [
+    {
+     "id": "cde3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un requisito de seguridad y por qué escribirlo junto al funcional?",
+     "solucion": "Es el enunciado que acompaña a la función describiendo qué entradas son no confiables, quién puede hacer qué, qué datos no deben salir y qué pasa ante un error. Escribirlo convierte la seguridad en algo comprobable en vez de buena voluntad improvisada; sin él, el equipo falla abierto.",
+     "explicacion": "Seguridad comprobable desde el diseño.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cde3-q2",
+     "tipo": "concepto",
+     "enunciado": "Define fail-safe defaults y mediación completa (Saltzer & Schroeder).",
+     "solucion": "Fail-safe defaults: ante la duda, negar (permiso denegado por defecto, se concede explícito). Mediación completa: verificar el acceso en cada petición, no solo al iniciar sesión. Son dos de los principios cuya violación causa la mayoría de las vulnerabilidades.",
+     "explicacion": "Negar por defecto + verificar siempre.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cde3-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es seguridad por oscuridad y por qué falla (principio de diseño abierto)?",
+     "solucion": "Confiar en que el atacante no conozca cómo funciona el sistema ('es seguro porque nadie sabe el endpoint'). Falla porque los diseños se filtran, se deducen o se descubren; la seguridad debe descansar en mecanismos (claves, autorización), no en el secreto del diseño.",
+     "explicacion": "El secreto del diseño no es un control.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cde3-q4",
+     "tipo": "concepto",
+     "enunciado": "Diseñas un servicio que recibe un CSV de usuario y guarda resultados en BD. Da 3 requisitos de seguridad y su principio.",
+     "solucion": "Solo usuarios autenticados suben (mediación completa); el CSV se valida y se parsea sin ejecutar nada (validación de entrada / no ejecución); la credencial de BD es de escritura solo en su tabla (privilegio mínimo); un error devuelve mensaje genérico y registra detalle interno sin datos sensibles (fail-safe + no filtrar).",
+     "explicacion": "Cada requisito mapea a un principio.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cde3-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué casi toda vulnerabilidad 'viola un principio' y cómo ayuda eso?",
+     "solucion": "Porque los principios codifican las propiedades que mantienen seguro un sistema; un bug aparece cuando una decisión rompe uno (p. ej. permiso amplio = viola privilegio mínimo; error verboso = viola fail-safe). Identificar qué principio se violó indica directamente el arreglo correcto, no un parche puntual.",
+     "explicacion": "Diagnóstico por principio → remedio.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cde3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Choca la economía de mecanismo con tener lógica de negocio compleja?",
+     "solucion": "No: el principio no dice 'no tengas lógica', dice 'haz la lógica de SEGURIDAD tan simple y auditable como puedas', aislándola de la complejidad del negocio. Una ruta de autorización clara y central es auditable aunque el resto del sistema sea complejo.",
+     "explicacion": "Simplicidad en la seguridad, no en todo.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 823
+  },
+  {
+   "id": "cyber-dev4",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Verificación: SAST, fuzzing, code review y pruebas de seguridad",
+   "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
+   "lectura": "data/teoria/cyber-dev4.md",
+   "dosis": 30,
+   "objetivo": "Distinguir SAST, DAST y SCA; entender fuzzing y por qué halla lo que las pruebas normales no; hacer code review con foco en seguridad; y combinar técnicas según su punto ciego.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Diseñar seguro no basta: hay que verificar",
+    "SAST (tu código), DAST (la app corriendo), SCA (dependencias), fuzzing (entradas raras)",
+    "Cada técnica tiene un punto ciego distinto: se combinan",
+    "El code review humano caza la lógica de autorización que las máquinas no ven"
+   ],
+   "banco": [
+    {
+     "id": "cde4-q1",
+     "tipo": "concepto",
+     "enunciado": "Distingue SAST, DAST y SCA por lo que examinan.",
+     "solucion": "SAST analiza tu código fuente sin ejecutarlo (patrones inseguros temprano). DAST prueba la app corriendo desde fuera (fallos en ejecución real: config, auth). SCA examina tus dependencias contra bases de vulnerabilidades (CVEs heredados). Cubren superficies distintas.",
+     "explicacion": "Código / app corriendo / dependencias.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cde4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el fuzzing halla fallos que las pruebas normales no?",
+     "solucion": "Porque tus pruebas usan entradas 'razonables' y los ataques usan entradas patológicas: el archivo de 0 bytes, el string de 10 MB, el carácter raro, el número negativo inesperado. El fuzzing bombardea con entradas masivas/malformadas y provoca crashes o comportamientos no previstos que el camino feliz nunca toca.",
+     "explicacion": "Entradas patológicas vs razonables.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cde4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué clase de fallos caza el code review humano que las herramientas no?",
+     "solucion": "Errores de lógica: autorización mal hecha (BOLA/IDOR), supuestos de confianza rotos, secretos olvidados, decisiones de negocio inseguras. Las herramientas detectan patrones; un humano entiende la intención y ve que 'este endpoint no verifica el dueño del recurso', algo invisible para un patrón.",
+     "explicacion": "Lógica de seguridad necesita ojos humanos.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cde4-q4",
+     "tipo": "concepto",
+     "enunciado": "Tu repo pasa los tests funcionales. ¿Está seguro? Diseña un plan de verificación.",
+     "solucion": "No: los tests funcionales prueban el camino feliz, no al adversario. Plan: SCA (dependencias con CVE), SAST (concatenación SQL → inyección), fuzzing (CSV malformado tumba el servicio), code review (endpoint sin verificar dueño → BOLA). Cuatro técnicas, cuatro clases de fallo; ninguna sola las halla todas.",
+     "explicacion": "Tests funcionales ≠ verificación de seguridad.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cde4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué no basta confiar en una sola herramienta de verificación?",
+     "solucion": "Porque cada una tiene un punto ciego distinto: SAST no ve dependencias (eso es SCA) ni lógica de negocio; SCA no ve tu código; DAST solo lo que alcanza por la interfaz; el fuzzing necesita objetivos. Combinarlas es defense in depth aplicado a la verificación: lo que una no ve, otra lo cubre.",
+     "explicacion": "Puntos ciegos complementarios.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cde4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué demasiados falsos positivos de SAST pueden empeorar la seguridad?",
+     "solucion": "Porque generan fatiga (como la fatiga de alertas): el equipo empieza a ignorar todos los hallazgos, incluidos los verdaderos. La verificación se calibra —priorizar hallazgos de alto impacto, afinar reglas— en vez de inundar; un SAST que se ignora no protege.",
+     "explicacion": "Calibrar para no morir de ruido.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 824
+  },
+  {
+   "id": "cyber-dev5",
+   "bloque": "fase-8",
+   "titulo": "Ciber · CI/CD seguro, contenedores y respuesta a vulnerabilidades",
+   "libro": "Secure Software Development Fundamentals (OpenSSF / Wheeler)",
+   "lectura": "data/teoria/cyber-dev5.md",
+   "dosis": 30,
+   "objetivo": "Asegurar un pipeline CI/CD con permisos mínimos e integridad; endurecer contenedores en el despliegue; diseñar divulgación de vulnerabilidades y parcheo rápido; y ejecutar el mini-proyecto del pipeline ML seguro.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "El CI/CD es un activo crítico: permisos mínimos, integridad, ejecución aislada, secretos en su store",
+    "Contenedores en despliegue: no-root, sin secretos en imagen, base actualizada",
+    "Las vulnerabilidades aparecen tras liberar: hace falta divulgación + parcheo rápido",
+    "Parchear rápido y verificado, no rápido y a ciegas"
+   ],
+   "banco": [
+    {
+     "id": "cde5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el pipeline CI/CD es un activo crítico y cómo se endurece?",
+     "solucion": "Porque tiene secretos y acceso a producción: comprometerlo es comprometer todo lo que despliega (ataques de supply chain famosos lo atacaron). Se endurece con permisos mínimos por job, integridad de dependencias/artefactos (pinning + verificación), ejecución aislada efímera y secretos en el store del CI (no en el YAML ni en logs).",
+     "explicacion": "Tiene las llaves del reino.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cde5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué configuraciones endurecen un contenedor en despliegue?",
+     "solucion": "Correrlo como no-root, sin --privileged, sin secretos en la imagen (quedan en las capas), con la imagen base actualizada (hereda CVEs) y montando solo lo necesario. El contenedor empaqueta y aísla razonablemente, pero comparte el kernel: su config decide si aísla o solo aparenta.",
+     "explicacion": "Repaso aplicado de aislamiento.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cde5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué elementos tiene un proceso de divulgación y parcheo de vulnerabilidades?",
+     "solucion": "Una vía clara para recibir reportes (política de divulgación / security.txt) sin castigar al mensajero; priorización por explotabilidad e impacto; parcheo rápido de lo crítico con capacidad de desplegarlo con confianza (gracias al CI/CD seguro); y comunicación a quien usa lo afectado.",
+     "explicacion": "Recibir, priorizar, parchear, comunicar.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cde5-q4",
+     "tipo": "concepto",
+     "enunciado": "Un pipeline usa credencial de admin, instala 'la última' versión, mete la API key en el YAML y corre el contenedor como root. Endurécelo.",
+     "solucion": "Token de despliegue de alcance mínimo (no admin); fijar versiones con hashes + SCA en el pipeline; mover la key al store del CI y rotarla (estuvo en el YAML → comprometida); contenedor no-root sin secretos en la imagen con base actualizada; y publicar una vía de reporte con criterio de parcheo por severidad.",
+     "explicacion": "Endurecimiento punto por punto.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cde5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'parchear rápido' no significa 'parchear sin verificar'?",
+     "solucion": "Porque un parche apresurado sin verificación puede introducir un bug nuevo o romper producción. El objetivo es un canal de despliegue confiable que permita parchear rápido Y seguro (con pruebas y verificación), no rápido y a ciegas; la velocidad viene del proceso, no de saltarse controles.",
+     "explicacion": "Rápido y verificado.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cde5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué castigar a quien reporta una vulnerabilidad empeora la seguridad?",
+     "solucion": "Porque desincentiva la divulgación responsable: quien encuentra el fallo deja de reportarlo (o lo lleva al mercado negro), y la organización se entera tarde o por un ataque. Una vía de reporte clara y sin represalias hace que los fallos lleguen a quien puede arreglarlos.",
+     "explicacion": "No mates al mensajero.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 825
+  },
+  {
    "id": "cyber-blue1",
    "bloque": "fase-8",
-   "orden": 823,
+   "orden": 826,
    "titulo": "Ciber · Blue team I: MITRE ATT&CK, tácticas, técnicas y logs",
    "libro": "Getting Started with MITRE ATT&CK",
    "lectura": "data/teoria/cyber-blue1.md",
@@ -25516,7 +25735,7 @@
   {
    "id": "cyber-blue2",
    "bloque": "fase-8",
-   "orden": 824,
+   "orden": 827,
    "titulo": "Ciber · Blue team II: detection engineering e hipótesis",
    "libro": "Getting Started with MITRE ATT&CK",
    "lectura": "data/teoria/cyber-blue2.md",
@@ -25585,9 +25804,222 @@
    ]
   },
   {
+   "id": "cyber-blue3",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Threat intelligence e indicadores: del adversario a la señal",
+   "libro": "Getting Started with MITRE ATT&CK",
+   "lectura": "data/teoria/cyber-blue3.md",
+   "dosis": 30,
+   "objetivo": "Explicar qué es threat intelligence; distinguir indicadores por valor y durabilidad (pirámide del dolor); relacionar inteligencia con ATT&CK; y priorizar detección según amenazas relevantes.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Threat intelligence prioriza: ¿de qué me defiendo primero?",
+    "Pirámide del dolor: hashes/IPs caducan; los TTPs (comportamiento) duelen al atacante",
+    "Detectar por comportamiento (ATT&CK) supera a bloquear IoC de bajo nivel",
+    "Defensa informada por el adversario, no genérica"
+   ],
+   "banco": [
+    {
+     "id": "cbl3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es threat intelligence y para qué sirve a un defensor?",
+     "solucion": "Es recopilar y analizar información sobre quién ataca a organizaciones como la tuya, qué busca y cómo opera (sus TTPs), para priorizar la defensa. Sirve para pasar de 'cubrir todo ATT&CK por igual' a reforzar primero las conductas que tu sector realmente enfrenta.",
+     "explicacion": "Prioriza con conocimiento del adversario.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cbl3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué ordena la pirámide del dolor?",
+     "solucion": "Ordena los indicadores por cuánto le cuesta al atacante si se los bloqueas: hashes (trivial, recompila), IPs/dominios (fácil, cambia), artefactos de red/host (molesto), herramientas (difícil) y TTPs/comportamiento (doloroso: cambiar su modo de operar). Cuanto más arriba, más durable la detección.",
+     "explicacion": "Costo de evasión para el atacante.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cbl3-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué detectar TTPs supera a bloquear hashes e IPs?",
+     "solucion": "Porque un hash o una IP se cambian gratis (recompilar, mudar de servidor) y los feeds caducan en días; en cambio detectar el comportamiento (cómo entra, se mueve, exfiltra —lo que cataloga ATT&CK) obliga al atacante a reinventar su método, que es caro. Es la diferencia entre evasión trivial y dolorosa.",
+     "explicacion": "Comportamiento es durable; IoC, frágil.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cbl3-q4",
+     "tipo": "concepto",
+     "enunciado": "Te dan un feed de 5 000 IPs maliciosas para bloquear. ¿Es la mejor inversión?",
+     "solucion": "No como estrategia central: bloquear IPs es la base de la pirámide (el atacante cambia de IP y vuelve; el feed caduca). Mejor usar inteligencia para saber qué TTPs usan los actores de tu sector y construir detección de esas conductas, que obliga a cambiar el método. El feed sirve como señal complementaria de bajo costo, no como plan.",
+     "explicacion": "IoC como complemento, no estrategia.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cbl3-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué intentar cubrir todo ATT&CK por igual es un error?",
+     "solucion": "Porque el presupuesto de detección es finito y diluirlo en las ~200 técnicas deja todo cubierto a medias. La inteligencia prioriza las técnicas que tu tipo de organización realmente enfrenta (un banco y una clínica no temen a los mismos adversarios), concentrando el esfuerzo donde rinde.",
+     "explicacion": "Priorizar por relevancia, no por completitud.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cbl3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Qué riesgo tiene basarse solo en inteligencia de amenazas conocidas?",
+     "solucion": "Que se sesga hacia lo reportado/famoso y deja puntos ciegos en técnicas nuevas o no documentadas. Por eso la inteligencia se complementa con detección de anomalías de comportamiento para lo que no se anticipó: lo conocido se prioriza, lo desconocido se vigila por desviación.",
+     "explicacion": "La inteligencia no ve lo no reportado.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 828
+  },
+  {
+   "id": "cyber-blue4",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Respuesta a incidentes: del triaje a la recuperación",
+   "libro": "Getting Started with MITRE ATT&CK",
+   "lectura": "data/teoria/cyber-blue4.md",
+   "dosis": 30,
+   "objetivo": "Recorrer las fases de respuesta a incidentes; hacer triaje de una alerta; razonar contención sin destruir evidencia; y entender por qué la preparación decide el resultado.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Fases: preparación, detección/análisis, contención, erradicación, recuperación, lecciones",
+    "El triaje define si una alerta es real y su severidad",
+    "Contener preservando evidencia: a menudo aislar, no apagar",
+    "La preparación previa decide el resultado; post-mortem sin culpas"
+   ],
+   "banco": [
+    {
+     "id": "cbl4-q1",
+     "tipo": "concepto",
+     "enunciado": "Nombra las fases de la respuesta a incidentes.",
+     "solucion": "Preparación (planes, accesos, respaldos, práctica antes del incidente), detección y análisis (confirmar y dimensionar), contención (frenar la propagación), erradicación (eliminar la causa), recuperación (restaurar desde un estado limpio) y lecciones aprendidas (post-mortem sin culpas). No son rígidas pero dan orden.",
+     "explicacion": "Modelo NIST/SANS.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cbl4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué decide el triaje ante una alerta?",
+     "solucion": "Si la alerta es un falso positivo o un incidente real, qué activos toca y cuál es su impacto, para asignar una severidad que define la urgencia y a quién involucrar. Vuelve la pregunta clave: '¿qué dato falta para confirmarlo?'. Evita escalar todo (fatiga) o ignorar lo grave.",
+     "explicacion": "Real/falso + severidad.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cbl4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'apagar todo' puede ser una mala contención y qué se prefiere?",
+     "solucion": "Porque apagar destruye memoria volátil y evidencia útil para entender el ataque y erradicarlo bien, y alertar al atacante puede hacer que acelere el daño o borre rastros. Se prefiere aislar de la red (frenar sin destruir), tomar copias forenses antes de limpiar, y contener primero el sangrado y luego estabilizar.",
+     "explicacion": "Aislar y preservar, no apagar a ciegas.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cbl4-q4",
+     "tipo": "concepto",
+     "enunciado": "Una cuenta descargó 4.2 GB del bucket de pacientes a las 3 a.m. desde geo inusual. Describe la respuesta.",
+     "solucion": "Triaje (¿viajó/VPN? ¿es su trabajo? si no → incidente alto por datos sensibles). Contención: deshabilitar/forzar reauth de la cuenta y revocar tokens, restringir el bucket, sin borrar logs ni la máquina (evidencia). Erradicación: hallar cómo se comprometió (phishing/credencial), cerrar la vía, rotar credenciales. Recuperación: restaurar con MFA, confirmar sin persistencia. Lecciones: por qué no había alerta/límite antes.",
+     "explicacion": "Triaje→contener→erradicar→recuperar→aprender.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cbl4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué la preparación previa decide el resultado de un incidente?",
+     "solucion": "Porque durante el incidente se actúa bajo presión: sin plan, contactos, accesos y respaldos verificados listos de antemano, se improvisa y se cometen errores costosos (se destruye evidencia, se tarda, se contiene mal). La preparación convierte el caos en ejecución de un protocolo ensayado.",
+     "explicacion": "El plan se hace antes, no durante.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cbl4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué tratar un falso positivo como incidente grave también es un problema?",
+     "solucion": "Porque consume recursos y erosiona la confianza en las alertas (fatiga), llevando a ignorar futuras alertas reales. Por eso el triaje y la severidad son la primera fase activa: la respuesta debe ser proporcional al riesgo real, ni exagerada ni ausente.",
+     "explicacion": "Respuesta proporcional a la severidad.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 829
+  },
+  {
+   "id": "cyber-blue5",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Mejora continua: emulación adversaria, brechas de cobertura y métricas",
+   "libro": "Getting Started with MITRE ATT&CK",
+   "lectura": "data/teoria/cyber-blue5.md",
+   "dosis": 30,
+   "objetivo": "Usar emulación adversaria (purple team) para validar detección; medir cobertura contra ATT&CK y hallar brechas; elegir métricas útiles; y ejecutar el mini-proyecto de mini-SOC.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "La defensa es un ciclo: emular, medir cobertura, mejorar",
+    "Purple team: red emula, blue verifica; lo que no dispara es una brecha",
+    "Matriz de cobertura vs teatro de cobertura (marcar 'detectado' sin verificar)",
+    "Métricas de resultado (incidentes reales detectados, MTTD/MTTR), no de actividad"
+   ],
+   "banco": [
+    {
+     "id": "cbl5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es la emulación adversaria / purple team?",
+     "solucion": "Ejecutar de forma controlada y autorizada las técnicas ATT&CK que preocupan para ver si tus detecciones las cazan; en purple team el equipo ofensivo (red) y el defensivo (blue) trabajan juntos: el red ejecuta, el blue verifica si saltó la alerta y ajustan en el momento. Lo que pasa sin disparar es una brecha de cobertura. Solo sobre sistemas propios o autorizados.",
+     "explicacion": "Validar detección atacándose a propósito.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cbl5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué hace visible una matriz de cobertura y qué es el 'teatro de cobertura'?",
+     "solucion": "Mapea las técnicas ATT&CK relevantes contra tu capacidad de detectarlas (detectada/parcial/brecha), haciendo visible el progreso y las brechas a priorizar. El teatro de cobertura es marcar una técnica como 'detectada' porque existe una regla, sin verificar que realmente dispara (eso solo lo confirma la emulación).",
+     "explicacion": "Cobertura verificada vs aparente.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cbl5-q3",
+     "tipo": "concepto",
+     "enunciado": "Da una métrica engañosa de seguridad y su alternativa de resultado.",
+     "solucion": "Engañosa: 'número de alertas' o 'número de reglas' (más actividad no es más seguridad; puede ser ruido). Alternativa de resultado: porcentaje de incidentes reales detectados, cobertura verificada por emulación, y tiempos de detección y respuesta (MTTD/MTTR). Se mide resultado, no actividad.",
+     "explicacion": "Resultado, no actividad.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cbl5-q4",
+     "tipo": "concepto",
+     "enunciado": "Tu equipo cree estar 'bien cubierto' por tener 200 reglas. Aplica el ciclo de mejora.",
+     "solucion": "Emular (autorizado) una exfiltración: si no salta nada, hay brecha (la regla existía pero filtraba mal). Mapear cobertura por técnicas relevantes y descubrir huecos (p. ej. exfiltración, movimiento lateral). Ajustar/crear detección y revalidar emulando hasta que dispare sin marcar respaldos legítimos. Reportar cobertura verificada y MTTD en vez de '200 reglas'.",
+     "explicacion": "Emular→medir→mejorar→revalidar.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cbl5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'tenemos N reglas, estamos cubiertos' es un autoengaño?",
+     "solucion": "Porque tener una regla no implica que detecte: puede estar mal configurada, filtrar por lo equivocado o haber quedado obsoleta al cambiar el sistema. Solo la emulación verifica que dispara ante la conducta real; sin verificación, la cobertura es nominal (teatro), no efectiva.",
+     "explicacion": "Existir ≠ funcionar.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cbl5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el ciclo emular→medir→mejorar no basta por sí solo?",
+     "solucion": "Porque la emulación cubre lo que anticipas (técnicas conocidas); un adversario con una técnica nueva no emulada puede pasar. Se complementa con detección de anomalías de comportamiento e inteligencia actualizada para lo desconocido: el ciclo cierra los huecos conocidos, las anomalías vigilan lo demás.",
+     "explicacion": "Lo conocido se valida; lo nuevo se vigila.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 830
+  },
+  {
    "id": "cyber-mls1",
    "bloque": "fase-8",
-   "orden": 825,
+   "orden": 831,
    "titulo": "Ciber · Seguridad de ML I: por qué la IA cambia la superficie de ataque",
    "libro": "MITRE SAFE-AI / MITRE ATLAS",
    "lectura": "data/teoria/cyber-mls1.md",
@@ -25658,7 +26090,7 @@
   {
    "id": "cyber-mls2",
    "bloque": "fase-8",
-   "orden": 826,
+   "orden": 832,
    "titulo": "Ciber · Seguridad de ML II: inferencia, supply chain y controles",
    "libro": "MITRE SAFE-AI / MITRE ATLAS",
    "lectura": "data/teoria/cyber-mls2.md",
@@ -25729,7 +26161,7 @@
   {
    "id": "cyber-llm1",
    "bloque": "fase-8",
-   "orden": 827,
+   "orden": 833,
    "titulo": "Ciber · Seguridad de LLMs I: prompt injection directa e indirecta",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm1.md",
@@ -25800,7 +26232,7 @@
   {
    "id": "cyber-llm2",
    "bloque": "fase-8",
-   "orden": 828,
+   "orden": 834,
    "titulo": "Ciber · Seguridad de LLMs II: RAG, agentes y agencia excesiva",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm2.md",

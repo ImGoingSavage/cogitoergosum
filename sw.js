@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v146';
+const VERSION = 'cogitoergosum-v147';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -278,8 +278,14 @@ const SHELL = [
   'data/teoria/cyber-dp5.md',
   'data/teoria/cyber-dev1.md',
   'data/teoria/cyber-dev2.md',
+  'data/teoria/cyber-dev3.md',
+  'data/teoria/cyber-dev4.md',
+  'data/teoria/cyber-dev5.md',
   'data/teoria/cyber-blue1.md',
   'data/teoria/cyber-blue2.md',
+  'data/teoria/cyber-blue3.md',
+  'data/teoria/cyber-blue4.md',
+  'data/teoria/cyber-blue5.md',
   'data/teoria/cyber-mls1.md',
   'data/teoria/cyber-mls2.md',
   'data/teoria/cyber-llm1.md',
