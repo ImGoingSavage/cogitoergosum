@@ -12214,15 +12214,15 @@
      "id": "arsd1-q3",
      "tipo": "calculo",
      "enunciado": "Una app tiene 100 millones de usuarios activos diarios que hacen 5 acciones al día en promedio. Estima el QPS promedio y el QPS pico.",
-     "solucion": "QPS = 100M × 5 / 86400 ≈ 5.8M / 86400 ≈ 5787 ≈ ~5800 QPS. Pico ≈ 2× ≈ ~11600 QPS.",
-     "explicacion": "500M acciones/día entre 86400 s ≈ 5800 QPS. La regla de pulgar es pico ≈ 2× el promedio. Se redondea: la precisión no importa, el orden de magnitud sí."
+     "solucion": "QPS $= 100\\text{M} \\times 5 / 86400 \\approx 5.8\\text{M} / 86400 \\approx 5787 \\approx$ ~5800 QPS. Pico $\\approx 2\\times \\approx$ ~11600 QPS.",
+     "explicacion": "500M acciones/día entre $86400$ s $\\approx 5800$ QPS. La regla de pulgar es pico $\\approx 2\\times$ el promedio. Se redondea: la precisión no importa, el orden de magnitud sí."
     },
     {
      "id": "arsd1-q4",
      "tipo": "calculo",
      "enunciado": "¿Cuánto downtime al año implica una disponibilidad de 99.99% (cuatro nueves)? ¿Y 99.9%?",
      "solucion": "99.99% ≈ 52.6 minutos/año. 99.9% ≈ 8.76 horas/año.",
-     "explicacion": "Año = 525600 min. 0.01% de 525600 ≈ 52.6 min; 0.1% ≈ 526 min ≈ 8.76 h. Cada nueve adicional reduce el downtime ~10× y cuesta exponencialmente más."
+     "explicacion": "Año $= 525600$ min. $0.01\\%$ de $525600 \\approx 52.6$ min; $0.1\\% \\approx 526$ min $\\approx 8.76$ h. Cada nueve adicional reduce el downtime $\\sim10\\times$ y cuesta exponencialmente más."
     },
     {
      "id": "arsd1-q5",
@@ -12270,8 +12270,8 @@
      "id": "arsd1-q11",
      "tipo": "calculo",
      "enunciado": "Estima el almacenamiento de medios a 5 años de una red social con 150M usuarios diarios que suben 2 posts/día, donde el 10% tiene una imagen de 1 MB.",
-     "solucion": "Diario: 150M × 2 × 10% × 1MB = 30 TB/día. A 5 años: 30 TB × 365 × 5 ≈ 55 PB.",
-     "explicacion": "30M imágenes/día × 1 MB = 30 TB/día. Multiplicado por ~1825 días ≈ 55 PB. Este cálculo justifica decisiones de storage distribuido y CDN."
+     "solucion": "Diario: $150\\text{M} \\times 2 \\times 10\\% \\times 1\\text{MB} = 30$ TB/día. A 5 años: $30\\text{ TB} \\times 365 \\times 5 \\approx 55$ PB.",
+     "explicacion": "$30\\text{M}$ imágenes/día $\\times 1$ MB $= 30$ TB/día. Multiplicado por $\\sim1825$ días $\\approx 55$ PB. Este cálculo justifica decisiones de storage distribuido y CDN."
     },
     {
      "id": "arsd1-q12",
@@ -12395,7 +12395,7 @@
      "tipo": "concepto",
      "enunciado": "¿Qué es un vector clock y qué resuelve que un timestamp simple no puede?",
      "solucion": "Un vector clock es un conjunto de pares [servidor, versión] asociado a un dato. Detecta si una versión es ancestro, descendiente o está en conflicto con otra. Un timestamp simple no distingue escrituras concurrentes (conflicto) de secuenciales.",
-     "explicacion": "Versión X es ancestro de Y si cada contador de X ≤ el de Y. Si ninguna domina a la otra, son hermanas → conflicto que el cliente reconcilia. El timestamp solo da orden total, perdiendo la causalidad."
+     "explicacion": "Versión $X$ es ancestro de $Y$ si cada contador de $X \\le$ el de $Y$. Si ninguna domina a la otra, son hermanas → conflicto que el cliente reconcilia. El timestamp solo da orden total, perdiendo la causalidad."
     },
     {
      "id": "arsd2-q11",
@@ -12430,7 +12430,7 @@
      "tipo": "calculo",
      "enunciado": "Reparte los 64 bits de un ID Snowflake y di cuántos IDs por milisegundo puede emitir una máquina.",
      "solucion": "1 bit signo + 41 timestamp + 5 datacenter + 5 máquina + 12 secuencia = 64. Con 12 bits de secuencia, 2¹² = 4096 IDs por milisegundo por máquina.",
-     "explicacion": "41 bits de ms dan ~69 años desde una época propia. 5+5 bits = 32 datacenters × 32 máquinas. La secuencia de 12 bits evita colisiones dentro del mismo ms en la misma máquina."
+     "explicacion": "$41$ bits de ms dan $\\sim69$ años desde una época propia. $5+5$ bits $= 32$ datacenters $\\times 32$ máquinas. La secuencia de $12$ bits evita colisiones dentro del mismo ms en la misma máquina."
     }
    ]
   },
@@ -12462,7 +12462,7 @@
      "id": "arsd3-q1",
      "tipo": "calculo",
      "enunciado": "En un acortador de URLs con base62, ¿cuántas URLs distintas representa una clave de 7 caracteres y por qué basta?",
-     "solucion": "62⁷ ≈ 3.5 billones (3.5 × 10¹²). Basta para años de operación incluso con millones de URLs nuevas al día.",
+     "solucion": "$62^7 \\approx 3.5$ billones ($3.5 \\times 10^{12}$). Basta para años de operación incluso con millones de URLs nuevas al día.",
      "explicacion": "Base62 = [a-zA-Z0-9] = 62 símbolos. 62⁷ ≈ 3.5T. Más caracteres dan más espacio pero URLs más largas; 7 es el equilibrio típico."
     },
     {
@@ -12553,7 +12553,7 @@
      "id": "arsd3-q14",
      "tipo": "calculo",
      "enunciado": "Un acortador recibe 100 escrituras/s (URLs nuevas) y una proporción lectura:escritura de 10:1. ¿Cuál es el QPS de lectura y qué implica para el diseño?",
-     "solucion": "Lecturas = 10 × 100 = 1000 QPS. El sistema es read-heavy → el diseño se centra en caché de redirecciones y réplicas de lectura, no en la escritura.",
+     "solucion": "Lecturas $= 10 \\times 100 = 1000$ QPS. El sistema es read-heavy → el diseño se centra en caché de redirecciones y réplicas de lectura, no en la escritura.",
      "explicacion": "La redirección (lectura) domina. Una caché de las URLs populares absorbe la mayoría de las lecturas; la escritura es comparativamente trivial."
     },
     {
@@ -13832,7 +13832,7 @@
      "id": "arpst1-q10",
      "tipo": "concepto",
      "enunciado": "¿Qué muestra un boxplot y cómo marca los outliers?",
-     "solucion": "Un boxplot resume la distribución con la mediana (línea central), los cuartiles 25 y 75 (la caja, cuya altura es el IQR) y los bigotes. Marca como outliers los puntos a más de 1.5×IQR por encima del P75 o por debajo del P25.",
+     "solucion": "Un boxplot resume la distribución con la mediana (línea central), los cuartiles 25 y 75 (la caja, cuya altura es el IQR) y los bigotes. Marca como outliers los puntos a más de $1.5\\times\\text{IQR}$ por encima del P75 o por debajo del P25.",
      "explicacion": "Es una vista compacta basada en order statistics (robustas) que muestra centro, dispersión y outliers de un vistazo, ideal para comparar grupos."
     },
     {
@@ -13892,7 +13892,7 @@
    "ideas_clave": [
     "Error estándar = variabilidad del estadístico; desviación estándar = de los datos",
     "El bootstrap remuestrea con reemplazo para estimar la distribución muestral de cualquier estadístico",
-    "SE ∝ 1/√n: reducirlo a la mitad exige cuadruplicar n"
+    "$\\text{SE} \\propto 1/\\sqrt{n}$: reducirlo a la mitad exige cuadruplicar $n$"
    ],
    "banco": [
     {
@@ -13912,8 +13912,8 @@
     {
      "id": "arpst2-q3",
      "tipo": "calculo",
-     "enunciado": "El error estándar de la media es SE = s/√n. Si quieres reducir el SE a la mitad, ¿cuánto debes aumentar n?",
-     "solucion": "Como SE ∝ 1/√n, para dividir el SE entre 2 hay que multiplicar √n por 2, es decir multiplicar n por 4 (cuadruplicarlo).",
+     "enunciado": "El error estándar de la media es $\\text{SE} = s/\\sqrt{n}$. Si quieres reducir el $\\text{SE}$ a la mitad, ¿cuánto debes aumentar $n$?",
+     "solucion": "Como $\\text{SE} \\propto 1/\\sqrt{n}$, para dividir el $\\text{SE}$ entre 2 hay que multiplicar $\\sqrt{n}$ por 2, es decir multiplicar $n$ por 4 (cuadruplicarlo).",
      "explicacion": "La raíz cuadrada implica rendimientos decrecientes: cada mejora de precisión cuesta cada vez más datos. Por eso recolectar más no siempre vale la pena."
     },
     {
@@ -14072,14 +14072,14 @@
      "id": "arpst3-q7",
      "tipo": "concepto",
      "enunciado": "Distingue error Tipo I y Tipo II en un experimento.",
-     "solucion": "Error Tipo I: declarar real un efecto que en verdad es azar (falso positivo), con probabilidad α. Error Tipo II: no detectar un efecto que sí es real (falso negativo), con probabilidad β.",
-     "explicacion": "α la fija el analista (típico 0.05); β depende del tamaño del efecto y de n. Reducir uno suele aumentar el otro a n fijo."
+     "solucion": "Error Tipo I: declarar real un efecto que en verdad es azar (falso positivo), con probabilidad $\\alpha$. Error Tipo II: no detectar un efecto que sí es real (falso negativo), con probabilidad $\\beta$.",
+     "explicacion": "$\\alpha$ la fija el analista (típico $0.05$); $\\beta$ depende del tamaño del efecto y de $n$. Reducir uno suele aumentar el otro a $n$ fijo."
     },
     {
      "id": "arpst3-q8",
      "tipo": "concepto",
      "enunciado": "Define potencia estadística y di qué la aumenta.",
-     "solucion": "La potencia es la probabilidad de detectar un efecto de un tamaño dado con un tamaño de muestra dado, es decir 1−β. Aumenta al incrementar el tamaño de muestra n, al aumentar el tamaño del efecto a detectar, o al reducir la varianza/mejorar el diseño de medición.",
+     "solucion": "La potencia es la probabilidad de detectar un efecto de un tamaño dado con un tamaño de muestra dado, es decir $1-\\beta$. Aumenta al incrementar el tamaño de muestra $n$, al aumentar el tamaño del efecto a detectar, o al reducir la varianza/mejorar el diseño de medición.",
      "explicacion": "Más datos y efectos más grandes son más fáciles de detectar; dimensionar un experimento es elegir n para una potencia objetivo dado un efecto."
     },
     {
@@ -14087,13 +14087,13 @@
      "tipo": "concepto",
      "enunciado": "¿Qué es el tamaño del efecto (effect size) y por qué es necesario para calcular el tamaño de muestra?",
      "solucion": "Es la magnitud mínima de diferencia que quieres poder detectar (p.ej. +1% de conversión). Es necesario porque la potencia depende de él: detectar un efecto pequeño exige muchos más datos que uno grande. Sin fijar el effect size no se puede despejar el n requerido.",
-     "explicacion": "Potencia, α, tamaño del efecto y n están ligados: fijando tres se despeja el cuarto. El effect size traduce 'qué diferencia me importa' en datos necesarios."
+     "explicacion": "Potencia, $\\alpha$, tamaño del efecto y $n$ están ligados: fijando tres se despeja el cuarto. El effect size traduce 'qué diferencia me importa' en datos necesarios."
     },
     {
      "id": "arpst3-q10",
      "tipo": "concepto",
      "enunciado": "Explica el problema de la multiplicidad con un ejemplo.",
-     "solucion": "Si pruebas muchas comparaciones, subgrupos, variables o modelos, por puro azar algo saldrá 'significativo' aunque no haya efecto real. Ejemplo: revisar 20 subgrupos a α=0.05 hace esperar ~1 falso positivo; o 'no hubo efecto general, pero sí en mujeres solteras menores de 30'. 'Si torturas los datos lo suficiente, confiesan'.",
+     "solucion": "Si pruebas muchas comparaciones, subgrupos, variables o modelos, por puro azar algo saldrá 'significativo' aunque no haya efecto real. Ejemplo: revisar 20 subgrupos a $\\alpha=0.05$ hace esperar ~1 falso positivo; o 'no hubo efecto general, pero sí en mujeres solteras menores de 30'. 'Si torturas los datos lo suficiente, confiesan'.",
      "explicacion": "Cada test tiene 5% de falso positivo; con muchos, la probabilidad de al menos uno se dispara. Es una causa mayor de resultados irreproducibles."
     },
     {
@@ -14107,7 +14107,7 @@
      "id": "arpst3-q12",
      "tipo": "concepto",
      "enunciado": "¿Qué es la False Discovery Rate (FDR) y la corrección de Bonferroni?",
-     "solucion": "La FDR es la tasa esperada de falsos descubrimientos (tests que declaran efecto sin haberlo) entre los rechazos; se busca mantenerla bajo un nivel cuando se hacen muchísimos tests (p.ej. genómica). Bonferroni es un ajuste conservador que divide α entre el número de tests (α/m) para controlar la probabilidad de al menos un falso positivo (FWER).",
+     "solucion": "La FDR es la tasa esperada de falsos descubrimientos (tests que declaran efecto sin haberlo) entre los rechazos; se busca mantenerla bajo un nivel cuando se hacen muchísimos tests (p.ej. genómica). Bonferroni es un ajuste conservador que divide $\\alpha$ entre el número de tests ($\\alpha/m$) para controlar la probabilidad de al menos un falso positivo (FWER).",
      "explicacion": "Ambos endurecen el umbral para compensar la multiplicidad; Bonferroni controla la FWER (cualquier error), la FDR controla la proporción de errores entre los hallazgos."
     },
     {
@@ -14167,8 +14167,8 @@
     {
      "id": "arpst4-q2",
      "tipo": "concepto",
-     "enunciado": "¿Cómo se interpreta un coeficiente b_j en una regresión lineal múltiple, y por qué esa cláusula causa problemas?",
-     "solucion": "b_j es el cambio esperado en Y por unidad de X_j MANTENIENDO LOS DEMÁS PREDICTORES CONSTANTES. Esa cláusula causa problemas porque rara vez los predictores son independientes: si están correlacionados (multicolinealidad) o falta uno importante (confounding), 'mantener lo demás constante' deja de ser realista y la interpretación se distorsiona.",
+     "enunciado": "¿Cómo se interpreta un coeficiente $b_j$ en una regresión lineal múltiple, y por qué esa cláusula causa problemas?",
+     "solucion": "$b_j$ es el cambio esperado en $Y$ por unidad de $X_j$ MANTENIENDO LOS DEMÁS PREDICTORES CONSTANTES. Esa cláusula causa problemas porque rara vez los predictores son independientes: si están correlacionados (multicolinealidad) o falta uno importante (confounding), 'mantener lo demás constante' deja de ser realista y la interpretación se distorsiona.",
      "explicacion": "El 'todo lo demás igual' es una idealización; cuando los predictores se mueven juntos o falta información, los coeficientes dejan de tener el significado limpio que sugiere la fórmula."
     },
     {
@@ -14196,7 +14196,7 @@
      "id": "arpst4-q6",
      "tipo": "concepto",
      "enunciado": "¿Qué es un término de interacción y cuándo lo necesitas?",
-     "solucion": "Un término de interacción (X1·X2) se necesita cuando el efecto de un predictor sobre la respuesta DEPENDE del nivel de otro. Ejemplo: el valor del pie cuadrado depende de la zona — en la zona más cara cada pie² suma mucho más que en la más barata. Sin la interacción, el modelo asumiría un efecto único para todas las zonas.",
+     "solucion": "Un término de interacción ($X_1\\cdot X_2$) se necesita cuando el efecto de un predictor sobre la respuesta DEPENDE del nivel de otro. Ejemplo: el valor del pie cuadrado depende de la zona — en la zona más cara cada pie$^2$ suma mucho más que en la más barata. Sin la interacción, el modelo asumiría un efecto único para todas las zonas.",
      "explicacion": "La interacción captura que la relación entre las variables y la respuesta es interdependiente; ignorarla sesga las predicciones por subgrupo."
     },
     {
@@ -14239,7 +14239,7 @@
      "tipo": "concepto",
      "enunciado": "Diferencia un outlier de un valor influyente (leverage) en regresión.",
      "solucion": "Un outlier es un registro cuyo valor observado está lejos del predicho (residual grande). Un valor influyente es uno cuya presencia o ausencia cambia notablemente la ecuación de regresión; su grado de influencia se mide con el leverage (hat-value). Un punto puede ser influyente sin tener un residual enorme, y viceversa.",
-     "explicacion": "Influencia ≠ residual grande: un punto en un extremo del eje X puede 'jalar' la recta (alto leverage) aunque caiga cerca de ella; conviene revisar ambos."
+     "explicacion": "Influencia $\\ne$ residual grande: un punto en un extremo del eje $X$ puede 'jalar' la recta (alto leverage) aunque caiga cerca de ella; conviene revisar ambos."
     },
     {
      "id": "arpst4-q13",
@@ -17125,7 +17125,7 @@
      "id": "arrom2-q10",
      "tipo": "concepto",
      "enunciado": "Regla 20: explica discretización y cruces como formas de crear features.",
-     "solucion": "DISCRETIZACIÓN: tomar una feature CONTINUA (p.ej. edad) y crear muchas features discretas a partir de ella (1 si edad<18, otra si 18≤edad<35, etc.); no sobrepienses los cortes, los cuantiles básicos dan casi todo el impacto. CRUCES: combinar dos o más feature columns (conjuntos de features homogéneas); p.ej. {male,female}×{US,Canada,Mexico} crea una nueva columna con la feature (male, Canada). Cruces de 3-4+ columnas exigen muchísimos datos y pueden sobreajustar.",
+     "solucion": "DISCRETIZACIÓN: tomar una feature CONTINUA (p.ej. edad) y crear muchas features discretas a partir de ella (1 si edad$<18$, otra si $18\\le$ edad $<35$, etc.); no sobrepienses los cortes, los cuantiles básicos dan casi todo el impacto. CRUCES: combinar dos o más feature columns (conjuntos de features homogéneas); p.ej. $\\{\\text{male},\\text{female}\\}\\times\\{\\text{US},\\text{Canada},\\text{Mexico}\\}$ crea una nueva columna con la feature (male, Canada). Cruces de 3-4+ columnas exigen muchísimos datos y pueden sobreajustar.",
      "explicacion": "Discretizar y cruzar son las dos transformaciones estándar (p.ej. en TensorFlow) para enriquecer features de forma humano-entendible."
     },
     {
@@ -17161,7 +17161,7 @@
      "tipo": "concepto",
      "enunciado": "¿Por qué un cruce de muchas feature columns con texto puede sobreajustar, y qué alternativas hay (Regla 20)?",
      "solucion": "Porque un cruce de una columna con palabras de la query y otra con palabras del documento genera muchísimas features (R21), que con datos insuficientes sobreajustan. Alternativas al trabajar con texto: (1) la más draconiana es un DOT PRODUCT, que cuenta las palabras comunes entre query y documento (y luego se discretiza); (2) una INTERSECCIÓN: una feature presente si y solo si la palabra 'pony' está en documento Y query, otra para 'the', etc.",
-     "explicacion": "El dot product y la intersección reducen la dimensionalidad explosiva del cruce texto×texto."
+     "explicacion": "El dot product y la intersección reducen la dimensionalidad explosiva del cruce texto $\\times$ texto."
     }
    ]
   },
@@ -17278,8 +17278,8 @@
      "id": "arrom3-q13",
      "tipo": "concepto",
      "enunciado": "Regla 34: ¿cómo obtener datos limpios en una tarea de filtrado (spam) sin sesgo de muestreo?",
-     "solucion": "En filtrado, los ejemplos marcados como negativos NO se muestran al usuario. Si tu filtro bloquea el 75% de los negativos en serving y solo aprendes de lo que el usuario ve, introduces sesgo de muestreo. Solución: durante el serving etiqueta el 1% de TODO el tráfico como 'held out' y muéstralo al usuario; así tu filtro sigue bloqueando ≥74% de los negativos y esos ejemplos held-out (sin sesgo) se vuelven tus datos de entrenamiento. Es un pequeño sacrificio de rendimiento a corto plazo por datos muy limpios.",
-     "explicacion": "Si el filtro bloquea ≥95% es menos viable; para solo medir rendimiento basta una muestra ínfima (0.1%, ~10.000 ejemplos)."
+     "solucion": "En filtrado, los ejemplos marcados como negativos NO se muestran al usuario. Si tu filtro bloquea el 75% de los negativos en serving y solo aprendes de lo que el usuario ve, introduces sesgo de muestreo. Solución: durante el serving etiqueta el 1% de TODO el tráfico como 'held out' y muéstralo al usuario; así tu filtro sigue bloqueando $\\ge74\\%$ de los negativos y esos ejemplos held-out (sin sesgo) se vuelven tus datos de entrenamiento. Es un pequeño sacrificio de rendimiento a corto plazo por datos muy limpios.",
+     "explicacion": "Si el filtro bloquea $\\ge95\\%$ es menos viable; para solo medir rendimiento basta una muestra ínfima ($0.1\\%$, ~10.000 ejemplos)."
     },
     {
      "id": "arrom3-q14",
@@ -17449,7 +17449,7 @@
    "ideas_clave": [
     "La deuda de ML vive a nivel de SISTEMA, no de código (los datos corrompen abstracciones)",
     "CACE: Changing Anything Changes Everything (entanglement)",
-    "Correction cascades: parchear m_a' sobre m_a crea deadlock de mejora",
+    "Correction cascades: parchear $m_{a'}$ sobre $m_a$ crea deadlock de mejora",
     "Undeclared consumers (visibility debt): acoplamiento oculto; usa SLAs/access control",
     "Mejorar un componente de un ensemble puede empeorar el sistema (errores correlacionados)"
    ],
@@ -17479,7 +17479,7 @@
      "id": "arhtd1-q4",
      "tipo": "concepto",
      "enunciado": "Enuncia el principio CACE y explica el 'entanglement' que lo causa.",
-     "solucion": "Entanglement: el ML mezcla señales, entrelazándolas, lo que hace imposible aislar mejoras. Si un modelo usa features x_1..x_n y cambias la distribución de x_1, la importancia, los pesos o el uso de las demás n-1 features pueden cambiar (igual al añadir x_{n+1} o quitar cualquier x_j); ningún input es realmente independiente. Esto es el principio CACE: 'Changing Anything Changes Everything' (cambiar cualquier cosa lo cambia todo).",
+     "solucion": "Entanglement: el ML mezcla señales, entrelazándolas, lo que hace imposible aislar mejoras. Si un modelo usa features $x_1,\\dots,x_n$ y cambias la distribución de $x_1$, la importancia, los pesos o el uso de las demás $n-1$ features pueden cambiar (igual al añadir $x_{n+1}$ o quitar cualquier $x_j$); ningún input es realmente independiente. Esto es el principio CACE: 'Changing Anything Changes Everything' (cambiar cualquier cosa lo cambia todo).",
      "explicacion": "Ocurre tanto en entrenamiento batch como online; no hay inputs verdaderamente independientes."
     },
     {
@@ -17507,28 +17507,28 @@
      "id": "arhtd1-q8",
      "tipo": "concepto",
      "enunciado": "¿Qué es una 'correction cascade' y cómo surge?",
-     "solucion": "Surge cuando existe un modelo m_a para el problema A pero se necesita resolver un problema A' ligeramente distinto. Es tentador aprender un modelo m_a' que TOMA m_a COMO INPUT y aprende una pequeña corrección como solución rápida. Si luego aparece A'' y se aprende otro modelo sobre m_a', y así sucesivamente, se forma una cascada de correcciones encadenadas.",
+     "solucion": "Surge cuando existe un modelo $m_a$ para el problema $A$ pero se necesita resolver un problema $A'$ ligeramente distinto. Es tentador aprender un modelo $m_{a'}$ que TOMA $m_a$ COMO INPUT y aprende una pequeña corrección como solución rápida. Si luego aparece $A''$ y se aprende otro modelo sobre $m_{a'}$, y así sucesivamente, se forma una cascada de correcciones encadenadas.",
      "explicacion": "Es una 'solución rápida' que crea una nueva dependencia de sistema."
     },
     {
      "id": "arhtd1-q9",
      "tipo": "concepto",
      "enunciado": "¿Por qué es peligrosa una correction cascade y cómo se mitiga?",
-     "solucion": "Porque crea una dependencia nueva de m_a' sobre m_a que vuelve significativamente más caro analizar mejoras a m_a en el futuro, y el coste crece al encadenar correcciones. Una vez instalada, puede crear un DEADLOCK DE MEJORA: mejorar la precisión de cualquier componente individual lleva a detrimentos a nivel de sistema. Mitigación: aumentar m_a para aprender las correcciones DIRECTAMENTE dentro del mismo modelo (añadiendo features que distingan entre los casos), o aceptar el coste de crear un MODELO SEPARADO para A'.",
+     "solucion": "Porque crea una dependencia nueva de $m_{a'}$ sobre $m_a$ que vuelve significativamente más caro analizar mejoras a $m_a$ en el futuro, y el coste crece al encadenar correcciones. Una vez instalada, puede crear un DEADLOCK DE MEJORA: mejorar la precisión de cualquier componente individual lleva a detrimentos a nivel de sistema. Mitigación: aumentar $m_a$ para aprender las correcciones DIRECTAMENTE dentro del mismo modelo (añadiendo features que distingan entre los casos), o aceptar el coste de crear un MODELO SEPARADO para $A'$.",
      "explicacion": "El deadlock surge porque las correcciones encadenadas atan el sistema a un estado subóptimo."
     },
     {
      "id": "arhtd1-q10",
      "tipo": "concepto",
      "enunciado": "¿Qué son los 'undeclared consumers' y con qué deuda clásica se relacionan?",
-     "solucion": "Cuando la predicción de un modelo m_a se hace ampliamente accesible (en runtime, o escribiéndola a archivos o logs que otros sistemas leen luego), algunos de esos consumidores pueden ser NO DECLARADOS: usan silenciosamente la salida del modelo como input de otro sistema sin acceso controlado ni aviso. En ingeniería de software clásica esto se llama VISIBILITY DEBT (deuda de visibilidad).",
+     "solucion": "Cuando la predicción de un modelo $m_a$ se hace ampliamente accesible (en runtime, o escribiéndola a archivos o logs que otros sistemas leen luego), algunos de esos consumidores pueden ser NO DECLARADOS: usan silenciosamente la salida del modelo como input de otro sistema sin acceso controlado ni aviso. En ingeniería de software clásica esto se llama VISIBILITY DEBT (deuda de visibilidad).",
      "explicacion": "El problema es la falta de barreras: bajo presión de plazos, los ingenieros usan la señal más conveniente a mano."
     },
     {
      "id": "arhtd1-q11",
      "tipo": "concepto",
      "enunciado": "¿Por qué los undeclared consumers son 'caros en el mejor caso y peligrosos en el peor'?",
-     "solucion": "Porque crean un acoplamiento fuerte OCULTO de m_a al resto del stack: cambios en m_a (incluso mejoras) muy probablemente impactarán a esas otras partes de formas no intencionadas, mal entendidas y detrimentales. En la práctica, este acoplamiento puede aumentar radicalmente el coste y la dificultad de hacer CUALQUIER cambio a m_a, aun si es una mejora. Además, los consumidores no declarados pueden crear hidden feedback loops.",
+     "solucion": "Porque crean un acoplamiento fuerte OCULTO de $m_a$ al resto del stack: cambios en $m_a$ (incluso mejoras) muy probablemente impactarán a esas otras partes de formas no intencionadas, mal entendidas y detrimentales. En la práctica, este acoplamiento puede aumentar radicalmente el coste y la dificultad de hacer CUALQUIER cambio a $m_a$, aun si es una mejora. Además, los consumidores no declarados pueden crear hidden feedback loops.",
      "explicacion": "El acoplamiento oculto convierte cualquier mejora en un riesgo de romper consumidores invisibles."
     },
     {
