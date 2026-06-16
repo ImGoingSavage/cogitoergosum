@@ -18580,7 +18580,7 @@
      "id": "arisl1-q9",
      "tipo": "concepto",
      "enunciado": "Escribe e interpreta la descomposición sesgo-varianza del error de test esperado.",
-     "solucion": "E[(y₀ − f̂(x₀))²] = Var(f̂(x₀)) + [Bias(f̂(x₀))]² + Var(ε). El error esperado de test en x₀ es la suma de la VARIANZA del estimador, el SESGO al cuadrado y la varianza irreducible Var(ε). Para minimizar el error de test hay que lograr a la vez baja varianza y bajo sesgo; Var(ε) es la cota que no se puede superar.",
+     "solucion": "$E[(y_0 - \\hat f(x_0))^2] = \\text{Var}(\\hat f(x_0)) + [\\text{Bias}(\\hat f(x_0))]^2 + \\text{Var}(\\varepsilon)$. El error esperado de test en $x_0$ es la suma de la VARIANZA del estimador, el SESGO al cuadrado y la varianza irreducible $\\text{Var}(\\varepsilon)$. Para minimizar el error de test hay que lograr a la vez baja varianza y bajo sesgo; $\\text{Var}(\\varepsilon)$ es la cota que no se puede superar.",
      "explicacion": "Es un valor esperado sobre muchos conjuntos de entrenamiento; los tres términos son no negativos."
     },
     {
@@ -18601,14 +18601,14 @@
      "id": "arisl1-q12",
      "tipo": "concepto",
      "enunciado": "En clasificación, ¿cómo se mide la calidad del ajuste y qué es la tasa de error?",
-     "solucion": "Con la TASA DE ERROR: la fracción de observaciones MAL clasificadas (1 si ŷᵢ≠yᵢ, promediado). Igual que en regresión, importa la tasa de error de TEST, no la de entrenamiento (que se puede minimizar sobreajustando). Un buen clasificador minimiza el error de test.",
+     "solucion": "Con la TASA DE ERROR: la fracción de observaciones MAL clasificadas (1 si $\\hat y_i\\ne y_i$, promediado). Igual que en regresión, importa la tasa de error de TEST, no la de entrenamiento (que se puede minimizar sobreajustando). Un buen clasificador minimiza el error de test.",
      "explicacion": "El análogo del MSE en clasificación es la proporción de errores de clasificación."
     },
     {
      "id": "arisl1-q13",
      "tipo": "concepto",
      "enunciado": "¿Qué es el clasificador de Bayes y la tasa de error de Bayes?",
-     "solucion": "El clasificador de Bayes asigna cada observación a la clase MÁS PROBABLE dado su x: argmax_j P(Y=j | X=x). Es el clasificador ÓPTIMO (minimiza la tasa de error de test esperada). Su error, la TASA DE ERROR DE BAYES = 1 − E[máx_j P(Y=j|X)], es el análogo al error irreducible: ninguna regla puede tener un error de test menor. No es realizable porque no conocemos la distribución condicional real de Y dado X.",
+     "solucion": "El clasificador de Bayes asigna cada observación a la clase MÁS PROBABLE dado su x: $\\arg\\max_j P(Y=j \\mid X=x)$. Es el clasificador ÓPTIMO (minimiza la tasa de error de test esperada). Su error, la TASA DE ERROR DE BAYES $= 1 - E[\\max_j P(Y=j\\mid X)]$, es el análogo al error irreducible: ninguna regla puede tener un error de test menor. No es realizable porque no conocemos la distribución condicional real de Y dado X.",
      "explicacion": "Es el techo teórico de desempeño; KNN intenta estimar P(Y|X) para aproximarlo."
     },
     {
@@ -18648,7 +18648,7 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "t de un coeficiente = β̂/SE; el F prueba si ALGÚN β≠0 (corrige el azar múltiple)",
+    "t de un coeficiente $= \\hat\\beta/\\text{SE}$; el F prueba si ALGÚN $\\beta\\ne0$ (corrige el azar múltiple)",
     "Colinealidad infla SE; detéctala con VIF=1/(1−R²ⱼ) (>5–10 = problema)",
     "Interacción relaja la aditividad; respeta el principio jerárquico",
     "LDA (cov común→lineal) y QDA (cov por clase→cuadrática) son generativos; logística es discriminativa",
@@ -18658,22 +18658,22 @@
     {
      "id": "arisl2-q1",
      "tipo": "concepto",
-     "enunciado": "En la regresión lineal simple, ¿cómo se estiman los coeficientes β₀ y β₁?",
-     "solucion": "Por MÍNIMOS CUADRADOS: se eligen β̂₀ y β̂₁ que minimizan la suma de residuos al cuadrado RSS = Σ(yᵢ − ŷᵢ)². La solución cerrada es β̂₁ = Σ(xᵢ−x̄)(yᵢ−ȳ) / Σ(xᵢ−x̄)² y β̂₀ = ȳ − β̂₁x̄. La recta resultante pasa por el punto (x̄, ȳ).",
-     "explicacion": "Mínimos cuadrados es el criterio estándar; β̂₁ es covarianza/varianza muestral."
+     "enunciado": "En la regresión lineal simple, ¿cómo se estiman los coeficientes $\\beta_0$ y $\\beta_1$?",
+     "solucion": "Por MÍNIMOS CUADRADOS: se eligen $\\hat\\beta_0$ y $\\hat\\beta_1$ que minimizan la suma de residuos al cuadrado $\\text{RSS} = \\sum(y_i - \\hat y_i)^2$. La solución cerrada es $\\hat\\beta_1 = \\sum(x_i-\\bar x)(y_i-\\bar y) / \\sum(x_i-\\bar x)^2$ y $\\hat\\beta_0 = \\bar y - \\hat\\beta_1\\bar x$. La recta resultante pasa por el punto $(\\bar x, \\bar y)$.",
+     "explicacion": "Mínimos cuadrados es el criterio estándar; $\\hat\\beta_1$ es covarianza/varianza muestral."
     },
     {
      "id": "arisl2-q2",
      "tipo": "concepto",
      "enunciado": "¿Qué es el error estándar de un coeficiente y cómo se usa para un intervalo de confianza?",
-     "solucion": "El error estándar SE(β̂) mide cuánto varía la estimación del coeficiente entre muestras (su precisión); depende de σ² (varianza del error) y de la dispersión de X. Un intervalo de confianza al 95% es aproximadamente β̂ ± 2·SE(β̂): el rango que con 95% de confianza contiene el valor verdadero. Cuanto menor el SE, más precisa la estimación.",
+     "solucion": "El error estándar $\\text{SE}(\\hat\\beta)$ mide cuánto varía la estimación del coeficiente entre muestras (su precisión); depende de $\\sigma^2$ (varianza del error) y de la dispersión de $X$. Un intervalo de confianza al 95% es aproximadamente $\\hat\\beta \\pm 2\\cdot\\text{SE}(\\hat\\beta)$: el rango que con 95% de confianza contiene el valor verdadero. Cuanto menor el SE, más precisa la estimación.",
      "explicacion": "SE más pequeño con más datos y mayor dispersión de los predictores."
     },
     {
      "id": "arisl2-q3",
      "tipo": "concepto",
      "enunciado": "¿Cómo se contrasta si un predictor tiene relación con la respuesta (test del coeficiente)?",
-     "solucion": "Con la hipótesis nula H0: βⱼ=0 (sin relación) frente a Hₐ: βⱼ≠0. Se calcula el estadístico t = β̂ⱼ / SE(β̂ⱼ), que mide cuántos errores estándar se aleja el coeficiente de cero, y su p-valor (probabilidad de ver un t así de extremo si H0 fuera cierta). Un p-valor pequeño (p. ej. <0.05) lleva a rechazar H0 y concluir que existe asociación.",
+     "solucion": "Con la hipótesis nula $H_0$: $\\beta_j=0$ (sin relación) frente a $H_a$: $\\beta_j\\ne0$. Se calcula el estadístico $t = \\hat\\beta_j / \\text{SE}(\\hat\\beta_j)$, que mide cuántos errores estándar se aleja el coeficiente de cero, y su p-valor (probabilidad de ver un $t$ así de extremo si $H_0$ fuera cierta). Un p-valor pequeño (p. ej. $<0.05$) lleva a rechazar $H_0$ y concluir que existe asociación.",
      "explicacion": "El t-statistic es el coeficiente en unidades de su propio error estándar."
     },
     {
@@ -18708,7 +18708,7 @@
      "id": "arisl2-q8",
      "tipo": "concepto",
      "enunciado": "¿Qué es un término de INTERACCIÓN y qué dice el principio jerárquico (hierarchy)?",
-     "solucion": "Un término de interacción (X₁·X₂) permite que el efecto de un predictor sobre Y DEPENDA del valor de otro, relajando el supuesto aditivo del modelo lineal. El principio jerárquico dice que si se incluye una interacción, se deben incluir TAMBIÉN los efectos principales (X₁ y X₂) aunque sus p-valores individuales no sean significativos, porque la interacción está correlacionada con ellos y omitirlos altera la interpretación.",
+     "solucion": "Un término de interacción ($X_1\\cdot X_2$) permite que el efecto de un predictor sobre Y DEPENDA del valor de otro, relajando el supuesto aditivo del modelo lineal. El principio jerárquico dice que si se incluye una interacción, se deben incluir TAMBIÉN los efectos principales ($X_1$ y $X_2$) aunque sus p-valores individuales no sean significativos, porque la interacción está correlacionada con ellos y omitirlos altera la interpretación.",
      "explicacion": "Sin interacción, el efecto de cada feature es constante; con ella, varía según la otra."
     },
     {
@@ -18736,14 +18736,14 @@
      "id": "arisl2-q12",
      "tipo": "concepto",
      "enunciado": "¿Qué modela la regresión logística y por qué es preferible a la lineal para probabilidades?",
-     "solucion": "Modela P(Y=1|X) pasando la combinación lineal por la función LOGÍSTICA, que acota la salida a (0,1), garantizando probabilidades válidas (la lineal podría dar <0 o >1). Se ajusta por máxima verosimilitud. El efecto de un predictor se interpreta vía el ODDS RATIO exp(βⱼ): al subir xⱼ una unidad, los odds se multiplican por exp(βⱼ) (ceteris paribus).",
+     "solucion": "Modela $P(Y=1\\mid X)$ pasando la combinación lineal por la función LOGÍSTICA, que acota la salida a $(0,1)$, garantizando probabilidades válidas (la lineal podría dar $<0$ o $>1$). Se ajusta por máxima verosimilitud. El efecto de un predictor se interpreta vía el ODDS RATIO $\\exp(\\beta_j)$: al subir $x_j$ una unidad, los odds se multiplican por $\\exp(\\beta_j)$ (ceteris paribus).",
      "explicacion": "El peso es lineal sobre los log-odds, no sobre la probabilidad."
     },
     {
      "id": "arisl2-q13",
      "tipo": "concepto",
      "enunciado": "Explica el Análisis Discriminante Lineal (LDA): supuestos y forma de la frontera.",
-     "solucion": "LDA es un método GENERATIVO: modela la distribución de los predictores en cada clase como GAUSSIANA y aplica el teorema de Bayes para obtener P(Y=k|X). Asume que todas las clases comparten la MISMA matriz de covarianza, lo que hace que la frontera de decisión sea LINEAL. Estima las medias de clase, la covarianza común y las probabilidades a priori, y asigna a la clase con mayor probabilidad posterior (discriminante).",
+     "solucion": "LDA es un método GENERATIVO: modela la distribución de los predictores en cada clase como GAUSSIANA y aplica el teorema de Bayes para obtener $P(Y=k\\mid X)$. Asume que todas las clases comparten la MISMA matriz de covarianza, lo que hace que la frontera de decisión sea LINEAL. Estima las medias de clase, la covarianza común y las probabilidades a priori, y asigna a la clase con mayor probabilidad posterior (discriminante).",
      "explicacion": "LDA ≈ logística en resultados, pero más estable cuando las clases están bien separadas o n es pequeño."
     },
     {
@@ -18844,7 +18844,7 @@
      "id": "arisl3-q8",
      "tipo": "concepto",
      "enunciado": "¿Qué es la BEST SUBSET SELECTION y cuál es su limitación?",
-     "solucion": "Ajustar TODOS los posibles subconjuntos de predictores (2^p modelos), elegir el mejor de cada tamaño k por RSS/R² y luego elegir entre tamaños con un criterio que penalice complejidad (Cp/AIC/BIC/CV). Limitación: el coste computacional es EXPONENCIAL (2^p), inviable más allá de ~p=40, y probar tantos modelos aumenta el riesgo de encontrar uno bueno por azar (overfitting al proceso de selección).",
+     "solucion": "Ajustar TODOS los posibles subconjuntos de predictores ($2^p$ modelos), elegir el mejor de cada tamaño $k$ por RSS/$R^2$ y luego elegir entre tamaños con un criterio que penalice complejidad (Cp/AIC/BIC/CV). Limitación: el coste computacional es EXPONENCIAL ($2^p$), inviable más allá de $\\sim p=40$, y probar tantos modelos aumenta el riesgo de encontrar uno bueno por azar (overfitting al proceso de selección).",
      "explicacion": "Por eso se recurre a métodos stepwise, mucho más baratos."
     },
     {
@@ -18865,14 +18865,14 @@
      "id": "arisl3-q11",
      "tipo": "concepto",
      "enunciado": "Explica la regresión RIDGE: qué penaliza y qué efecto tiene.",
-     "solucion": "Ridge minimiza RSS + λ·Σβⱼ² (penalización L2 sobre los coeficientes, sin incluir el intercepto). Al subir λ ENCOGE los coeficientes hacia cero (pero NUNCA exactamente a cero, así que no hace selección de variables), reduciendo la VARIANZA a costa de algo de sesgo — útil cuando hay muchos predictores o colinealidad. λ se elige por validación cruzada y los predictores deben ESTANDARIZARSE antes, porque la penalización depende de la escala.",
+     "solucion": "Ridge minimiza $\\text{RSS} + \\lambda\\cdot\\sum\\beta_j^2$ (penalización L2 sobre los coeficientes, sin incluir el intercepto). Al subir $\\lambda$ ENCOGE los coeficientes hacia cero (pero NUNCA exactamente a cero, así que no hace selección de variables), reduciendo la VARIANZA a costa de algo de sesgo — útil cuando hay muchos predictores o colinealidad. $\\lambda$ se elige por validación cruzada y los predictores deben ESTANDARIZARSE antes, porque la penalización depende de la escala.",
      "explicacion": "Ridge mantiene todas las variables, solo las regulariza; clave estandarizar."
     },
     {
      "id": "arisl3-q12",
      "tipo": "concepto",
      "enunciado": "¿Qué hace el LASSO distinto de ridge y por qué produce modelos dispersos?",
-     "solucion": "El lasso minimiza RSS + λ·Σ|βⱼ| (penalización L1). A diferencia de ridge, la geometría de la restricción L1 (con 'esquinas') hace que, al crecer λ, algunos coeficientes lleguen EXACTAMENTE a cero: el lasso realiza SELECCIÓN DE VARIABLES y produce modelos dispersos e interpretables. λ se elige por CV y también requiere estandarizar.",
+     "solucion": "El lasso minimiza $\\text{RSS} + \\lambda\\cdot\\sum|\\beta_j|$ (penalización L1). A diferencia de ridge, la geometría de la restricción L1 (con 'esquinas') hace que, al crecer $\\lambda$, algunos coeficientes lleguen EXACTAMENTE a cero: el lasso realiza SELECCIÓN DE VARIABLES y produce modelos dispersos e interpretables. $\\lambda$ se elige por CV y también requiere estandarizar.",
      "explicacion": "Ridge encoge; lasso encoge Y selecciona (pone a cero)."
     },
     {
@@ -18921,7 +18921,7 @@
    "ideas_clave": [
     "Splines = polinomios a trozos en nudos (mejor que polinomio global); GAM = Σ fⱼ(xⱼ)",
     "Bagging promedia árboles (↓varianza); RF muestrea m features por split y decorrelaciona",
-    "OOB da una estimación de error gratis; boosting aprende lento (B, d, λ)",
+    "OOB da una estimación de error gratis; boosting aprende lento ($B$, $d$, $\\lambda$)",
     "SVM: margen máximo + soft margin (C regula sesgo-varianza) + kernel para no lineal",
     "No supervisado: PCA (máx. varianza), K-means (fija K) vs jerárquico (dendrograma)"
    ],
@@ -18951,7 +18951,7 @@
      "id": "arisl4-q4",
      "tipo": "concepto",
      "enunciado": "¿Qué son un spline suavizante y un GAM?",
-     "solucion": "Un SPLINE SUAVIZANTE coloca un nudo en cada observación pero añade una PENALIZACIÓN de rugosidad (∫f''²) controlada por λ, que regula la suavidad (λ→∞ da una recta); λ (y los grados de libertad efectivos) se elige por CV/LOOCV. Un GAM (Generalized Additive Model) extiende el modelo lineal sumando una función no lineal por predictor, y = β₀ + Σ fⱼ(xⱼ), donde cada fⱼ puede ser un spline: captura no linealidad POR variable conservando la ADITIVIDAD (sigue siendo interpretable por feature). No modela interacciones salvo que se añadan explícitamente.",
+     "solucion": "Un SPLINE SUAVIZANTE coloca un nudo en cada observación pero añade una PENALIZACIÓN de rugosidad ($\\int (f'')^2$) controlada por $\\lambda$, que regula la suavidad ($\\lambda\\to\\infty$ da una recta); $\\lambda$ (y los grados de libertad efectivos) se elige por CV/LOOCV. Un GAM (Generalized Additive Model) extiende el modelo lineal sumando una función no lineal por predictor, $y = \\beta_0 + \\sum f_j(x_j)$, donde cada $f_j$ puede ser un spline: captura no linealidad POR variable conservando la ADITIVIDAD (sigue siendo interpretable por feature). No modela interacciones salvo que se añadan explícitamente.",
      "explicacion": "El GAM da el efecto no lineal de cada feature por separado; suma de splines."
     },
     {
@@ -18979,7 +18979,7 @@
      "id": "arisl4-q8",
      "tipo": "concepto",
      "enunciado": "¿Qué problema del bagging resuelve un Random Forest y cómo?",
-     "solucion": "En bagging, si existe un predictor MUY fuerte, casi todos los árboles lo eligen para el primer split y resultan muy PARECIDOS (CORRELACIONADOS); promediar árboles correlacionados reduce poco la varianza. El Random Forest los DECORRELACIONA: en CADA split solo considera un subconjunto ALEATORIO de m predictores (≈√p en clasificación, p/3 en regresión), forzando a los árboles a usar variables distintas. Árboles menos correlacionados ⇒ mayor reducción de varianza y mejor desempeño.",
+     "solucion": "En bagging, si existe un predictor MUY fuerte, casi todos los árboles lo eligen para el primer split y resultan muy PARECIDOS (CORRELACIONADOS); promediar árboles correlacionados reduce poco la varianza. El Random Forest los DECORRELACIONA: en CADA split solo considera un subconjunto ALEATORIO de $m$ predictores ($\\approx\\sqrt p$ en clasificación, $p/3$ en regresión), forzando a los árboles a usar variables distintas. Árboles menos correlacionados $\\Rightarrow$ mayor reducción de varianza y mejor desempeño.",
      "explicacion": "Con m=p, el random forest es exactamente bagging."
     },
     {
@@ -19000,7 +19000,7 @@
      "id": "arisl4-q11",
      "tipo": "concepto",
      "enunciado": "¿Cómo funciona el boosting y cuáles son sus hiperparámetros clave?",
-     "solucion": "El boosting crece árboles SECUENCIALMENTE: cada árbol (pequeño) se ajusta a los RESIDUOS del conjunto actual, mejorando despacio donde el modelo aún falla, y se va sumando con un factor de encogimiento. Hiperparámetros: B = número de árboles (a diferencia del RF, demasiados PUEDEN sobreajustar → elegir por CV); d = profundidad/interaction depth (a menudo d=1, stumps); λ = shrinkage/learning rate (pequeño, p. ej. 0.01, aprende más lento pero generaliza mejor).",
+     "solucion": "El boosting crece árboles SECUENCIALMENTE: cada árbol (pequeño) se ajusta a los RESIDUOS del conjunto actual, mejorando despacio donde el modelo aún falla, y se va sumando con un factor de encogimiento. Hiperparámetros: $B$ = número de árboles (a diferencia del RF, demasiados PUEDEN sobreajustar → elegir por CV); $d$ = profundidad/interaction depth (a menudo $d=1$, stumps); $\\lambda$ = shrinkage/learning rate (pequeño, p. ej. $0.01$, aprende más lento pero generaliza mejor).",
      "explicacion": "Boosting = aprendizaje lento secuencial; RF = árboles independientes en paralelo."
     },
     {
