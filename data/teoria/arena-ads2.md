@@ -1,56 +1,77 @@
 # Estadística e inferencia para entrevistas
 
-## Propiedades de las variables aleatorias
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-- **Esperanza:** $E[X]=\int x\,f_X(x)\,dx$ (peso de cada valor por su densidad).
-- **Varianza:** $\mathrm{Var}(X)=E[X^2]-(E[X])^2$, siempre $\ge 0$; su raíz es la desviación estándar.
-- **Covarianza:** $\mathrm{Cov}(X,Y)=E[XY]-E[X]E[Y]$ (relación lineal).
-- **Correlación:** covarianza normalizada $\rho=\dfrac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}}\in[-1,1]$.
+La inferencia estadística responde una sola pregunta de fondo: **¿lo que veo en mis datos es señal real o ruido de muestreo?** Mediste 11% de conversión en el grupo nuevo contra 10% en el viejo; ¿el producto mejoró, o es la diferencia que esperarías por puro azar? Esta lección construye, desde cero, la maquinaria que contesta eso: por qué los promedios se vuelven normales (CLT), cómo se monta un test de hipótesis (el motor del A/B test), qué errores puede cometer, y cómo se estima un parámetro (MLE/MAP).
 
-No hace falta memorizar derivaciones de cada distribución, pero sí saber **derivar** la media/varianza de las comunes (uniforme, exponencial) cuando lo pidan.
+Al terminar podrás: (1) explicar por qué el ruido de un promedio cae como $1/\sqrt{n}$; (2) plantear y leer un test de hipótesis sin confundir el p-valor; (3) razonar el trade-off entre falsos positivos y falsos negativos; (4) interpretar un intervalo de confianza correctamente; y (5) distinguir estimar con datos solos (MLE) de datos + creencia previa (MAP). Cada idea entra primero como intuición y solo después como fórmula.
 
-## Las dos leyes asintóticas
+---
 
-- **Ley de los grandes números (LLN):** al muestrear muchas veces, el promedio empírico **converge a la esperanza verdadera**. Una moneda puede caer 5 caras seguidas, pero a la larga la proporción tiende a ½.
-- **Teorema Central del Límite (CLT):** la distribución del **promedio muestral** tiende a una **normal**, sin importar la distribución original. Estandarizado: $\dfrac{\bar X_n-\mu}{\sigma/\sqrt n}\to N(0,1)$.
+## El vocabulario mínimo: esperanza, varianza, covarianza
 
-El CLT es la base de casi todo el testeo de hipótesis: por eso aproximamos por normal con muestras grandes, sea binomial, Poisson u otra.
+Antes de inferir hay que poder **resumir** una variable aleatoria con dos números: dónde está centrada y cuánto se dispersa.
 
-## Prueba de hipótesis (la maquinaria del A/B test)
+- **Esperanza** $E[X]=\int x\,f_X(x)\,dx$ — el "centro de gravedad": cada valor pesa por su densidad $f_X$. Es el promedio que obtendrías a la larga.
+- **Varianza** $\mathrm{Var}(X)=E[X^2]-(E[X])^2$ — cuánto se aleja $X$ de su media en promedio (al cuadrado); siempre $\ge 0$. Su raíz, la **desviación estándar**, vuelve a las unidades originales.
+- **Covarianza** $\mathrm{Cov}(X,Y)=E[XY]-E[X]E[Y]$ — si $X$ e $Y$ tienden a subir juntas (positiva) o en sentidos opuestos (negativa). Mide relación **lineal**.
+- **Correlación** $\rho=\dfrac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}}\in[-1,1]$ — la covarianza normalizada a una escala interpretable: −1 (anti), 0 (sin relación lineal), +1 (perfecta).
 
-Pasos:
-1. Plantea **$H_0$** (nula, el "no pasó nada" — p.ej. la campaña no cambió la conversión) y **$H_1$** (alternativa).
-2. Calcula un **estadístico de prueba** y su **p-valor**.
-3. Compara el p-valor con el nivel de significancia $\alpha$ (típico 0.05).
+No memorices derivaciones de cada distribución, pero sí practica **derivar** la media y varianza de las comunes (uniforme, exponencial) si lo piden: es un chequeo de que entiendes las definiciones, no solo las fórmulas.
 
-El **p-valor** es la probabilidad de observar un resultado al menos tan extremo como el visto **si $H_0$ fuera cierta**. p-valor bajo → evidencia para rechazar $H_0$. **Ojo:** no rechazar $H_0$ no la prueba verdadera, solo dice que no hubo evidencia suficiente.
+## Las dos leyes asintóticas: por qué los datos "se portan" con muchas muestras
 
-- **Una cola** vs **dos colas:** según la alternativa sea direccional ($>$ o $<$) o de simple diferencia ($\ne$).
-- **Tests comunes:** Z-test / t-test (medias), Chi-cuadrado (frecuencias observadas vs esperadas).
+Toda la inferencia descansa en dos teoremas sobre qué pasa cuando $n$ (el tamaño de muestra) crece.
 
-## Errores Tipo I y Tipo II
+- **Ley de los grandes números (LLN):** el **promedio empírico** $\bar X_n$ converge a la esperanza verdadera $\mu$. Una moneda justa puede dar 5 caras seguidas, pero a la larga la proporción se acerca a ½. Intuición: el azar de cada dato se va promediando hasta cancelarse.
+- **Teorema Central del Límite (CLT):** la *distribución* del promedio muestral $\bar X_n$ se vuelve **normal** (campana) **sin importar** la forma original de los datos. Estandarizado:
+
+$$\frac{\bar X_n-\mu}{\sigma/\sqrt n}\to N(0,1).$$
+
+Lee esa fórmula con calma: $\bar X_n-\mu$ es "cuánto se desvía el promedio de la verdad"; se divide por $\sigma/\sqrt n$, el **error estándar**, que es cuánto fluctúa típicamente ese promedio. El motor es la **$\sqrt n$**: el ruido del promedio encoge como $1/\sqrt n$, así que para halve el ruido necesitas 4× los datos. El CLT es la razón de que aproximemos casi todo por normal con $n$ grande, sea el dato original binomial, Poisson u otra cosa.
+
+## Prueba de hipótesis: la maquinaria del A/B test
+
+Un test de hipótesis formaliza "¿es señal o ruido?". Los pasos:
+
+1. Plantea **$H_0$** (la hipótesis nula, el "no pasó nada" — la campaña *no* cambió la conversión) y **$H_1$** (la alternativa, "sí cambió").
+2. Calcula un **estadístico de prueba** (resume los datos en un número) y su **p-valor**.
+3. Compáralo con el **nivel de significancia** $\alpha$ (típico 0.05): si el p-valor $<\alpha$, rechazas $H_0$.
+
+El concepto que más se malinterpreta es el **p-valor**: es la probabilidad de observar un resultado **al menos tan extremo** como el visto, **suponiendo que $H_0$ es cierta**. Un p-valor bajo significa "estos datos serían raros si no pasara nada" → evidencia para rechazar $H_0$. **Ojo a dos trampas:** (a) el p-valor **no** es "la probabilidad de que $H_0$ sea cierta" (eso invierte el condicional, igual que confundir sensibilidad con VPP); (b) **no rechazar $H_0$ no la prueba verdadera** — solo dice que no hubo evidencia suficiente.
+
+- **Una cola** vs **dos colas:** usa una cola si la alternativa es direccional ($H_1:\mu>\mu_0$ o $<$), dos colas si es de simple diferencia ($\ne$).
+- **Tests comunes:** Z-test / t-test (comparar medias), Chi-cuadrado (frecuencias observadas vs esperadas).
+
+## Errores Tipo I y Tipo II: los dos modos de equivocarse
+
+Como decides con datos ruidosos, puedes fallar de dos maneras. La analogía judicial lo fija de inmediato ($H_0$ = "el acusado es inocente"):
 
 | | $H_0$ verdadera | $H_0$ falsa |
 |---|---|---|
 | **Rechazas $H_0$** | Tipo I (falso positivo), prob. $\alpha$ | Acierto (potencia $1-\beta$) |
 | **No rechazas** | Acierto | Tipo II (falso negativo), prob. $\beta$ |
 
-- **Tipo I (α):** condenar a un inocente — afirmar un efecto que no existe.
-- **Tipo II (β):** dejar libre a un culpable — no detectar un efecto real.
-- **Potencia** $=1-\beta$: prob. de detectar un efecto real; sube con el tamaño muestral.
+- **Tipo I ($\alpha$):** condenar a un inocente — afirmar un efecto que no existe.
+- **Tipo II ($\beta$):** dejar libre a un culpable — no detectar un efecto real.
+- **Potencia** $=1-\beta$: la probabilidad de detectar un efecto real cuando lo hay. Sube con el **tamaño de muestra** y con el tamaño del efecto.
 
-Bajar α reduce falsos positivos pero sube β (y viceversa): es un trade-off que se equilibra con el tamaño de muestra.
+El trade-off clave: bajar $\alpha$ (ser más exigente para gritar "efecto") reduce falsos positivos pero **sube** $\beta$ (más falsos negativos), y viceversa. La única forma de mejorar ambos a la vez es **más datos**. Por eso "¿qué $n$ necesito?" es una pregunta de potencia, no de capricho.
 
-## Intervalos de confianza
+## Intervalos de confianza: el rango y su interpretación delicada
 
-Un IC del 95% es un rango construido por un procedimiento que, repetido, **captura el parámetro verdadero el 95% de las veces**. No es "hay 95% de prob. de que μ esté aquí" (μ es fijo). Es complementario al test: si el IC del 95% no contiene el valor nulo, rechazas a α=0.05.
+Un **intervalo de confianza (IC) del 95%** es un rango construido por un procedimiento que, **si lo repitieras muchas veces**, capturaría el parámetro verdadero el 95% de las veces. La sutileza que te van a probar: **no** es "hay 95% de probabilidad de que $\mu$ esté en este intervalo concreto". El parámetro $\mu$ es fijo (no aleatorio); lo aleatorio es el intervalo, que cambia con cada muestra. La cobertura es una propiedad del **procedimiento**, no de un intervalo particular.
+
+El IC es la otra cara del test: si el IC del 95% **no contiene** el valor nulo, rechazas $H_0$ a $\alpha=0.05$. Dan exactamente la misma decisión, pero el IC además te dice **cuánto** y con qué precisión, no solo "sí/no".
 
 ## Estimación: MLE y MAP
 
-- **MLE (máxima verosimilitud):** elige el parámetro que **maximiza la probabilidad de los datos observados**, $\hat\theta=\arg\max_\theta L(\theta)$. Frecuentista, sin prior.
-- **MAP (máximo a posteriori):** maximiza el **posterior** $\propto$ likelihood × prior → MLE más un prior bayesiano. Con prior uniforme, MAP = MLE.
+¿Cómo eliges el valor de un parámetro $\theta$ a partir de datos? Dos filosofías:
 
-Conexión con ML: muchas funciones de pérdida (p.ej. log-loss) salen de un MLE.
+- **MLE (máxima verosimilitud):** elige el $\theta$ que hace **más probables los datos que observaste**, $\hat\theta=\arg\max_\theta L(\theta)$, donde $L(\theta)=P(\text{datos}\mid\theta)$ es la verosimilitud. Intuición: "¿qué moneda explica mejor que salieran 7 caras de 10?" → la de $p=0.7$. Es frecuentista: sin creencia previa.
+- **MAP (máximo a posteriori):** maximiza el **posterior** $\propto$ likelihood $\times$ prior. Es MLE más un prior bayesiano que regulariza hacia lo que ya creías. Caso límite revelador: con **prior uniforme** (no creo nada en particular), MAP $=$ MLE.
+
+Conexión con ML que vale oro en entrevista: muchas **funciones de pérdida** salen de un MLE. Minimizar el error cuadrático equivale a MLE bajo ruido normal; la **log-loss** (entropía cruzada) es el MLE de un modelo Bernoulli/multinomial. "Entrenar" es, muchas veces, maximizar verosimilitud disfrazada de minimizar pérdida.
 
 ---
 

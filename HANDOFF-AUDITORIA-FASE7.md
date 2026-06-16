@@ -351,6 +351,17 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   arranque desde cero. **Pendiente:** replicar el mismo trabajo en los otros 7 clusters
   (stats-inf, dsa, system-design, ds-applied, ml-systems, causal-health, conductual)
   cuando Edgar lo pida — son otra oleada.
+- 🟡 **Cluster 5 (ds-applied) reescrito DESDE CERO — EN CURSO (sw.js v88).** Edgar
+  eligió este cluster como siguiente (2026-06-15). Patrón observado: estas lecciones
+  ya traían el tratamiento de Oleada 2 (mini-ejemplo, prototipo/contraejemplo, errores,
+  transferencia, disparadores, síntesis, retrieval) — todo eso se **conserva verbatim**;
+  lo que se reescribe es la **mitad superior** (el núcleo teórico) al estándar from-zero:
+  espina "De qué trata… y qué sabrás hacer", intuición/analogía ANTES de cada fórmula,
+  cada símbolo explicado, y forcejeo socrático intercalado en el cuerpo. **Lote 1 (v88):**
+  `ads1` (probabilidad DS), `ads2` (estadística e inferencia), `ads4` (SQL + product
+  sense), `cds1` (feature engineering). Validado: smoke threw=0 rawDisplayMath=0, KaTeX
+  0 throws. **Pendiente del cluster:** lote 2 (`ads3`, `cds2`, `cds3`) y lote 3 (`s1`,
+  `cds4`); orden didáctico en `BACKLOG-OLEADA-DESDE-CERO.md`.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

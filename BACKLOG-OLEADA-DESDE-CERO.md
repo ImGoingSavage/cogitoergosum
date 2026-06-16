@@ -20,11 +20,11 @@
 | 2. stats-inf (Estadística aplicada e inferencia) | 16 | ⬜ pendiente |
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
-| 5. ds-applied (Ciencia de datos aplicada) | 9 | ⬜ pendiente |
+| 5. ds-applied (Ciencia de datos aplicada) | 9 | 🟡 4/9 (lote 1 v88) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ⬜ pendiente |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **25 / 118 hechas** |
+| | **118** | **29 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -103,12 +103,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [ ] `arena-sd3` — Sistemas de datos a escala
 - [ ] `arena-sd4` — Sistemas en tiempo real y de medios
 
-### 5. ds-applied — Ciencia de datos aplicada (9) — ⬜
+### 5. ds-applied — Ciencia de datos aplicada (9) — 🟡 4/9 (lote 1 v88)
 
-- [ ] `arena-ads1` — Probabilidad para ciencia de datos
-- [ ] `arena-ads2` — Estadística e inferencia
-- [ ] `arena-ads4` — SQL y product sense / A·B testing
-- [ ] `arena-cds1` — Feature engineering y preparación de datos
+- [x] `arena-ads1` — Probabilidad para ciencia de datos
+- [x] `arena-ads2` — Estadística e inferencia
+- [x] `arena-ads4` — SQL y product sense / A·B testing
+- [x] `arena-cds1` — Feature engineering y preparación de datos
 - [ ] `arena-ads3` — Machine Learning aplicado
 - [ ] `arena-cds2` — Deep learning: redes neuronales por dentro
 - [ ] `arena-cds3` — MLOps: despliegue y monitoreo en producción

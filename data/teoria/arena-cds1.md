@@ -1,20 +1,28 @@
 # Feature engineering y preparación de datos
 
-## Qué es feature engineering
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-Tomar datos crudos y **construir representaciones que capturen los patrones** que el modelo necesita. Es donde el dominio y la creatividad del científico de datos amplifican (o hunden) el poder predictivo. Más vale un modelo simple con buenas features que uno complejo con features pobres.
+Antes de que un modelo aprenda algo, alguien tuvo que convertir datos crudos —fechas, texto, campos con huecos, números en escalas dispares— en **features** que el modelo pueda explotar. Ese trabajo, el *feature engineering*, decide más del resultado que la elección del algoritmo: un modelo simple con buenas features gana a uno complejo con features pobres. Esta lección construye, desde cero, las decisiones que más se evalúan en entrevista: cómo evitar el **data leakage** (el error que infla tus métricas y te traiciona en producción), cómo tratar datos faltantes según *por qué* faltan, cómo escalar, y cómo transformar distribuciones y categóricas.
+
+Al terminar podrás: (1) explicar por qué ajustar transformaciones sobre todo el dataset es trampa y cómo evitarla; (2) elegir el manejo de NaN según el mecanismo de missingness (MCAR/MAR/MNAR); (3) decidir entre min-max y z-score; y (4) saber cuándo una transformación logarítmica o un one-hot encoding es la jugada. Cada idea entra primero como intuición y problema concreto, no como receta.
+
+---
+
+## Qué es feature engineering (y por qué decide el resultado)
+
+**Feature engineering** es tomar datos crudos y **construir representaciones que capturen los patrones** que el modelo necesita ver. Una fecha cruda no le dice nada a un modelo; "día de la semana" o "días desde el último login" sí. Es donde el conocimiento del dominio y la creatividad del científico de datos amplifican —o hunden— el poder predictivo. La moraleja que conviene grabar: **más vale un modelo simple con buenas features que uno complejo con features pobres.** El algoritmo no inventa información que las features no contienen.
 
 ## La trampa #1: data leakage (fuga de información)
 
-**Data leakage** = información ajena al set de entrenamiento se cuela durante la construcción del modelo, dándole un "vistazo" a lo que no debería conocer. Resultado: rendimiento estimado **demasiado optimista** que se desploma en producción.
+Esta es la que más entrevistas decide, así que va primero. **Data leakage** ocurre cuando información que el modelo **no debería conocer al predecir** se cuela durante el entrenamiento, dándole un "vistazo" al futuro o al conjunto de evaluación. El síntoma es traicionero: el rendimiento offline sale **demasiado optimista** y luego se **desploma en producción**, donde esa información ya no está disponible.
 
-El error clásico del novato: aplicar transformaciones (escalado, imputación) **sobre todo el dataset antes de separar train/test**. La media o el mínimo se calculan usando datos de test → fuga.
+El error clásico del novato: aplicar transformaciones que **aprenden parámetros** (escalado, imputación) **sobre todo el dataset antes de separar train/test**. Si la media o el mínimo se calculan usando también las filas de test, el modelo ya "vio" información del conjunto con el que lo vas a evaluar → fuga.
 
-**Regla de oro:** divide primero, **ajusta la transformación SOLO con train** (`fit_transform` en train), y luego **aplícala** al test (`transform`, sin re-ajustar). Encapsula todo en un *pipeline* reproducible.
+**Regla de oro (memorízala):** **separa primero**, **ajusta la transformación SOLO con train** (`fit_transform` en train), y luego **aplícala** al test sin re-ajustar (`transform`). El test debe comportarse como un futuro que tu pipeline nunca tocó. Encapsúlalo todo en un *pipeline* reproducible para que el orden sea imposible de equivocar.
 
 ## Datos faltantes: identifica el mecanismo, luego actúa
 
-No todo faltante se trata igual. El mecanismo de "missingness" decide la jugada:
+El error aquí es tratar todo NaN igual. **Por qué** falta un dato decide la jugada correcta; hay tres mecanismos de "missingness":
 
 | Mecanismo | Significa | Manejo típico |
 |-----------|-----------|---------------|
@@ -22,26 +30,32 @@ No todo faltante se trata igual. El mecanismo de "missingness" decide la jugada:
 | **MAR** (al azar condicional) | depende de variables **observadas** | imputación condicional (moda/media por grupo) |
 | **MNAR** (no al azar) | depende del **valor mismo** no observado | imputar con info disponible; modelar el faltante |
 
-Imputar mal introduce sesgo. Siempre considera el impacto de la imputación sobre el análisis final.
+La distinción clave es MCAR vs MNAR. Si los datos faltan **al azar** (MCAR), borrarlos solo te cuesta tamaño de muestra. Pero si faltan **por su propio valor** (MNAR: los de ingreso alto no declaran ingreso), borrarlos o imputar la media **sesga** la muestra — estás borrando sistemáticamente a un tipo de unidad. Imputar mal introduce sesgo; siempre considera el efecto de la imputación sobre el análisis final.
 
 ## Escalado: poner las features en rangos comparables
 
-Algoritmos basados en distancia (k-means, kNN, jerárquico) y PCA son **sensibles a la magnitud**: una feature en miles domina a otra en decenas. Escalar iguala su influencia.
+Algunos algoritmos miran **distancias** (k-means, kNN, clustering jerárquico) o varianzas (PCA), y ahí la **magnitud** importa: una feature medida en miles (ingreso) aplastará a otra en decenas (edad), no porque sea más informativa sino porque sus números son más grandes. Escalar iguala su influencia. Dos formas:
 
-- **Min-max** → rango fijo $[0,1]$: $X' = \dfrac{X - X_{min}}{X_{max}-X_{min}}$. Útil cuando quieres un rango acotado; **sensible a outliers** (un extremo aplasta el resto).
-- **Z-score (estandarización)** → media 0, desv. 1: $X' = \dfrac{X-\mu}{\sigma}$. **Más robusto a outliers**; preferido cuando hay valores extremos legítimos.
+- **Min-max** → lleva al rango fijo $[0,1]$:
+  $$X' = \frac{X - X_{\min}}{X_{\max}-X_{\min}}.$$
+  El valor mínimo va a 0, el máximo a 1, el resto se interpola. Útil cuando quieres un rango acotado; pero es **sensible a outliers**: un solo valor extremo fija el máximo y aplasta todo lo demás cerca de 0.
+- **Z-score (estandarización)** → media 0, desviación 1:
+  $$X' = \frac{X-\mu}{\sigma}.$$
+  Resta la media $\mu$ y divide por la desviación $\sigma$, así que mide "a cuántas desviaciones del promedio está cada valor". Es **más robusto a outliers** que min-max y se prefiere cuando hay valores extremos legítimos.
 
-Si dudas, prueba ambos y compara el rendimiento del modelo.
+Si dudas, prueba ambos y compara el rendimiento del modelo — no hay una respuesta universal.
+
+> **Predicción antes de seguir:** una columna de ingresos tiene un valor de 50 millones (un multimillonario) entre miles de salarios normales. Si la escalas con **min-max**, ¿dónde quedan los salarios normales? Respuesta: **aplastados cerca de 0**, porque ese único extremo define el máximo (=1) y comprime todo el rango útil. Esa es justo la señal para preferir **z-score**: tolera el outlier sin destruir la resolución del resto.
 
 ## Transformaciones de distribución
 
-Cambian la **forma** (sesgo) de los datos para cumplir los supuestos de un modelo. La **transformación logarítmica** comprime colas largas de datos sesgados a la derecha (ventas, ingresos), volviéndolos más simétricos. Otras: Box-Cox, potencia, exponencial. También se transforma la variable respuesta — recordando **revertir** la predicción a su escala original.
+A veces el problema no es la escala sino la **forma** de la distribución. Muchos modelos suponen datos aproximadamente simétricos, y variables como ventas o ingresos están **sesgadas a la derecha** (una cola larga de valores enormes). La **transformación logarítmica** comprime esa cola y vuelve los datos más simétricos: el log convierte multiplicativo en aditivo, así que un salto de 100 a 1000 pesa lo mismo que de 1000 a 10000. Otras opciones: Box-Cox, potencia, exponencial. Cuidado: si transformas la **variable respuesta**, debes **revertir** la predicción a su escala original antes de reportarla.
 
 ## Codificar categóricas y reducir dimensión
 
-- **One-hot encoding:** una columna binaria por categoría (sin orden implícito).
-- **Selección de features:** quedarse con las informativas (menos ruido, menos overfitting).
-- **Reducción de dimensión (PCA):** comprimir muchas features correlacionadas en pocos componentes.
+- **One-hot encoding:** convierte una categórica de texto en una columna binaria por categoría (rojo/verde/azul → tres columnas 0/1). Se usa cuando **no hay orden** entre categorías; codificarlas como 1,2,3 le inventaría al modelo un orden falso (azul > verde) que no existe.
+- **Selección de features:** quedarte solo con las informativas reduce ruido y overfitting (menos features espurias que el modelo pueda sobre-ajustar).
+- **Reducción de dimensión (PCA):** comprime muchas features correlacionadas en pocos **componentes** que conservan la mayor varianza. Recuerda: PCA mira varianzas, así que **exige escalar antes** (mismo motivo que k-means).
 
 ---
 
