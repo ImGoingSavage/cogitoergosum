@@ -1,5 +1,11 @@
 # Target trial emulation e immortal time bias
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Con datos observacionales masivos (historias clínicas, claims) la tentación es "ver qué asociaciones salen". Esta lección construye, desde cero, la disciplina que convierte esos datos en inferencia causal seria: **emular un ensayo objetivo** (target trial), especificando primero el experimento aleatorizado que *querrías* haber corrido. Y enseña a cazar el sesgo más traicionero del análisis longitudinal, el **immortal time bias**: regalarle al grupo tratado un tramo de tiempo en el que, por construcción, no podía tener el evento.
+
+Al terminar podrás: (1) especificar los 7 componentes de un target trial antes de tocar código; (2) reconocer el immortal time bias por su firma ("el grupo tratado debe sobrevivir un período antes de contar como tratado"); (3) rediseñar alineando el tiempo cero con la asignación; y (4) distinguirlo de su primo, el prevalent user bias. Cada idea entra por un ejemplo contado. *(Ejemplos clínicos puramente ilustrativos del método causal, no consejo médico.)*
+
 ## El ensayo objetivo: la pregunta que ordena todo
 
 El "target trial" (ensayo objetivo) es el experimento aleatorizado hipotético que un estudio observacional intenta emular. Formularlo explícitamente es el paso que diferencia el análisis causal riguroso del análisis descriptivo.

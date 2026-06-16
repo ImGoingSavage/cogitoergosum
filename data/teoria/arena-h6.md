@@ -2,6 +2,12 @@
 
 > Complementa [[arena-h2]] (componentes del target trial / immortal time): aquí, tratamientos **tiempo-variables**, supervivencia causal y g-métodos.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando el tratamiento **cambia con el tiempo** y las covariables que lo guían son a la vez consecuencia del tratamiento pasado, ocurre algo que rompe los métodos estándar: ajustar sesga y no ajustar también. Esta lección construye, desde cero, por qué pasa (el **feedback tratamiento-confundidor**) y la única salida (los **g-métodos**, que ponderan por la historia en vez de condicionar). También explica por qué el hazard ratio engaña con el tiempo y cómo el **target trial** disciplina la inferencia con datos del mundo real (RWE).
+
+Al terminar podrás: (1) entender por qué el HR carga un sesgo de selección que crece con el tiempo, y preferir riesgo a tiempo fijo; (2) reconocer el feedback tratamiento-confundidor y por qué exige g-métodos; (3) distinguir ITT (asignar) de per-protocol (seguir) y por qué el per-protocol ingenuo está sesgado; y (4) emular un target trial con t=0 alineado, new-user y comparador activo. Profundiza la mecánica de [[arena-h7]]. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## Supervivencia causal
 
 El **hazard ratio** es problemático: el hazard en t condiciona en **haber sobrevivido** hasta t, y los sobrevivientes dejan de ser intercambiables (depleción de susceptibles) → **sesgo de selección incorporado** que crece con el tiempo. Prefiere contrastes de **riesgo/supervivencia a tiempo fijo** (diferencia/razón de riesgos a 1, 5 años; curvas ajustadas; supervivencia media restringida). La **censura** es un tratamiento tiempo-variable → **IPCW**. Ver [[analisis-supervivencia-hazard-vs-riesgo]].

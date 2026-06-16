@@ -424,8 +424,10 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   NDE/NIE, PN/PS). **Lote 3 (v97):** `h5` (IP weighting/g-fórmula/PS/IV/doble robustez),
   `h20` (Mixtape: matching/subclasificación/PS, CIA), `h21` (IV/2SLS y RDD), `h22`
   (panel/efectos fijos, DiD, control sintético). Validado: smoke threw=0, KaTeX 0 throws.
-  **Pendiente:** lotes 4-5 (`h2,h6,h7,h8` / `h9,h10,h11,h12,h13,h14` — supervivencia/Cox/
-  OHDSI); orden en el backlog.
+  **Lote 4 (v98):** `h2` (target trial + immortal time bias), `h6` (longitudinal/supervivencia
+  causal/g-métodos/ITT-PP), `h7` (KM + log-rank), `h8` (Cox + supuesto PH). Validado: smoke
+  threw=0, KaTeX 0 throws. **Pendiente:** lote 5 (`h9,h10,h11,h12,h13,h14` — Cox extendido/AFT,
+  recurrentes/competitivos, OHDSI x4) cierra el cluster; orden en el backlog.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

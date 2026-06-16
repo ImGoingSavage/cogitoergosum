@@ -1,5 +1,11 @@
 # Análisis de supervivencia II: modelo de Cox y supuesto PH
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Kaplan-Meier compara grupos enteros, pero ¿cómo mides el efecto de una covariable *ajustando por otras*, sin comprometerte con la forma exacta del riesgo en el tiempo? Esta lección construye, desde cero, la respuesta más usada de toda la bioestadística: el **modelo de Cox**, que entrega un **hazard ratio** limpio porque deja el riesgo base *sin especificar* y lo cancela en el cociente. Su precio es un supuesto —**hazards proporcionales (PH)**, que el efecto no derive con el tiempo— que hay que verificar siempre.
+
+Al terminar podrás: (1) leer un HR como una razón de tasas instantáneas a igualdad de las demás covariables; (2) entender por qué el hazard base se cancela y qué hace la verosimilitud parcial; (3) evaluar el supuesto PH de tres formas (log-log, Schoenfeld, interacción×tiempo); y (4) saber qué hacer si se viola (Cox estratificado o extendido). El ejemplo de "fumar, HR≈2" hace de hilo. Profundiza la mecánica de [[arena-h7]]. *(Ejemplos clínicos ilustran el método, no son consejo médico.)*
+
 ## El modelo de Cox
 
 **h(t,X) = h₀(t)·exp(β₁X₁+…+βₚXₚ).** El **hazard base** h₀(t) (cuando todas X=0) queda **sin especificar**; el factor exp(ΣβⱼXⱼ) lo escala según las covariables y **no depende del tiempo**.

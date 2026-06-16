@@ -2,6 +2,12 @@
 
 > La **mecánica** biostadística del tiempo-hasta-evento. Complementa [[arena-h6]] (supervivencia *causal* / g-métodos).
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+¿Cómo analizas "tiempo hasta que pasa algo" cuando para muchos sujetos ese algo **aún no ha pasado** al cerrar el estudio? Tirar esos casos sesga; tratarlos como "no ocurrió" miente. Esta lección construye, desde cero, el análisis de supervivencia: las dos funciones que lo describen (**supervivencia** $S(t)$ y **hazard** $h(t)$), cómo la **censura** se maneja sin desperdiciar información, y los dos caballos de batalla —**Kaplan-Meier** para estimar la curva y **log-rank** para comparar grupos—.
+
+Al terminar podrás: (1) relacionar $S(t)$, $h(t)$ y $H(t)$; (2) construir una curva de Kaplan-Meier a mano y ver cómo la censura agranda los saltos posteriores; (3) comparar dos curvas con log-rank y saber cuándo usar Wilcoxon; y (4) reconocer la censura informativa como la amenaza crítica. El gemelo en producto —la curva de retención/churn— hace todo más concreto. *(Ejemplos clínicos ilustran la mecánica, no son consejo médico.)*
+
 ## Datos de tiempo-hasta-evento
 
 El outcome es el **tiempo** desde un origen bien definido (t=0) hasta un evento. Dos rasgos: tiempos **sesgados** (positivos, no normales) y **censura**. Por individuo: **tiempo de seguimiento** + **indicador** (evento=1 / censura=0) + covariables.

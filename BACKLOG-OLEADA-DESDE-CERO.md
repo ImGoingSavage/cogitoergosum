@@ -22,9 +22,9 @@
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
-| 7. causal-health (Causalidad y Health AI / RWE) | 22 | 🟡 12/22 (lotes 1-3 v95-v97) |
+| 7. causal-health (Causalidad y Health AI / RWE) | 22 | 🟡 16/22 (lotes 1-4 v95-v98) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **62 / 118 hechas** |
+| | **118** | **66 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -164,10 +164,10 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-h20` — Matching, subclasificación y propensity score
 - [x] `arena-h21` — Variables instrumentales y RDD
 - [x] `arena-h22` — Panel/efectos fijos, DiD y control sintético
-- [ ] `arena-h2` — Target trial emulation e immortal time bias
-- [ ] `arena-h6` — Longitudinal, supervivencia y target trial
-- [ ] `arena-h7` — Supervivencia: fundamentos, Kaplan-Meier y log-rank
-- [ ] `arena-h8` — Modelo de Cox y supuesto PH
+- [x] `arena-h2` — Target trial emulation e immortal time bias
+- [x] `arena-h6` — Longitudinal, supervivencia y target trial
+- [x] `arena-h7` — Supervivencia: fundamentos, Kaplan-Meier y log-rank
+- [x] `arena-h8` — Modelo de Cox y supuesto PH
 - [ ] `arena-h9` — Cox extendido y modelos paramétricos/AFT
 - [ ] `arena-h10` — Eventos recurrentes y riesgos competitivos
 - [ ] `arena-h11` — OHDSI: comunidad, datos observacionales y OMOP CDM
