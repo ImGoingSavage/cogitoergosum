@@ -1,5 +1,11 @@
 # Interpretabilidad I: conceptos, taxonomía y buenas explicaciones
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un modelo con 95% de accuracy que nadie entiende es peligroso: no puedes auditarlo, ni detectar su sesgo, ni cumplir un "derecho a explicación". Esta lección construye, desde cero, el marco de la **interpretabilidad**: qué es, cuándo (y cuándo no) hace falta, su taxonomía (intrínseca/post-hoc, específica/agnóstica, global/local) y —sorprendentemente, según las ciencias sociales— qué hace que una explicación de verdad **convenza** a un humano.
+
+Al terminar podrás: (1) definir interpretabilidad y dar razones para necesitarla y para no; (2) ubicar un método en los cuatro ejes de la taxonomía; (3) entender por qué los métodos agnósticos (caja negra) ganan flexibilidad; y (4) construir explicaciones **contrastivas y selectivas** ("¿por qué esto y no aquello?") en vez de listas exhaustivas. El ejemplo del préstamo negado revela que una buena explicación es un contrafactual disfrazado ([[arena-h18]]). Es la primera de cuatro sobre interpretabilidad.
+
 ## ¿Qué es la interpretabilidad y por qué importa?
 
 **Interpretabilidad** = el grado en que un humano puede **entender la causa de una decisión** (o predecir de forma consistente el resultado del modelo). Cuanto más alta, más fácil es comprender por qué el modelo decidió algo. Sirve para satisfacer la **curiosidad y el aprendizaje**, dar **seguridad** (depurar, auditar), detectar **sesgo/injusticia**, generar **confianza**, cumplir requisitos legales (**derecho a explicación**) y permitir **acción** (recurso).

@@ -2,6 +2,12 @@
 
 > La opción más simple: usar un modelo que ya es interpretable. Propiedades deseables: **linealidad**, **monotonicidad** e **interacciones** explícitas (o su ausencia).
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+La forma más honesta de interpretar un modelo es usar uno que **ya** se entiende por su estructura. Esta lección construye, desde cero, la familia de modelos intrínsecamente interpretables y cómo leer cada uno: regresión lineal (el peso es el efecto por unidad), logística (el odds ratio $e^{\beta_j}$), GLM/GAM (no linealidad sin perder la lectura por feature), árboles y RuleFit (interacciones legibles).
+
+Al terminar podrás: (1) interpretar el peso de una regresión lineal (ceteris paribus) y medir su importancia con el t-statistic; (2) leer un coeficiente logístico como odds ratio; (3) saber qué gana un GAM sobre un GLM lineal; y (4) elegir el modelo según necesites linealidad, monotonicidad o interacciones. El ejemplo de leer un peso y un odds ratio hace de hilo, y la inestabilidad por multicolinealidad conecta con [[arena-htd2]]. Continúa la taxonomía de [[arena-iml1]].
+
 | Modelo | Lineal | Monótono | Interacción | Tarea |
 |---|---|---|---|---|
 | Regresión lineal | sí | sí | no | regresión |

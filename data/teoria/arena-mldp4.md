@@ -1,5 +1,11 @@
 # Patrones de reproducibilidad e IA responsable
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un experimento de ML que no puedes reproducir no es ciencia, y un modelo que decide sobre personas sin examinar su equidad es un riesgo. Esta lección construye, desde cero, dos familias de design patterns: los de **reproducibilidad** (Transform, Repeatable Splitting, Bridged Schema, Windowed Inference, Workflow Pipeline, Model Versioning) y los de **IA responsable** (Heuristic Benchmark, Explainable Predictions, Fairness Lens).
+
+Al terminar podrás: (1) entender cómo Transform mata el training-serving skew fijando la transformación input→feature en el grafo; (2) hacer splits reproducibles y sin fuga con un hash determinista de una columna no-input; (3) contextualizar un modelo con un benchmark heurístico; y (4) saber por qué quitar la feature sensible **no** arregla el sesgo (sobrevive en proxies) y que la equidad se mide por slices. El ejemplo de fairness por proxy conecta con el confundimiento de [[arena-h4]].
+
 ## Reproducibilidad
 
 - **Transform:** los **inputs ≠ features** (las features se derivan de los inputs). Captura explícitamente la transformación input→feature y guárdala en el **grafo del modelo** (cláusula `TRANSFORM` de BigQuery ML, o un feature store) para aplicarla **idéntica** en train y serving → mata el **training-serving skew**. En inferencia mandas solo inputs crudos.

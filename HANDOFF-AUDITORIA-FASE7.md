@@ -435,7 +435,7 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   conductual (4) como cortos. Patrón confirmado: clusters narrativos (pst/isl/h*) = solo
   espina; clusters de fichas secas (dg/cb) = reescritura + math a LaTeX. Revisar el estilo
   de cada lección de ml-systems antes de decidir el nivel de trabajo.
-- 🟡 **Cluster 6 (ml-systems) reescrito DESDE CERO — EN CURSO (sw.js v100).** Edgar pidió
+- ✅ **Cluster 6 (ml-systems) reescrito DESDE CERO — HECHO (sw.js v100-v106).** Edgar pidió
   hacerlo tras causal-health (2026-06-15). Es el cluster **más grande (32)**. Estilo: como
   pst/isl/h*, ya están bien escritas y narrativas → trabajo from-zero = **solo añadir la
   espina** "De qué trata… y qué sabrás hacer" (sin reescribir cuerpo; anti-relleno). **Lote 1
@@ -456,9 +456,13 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   (escala: columnar/muestreo/OMM). **Lote 6 (v105):** `htd1` (deuda ML: CACE/cascadas/
   undeclared consumers), `htd2` (dependencias de datos/feedback loops), `htd3` (anti-patrones:
   glue code/pipeline jungles/dead codepaths/config), `htd4` (mundo externo/prediction bias).
-  **27/32. Pendiente (5):** `mldp4, iml1, iml2, iml3, iml4` (lote 7 FINAL: reproducibilidad +
-  interpretabilidad) — cierra ml-systems. Tras él quedan solo los clusters cortos `dsa` (6),
-  `system-design` (4), `conductual` (4).
+  **Lote 7 FINAL (v106):** `mldp4` (reproducibilidad + IA responsable), `iml1` (interpretabilidad:
+  conceptos/taxonomía/buenas explicaciones), `iml2` (modelos intrínsecos), `iml3` (métodos
+  agnósticos PDP/ICE/ALE/permutación), `iml4` (LIME/SHAP/contrafactuales). **Cluster 6
+  COMPLETO (32/32).** Hechos: quant-prob (25) + ds-applied (9) + stats-inf (16) + causal-health
+  (22) + ml-systems (32) = **104/118**. **Pendiente: solo 3 clusters cortos:** `dsa` (6),
+  `system-design` (4), `conductual` (4). Revisar su estilo: probablemente narrativos (solo
+  espina) salvo `dsa` que puede tener algo de pseudocódigo/complejidad. Mismo workflow por lote.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

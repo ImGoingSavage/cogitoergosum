@@ -2,6 +2,12 @@
 
 > Tratan al modelo como **caja negra** (solo input→output). Perturban features y miran cómo cambia la predicción. Ventaja: comparan cualquier modelo.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+¿Y si tu modelo es una caja negra (un random forest, una red profunda)? Entonces lo interpretas **perturbando inputs y mirando outputs**, sin abrir la caja. Esta lección construye, desde cero, esos métodos agnósticos: el PDP (efecto marginal global) y su trampa de independencia, el ICE (que revela la heterogeneidad que el PDP esconde), el ALE (la corrección para features correlacionadas), la H-statistic (interacción) y la importancia por permutación.
+
+Al terminar podrás: (1) entender qué supuesto rompe el PDP bajo correlación y por qué el ALE lo arregla (no inventa combinaciones imposibles); (2) usar el ICE para detectar efectos heterogéneos; (3) medir importancia por permutación correctamente (en test, no train); y (4) cuantificar interacción con la H-statistic. La trampa de independencia del PDP conecta con la positividad causal ([[arena-h3]]). Continúa [[arena-iml2]].
+
 ## PDP — Partial Dependence Plot (efecto marginal global)
 
 Muestra el **efecto marginal promedio** de una (o dos) features sobre la predicción. Para cada valor de xⱼ, **fija** ese valor en todas las instancias, deja el resto como está, **promedia** las predicciones. La curva resultante es el efecto medio. **Intuitivo y global.** **Supuesto fuerte y peligroso: independencia** — al fijar xⱼ creas combinaciones **imposibles** si xⱼ se correlaciona con otras features (p. ej. altura=2 m con peso=50 kg). Además **oculta heterogeneidad**: efectos positivos y negativos que se cancelan dan una curva plana engañosa. Máx. 2 features (visualización).

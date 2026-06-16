@@ -1,5 +1,11 @@
 # Interpretabilidad IV: LIME, Shapley/SHAP y explicaciones por ejemplos
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Esta lección cierra la interpretabilidad —y el cluster ml-systems entero— con los métodos locales más potentes: **LIME** (un modelo lineal que aproxima la caja negra alrededor de una instancia), los **valores de Shapley** y **SHAP** (un reparto justo y completo de la predicción, fundado en teoría de juegos), y las explicaciones **por ejemplos** (contrafactuales, prototipos, instancias influyentes).
+
+Al terminar podrás: (1) describir los cuatro pasos de LIME y su debilidad (inestabilidad por vecindad arbitraria); (2) entender la propiedad de **eficiencia** de Shapley (las contribuciones suman exactamente $\hat y - \bar y$) y por qué es el único reparto que cumple los cuatro axiomas; (3) saber qué añade SHAP sobre la importancia por permutación; y (4) elegir un **contrafactual** cuando la pregunta es "¿qué cambiar?" (contrastivo y accionable, [[arena-h18]]) en vez de una atribución. El ejemplo numérico de la eficiencia de Shapley hace de hilo. Cierra los cuatro de interpretabilidad ([[arena-iml3]]).
+
 ## LIME — Local Interpretable Model-agnostic Explanations
 
 Explica **una predicción** entrenando un **modelo interpretable local** (lineal) que aproxima a la caja negra **alrededor de esa instancia**. Receta: (1) genera muestras **perturbadas** cerca de la instancia; (2) pide al modelo negro su predicción para cada una; (3) **pondera** las muestras por su cercanía a la instancia (kernel de proximidad); (4) ajusta un modelo lineal disperso sobre esas muestras ponderadas. Los pesos del lineal son la explicación local. Funciona para tabular, **texto** (presencia/ausencia de palabras) e **imágenes** (superpíxeles). **Debilidades:** definición de "vecindad"/kernel es arbitraria y frágil; **inestabilidad** (dos corridas pueden dar explicaciones distintas).

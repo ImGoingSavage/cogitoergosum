@@ -21,10 +21,10 @@
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
-| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 27/32 (lotes 1-6 v100-v105) |
+| 6. ml-systems (ML Systems y feature pipelines) | 32 | ✅ **COMPLETO** (v100–v106) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **99 / 118 hechas** |
+| | **118** | **104 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -115,7 +115,7 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-s1` — Del modelo al sistema: skew, drift y rollback
 - [x] `arena-cds4` — Toolkit práctico: visualización, storytelling y Git
 
-### 6. ml-systems — ML Systems y feature pipelines (32) — 🟡 4/32 (lote 1 v100)
+### 6. ml-systems — ML Systems y feature pipelines (32) — ✅ COMPLETO (v100–v106)
 
 - [x] `arena-rom1` — Antes del ML y tu primer pipeline
 - [x] `arena-dmls1` — Encuadre de problemas de ML: objetivos y tipos de tarea
@@ -144,11 +144,11 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-htd2` — Dependencias de datos y feedback loops
 - [x] `arena-htd3` — Anti-patrones de sistema y configuración
 - [x] `arena-htd4` — Mundo externo, otras deudas y medición
-- [ ] `arena-mldp4` — Patrones de reproducibilidad e IA responsable
-- [ ] `arena-iml1` — Interpretabilidad: conceptos, taxonomía y buenas explicaciones
-- [ ] `arena-iml2` — Modelos interpretables (intrínsecos)
-- [ ] `arena-iml3` — Métodos agnósticos: efectos e importancia
-- [ ] `arena-iml4` — LIME, Shapley/SHAP y ejemplos
+- [x] `arena-mldp4` — Patrones de reproducibilidad e IA responsable
+- [x] `arena-iml1` — Interpretabilidad: conceptos, taxonomía y buenas explicaciones
+- [x] `arena-iml2` — Modelos interpretables (intrínsecos)
+- [x] `arena-iml3` — Métodos agnósticos: efectos e importancia
+- [x] `arena-iml4` — LIME, Shapley/SHAP y ejemplos
 
 ### 7. causal-health — Causalidad y Health AI / RWE (22) — ✅ COMPLETO (v95–v99)
 
