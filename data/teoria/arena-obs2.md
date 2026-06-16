@@ -1,5 +1,11 @@
 # Pilares de la observabilidad: eventos estructurados, trazas y el Core Analysis Loop
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Si la observabilidad responde preguntas que no anticipaste, ¿cómo se construye en la práctica? Esta lección arma sus pilares desde cero: el **evento estructurado ancho** (no la métrica ni el log) como bloque base, las **trazas distribuidas** que enlazan eventos a través de servicios, y el **Core Analysis Loop**, un método científico para depurar desde primeros principios cualquier fallo —conocido o no—.
+
+Al terminar podrás: (1) entender por qué el evento ancho (300-400 dimensiones por petición) vence a la métrica preagregada y al log suelto; (2) diseñar un span con sus cinco campos imprescindibles y saber cómo se propaga una traza (Trace ID por cabecera, OpenTelemetry); (3) ejecutar el Core Analysis Loop (anomalía → agrupar dimensiones → aislar → repetir); y (4) entender por qué AIOps no es bala de plata (la máquina surfacea, el humano significa). Profundiza la observabilidad de [[arena-obs1]].
+
 ## El bloque de construcción: el evento estructurado ancho
 
 El bloque fundamental NO es la métrica ni el log, sino el **evento estructurado arbitrariamente ancho**: un registro de **todo** lo que ocurrió mientras **una petición** interactuó con tu servicio. Se inicializa un mapa vacío al entrar la petición y se le añaden, durante su vida, IDs, parámetros, tiempos, llamadas remotas, etc.; al salir o errar, se emite ese mapa como pares clave-valor (a menudo JSON). Una instrumentación madura suele tener **300-400 dimensiones por evento**.

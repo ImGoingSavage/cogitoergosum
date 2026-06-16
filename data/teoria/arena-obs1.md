@@ -1,5 +1,11 @@
 # ¿Qué es observabilidad? Monitoreo vs. observabilidad
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+"Tengo dashboards, luego tengo observabilidad" es uno de los malentendidos más caros de la ingeniería moderna. Esta lección construye, desde cero, la distinción real: el **monitoreo** comprueba condiciones contra umbrales que *ya anticipaste* (known-unknowns), mientras la **observabilidad** te deja entender *cualquier* estado nuevo o extraño **sin desplegar código nuevo** (unknown-unknowns). La clave técnica que las separa: la **alta cardinalidad** y la **alta dimensionalidad** de los eventos.
+
+Al terminar podrás: (1) dar la prueba de fuego de la observabilidad (responder preguntas que no anticipaste, sin instrumentar primero); (2) explicar por qué monitoreo = known-unknowns y observabilidad = unknown-unknowns; (3) entender por qué la cardinalidad (user_id, request_id) hunde a las métricas preagregadas; y (4) decidir cuándo usar cada una (infra → monitoreo; tu código/cliente → observabilidad). El ejemplo del p99 "rápido" y el cliente furioso hace de hilo. Conecta con la observabilidad de modelos ([[arena-rml3]]).
+
 El término **observabilidad** lo acuñó Rudolf Kálmán (1960) en teoría de control: una medida de qué tan bien se pueden inferir los **estados internos** de un sistema a partir de sus **salidas externas**. Aplicado al software, un sistema es observable en la medida en que puedes **entender y explicar cualquier estado en que pueda caer —por nuevo o extraño que sea— sin tener que desplegar código nuevo** para explicarlo.
 
 ## La prueba de fuego

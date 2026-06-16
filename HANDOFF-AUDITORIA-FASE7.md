@@ -450,10 +450,13 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   humano, training-serving skew), `dmls4` (shifts covariate/label/concept, test en prod),
   `rml1` (confiabilidad e2e, SLOs por capa). **Lote 4 (v103):** `sre1` (riesgo/error budget/
   SLOs), `sre2` (toil/4 señales doradas), `sre3` (troubleshooting/ICS/postmortems sin culpa),
-  `sre4` (releases/simplicidad/sobrecarga/cascada). **18/32. Pendiente (14):** `rml4, obs1-4`
-  (lote 5), `htd1-4` (lote 6), `mldp4, iml1-4` (lote 7). Trabajar en lotes de 4-6, validar
-  render+KaTeX, subir VERSION, push, marcar backlog+HANDOFF cada lote. Al cerrar ml-systems
-  quedan solo los clusters cortos `dsa` (6), `system-design` (4), `conductual` (4).
+  `sre4` (releases/simplicidad/sobrecarga/cascada). **Lote 5 (v104):** `rml4` (respuesta a
+  incidentes ML: Public/Fuzzy/Unbounded), `obs1` (monitoreo vs observabilidad, cardinalidad),
+  `obs2` (eventos anchos/trazas/Core Analysis Loop), `obs3` (SLO alerts/burn alerts), `obs4`
+  (escala: columnar/muestreo/OMM). **23/32. Pendiente (9):** `htd1-4` (lote 6, deuda técnica
+  ML), `mldp4, iml1-4` (lote 7, reproducibilidad + interpretabilidad). Trabajar en lotes de
+  4-5, validar render+KaTeX, subir VERSION, push, marcar backlog+HANDOFF cada lote. Al cerrar
+  ml-systems quedan solo los clusters cortos `dsa` (6), `system-design` (4), `conductual` (4).
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

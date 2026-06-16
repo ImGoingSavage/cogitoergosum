@@ -1,5 +1,11 @@
 # Respuesta a incidentes en sistemas de ML
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando un sistema de ML falla en producción, la respuesta hereda el playbook del SRE pero con un giro propio: el fallo suele ser **Public** (lo ven antes los usuarios), **Fuzzy** (sin inicio ni fin nítidos) y **Unbounded** (toca producto, negocio, legal). Esta lección construye, desde cero, cómo gestionar un incidente de ML —los tres pilares (estado, roles, registro), las fases y los cuatro roles— y qué cambia respecto a un incidente de infraestructura.
+
+Al terminar podrás: (1) reconocer un incidente no gestionado (el peor tipo) y montar la respuesta con estado+roles+registro; (2) nombrar las fases y los cuatro roles (commander, comms, ops, planning); (3) entender por qué en ML un problema de sistemas se disfraza de caída de calidad (la Historia 1, modelo congelado 3 semanas por un OOM crash loop); y (4) prepararte versionando modelos/datos y sin posponer nunca la privacidad. Conecta con el ICS del SRE ([[arena-sre3]]).
+
 ## Los tres pilares de un incidente gestionado
 
 **Estado** (en qué fase está) + **roles** (quién hace qué) + **registro** (para el postmortem). Sin ellos aparece el **incidente no gestionado** —el peor tipo—: un ingeniero lo depura en solitario, no mide el impacto en usuarios, no comunica, y otras partes de la organización toman pasos descoordinados. La clave es un **proceso ensayado** que se aplica solo cuando algo merece llamarse incidente (formalizar tiene coste).

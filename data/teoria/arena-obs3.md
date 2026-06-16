@@ -1,5 +1,11 @@
 # SLOs, alertas basadas en SLO y burn alerts
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Las alertas que avisan de *causas potenciales* (CPU alta, hilos anómalos) producen un mar de falsos positivos que desensibiliza al equipo —la **fatiga de alertas**, la misma normalización de la desviación del desastre del Challenger—. Esta lección construye, desde cero, la alternativa: alertar por el **síntoma de dolor del usuario** vía **SLOs**, gobernar releases con el **error budget**, y avisar *antes* de agotarlo con **burn alerts predictivas**.
+
+Al terminar podrás: (1) entender por qué el umbral estático solo cubre known-unknowns y por qué una buena alerta debe ser indicador fiable de impacto al usuario y accionable; (2) definir SLI/SLO y por qué preferir SLI basados en eventos; (3) usar el error budget ($1-\text{SLO}$) para arbitrar releases; y (4) construir una burn alert predictiva (ventana deslizante de 30 días, lookahead + baseline del mismo orden). El caso del brownout por fuga de memoria hace de hilo. Comparte el error budget con [[arena-sre1]].
+
 ## El problema: fatiga de alertas
 
 Las alertas tradicionales de **causa potencial** (CPU alta, nº anómalo de hilos) producen muchos **falsos positivos**: la condición puede deberse a mil factores, no al que importa. El equipo se desensibiliza → **fatiga de alertas** (*normalización de la desviación*, término del desastre del Challenger). Una buena alerta (según el libro SRE de Google) debe ser **fiable indicador de impacto al usuario** y **accionable**; si no cumple ambas, debe **borrarse**.

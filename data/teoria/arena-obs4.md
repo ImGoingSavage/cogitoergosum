@@ -1,5 +1,11 @@
 # Observabilidad a escala: almacenamiento, muestreo y madurez
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Guardar eventos ultra-anchos de alta cardinalidad para *todas* las peticiones suena imposiblemente caro —y con las herramientas equivocadas (una TSDB) lo es—. Esta lección construye, desde cero, cómo se hace observabilidad a escala: por qué la base de datos de series temporales explota, qué almacén sí funciona (**columnar híbrido particionado por tiempo**), cómo el **muestreo** conserva la forma de los datos a fracción del coste, y cómo medir la **madurez** socio-técnica de un equipo (OMM).
+
+Al terminar podrás: (1) explicar por qué indexar `user_id` en una TSDB causa explosión de cardinalidad y por qué "rápido > perfecto" en observabilidad; (2) entender el almacén columnar particionado; (3) elegir estrategia de muestreo (por clave/consistente sobre constante, head vs tail, grabando la sample rate); y (4) ubicar las cinco capacidades del OMM. Cierra los pilares de [[arena-obs2]] y [[arena-obs3]].
+
 ## Requisitos funcionales del almacén de observabilidad
 
 Los datos son **eventos ultra-anchos**; cualquier campo debe ser **consultable** sin preagregar (no sabes de antemano qué dimensión importará). De ahí: **todo indexado o ningún índice privilegiado** (todas las dimensiones igual de rápidas), datos **frescos en segundos**, y almacén **durable y tolerante a fallos** (no puede caerse justo cuando depuras una caída).
