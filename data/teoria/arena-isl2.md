@@ -1,5 +1,11 @@
 # Aprendizaje estadístico II: regresión lineal y clasificación
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Las dos tareas supervisadas más comunes son predecir un número (**regresión**) y predecir una etiqueta (**clasificación**). Esta lección construye, desde cero, los modelos de referencia de cada una: la regresión lineal (cómo se interpreta cada coeficiente y por qué el F-test existe **además** de los t) y los clasificadores fundamentales (logística, LDA/QDA), con su evaluación honesta (matriz de confusión, ROC/AUC) en vez del engañoso accuracy.
+
+Al terminar podrás: (1) leer un coeficiente como efecto **parcial** y entender por qué puede cambiar de signo (confounding); (2) saber por qué el F global corrige la multiplicidad que los t individuales no ven; (3) elegir entre logística (discriminativa) y LDA/QDA (generativos) según el caso; y (4) evaluar un clasificador con sensibilidad/especificidad/AUC. Cada idea entra por un ejemplo concreto.
+
 ## Regresión lineal: estimación e inferencia
 
 - **Mínimos cuadrados:** elige β̂ que minimizan RSS = Σ(yᵢ−ŷᵢ)². La recta pasa por (x̄, ȳ).

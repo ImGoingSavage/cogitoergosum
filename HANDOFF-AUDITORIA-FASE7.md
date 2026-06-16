@@ -371,7 +371,7 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   sugerido por el backlog: `stats-inf` (16), `dsa` (6), `system-design`/`conductual` (4
   c/u), `causal-health` (22), `ml-systems` (32). El patrón de trabajo de este cluster
   (reescribir solo la mitad superior, conservar la inferior curada) aplica a los demás.
-- 🟡 **Cluster 2 (stats-inf) reescrito DESDE CERO — EN CURSO (sw.js v91).** Edgar pidió
+- ✅ **Cluster 2 (stats-inf) reescrito DESDE CERO — HECHO (sw.js v91-v94).** Edgar pidió
   seguir con este cluster (2026-06-15). Estas lecciones eran las **más secas**: la mitad
   superior eran fichas de fórmulas en **texto plano/Unicode** (sin LaTeX). El trabajo es
   doble: reescribir el núcleo from-zero **y** pasar la matemática nueva a **LaTeX**
@@ -398,7 +398,15 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   (v93):** `pst1` (EDA: robustez, punto de ruptura), `pst2` (distribución muestral,
   bootstrap, SE∝1/√n), `pst3` (A/B + test de permutación, multiplicidad), `pst4` (regresión:
   multicolinealidad/confounding/interacción + diagnóstico por residuales). Validado: smoke
-  threw=0, KaTeX 0 throws. **Pendiente:** lote 4 (`isl1-4`, ISL) cierra el cluster.
+  threw=0, KaTeX 0 throws. **Lote 4 (v94):** `isl1` (marco Y=f(X)+ε, sesgo-varianza, KNN),
+  `isl2` (regresión lineal + clasificación logística/LDA/QDA), `isl3` (remuestreo,
+  selección, ridge/lasso), `isl4` (no linealidad/splines, árboles/RF/boosting, SVM, no
+  supervisado) — como las `pst`, ya estaban bien escritas con intuición y LaTeX, solo se
+  les añadió la espina from-zero. Validado: smoke threw=0, KaTeX 0 throws. **Cluster 2
+  COMPLETO (16/16).** Hechos hasta ahora: ds-applied (9) + stats-inf (16) = 50/118.
+  **Siguiente cluster** sugerido: `dsa` (6) o `system-design`/`conductual` (4), luego
+  `causal-health` (22) y `ml-systems` (32, el más grande). Patrón: clusters teóricos
+  (dg/cb) = reescritura fuerte + math a LaTeX; clusters narrativos (pst/isl) = solo espina.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

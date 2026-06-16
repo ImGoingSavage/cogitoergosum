@@ -17,14 +17,14 @@
 | Cluster | Unidades | Estado |
 |---|---|---|
 | **1. quant-prob** (Probabilidad, esperanza y conteo) | 25 | ✅ **COMPLETO** (v82–v87) |
-| 2. stats-inf (Estadística aplicada e inferencia) | 16 | 🟡 12/16 (lotes 1-3 v91-v93) |
+| 2. stats-inf (Estadística aplicada e inferencia) | 16 | ✅ **COMPLETO** (v91–v94) |
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ⬜ pendiente |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **46 / 118 hechas** |
+| | **118** | **50 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -68,7 +68,7 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-q7` — Finanzas avanzadas: bonos, Greeks y procesos
 - [x] `arena-q6` — Estadística inferencial: distribuciones y estimación
 
-### 2. stats-inf — Estadística aplicada e inferencia (16) — 🟡 8/16 (lotes 1-2 v91-v92)
+### 2. stats-inf — Estadística aplicada e inferencia (16) — ✅ COMPLETO (v91–v94)
 
 - [x] `arena-dg1` — Estimación puntual y propiedades de estimadores
 - [x] `arena-dg2` — Máxima verosimilitud y familias exponenciales
@@ -82,10 +82,10 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-pst2` — Distribuciones muestrales y bootstrap
 - [x] `arena-pst3` — Experimentos estadísticos y tests de permutación
 - [x] `arena-pst4` — Regresión y predicción: interpretación y diagnóstico
-- [ ] `arena-isl1` — El marco (estimar f, sesgo-varianza, KNN)
-- [ ] `arena-isl2` — Regresión lineal y clasificación
-- [ ] `arena-isl3` — Remuestreo, selección y regularización
-- [ ] `arena-isl4` — No linealidad, árboles, SVM y no supervisado
+- [x] `arena-isl1` — El marco (estimar f, sesgo-varianza, KNN)
+- [x] `arena-isl2` — Regresión lineal y clasificación
+- [x] `arena-isl3` — Remuestreo, selección y regularización
+- [x] `arena-isl4` — No linealidad, árboles, SVM y no supervisado
 
 ### 3. dsa — Estructuras de datos y algoritmos (MAANG) (6) — ⬜
 

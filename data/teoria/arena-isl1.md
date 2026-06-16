@@ -1,5 +1,11 @@
 # Aprendizaje estadístico I: el marco, sesgo-varianza y KNN
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Todo el machine learning supervisado cabe en una ecuación: $Y=f(X)+\varepsilon$. Aprender es estimar esa $f$ a partir de datos. Esta lección construye, desde cero, el marco mental que organiza el resto del cluster: por qué estimamos $f$ (predecir vs inferir), por qué siempre hay un error que **ningún** modelo puede vencer, y por qué la flexibilidad es un arma de doble filo —el **trade-off sesgo-varianza**, que aquí cobra su forma definitiva con la curva en U del error de test.
+
+Al terminar podrás: (1) distinguir error reducible de irreducible; (2) escribir y leer la descomposición sesgo-varianza; (3) entender por qué un error de entrenamiento de 0 suele ser mala señal; y (4) usar el clasificador de Bayes como techo y KNN como su aproximación, con $K$ de perilla. Cada idea entra por su intuición. Es el cimiento de [[arena-ads3]] y de los tres ISL siguientes.
+
 ## ¿Qué es estimar f?
 
 Asumimos **Y = f(X) + ε**: f es la información SISTEMÁTICA que X aporta sobre Y, y ε un error aleatorio independiente de X con media 0. El aprendizaje estadístico estima **f̂** por dos motivos:

@@ -1,5 +1,11 @@
 # Aprendizaje estadístico III: remuestreo, selección y regularización
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Dos preguntas dominan la práctica del ML: **¿qué tan bien predigo fuera de muestra?** y **¿qué predictores conservo?** Esta lección construye, desde cero, las herramientas que las responden: el **remuestreo** (validación cruzada para estimar el error de test, bootstrap para la incertidumbre), la **selección de subconjuntos** y la **regularización** (ridge y lasso), con su distinción geométrica clave —por qué el lasso anula coeficientes y el ridge solo los encoge—.
+
+Al terminar podrás: (1) elegir k-fold sobre LOOCV sabiendo por qué; (2) distinguir lo que estima el CV (error de test) de lo que estima el bootstrap (incertidumbre); (3) decidir entre ridge y lasso según cuántos predictores importen; y (4) reconocer la maldición de la dimensionalidad cuando $p\gtrsim n$. La intuición primero, incluida la del rombo L1 que produce sparsity.
+
 ## ¿Por qué remuestrear?
 
 El **error de entrenamiento subestima** el de test (baja al añadir flexibilidad aunque haya overfit). Reutilizamos los datos ajustando muchas veces para **estimar el error de test** (CV) o **cuantificar incertidumbre** (bootstrap).

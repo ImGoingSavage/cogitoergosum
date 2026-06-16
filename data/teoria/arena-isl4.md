@@ -1,5 +1,11 @@
 # Aprendizaje estadístico IV: no linealidad, árboles, SVM y no supervisado
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando la relación entre $X$ e $Y$ no es lineal, hace falta un arsenal más flexible. Esta lección lo recorre desde cero: cómo capturar no linealidad **sin perder control** (splines, GAM), los métodos basados en árboles (y por qué un **random forest** decorrelaciona para ganar donde el bagging se estanca), las **SVM** con su margen y su kernel trick, y el aprendizaje **no supervisado** (PCA, clustering). El hilo conductor sigue siendo el sesgo-varianza: cada método es una forma distinta de marcar la perilla de flexibilidad.
+
+Al terminar podrás: (1) preferir splines/GAM a un polinomio global y saber por qué; (2) explicar cómo y por qué un random forest decorrelaciona los árboles (m=√p) y qué regala el OOB; (3) entender qué regula la C de una SVM y qué hace el kernel trick; y (4) distinguir PCA, K-means y clustering jerárquico. Cada idea entra por su intuición.
+
 ## Más allá de la linealidad (Cap. 7)
 
 Extensiones lineales **en los parámetros** vía **funciones base**:
