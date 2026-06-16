@@ -11670,64 +11670,64 @@
     "nivel": 2
    },
    "ideas_clave": [
-    "Hash map = O(1) lookup; úsalo para complementos, frecuencias, duplicados",
+    "Hash map $= O(1)$ lookup; úsalo para complementos, frecuencias, duplicados",
     "Sliding window para subarreglos/subcadenas contiguas con propiedad X",
-    "Two pointers para pares en arrays ordenados — O(n) vs O(n²)"
+    "Two pointers para pares en arrays ordenados — $O(n)$ vs $O(n^2)$"
    ],
    "banco": [
     {
      "id": "arcc1-q1",
      "tipo": "calculo",
-     "enunciado": "Dado un array de enteros y un target, describe el algoritmo O(n) para encontrar dos números que sumen al target (Two Sum).",
+     "enunciado": "Dado un array de enteros y un target, describe el algoritmo $O(n)$ para encontrar dos números que sumen al target (Two Sum).",
      "solucion": "Hash map: para cada x, busca (target-x) en el mapa. Si existe, retorna. Si no, inserta x→índice.",
-     "explicacion": "El complemento target-x se busca en O(1) con el hash map. Un solo recorrido del array da O(n) tiempo y O(n) espacio."
+     "explicacion": "El complemento target-x se busca en $O(1)$ con el hash map. Un solo recorrido del array da $O(n)$ tiempo y $O(n)$ espacio."
     },
     {
      "id": "arcc1-q2",
      "tipo": "calculo",
      "enunciado": "¿Cuál es la complejidad amortizada de insertar al final de un array dinámico (como Python list o Java ArrayList)? Explica.",
-     "solucion": "O(1) amortizado",
-     "explicacion": "El array duplica capacidad cuando se llena. La operación costosa (copiar n elementos) ocurre cada n inserciones. Costo total de n inserciones = n + n/2 + n/4 + ... < 2n → O(1) por inserción amortizado."
+     "solucion": "$O(1)$ amortizado",
+     "explicacion": "El array duplica capacidad cuando se llena. La operación costosa (copiar $n$ elementos) ocurre cada $n$ inserciones. Costo total de $n$ inserciones $= n + n/2 + n/4 + \\dots < 2n \\to O(1)$ por inserción amortizado."
     },
     {
      "id": "arcc1-q3",
      "tipo": "calculo",
-     "enunciado": "Dado un string, verifica en O(n) si es permutación de un palíndromo.",
+     "enunciado": "Dado un string, verifica en $O(n)$ si es permutación de un palíndromo.",
      "solucion": "Cuenta frecuencias con hash map. Un string es permutación de palíndromo ↔ a lo sumo UN carácter tiene frecuencia impar.",
-     "explicacion": "Un palíndromo puede tener todos los caracteres en pares, excepto el del centro (longitud impar). Contar con hash map en O(n) y verificar la condición."
+     "explicacion": "Un palíndromo puede tener todos los caracteres en pares, excepto el del centro (longitud impar). Contar con hash map en $O(n)$ y verificar la condición."
     },
     {
      "id": "arcc1-q4",
      "tipo": "calculo",
      "enunciado": "Sliding window: dado array nums y k, encuentra la suma máxima de un subarreglo de longitud exactamente k.",
-     "solucion": "Suma los primeros k elementos. Luego desliza: suma += nums[r] - nums[r-k] y actualiza el máximo. O(n) tiempo, O(1) espacio.",
-     "explicacion": "La ventana fija de tamaño k se actualiza en O(1) por paso: añade el elemento entrante, elimina el saliente."
+     "solucion": "Suma los primeros $k$ elementos. Luego desliza: suma += nums[r] - nums[r-k] y actualiza el máximo. $O(n)$ tiempo, $O(1)$ espacio.",
+     "explicacion": "La ventana fija de tamaño $k$ se actualiza en $O(1)$ por paso: añade el elemento entrante, elimina el saliente."
     },
     {
      "id": "arcc1-q5",
      "tipo": "calculo",
      "enunciado": "Longitud de la subcadena más larga sin caracteres repetidos. Describe el algoritmo.",
-     "solucion": "Sliding window variable: hash map de carácter→posición. Si s[r] ya está en el mapa y su posición ≥ left, mueve left a esa posición+1. Actualiza el máximo de (r-left+1). O(n).",
-     "explicacion": "El puntero left garantiza que la ventana [left,r] no tiene duplicados. El hash map da O(1) lookup de si un carácter está en la ventana."
+     "solucion": "Sliding window variable: hash map de carácter→posición. Si s[r] ya está en el mapa y su posición $\\ge$ left, mueve left a esa posición+1. Actualiza el máximo de $(r-\\text{left}+1)$. $O(n)$.",
+     "explicacion": "El puntero left garantiza que la ventana [left,r] no tiene duplicados. El hash map da $O(1)$ lookup de si un carácter está en la ventana."
     },
     {
      "id": "arcc1-q6",
      "tipo": "calculo",
      "enunciado": "Dado un array de n enteros, calcula el array de productos donde result[i] = producto de todos los elementos excepto nums[i], sin usar división.",
-     "solucion": "Pase izquierda: result[i] = producto de nums[0..i-1]. Pase derecha: multiplica por sufijo acumulado. O(n) tiempo, O(1) espacio extra.",
+     "solucion": "Pase izquierda: result[i] = producto de nums[0..i-1]. Pase derecha: multiplica por sufijo acumulado. $O(n)$ tiempo, $O(1)$ espacio extra.",
      "explicacion": "Ningún elemento se excluye explícitamente: se multiplican todos los que están a su izquierda y a su derecha."
     },
     {
      "id": "arcc1-q7",
      "tipo": "calculo",
-     "enunciado": "Rota un array de n elementos k posiciones a la derecha en O(n) tiempo y O(1) espacio. Describe el método.",
+     "enunciado": "Rota un array de $n$ elementos $k$ posiciones a la derecha en $O(n)$ tiempo y $O(1)$ espacio. Describe el método.",
      "solucion": "Método de 3 reversas: (1) reversa todo, (2) reversa los primeros k elementos, (3) reversa los últimos n-k.",
      "explicacion": "Ejemplo [1,2,3,4,5], k=2: → [5,4,3,2,1] → [4,5,3,2,1] → [4,5,1,2,3]. Tres reversas consecutivas logran la rotación."
     },
     {
      "id": "arcc1-q8",
      "tipo": "calculo",
-     "enunciado": "Ordena un array con solo valores {0,1,2} en O(n) con un solo recorrido y O(1) espacio (Dutch National Flag).",
+     "enunciado": "Ordena un array con solo valores $\\{0,1,2\\}$ en $O(n)$ con un solo recorrido y $O(1)$ espacio (Dutch National Flag).",
      "solucion": "Tres punteros: low=0, mid=0, high=n-1. Si nums[mid]=0: swap(low,mid), low++,mid++. Si 1: mid++. Si 2: swap(mid,high), high--.",
      "explicacion": "Invariante: [0..low-1] son 0s, [low..mid-1] son 1s, [high+1..n-1] son 2s. El puntero mid no avanza al hacer swap con high (el valor intercambiado aún no fue examinado)."
     },
@@ -11735,36 +11735,36 @@
      "id": "arcc1-q9",
      "tipo": "calculo",
      "enunciado": "Dado una lista de intervalos [sᵢ,eᵢ] posiblemente solapados, combínalos. Describe el algoritmo.",
-     "solucion": "Ordena por inicio. Recorre: si el intervalo actual comienza ≤ fin del resultado anterior, expande el fin. Si no, añade al resultado. O(n log n).",
-     "explicacion": "Después de ordenar, dos intervalos solapados son adyacentes en la lista. La condición de solapamiento es: inicio_actual ≤ fin_anterior."
+     "solucion": "Ordena por inicio. Recorre: si el intervalo actual comienza $\\le$ fin del resultado anterior, expande el fin. Si no, añade al resultado. $O(n\\log n)$.",
+     "explicacion": "Después de ordenar, dos intervalos solapados son adyacentes en la lista. La condición de solapamiento es: inicio_actual $\\le$ fin_anterior."
     },
     {
      "id": "arcc1-q10",
      "tipo": "calculo",
      "enunciado": "¿Cómo funciona el algoritmo de Rabin-Karp para buscar un patrón de longitud m en un texto de longitud n?",
-     "solucion": "Usa un rolling hash: calcula el hash del patrón y de cada ventana de longitud m en O(1). Si los hashes coinciden, verifica carácter por carácter. O(n+m) esperado.",
-     "explicacion": "El rolling hash actualiza en O(1): descarta el carácter saliente y añade el entrante. Las colisiones de hash se verifican explícitamente pero son raras."
+     "solucion": "Usa un rolling hash: calcula el hash del patrón y de cada ventana de longitud $m$ en $O(1)$. Si los hashes coinciden, verifica carácter por carácter. $O(n+m)$ esperado.",
+     "explicacion": "El rolling hash actualiza en $O(1)$: descarta el carácter saliente y añade el entrante. Las colisiones de hash se verifican explícitamente pero son raras."
     },
     {
      "id": "arcc1-q11",
      "tipo": "calculo",
      "enunciado": "Trapping Rain Water: dado un array heights de alturas de barras, calcula el agua total atrapada.",
-     "solucion": "Para cada posición i: agua[i] = min(max_izq, max_der) - heights[i]. O(n) con dos pases o dos punteros.",
+     "solucion": "Para cada posición i: agua[i] = min(max_izq, max_der) - heights[i]. $O(n)$ con dos pases o dos punteros.",
      "explicacion": "Con dos punteros: mantén max_left y max_right avanzando desde los extremos. El lado con menor max determina el agua del puntero que avanza."
     },
     {
      "id": "arcc1-q12",
      "tipo": "concepto",
      "enunciado": "¿Cuándo conviene usar open addressing vs chaining para resolver colisiones en una tabla hash?",
-     "solucion": "Chaining: mejor con factor de carga alto (α>0.7), implementación sencilla. Open addressing: mejor con α bajo, evita overhead de punteros, mejor localidad de caché.",
-     "explicacion": "Open addressing degrada rápido cuando α>0.7 por clustering. Chaining mantiene O(1+α) pero usa más memoria por los nodos de lista enlazada."
+     "solucion": "Chaining: mejor con factor de carga alto ($\\alpha>0.7$), implementación sencilla. Open addressing: mejor con $\\alpha$ bajo, evita overhead de punteros, mejor localidad de caché.",
+     "explicacion": "Open addressing degrada rápido cuando $\\alpha>0.7$ por clustering. Chaining mantiene $O(1+\\alpha)$ pero usa más memoria por los nodos de lista enlazada."
     },
     {
      "id": "arcc1-q13",
      "tipo": "calculo",
-     "enunciado": "Encuentra todos los duplicados en un array de enteros donde 1 ≤ nums[i] ≤ n, n = len(nums). O(n) tiempo y O(1) espacio.",
+     "enunciado": "Encuentra todos los duplicados en un array de enteros donde $1 \\le$ nums[i] $\\le n$, $n=$ len(nums). $O(n)$ tiempo y $O(1)$ espacio.",
      "solucion": "Usa los índices del propio array como hash: para cada nums[i], marca nums[abs(nums[i])-1] como negativo. Si ya era negativo, es duplicado.",
-     "explicacion": "El signo del elemento en la posición abs(x)-1 indica si x fue visto antes. Funciona porque 1 ≤ x ≤ n garantiza que abs(x)-1 es índice válido."
+     "explicacion": "El signo del elemento en la posición abs(x)-1 indica si x fue visto antes. Funciona porque $1 \\le x \\le n$ garantiza que abs(x)-1 es índice válido."
     },
     {
      "id": "arcc1-q14",
@@ -11776,7 +11776,7 @@
     {
      "id": "arcc1-q15",
      "tipo": "calculo",
-     "enunciado": "Two Sum con array ORDENADO: encuentra los dos índices con suma = target. O(n) tiempo, O(1) espacio.",
+     "enunciado": "Two Sum con array ORDENADO: encuentra los dos índices con suma = target. $O(n)$ tiempo, $O(1)$ espacio.",
      "solucion": "Two pointers: left=0, right=n-1. Si suma < target: left++. Si suma > target: right--. Si igual: retorna.",
      "explicacion": "El array ordenado permite descartar elementos de forma determinista: si la suma es pequeña, el elemento mayor es insuficiente para cualquier valor a la izquierda."
     }
@@ -11802,7 +11802,7 @@
    "ideas_clave": [
     "BFS = camino más corto (sin pesos); DFS = ciclos, topológico, componentes",
     "In-order de BST produce valores ordenados — úsalo para validar y buscar",
-    "Union-Find responde '¿conectados?' en O(α) amortizado"
+    "Union-Find responde '¿conectados?' en $O(\\alpha)$ amortizado"
    ],
    "banco": [
     {
@@ -11823,7 +11823,7 @@
      "id": "arcc2-q3",
      "tipo": "calculo",
      "enunciado": "Number of Islands: dado un grid 2D de '0's y '1's, cuenta el número de islas. Describe el algoritmo.",
-     "solucion": "DFS/BFS desde cada '1' no visitado, marcando toda la isla como visitada. Incrementa el contador cada vez que lanzas un DFS. O(m·n).",
+     "solucion": "DFS/BFS desde cada '1' no visitado, marcando toda la isla como visitada. Incrementa el contador cada vez que lanzas un DFS. $O(m\\cdot n)$.",
      "explicacion": "Cada celda se visita exactamente una vez. Los 4 vecinos (arriba, abajo, izquierda, derecha) se exploran recursivamente o con cola."
     },
     {
@@ -11858,7 +11858,7 @@
      "id": "arcc2-q8",
      "tipo": "calculo",
      "enunciado": "Algoritmo de Dijkstra: ¿qué garantiza y cuándo falla?",
-     "solucion": "Garantiza el camino más corto en grafos con pesos ≥ 0. Falla con pesos negativos (usa Bellman-Ford en ese caso).",
+     "solucion": "Garantiza el camino más corto en grafos con pesos $\\ge 0$. Falla con pesos negativos (usa Bellman-Ford en ese caso).",
      "explicacion": "Dijkstra es greedy: extrae el nodo de menor distancia acumulada y no revisa aristas a ese nodo nuevamente. Con pesos negativos, una arista posterior podría mejorar un nodo ya 'finalizado'."
     },
     {
@@ -11873,7 +11873,7 @@
      "tipo": "calculo",
      "enunciado": "Union-Find: describe las operaciones find y union con path compression y union by rank.",
      "solucion": "find: sigue el parent hasta la raíz, aplana el path al volver. union: une las raíces; el árbol de menor rank queda bajo el mayor.",
-     "explicacion": "Path compression: cada nodo apunta directamente a la raíz después de find. Union by rank: evita cadenas largas. Juntos: find es O(α(n)) amortizado (casi constante)."
+     "explicacion": "Path compression: cada nodo apunta directamente a la raíz después de find. Union by rank: evita cadenas largas. Juntos: find es $O(\\alpha(n))$ amortizado (casi constante)."
     },
     {
      "id": "arcc2-q11",
@@ -11939,7 +11939,7 @@
      "id": "arcc3-q1",
      "tipo": "calculo",
      "enunciado": "Climbing Stairs: llegas a un escalón n dando pasos de 1 o 2. ¿Cuántas formas distintas hay? Recurrencia y complejidad.",
-     "solucion": "dp[n] = dp[n-1] + dp[n-2], dp[1]=1, dp[2]=2. Tiempo O(n), espacio O(1) con dos variables.",
+     "solucion": "dp[n] = dp[n-1] + dp[n-2], dp[1]=1, dp[2]=2. Tiempo $O(n)$, espacio $O(1)$ con dos variables.",
      "explicacion": "El último paso fue de 1 (venías de n-1) o de 2 (venías de n-2). Idéntico a Fibonacci: dp[n] = F(n+1)."
     },
     {
@@ -11947,21 +11947,21 @@
      "tipo": "calculo",
      "enunciado": "Coin Change (mínimo de monedas): monedas [1,5,11], amount=15. ¿Mínimo de monedas? ¿Falla greedy?",
      "solucion": "DP: dp[15]=3 (11+1+1+1=4, pero 5+5+5=3). Greedy falla: elegiría 11+1+1+1+1=5 monedas.",
-     "explicacion": "Greedy elige la moneda mayor posible. Para [1,5,11]: greedy da 11+4×1=5; DP da 3×5=3. Sin propiedad de intercambio óptimo, greedy no funciona."
+     "explicacion": "Greedy elige la moneda mayor posible. Para [1,5,11]: greedy da $11+4\\times1=5$; DP da $3\\times5=3$. Sin propiedad de intercambio óptimo, greedy no funciona."
     },
     {
      "id": "arcc3-q3",
      "tipo": "calculo",
      "enunciado": "LCS de 'ABCBDAB' y 'BDCAB'. Escribe la recurrencia y da la longitud.",
      "solucion": "dp[i][j] = dp[i-1][j-1]+1 si X[i]==Y[j]; max(dp[i-1][j], dp[i][j-1]) si no. LCS = 4 ('BCAB' o 'BDAB').",
-     "explicacion": "Tabla 7×5 llenada bottom-up. La LCS no necesita ser contigua. Backtrack por la tabla para reconstruir la subsecuencia."
+     "explicacion": "Tabla $7\\times5$ llenada bottom-up. La LCS no necesita ser contigua. Backtrack por la tabla para reconstruir la subsecuencia."
     },
     {
      "id": "arcc3-q4",
      "tipo": "calculo",
      "enunciado": "Edit Distance entre 'kitten' y 'sitting'. Recurrencia y valor.",
      "solucion": "dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(0 si iguales, 1 si no)). Resultado = 3.",
-     "explicacion": "kitten→sitten (replace k→s) → sittin (replace e→i) → sitting (insert g). Tabla 7×8 con dp[0][j]=j y dp[i][0]=i como bases."
+     "explicacion": "kitten→sitten (replace k→s) → sittin (replace e→i) → sitting (insert g). Tabla $7\\times8$ con dp[0][j]=j y dp[i][0]=i como bases."
     },
     {
      "id": "arcc3-q5",
@@ -11982,19 +11982,19 @@
      "tipo": "calculo",
      "enunciado": "Word Break: ¿puede 'leetcode' segmentarse usando el diccionario ['leet','code']? Describe el DP.",
      "solucion": "Sí: 'leet' + 'code'. dp[i]=True si dp[j]=True y s[j..i] está en el diccionario para algún j<i.",
-     "explicacion": "dp[0]=True (string vacío). Para i de 1 a n: para j de 0 a i-1: si dp[j] y s[j..i-1] en diccionario → dp[i]=True. O(n²·m) donde m = longitud máxima de palabra."
+     "explicacion": "dp[0]=True (string vacío). Para i de 1 a n: para j de 0 a i-1: si dp[j] y s[j..i-1] en diccionario → dp[i]=True. $O(n^2\\cdot m)$ donde $m$ = longitud máxima de palabra."
     },
     {
      "id": "arcc3-q8",
      "tipo": "calculo",
      "enunciado": "¿Cuántas formas de decodificar '226' usando la regla A=1,...,Z=26?",
      "solucion": "3 formas: '2','2','6' (BBF) / '22','6' (VF) / '2','26' (BZ).",
-     "explicacion": "dp[0]=1, dp[1]=1. Para i≥2: si s[i-1]≠'0': dp[i]+=dp[i-1]. Si s[i-2..i-1] en [10..26]: dp[i]+=dp[i-2]."
+     "explicacion": "dp[0]=1, dp[1]=1. Para $i\\ge2$: si s[i-1]≠'0': dp[i]+=dp[i-1]. Si s[i-2..i-1] en [10..26]: dp[i]+=dp[i-2]."
     },
     {
      "id": "arcc3-q9",
      "tipo": "calculo",
-     "enunciado": "Maximum profit con una transacción (buy low, sell high). Algoritmo O(n).",
+     "enunciado": "Maximum profit con una transacción (buy low, sell high). Algoritmo $O(n)$.",
      "solucion": "Rastrea el mínimo visto hasta hoy. Para cada día: ganancia = precio_hoy - min_hasta_hoy. Actualiza el máximo de ganancia y el mínimo.",
      "explicacion": "DP implícito: dp[i] = max ganancia vendiendo en el día i = precio[i] - min(precio[0..i-1]). Se puede calcular en un pase."
     },
@@ -12008,7 +12008,7 @@
     {
      "id": "arcc3-q11",
      "tipo": "calculo",
-     "enunciado": "Unique Paths: cuántos caminos únicos hay de esquina superior-izquierda a inferior-derecha en un grid m×n moviéndose solo derecha o abajo.",
+     "enunciado": "Unique Paths: cuántos caminos únicos hay de esquina superior-izquierda a inferior-derecha en un grid $m\\times n$ moviéndose solo derecha o abajo.",
      "solucion": "dp[i][j] = dp[i-1][j] + dp[i][j-1], dp[0][j]=dp[i][0]=1. Resultado = dp[m-1][n-1]. Alternativamente: C(m+n-2, m-1).",
      "explicacion": "Hay m+n-2 movimientos totales, de los cuales m-1 son hacia abajo. Elegir cuáles son abajo: C(m+n-2, m-1). DP y combinatoria dan el mismo resultado."
     },
@@ -12017,28 +12017,28 @@
      "tipo": "concepto",
      "enunciado": "¿Cuándo la recursión con memoización es preferible a la tabulation (y viceversa)?",
      "solucion": "Memoization: cuando solo necesitas algunos subproblemas o el orden de llenado es complejo. Tabulation: cuando necesitas todos los subproblemas, sin overhead de recursión y stack overflow.",
-     "explicacion": "Para n=10^6, la recursión puede causar stack overflow. Tabulation es iterativa y evita este problema. Memoization es más natural para problemas con estado complejo (e.g., bitmask DP)."
+     "explicacion": "Para $n=10^6$, la recursión puede causar stack overflow. Tabulation es iterativa y evita este problema. Memoization es más natural para problemas con estado complejo (e.g., bitmask DP)."
     },
     {
      "id": "arcc3-q13",
      "tipo": "calculo",
      "enunciado": "Palindrome Partitioning: número mínimo de cortes para que cada parte sea palíndromo. Recurrencia.",
-     "solucion": "dp[i] = min cortes para s[0..i]. Para cada j≤i: si s[j..i] es palíndromo → dp[i] = min(dp[i], dp[j-1]+1). Tiempo O(n²) o O(n) con Manacher.",
-     "explicacion": "Precalcula si cada s[i..j] es palíndromo con otra tabla de O(n²). Luego la DP de cortes es O(n²) en total."
+     "solucion": "dp[i] = min cortes para s[0..i]. Para cada $j\\le i$: si s[j..i] es palíndromo → dp[i] = min(dp[i], dp[j-1]+1). Tiempo $O(n^2)$ o $O(n)$ con Manacher.",
+     "explicacion": "Precalcula si cada s[i..j] es palíndromo con otra tabla de $O(n^2)$. Luego la DP de cortes es $O(n^2)$ en total."
     },
     {
      "id": "arcc3-q14",
      "tipo": "calculo",
      "enunciado": "Burst Balloons: n globos con valores nums[i]. Al reventar el globo i ganas nums[i-1]\\*nums[i]\\*nums[i+1]. Maximiza monedas.",
      "solucion": "dp[i][j] = max monedas de reventar todos los globos en [i..j]. El último globo en reventarse en [i..j] es k: dp[i][j] = max(dp[i][k-1] + nums[i-1]\\*nums[k]\\*nums[j+1] + dp[k+1][j]).",
-     "explicacion": "La clave: en lugar de pensar en cuál globo reventar PRIMERO, pensar en cuál es el ÚLTIMO (los vecinos en ese momento son los bordes i-1 y j+1). O(n³)."
+     "explicacion": "La clave: en lugar de pensar en cuál globo reventar PRIMERO, pensar en cuál es el ÚLTIMO (los vecinos en ese momento son los bordes $i-1$ y $j+1$). $O(n^3)$."
     },
     {
      "id": "arcc3-q15",
      "tipo": "calculo",
      "enunciado": "DP con bitmask: TSP con n=4 ciudades. ¿Cuántos estados tiene dp[mask][i]?",
-     "solucion": "2^n × n = 16 × 4 = 64 estados.",
-     "explicacion": "mask representa el conjunto de ciudades ya visitadas (2^n posibles subconjuntos); i es la ciudad actual (n opciones). Para n=20: 2^20×20 ≈ 20 millones — factible."
+     "solucion": "$2^n \\times n = 16 \\times 4 = 64$ estados.",
+     "explicacion": "mask representa el conjunto de ciudades ya visitadas ($2^n$ posibles subconjuntos); i es la ciudad actual (n opciones). Para $n=20$: $2^{20}\\times20 \\approx 20$ millones — factible."
     }
    ]
   },
@@ -12060,17 +12060,17 @@
     "nivel": 2
    },
    "ideas_clave": [
-    "QuickSort: in-place, O(n log n) promedio. MergeSort: estable, O(n log n) garantizado.",
+    "QuickSort: in-place, $O(n\\log n)$ promedio. MergeSort: estable, $O(n\\log n)$ garantizado.",
     "Búsqueda binaria sobre la respuesta: cuando el dominio es monótono.",
-    "XOR tricks: x^x=0, x^0=x — detecta el elemento sin par o el faltante."
+    "XOR tricks: $x\\oplus x=0$, $x\\oplus 0=x$ — detecta el elemento sin par o el faltante."
    ],
    "banco": [
     {
      "id": "arcc4-q1",
      "tipo": "calculo",
      "enunciado": "Compara QuickSort y MergeSort: complejidad, espacio y cuándo preferir cada uno.",
-     "solucion": "QuickSort: O(n log n) promedio / O(n²) peor, O(log n) espacio, no estable. MergeSort: O(n log n) garantizado, O(n) espacio, estable. Prefiere QuickSort in-memory; MergeSort para datos externos o cuando necesitas estabilidad.",
-     "explicacion": "QuickSort es más rápido en la práctica (mejor localidad de caché, constantes menores). MergeSort garantiza O(n log n) y es necesario para external sort o listas enlazadas."
+     "solucion": "QuickSort: $O(n\\log n)$ promedio / $O(n^2)$ peor, $O(\\log n)$ espacio, no estable. MergeSort: $O(n\\log n)$ garantizado, $O(n)$ espacio, estable. Prefiere QuickSort in-memory; MergeSort para datos externos o cuando necesitas estabilidad.",
+     "explicacion": "QuickSort es más rápido en la práctica (mejor localidad de caché, constantes menores). MergeSort garantiza $O(n\\log n)$ y es necesario para external sort o listas enlazadas."
     },
     {
      "id": "arcc4-q2",
@@ -12084,56 +12084,56 @@
      "tipo": "calculo",
      "enunciado": "Búsqueda binaria sobre la respuesta: 'mínima velocidad v para que el barco entregue todos los paquetes en d días'. ¿Cómo planteas la búsqueda?",
      "solucion": "left=max(pesos), right=sum(pesos). Función canLoad(v): simula la entrega y retorna True si caben en d días. Busca el mínimo v donde canLoad(v)==True.",
-     "explicacion": "La función es monótona: si v es suficiente, v+1 también lo es. Búsqueda binaria sobre la respuesta en O(n log(sum)) en lugar de probar cada velocidad."
+     "explicacion": "La función es monótona: si $v$ es suficiente, $v+1$ también lo es. Búsqueda binaria sobre la respuesta en $O(n\\log(\\text{sum}))$ en lugar de probar cada velocidad."
     },
     {
      "id": "arcc4-q4",
      "tipo": "calculo",
      "enunciado": "QuickSelect: encuentra el kth elemento más pequeño. Complejidad esperada y peor caso.",
-     "solucion": "O(n) esperado (con pivote aleatorio), O(n²) peor caso. Después de particionar, recurre solo en la mitad que contiene k.",
-     "explicacion": "A diferencia de QuickSort que recurre en ambas mitades, QuickSelect solo recurre en una → T(n) = T(n/2) + O(n) → O(n) esperado."
+     "solucion": "$O(n)$ esperado (con pivote aleatorio), $O(n^2)$ peor caso. Después de particionar, recurre solo en la mitad que contiene $k$.",
+     "explicacion": "A diferencia de QuickSort que recurre en ambas mitades, QuickSelect solo recurre en una → $T(n) = T(n/2) + O(n) \\to O(n)$ esperado."
     },
     {
      "id": "arcc4-q5",
      "tipo": "calculo",
      "enunciado": "Buscar en un array rotado sin duplicados: [4,5,6,7,0,1,2], target=0.",
-     "solucion": "Binaria: identifica qué mitad está ordenada. Si arr[left]≤arr[mid]: izquierda ordenada. Si target en rango izquierdo → busca ahí; si no → derecha. O(log n).",
-     "explicacion": "Para el ejemplo: mid=6, arr[left]=4≤arr[mid]=7 → izquierda [4,5,6,7] ordenada. target=0 no está en [4,7] → busca en [0,1,2]. Continúa."
+     "solucion": "Binaria: identifica qué mitad está ordenada. Si arr[left]$\\le$arr[mid]: izquierda ordenada. Si target en rango izquierdo → busca ahí; si no → derecha. $O(\\log n)$.",
+     "explicacion": "Para el ejemplo: mid=6, arr[left]$=4\\le$arr[mid]$=7$ → izquierda [4,5,6,7] ordenada. target=0 no está en [4,7] → busca en [0,1,2]. Continúa."
     },
     {
      "id": "arcc4-q6",
      "tipo": "calculo",
      "enunciado": "Conteo de inversiones en un array: describe cómo usar MergeSort.",
-     "solucion": "Al hacer merge de left_arr y right_arr: si left_arr[i] > right_arr[j], todas las posiciones restantes de left_arr forman inversiones con right_arr[j]. inversiones += (mid - left_i + 1). O(n log n).",
+     "solucion": "Al hacer merge de left_arr y right_arr: si left_arr[i] > right_arr[j], todas las posiciones restantes de left_arr forman inversiones con right_arr[j]. inversiones += (mid - left_i + 1). $O(n\\log n)$.",
      "explicacion": "Cada inversión (i<j, arr[i]>arr[j]) se cuenta exactamente una vez durante la fase de merge donde los dos elementos se comparan por primera vez."
     },
     {
      "id": "arcc4-q7",
      "tipo": "calculo",
-     "enunciado": "¿Cómo construyes un heap de n elementos en O(n)?",
-     "solucion": "Heapify desde el último nodo interno hacia la raíz (bottom-up). El nodo en posición ⌊n/2⌋-1 es el último con hijos. O(n) por análisis de suma de alturas.",
-     "explicacion": "Intuitivamente parece O(n log n), pero la mayoría de los nodos están en niveles inferiores con pocas operaciones de sift-down. La suma converge a O(n)."
+     "enunciado": "¿Cómo construyes un heap de $n$ elementos en $O(n)$?",
+     "solucion": "Heapify desde el último nodo interno hacia la raíz (bottom-up). El nodo en posición $\\lfloor n/2\\rfloor-1$ es el último con hijos. $O(n)$ por análisis de suma de alturas.",
+     "explicacion": "Intuitivamente parece $O(n\\log n)$, pero la mayoría de los nodos están en niveles inferiores con pocas operaciones de sift-down. La suma converge a $O(n)$."
     },
     {
      "id": "arcc4-q8",
      "tipo": "calculo",
      "enunciado": "Top-k elementos más frecuentes en un array. ¿Cuál es el enfoque óptimo?",
-     "solucion": "Hash map de frecuencias + min-heap de tamaño k: mantén los k más frecuentes en el heap. Al insertar si el heap tiene k+1 elementos, expulsa el mínimo. O(n log k).",
-     "explicacion": "Alternativa: bucket sort por frecuencia (0 a n) → O(n). El heap da O(n log k) — mejor para k pequeño y n grande."
+     "solucion": "Hash map de frecuencias + min-heap de tamaño $k$: mantén los $k$ más frecuentes en el heap. Al insertar si el heap tiene $k+1$ elementos, expulsa el mínimo. $O(n\\log k)$.",
+     "explicacion": "Alternativa: bucket sort por frecuencia (0 a n) → $O(n)$. El heap da $O(n\\log k)$ — mejor para $k$ pequeño y $n$ grande."
     },
     {
      "id": "arcc4-q9",
      "tipo": "calculo",
      "enunciado": "¿Cuándo RadixSort es más eficiente que QuickSort?",
-     "solucion": "Cuando d (número de dígitos) es pequeño y n es grande: RadixSort es O(d·n) vs O(n log n). Para enteros de 32 bits con d=4 pasadas de base 256: O(4n) = O(n).",
+     "solucion": "Cuando d (número de dígitos) es pequeño y n es grande: RadixSort es $O(d\\cdot n)$ vs $O(n\\log n)$. Para enteros de 32 bits con $d=4$ pasadas de base 256: $O(4n) = O(n)$.",
      "explicacion": "RadixSort no es de comparación — puede romper el límite Ω(n log n). Útil para strings de longitud fija, enteros en rango acotado, o IPs."
     },
     {
      "id": "arcc4-q10",
      "tipo": "calculo",
      "enunciado": "Número faltante en [1..n] usando XOR. Explica por qué funciona.",
-     "solucion": "XOR de 1..n XOR XOR de todos los elementos del array. Los números presentes se cancelan (x^x=0), queda el faltante.",
-     "explicacion": "XOR es conmutativo y asociativo. (1^2^...^n) ^ (todos_excepto_k) = k, porque todos los demás aparecen exactamente 2 veces y se cancelan."
+     "solucion": "XOR de $1..n$ XOR XOR de todos los elementos del array. Los números presentes se cancelan ($x\\oplus x=0$), queda el faltante.",
+     "explicacion": "XOR es conmutativo y asociativo. $(1\\oplus2\\oplus\\dots\\oplus n) \\oplus (\\text{todos\\_excepto\\_}k) = k$, porque todos los demás aparecen exactamente 2 veces y se cancelan."
     },
     {
      "id": "arcc4-q11",
@@ -12154,12 +12154,12 @@
      "tipo": "calculo",
      "enunciado": "Merge k sorted lists en una sola lista ordenada. Complejidad óptima.",
      "solucion": "Min-heap de tamaño k con el primer elemento de cada lista. Extrae el mínimo, inserta el siguiente elemento de la misma lista. O(N log k) donde N = total de elementos.",
-     "explicacion": "El heap siempre tiene ≤k elementos → cada operación es O(log k). N inserciones + N extracciones = O(N log k). Mejor que merge secuencial O(N·k)."
+     "explicacion": "El heap siempre tiene $\\le k$ elementos → cada operación es $O(\\log k)$. N inserciones + N extracciones $= O(N\\log k)$. Mejor que merge secuencial $O(N\\cdot k)$."
     },
     {
      "id": "arcc4-q14",
      "tipo": "calculo",
-     "enunciado": "Elemento mayoritario (aparece más de n/2 veces). Describe el algoritmo O(n) con O(1) espacio.",
+     "enunciado": "Elemento mayoritario (aparece más de $n/2$ veces). Describe el algoritmo $O(n)$ con $O(1)$ espacio.",
      "solucion": "Boyer-Moore Voting: mantén un candidato y un contador. Si contador=0, el candidato es el elemento actual. Si el elemento = candidato, counter++. Si no, counter--.",
      "explicacion": "El elemento mayoritario 'gana' todos los votos. Aunque pierde contra otros, siempre quedan votos positivos al final porque aparece más de n/2 veces."
     },
@@ -12168,7 +12168,7 @@
      "tipo": "calculo",
      "enunciado": "Median de dos arrays ordenados de tamaños m y n. ¿Cuál es la complejidad óptima?",
      "solucion": "O(log(min(m,n))) con búsqueda binaria sobre el array más pequeño.",
-     "explicacion": "Particiona el array más pequeño en dos mitades de forma que los elementos a la izquierda de ambas particiones sean ≤ los de la derecha. Búsqueda binaria encuentra la partición correcta en O(log m)."
+     "explicacion": "Particiona el array más pequeño en dos mitades de forma que los elementos a la izquierda de ambas particiones sean $\\le$ los de la derecha. Búsqueda binaria encuentra la partición correcta en $O(\\log m)$."
     }
    ]
   },
