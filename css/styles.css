@@ -487,6 +487,16 @@ nav button.activo { color: var(--acento); background: var(--acento-suave); }
 
 .timer-boton:hover:not(:disabled) { border-color: var(--acento); color: var(--acento); }
 
+.timer-boton--terminar {
+  border-color: var(--acento);
+  color: var(--acento);
+  font-weight: 600;
+}
+.timer-boton--terminar:hover:not(:disabled) {
+  background: var(--acento);
+  color: var(--fondo);
+}
+
 .timer-etiqueta { display: block; font-size: 13px; color: var(--texto-tenue); margin-bottom: 10px; }
 
 .timer-config {

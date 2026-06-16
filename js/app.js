@@ -509,6 +509,12 @@ function renderizarSesion() {
   actualizarTimerControles();
   Timer.iniciar(
     (ms, fraccion, pausado) => {
+      // Si el forcejeo ya terminó (natural o manualmente), fijar display en 00:00
+      if (Timer.cumplido()) {
+        $('timer-display').textContent = '00:00';
+        $('timer-progreso').style.width = '100%';
+        return;
+      }
       $('timer-display').textContent = Timer.formato(ms);
       $('timer-progreso').style.width = `${(fraccion * 100).toFixed(2)}%`;
       actualizarCheckpoint();
@@ -564,6 +570,8 @@ function configurarTimerUI() {
     Timer.extender(10); // extender nunca rompe el gating: solo pospone
     actualizarTimerControles();
   });
+
+  $('btn-timer-terminar').addEventListener('click', terminarForcejeo);
 }
 
 function actualizarTimerControles() {
@@ -571,6 +579,8 @@ function actualizarTimerControles() {
   const activo = Boolean(a && !a.revelado && !a.completado);
   $('btn-timer-pausa').hidden = !activo;
   $('btn-timer-extender').hidden = !activo;
+  // "Listo" solo aparece mientras el forcejeo está en curso (no cumplido aún)
+  $('btn-timer-terminar').hidden = !activo || Timer.cumplido();
   $('timer-sugerencia').textContent = '';
   if (!activo) return;
 
@@ -593,6 +603,20 @@ function actualizarTimerControles() {
       : `Esta sesión: ${dur} min.`;
 }
 
+function terminarForcejeo() {
+  const a = Storage.load('asignacion');
+  if (!a || a.timerCumplido || a.revelado || a.completado) return;
+  Storage.update('asignacion', (as) => {
+    if (as) as.timerCumplido = true;
+    return as;
+  });
+  $('timer-display').textContent = '00:00';
+  $('timer-progreso').style.width = '100%';
+  actualizarTimerControles();
+  actualizarCheckpoint();
+  actualizarEstadoBloqueo();
+}
+
 /* ============ Checkpoint metacognitivo (~40% y ~80%, efectivo) ========= */
 
 function actualizarCheckpoint() {
@@ -606,8 +630,8 @@ function actualizarCheckpoint() {
     return;
   }
 
-  // Incubación: al cumplirse el timer, antes de revelar, invitar a la pausa
-  etiqueta.textContent = Timer.msRestantes() === 0 ? ETIQUETA_TIMER_INCUBACION : ETIQUETA_TIMER_DEFAULT;
+  // Incubación: al cumplirse el timer (natural o manual), antes de revelar
+  etiqueta.textContent = Timer.cumplido() ? ETIQUETA_TIMER_INCUBACION : ETIQUETA_TIMER_DEFAULT;
 
   // Calculado sobre tiempo efectivo: una pausa no salta el checkpoint
   const minTranscurridos = Timer.msTranscurridos() / 60000;
