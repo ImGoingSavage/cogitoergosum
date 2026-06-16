@@ -59,9 +59,10 @@ const DEFAULTS = {
     mejorRachaEstudio: 0,
     ultimaSesionEstudio: null,    // 'YYYY-MM-DD'
     unidadesCompletadas: {},      // { unidadId: { fecha, aciertos, total, resultados } }
-    quizEnCurso: null,            // { unidadId, preguntasIds, indice, resultados, esRepaso? }
+    quizEnCurso: null,            // { unidadId, preguntasIds, dificultad, indice, resultados, esRepaso? }
     examenes: {},                 // { bloqueId: { aprobado, fecha, coincidencias, total, registros, intentos } }
     examenEnCurso: null,          // { bloqueId, itemIds, indice, paso, registros }
+    examenClusterEnCurso: null,   // { clusterId, clusterTitulo, preguntasIds, dificultad, indice, resultados }
     pendientesRepaso: {},         // { unidadId: [preguntaId, ...] } — mal o parcial en el último quiz
   },
   // Repetición espaciada: { problemId: { etapa, proximaRevision, revisiones: [] } }

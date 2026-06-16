@@ -24,6 +24,7 @@ import { renderMarkdown, renderInline } from './markdown.js';
 const $ = (id) => document.getElementById(id);
 
 const MIN_RESPUESTA_QUIZ = 40; // forcejeo mínimo antes de ver la respuesta
+const DEFAULT_CLUSTER_EXAM_SIZE = 25; // preguntas del examen final de cluster
 
 const NOMBRES_TIPO = {
   quiz: 'Pregunta de recuperación',
@@ -33,6 +34,25 @@ const NOMBRES_TIPO = {
 };
 
 let datos = null; // contenido de data/study.json (null si no cargó)
+
+/** Fisher-Yates en sitio: devuelve una copia barajada del array. */
+function barajar(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** Todas las preguntas de banco de las unidades fase-7 de un cluster. */
+function getClusterQuestionPool(clusterId) {
+  const c = taxonomia.find((x) => x.id === clusterId);
+  return (c?.unidades ?? [])
+    .map(unidad)
+    .filter((u) => u && u.bloque === 'fase-7')
+    .flatMap((u) => u.banco ?? []);
+}
 
 // Simulación de entrevista (Nivel E), organizada sobre la TAXONOMÍA semántica
 // de la Fase 7 (auditoria.md Fase 3). El contenido vive en data/entrevista/
@@ -270,7 +290,10 @@ export function renderizar() {
   // Paneles: retomar lo que estaba en curso
   $('estudio-unidad').hidden = true;
   $('estudio-examen').hidden = true;
-  if (e.examenEnCurso?.bloqueId === b.id) renderExamen();
+  const panelCluster = $('estudio-examen-cluster');
+  if (panelCluster) panelCluster.hidden = true;
+  if (e.examenClusterEnCurso) renderExamenCluster();
+  else if (e.examenEnCurso?.bloqueId === b.id) renderExamen();
   else if (e.quizEnCurso) abrirUnidad(e.quizEnCurso.unidadId);
 
   actualizarHeaderRachas();
@@ -493,6 +516,19 @@ function crearClusterAcordeon(c, unidades, b) {
     cuerpo.appendChild(wrap);
   }
 
+  // Examen final del cluster: banco completo de todas las lecciones, con selector de nivel.
+  if (c.id !== '__otras') {
+    const examWrap = document.createElement('div');
+    examWrap.className = 'cluster-exam-wrap';
+    const examBtn = document.createElement('button');
+    examBtn.type = 'button';
+    examBtn.className = 'secundario cluster-exam-launch';
+    examBtn.textContent = '📝 Examen final del cluster';
+    examBtn.addEventListener('click', () => prepararExamenCluster(c.id, c.titulo));
+    examWrap.appendChild(examBtn);
+    cuerpo.appendChild(examWrap);
+  }
+
   cab.addEventListener('click', () => {
     const ahora = cuerpo.hidden;
     cuerpo.hidden = !ahora;
@@ -704,6 +740,10 @@ function abrirUnidad(unidadId) {
   const e = load('estudio');
   const enCurso = e.quizEnCurso?.unidadId === u.id;
 
+  // Limpiar selector de dificultad de una unidad anterior
+  const prevSel = $('quiz-dificultad-selector');
+  if (prevSel) prevSel.remove();
+
   if (unidadCompletada(u.id)) {
     $('unidad-quiz').hidden = true;
     $('btn-quiz-iniciar').hidden = true;
@@ -715,18 +755,76 @@ function abrirUnidad(unidadId) {
   } else {
     $('unidad-cierre').hidden = true;
     $('unidad-quiz').hidden = true;
+
+    // Selector de dificultad antes del botón de inicio
+    const selectorDif = document.createElement('div');
+    selectorDif.id = 'quiz-dificultad-selector';
+    selectorDif.className = 'quiz-dif-selector';
+    $('btn-quiz-iniciar').insertAdjacentElement('beforebegin', selectorDif);
+
+    const labelEl = document.createElement('span');
+    labelEl.className = 'quiz-dif-label';
+    labelEl.textContent = 'Nivel:';
+    selectorDif.appendChild(labelEl);
+
+    const msgVacioLeccion = document.createElement('p');
+    msgVacioLeccion.className = 'quiz-dif-vacio';
+    msgVacioLeccion.hidden = true;
+
+    let difSeleccionada = 'mixto';
+    const difOpciones = [
+      { valor: 'mixto', etiqueta: 'Mixto' },
+      { valor: 'easy', etiqueta: 'Fácil' },
+      { valor: 'medium', etiqueta: 'Medio' },
+      { valor: 'hard', etiqueta: 'Difícil' },
+    ];
+    difOpciones.forEach(({ valor, etiqueta }) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `quiz-dif-btn${valor === 'mixto' ? ' activo' : ''}`;
+      btn.textContent = etiqueta;
+      btn.dataset.valor = valor;
+      btn.addEventListener('click', () => {
+        difSeleccionada = valor;
+        selectorDif.querySelectorAll('.quiz-dif-btn').forEach((b) =>
+          b.classList.toggle('activo', b.dataset.valor === valor)
+        );
+        const pool = difSeleccionada === 'mixto'
+          ? u.banco
+          : u.banco.filter((q) => q.difficulty === difSeleccionada);
+        if (pool.length === 0) {
+          $('btn-quiz-iniciar').hidden = true;
+          msgVacioLeccion.hidden = false;
+          msgVacioLeccion.textContent =
+            `Esta lección no tiene preguntas de nivel ${etiqueta}. Prueba otro nivel.`;
+        } else {
+          $('btn-quiz-iniciar').hidden = false;
+          msgVacioLeccion.hidden = true;
+        }
+      });
+      selectorDif.appendChild(btn);
+    });
+    selectorDif.appendChild(msgVacioLeccion);
+
     $('btn-quiz-iniciar').hidden = false;
     $('btn-quiz-iniciar').onclick = () => {
+      const pool = difSeleccionada === 'mixto'
+        ? u.banco
+        : u.banco.filter((q) => q.difficulty === difSeleccionada);
+      if (!pool.length) return;
+      const ids = barajar(pool.map((q) => q.id));
       update('estudio', (st) => {
         st.quizEnCurso = {
           unidadId: u.id,
-          preguntasIds: u.banco.map((q) => q.id),
+          preguntasIds: ids,
+          dificultad: difSeleccionada,
           indice: 0,
           resultados: [],
           esRepaso: false,
         };
         return st;
       });
+      selectorDif.remove();
       $('btn-quiz-iniciar').hidden = true;
       renderPreguntaQuiz();
     };
@@ -1365,6 +1463,256 @@ function finalizarExamen() {
   btn.className = 'secundario';
   btn.textContent = 'Volver al camino';
   btn.addEventListener('click', () => renderizar());
+  cont.appendChild(btn);
+}
+
+/* =================== Examen final de cluster (Fase 7) ================ */
+
+/**
+ * Muestra el panel del examen con el selector de dificultad antes de iniciarlo.
+ * Se llama al pulsar el botón dentro del acordeón del cluster.
+ */
+function prepararExamenCluster(clusterId, clusterTitulo) {
+  $('estudio-unidad').hidden = true;
+  $('estudio-examen').hidden = true;
+  const panel = $('estudio-examen-cluster');
+  panel.hidden = false;
+  $('examen-cluster-titulo').textContent = `Examen: ${clusterTitulo}`;
+
+  const cont = $('examen-cluster-contenido');
+  cont.innerHTML = '';
+
+  let difSeleccionada = 'mixto';
+  const difOpciones = [
+    { valor: 'mixto', etiqueta: 'Mixto' },
+    { valor: 'easy', etiqueta: 'Fácil' },
+    { valor: 'medium', etiqueta: 'Medio' },
+    { valor: 'hard', etiqueta: 'Difícil' },
+  ];
+
+  const wrapDif = document.createElement('div');
+  wrapDif.className = 'quiz-dif-selector';
+  const labelEl = document.createElement('span');
+  labelEl.className = 'quiz-dif-label';
+  labelEl.textContent = 'Nivel:';
+  wrapDif.appendChild(labelEl);
+
+  const msgVacio = document.createElement('p');
+  msgVacio.className = 'quiz-dif-vacio';
+  msgVacio.hidden = true;
+
+  const btnIniciar = document.createElement('button');
+  btnIniciar.className = 'primario';
+  btnIniciar.textContent = 'Iniciar examen';
+
+  difOpciones.forEach(({ valor, etiqueta }) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `quiz-dif-btn${valor === 'mixto' ? ' activo' : ''}`;
+    btn.textContent = etiqueta;
+    btn.dataset.valor = valor;
+    btn.addEventListener('click', () => {
+      difSeleccionada = valor;
+      wrapDif.querySelectorAll('.quiz-dif-btn').forEach((b) =>
+        b.classList.toggle('activo', b.dataset.valor === valor)
+      );
+      const pool = valor === 'mixto'
+        ? getClusterQuestionPool(clusterId)
+        : getClusterQuestionPool(clusterId).filter((q) => q.difficulty === valor);
+      if (pool.length === 0) {
+        btnIniciar.hidden = true;
+        msgVacio.hidden = false;
+        msgVacio.textContent =
+          `Este cluster no tiene preguntas de nivel ${etiqueta}. Prueba otro nivel.`;
+      } else {
+        btnIniciar.hidden = false;
+        msgVacio.hidden = true;
+      }
+    });
+    wrapDif.appendChild(btn);
+  });
+
+  cont.append(wrapDif, msgVacio, btnIniciar);
+
+  btnIniciar.addEventListener('click', () => {
+    const pool = difSeleccionada === 'mixto'
+      ? getClusterQuestionPool(clusterId)
+      : getClusterQuestionPool(clusterId).filter((q) => q.difficulty === difSeleccionada);
+    if (!pool.length) return;
+
+    const barajado = barajar(pool.map((q) => q.id));
+    const seleccionadas = barajado.slice(0, DEFAULT_CLUSTER_EXAM_SIZE);
+    const nota = seleccionadas.length < DEFAULT_CLUSTER_EXAM_SIZE
+      ? `Solo hay ${seleccionadas.length} pregunta(s) de este nivel en el cluster.`
+      : null;
+
+    update('estudio', (st) => {
+      st.examenClusterEnCurso = {
+        clusterId,
+        clusterTitulo,
+        preguntasIds: seleccionadas,
+        dificultad: difSeleccionada,
+        indice: 0,
+        resultados: [],
+      };
+      return st;
+    });
+    renderExamenCluster(nota);
+  });
+
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+/** Pinta la pregunta actual del examen de cluster (mismo patrón que renderPreguntaQuiz). */
+function renderExamenCluster(notaInicial) {
+  const e = load('estudio');
+  const ec = e.examenClusterEnCurso;
+  if (!ec) return;
+
+  const panel = $('estudio-examen-cluster');
+  panel.hidden = false;
+  $('estudio-unidad').hidden = true;
+  $('estudio-examen').hidden = true;
+  if (ec.clusterTitulo) $('examen-cluster-titulo').textContent = `Examen: ${ec.clusterTitulo}`;
+
+  if (ec.indice >= ec.preguntasIds.length) {
+    finalizarExamenCluster();
+    return;
+  }
+
+  const pool = getClusterQuestionPool(ec.clusterId);
+  const qid = ec.preguntasIds[ec.indice];
+  const q = pool.find((b) => b.id === qid);
+  if (!q) {
+    // Pregunta no encontrada en el pool (no debería ocurrir): saltar
+    update('estudio', (st) => { st.examenClusterEnCurso.indice += 1; return st; });
+    renderExamenCluster();
+    return;
+  }
+
+  const cont = $('examen-cluster-contenido');
+  cont.innerHTML = '';
+
+  if (notaInicial) {
+    const nota = document.createElement('p');
+    nota.className = 'nota-privacidad';
+    nota.textContent = notaInicial;
+    cont.appendChild(nota);
+  }
+
+  const head = document.createElement('p');
+  head.className = 'quiz-progreso';
+  head.textContent = `Pregunta · ${ec.indice + 1} de ${ec.preguntasIds.length}`;
+  cont.appendChild(head);
+
+  const enunciado = document.createElement('p');
+  enunciado.className = 'quiz-enunciado';
+  enunciado.innerHTML = renderInline(q.enunciado);
+  cont.appendChild(enunciado);
+
+  const ta = document.createElement('textarea');
+  ta.className = 'textarea-corta';
+  ta.placeholder = 'Responde desde la memoria, por escrito. El forcejeo es el aprendizaje.';
+  cont.appendChild(ta);
+
+  const pie = document.createElement('div');
+  pie.className = 'textarea-pie';
+  const contador = document.createElement('span');
+  pie.appendChild(contador);
+  cont.appendChild(pie);
+
+  const btnRevelar = document.createElement('button');
+  btnRevelar.className = 'primario';
+  btnRevelar.textContent = 'Mostrar respuesta esperada';
+  cont.appendChild(btnRevelar);
+
+  const refrescarEstado = () => {
+    const len = ta.value.trim().length;
+    contador.textContent = `${len} / ${MIN_RESPUESTA_QUIZ} caracteres`;
+    btnRevelar.disabled = len < MIN_RESPUESTA_QUIZ;
+  };
+  refrescarEstado();
+  ta.addEventListener('input', refrescarEstado);
+
+  btnRevelar.addEventListener('click', () => {
+    btnRevelar.hidden = true;
+    ta.readOnly = true;
+
+    const sol = document.createElement('div');
+    sol.className = 'quiz-solucion';
+    const sp = document.createElement('p');
+    sp.innerHTML = renderInline(q.solucion);
+    sol.appendChild(sp);
+    if (q.explicacion) {
+      const ex = document.createElement('p');
+      ex.className = 'quiz-explicacion';
+      ex.innerHTML = renderInline(q.explicacion);
+      sol.appendChild(ex);
+    }
+    cont.appendChild(sol);
+
+    const fs = document.createElement('fieldset');
+    fs.className = 'autoeval';
+    fs.innerHTML =
+      '<legend>Comparado con la respuesta esperada, ¿cómo estuvo la tuya?</legend>' +
+      '<label><input type="radio" name="cluster-eval" value="bien" /> Lo tenía</label>' +
+      '<label><input type="radio" name="cluster-eval" value="parcial" /> A medias</label>' +
+      '<label><input type="radio" name="cluster-eval" value="mal" /> No lo tenía</label>';
+    cont.appendChild(fs);
+
+    const ec2 = load('estudio').examenClusterEnCurso;
+    const btnSig = document.createElement('button');
+    btnSig.className = 'primario';
+    btnSig.textContent =
+      ec2 && ec2.indice + 1 < ec2.preguntasIds.length ? 'Siguiente pregunta' : 'Cerrar examen';
+    cont.appendChild(btnSig);
+
+    btnSig.addEventListener('click', () => {
+      const evalSel = cont.querySelector('input[name="cluster-eval"]:checked')?.value;
+      if (!evalSel) return;
+      update('estudio', (st) => {
+        st.examenClusterEnCurso.resultados.push({ preguntaId: q.id, evaluacion: evalSel });
+        st.examenClusterEnCurso.indice += 1;
+        return st;
+      });
+      renderExamenCluster();
+    });
+  });
+}
+
+/** Cierra el examen de cluster: muestra resumen y limpia el estado. */
+function finalizarExamenCluster() {
+  const e = load('estudio');
+  const ec = e.examenClusterEnCurso;
+  if (!ec) return;
+
+  const aciertos = ec.resultados.filter((r) => r.evaluacion === 'bien').length;
+  const parciales = ec.resultados.filter((r) => r.evaluacion === 'parcial').length;
+  const total = ec.resultados.length;
+
+  update('estudio', (st) => {
+    st.examenClusterEnCurso = null;
+    return st;
+  });
+  marcarDiaEstudio();
+
+  const cont = $('examen-cluster-contenido');
+  cont.innerHTML = '';
+
+  const res = document.createElement('p');
+  res.className = 'quiz-enunciado';
+  res.textContent =
+    `Examen completado: ${aciertos}/${total} recordados completamente` +
+    (parciales > 0 ? `, ${parciales} a medias.` : '.');
+  cont.appendChild(res);
+
+  const btn = document.createElement('button');
+  btn.className = 'secundario';
+  btn.textContent = 'Volver al roadmap';
+  btn.addEventListener('click', () => {
+    $('estudio-examen-cluster').hidden = true;
+    renderizar();
+  });
   cont.appendChild(btn);
 }
 
