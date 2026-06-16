@@ -2,6 +2,14 @@
 
 > Estas preguntas evalúan **autoconciencia, honestidad y aprendizaje**, no la ausencia de errores. Usa [[narrativa-star]] y centra la respuesta en el **aprendizaje aplicado**.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Las preguntas de fracaso, error y "no sé" parecen trampas, pero miden algo concreto: **autoconciencia, honestidad y capacidad de aprender** — no la ausencia de errores. La peor respuesta finge que nunca fallaste; la mejor muestra qué cambiaste en tu proceso después. Esta lección construye, desde cero, cómo contar un fracaso, navegar la ambigüedad y manejar el feedback con STAR.
+
+Al terminar podrás: (1) elegir un fracaso **real** y con consecuencias, asumir la responsabilidad y centrar la respuesta en el **cambio de proceso** que aplicaste; (2) responder a la ambigüedad descomponiendo y declarando supuestos explícitos; (3) detectar un plazo en riesgo y avisar a tiempo; y (4) recibir feedback sin defenderte y responder "no sé" con integridad, mostrando el método. Conecta con [[arena-c1]] (estructura STAR) y con la Constitución del proyecto: el error es parte del proceso.
+
+---
+
 ## Fracaso y errores
 
 Elige un caso **real** y con consecuencias (ni trivial ni imprudente). **Asume la responsabilidad** sin culpar, narra brevemente qué salió mal y **por qué**, y dedica el grueso al **aprendizaje** y al **cambio concreto** que aplicaste después (cómo evitas que se repita). Señales fuertes: ownership, causa raíz, reflexión y evidencia de que la lección 'pegó'. Ver [[responder-fracaso-star]].
@@ -19,6 +27,25 @@ Elige un caso **real** y con consecuencias (ni trivial ni imprudente). **Asume l
 - **"No sé":** admítelo con integridad y explica **cómo lo averiguarías** (consejo del libro: está bien no saber; muestra el método). No inventes.
 
 ---
+
+## Mini-ejemplo trabajado: un esqueleto STAR de fracaso
+
+"Cuéntame de un proyecto que fracasó." El valor está en la lección, no en el desastre:
+
+- **Situación (1 frase):** lancé un modelo a producción confiando en que los datos de entrenamiento y los de producción coincidían.
+- **Tarea:** era mi entrega; yo respondía por que funcionara.
+- **Acción:** falló de forma silenciosa por un cambio de distribución; hice **causa raíz**, lo comuniqué pronto al negocio y añadí un test de validación de supuestos y una alerta de drift.
+- **Resultado (el grueso):** lo corregí, pero lo importante es que el cambio de proceso **pegó**: en los proyectos siguientes valido supuestos y monitoreo antes de lanzar. El fracaso me dio un hábito.
+
+El reparto se invierte respecto a otras respuestas: aquí el peso va al **aprendizaje aplicado**, no a la Acción.
+
+**Predicción antes de seguir:** te preguntan "¿tu mayor debilidad?" y respondes "soy demasiado perfeccionista". ¿Suma o resta? **Resta**: el falso defecto se detecta al instante y señala falta de autoconciencia. Un defecto real con un cambio concreto ("tendía a no pedir ayuda a tiempo; ahora fijo un punto de control donde reviso si debo escalar") es mucho más fuerte.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** fracaso real con consecuencias + ownership (sin culpar) + la lección y el cambio de proceso que aplicaste después → respuesta fuerte.
+- **Contraejemplo (parece buena, falla):** el falso defecto ("perfeccionista"), un fracaso trivial sin consecuencias, o echarle la culpa al equipo/al cliente. Cumplen el formato pero no muestran aprendizaje.
+- **Caso borde:** "no sé la respuesta". Lo más fuerte no es inventar, sino admitirlo y explicar **cómo lo averiguarías** — el método vale más que una respuesta fabricada que se desmorona a la primera repregunta.
 
 ## Errores típicos
 

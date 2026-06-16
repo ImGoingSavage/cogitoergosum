@@ -2,6 +2,14 @@
 
 > Preguntas conductuales **específicas de DS** y de carrera. Usa [[narrativa-star]] y demuestra **orientación al negocio** y **traducción** técnica. Ver [[comunicar-resultado-ds-star]].
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Las conductuales de data science son las preguntas técnicas vistas desde el **negocio**: la misma estructura STAR, otra audiencia. El error que más resta es contar un proyecto por su AUC en vez de por la decisión o el valor que habilitó. Esta lección construye, desde cero, cómo narrar proyectos end-to-end, manejar stakeholders y responder preguntas de carrera demostrando **orientación al negocio** y capacidad de **traducción**.
+
+Al terminar podrás: (1) contar un proyecto end-to-end por su **impacto de negocio** cuantificado, no por la métrica técnica; (2) comunicar un resultado negativo o nulo como **aprendizaje accionable**; (3) diagnosticar la causa raíz de un fallo en producción y añadir monitoreo/salvaguardas; y (4) definir métricas con guardrails y ganar a un stakeholder escéptico traduciendo a su objetivo. Cierra el cluster conductual: reúne la estructura de [[arena-c1]] con las lecciones técnicas de [[arena-s1]] y [[arena-ads4]].
+
+---
+
 ## Proyectos y stakeholders
 
 - **Proyecto end-to-end:** encuadra el problema de **negocio** (no solo técnico), recorre el ciclo (entender→datos→modelar→validar→desplegar/comunicar) destacando **tus** decisiones, y da el **impacto de negocio** cuantificado (no solo el AUC: la decisión/valor que habilitó).
@@ -23,6 +31,25 @@
 - **Aprendizaje continuo / metas:** hábitos + un ejemplo **aplicado** con impacto; metas alineadas con el rol.
 
 ---
+
+## Mini-ejemplo trabajado: un esqueleto STAR de proyecto DS
+
+"Cuéntame de un proyecto del que estés orgulloso." Cuéntalo por el valor, no por el AUC:
+
+- **Situación (1 frase):** el negocio perdía clientes y no sabía a quiénes retener.
+- **Tarea:** construir un modelo de propensión a la fuga y, sobre todo, **la decisión** que habilitaría (a quién contactar con qué oferta).
+- **Acción:** encuadré el problema de negocio, validé el modelo, lo desplegué con monitoreo de drift y lo conecté al flujo de retención.
+- **Resultado:** no "AUC 0.9", sino **retención +X% y $Y ahorrados** en el trimestre, con tu rol específico en cada paso.
+
+La métrica técnica es un medio; el Resultado debe ser la decisión o el valor de negocio.
+
+**Predicción antes de seguir:** presentas tu proyecto y rematas con "logré un AUC de 0.92". El entrevistador asiente, pero no se impresiona. ¿Qué falta? El **impacto de negocio**: qué decisión habilitó, cuánto dinero/tiempo movió. El AUC sin una consecuencia de negocio es una métrica vanidosa para esta audiencia.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** proyecto encuadrado en el problema de negocio + tu rol claro + impacto medible (decisión/valor), con monitoreo si fue a producción → respuesta orientada al negocio.
+- **Contraejemplo (parece buena, falla):** reportar solo la métrica técnica (AUC/F1), proponer una métrica *gameable* sin guardrail, u ocultar un resultado negativo. Suenan competentes pero fallan la orientación al negocio y la honestidad.
+- **Caso borde:** un resultado **nulo o negativo**. Bien enmarcado es valioso: saber qué **no** funciona ahorra recursos; comunícalo con honestidad y propón el siguiente paso, en vez de maquillarlo.
 
 ## Errores típicos
 

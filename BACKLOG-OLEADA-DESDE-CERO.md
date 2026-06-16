@@ -7,7 +7,7 @@
 > (que solo insertaba secciones): aquí cada lección se reescribe entera —pero
 > **conservando todo el contenido curado**—.
 >
-> Última actualización: 2026-06-16 (cluster 4 system-design completo, sw.js v135).
+> Última actualización: 2026-06-16 (clusters 4 y 8 completos → **OLEADA COMPLETA 118/118**, sw.js v136).
 > Lee también: `PROMPT-OLEADA-DESDE-CERO.md` (instrucciones para el agente),
 > `HANDOFF-AUDITORIA-FASE7.md` §7 (registro), `auditoria.md` (contrato de calidad),
 > `CLAUDE.md` → `HANDOFFCES.md` §0 (Constitución, es LEY).
@@ -23,8 +23,8 @@
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ✅ **COMPLETO** (v100–v106) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
-| 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **114 / 118 hechas** |
+| 8. conductual (Conductual y comunicación) | 4 | ✅ **COMPLETO** (v136) |
+| | **118** | **✅ 118 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -175,12 +175,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-h13` — OHDSI: analítica estandarizada
 - [x] `arena-h14` — OHDSI: calidad de la evidencia, validez y estudios en red
 
-### 8. conductual — Conductual y comunicación bajo presión (4) — ⬜
+### 8. conductual — Conductual y comunicación bajo presión (4) — ✅ COMPLETO (v136)
 
-- [ ] `arena-c1` — Conflicto, colaboración y comunicación (STAR)
-- [ ] `arena-c2` — Fracaso, errores, ambigüedad y feedback (STAR)
-- [ ] `arena-c3` — Liderazgo, iniciativa, impacto y priorización (STAR)
-- [ ] `arena-c4` — Data science aplicada, stakeholders y carrera (STAR)
+- [x] `arena-c1` — Conflicto, colaboración y comunicación (STAR)
+- [x] `arena-c2` — Fracaso, errores, ambigüedad y feedback (STAR)
+- [x] `arena-c3` — Liderazgo, iniciativa, impacto y priorización (STAR)
+- [x] `arena-c4` — Data science aplicada, stakeholders y carrera (STAR)
 
 ---
 

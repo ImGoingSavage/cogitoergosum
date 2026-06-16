@@ -2,6 +2,14 @@
 
 > Las preguntas conductuales NO tienen una respuesta única: practican la **estructura** para contar TUS experiencias reales con claridad. La "solución" es el andamiaje STAR + las señales de una buena respuesta, nunca una historia inventada.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Una pregunta conductual no se "resuelve" con una respuesta correcta: se **estructura**. El entrevistador no busca la historia perfecta, sino evidencia de cómo piensas, colaboras y aprendes — y eso solo se ve si cuentas una experiencia **real** con claridad. Esta lección construye, desde cero, el andamiaje **STAR** y lo aplica a las tres situaciones más frecuentes: conflicto, colaboración y comunicación.
+
+Al terminar podrás: (1) armar cualquier respuesta con STAR dedicando el grueso (60-70%) a **tu** Acción y al Resultado medible; (2) responder una de conflicto sin culpar — con empatía, datos y la relación preservada; (3) comunicar a audiencias no técnicas y dar/recibir feedback de forma accionable; y (4) reconocer las señales de una respuesta **madura** frente a las banderas rojas. Es la base de [[arena-c2]] (fracaso y aprendizaje) y se apoya en [[narrativa-star]].
+
+---
+
 ## La estructura STAR
 
 | Parte | Qué incluir |
@@ -25,6 +33,25 @@ Foco en **madurez**: describe el desacuerdo de forma **objetiva y empática** (s
 - **Feedback (dar/recibir):** específico, sobre comportamientos, orientado a mejorar; recíbelo sin defenderte y **acciónalo**.
 
 ---
+
+## Mini-ejemplo trabajado: un esqueleto STAR de conflicto
+
+"Cuéntame de un conflicto con un compañero." Arma la respuesta, no la inventes:
+
+- **Situación (1 frase):** en un proyecto, un colega y yo discrepábamos sobre qué métrica usar para evaluar el modelo.
+- **Tarea:** yo era responsable de cerrar esa decisión sin frenar al equipo ni dañar la relación.
+- **Acción (el grueso):** le pregunté *por qué* prefería la suya (entender antes de rebatir); propusimos un criterio objetivo —medir ambas sobre un conjunto de validación— y acordamos seguir la que mejor reflejara el costo real del error.
+- **Resultado:** elegimos una tercera métrica, mejor que las dos iniciales; la relación quedó intacta y aprendí a convertir un choque de opiniones en un pequeño experimento.
+
+Fíjate en el reparto: una frase de contexto y el resto en **tu acción y el desenlace** (el 60-70%).
+
+**Predicción antes de seguir:** dos personas responden esta misma pregunta. Una dedica cuatro frases a describir lo difícil que era el compañero; la otra, una frase al contexto y el resto a qué hizo y cómo terminó. ¿Cuál puntúa más alto? La segunda: el entrevistador evalúa **tu** madurez y tu acción, no al "villano". Hablar mal del otro es bandera roja, aun si tenías razón.
+
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** describes el desacuerdo sin culpar, buscas entender la otra postura, resuelves con un criterio objetivo y cierras con la relación preservada → respuesta madura.
+- **Contraejemplo (parece buena, falla):** "ganamos la discusión y quedó claro que yo tenía razón" — plantea ganador/perdedor y te pinta como héroe; o todo en "nosotros" sin tu rol. Suena a respuesta, pero no muestra madurez ni tu contribución.
+- **Caso borde:** un conflicto que **no** ganaste — cediste y la otra postura resultó mejor. Bien contado es de los más fuertes: muestra humildad, *disagree and commit* y que el objetivo era el resultado del equipo, no tu ego.
 
 ## Errores típicos
 
