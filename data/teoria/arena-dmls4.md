@@ -1,5 +1,11 @@
 # Cambios de distribución, monitoreo y test en producción
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Todo modelo en producción **se pudre**: el mundo cambia y los datos dejan de parecerse a los de entrenamiento. Esta lección construye, desde cero, cómo nombrar ese deterioro con precisión —descomponiendo $P(X,Y)$ en sus piezas para distinguir **covariate shift**, **label shift** y el temido **concept drift**—, cómo detectarlo (two-sample tests) y cómo validar un modelo nuevo en producción sin arriesgar usuarios (shadow, A/B, canary, bandits).
+
+Al terminar podrás: (1) clasificar un shift por su probabilidad (¿cambió $P(X)$, $P(Y)$ o $P(Y\mid X)$?) y saber cuál solo se cura reentrenando; (2) detectar un shift con un two-sample test (KS/MMD), la misma maquinaria del A/B vista al revés; (3) explicar por qué el shadow deployment es el test más seguro; y (4) distinguir canary de bandits. El ejemplo de scoring crediticio nombra cada shift. Profundiza el skew/drift de [[arena-rml3]].
+
 ## El modelo se pudre: data distribution shifts
 
 Un modelo desplegado **degrada** porque el mundo cambia y los datos de producción dejan de parecerse a los de entrenamiento. Partiendo de P(X, Y) = P(Y|X)·P(X) = P(X|Y)·P(Y), hay tres subtipos distintos:

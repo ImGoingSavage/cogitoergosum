@@ -21,10 +21,10 @@
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
-| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 8/32 (lotes 1-2 v100-v101) |
+| 6. ml-systems (ML Systems y feature pipelines) | 32 | 🟡 14/32 (lotes 1-3 v100-v102) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **80 / 118 hechas** |
+| | **118** | **86 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -125,12 +125,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-rml2` — Datos como pasivo y sistemas de entrenamiento confiables
 - [x] `arena-mldp2` — Ensembles, cascada, clase neutra y rebalanceo
 - [x] `arena-mldp3` — Patrones de entrenamiento y de serving resiliente
-- [ ] `arena-rom4` — Fase III: modelos complejos y trade-offs
-- [ ] `arena-dmls3` — Despliegue y predicción: batch vs online, compresión y edge
-- [ ] `arena-rml3` — Serving, monitoreo y observabilidad de modelos
-- [ ] `arena-rom3` — Análisis humano y training-serving skew
-- [ ] `arena-dmls4` — Cambios de distribución, monitoreo y test en producción
-- [ ] `arena-rml1` — Confiabilidad e2e: ciclo de vida del ML y los SLOs
+- [x] `arena-rom4` — Fase III: modelos complejos y trade-offs
+- [x] `arena-dmls3` — Despliegue y predicción: batch vs online, compresión y edge
+- [x] `arena-rml3` — Serving, monitoreo y observabilidad de modelos
+- [x] `arena-rom3` — Análisis humano y training-serving skew
+- [x] `arena-dmls4` — Cambios de distribución, monitoreo y test en producción
+- [x] `arena-rml1` — Confiabilidad e2e: ciclo de vida del ML y los SLOs
 - [ ] `arena-sre1` — Fundamentos SRE: riesgo, error budgets y SLOs
 - [ ] `arena-sre2` — Eliminar toil, monitoreo y las cuatro señales doradas
 - [ ] `arena-sre3` — Troubleshooting, incidentes y postmortems sin culpa

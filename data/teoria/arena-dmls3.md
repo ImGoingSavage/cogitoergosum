@@ -1,5 +1,11 @@
 # Despliegue y predicción: batch vs online, compresión y edge
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Entrenar un modelo es media historia; **servirlo** es la otra mitad, y se decide en tres ejes. Esta lección construye, desde cero: cuándo precomputar predicciones por lotes (batch) vs predecir al momento (online), cómo **comprimir** un modelo grande para que corra rápido o en un dispositivo (distillation, quantization, pruning, low-rank), y el trade-off entre servir en la nube o en el edge.
+
+Al terminar podrás: (1) elegir batch vs online según conozcas el input de antemano, y saber que online serio necesita streaming features; (2) distinguir batch features de streaming features; (3) nombrar las cuatro técnicas de compresión y qué hace cada una (con distillation teacher→student como caballo de batalla); y (4) sopesar edge (latencia, offline, privacidad) contra nube (escala fácil). Cada técnica entra por su problema. Conecta con los patrones de serving de [[arena-mldp3]].
+
 ## Batch prediction vs online prediction
 
 - **Batch prediction (asíncrona):** se calculan predicciones **por adelantado** en lotes, en un horario, y se **guardan** (p.ej. en una key-value store) para servirlas al instante. Buena cuando no necesitas frescura inmediata (recomendaciones de Netflix precomputadas). Riesgo: predicciones **rancias** y desperdicio si el usuario nunca las pide.

@@ -1,5 +1,11 @@
 # Reglas de ML (Google) III: análisis humano del sistema y training-serving skew
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Esta lección cubre dos problemas que aparecen al madurar un sistema de ML. Primero, el **análisis humano** del sistema —un terreno lleno de anti-patrones, empezando por el más insidioso: "a mí me funciona" (no eres un usuario típico)—. Segundo, el enemigo nº1 de los modelos en producción: el **training-serving skew**, cuando una feature se computa distinto al entrenar y al servir, o los datos cambian entre ambos. Destila las Reglas 23-37 de Google en criterios accionables.
+
+Al terminar podrás: (1) evitar los anti-patrones del análisis humano (raters/UX en vez de tu propio juicio, medir el delta entre modelos, priorizar rendimiento utilitario sobre potencia predictiva); (2) entender qué causa el training-serving skew y la mejor defensa (loggear features en serving y reusar código); y (3) reconocer el loop venenoso de la feature posicional y cómo aislarlo. Conecta con [[arena-rom2]] y profundiza el skew de [[arena-dmls4]].
+
 ## Análisis humano del sistema (Reglas 23-28)
 
 Mirar un modelo existente y mejorarlo es más arte que ciencia; hay anti-patrones que evitar.

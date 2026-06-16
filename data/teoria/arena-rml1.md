@@ -1,5 +1,11 @@
 # Confiabilidad de extremo a extremo: el ciclo de vida del ML y los SLOs
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un sistema de ML no es un proyecto que se termina, sino un **loop** que nunca para —y su confiabilidad hereda la del software, con un giro propio: puede fallar **en silencio**—. Esta lección construye, desde cero, el ciclo de vida end-to-end y cómo definirle SLOs por capa, por qué un pipeline de ML es más frágil que un ETL, y cómo lanzar un modelo con el rigor de código (despacio, aislando la capa de datos, con rollback).
+
+Al terminar podrás: (1) entender por qué el ML es un loop que empieza y termina en los datos; (2) definir SLOs en tres capas (señales doradas → salud del modelo → métrica de negocio por slices) y por qué la infraestructura nunca mide la calidad del ML; (3) aplicar "models as code", "release not refactor" y aislar el rollout en la capa de datos; y (4) sospechar del sistema antes que del modelo (la mayoría de fallos no son de ML). El ejemplo del recomendador con tres capas de SLO hace de hilo. Conecta con los SLOs de SRE ([[arena-sre1]]).
+
 ## El ML es un loop, no una línea recta
 
 Un sistema de ML **nunca está terminado**. Si el modelo va mal, el equipo itera (cambia features, datos, estructura); si va bien, la organización se entusiasma y hace *el mismo trabajo* para mejorarlo más. El primer modelo es solo un punto de partida. El ciclo: recolección/análisis de datos → pipelines de entrenamiento → integrar y validar la aplicación → evaluación de calidad → definir y medir SLOs → lanzamiento → monitoreo y realimentación, y vuelta a empezar. Empieza y termina en los **datos**, y a menudo hay que revisitar etapas.

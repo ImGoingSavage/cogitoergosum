@@ -1,5 +1,11 @@
 # Reglas de ML (Google) IV: Fase III — crecimiento lento, modelos complejos
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando un sistema de ML madura, las ganancias fáciles se agotan y aparecen los **trade-offs entre métricas** (unas suben, otras bajan). Esta lección destila, desde cero, las Reglas 38-43 de Google para esa Fase III: por qué no hay un único número que decida un lanzamiento, cómo mantener un ensemble simple, y por qué cuando te estancas debes buscar *información nueva*, no refinar la vieja.
+
+Al terminar podrás: (1) reconocer cuándo el problema es de objetivos desalineados (cambia el objetivo, no añadas features); (2) entender por qué una decisión de lanzamiento es multi-métrica (el ejemplo DAU vs revenue, una frontera de Pareto sin ranking); (3) mantener ensembles simples y monotónicos; y (4) saber que medir clicks mide *popularidad*, por lo que personalización y diversidad rinden menos de lo esperado. Cierra la trilogía de Reglas de ML ([[arena-rom1]], [[arena-rom2]], [[arena-rom3]]).
+
 Señales de que la Fase II se acaba: las ganancias mensuales disminuyen y aparecen **trade-offs entre métricas** (unas suben, otras bajan). Como las ganancias cuestan más, el ML se vuelve más sofisticado. Esta sección tiene más reglas «blue-sky»: tras la Fase III cada equipo halla su camino.
 
 ## Reglas 38-43

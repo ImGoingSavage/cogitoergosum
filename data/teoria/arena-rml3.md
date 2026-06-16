@@ -1,5 +1,11 @@
 # Serving, monitoreo y observabilidad de modelos
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un modelo en producción vive o muere por cómo se **sirve** y cómo se **vigila**. Esta lección construye, desde cero, las cuatro preguntas que definen la arquitectura de serving (carga, latencia, dónde vive, hardware) y las cuatro arquitecturas (offline, online, MaaS, edge), más el salto mental de **monitoreo** ("¿funciona?") a **observabilidad** ("¿por qué falla?", con métricas troceables por slice).
+
+Al terminar podrás: (1) entender por qué replicar sube el throughput pero **no** baja la latencia de una predicción (y qué sí la baja); (2) elegir entre offline/online/MaaS/edge según el problema; (3) saber qué añade la observabilidad sobre el monitoreo y por qué mirar la tail latency (p99) y los slices, no el promedio; y (4) reconocer el training-serving skew como causa de caídas evitables. El ejemplo de QPS vs latencia hace de hilo. Conecta con [[arena-dmls3]] (despliegue) y [[arena-obs1]] (observabilidad).
+
 ## Cuatro preguntas clave de serving
 
 1. **Carga (QPS):** ¿cuántas queries por segundo? Estrategias: replicar, hardware acelerador (con batching), abaratar el modelo (menos features/capas, cuantización/sparsificación) y **cascadas** (un modelo barato resuelve los casos fáciles, los difíciles van a uno caro).
