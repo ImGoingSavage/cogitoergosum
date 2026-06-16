@@ -20047,7 +20047,7 @@
      "id": "arh10-q8",
      "tipo": "concepto",
      "enunciado": "¿Qué es la FUNCIÓN/CURVA DE INCIDENCIA ACUMULADA (CIF/CIC) y por qué es la medida correcta?",
-     "solucion": "La CIF (cumulative incidence function / CIC) es la probabilidad de haber sufrido el evento de interés ANTES de t Y antes que cualquier evento competidor. Se calcula combinando el hazard específico de causa del evento con la supervivencia GLOBAL (a todas las causas), de modo que solo acumula riesgo mientras el sujeto sigue libre de TODOS los eventos. Es la medida correcta del riesgo ABSOLUTO en presencia de competidores, y las CIF de todas las causas suman la incidencia total (≤1).",
+     "solucion": "La CIF (cumulative incidence function / CIC) es la probabilidad de haber sufrido el evento de interés ANTES de $t$ Y antes que cualquier evento competidor. Se calcula combinando el hazard específico de causa del evento con la supervivencia GLOBAL (a todas las causas), de modo que solo acumula riesgo mientras el sujeto sigue libre de TODOS los eventos. Es la medida correcta del riesgo ABSOLUTO en presencia de competidores, y las CIF de todas las causas suman la incidencia total ($\\le1$).",
      "explicacion": "La CIF acumula riesgo solo entre los libres de todo evento; respeta los competidores."
     },
     {
@@ -20255,7 +20255,7 @@
     "concept_id; estándar (SNOMED/RxNorm/LOINC) vs fuente (ICD/NDC) con 'Maps to'",
     "CONCEPT_ANCESTOR/jerarquías: un concepto + todos sus descendientes en cohortes",
     "ETL: estructura al CDM + códigos a estándar (WhiteRabbit/Rabbit-in-a-Hat/Usagi); nunca perfecto",
-    "Calidad (Kahn): conformance/completeness/plausibility × verification/validation",
+    "Calidad (Kahn): conformance/completeness/plausibility $\\times$ verification/validation",
     "ACHILLES describe/alerta; DataQualityDashboard ejecuta los chequeos sistemáticos"
    ],
    "banco": [
@@ -20313,7 +20313,7 @@
      "tipo": "concepto",
      "enunciado": "Describe el marco de KAHN para la calidad de datos.",
      "solucion": "Clasifica la calidad en tres CATEGORÍAS — CONFORMANCE (¿los datos cumplen la estructura/formato/relaciones esperados del modelo?), COMPLETENESS (¿están presentes los datos que deberían?) y PLAUSIBILITY (¿los valores son creíbles: rangos, temporalidad, consistencia interna?) — cada una evaluada en dos CONTEXTOS: VERIFICATION (contra reglas internas/del propio modelo y metadatos) y VALIDATION (contra una referencia externa o el conocimiento del mundo real). Da un vocabulario sistemático para auditar una base CDM.",
-     "explicacion": "3 categorías (conformance/completeness/plausibility) × 2 contextos (verification/validation)."
+     "explicacion": "3 categorías (conformance/completeness/plausibility) $\\times$ 2 contextos (verification/validation)."
     },
     {
      "id": "arh12-q9",
@@ -20404,7 +20404,7 @@
      "id": "arh13-q2",
      "tipo": "concepto",
      "enunciado": "¿Cuáles son los tres componentes de una definición de cohorte?",
-     "solucion": "(1) EVENTOS DE ENTRADA (cohort entry): el evento que hace que la persona entre (p. ej. primera exposición a un fármaco). (2) REGLAS DE INCLUSIÓN: criterios adicionales que deben cumplirse (p. ej. ≥365 días de observación previa, cierta edad, ausencia de una condición). (3) CRITERIOS DE SALIDA (cohort exit): cuándo termina la pertenencia (fin de exposición, fin de observación, un evento). Definirlos con precisión determina a quién y por cuánto tiempo se estudia.",
+     "solucion": "(1) EVENTOS DE ENTRADA (cohort entry): el evento que hace que la persona entre (p. ej. primera exposición a un fármaco). (2) REGLAS DE INCLUSIÓN: criterios adicionales que deben cumplirse (p. ej. $\\ge365$ días de observación previa, cierta edad, ausencia de una condición). (3) CRITERIOS DE SALIDA (cohort exit): cuándo termina la pertenencia (fin de exposición, fin de observación, un evento). Definirlos con precisión determina a quién y por cuánto tiempo se estudia.",
      "explicacion": "Entry + inclusión + exit; cada uno con concept sets y ventanas temporales."
     },
     {
@@ -20652,7 +20652,7 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "Tres peldaños: ver P(Y|X) · hacer P(Y|do(X)) · imaginar (contrafactual)",
+    "Tres peldaños: ver $P(Y\\mid X)$ · hacer $P(Y\\mid\\text{do}(X))$ · imaginar (contrafactual)",
     "El ML/deep learning actual vive en el peldaño 1 (asociación)",
     "Los datos no contienen causalidad: subir la escalera exige un MODELO (DAG)",
     "Un peldaño superior responde a los inferiores, no al revés",
@@ -20919,7 +20919,7 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "P(Y|X) (ver) ≠ P(Y|do(X)) (hacer); do() borra las flechas hacia X (como un RCT)",
+    "$P(Y\\mid X)$ (ver) $\\ne P(Y\\mid\\text{do}(X))$ (hacer); $\\text{do}()$ borra las flechas hacia $X$ (como un RCT)",
     "Identificar = expresar P(Y|do(x)) con datos observacionales usando el grafo",
     "Back-door: ajustar un conjunto que cierre los caminos traseros (estandarización)",
     "Front-door: mediador que capta todo el efecto → identifica sin medir el confundidor",
@@ -20931,7 +20931,7 @@
      "tipo": "concepto",
      "enunciado": "¿Qué distingue P(Y|X) de P(Y|do(X))?",
      "solucion": "P(Y|X=x) es OBSERVACIONAL: la distribución de Y entre quienes SE OBSERVAN con X=x (peldaño 1; puede estar confundida). P(Y|do(X=x)) es INTERVENCIONAL: la distribución de Y si FORZÁRAMOS X=x en TODA la población (peldaño 2, el efecto causal). Son distintas siempre que haya confundimiento: ver gente que eligió X=x no es lo mismo que imponer X=x a todos. Confundirlas es el error de 'correlación = causación'.",
-     "explicacion": "Ver (condicionar) ≠ hacer (intervenir); el do() es la marca de la intervención."
+     "explicacion": "Ver (condicionar) $\\ne$ hacer (intervenir); el $\\text{do}()$ es la marca de la intervención."
     },
     {
      "id": "arh17-q2",
@@ -20951,7 +20951,7 @@
      "id": "arh17-q4",
      "tipo": "concepto",
      "enunciado": "Describe la fórmula de ajuste por la PUERTA TRASERA (back-door adjustment).",
-     "solucion": "Si un conjunto Z satisface el criterio de la puerta trasera (bloquea todos los caminos traseros de X a Y y no contiene descendientes de X), entonces P(Y|do(x)) = Σ_z P(Y | X=x, Z=z) · P(Z=z): se estima el efecto DENTRO de cada estrato de Z y se promedia ponderando por la PREVALENCIA de cada estrato en la población (estandarización). El back-door garantiza que el efecto en cada estrato es ya el causal (sin confundimiento), por eso el promedio ponderado es el efecto causal total.",
+     "solucion": "Si un conjunto Z satisface el criterio de la puerta trasera (bloquea todos los caminos traseros de X a Y y no contiene descendientes de X), entonces $P(Y\\mid\\text{do}(x)) = \\sum_z P(Y \\mid X=x, Z=z) \\cdot P(Z=z)$: se estima el efecto DENTRO de cada estrato de Z y se promedia ponderando por la PREVALENCIA de cada estrato en la población (estandarización). El back-door garantiza que el efecto en cada estrato es ya el causal (sin confundimiento), por eso el promedio ponderado es el efecto causal total.",
      "explicacion": "Estratificar por los deconfundidores Z y promediar ponderando por P(Z): la estandarización."
     },
     {
@@ -21054,7 +21054,7 @@
    "ideas_clave": [
     "Contrafactual (peldaño 3): ¿qué habría pasado con ESTE caso si X fuera otro?",
     "SCM con errores U: contrafactual = abducción → acción (do) → predicción",
-    "Contrafactual de Pearl = potential outcome Y_x de Neyman-Rubin (mismo concepto)",
+    "Contrafactual de Pearl = potential outcome $Y_x$ de Neyman-Rubin (mismo concepto)",
     "Mediación: efecto = directo + indirecto; usa NDE/NIE (Baron-Kenny falla con interacción)",
     "PN (necesidad, 'but-for'/legal) vs PS (suficiencia/prevención)"
    ],
@@ -21091,8 +21091,8 @@
      "id": "arh18-q5",
      "tipo": "concepto",
      "enunciado": "¿Qué relación hay entre los contrafactuales de Pearl y los potential outcomes de Neyman-Rubin?",
-     "solucion": "Son la MISMA idea en lenguajes distintos. El potential outcome Y_x (o Y^{a=x}) de Neyman-Rubin —'el valor que tomaría Y si X fuera x'— es exactamente un contrafactual, que en el marco de Pearl se DERIVA del SCM (Y_x es el valor de Y en el modelo tras hacer do(X=x)). Pearl muestra que el enfoque gráfico/estructural y el de potential outcomes son equivalentes y complementarios: el grafo hace transparentes los supuestos, los potential outcomes facilitan ciertos cálculos.",
-     "explicacion": "Y_x (Rubin) = contrafactual derivable del SCM (Pearl): dos dialectos del mismo concepto."
+     "solucion": "Son la MISMA idea en lenguajes distintos. El potential outcome $Y_x$ (o $Y^{a=x}$) de Neyman-Rubin —'el valor que tomaría Y si X fuera x'— es exactamente un contrafactual, que en el marco de Pearl se DERIVA del SCM ($Y_x$ es el valor de Y en el modelo tras hacer $\\text{do}(X=x)$). Pearl muestra que el enfoque gráfico/estructural y el de potential outcomes son equivalentes y complementarios: el grafo hace transparentes los supuestos, los potential outcomes facilitan ciertos cálculos.",
+     "explicacion": "$Y_x$ (Rubin) = contrafactual derivable del SCM (Pearl): dos dialectos del mismo concepto."
     },
     {
      "id": "arh18-q6",
@@ -21184,7 +21184,7 @@
     "nivel": 3
    },
    "ideas_clave": [
-    "Y¹/Y⁰ y switching equation Y=D·Y¹+(1−D)·Y⁰: solo se observa uno",
+    "$Y^1/Y^0$ y switching equation $Y=D\\cdot Y^1+(1-D)\\cdot Y^0$: solo se observa uno",
     "ATE (todos) vs ATT (tratados) vs ATU (no tratados): difieren si hay heterogeneidad",
     "SUTVA = sin interferencia + tratamiento bien definido",
     "Diferencia naïve = ATE + sesgo de selección + sesgo heterogéneo",
@@ -21195,14 +21195,14 @@
      "id": "arh19-q1",
      "tipo": "concepto",
      "enunciado": "En el modelo de resultados potenciales, ¿qué son Y¹ e Y⁰ y por qué el efecto individual es inobservable?",
-     "solucion": "Para cada unidad i, Y¹ᵢ es el resultado que tendría SI recibe el tratamiento y Y⁰ᵢ el que tendría SIN él; el efecto causal individual es δᵢ = Y¹ᵢ − Y⁰ᵢ. Es inobservable por el PROBLEMA FUNDAMENTAL: solo observamos UNO de los dos (el correspondiente al tratamiento que de hecho recibió), descrito por la 'switching equation' Y = D·Y¹ + (1−D)·Y⁰. El otro resultado potencial es un contrafactual que nunca vemos.",
+     "solucion": "Para cada unidad i, $Y^1_i$ es el resultado que tendría SI recibe el tratamiento y $Y^0_i$ el que tendría SIN él; el efecto causal individual es $\\delta_i = Y^1_i - Y^0_i$. Es inobservable por el PROBLEMA FUNDAMENTAL: solo observamos UNO de los dos (el correspondiente al tratamiento que de hecho recibió), descrito por la 'switching equation' $Y = D\\cdot Y^1 + (1-D)\\cdot Y^0$. El otro resultado potencial es un contrafactual que nunca vemos.",
      "explicacion": "Solo se observa Y¹ o Y⁰ por unidad, nunca ambos; por eso se estiman efectos PROMEDIO."
     },
     {
      "id": "arh19-q2",
      "tipo": "concepto",
      "enunciado": "Define ATE, ATT y ATU y di cuándo difieren.",
-     "solucion": "ATE (Average Treatment Effect) = E[Y¹−Y⁰] en TODA la población. ATT (on the Treated) = E[Y¹−Y⁰ | D=1], solo entre los que reciben el tratamiento. ATU (on the Untreated) = E[Y¹−Y⁰ | D=0], entre los no tratados. Difieren cuando el efecto es HETEROGÉNEO y la selección al tratamiento se relaciona con el tamaño del efecto (p. ej. quienes más se benefician son los que se tratan → ATT > ATU > ATE). En un RCT con efecto homogéneo coinciden.",
+     "solucion": "ATE (Average Treatment Effect) $= E[Y^1-Y^0]$ en TODA la población. ATT (on the Treated) $= E[Y^1-Y^0 \\mid D=1]$, solo entre los que reciben el tratamiento. ATU (on the Untreated) $= E[Y^1-Y^0 \\mid D=0]$, entre los no tratados. Difieren cuando el efecto es HETEROGÉNEO y la selección al tratamiento se relaciona con el tamaño del efecto (p. ej. quienes más se benefician son los que se tratan → $\\text{ATT} > \\text{ATU} > \\text{ATE}$). En un RCT con efecto homogéneo coinciden.",
      "explicacion": "Si todos responden igual, ATE=ATT=ATU; la heterogeneidad + selección los separa."
     },
     {
@@ -21215,22 +21215,22 @@
     {
      "id": "arh19-q4",
      "tipo": "concepto",
-     "enunciado": "Descompón la diferencia simple de medias E[Y|D=1]−E[Y|D=0] en sus componentes.",
-     "solucion": "Se descompone en TRES términos: el EFECTO PROMEDIO (ATE) + el SESGO DE SELECCIÓN + el SESGO POR HETEROGENEIDAD del efecto. Formalmente, la diferencia observada = ATE + (E[Y⁰|D=1]−E[Y⁰|D=0]) + (1−π)(ATT−ATU), donde el segundo término es el sesgo de selección y el tercero refleja que tratados y no tratados tienen efectos distintos. Solo el primer término es causal; los otros dos son sesgos que contaminan la comparación cruda.",
+     "enunciado": "Descompón la diferencia simple de medias $E[Y\\mid D=1]-E[Y\\mid D=0]$ en sus componentes.",
+     "solucion": "Se descompone en TRES términos: el EFECTO PROMEDIO (ATE) + el SESGO DE SELECCIÓN + el SESGO POR HETEROGENEIDAD del efecto. Formalmente, la diferencia observada $= \\text{ATE} + (E[Y^0\\mid D=1]-E[Y^0\\mid D=0]) + (1-\\pi)(\\text{ATT}-\\text{ATU})$, donde el segundo término es el sesgo de selección y el tercero refleja que tratados y no tratados tienen efectos distintos. Solo el primer término es causal; los otros dos son sesgos que contaminan la comparación cruda.",
      "explicacion": "Diferencia naïve = ATE + sesgo de selección + sesgo heterogéneo; no es el efecto causal."
     },
     {
      "id": "arh19-q5",
      "tipo": "concepto",
      "enunciado": "¿Qué es el SESGO DE SELECCIÓN en esta descomposición?",
-     "solucion": "Es E[Y⁰|D=1] − E[Y⁰|D=0]: la diferencia en el resultado BASE (lo que les pasaría SIN tratamiento) entre quienes se tratan y quienes no. Captura que los dos grupos no son comparables de entrada. Si los más enfermos se tratan, E[Y⁰|D=1] es peor que E[Y⁰|D=0], el sesgo es negativo y puede hacer que un tratamiento beneficioso parezca inútil o dañino. Eliminar este término es el objetivo central de la inferencia causal observacional.",
+     "solucion": "Es $E[Y^0\\mid D=1] - E[Y^0\\mid D=0]$: la diferencia en el resultado BASE (lo que les pasaría SIN tratamiento) entre quienes se tratan y quienes no. Captura que los dos grupos no son comparables de entrada. Si los más enfermos se tratan, $E[Y^0\\mid D=1]$ es peor que $E[Y^0\\mid D=0]$, el sesgo es negativo y puede hacer que un tratamiento beneficioso parezca inútil o dañino. Eliminar este término es el objetivo central de la inferencia causal observacional.",
      "explicacion": "Cuánto difieren tratados y controles en ausencia de tratamiento; el corazón del confundimiento."
     },
     {
      "id": "arh19-q6",
      "tipo": "concepto",
      "enunciado": "¿Por qué la ALEATORIZACIÓN resuelve el problema de identificación?",
-     "solucion": "Porque al asignar D al azar, el tratamiento es INDEPENDIENTE de los resultados potenciales: (Y¹,Y⁰) ⊥ D. Eso hace que E[Y⁰|D=1] = E[Y⁰|D=0] (sesgo de selección = 0) y que los grupos sean intercambiables, de modo que la simple diferencia de medias estima el ATE sin sesgo. Los términos de selección y heterogeneidad de la descomposición se anulan. Por eso el RCT es el patrón de referencia.",
+     "solucion": "Porque al asignar D al azar, el tratamiento es INDEPENDIENTE de los resultados potenciales: $(Y^1,Y^0) \\perp D$. Eso hace que $E[Y^0\\mid D=1] = E[Y^0\\mid D=0]$ (sesgo de selección = 0) y que los grupos sean intercambiables, de modo que la simple diferencia de medias estima el ATE sin sesgo. Los términos de selección y heterogeneidad de la descomposición se anulan. Por eso el RCT es el patrón de referencia.",
      "explicacion": "Independencia (Y¹,Y⁰)⊥D anula ambos sesgos → la diferencia de medias = ATE."
     },
     {
@@ -21265,21 +21265,21 @@
      "id": "arh19-q11",
      "tipo": "concepto",
      "enunciado": "Da un ejemplo donde la comparación naïve engaña por sesgo de selección.",
-     "solucion": "Comparar la mortalidad de pacientes que reciben CIRUGÍA vs los que no: los operados suelen morir MÁS, no porque la cirugía dañe, sino porque se opera a los más graves (E[Y⁰|D=1] peor que E[Y⁰|D=0]). El sesgo de selección negativo enmascara el beneficio real. La comparación cruda mezcla el efecto del tratamiento con la diferencia de gravedad de base; hay que ajustar o usar un diseño que neutralice esa selección.",
+     "solucion": "Comparar la mortalidad de pacientes que reciben CIRUGÍA vs los que no: los operados suelen morir MÁS, no porque la cirugía dañe, sino porque se opera a los más graves ($E[Y^0\\mid D=1]$ peor que $E[Y^0\\mid D=0]$). El sesgo de selección negativo enmascara el beneficio real. La comparación cruda mezcla el efecto del tratamiento con la diferencia de gravedad de base; hay que ajustar o usar un diseño que neutralice esa selección.",
      "explicacion": "Los que se tratan están peor de entrada; su peor resultado no es culpa del tratamiento."
     },
     {
      "id": "arh19-q12",
      "tipo": "concepto",
      "enunciado": "¿Qué es la 'switching equation' y qué problema ilustra?",
-     "solucion": "Es Y = D·Y¹ + (1−D)·Y⁰: el resultado OBSERVADO es Y¹ si la unidad fue tratada (D=1) o Y⁰ si no (D=0). Ilustra el PROBLEMA FUNDAMENTAL de la inferencia causal: para cada unidad solo 'se enciende' uno de los dos resultados potenciales y el otro queda como contrafactual no observado. Por eso nunca observamos δᵢ=Y¹ᵢ−Y⁰ᵢ directamente y la causalidad se vuelve un problema de datos faltantes que requiere supuestos para promediar.",
+     "solucion": "Es $Y = D\\cdot Y^1 + (1-D)\\cdot Y^0$: el resultado OBSERVADO es $Y^1$ si la unidad fue tratada (D=1) o $Y^0$ si no (D=0). Ilustra el PROBLEMA FUNDAMENTAL de la inferencia causal: para cada unidad solo 'se enciende' uno de los dos resultados potenciales y el otro queda como contrafactual no observado. Por eso nunca observamos $\\delta_i=Y^1_i-Y^0_i$ directamente y la causalidad se vuelve un problema de datos faltantes que requiere supuestos para promediar.",
      "explicacion": "El interruptor D revela solo un resultado potencial por unidad; el otro falta siempre."
     },
     {
      "id": "arh19-q13",
      "tipo": "concepto",
      "enunciado": "¿Por qué el efecto promedio del tratamiento puede ser positivo aunque para muchos individuos sea negativo?",
-     "solucion": "Porque el ATE es un PROMEDIO: E[Y¹−Y⁰]. Si el tratamiento ayuda mucho a un subgrupo y perjudica levemente a otro, el promedio puede salir positivo aunque haya perdedores. La heterogeneidad del efecto (δᵢ varía) implica que un ATE positivo no garantiza beneficio universal, y por eso interesan también el ATT/ATU y los efectos por subgrupos para no ocultar a quienes el tratamiento daña.",
+     "solucion": "Porque el ATE es un PROMEDIO: $E[Y^1-Y^0]$. Si el tratamiento ayuda mucho a un subgrupo y perjudica levemente a otro, el promedio puede salir positivo aunque haya perdedores. La heterogeneidad del efecto ($\\delta_i$ varía) implica que un ATE positivo no garantiza beneficio universal, y por eso interesan también el ATT/ATU y los efectos por subgrupos para no ocultar a quienes el tratamiento daña.",
      "explicacion": "El promedio puede esconder ganadores y perdedores; mira la heterogeneidad."
     },
     {
@@ -21503,7 +21503,7 @@
      "id": "arh21-q7",
      "tipo": "concepto",
      "enunciado": "Diferencia la RDD NÍTIDA (sharp) de la DIFUSA (fuzzy).",
-     "solucion": "En la RDD SHARP, cruzar el umbral DETERMINA el tratamiento (la probabilidad pasa de 0 a 1): el efecto es directamente el salto en E[Y] en el cutoff. En la RDD FUZZY, cruzar el umbral solo CAMBIA LA PROBABILIDAD de tratamiento (no de 0 a 1, hay incumplimiento): el salto en Y debe escalarse por el salto en la probabilidad de tratamiento, lo que equivale a usar el indicador de 'estar sobre el cutoff' como INSTRUMENTO del tratamiento (IV). La fuzzy estima un LATE en el umbral.",
+     "solucion": "En la RDD SHARP, cruzar el umbral DETERMINA el tratamiento (la probabilidad pasa de 0 a 1): el efecto es directamente el salto en $E[Y]$ en el cutoff. En la RDD FUZZY, cruzar el umbral solo CAMBIA LA PROBABILIDAD de tratamiento (no de 0 a 1, hay incumplimiento): el salto en Y debe escalarse por el salto en la probabilidad de tratamiento, lo que equivale a usar el indicador de 'estar sobre el cutoff' como INSTRUMENTO del tratamiento (IV). La fuzzy estima un LATE en el umbral.",
      "explicacion": "Sharp: tratamiento determinista en el corte; fuzzy: cambia la probabilidad → se estima por IV."
     },
     {
@@ -21517,7 +21517,7 @@
      "id": "arh21-q9",
      "tipo": "concepto",
      "enunciado": "¿Qué supuestos clave debe cumplir una RDD válida además de la no manipulación?",
-     "solucion": "(1) CONTINUIDAD: en ausencia de tratamiento, E[Y⁰] (y los confundidores) serían CONTINUOS en el cutoff — cualquier salto en Y se debe al tratamiento, no a otro cambio que ocurra en el mismo umbral. (2) No debe haber OTRAS políticas/cambios que coincidan exactamente en ese corte. Se verifica además que las COVARIABLES predeterminadas NO salten en el cutoff (placebo) y que el resultado no salte en cutoffs FALSOS. La identificación es LOCAL al umbral.",
+     "solucion": "(1) CONTINUIDAD: en ausencia de tratamiento, $E[Y^0]$ (y los confundidores) serían CONTINUOS en el cutoff — cualquier salto en Y se debe al tratamiento, no a otro cambio que ocurra en el mismo umbral. (2) No debe haber OTRAS políticas/cambios que coincidan exactamente en ese corte. Se verifica además que las COVARIABLES predeterminadas NO salten en el cutoff (placebo) y que el resultado no salte en cutoffs FALSOS. La identificación es LOCAL al umbral.",
      "explicacion": "Continuidad de potenciales y covariables en el cutoff; ningún otro cambio coincide en el corte."
     },
     {
@@ -21585,7 +21585,7 @@
    },
    "ideas_clave": [
     "FE de unidad: controlan lo invariante en el tiempo (aun no observado) vía within",
-    "DiD: doble diferencia (tratado−control)×(post−pre) = ATT bajo tendencias paralelas",
+    "DiD: doble diferencia (tratado$-$control)$\\times$(post$-$pre) $=$ ATT bajo tendencias paralelas",
     "Apoya el supuesto con event study (pre-tendencias≈0) y placebos",
     "TWFE con adopción escalonada + heterogeneidad sesga (Goodman-Bacon)",
     "Control sintético: gemelo ponderado del donor pool; inferencia por placebo/permutación"
@@ -21609,7 +21609,7 @@
      "id": "arh22-q3",
      "tipo": "concepto",
      "enunciado": "¿Cómo estima un efecto la estrategia de DIFERENCIAS EN DIFERENCIAS (DiD)?",
-     "solucion": "Comparando el CAMBIO antes→después del grupo TRATADO con el cambio del grupo CONTROL: ATT = (Ȳ_trat,post − Ȳ_trat,pre) − (Ȳ_ctrl,post − Ȳ_ctrl,pre). La primera diferencia (post−pre) elimina lo fijo de cada grupo; la segunda diferencia (tratado−control) resta la tendencia común/shocks que afectan a ambos. Lo que queda es el efecto del tratamiento. Se implementa con una regresión de efectos fijos de dos vías (grupo y tiempo) más el término de interacción tratado×post.",
+     "solucion": "Comparando el CAMBIO antes→después del grupo TRATADO con el cambio del grupo CONTROL: $\\text{ATT} = (\\bar Y_{\\text{trat,post}} - \\bar Y_{\\text{trat,pre}}) - (\\bar Y_{\\text{ctrl,post}} - \\bar Y_{\\text{ctrl,pre}})$. La primera diferencia (post−pre) elimina lo fijo de cada grupo; la segunda diferencia (tratado−control) resta la tendencia común/shocks que afectan a ambos. Lo que queda es el efecto del tratamiento. Se implementa con una regresión de efectos fijos de dos vías (grupo y tiempo) más el término de interacción tratado$\\times$post.",
      "explicacion": "Doble diferencia: (post−pre del tratado) − (post−pre del control) = ATT."
     },
     {
