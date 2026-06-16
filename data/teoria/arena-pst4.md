@@ -1,5 +1,11 @@
 # Regresión y predicción: interpretación y diagnóstico
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Ajustas una regresión y un coeficiente sale **negativo**: ¿una recámara más *baja* el precio de una casa? El número no está mal calculado; está respondiendo a la pregunta equivocada. Esta lección construye, desde cero, cómo **interpretar** una regresión sin caer en sus trampas (multicolinealidad, confounding, interacciones) y cómo **diagnosticarla** con los residuales. El hilo conductor es una sola cláusula traicionera: "manteniendo lo demás constante".
+
+Al terminar podrás: (1) distinguir un intervalo de confianza (de la media) de uno de predicción (individual, mucho más ancho); (2) diagnosticar un coeficiente absurdo como **omisión** (confounding) y uno inestable como **comisión** (multicolinealidad); (3) modelar una **interacción** cuando el efecto de un predictor depende de otro; y (4) leer residuales para detectar outliers, leverage y heteroscedasticidad. Cada trampa entra por un ejemplo concreto.
+
 ## Dos usos de la regresión
 
 - **Explicar:** entender cómo se relaciona cada predictor con la respuesta (foco en los coeficientes).

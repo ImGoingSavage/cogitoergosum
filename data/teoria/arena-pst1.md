@@ -1,5 +1,11 @@
 # Análisis exploratorio: estimadores robustos de centro y dispersión
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Antes de cualquier modelo, hay una pregunta humilde pero decisiva: **¿por dónde anda el centro de mis datos y cuánto se dispersan?** La respuesta no es única, y la diferencia importa: la media de los ingresos de un pueblo cambia si entra un multimillonario, pero la mediana casi no. Esta lección construye, desde cero, los resúmenes de centro y dispersión, organizados por una sola idea —la **robustez a outliers**— y su medida formal, el **punto de ruptura**.
+
+Al terminar podrás: (1) elegir media vs mediana vs media recortada según cuántos outliers toleras; (2) distinguir varianza/desviación estándar de IQR/MAD-mediana y saber cuál resiste valores extremos; (3) explicar por qué se divide entre $n-1$ (grados de libertad); y (4) leer un boxplot y la correlación de Pearson sabiendo qué capturan y qué no. La matemática es ligera; lo que entrena la lección es **criterio**.
+
 ## La estadística empieza por mirar los datos
 
 Antes de modelar, el científico de datos **explora** (EDA, en la tradición de Tukey): resume el centro, la dispersión y la forma de cada variable. La elección del resumen no es trivial — depende de cuán sensible quieras ser a los **outliers**.

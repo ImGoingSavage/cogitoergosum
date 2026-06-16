@@ -391,6 +391,14 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   smoke threw=0 rawDisplayMath=0, KaTeX 0 throws. **Pendiente:** lote 3 (`pst1-4`,
   Practical Statistics — EDA/bootstrap/permutación/regresión), lote 4 (`isl1-4`, ISL —
   marco/sesgo-varianza/regresión/regularización/árboles). Orden en el backlog.
+- **Nota de calibración (lote 3, v93):** las `pst*` (Practical Statistics) NO eran fichas
+  secas como dg/cb — ya estaban en buen estilo narrativo, con intuición y poca fórmula.
+  Para esas, el trabajo from-zero fue **solo añadir la espina** "De qué trata… y qué sabrás
+  hacer" (toque ligero, sin relleno: anti-relleno manda), no reescribir el cuerpo. **Lote 3
+  (v93):** `pst1` (EDA: robustez, punto de ruptura), `pst2` (distribución muestral,
+  bootstrap, SE∝1/√n), `pst3` (A/B + test de permutación, multiplicidad), `pst4` (regresión:
+  multicolinealidad/confounding/interacción + diagnóstico por residuales). Validado: smoke
+  threw=0, KaTeX 0 throws. **Pendiente:** lote 4 (`isl1-4`, ISL) cierra el cluster.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

@@ -1,5 +1,13 @@
 # Experimentos estadísticos: A/B tests y tests de permutación
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+La página B convirtió 50% y la A 30%. ¿La B es mejor, o es suerte con 10 usuarios por grupo? Esta lección construye, desde cero, cómo responder esa pregunta **sin fórmulas**: el **test de permutación**, que materializa la hipótesis nula barajando las etiquetas de grupo y mide si la diferencia observada es de las que el azar produce con facilidad. Es la forma más intuitiva de entender qué es un p-valor: no se deriva, se **fabrica**.
+
+Al terminar podrás: (1) montar un A/B test y plantear su H0; (2) ejecutar un test de permutación y leer su p-valor como una fracción de barajadas; (3) razonar errores tipo I/II, potencia y tamaño del efecto; y (4) reconocer el enemigo número uno del data scientist —la **multiplicidad** (probar demasiado garantiza falsos positivos)— y su antídoto, el holdout. Cada idea entra por su intuición; no hace falta teoría previa de tests.
+
+> Comparte raíz con la teoría de tests óptimos ([[arena-cb3]]) y con los IC/p-valor clásicos ([[arena-dg3]]), pero por la vía del remuestreo.
+
 ## El A/B test y la hipótesis nula
 
 Un **A/B test** compara dos (o más) tratamientos —página A vs B, fármaco vs placebo— asignando sujetos **al azar** a cada grupo y midiendo una métrica. La **hipótesis nula (H0)** dice que no hay diferencia: cualquier discrepancia observada es producto del azar. El objetivo es reunir evidencia para **rechazarla**.

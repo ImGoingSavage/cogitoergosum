@@ -1,5 +1,11 @@
 # Distribuciones muestrales y el bootstrap
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Mides la mediana de tus datos y obtienes 150 ms. Pregunta clave: **¿cuán estable es ese 150?** Si tomaras otra muestra, ¿saldría 148 o 200? Esa variabilidad —no la de los datos, sino la del *estadístico*— es lo que decide si tu resultado significa algo. Esta lección construye, desde cero, cómo cuantificarla: la **distribución muestral**, el **error estándar** y, sobre todo, el **bootstrap**, una técnica que estima la incertidumbre de *cualquier* estadístico sin fórmulas ni supuestos de normalidad.
+
+Al terminar podrás: (1) distinguir la desviación estándar (datos) del error estándar (estadístico, $\propto 1/\sqrt n$); (2) ejecutar el algoritmo del bootstrap y construir un IC por percentiles; (3) entender qué **no** hace el bootstrap (no inventa datos ni rescata una muestra pequeña); y (4) reconocer los sesgos de muestreo y la regresión a la media. La intuición primero; la única fórmula —la √n— reaparece por todas partes.
+
 ## Dos distribuciones que no hay que confundir
 
 - **Distribución de los datos:** cómo se reparten las observaciones individuales.

@@ -17,14 +17,14 @@
 | Cluster | Unidades | Estado |
 |---|---|---|
 | **1. quant-prob** (Probabilidad, esperanza y conteo) | 25 | ✅ **COMPLETO** (v82–v87) |
-| 2. stats-inf (Estadística aplicada e inferencia) | 16 | 🟡 8/16 (lotes 1-2 v91-v92) |
+| 2. stats-inf (Estadística aplicada e inferencia) | 16 | 🟡 12/16 (lotes 1-3 v91-v93) |
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ⬜ pendiente |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **42 / 118 hechas** |
+| | **118** | **46 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -78,10 +78,10 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-cb3` — NP Lemma, LRT y tests UMP
 - [x] `arena-cb4` — Intervalos de confianza y métodos asintóticos
 - [x] `arena-dg4` — Teoría de la decisión, regresión y modelos lineales
-- [ ] `arena-pst1` — Análisis exploratorio: estimadores robustos
-- [ ] `arena-pst2` — Distribuciones muestrales y bootstrap
-- [ ] `arena-pst3` — Experimentos estadísticos y tests de permutación
-- [ ] `arena-pst4` — Regresión y predicción: interpretación y diagnóstico
+- [x] `arena-pst1` — Análisis exploratorio: estimadores robustos
+- [x] `arena-pst2` — Distribuciones muestrales y bootstrap
+- [x] `arena-pst3` — Experimentos estadísticos y tests de permutación
+- [x] `arena-pst4` — Regresión y predicción: interpretación y diagnóstico
 - [ ] `arena-isl1` — El marco (estimar f, sesgo-varianza, KNN)
 - [ ] `arena-isl2` — Regresión lineal y clasificación
 - [ ] `arena-isl3` — Remuestreo, selección y regularización
