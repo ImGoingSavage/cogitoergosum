@@ -7560,40 +7560,40 @@
     "ruta": "quant"
    },
    "ideas_clave": [
-    "E[X+Y]=E[X]+E[Y] para cualquier X, Y con esperanzas finitas — sin importar si son independientes, correlacionadas o dependientes.",
-    "Descomposición en indicadores: si X = I₁ + I₂ + … + Iₙ donde Iₖ ∈ {0,1}, entonces E[X] = P(I₁=1) + P(I₂=1) + … + P(Iₙ=1).",
+    "$E[X+Y]=E[X]+E[Y]$ para cualquier $X, Y$ con esperanzas finitas — sin importar si son independientes, correlacionadas o dependientes.",
+    "Descomposición en indicadores: si $X = I_1 + I_2 + \\dots + I_n$ donde $I_k \\in \\{0,1\\}$, entonces $E[X] = P(I_1=1) + P(I_2=1) + \\dots + P(I_n=1)$.",
     "Señal de reconocimiento: '¿cuántos objetos de un conjunto cumplen una propiedad aleatoria?' → define un indicador por objeto y suma.",
-    "El número armónico Hₙ = 1 + 1/2 + 1/3 + … + 1/n aparece naturalmente cuando P(Iₖ=1) = 1/k.",
-    "Trampa frecuente en entrevistas: asumir que 'necesito independencia para calcular E[X]'. No: la independencia afecta la varianza, no la media."
+    "El número armónico $H_n = 1 + 1/2 + 1/3 + \\dots + 1/n$ aparece naturalmente cuando $P(I_k=1) = 1/k$.",
+    "Trampa frecuente en entrevistas: asumir que 'necesito independencia para calcular $E[X]$'. No: la independencia afecta la varianza, no la media."
    ],
    "banco": [
     {
      "id": "arq1-q1",
      "tipo": "quiz",
      "enunciado": "Enuncia el teorema de linealidad de la esperanza en tus palabras y da el paso clave de la demostración (sin memorizar: razona desde la definición de esperanza).",
-     "solucion": "E[X+Y] = ∑ₓᵧ (x+y)·P(X=x, Y=y) = ∑ₓᵧ x·P(X=x,Y=y) + ∑ₓᵧ y·P(X=x,Y=y) = E[X] + E[Y]. La independencia no aparece en ningún paso: solo se usa la linealidad de la suma y la marginación de la distribución conjunta.",
+     "solucion": "$E[X+Y] = \\sum_{x,y}(x+y)\\,P(X=x,\\,Y=y) = \\sum_{x,y} x\\,P(X=x,Y=y) + \\sum_{x,y} y\\,P(X=x,Y=y) = E[X] + E[Y]$. La independencia no aparece en ningún paso: solo se usa la linealidad de la suma y la marginación de la distribución conjunta.",
      "explicacion": "Si lo demostraste con integrales (caso continuo), el argumento es idéntico: la linealidad de la integral hace el trabajo."
     },
     {
      "id": "arq1-q2",
      "tipo": "quiz",
      "enunciado": "Un mazo de 52 cartas se mezcla aleatoriamente. ¿Cuántos pares adyacentes (posiciones i e i+1) del mismo palo esperas ver? Resuélvelo con indicadores, no contando directamente.",
-     "solucion": "Hay 51 pares adyacentes. Para el par (i, i+1): P(mismo palo) = 12/51 (una vez fijada la carta en la posición i, hay 12 cartas del mismo palo en las 51 restantes). E[X] = 51 × 12/51 = 12.",
-     "explicacion": "Los indicadores de pares adyacentes NO son independientes entre sí (comparten cartas), pero la linealidad no lo necesita: E[X] = 51 × 12/51 = 12, un cálculo de una línea para un conteo que sería muy incómodo por casos."
+     "solucion": "Hay 51 pares adyacentes. Para el par $(i,\\,i+1)$: $P(\\text{mismo palo}) = 12/51$ (una vez fijada la carta en la posición $i$, hay 12 cartas del mismo palo en las 51 restantes). $E[X] = 51 \\times 12/51 = 12$.",
+     "explicacion": "Los indicadores de pares adyacentes NO son independientes entre sí (comparten cartas), pero la linealidad no lo necesita: $E[X] = 51 \\times 12/51 = 12$, un cálculo de una línea para un conteo que sería muy incómodo por casos."
     },
     {
      "id": "arq1-q3",
      "tipo": "quiz",
-     "enunciado": "Se lanzan n dados (6 caras, justos). Sea X el número de valores distintos que aparecen. Calcula E[X] para n=6.",
-     "solucion": "Define Iₖ = 1 si el valor k aparece al menos una vez. P(Iₖ=1) = 1 − (5/6)⁶ ≈ 0.665. E[X] = 6 × (1 − (5/6)⁶) = 6 × (1 − 15625/46656) ≈ 6 × 0.665 ≈ 3.99.",
+     "enunciado": "Se lanzan $n$ dados (6 caras, justos). Sea $X$ el número de valores distintos que aparecen. Calcula $E[X]$ para $n=6$.",
+     "solucion": "Define $I_k = 1$ si el valor $k$ aparece al menos una vez. $P(I_k=1) = 1 - (5/6)^6 \\approx 0.665$. $E[X] = 6\\,(1 - (5/6)^6) = 6\\,(1 - 15625/46656) \\approx 6 \\times 0.665 \\approx 3.99$.",
      "explicacion": "La señal: 'cuántos valores distintos de un conjunto aparecen' → indicador por valor. No es inmediato contarlos directamente porque los dados no son independientes en cuanto a cuáles valores cubre el conjunto."
     },
     {
      "id": "arq1-q4",
      "tipo": "disparador",
-     "enunciado": "En una entrevista te dicen: 'n personas arrojan sus llaves al centro; cada persona toma una al azar. ¿Cuántas personas esperan recuperar SU llave?' Detectas que es linealidad de la esperanza. ¿Qué indicador defines y cuál es la respuesta?",
-     "solucion": "Iₖ = 1 si la persona k recupera su propia llave. P(Iₖ=1) = 1/n para cada k. E[número de coincidencias] = n × 1/n = 1, para cualquier n ≥ 1. Sorprendentemente, la esperanza es siempre 1 sin importar n.",
-     "explicacion": "Señal → jugada: 'coincidencias al azar en una permutación' → indicador por objeto, P = 1/n, suma = 1. El resultado (siempre 1) es la respuesta que diferencia al candidato que razona del que memoriza."
+     "enunciado": "En una entrevista te dicen: '$n$ personas arrojan sus llaves al centro; cada persona toma una al azar. ¿Cuántas personas esperan recuperar SU llave?' Detectas que es linealidad de la esperanza. ¿Qué indicador defines y cuál es la respuesta?",
+     "solucion": "$I_k = 1$ si la persona $k$ recupera su propia llave. $P(I_k=1) = 1/n$ para cada $k$. $E[\\text{número de coincidencias}] = n \\times 1/n = 1$, para cualquier $n \\ge 1$. Sorprendentemente, la esperanza es siempre 1 sin importar $n$.",
+     "explicacion": "Señal → jugada: 'coincidencias al azar en una permutación' → indicador por objeto, $P = 1/n$, suma $= 1$. El resultado (siempre 1) es la respuesta que diferencia al candidato que razona del que memoriza."
     }
    ]
   },
@@ -7614,10 +7614,10 @@
     "ruta": "quant"
    },
    "ideas_clave": [
-    "P(enfermo|+) = P(+|enfermo)·P(enfermo) / P(+). El denominador P(+) = sens·prev + (1−espec)·(1−prev).",
+    "$P(\\text{enfermo}\\mid+) = P(+\\mid\\text{enfermo})\\cdot P(\\text{enfermo}) / P(+)$. El denominador $P(+) = \\text{sens}\\cdot\\text{prev} + (1-\\text{espec})\\cdot(1-\\text{prev})$.",
     "Con prevalencia baja, la mayoría de positivos son FALSOS POSITIVOS aunque el test sea muy bueno: la especificidad domina.",
-    "Tabla de contingencia con N=10,000: VP, FP, FN, VN. El VPP = VP/(VP+FP) se lee directamente.",
-    "Likelihood ratio (LR+) = sensibilidad/(1−especificidad): multiplicar los odds previos por LR+ da los odds posteriores.",
+    "Tabla de contingencia con $N=10{,}000$: VP, FP, FN, VN. El VPP $= \\text{VP}/(\\text{VP}+\\text{FP})$ se lee directamente.",
+    "Likelihood ratio (LR+) $= \\text{sensibilidad}/(1-\\text{especificidad})$: multiplicar los odds previos por LR+ da los odds posteriores.",
     "En entrevistas quant y health AI: pide siempre la prevalencia antes de calcular VPP. Sin ella, el cálculo es incompleto."
    ],
    "banco": [
@@ -7625,21 +7625,21 @@
      "id": "arq2-q1",
      "tipo": "quiz",
      "enunciado": "Un test tiene sensibilidad 90% y especificidad 95%. La prevalencia es 10%. Usando una tabla de contingencia para 1000 personas, calcula VPP y VPN.",
-     "solucion": "100 enfermos: 90 VP + 10 FN. 900 sanos: 45 FP + 855 VN. VPP = 90/(90+45) = 90/135 = 66.7%. VPN = 855/(855+10) = 98.8%.",
+     "solucion": "100 enfermos: 90 VP + 10 FN. 900 sanos: 45 FP + 855 VN. VPP $= 90/(90+45) = 90/135 = 66.7\\%$. VPN $= 855/(855+10) = 98.8\\%$.",
      "explicacion": "La tabla evita errores de fórmula. Nota que incluso con buenos parámetros, VPP=67%: uno de cada tres positivos es falso. La prevalencia del 10% ya es relativamente alta; con 1% el VPP caería mucho más."
     },
     {
      "id": "arq2-q2",
      "tipo": "quiz",
      "enunciado": "Define Likelihood Ratio positivo (LR+) y explica cómo se usa con los odds del prior para obtener los odds del posterior.",
-     "solucion": "LR+ = P(+|enfermo) / P(+|sano) = sensibilidad / (1−especificidad). Odds posteriores = LR+ × odds previos, donde odds previos = prev/(1−prev). Convierte odds posteriores a probabilidad: P = odds/(1+odds).",
+     "solucion": "LR+ $= \\dfrac{P(+\\mid\\text{enfermo})}{P(+\\mid\\text{sano})} = \\dfrac{\\text{sensibilidad}}{1-\\text{especificidad}}$. Odds posteriores $=$ LR+ $\\times$ odds previos, donde odds previos $= \\text{prev}/(1-\\text{prev})$. Convierte odds posteriores a probabilidad: $P = \\text{odds}/(1+\\text{odds})$.",
      "explicacion": "La forma de odds es más cómoda para combinar múltiples tests: se multiplican los LR de cada test independiente."
     },
     {
      "id": "arq2-q3",
      "tipo": "quiz",
      "enunciado": "Un modelo de fraude tiene VPP≈49% en producción (el ejemplo de la lección: sensibilidad 97%, especificidad 99.8%, prevalencia 0.2%). El gerente dice 'necesitamos que el 80% de las alertas sean fraude real'. ¿Qué especificidad requeriría el modelo, asumiendo misma sensibilidad y misma prevalencia?",
-     "solucion": "VPP=0.8: VP/(VP+FP)=0.8 → FP = VP/4. VP = 0.97×0.002×N = 0.00194N. FP = 0.00194N/4 = 0.000485N. FPR = FP/(sanos×N) = 0.000485/0.998 ≈ 0.000486. Especificidad = 1−0.000486 ≈ 99.95%. Es extremadamente exigente — en práctica, se subsegmenta la población para subir la prevalencia efectiva.",
+     "solucion": "VPP$=0.8$: $\\text{VP}/(\\text{VP}+\\text{FP})=0.8 \\Rightarrow \\text{FP} = \\text{VP}/4$. $\\text{VP} = 0.97\\times0.002\\times N = 0.00194N$. $\\text{FP} = 0.00194N/4 = 0.000485N$. FPR $= \\text{FP}/(\\text{sanos}\\times N) = 0.000485/0.998 \\approx 0.000486$. Especificidad $= 1-0.000486 \\approx 99.95\\%$. Es extremadamente exigente — en práctica, se subsegmenta la población para subir la prevalencia efectiva.",
      "explicacion": "Cuando la prevalencia es muy baja, exigir VPP alto requiere una especificidad casi perfecta. La alternativa real es refinar el subconjunto al que se aplica el modelo (aumentar la prev efectiva)."
     },
     {
