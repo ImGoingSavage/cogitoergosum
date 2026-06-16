@@ -1,65 +1,79 @@
 # Machine Learning para entrevistas de ciencia de datos
 
-> La mayoría de los puestos de DS valoran **intuición de negocio + ML clásico** sobre deep learning. Tres tipos de pregunta: conceptual (¿qué es el trade-off sesgo-varianza?), de currículum (¿qué aplicaste?) y end-to-end (¿cómo modelarías X?).
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-## Trade-off sesgo–varianza
+La mayoría de los puestos de DS valoran **intuición + ML clásico** por encima del deep learning, y casi todas las preguntas caen en tres moldes: conceptual ("¿qué es el trade-off sesgo-varianza?"), de currículum ("¿qué aplicaste?") y end-to-end ("¿cómo modelarías X?"). Esta lección construye, desde cero, el eje del que cuelga todo —**sesgo vs varianza**— y de ahí deriva overfitting, regularización, validación, métricas de clasificación, los algoritmos clásicos que debes conocer y el descenso de gradiente que los entrena.
 
-Modelamos $y=f(x)+w$ (ruido $w$). El error de predicción se descompone en:
+Al terminar podrás: (1) diagnosticar si un modelo sufre alto sesgo o alta varianza y qué hacer en cada caso; (2) explicar L1 vs L2 y por qué L1 da sparsity; (3) elegir la métrica correcta para clases desbalanceadas sin caer en la trampa del accuracy; y (4) razonar el trade-off precisión-recall según el costo de un falso positivo vs uno falso negativo. La regla de fondo: más vale dominar una técnica que recitar diez.
 
-1. **Sesgo (bias):** qué tan lejos caen las predicciones de la $f(x)$ real. Alto sesgo = modelo demasiado simple (**underfitting**).
-2. **Varianza:** cuánto cambian las predicciones según los datos de entrenamiento. Alta varianza = modelo demasiado sensible al ruido (**overfitting**).
-3. **Error irreducible:** ruido inherente de la observación.
+---
 
-- **Lineal/regresión simple:** alto sesgo, baja varianza.
-- **Redes neuronales / árboles profundos:** bajo sesgo, alta varianza.
+## El eje central: trade-off sesgo–varianza
 
-En la entrevista casi nunca piden la ecuación; piden **razonar**: si el modelo tiene alta varianza → consigue más datos o regulariza; si tiene alto sesgo → aumenta la complejidad. Navaja de Occam: el modelo más simple que cumple suele generalizar mejor.
+Casi todo el ML cuelga de una sola descomposición. Modelamos la realidad como $y=f(x)+w$, donde $f(x)$ es el patrón verdadero y $w$ es ruido inevitable. Cuando entrenas un modelo y mides su error de predicción fuera de muestra, ese error se parte en tres:
+
+1. **Sesgo (bias):** qué tan lejos caen *en promedio* tus predicciones de la $f(x)$ real. Sesgo alto = el modelo es **demasiado simple** para capturar el patrón → **underfitting**. (Intentar ajustar una curva con una recta.)
+2. **Varianza:** cuánto **cambian** tus predicciones si reentrenas con otra muestra de datos. Varianza alta = el modelo es **demasiado sensible** y aprende el ruido del train particular → **overfitting**. (Memoriza en vez de generalizar.)
+3. **Error irreducible:** el ruido $w$ inherente; ningún modelo lo puede vencer.
+
+La tensión: bajar el sesgo (más complejidad) suele subir la varianza, y viceversa. Por eso es un *trade-off*, no un problema con solución única.
+
+- **Lineal / regresión simple:** alto sesgo, baja varianza (rígido pero estable).
+- **Redes neuronales / árboles profundos:** bajo sesgo, alta varianza (flexible pero inestable).
+
+En la entrevista casi nunca piden la ecuación; piden **razonar el remedio**, y aquí está el truco que muchos invierten: si el modelo tiene **alta varianza** → consigue más datos o **regulariza** (no más complejidad, que empeora); si tiene **alto sesgo** → aumenta la complejidad (más datos no ayudan a un modelo que ni siquiera puede capturar el patrón). Navaja de Occam: el modelo más simple que cumple suele generalizar mejor.
 
 ## Overfitting y regularización
 
-Overfitting = el modelo memoriza ruido del train y no generaliza. **Regularización** penaliza la complejidad para bajar varianza a costa de un poco de sesgo:
+**Overfitting** es el síntoma de varianza alta: el modelo memoriza ruido del train y no generaliza al test. La **regularización** lo combate **penalizando la complejidad** —cambia un poco de sesgo por mucha menos varianza—. La idea: añade a la pérdida un castigo por pesos grandes, así que el optimizador prefiere modelos más "suaves".
 
-- **L2 (Ridge):** penaliza $\sum w_i^2$ → encoge los pesos hacia 0 sin anularlos.
-- **L1 (Lasso):** penaliza $\sum |w_i|$ → lleva pesos exactamente a 0 → **selección de features** (modelos sparse). Encogimiento más estricto.
-- **Elastic net:** combina L1 y L2.
+- **L2 (Ridge):** penaliza $\sum_i w_i^2$ (la suma de los pesos al cuadrado) → **encoge** los pesos hacia 0 sin anularlos. Suaviza.
+- **L1 (Lasso):** penaliza $\sum_i |w_i|$ (suma de valores absolutos) → lleva pesos **exactamente a 0** → hace **selección de features** (modelos *sparse*). La geometría del valor absoluto, con sus esquinas, es lo que empuja pesos al cero exacto; el cuadrado de L2 no.
+- **Elastic net:** combina L1 y L2 para tener selección *y* suavizado.
 
-Otras defensas contra overfitting: más datos, cross-validation, early stopping, dropout (redes), poda (árboles).
+Otras defensas contra overfitting: más datos, cross-validation, early stopping, dropout (en redes), poda (en árboles).
 
 ## Validación y selección de modelo
 
-Separar **train / validación / test**. **Cross-validation** (k-fold): rota qué partición es validación para estimar el desempeño fuera de muestra de forma robusta. El test set se toca **una sola vez**, al final.
+Para estimar el desempeño **fuera de muestra** sin engañarte: separa **train / validación / test**. Entrenas en train, eliges hiperparámetros mirando validación, y el **test se toca una sola vez, al final** — si lo miras varias veces para decidir, se convierte en otro set de validación y sobreajustas a él. La **cross-validation (k-fold)** rota qué partición hace de validación (k veces) y promedia, dando una estimación más robusta cuando tienes pocos datos.
 
 ## Métricas de clasificación
 
-Con la matriz de confusión (TP, FP, TN, FN):
+Toda métrica de clasificación nace de la **matriz de confusión** (TP verdaderos positivos, FP falsos positivos, TN verdaderos negativos, FN falsos negativos). La trampa #1 de entrevista es reportar **accuracy** en problemas desbalanceados:
 
-- **Accuracy** = (TP+TN)/total. **Engaña con clases desbalanceadas** (99% sanos → predecir "sano" siempre da 99%).
-- **Precisión** = TP/(TP+FP): de los que marqué positivos, ¿cuántos lo eran?
-- **Recall (sensibilidad)** = TP/(TP+FN): de los positivos reales, ¿cuántos atrapé?
-- **F1** = media armónica $2\cdot\dfrac{P\cdot R}{P+R}$: equilibra ambas.
-- **ROC / AUC:** TPR vs FPR a distintos umbrales; AUC = prob. de rankear un positivo por encima de un negativo.
+- **Accuracy** $=\dfrac{TP+TN}{\text{total}}$. **Engaña con clases desbalanceadas:** si 99% son sanos, predecir "sano" siempre da 99% sin haber aprendido nada.
+- **Precisión** $=\dfrac{TP}{TP+FP}$: de los que marqué positivos, ¿cuántos lo eran de verdad? (Calidad de mis alarmas.)
+- **Recall (sensibilidad)** $=\dfrac{TP}{TP+FN}$: de los positivos reales, ¿cuántos atrapé? (Cobertura.)
+- **F1** $=2\cdot\dfrac{P\cdot R}{P+R}$: la media armónica de precisión y recall; castiga que una sea baja, equilibra ambas.
+- **ROC / AUC:** curva de TPR vs FPR al barrer el umbral; el **AUC** es la probabilidad de que el modelo rankee un positivo aleatorio por encima de un negativo aleatorio.
 
-**Trade-off precisión–recall:** subir recall (atrapar todos los cánceres) cuesta más falsas alarmas; subir precisión cuesta dejar casos sin detectar. Elige según el costo de un FP vs un FN.
+**Trade-off precisión–recall:** mover el umbral los intercambia. Subir recall (atrapar todos los cánceres) cuesta más falsas alarmas (menos precisión); subir precisión cuesta dejar casos sin detectar (menos recall). Eliges según cueste más un **FP** (alarma innecesaria) o un **FN** (caso perdido).
 
 ## Algoritmos clásicos
 
-- **Regresión lineal:** supervisado, etiquetas continuas; alto sesgo, interpretable.
-- **Regresión logística:** clasificación; salida lineal pasada por sigmoide → probabilidad; pérdida **log-loss**. Falla con fronteras no lineales.
-- **Naive Bayes:** asume independencia condicional de features dado la clase → evita los $2^k$ parámetros; rápido, fuerte baseline en texto.
-- **SVM:** maximiza el margen; con kernels logra fronteras no lineales.
-- **Árboles de decisión:** interpretables pero propensos a overfit.
-- **Ensembles** (bootstrapping/bagging): promedian muchos modelos para bajar varianza.
-  - **Random Forest:** bagging de árboles con sub-muestreo de features; robusto, poco preprocesamiento.
-  - **Boosting (AdaBoost/XGBoost):** modelos secuenciales que corrigen los errores del anterior; baja sesgo.
+Conoce a fondo un puñado; no los recites, entiende qué supone cada uno:
+
+- **Regresión lineal:** supervisado, etiquetas continuas; alto sesgo, muy interpretable.
+- **Regresión logística:** clasificación; pasa una combinación lineal por una **sigmoide** para producir una probabilidad; entrena con **log-loss**. Falla con fronteras no lineales.
+- **Naive Bayes:** asume independencia condicional de las features dada la clase, lo que evita estimar $2^k$ parámetros; rápido y un baseline fuerte en texto.
+- **SVM:** busca la frontera que **maximiza el margen**; con *kernels* logra fronteras no lineales.
+- **Árboles de decisión:** muy interpretables pero propensos a overfit.
+- **Ensembles:** combinan muchos modelos. **Bagging / Random Forest** promedia árboles entrenados sobre muestras con reemplazo (y sub-muestreo de features) para **bajar varianza**; **Boosting (AdaBoost/XGBoost)** entrena modelos en secuencia, cada uno corrigiendo los errores del anterior, para **bajar sesgo**.
 
 ## No supervisado y reducción de dimensión
 
-- **K-means / clustering:** halla grupos ocultos (segmentar clientes). Hay que elegir k.
-- **PCA:** proyecta a las direcciones de **máxima varianza** (eigenvectores de la matriz de covarianza). Reduce dimensión conservando señal. Pitfall: sensible a la escala (estandariza antes) y los componentes pierden interpretabilidad.
+- **K-means / clustering:** halla grupos ocultos (segmentar clientes); debes elegir $k$.
+- **PCA:** proyecta los datos a las direcciones de **máxima varianza** (los eigenvectores de la matriz de covarianza), conservando la mayor señal en menos dimensiones. Dos pitfalls: es **sensible a la escala** (estandariza antes, como k-means) y los componentes pierden interpretabilidad directa.
 
 ## Optimización: descenso de gradiente
 
-Minimiza la función de pérdida moviéndose en la dirección de máximo descenso: $x_{t+1}=x_t-\alpha\,\nabla f(x_t)$, con **learning rate** $\alpha$. Convexa → óptimo global; no convexa → puede quedar en mínimos locales. **SGD** usa mini-lotes para escalar.
+El motor que entrena casi todo. Para minimizar una función de pérdida, te mueves en la dirección de **máximo descenso**:
+
+$$x_{t+1}=x_t-\alpha\,\nabla f(x_t),$$
+
+donde $\nabla f(x_t)$ es el gradiente (la dirección de mayor subida; por eso lo restas) y $\alpha$ es el **learning rate** (cuánto avanzas en cada paso). Si la pérdida es **convexa**, llegas al óptimo global; si **no** lo es (redes), puedes quedarte en un mínimo local. **SGD** (descenso estocástico) usa mini-lotes en vez de todos los datos para escalar.
+
+> **Predicción antes de seguir:** tu modelo da 100% de accuracy en train y 70% en test. ¿Más complejidad o más regularización? Respuesta: **regularización (o más datos)**. La brecha train≫test es la firma de **alta varianza** (overfitting); subir la complejidad la agranda. El error de train siempre baja con la complejidad, así que un train perfecto no es maestría, es la señal de alarma.
 
 ---
 

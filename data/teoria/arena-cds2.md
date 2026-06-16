@@ -1,57 +1,68 @@
 # Deep learning: redes neuronales por dentro
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Una red neuronal parece una caja negra, pero por dentro es sorprendentemente simple: cada neurona suma entradas por pesos, añade un sesgo y aplica una función que la "dobla". Esta lección abre esa caja desde cero: qué hace a una red "profunda", qué pasa exactamente en una neurona, por qué la **no-linealidad** es lo único que justifica apilar capas, cómo aprende (descenso de gradiente + **backpropagation**) y por qué las redes muy profundas sufren el **gradiente que se desvanece**.
+
+Al terminar podrás: (1) explicar por qué sin activación no-lineal una red de 100 capas colapsa a un modelo lineal; (2) describir qué calcula backprop y con qué regla matemática; (3) reconocer y mitigar el vanishing/exploding gradient; y (4) elegir la activación correcta para una salida binaria, multiclase o una capa oculta. La intuición primero; la fórmula, solo cuando ayuda.
+
+---
+
 ## Qué hace "profunda" a una red
 
-Una red neuronal (NN) estándar tiene una o dos capas ocultas; una de **deep learning** tiene decenas, cientos o miles. Esa profundidad permite aprender **representaciones jerárquicas** de los datos: bordes → formas → objetos. Por eso domina visión, voz y lenguaje, donde la ML tradicional batalla. Ventaja clave: **aprende las features sola** (feature learning), sin ingeniería manual.
+Una red neuronal estándar tiene una o dos capas ocultas; una red de **deep learning** tiene decenas, cientos o miles. Esa profundidad le permite aprender **representaciones jerárquicas**: en visión, las primeras capas detectan bordes, las siguientes formas, las últimas objetos completos. Por eso domina visión, voz y lenguaje, donde el ML tradicional batalla. La ventaja decisiva: **aprende las features sola** (*feature learning*), sin que un humano las diseñe a mano — justo lo contrario del feature engineering manual.
 
 ## Anatomía de una neurona: pesos, sesgos, activación
 
-Un "forward pass" en un nodo:
-1. Cada entrada se multiplica por su **peso** (fuerza de la conexión).
-2. Se suman los productos.
-3. Se añade el **sesgo** (bias) — constante que desplaza el resultado, da flexibilidad.
-4. Se aplica una **función de activación**.
+Una neurona hace un "forward pass" en cinco pasos:
+
+1. Cada entrada se multiplica por su **peso** (la fuerza de esa conexión).
+2. Se **suman** todos los productos.
+3. Se añade el **sesgo** (bias), una constante que desplaza el resultado y da flexibilidad (sin él, la neurona siempre pasaría por el origen).
+4. Se aplica una **función de activación** (la no-linealidad).
 5. La salida alimenta la siguiente neurona.
 
-Pesos y sesgos arrancan en valores aleatorios pequeños y se **ajustan durante el entrenamiento**. Ahí está el aprendizaje.
+Los pesos y sesgos arrancan en valores aleatorios pequeños y se **ajustan durante el entrenamiento**: ahí, y solo ahí, está el "aprendizaje". Entrenar una red *es* encontrar los pesos que minimizan el error.
 
 ## Funciones de activación: el porqué de la no-linealidad
 
-Sin activación no-lineal, apilar capas equivale a **una sola transformación lineal**: la red no podría capturar patrones que se tuercen. La activación "infunde vida".
+Esta es la idea central de toda la lección. Sin una activación **no-lineal** entre capas, apilar capas equivale a **una sola transformación lineal**: la red no podría representar patrones que se tuercen (una frontera curva). La activación es lo que "infunde vida" a la profundidad.
 
 | Función | Rango | Uso típico |
 |---------|-------|-----------|
 | **Step** (escalón) | {0,1} | conceptual; decisión dura |
 | **Sigmoide** | (0,1) | salida de clasificación **binaria** (probabilidades) |
 | **Tanh** | (−1,1) | capas ocultas |
-| **ReLU** | [0,∞) | capas ocultas de DNN; mitiga gradiente que se desvanece |
+| **ReLU** | [0,∞) | capas ocultas de DNN; mitiga el gradiente que se desvanece |
 | **Leaky ReLU** | ~ReLU | evita "dying ReLU" (gradiente no-cero en negativos) |
 | **Softmax** | suma 1 | salida **multiclase** (probabilidades que suman 1) |
 
-Regla rápida: binaria → sigmoide; multiclase → softmax; capas ocultas profundas → ReLU.
+Regla rápida para la entrevista: salida **binaria** → sigmoide; salida **multiclase** → softmax; **capas ocultas** profundas → ReLU (porque su derivada no se satura en positivos).
 
 ## Backpropagation y descenso de gradiente
 
-- **Descenso de gradiente:** predice → mide el error con una **función de pérdida** → ajusta los pesos un poquito en la dirección que reduce el error → repite. Busca el **mínimo global** de la pérdida, pero puede atascarse en un **mínimo local**.
-- **Backpropagation** ("propagación hacia atrás del error"): usa la **regla de la cadena** para calcular, capa por capa desde la salida, cuánto contribuyó cada peso al error. Ese gradiente alimenta al descenso de gradiente. Pérdida → backprop → gradiente → actualizar pesos.
+¿Cómo se ajustan los pesos? Dos piezas que trabajan juntas:
+
+- **Descenso de gradiente:** la red predice → una **función de pérdida** mide cuán lejos quedó del objetivo → se mueven los pesos un poquito en la dirección que reduce el error → se repite. Busca el **mínimo** de la pérdida, pero en una red (no convexa) puede atascarse en un mínimo local.
+- **Backpropagation** ("propagación hacia atrás del error"): para saber *cuánto* mover cada peso necesitas el gradiente, y backprop lo calcula usando la **regla de la cadena**, capa por capa desde la salida hacia la entrada. Atribuye a cada peso su parte de culpa en el error. El ciclo completo: pérdida → backprop (gradiente) → actualizar pesos → repetir.
 
 ## Gradiente que se desvanece (y que explota)
 
-En redes muy profundas, al multiplicar derivadas pequeñas capa tras capa (sigmoide/tanh saturan), el gradiente **se encoge exponencialmente** hacia las primeras capas → aprendizaje lento o detenido. Es el **vanishing gradient problem**, severo en RNNs y redes muy profundas.
+Aquí está el gran problema de las redes profundas, y sale directo de la mecánica de backprop. Como el gradiente se calcula **multiplicando** derivadas capa tras capa, si esas derivadas son pequeñas (sigmoide y tanh **saturan**: su derivada es ≤ 0.25), el producto **se encoge exponencialmente** al llegar a las primeras capas → casi no se actualizan → el aprendizaje se vuelve lentísimo o se detiene. Es el **vanishing gradient problem**, severo en RNNs y redes muy profundas.
 
-Su gemelo, **exploding gradient**, multiplica derivadas grandes → actualizaciones enormes, inestabilidad numérica, no converge.
+Su gemelo, el **exploding gradient**, es lo opuesto: derivadas grandes multiplicadas dan actualizaciones enormes, inestabilidad numérica (NaNs) y no converge.
 
 Mitigaciones:
-- **ReLU** en lugar de sigmoide/tanh (su derivada no satura en positivos).
+- **ReLU** en lugar de sigmoide/tanh (su derivada vale 1 en positivos, no satura).
 - **Gradient clipping** (recortar el gradiente por valor o por norma) contra la explosión.
 - Inicialización cuidadosa: **Glorot/Xavier** (con tanh/sigmoide/softmax) o **He** (con ReLU).
-- Conexiones de salto (skip connections).
+- Conexiones de salto (*skip connections*), que dan al gradiente un atajo hacia las capas tempranas.
 
 ## Arquitecturas y transfer learning
 
-- **CNN** (convolucionales): imágenes/visión.
-- **RNN** (recurrentes): secuencias y series de tiempo; especialmente afectadas por vanishing gradient.
-- **Transfer learning:** reusar una red pre-entrenada (p.ej. BERT) y afinarla a una tarea nueva con pocos datos — práctico cuando recolectar datos es caro.
+- **CNN** (convolucionales): imágenes/visión; explotan que píxeles vecinos están relacionados.
+- **RNN** (recurrentes): secuencias y series de tiempo; especialmente golpeadas por el vanishing gradient.
+- **Transfer learning:** reusar una red ya entrenada (p. ej. BERT) y **afinarla** a una tarea nueva con pocos datos — práctico cuando recolectar datos es caro, porque heredas las representaciones ya aprendidas.
 
 ---
 
