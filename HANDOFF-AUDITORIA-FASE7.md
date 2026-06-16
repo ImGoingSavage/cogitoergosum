@@ -351,7 +351,7 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   arranque desde cero. **Pendiente:** replicar el mismo trabajo en los otros 7 clusters
   (stats-inf, dsa, system-design, ds-applied, ml-systems, causal-health, conductual)
   cuando Edgar lo pida — son otra oleada.
-- 🟡 **Cluster 5 (ds-applied) reescrito DESDE CERO — EN CURSO (sw.js v88).** Edgar
+- ✅ **Cluster 5 (ds-applied) reescrito DESDE CERO — HECHO (sw.js v88-v90).** Edgar
   eligió este cluster como siguiente (2026-06-15). Patrón observado: estas lecciones
   ya traían el tratamiento de Oleada 2 (mini-ejemplo, prototipo/contraejemplo, errores,
   transferencia, disparadores, síntesis, retrieval) — todo eso se **conserva verbatim**;
@@ -362,8 +362,15 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   sense), `cds1` (feature engineering). **Lote 2 (v89):** `ads3` (ML clásico:
   sesgo-varianza, regularización, métricas), `cds2` (deep learning: neurona, activación
   no-lineal, backprop, vanishing gradient), `cds3` (MLOps: pipeline, Docker/K8s, data vs
-  concept drift). Validado: smoke threw=0 rawDisplayMath=0, KaTeX 0 throws. **Pendiente
-  del cluster:** lote 3 (`s1`, `cds4`); orden didáctico en `BACKLOG-OLEADA-DESDE-CERO.md`.
+  concept drift). **Lote 3 (v90):** `s1` (del modelo al sistema: skew, drift, rollback —
+  ya muy narrativa; se le añadió espina + intuición, conserva su cierre propio "Señales
+  de reconocimiento" + "Ejercicio de consolidación", por eso da `closers:false` en el
+  smoke, que es su estado original, no regresión), `cds4` (toolkit: visualización,
+  storytelling, pandas, Git/Bash — espina + intuición). Validado: smoke threw=0
+  rawDisplayMath=0, KaTeX 0 throws. **Cluster 5 COMPLETO (9/9).** Siguiente cluster
+  sugerido por el backlog: `stats-inf` (16), `dsa` (6), `system-design`/`conductual` (4
+  c/u), `causal-health` (22), `ml-systems` (32). El patrón de trabajo de este cluster
+  (reescribir solo la mitad superior, conservar la inferior curada) aplica a los demás.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

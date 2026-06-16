@@ -1,8 +1,14 @@
 # Toolkit práctico: visualización, storytelling y Git
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un científico de datos no solo modela: **abre datos, los limpia, los comunica y versiona su trabajo**. Una entrevista de DS asume que ya dominas ese toolkit y lo prueba de refilón ("¿qué gráfico usarías?", "¿cómo deshaces un commit?"). Esta lección lo construye desde cero, con un hilo que une visualización, storytelling, pandas y Git/Bash: elegir la representación correcta es elegir *cuánta estructura mostrar*, y eso resulta ser el mismo trade-off sesgo-varianza que gobierna el modelado.
+
+Al terminar podrás: (1) elegir el gráfico según datos + narrativa + audiencia, no por gusto; (2) ver por qué el ancho de bin de un histograma es una perilla de sesgo-varianza para el ojo; (3) envolver números en una historia que mueva a la acción; y (4) ejecutar el flujo Git mínimo (init → add → commit → push) y leer la historia con `git log`. Cada herramienta entra por su motivación, no como lista de comandos.
+
 ## Visualización: elegir el gráfico correcto
 
-La fuerza de un gráfico está en su **adecuación a los datos, la narrativa y la audiencia**. El tipo de gráfico no es decorativo: cambia la comprensión y el impacto.
+La fuerza de un gráfico no está en lo bonito, sino en su **adecuación a los datos, la narrativa y la audiencia**. El tipo de gráfico no es decorativo: cambia la comprensión y el impacto. La pregunta correcta no es "¿qué gráfico me gusta?" sino "¿qué estructura del dato quiero que salte a la vista, y para quién?".
 
 | Gráfico | Para qué | Cuándo usarlo |
 |---------|----------|---------------|

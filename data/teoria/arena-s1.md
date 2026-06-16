@@ -2,15 +2,21 @@
 
 *Lección redactada para CogitoErgoSum. Referencia: Huyen C — Designing Machine Learning Systems (O'Reilly 2022), caps. 8-9; Sculley et al. — "Hidden Technical Debt in Machine Learning Systems" (NeurIPS 2015).*
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Hay un salto enorme entre "mi modelo da buen AUC en el notebook" y "mi modelo crea valor en producción seis meses después". Casi todo lo que sale mal en ese salto **no es el modelo**: es el contorno —cómo se calculan las features, qué llega de verdad en inferencia, si alguien vigila, si hay forma de volver atrás—. Esta lección construye, desde cero, los tres fallos que más hunden modelos buenos: el **training-serving skew** (entrenas con una feature y sirves con otra), el **drift** (el mundo o sus datos cambian) y la falta de **rollback**.
+
+Al terminar podrás: (1) explicar por qué en producción el modelo es la pieza más pequeña; (2) detectar y prevenir el training-serving skew loggeando las features tal como se sirven; (3) distinguir data drift de concept drift y monitorear cada uno por su lado; y (4) entender por qué un mejor número offline puede empeorar el negocio, y diseñar el rollback **antes** de desplegar. No se asume experiencia en producción: cada falla entra por un ejemplo concreto.
+
 ## El principio central
 
-En producción el **modelo es la pieza más pequeña del sistema**. Lo que falla casi siempre es el contorno: el pipeline de datos, el cálculo de features, el monitoreo ausente, la ausencia de un plan de rollback. Un modelo con AUC 0.92 en un pipeline roto es peor que un modelo con AUC 0.85 en un pipeline sano.
+Empieza por aquí porque reordena toda tu intuición: en producción el **modelo es la pieza más pequeña del sistema**. Lo que falla casi siempre es el contorno —el pipeline de datos, el cálculo de features, el monitoreo ausente, la ausencia de un plan de rollback—. La moraleja con la que conviene quedarse: un modelo con AUC 0.92 en un pipeline roto es **peor** que un modelo con AUC 0.85 en un pipeline sano. Optimizar el modelo cuando el cuello de botella es el sistema es pulir la pieza equivocada.
 
 ---
 
 ## Training-serving skew
 
-El **training-serving skew** ocurre cuando las features o los datos que el modelo recibe en producción difieren de los que vio durante el entrenamiento. El modelo no ha cambiado; lo que cambió es lo que le llega.
+Analogía para fijarlo: es como entrenar para una carrera midiendo tu tiempo en una pista de tartán y luego competir en arena — las piernas no cambiaron, pero el terreno sí, y el rendimiento se desploma. El **training-serving skew** ocurre cuando las features o los datos que el modelo recibe en producción **difieren** de los que vio durante el entrenamiento. El modelo no ha cambiado; lo que cambió es lo que le llega.
 
 **Tres causas típicas:**
 
