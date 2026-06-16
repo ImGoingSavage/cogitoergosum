@@ -1,5 +1,11 @@
 # La causalidad según Pearl III: do-operator, back-door, front-door y do-calculus
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Quieres saber el efecto de *actuar* (dar un fármaco, lanzar una feature), pero solo tienes datos de *observar*. Esta lección construye, desde cero, la maquinaria que traduce una de la otra: el **do-operator** que distingue ver de hacer, y las rutas de **identificación** (back-door, front-door, variables instrumentales, do-calculus) que expresan el efecto causal $P(Y\mid do(x))$ con cantidades puramente observacionales —cuando es posible—.
+
+Al terminar podrás: (1) distinguir $P(Y\mid X)$ de $P(Y\mid do(X))$ y entender qué le hace $do$ al grafo; (2) aplicar el ajuste back-door cuando los confundidores están medidos; (3) reconocer cuándo el front-door rescata un efecto **aunque el confundidor no esté medido**; y (4) saber qué garantiza el do-calculus y qué significa que un efecto **no sea identificable**. Cada ruta entra por su intuición; el ejemplo del fármaco con la edad confundiendo hace de hilo.
+
 ## El do-operator (ver vs hacer)
 
 - **P(Y|X=x)** = OBSERVAR: distribución de Y entre quienes *se ven* con X=x (peldaño 1, puede estar confundida).

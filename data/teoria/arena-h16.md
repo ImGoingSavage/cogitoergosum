@@ -1,5 +1,11 @@
 # La causalidad según Pearl II: diagramas, junciones y paradojas
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Si la causalidad necesita un modelo, ¿cómo se dibuja ese modelo? Con un **DAG** (grafo dirigido acíclico). Esta lección construye, desde cero, la gramática de los DAGs: las **tres junciones** (cadena, bifurcación, collider) que componen cualquier grafo, y la regla de oro que de ellas se deriva —cuándo ajustar una variable *cierra* el sesgo y cuándo lo *abre*—. Con eso, las paradojas famosas (Simpson, Berkson, Monty Hall) dejan de ser misterios: son la misma estructura disfrazada.
+
+Al terminar podrás: (1) clasificar una variable como mediador, confundidor o collider; (2) aplicar la regla "ajusta confundidores, nunca colliders ni mediadores"; (3) explicar por qué un collider fabrica correlación de la nada; y (4) reconocer Simpson/Berkson/Monty Hall como casos de condicionar un efecto común. Cada junción entra por un ejemplo concreto.
+
 ## Diagramas causales (DAGs)
 
 Grafo dirigido acíclico: nodos = variables, flechas = causas directas. Codifica supuestos; las **flechas ausentes** son las afirmaciones más fuertes (niegan un efecto directo) y las que dan poder —y riesgo— a la identificación. Hace los supuestos **transparentes** y debatibles. Evolución de los path diagrams de Wright; misma forma que una **red bayesiana** (dependencia) pero con flechas interpretadas como **causa**.

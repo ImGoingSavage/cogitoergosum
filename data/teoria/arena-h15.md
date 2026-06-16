@@ -2,6 +2,12 @@
 
 > El enfoque **gráfico/do-calculus** de Pearl. Complementa [[arena-h3]] (What If, enfoque potential-outcomes) con la **escalera**, el **do-operator** y la mirada de IA.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+"Correlación no es causación" lo repite todo el mundo, pero pocos saben *por qué* ni qué se necesita para cruzar de una a otra. Esta lección construye, desde cero, la respuesta de Judea Pearl: la **escalera de la causalidad**, tres peldaños de preguntas con poder creciente —**ver** (asociación), **hacer** (intervención), **imaginar** (contrafactuales)—. La tesis central, contraintuitiva en la era del big data: **los datos por sí solos no contienen causalidad**; subir la escalera exige un *modelo*, no más datos.
+
+Al terminar podrás: (1) clasificar cualquier pregunta causal en su peldaño; (2) explicar por qué el machine learning, por potente que sea, vive en el peldaño 1; (3) entender por qué una misma tabla es compatible con mundos causales opuestos; y (4) reconocer el do-operator como el salto físico del peldaño 1 al 2. No se asume nada de causalidad previa; cada idea entra por un ejemplo cotidiano.
+
 ## Los tres peldaños
 
 | Peldaño | Pregunta | Notación | Quién |

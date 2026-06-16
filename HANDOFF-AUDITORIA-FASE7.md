@@ -407,6 +407,19 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   **Siguiente cluster** sugerido: `dsa` (6) o `system-design`/`conductual` (4), luego
   `causal-health` (22) y `ml-systems` (32, el más grande). Patrón: clusters teóricos
   (dg/cb) = reescritura fuerte + math a LaTeX; clusters narrativos (pst/isl) = solo espina.
+- 🟡 **Cluster 7 (causal-health) reescrito DESDE CERO — EN CURSO (sw.js v95).** Edgar pidió
+  entrar a causal-health y luego ml-systems (2026-06-15). **Restricción dura:** nada
+  clínico/diagnóstico en el contenido (ver `<restricciones_clinicas_y_eticas>` de
+  `auditoria.md`); las lecciones usan ejemplos de fármaco/recuperación como ilustración
+  causal, no como consejo médico — mantenerlo así. Calibración: estas lecciones (como
+  pst/isl) ya están bien escritas, narrativas y con poca matemática → el trabajo from-zero
+  es **solo añadir la espina** "De qué trata… y qué sabrás hacer", no reescribir el cuerpo.
+  Varias usan cierre propio "Señales de reconocimiento" + "Ejercicio de consolidación"
+  (como `s1`), por lo que dan `closers:false` en el smoke — es su estado original, NO
+  regresión. **Lote 1 (v95):** `h15` (escalera de Pearl), `h16` (junciones/paradojas),
+  `h1` (DAGs/adjustment sets), `h17` (do-operator/back-door/front-door/do-calculus).
+  Validado: smoke threw=0, KaTeX 0 throws. **Pendiente:** lotes 2-5 (`h3,h19,h4,h18` /
+  `h5,h20,h21,h22` / `h2,h6,h7,h8` / `h9,h10,h11,h12,h13,h14`); orden en el backlog.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

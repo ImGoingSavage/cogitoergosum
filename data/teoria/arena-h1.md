@@ -1,5 +1,11 @@
 # DAGs y adjustment sets
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Antes de correr una regresión, hay una decisión que la mayoría toma a ciegas: **¿qué variables incluyo en el ajuste?** La respuesta intuitiva ("controla por todo lo disponible") puede *sesgar* tu estimación en vez de mejorarla. Esta lección construye, desde cero, la herramienta que decide bien: el **DAG** como mapa de tus supuestos, los tres roles de una variable (confounder, mediador, collider) y el **criterio de back-door** que te dice exactamente qué ajustar para estimar un efecto causal.
+
+Al terminar podrás: (1) clasificar cada variable por su rol y saber si ajustarla; (2) reconocer por qué ajustar un collider es el error más costoso (paradoja de Berkson); (3) aplicar el criterio de back-door para elegir el conjunto de ajuste; y (4) evitar la trampa de las variables post-tratamiento. Es la versión operativa de las junciones de [[arena-h16]], orientada a "qué meto en el modelo".
+
 ## Por qué importa el DAG antes de la regresión
 
 Un Directed Acyclic Graph (DAG) causal es un mapa de tus supuestos sobre el proceso que generó los datos. Si lo dibujas antes de construir tu modelo, te dice exactamente qué variables incluir en el ajuste — y cuáles dejarías fuera aunque parezca contraintuitivo.
