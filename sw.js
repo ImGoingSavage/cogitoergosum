@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v143';
+const VERSION = 'cogitoergosum-v144';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -84,6 +84,9 @@ const SHELL = [
   'data/entrevista/cluster-ml-systems.json',
   'data/entrevista/cluster-causal-health.json',
   'data/entrevista/cluster-conductual.json',
+  // Fase 8 (Ciberseguridad): taxonomía de los 8 clusters. Las unidades viven en
+  // study.json (ya precacheado); _unidades.json es solo fuente de build, no se sirve.
+  'data/ciberseguridad/_taxonomia.json',
   // Lecciones de teoría del Modo Estudio (una por unidad): texto plano
   // pequeño — precachearlas garantiza estudiar sin red desde el iPad.
   'data/teoria/polya-cuatro-pasos.md',
@@ -252,6 +255,23 @@ const SHELL = [
   'data/teoria/aime-alg.md',
   'data/teoria/aime-geo.md',
   'data/teoria/aime-cnt.md',
+  // Fase 8 · Ciberseguridad (Oleada 1: 2 lecciones por cluster)
+  'data/teoria/cyber-ms1.md',
+  'data/teoria/cyber-ms2.md',
+  'data/teoria/cyber-sys1.md',
+  'data/teoria/cyber-sys2.md',
+  'data/teoria/cyber-web1.md',
+  'data/teoria/cyber-web2.md',
+  'data/teoria/cyber-dp1.md',
+  'data/teoria/cyber-dp2.md',
+  'data/teoria/cyber-dev1.md',
+  'data/teoria/cyber-dev2.md',
+  'data/teoria/cyber-blue1.md',
+  'data/teoria/cyber-blue2.md',
+  'data/teoria/cyber-mls1.md',
+  'data/teoria/cyber-mls2.md',
+  'data/teoria/cyber-llm1.md',
+  'data/teoria/cyber-llm2.md',
   'assets/fonts/EBGaramond-Regular.woff2',
   'assets/fonts/EBGaramond-SemiBold.woff2',
   'assets/fonts/EBGaramond-Italic.woff2',

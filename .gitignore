@@ -9,6 +9,15 @@ Biblioteca/
 Arena/
 Definitivo.pdf
 
+# Bibliografía de la Fase 8 (Ciberseguridad): PDFs/.md fuente (SEv3, cs161,
+# MITRE ATT&CK/ATLAS, NIST, OWASP, OpenSSF). Solo en esta máquina; a la app
+# entran destilados propios (data/teoria/cyber-*.md), nunca el texto íntegro.
+# OJO: data/ciberseguridad/ (taxonomía + unidades JSON) SÍ se versiona.
+/ciberseguridad/
+
+# Capturas de pantalla sueltas
+Screenshot*.png
+
 # Artefactos de pruebas locales
 test-seed.html
 

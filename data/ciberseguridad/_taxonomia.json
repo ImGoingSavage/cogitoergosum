@@ -1,0 +1,128 @@
+{
+  "_comment": "Taxonomía de la Fase 8 — Ciberseguridad para STEM, Ciencia de Datos e IA (ciberseguridad.md §7). Ocho clusters, cada uno con un recurso troncal de la bibliografía de data/../ciberseguridad/. El track 'cyber' colorea los chips. A diferencia de la Fase 7, estos clusters NO tienen simulación de entrevista (sin campo sim): traen examen final por dificultad y referencias APA. El orden de unidades[] es didáctico. La ruta es defensiva: criterio, no espectáculo.",
+  "clusters": [
+    {
+      "id": "cyber-mindset",
+      "titulo": "Mentalidad de seguridad, riesgo y diseño defensivo",
+      "track": "cyber",
+      "descripcion": "Formar criterio de seguridad como propiedad de un sistema sociotécnico: activos, amenazas, vulnerabilidades, impacto y controles; CIA triad; economía e incentivos de la seguridad; least privilege, defense in depth, fail-safe defaults; factores humanos; riesgo residual y tradeoffs. Recurso troncal: Anderson, Security Engineering (3.ª ed.).",
+      "secuencia": "Del lenguaje al criterio: vocabulario del riesgo (activo/amenaza/vulnerabilidad/impacto/control) y CIA → threat modeling básico (qué puede salir mal, quién, qué supuesto se rompe) → principios de diseño defensivo (least privilege, defensa en profundidad, fail-safe, factores humanos) → economía del riesgo, tradeoffs y riesgo residual.",
+      "referencias": [
+        "Anderson, R. (2020). Security engineering: A guide to building dependable distributed systems (3rd ed.). Wiley.",
+        "National Institute of Standards and Technology. (2018). Framework for improving critical infrastructure cybersecurity (v1.1). https://www.nist.gov/cyberframework"
+      ],
+      "unidades": [
+        "cyber-ms1",
+        "cyber-ms2"
+      ]
+    },
+    {
+      "id": "cyber-systems-crypto",
+      "titulo": "Sistemas, redes, web y criptografía base",
+      "track": "cyber",
+      "descripcion": "Fundamentos técnicos suficientes para entender cómo fallan sistemas reales: permisos y aislamiento, memoria y procesos, redes, DNS, HTTP y TLS, sesiones y autenticación, y criptografía aplicada (hash vs cifrado vs firma vs MAC) con la regla de oro de no inventar criptografía. Recurso troncal: UC Berkeley CS 161.",
+      "secuencia": "De la máquina a la red cifrada: modelo de amenaza técnico y principios → permisos, aislamiento y memoria → redes, DNS, HTTP → TLS, sesiones y autenticación → criptografía aplicada (hash, cifrado, firma, MAC) y qué nunca inventar.",
+      "referencias": [
+        "Wagner, D., Weaver, N., Kao, P., Shakir, F., Law, A., & Ngai, N. (2024). Computer security (CS 161). University of California, Berkeley.",
+        "OverTheWire. (n.d.). Bandit wargame. https://overthewire.org/wargames/bandit/",
+        "picoCTF. (n.d.). Practice. https://play.picoctf.org/practice"
+      ],
+      "unidades": [
+        "cyber-sys1",
+        "cyber-sys2"
+      ]
+    },
+    {
+      "id": "cyber-web-api",
+      "titulo": "Web, APIs y autenticación",
+      "track": "cyber",
+      "descripcion": "Vulnerabilidades web y de APIs desde la perspectiva defensiva: el OWASP Top 10 como mapa, inyección (SQLi), XSS, CSRF, SSRF, broken access control, fallos de autenticación y sesión, JWT y OAuth, y la distinción entre validar y sanear en la frontera de confianza del servidor. Recurso troncal: PortSwigger Web Security Academy.",
+      "secuencia": "De la frontera de confianza al control de acceso: validación vs saneamiento y trust boundaries del servidor → inyección y XSS → CSRF y SSRF → autenticación, sesiones, JWT/OAuth → broken access control y seguridad de APIs.",
+      "referencias": [
+        "PortSwigger. (n.d.). Web Security Academy. https://portswigger.net/web-security",
+        "OWASP Foundation. (2021). OWASP Top 10:2021. https://owasp.org/Top10/",
+        "OWASP Foundation. (n.d.). OWASP Juice Shop. https://owasp.org/www-project-juice-shop/"
+      ],
+      "unidades": [
+        "cyber-web1",
+        "cyber-web2"
+      ]
+    },
+    {
+      "id": "cyber-data-privacy",
+      "titulo": "Seguridad de datos y privacidad",
+      "track": "cyber",
+      "descripcion": "Proteger personas, no solo tablas: privacidad vs seguridad, riesgo de privacidad, datos personales y sensibles, minimización y limitación de finalidad, retención, reidentificación, seudonimización y anonimización, control de acceso, auditoría y gobernanza de datasets. Recurso troncal: NIST Privacy Framework 1.1 (IPD).",
+      "secuencia": "De la tabla a la persona: privacidad vs seguridad y riesgo de privacidad → datos personales/sensibles, minimización y finalidad → reidentificación, seudonimización y anonimización → gobernanza, acceso, auditoría y retención de datasets.",
+      "referencias": [
+        "National Institute of Standards and Technology. (2025). NIST Privacy Framework 1.1: Initial public draft (NIST CSWP 40 ipd). https://doi.org/10.6028/NIST.CSWP.40.ipd",
+        "National Institute of Standards and Technology. (n.d.). Privacy Framework. https://www.nist.gov/privacy-framework"
+      ],
+      "unidades": [
+        "cyber-dp1",
+        "cyber-dp2"
+      ]
+    },
+    {
+      "id": "cyber-secure-dev",
+      "titulo": "Desarrollo seguro, secretos y supply chain",
+      "track": "cyber",
+      "descripcion": "Desarrollo seguro práctico: requisitos y diseño seguro, validación de entradas y manejo de errores, gestión de secretos, riesgo de dependencias y supply chain, SBOM, SAST, SCA, fuzzing, CI/CD seguro, contenedores, divulgación de vulnerabilidades y parcheo rápido. Recurso troncal: OpenSSF / Wheeler, Secure Software Development Fundamentals.",
+      "secuencia": "Del requisito al parche: requisitos y diseño seguro → validación de entradas, manejo de errores y de salidas → secretos y riesgo de dependencias (supply chain, SBOM, SCA) → SAST/fuzzing, CI/CD y contenedores → divulgación y parcheo rápido.",
+      "referencias": [
+        "Wheeler, D. A. (n.d.). Developing secure software (LFD121): Secure software development fundamentals. Open Source Security Foundation. https://openssf.org/training/courses/",
+        "Open Source Security Foundation. (n.d.). OpenSSF training courses. https://openssf.org/training/courses/"
+      ],
+      "unidades": [
+        "cyber-dev1",
+        "cyber-dev2"
+      ]
+    },
+    {
+      "id": "cyber-blue-team",
+      "titulo": "Blue team, logs y detección",
+      "track": "cyber",
+      "descripcion": "Defensa informada por adversarios: MITRE ATT&CK como mapa, tácticas vs técnicas, threat intelligence, detection engineering, logs e indicadores, la cadena evento → alerta → incidente, hipótesis de detección, emulación adversaria controlada, brechas de cobertura y mejora continua. Recurso troncal: Getting Started with MITRE ATT&CK.",
+      "secuencia": "Del adversario a la regla: ATT&CK como mapa, tácticas vs técnicas → logs, indicadores y la cadena evento/alerta/incidente → hipótesis y detection engineering → emulación controlada, brechas de cobertura y mejora continua.",
+      "referencias": [
+        "Pennington, A. (Ed.), Applebaum, A., Nickels, K., Schulz, T., Strom, B., & Wunder, J. (2019). Getting started with ATT&CK. The MITRE Corporation.",
+        "MITRE. (n.d.). MITRE ATT&CK. https://attack.mitre.org",
+        "CyberDefenders. (n.d.). Blue team CTF challenges. https://cyberdefenders.org/blueteam-ctf-challenges/"
+      ],
+      "unidades": [
+        "cyber-blue1",
+        "cyber-blue2"
+      ]
+    },
+    {
+      "id": "cyber-ml-security",
+      "titulo": "Seguridad de ML y sistemas de IA",
+      "track": "cyber",
+      "descripcion": "Riesgos propios de ML y sistemas de IA: por qué la IA cambia la superficie de ataque, dependencia de datos, riesgos en entrenamiento vs inferencia, data poisoning, evasion/adversarial inputs, model extraction, model inversion, membership inference, backdoors, supply chain de modelos, provenance, riesgo residual y controles, con su relación con NIST AI RMF y MITRE ATLAS. Recurso troncal: MITRE SAFE-AI.",
+      "secuencia": "De la superficie de ataque a los controles: por qué la IA cambia la superficie → ataques al entrenamiento (poisoning, backdoors) → ataques a la inferencia (evasion, extraction, inversion, membership inference) → supply chain de modelos, provenance y controles (AI RMF, ATLAS, riesgo residual).",
+      "referencias": [
+        "Kressel, J., Perrella, R., Reed, E., Naik, N., Sidhu, J., Hu, Q., Booker, L., Cintron, J., & Huffner, L. (2025). SAFE-AI: A framework for securing AI-enabled systems. The MITRE Corporation.",
+        "MITRE. (n.d.). MITRE ATLAS. https://atlas.mitre.org"
+      ],
+      "unidades": [
+        "cyber-mls1",
+        "cyber-mls2"
+      ]
+    },
+    {
+      "id": "cyber-llm-rag-agents",
+      "titulo": "Seguridad de LLMs, RAG y agentes",
+      "track": "cyber",
+      "descripcion": "Amenazas modernas en sistemas con LLMs (OWASP Top 10 for LLM Applications 2025): prompt injection directa e indirecta, divulgación de información sensible, supply chain, data y model poisoning, manejo inseguro de salidas, agencia excesiva, fuga del system prompt, debilidades de embeddings/vectores, misinformation y consumo no acotado; threat modeling de RAG y agentes con herramientas; separar instrucciones confiables de contenido no confiable. Recurso troncal: OWASP Top 10 for LLM Applications 2025.",
+      "secuencia": "Del prompt al agente: por qué un LLM mezcla instrucciones y datos (prompt injection directa/indirecta) → RAG y debilidades de embeddings (LLM08), data/model poisoning (LLM04) → manejo de salidas (LLM05), fuga de datos y de system prompt (LLM02, LLM07) → agentes, agencia excesiva (LLM06), supply chain (LLM03) y consumo no acotado (LLM10).",
+      "referencias": [
+        "OWASP Foundation. (2024). OWASP Top 10 for LLM Applications 2025. https://genai.owasp.org/llm-top-10/",
+        "OWASP Foundation. (n.d.). OWASP GenAI Security Project. https://genai.owasp.org/"
+      ],
+      "unidades": [
+        "cyber-llm1",
+        "cyber-llm2"
+      ]
+    }
+  ]
+}

@@ -45,13 +45,19 @@ function barajar(arr) {
   return a;
 }
 
-/** Todas las preguntas de banco de las unidades fase-7 de un cluster. */
+/** Todas las preguntas de banco de las unidades de un cluster (de su propio bloque). */
 function getClusterQuestionPool(clusterId) {
   const c = taxonomia.find((x) => x.id === clusterId);
-  return (c?.unidades ?? [])
+  if (!c) return [];
+  return (c.unidades ?? [])
     .map(unidad)
-    .filter((u) => u && u.bloque === 'fase-7')
+    .filter((u) => u && u.bloque === c.bloque)
     .flatMap((u) => u.banco ?? []);
+}
+
+/** Clusters de un bloque dado (taxonomía combinada fase-7 entrevista + fase-8 ciber). */
+function taxonomiaDe(bloqueId) {
+  return taxonomia.filter((c) => c.bloque === bloqueId);
 }
 
 // Simulación de entrevista (Nivel E), organizada sobre la TAXONOMÍA semántica
@@ -60,8 +66,17 @@ function getClusterQuestionPool(clusterId) {
 // _taxonomia.json define los clusters (rondas de entrevista) y sus unidades;
 // cada cluster.sim apunta a su guion cluster-<id>.json. Cada ronda se simula
 // por área, no por unidad suelta.
-let taxonomia = []; // [{ id, titulo, track, descripcion, sim, unidades[] }]
+let taxonomia = []; // [{ id, titulo, track, descripcion, sim, referencias[], bloque, unidades[] }]
 const simClusterCache = {}; // clusterId → objeto del guion (null si no cargó)
+
+// Taxonomías por bloque: cada archivo agrupa las unidades de SU bloque en
+// clusters. fase-7 = rondas de entrevista (con simulación); fase-8 = ruta de
+// ciberseguridad (sin simulación). Se cargan en un solo arreglo combinado y
+// cada cluster recuerda a qué bloque pertenece.
+const TAXONOMIAS = [
+  { bloque: 'fase-7', url: 'data/entrevista/_taxonomia.json' },
+  { bloque: 'fase-8', url: 'data/ciberseguridad/_taxonomia.json' },
+];
 
 /* ============================ Arranque ================================ */
 
@@ -72,11 +87,16 @@ export async function init() {
   } catch {
     datos = null;
   }
-  try {
-    const r = await fetch('data/entrevista/_taxonomia.json');
-    taxonomia = r.ok ? (await r.json()).clusters ?? [] : [];
-  } catch {
-    taxonomia = [];
+  taxonomia = [];
+  for (const { bloque, url } of TAXONOMIAS) {
+    try {
+      const r = await fetch(url);
+      const clusters = r.ok ? (await r.json()).clusters ?? [] : [];
+      clusters.forEach((c) => { c.bloque = bloque; });
+      taxonomia.push(...clusters);
+    } catch {
+      /* un bloque sin taxonomía simplemente cae a lista plana */
+    }
   }
   actualizarRachaEstudio();
   actualizarHeaderRachas();
@@ -260,32 +280,43 @@ export function renderizar() {
     sel.value = b.id;
   }
 
-  // Lista de unidades del bloque con su estado. En el bloque Arena (fase-7) la
-  // lista plana de 118 lecciones se agrupa bajo las 8 categorías de la taxonomía
-  // (cada una colapsable, con sus unidades en orden didáctico + su simulación de
-  // entrevista). Las demás fases conservan la lista plana directa.
+  // Lista de unidades del bloque con su estado. Los bloques con taxonomía
+  // (Arena fase-7 y Ciberseguridad fase-8) agrupan sus lecciones bajo categorías
+  // colapsables (cada una con sus unidades en orden didáctico, examen final y
+  // referencias; fase-7 además trae simulación de entrevista). Las demás fases
+  // conservan la lista plana directa.
   const ul = $('estudio-unidades');
   ul.innerHTML = '';
-  if (b.id === 'fase-7' && taxonomia.length > 0) {
+  if (taxonomiaDe(b.id).length > 0) {
     ul.classList.add('estudio-clusters');
-    renderClustersFase7(ul, b);
+    renderClusters(ul, b);
   } else {
     ul.classList.remove('estudio-clusters');
     unidadesDe(b).forEach((u) => ul.appendChild(crearUnidadItem(u, b)));
   }
 
-  // Estado del examen del bloque
+  // Estado del examen del bloque. Los bloques con taxonomía pero sin banco de
+  // examen propio (p. ej. fase-8 Ciberseguridad) evalúan por CLUSTER, no con el
+  // examen-motor de bloque: en ese caso se oculta el botón y se indica dónde
+  // evaluar. Los bloques 0-7 sí tienen su banco y conservan su examen.
   const listo = bloqueUnidadesCompletas(b);
   const aprobado = bloqueAprobado(b.id);
-  $('estudio-examen-estado').textContent = aprobado
-    ? 'Examen aprobado — el siguiente bloque está abierto.'
-    : listo
-      ? 'Todas las unidades completas: puedes presentar el examen del bloque.'
-      : 'El examen se abre al completar todas las unidades del bloque.';
-  $('btn-examen-iniciar').hidden = aprobado || !listo;
-  $('btn-examen-iniciar').textContent = e.examenes[b.id]?.intentos
-    ? 'Reintentar examen del bloque'
-    : 'Presentar examen del bloque';
+  const tieneExamenBloque = (b.examen?.items?.length ?? 0) > 0;
+  if (!tieneExamenBloque) {
+    $('estudio-examen-estado').textContent =
+      'Este bloque se evalúa con el examen final de cada cluster (ábrelos en cada categoría).';
+    $('btn-examen-iniciar').hidden = true;
+  } else {
+    $('estudio-examen-estado').textContent = aprobado
+      ? 'Examen aprobado — el siguiente bloque está abierto.'
+      : listo
+        ? 'Todas las unidades completas: puedes presentar el examen del bloque.'
+        : 'El examen se abre al completar todas las unidades del bloque.';
+    $('btn-examen-iniciar').hidden = aprobado || !listo;
+    $('btn-examen-iniciar').textContent = e.examenes[b.id]?.intentos
+      ? 'Reintentar examen del bloque'
+      : 'Presentar examen del bloque';
+  }
 
   // Paneles: retomar lo que estaba en curso
   $('estudio-unidad').hidden = true;
@@ -366,6 +397,7 @@ const ETIQUETA_TRACK = {
   health: 'health ai',
   ds: 'ciencia de datos',
   conductual: 'conductual',
+  cyber: 'ciberseguridad',
 };
 
 // Mapea el track de un cluster a la clase .ruta-* del chip (mismo color que la
@@ -384,6 +416,7 @@ const ETIQUETA_RUTA = {
   'ml-systems': 'ml systems',
   'ciencia-datos': 'ciencia de datos',
   conductual: 'conductual',
+  cyber: 'ciberseguridad',
 };
 
 function crearUnidadItem(u, b) {
@@ -415,14 +448,14 @@ function crearUnidadItem(u, b) {
 // almacenamiento. Vista limpia por defecto: todas colapsadas al cargar.
 const clustersExpandidos = new Set();
 
-// Pinta las 118 lecciones de fase-7 agrupadas en las 8 categorías de la taxonomía:
+// Pinta las lecciones de un bloque agrupadas en las categorías de su taxonomía:
 // cada una es un acordeón (categoría → al desplegar muestra sus unidades en orden
-// didáctico + el botón para simular su ronda de entrevista). Una unidad de fase-7
-// que no estuviera en ninguna categoría se recoge en un grupo "Otras unidades"
-// para no perderla nunca.
-function renderClustersFase7(container, b) {
+// didáctico + examen final + referencias; fase-7 añade simulación de entrevista).
+// Una unidad del bloque que no estuviera en ninguna categoría se recoge en un
+// grupo "Otras unidades" para no perderla nunca.
+function renderClusters(container, b) {
   const colocadas = new Set();
-  taxonomia.forEach((c) => {
+  taxonomiaDe(b.id).forEach((c) => {
     const unidades = (c.unidades ?? []).map(unidad).filter((u) => u && u.bloque === b.id);
     unidades.forEach((u) => colocadas.add(u.id));
     container.appendChild(crearClusterAcordeon(c, unidades, b));
