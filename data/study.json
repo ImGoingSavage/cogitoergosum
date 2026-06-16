@@ -8804,117 +8804,117 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Cov(B_s,B_t) = min(s,t) — el BM es una función de covarianza de 'mínimo'.",
-    "Variación cuadrática [B,B]_t = t — de aquí nace el lema de Itô.",
-    "Ruina p=1/2: proporcional al inicio. Ruina p≠1/2: geométrico (q/p)^k.",
+    "$\\text{Cov}(B_s,B_t) = \\min(s,t)$ — el BM es una función de covarianza de 'mínimo'.",
+    "Variación cuadrática $[B,B]_t = t$ — de aquí nace el lema de Itô.",
+    "Ruina $p=1/2$: proporcional al inicio. Ruina $p\\ne1/2$: geométrico $(q/p)^k$.",
     "Proceso de Poisson: superposición y adelgazamiento son Poisson.",
-    "Cambio de medida (Girsanov): elimina el drift y convierte μ en r (neutral al riesgo)."
+    "Cambio de medida (Girsanov): elimina el drift y convierte $\\mu$ en $r$ (neutral al riesgo)."
    ],
    "banco": [
     {
      "id": "arp3-q1",
      "tipo": "conceptual",
-     "enunciado": "Define la caminata aleatoria simple Sₙ = X₁+…+Xₙ con P(Xᵢ=+1)=P(Xᵢ=−1)=1/2 y S₀=0. Calcula E[Sₙ], Var(Sₙ), E[Sₙ²] y describe la distribución aproximada para n grande.",
-     "solucion": "E[Sₙ] = 0; Var(Sₙ) = n (Var(Xᵢ)=1, i.i.d. → Var(Sₙ)=n); E[Sₙ²] = n. Para n grande por TCL: Sₙ/√n → N(0,1) en distribución.",
-     "explicacion": "La caminata aleatoria es el modelo discreto del movimiento browniano. El resultado clave: la dispersión crece como √n (no n). Esto fundamenta el √T en volatilidad financiera."
+     "enunciado": "Define la caminata aleatoria simple $S_n = X_1+\\dots+X_n$ con $P(X_i=+1)=P(X_i=-1)=1/2$ y $S_0=0$. Calcula $E[S_n]$, $\\text{Var}(S_n)$, $E[S_n^2]$ y describe la distribución aproximada para $n$ grande.",
+     "solucion": "$E[S_n] = 0$; $\\text{Var}(S_n) = n$ ($\\text{Var}(X_i)=1$, i.i.d. → $\\text{Var}(S_n)=n$); $E[S_n^2] = n$. Para $n$ grande por TCL: $S_n/\\sqrt n \\to N(0,1)$ en distribución.",
+     "explicacion": "La caminata aleatoria es el modelo discreto del movimiento browniano. El resultado clave: la dispersión crece como $\\sqrt n$ (no $n$). Esto fundamenta el $\\sqrt T$ en volatilidad financiera."
     },
     {
      "id": "arp3-q2",
      "tipo": "calculo",
-     "enunciado": "Ruina del jugador: empiezas con \\$k, barreras absorbentes en 0 y N, P(subir \\$1) = p, P(bajar \\$1) = q = 1−p. Deriba P(llegar a N antes de 0) para los dos casos p=1/2 y p≠1/2.",
-     "solucion": "Sea Pₖ = P(llegar a N | inicio k). Ecuación: Pₖ = p·P_{k+1} + q·P_{k−1}, con P₀=0, P_N=1. Para p=1/2: Pₖ = k/N. Para p≠1/2 (ρ=q/p): Pₖ = (1−ρᵏ)/(1−ρᴺ).",
-     "explicacion": "Señal: 'absorción en cadena de Markov en línea'. La ecuación de recurrencia lineal tiene soluciones 1 y ρ^k; ajustar con las condiciones de frontera da la fórmula. Para p<1/2: Pₖ→0 exponencialmente rápido al aumentar k; el 'casino' tiene ventaja devastadora."
+     "enunciado": "Ruina del jugador: empiezas con \\$$k$, barreras absorbentes en 0 y $N$, $P(\\text{subir})=p$, $P(\\text{bajar})=q=1-p$. Deriva $P(\\text{llegar a }N\\text{ antes de }0)$ para los dos casos $p=1/2$ y $p\\ne1/2$.",
+     "solucion": "Sea $P_k = P(\\text{llegar a }N\\mid\\text{inicio }k)$. Ecuación: $P_k = p\\,P_{k+1} + q\\,P_{k-1}$, con $P_0=0$, $P_N=1$. Para $p=1/2$: $P_k = k/N$. Para $p\\ne1/2$ ($\\rho=q/p$): $P_k = (1-\\rho^k)/(1-\\rho^N)$.",
+     "explicacion": "Señal: 'absorción en cadena de Markov en línea'. La ecuación de recurrencia lineal tiene soluciones 1 y $\\rho^k$; ajustar con las condiciones de frontera da la fórmula. Para $p<1/2$: $P_k\\to0$ exponencialmente rápido al aumentar $k$; el 'casino' tiene ventaja devastadora."
     },
     {
      "id": "arp3-q3",
      "tipo": "conceptual",
-     "enunciado": "Define el movimiento browniano estándar B_t. Enuncia sus 5 propiedades fundamentales y calcula Cov(B_s, B_t) para s ≤ t.",
-     "solucion": "Propiedades: (1) B₀ = 0; (2) incrementos independientes: B_t−B_s ⊥ B_s−B_u para u<s<t; (3) incrementos estacionarios: B_t−B_s ~ N(0, t−s); (4) trayectorias continuas; (5) variación cuadrática [B,B]_t = t. Covarianza: Cov(B_s,B_t) = E[B_sB_t] = min(s,t). Dem.: para s≤t: E[B_sB_t] = E[B_s(B_t−B_s)] + E[B_s²] = 0 + s = s.",
-     "explicacion": "Cov(B_s,B_t)=min(s,t) es fundamental: lo usan para calcular varianza de integrales estocásticas, la correlación entre log-precios a diferentes horizontes y en modelos de tasa de interés."
+     "enunciado": "Define el movimiento browniano estándar $B_t$. Enuncia sus 5 propiedades fundamentales y calcula $\\text{Cov}(B_s, B_t)$ para $s \\le t$.",
+     "solucion": "Propiedades: (1) $B_0 = 0$; (2) incrementos independientes: $B_t-B_s \\perp B_s-B_u$ para $u<s<t$; (3) incrementos estacionarios: $B_t-B_s \\sim N(0, t-s)$; (4) trayectorias continuas; (5) variación cuadrática $[B,B]_t = t$. Covarianza: $\\text{Cov}(B_s,B_t) = E[B_sB_t] = \\min(s,t)$. Dem.: para $s\\le t$: $E[B_sB_t] = E[B_s(B_t-B_s)] + E[B_s^2] = 0 + s = s$.",
+     "explicacion": "$\\text{Cov}(B_s,B_t)=\\min(s,t)$ es fundamental: lo usan para calcular varianza de integrales estocásticas, la correlación entre log-precios a diferentes horizontes y en modelos de tasa de interés."
     },
     {
      "id": "arp3-q4",
      "tipo": "conceptual",
-     "enunciado": "¿Qué es la variación cuadrática de B_t? ¿Por qué es diferente de la variación total? ¿Qué implica para el lema de Itô?",
-     "solucion": "Variación cuadrática [B,B]_t = t (en el límite L²). Variación total de B_t es ∞ (las trayectorias son tan 'rugosas' que su variación total diverge). Implicación para Itô: como (dB_t)² = dt en el cálculo estocástico, la fórmula de Taylor necesita el término de segundo orden en dB: df ≈ f'dB + ½f''(dB)² = f'dB + ½f''dt — esto es el lema de Itô.",
-     "explicacion": "En cálculo ordinario, (dx)² = 0 al segundo orden. En cálculo estocástico, (dB)² = dt ≠ 0. Por eso el lema de Itô difiere de la regla de la cadena clásica. Esta diferencia de primer principio es lo que genera el drift de Itô (−σ²/2)."
+     "enunciado": "¿Qué es la variación cuadrática de $B_t$? ¿Por qué es diferente de la variación total? ¿Qué implica para el lema de Itô?",
+     "solucion": "Variación cuadrática $[B,B]_t = t$ (en el límite $L^2$). Variación total de $B_t$ es $\\infty$ (las trayectorias son tan 'rugosas' que su variación total diverge). Implicación para Itô: como $(dB_t)^2 = dt$ en el cálculo estocástico, la fórmula de Taylor necesita el término de segundo orden en $dB$: $df \\approx f'\\,dB + \\tfrac12 f''(dB)^2 = f'\\,dB + \\tfrac12 f''\\,dt$ — esto es el lema de Itô.",
+     "explicacion": "En cálculo ordinario, $(dx)^2 = 0$ al segundo orden. En cálculo estocástico, $(dB)^2 = dt \\ne 0$. Por eso el lema de Itô difiere de la regla de la cadena clásica. Esta diferencia de primer principio es lo que genera el drift de Itô ($-\\sigma^2/2$)."
     },
     {
      "id": "arp3-q5",
      "tipo": "conceptual",
-     "enunciado": "¿Qué es una martingala? Verifica que B_t, B_t²−t y M_t = e^(σB_t − σ²t/2) son martingalas respecto a la filtración natural.",
-     "solucion": "Martingala: E[M_t | F_s] = M_s para s≤t. Para B_t: E[B_t|F_s] = E[B_s+(B_t−B_s)|F_s] = B_s (incremento independiente con media 0). Para B_t²−t: E[(B_t)²−t|F_s] = E[(B_s+(B_t−B_s))²|F_s]−t = B_s²+(t−s)−t = B_s²−s. Para M_t: usando E[e^{σZ}]=e^{σ²/2} para Z~N(0,1).",
-     "explicacion": "B_t²−t es la 'compensación' de B_t² (la corrección que lo convierte en martingala). M_t es la medida de Girsanov, fundamental para cambio de medida en finanzas. Toda martingala local positiva es martingala si es uniformemente integrable."
+     "enunciado": "¿Qué es una martingala? Verifica que $B_t$, $B_t^2-t$ y $M_t = e^{\\sigma B_t - \\sigma^2 t/2}$ son martingalas respecto a la filtración natural.",
+     "solucion": "Martingala: $E[M_t \\mid F_s] = M_s$ para $s\\le t$. Para $B_t$: $E[B_t\\mid F_s] = E[B_s+(B_t-B_s)\\mid F_s] = B_s$ (incremento independiente con media 0). Para $B_t^2-t$: $E[B_t^2-t\\mid F_s] = E[(B_s+(B_t-B_s))^2\\mid F_s]-t = B_s^2+(t-s)-t = B_s^2-s$. Para $M_t$: usando $E[e^{\\sigma Z}]=e^{\\sigma^2/2}$ para $Z\\sim N(0,1)$.",
+     "explicacion": "$B_t^2-t$ es la 'compensación' de $B_t^2$ (la corrección que lo convierte en martingala). $M_t$ es la medida de Girsanov, fundamental para cambio de medida en finanzas. Toda martingala local positiva es martingala si es uniformemente integrable."
     },
     {
      "id": "arp3-q6",
      "tipo": "calculo",
-     "enunciado": "Tiempo de primer toque: B_t es movimiento browniano y T_a = inf{t ≥ 0 : B_t = a} para a > 0. ¿Es E[T_a] finita? ¿Cuánto vale P(T_a < ∞)?",
-     "solucion": "P(T_a < ∞) = 1 (el BM alcanza cualquier nivel con probabilidad 1). E[T_a] = ∞. Dem.: si E[T_a] < ∞, el teorema de muestreo opcional aplicaría: E[B_{T_a}] = E[B_0] = 0, pero B_{T_a} = a → contradicción. La distribución de T_a es Lévy estable de índice 1/2: densidad f(t) = a/(√(2πt³))·e^{−a²/(2t)}.",
-     "explicacion": "El BM es recurrente pero las excursiones hasta nivel a son largas. E[T_a]=∞ significa que el tiempo esperado es infinito aunque siempre llegues. La distribución de T_a tiene cola pesada de Pareto con índice 1/2."
+     "enunciado": "Tiempo de primer toque: $B_t$ es movimiento browniano y $T_a = \\inf\\{t \\ge 0 : B_t = a\\}$ para $a > 0$. ¿Es $E[T_a]$ finita? ¿Cuánto vale $P(T_a < \\infty)$?",
+     "solucion": "$P(T_a < \\infty) = 1$ (el BM alcanza cualquier nivel con probabilidad 1). $E[T_a] = \\infty$. Dem.: si $E[T_a] < \\infty$, el teorema de muestreo opcional aplicaría: $E[B_{T_a}] = E[B_0] = 0$, pero $B_{T_a} = a$ → contradicción. La distribución de $T_a$ es Lévy estable de índice $1/2$: densidad $f(t) = \\dfrac{a}{\\sqrt{2\\pi t^3}}\\,e^{-a^2/(2t)}$.",
+     "explicacion": "El BM es recurrente pero las excursiones hasta nivel $a$ son largas. $E[T_a]=\\infty$ significa que el tiempo esperado es infinito aunque siempre llegues. La distribución de $T_a$ tiene cola pesada de Pareto con índice $1/2$."
     },
     {
      "id": "arp3-q7",
      "tipo": "conceptual",
-     "enunciado": "Enuncia el principio de reflexión de Brownian motion. Aplícalo para calcular P(max_{s≤t} B_s ≥ a) para a > 0.",
-     "solucion": "Reflexión: para a > 0, P(T_a ≤ t, B_t ≥ a) = P(B_t ≥ a) [la trayectoria que alcanza a y sigue está en biyección con sí misma]. Por simetría: P(max_{s≤t} B_s ≥ a) = P(B_t ≥ a) + P(B_t ≥ a) = 2P(B_t ≥ a) = 2(1−Φ(a/√t)) = 2Φ(−a/√t).",
-     "explicacion": "El principio de reflexión: una vez que B toca a, la parte futura se 'refleja' equiprobablemente. Consecuencia: P(max B_s ≥ a) = 2·P(B_t ≥ a). Se usa en valoración de opciones de barrera y knock-out."
+     "enunciado": "Enuncia el principio de reflexión del movimiento browniano. Aplícalo para calcular $P(\\max_{s\\le t} B_s \\ge a)$ para $a > 0$.",
+     "solucion": "Reflexión: para $a > 0$, $P(T_a \\le t, B_t \\ge a) = P(B_t \\ge a)$ (la trayectoria que alcanza $a$ y sigue está en biyección con sí misma). Por simetría: $P(\\max_{s\\le t} B_s \\ge a) = 2P(B_t \\ge a) = 2(1-\\Phi(a/\\sqrt t)) = 2\\Phi(-a/\\sqrt t)$.",
+     "explicacion": "El principio de reflexión: una vez que $B$ toca $a$, la parte futura se 'refleja' equiprobablemente. Consecuencia: $P(\\max B_s \\ge a) = 2\\,P(B_t \\ge a)$. Se usa en valoración de opciones de barrera y knock-out."
     },
     {
      "id": "arp3-q8",
      "tipo": "calculo",
-     "enunciado": "GBM: dS = μS dt + σS dW. Usa el lema de Itô para derivar la distribución de S(T). Calcula E[S(T)] y Var[S(T)] en términos de S(0), μ, σ, T.",
-     "solucion": "Por lema de Itô con f=ln(S): d(ln S) = (μ−σ²/2)dt + σdW → ln(S(T)/S(0)) ~ N((μ−σ²/2)T, σ²T). E[S(T)] = S(0)e^{μT}. Var[S(T)] = S(0)²e^{2μT}(e^{σ²T}−1) (usando E[e^X] = e^{μ+σ²/2} para X normal).",
-     "explicacion": "La distinción clave: E[ln S(T)] = ln S(0)+(μ−σ²/2)T pero ln E[S(T)] = ln S(0)+μT. El drift del log es μ−σ²/2, no μ. La diferencia es la corrección de Jensen."
+     "enunciado": "GBM: $dS = \\mu S\\,dt + \\sigma S\\,dW$. Usa el lema de Itô para derivar la distribución de $S(T)$. Calcula $E[S(T)]$ y $\\text{Var}[S(T)]$ en términos de $S(0), \\mu, \\sigma, T$.",
+     "solucion": "Por lema de Itô con $f=\\ln S$: $d(\\ln S) = (\\mu-\\sigma^2/2)dt + \\sigma\\,dW$ → $\\ln(S(T)/S(0)) \\sim N((\\mu-\\sigma^2/2)T, \\sigma^2 T)$. $E[S(T)] = S(0)e^{\\mu T}$. $\\text{Var}[S(T)] = S(0)^2 e^{2\\mu T}(e^{\\sigma^2 T}-1)$ (usando $E[e^X] = e^{\\mu+\\sigma^2/2}$ para $X$ normal).",
+     "explicacion": "La distinción clave: $E[\\ln S(T)] = \\ln S(0)+(\\mu-\\sigma^2/2)T$ pero $\\ln E[S(T)] = \\ln S(0)+\\mu T$. El drift del log es $\\mu-\\sigma^2/2$, no $\\mu$. La diferencia es la corrección de Jensen."
     },
     {
      "id": "arp3-q9",
      "tipo": "conceptual",
      "enunciado": "¿Qué es un proceso de Ornstein-Uhlenbeck (OU)? ¿Cómo se diferencia del BM? ¿Para qué se usa en finanzas?",
-     "solucion": "dX = −κ(X−θ)dt + σdW. Parámetros: κ (velocidad de reversión), θ (nivel de largo plazo), σ (volatilidad). Diferencia con BM: OU tiene reversión a la media → varianza estacionaria σ²/(2κ), no crece con t. Distribución estacionaria: N(θ, σ²/(2κ)). Usos: tasas de interés (modelo de Vasicek), spreads de crédito, pares trading.",
-     "explicacion": "El BM tiene varianza que crece indefinidamente (Var[B_t]=t). El OU llega a equilibrio porque la deriva lo 'jala' hacia θ. Para κ grande, revierte rápido; para κ≈0, se aproxima al BM."
+     "solucion": "$dX = -\\kappa(X-\\theta)dt + \\sigma\\,dW$. Parámetros: $\\kappa$ (velocidad de reversión), $\\theta$ (nivel de largo plazo), $\\sigma$ (volatilidad). Diferencia con BM: OU tiene reversión a la media → varianza estacionaria $\\sigma^2/(2\\kappa)$, no crece con $t$. Distribución estacionaria: $N(\\theta, \\sigma^2/(2\\kappa))$. Usos: tasas de interés (modelo de Vasicek), spreads de crédito, pares trading.",
+     "explicacion": "El BM tiene varianza que crece indefinidamente ($\\text{Var}[B_t]=t$). El OU llega a equilibrio porque la deriva lo 'jala' hacia $\\theta$. Para $\\kappa$ grande, revierte rápido; para $\\kappa\\approx0$, se aproxima al BM."
     },
     {
      "id": "arp3-q10",
      "tipo": "calculo",
-     "enunciado": "Proceso de Poisson N(t) con tasa λ. Calcula E[N(t)], Var[N(t)] y P(N(t)=k). ¿Cuál es la distribución del tiempo entre llegadas?",
-     "solucion": "N(t) ~ Poisson(λt). E[N(t)] = λt; Var[N(t)] = λt. P(N(t)=k) = e^{−λt}(λt)^k/k!. Tiempo entre llegadas: Exp(λ) con E[T]=1/λ.",
-     "explicacion": "Señal: 'conteo de eventos aleatorios en tiempo'. El proceso de Poisson tiene incrementos independientes y estacionarios. Propiedad key: si se mezclan Poisson(λ₁) y Poisson(λ₂) independientes, obtienes Poisson(λ₁+λ₂). Si se adelgaza Poisson(λ) con probabilidad p, obtienes Poisson(pλ)."
+     "enunciado": "Proceso de Poisson $N(t)$ con tasa $\\lambda$. Calcula $E[N(t)]$, $\\text{Var}[N(t)]$ y $P(N(t)=k)$. ¿Cuál es la distribución del tiempo entre llegadas?",
+     "solucion": "$N(t) \\sim \\text{Poisson}(\\lambda t)$. $E[N(t)] = \\lambda t$; $\\text{Var}[N(t)] = \\lambda t$. $P(N(t)=k) = e^{-\\lambda t}(\\lambda t)^k/k!$. Tiempo entre llegadas: $\\text{Exp}(\\lambda)$ con $E[T]=1/\\lambda$.",
+     "explicacion": "Señal: 'conteo de eventos aleatorios en tiempo'. El proceso de Poisson tiene incrementos independientes y estacionarios. Propiedad clave: si se mezclan $\\text{Poisson}(\\lambda_1)$ y $\\text{Poisson}(\\lambda_2)$ independientes, obtienes $\\text{Poisson}(\\lambda_1+\\lambda_2)$. Si se adelgaza $\\text{Poisson}(\\lambda)$ con probabilidad $p$, obtienes $\\text{Poisson}(\\lambda p)$."
     },
     {
      "id": "arp3-q11",
      "tipo": "calculo",
-     "enunciado": "Mezcla y adelgazamiento de Poisson: (a) Si llegan coches y motos de forma independiente como Poisson(3/hora) y Poisson(2/hora), ¿cuál es la distribución del total de vehículos? (b) Si cada vehículo es coche con p=0.6, ¿qué proceso describe los coches?",
-     "solucion": "(a) Total ~ Poisson(3+2) = Poisson(5/hora). (b) Coches ~ Poisson(5×0.6) = Poisson(3/hora); motos ~ Poisson(5×0.4) = Poisson(2/hora). Nota: adelgazamiento y la fuente original son independientes.",
-     "explicacion": "Superposición: suma de independientes Poisson es Poisson. Adelgazamiento: cada evento del Poisson(λ) se incluye con probabilidad p → Poisson(λp). Estas propiedades hacen al Poisson el modelo default para conteo de eventos raros independientes."
+     "enunciado": "Mezcla y adelgazamiento de Poisson: (a) Si llegan coches y motos de forma independiente como $\\text{Poisson}(3/\\text{hora})$ y $\\text{Poisson}(2/\\text{hora})$, ¿cuál es la distribución del total de vehículos? (b) Si cada vehículo es coche con $p=0.6$, ¿qué proceso describe los coches?",
+     "solucion": "(a) Total $\\sim \\text{Poisson}(3+2) = \\text{Poisson}(5/\\text{hora})$. (b) Coches $\\sim \\text{Poisson}(5\\times0.6) = \\text{Poisson}(3/\\text{hora})$; motos $\\sim \\text{Poisson}(5\\times0.4) = \\text{Poisson}(2/\\text{hora})$. Nota: adelgazamiento y la fuente original son independientes.",
+     "explicacion": "Superposición: suma de independientes Poisson es Poisson. Adelgazamiento: cada evento del $\\text{Poisson}(\\lambda)$ se incluye con probabilidad $p$ → $\\text{Poisson}(\\lambda p)$. Estas propiedades hacen al Poisson el modelo default para conteo de eventos raros independientes."
     },
     {
      "id": "arp3-q12",
      "tipo": "calculo",
-     "enunciado": "Cadena de Markov: estados {0,1,2} con matriz de transición P = \\[\\[0.5,0.4,0.1],[0.2,0.6,0.2],[0.3,0.3,0.4]]. Encuentra la distribución estacionaria π.",
-     "solucion": "Resuelve πP = π, Ση πᵢ = 1. Sistema: π₀ = 0.5π₀+0.2π₁+0.3π₂; π₁ = 0.4π₀+0.6π₁+0.3π₂; π₂ = 0.1π₀+0.2π₁+0.4π₂. Simplificando: −0.5π₀+0.2π₁+0.3π₂=0; 0.4π₀−0.4π₁+0.3π₂=0; Σπᵢ=1. Solución: π ≈ (0.322, 0.452, 0.226).",
+     "enunciado": "Cadena de Markov: estados $\\{0,1,2\\}$ con matriz de transición $P = \\begin{pmatrix}0.5 & 0.4 & 0.1\\\\ 0.2 & 0.6 & 0.2\\\\ 0.3 & 0.3 & 0.4\\end{pmatrix}$. Encuentra la distribución estacionaria $\\pi$.",
+     "solucion": "Resuelve $\\pi P = \\pi$, $\\sum_i \\pi_i = 1$. Sistema: $\\pi_0 = 0.5\\pi_0+0.2\\pi_1+0.3\\pi_2$; $\\pi_1 = 0.4\\pi_0+0.6\\pi_1+0.3\\pi_2$; $\\pi_2 = 0.1\\pi_0+0.2\\pi_1+0.4\\pi_2$. Simplificando: $-0.5\\pi_0+0.2\\pi_1+0.3\\pi_2=0$; $0.4\\pi_0-0.4\\pi_1+0.3\\pi_2=0$; $\\sum\\pi_i=1$. Solución: $\\pi \\approx (0.322, 0.452, 0.226)$.",
      "explicacion": "La distribución estacionaria describe el comportamiento a largo plazo. Para cadenas ergódicas, converge desde cualquier estado inicial. Método: resuelve el sistema lineal (n−1 ecuaciones independientes + normalización)."
     },
     {
      "id": "arp3-q13",
      "tipo": "conceptual",
-     "enunciado": "¿Por qué la caminata aleatoria en ℤ¹ y ℤ² es recurrente, pero en ℤ³ es transitoria? ¿Qué dice esto sobre el BM en dimensión d?",
-     "solucion": "Criterio de Chung-Fuchs: la caminata en ℤᵈ es recurrente ↔ Σ P₀₀(n) = ∞ (probabilidad de retorno al origen en n pasos). Para d=1,2: las sumas divergen → recurrente. Para d≥3: convergen → transitoria. BM d-dimensional análogo: recurrente para d≤2, transitorio para d≥3.",
+     "enunciado": "¿Por qué la caminata aleatoria en $\\mathbb Z^1$ y $\\mathbb Z^2$ es recurrente, pero en $\\mathbb Z^3$ es transitoria? ¿Qué dice esto sobre el BM en dimensión $d$?",
+     "solucion": "Criterio de Chung-Fuchs: la caminata en $\\mathbb Z^d$ es recurrente ↔ $\\sum P_{00}(n) = \\infty$ (probabilidad de retorno al origen en $n$ pasos). Para $d=1,2$: las sumas divergen → recurrente. Para $d\\ge3$: convergen → transitoria. BM $d$-dimensional análogo: recurrente para $d\\le2$, transitorio para $d\\ge3$.",
      "explicacion": "Intuitivo: en 1D hay solo 2 direcciones y siempre vuelves. En 2D hay más espacio pero los retornos siguen siendo frecuentes (probabilidad logarítmicamente decreciente). En 3D hay tanto espacio que te 'pierdes'. Esto tiene consecuencias en física (difusión) y teoría de potencial."
     },
     {
      "id": "arp3-q14",
      "tipo": "conceptual",
      "enunciado": "Explica el teorema de muestreo opcional (OST) de Doob. ¿Cuándo se puede aplicar para calcular el valor esperado en un tiempo de parada τ?",
-     "solucion": "OST: si M_t es martingala y τ es un tiempo de parada, entonces E[M_τ] = E[M₀] bajo condiciones técnicas (τ acotado, o M acotada, o E[τ]<∞ y incrementos acotados). Uso: para calcular probabilidades de absorción y valores esperados en juegos de azar. Ejemplo: E[B_{T_a}] = E[B_0] = 0 — pero T_a tiene E[T_a]=∞, así que OST no aplica directamente.",
-     "explicacion": "El OST falla cuando no se cumplen las condiciones: E[τ]=∞ puede dar E[M_τ] ≠ E[M₀]. En finanzas: se usa para valorar opciones de tipo americano y para derivar fórmulas de arbitraje en tiempos de parada óptimos."
+     "solucion": "OST: si $M_t$ es martingala y $\\tau$ es un tiempo de parada, entonces $E[M_\\tau] = E[M_0]$ bajo condiciones técnicas ($\\tau$ acotado, o $M$ acotada, o $E[\\tau]<\\infty$ y incrementos acotados). Uso: para calcular probabilidades de absorción y valores esperados en juegos de azar. Ejemplo: $E[B_{T_a}] = E[B_0] = 0$ — pero $T_a$ tiene $E[T_a]=\\infty$, así que OST no aplica directamente.",
+     "explicacion": "El OST falla cuando no se cumplen las condiciones: $E[\\tau]=\\infty$ puede dar $E[M_\\tau] \\ne E[M_0]$. En finanzas: se usa para valorar opciones de tipo americano y para derivar fórmulas de arbitraje en tiempos de parada óptimos."
     },
     {
      "id": "arp3-q15",
      "tipo": "calculo",
-     "enunciado": "Cambio de medida (Girsanov): si W_t es BM bajo ℙ y dQ/dP = e^(θW_T − θ²T/2), ¿cuál es la distribución de W_t bajo ℚ?",
-     "solucion": "Bajo ℚ: Ŵ_t = W_t − θt es movimiento browniano estándar (teorema de Girsanov). Equivalentemente: dW = dŴ + θdt, por lo que un proceso con drift θ bajo ℙ se convierte en BM puro bajo ℚ. En finanzas: la medida ℙ es la 'real' (con drift μ) y ℚ es la 'neutral al riesgo' (drift = r). El cambio de medida elimina μ y permite calcular precios de derivados como esperanza descontada.",
-     "explicacion": "El precio de una opción = E^ℚ[e^{−rT}·payoff]. El cambio de medida de Girsanov es la versión continua de la substitución q/p de la caminata aleatoria. Es la idea central que une la probabilidad moderna con las finanzas matemáticas."
+     "enunciado": "Cambio de medida (Girsanov): si $W_t$ es BM bajo $\\mathbb P$ y $d\\mathbb Q/d\\mathbb P = e^{\\theta W_T - \\theta^2 T/2}$, ¿cuál es la distribución de $W_t$ bajo $\\mathbb Q$?",
+     "solucion": "Bajo $\\mathbb Q$: $\\hat W_t = W_t - \\theta t$ es movimiento browniano estándar (teorema de Girsanov). Equivalentemente: $dW = d\\hat W + \\theta\\,dt$, por lo que un proceso con drift $\\theta$ bajo $\\mathbb P$ se convierte en BM puro bajo $\\mathbb Q$. En finanzas: la medida $\\mathbb P$ es la 'real' (con drift $\\mu$) y $\\mathbb Q$ es la 'neutral al riesgo' (drift $= r$). El cambio de medida elimina $\\mu$ y permite calcular precios de derivados como esperanza descontada.",
+     "explicacion": "El precio de una opción $= E^{\\mathbb Q}[e^{-rT}\\cdot\\text{payoff}]$. El cambio de medida de Girsanov es la versión continua de la substitución $q/p$ de la caminata aleatoria. Es la idea central que une la probabilidad moderna con las finanzas matemáticas."
     }
    ]
   },
@@ -8945,124 +8945,124 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Taylor de C(S): ΔC ≈ Δ·ΔS + ½Γ·(ΔS)² — Delta es lineal, Gamma es curvatura.",
-    "tr(AB) = tr(BA); det(A) = ∏λᵢ; tr(A) = Σλᵢ.",
-    "PCA = descomposición espectral de Σ; primeras PCs capturan el nivel y la pendiente.",
+    "Taylor de $C(S)$: $\\Delta C \\approx \\Delta\\cdot\\Delta S + \\tfrac12\\Gamma(\\Delta S)^2$ — Delta es lineal, Gamma es curvatura.",
+    "$\\text{tr}(AB) = \\text{tr}(BA)$; $\\det(A) = \\prod\\lambda_i$; $\\text{tr}(A) = \\sum\\lambda_i$.",
+    "PCA = descomposición espectral de $\\Sigma$; primeras PCs capturan el nivel y la pendiente.",
     "Newton-Raphson: convergencia cuadrática.",
-    "Integral gaussiana: ∫e^{−x²}dx = √π (truco 2D polar)."
+    "Integral gaussiana: $\\int e^{-x^2}\\,dx = \\sqrt\\pi$ (truco 2D polar)."
    ],
    "banco": [
     {
      "id": "arp4-q1",
      "tipo": "calculo",
-     "enunciado": "Escribe las series de Taylor de e^x, sin(x) y cos(x) alrededor de 0. Usa la de e^x para estimar e^{0.1} con error < 10^{-4}.",
-     "solucion": "e^x = Σ x^n/n! = 1+x+x²/2+x³/6+… Sin(x) = x−x³/6+x⁵/120−… Cos(x) = 1−x²/2+x⁴/24−… Para e^{0.1}: 1+0.1+0.005+0.0001667 ≈ 1.10517; el error del 4to término es ~0.1⁴/24 ≈ 4×10^{-6} < 10^{-4}.",
-     "explicacion": "Señal: 'aproximar función cerca de 0'. La regla práctica: para |x|=0.1, el error después de k términos es O(x^{k+1}/(k+1)!). Para x=0.1 y k=3: error ≈ 0.1⁴/24 ≈ 0.000004. Las series de Taylor de e, sin, cos son las tres más usadas en física y finanzas."
+     "enunciado": "Escribe las series de Taylor de $e^x$, $\\sin x$ y $\\cos x$ alrededor de 0. Usa la de $e^x$ para estimar $e^{0.1}$ con error $< 10^{-4}$.",
+     "solucion": "$e^x = \\sum x^n/n! = 1+x+x^2/2+x^3/6+\\dots$ $\\sin x = x-x^3/6+x^5/120-\\dots$ $\\cos x = 1-x^2/2+x^4/24-\\dots$ Para $e^{0.1}$: $1+0.1+0.005+0.0001667 \\approx 1.10517$; el error del 4.º término es $\\sim 0.1^4/24 \\approx 4\\times10^{-6} < 10^{-4}$.",
+     "explicacion": "Señal: 'aproximar función cerca de 0'. La regla práctica: para $|x|=0.1$, el error después de $k$ términos es $O(x^{k+1}/(k+1)!)$. Para $x=0.1$ y $k=3$: error $\\approx 0.1^4/24 \\approx 0.000004$. Las series de Taylor de $e$, sin, cos son las tres más usadas en física y finanzas."
     },
     {
      "id": "arp4-q2",
      "tipo": "calculo",
-     "enunciado": "Evalúa los límites: (a) lím_{x→0} sin(x)/x, (b) lím_{x→0} (e^x − 1 − x)/x², (c) lím_{x→∞} x·e^{-x}.",
-     "solucion": "(a) 1 (L'Hôpital o Taylor: sin(x) ≈ x). (b) 1/2 (Taylor: e^x−1−x = x²/2+O(x³)). (c) 0 (la exponencial domina cualquier potencial; L'Hôpital: lím e^{-x}/(1/x) → 0).",
-     "explicacion": "Para límites 0/0 o ∞/∞: L'Hôpital o Taylor. Taylor es más rápido cuando los primeros términos son evidentes. Para comparar crecimientos: poly << exp << poly·exp en cualquier dirección."
+     "enunciado": "Evalúa los límites: (a) $\\lim_{x\\to0} \\sin(x)/x$, (b) $\\lim_{x\\to0} (e^x - 1 - x)/x^2$, (c) $\\lim_{x\\to\\infty} x\\,e^{-x}$.",
+     "solucion": "(a) 1 (L'Hôpital o Taylor: $\\sin x \\approx x$). (b) $1/2$ (Taylor: $e^x-1-x = x^2/2+O(x^3)$). (c) 0 (la exponencial domina cualquier potencia; L'Hôpital: $\\lim e^{-x}/(1/x) \\to 0$).",
+     "explicacion": "Para límites 0/0 o ∞/∞: L'Hôpital o Taylor. Taylor es más rápido cuando los primeros términos son evidentes. Para comparar crecimientos: polinomio $\\ll$ exponencial."
     },
     {
      "id": "arp4-q3",
      "tipo": "calculo",
-     "enunciado": "Calcula ∫x·e^x dx e ∫ln(x) dx usando integración por partes. Enuncia la regla.",
-     "solucion": "Regla: ∫u dv = uv − ∫v du. Para ∫xe^x dx: u=x, dv=e^x dx → uv−∫v du = xe^x − ∫e^x dx = xe^x − e^x + C = (x−1)e^x + C. Para ∫ln(x) dx: u=ln(x), dv=dx → x·ln(x)−∫x·(1/x)dx = x·ln(x) − x + C.",
-     "explicacion": "Mnemónico LIATE para elegir u: Logarítmica, Inversa trig, Algebraica, Trigonométrica, Exponencial — elige el primero de la lista como u. ∫x^n·e^x dx requiere n integraciones por partes; la forma general: e^x·(x^n − nx^{n-1} + … ± n!)."
+     "enunciado": "Calcula $\\int x\\,e^x\\,dx$ e $\\int \\ln x\\,dx$ usando integración por partes. Enuncia la regla.",
+     "solucion": "Regla: $\\int u\\,dv = uv - \\int v\\,du$. Para $\\int x e^x\\,dx$: $u=x$, $dv=e^x\\,dx$ → $uv-\\int v\\,du = xe^x - \\int e^x\\,dx = xe^x - e^x + C = (x-1)e^x + C$. Para $\\int \\ln x\\,dx$: $u=\\ln x$, $dv=dx$ → $x\\ln x-\\int x\\cdot(1/x)\\,dx = x\\ln x - x + C$.",
+     "explicacion": "Mnemónico LIATE para elegir $u$: Logarítmica, Inversa trig, Algebraica, Trigonométrica, Exponencial — elige el primero de la lista como $u$. $\\int x^n e^x\\,dx$ requiere $n$ integraciones por partes; la forma general: $e^x(x^n - nx^{n-1} + \\dots \\pm n!)$."
     },
     {
      "id": "arp4-q4",
      "tipo": "conceptual",
      "enunciado": "Usa la expansión de Taylor del precio de una opción C(S) para interpretar Delta y Gamma. ¿Qué dice esta expansión sobre la P&L de un portafolio delta-hedgeado?",
-     "solucion": "C(S+ΔS) ≈ C(S) + Δ·ΔS + ½Γ·(ΔS)². P&L del delta-hedge (short ΔS acciones, long call): P&L = ΔC − Δ·ΔS ≈ ½Γ·(ΔS)². El portafolio es 'long gamma': gana con cualquier movimiento grande (convexo en ΔS). Costo: el theta (Θ<0) que corroe el valor cada día.",
+     "solucion": "$C(S+\\Delta S) \\approx C(S) + \\Delta\\cdot\\Delta S + \\tfrac12\\Gamma(\\Delta S)^2$. P&L del delta-hedge (short $\\Delta S$ acciones, long call): P&L $= \\Delta C - \\Delta\\cdot\\Delta S \\approx \\tfrac12\\Gamma(\\Delta S)^2$. El portafolio es 'long gamma': gana con cualquier movimiento grande (convexo en $\\Delta S$). Costo: el theta ($\\Theta<0$) que corroe el valor cada día.",
      "explicacion": "La interpretación de Taylor: Delta captura la exposición lineal; Gamma captura la convexidad. Un portafolio delta-neutral no tiene exposición de primer orden: solo gana/pierde por la curvatura. Esta es la intuición del trading de volatilidad: comprás gamma si crees que el activo se moverá más de lo que implica el precio de la opción."
     },
     {
      "id": "arp4-q5",
      "tipo": "calculo",
      "enunciado": "Para matrices A y B compatibles, demuestra que tr(AB) = tr(BA). ¿Es cierto AB = BA en general? Da un contraejemplo.",
-     "solucion": "tr(AB) = Σᵢ (AB)ᵢᵢ = Σᵢ Σⱼ AᵢⱼBⱼᵢ = Σⱼ Σᵢ BⱼᵢAᵢⱼ = Σⱼ (BA)ⱼⱼ = tr(BA). AB ≠ BA en general: \\[\\[1,1],[0,0]]·\\[\\[0,0],[1,0]] = \\[\\[1,0],[0,0]] pero el orden inverso da \\[\\[0,0],[1,1]].",
-     "explicacion": "tr(ABC) = tr(CAB) = tr(BCA) (permutación cíclica). La traza es invariante bajo permutaciones cíclicas pero NO bajo permutaciones arbitrarias. Consecuencia: los valores propios de AB y BA coinciden (aunque las matrices sean distintas)."
+     "solucion": "$\\text{tr}(AB) = \\sum_i (AB)_{ii} = \\sum_i \\sum_j A_{ij}B_{ji} = \\sum_j \\sum_i B_{ji}A_{ij} = \\sum_j (BA)_{jj} = \\text{tr}(BA)$. $AB \\ne BA$ en general: $\\begin{pmatrix}1&1\\\\0&0\\end{pmatrix}\\begin{pmatrix}0&0\\\\1&0\\end{pmatrix} = \\begin{pmatrix}1&0\\\\0&0\\end{pmatrix}$ pero el orden inverso da $\\begin{pmatrix}0&0\\\\1&1\\end{pmatrix}$.",
+     "explicacion": "$\\text{tr}(ABC) = \\text{tr}(CAB) = \\text{tr}(BCA)$ (permutación cíclica). La traza es invariante bajo permutaciones cíclicas pero NO bajo permutaciones arbitrarias. Consecuencia: los valores propios de $AB$ y $BA$ coinciden (aunque las matrices sean distintas)."
     },
     {
      "id": "arp4-q6",
      "tipo": "conceptual",
-     "enunciado": "Para una matriz A n×n con valores propios λ₁,…,λₙ (contados con multiplicidad), ¿cuánto son det(A) y tr(A)? Calcula ambos para A = \\[\\[3,1],[1,3]].",
-     "solucion": "det(A) = ∏ λᵢ; tr(A) = Σ λᵢ. Para A=\\[\\[3,1],[1,3]]: det = 9−1=8; tr=6. Valores propios: (3−λ)²−1=0 → λ=2 y λ=4. Verificación: 2×4=8 ✓; 2+4=6 ✓.",
-     "explicacion": "Estas relaciones son invariantes de la matriz independientes de la base. Det = 0 ↔ algún λᵢ=0 ↔ A es singular. El polinomio característico es p(λ) = det(A−λI) = (−1)^n(λ^n − tr(A)λ^{n-1} + … ± det(A))."
+     "enunciado": "Para una matriz $A$ $n\\times n$ con valores propios $\\lambda_1,\\dots,\\lambda_n$ (contados con multiplicidad), ¿cuánto son $\\det(A)$ y $\\text{tr}(A)$? Calcula ambos para $A = \\begin{pmatrix}3&1\\\\1&3\\end{pmatrix}$.",
+     "solucion": "$\\det(A) = \\prod \\lambda_i$; $\\text{tr}(A) = \\sum \\lambda_i$. Para $A=\\begin{pmatrix}3&1\\\\1&3\\end{pmatrix}$: $\\det = 9-1=8$; $\\text{tr}=6$. Valores propios: $(3-\\lambda)^2-1=0$ → $\\lambda=2$ y $\\lambda=4$. Verificación: $2\\times4=8$ ✓; $2+4=6$ ✓.",
+     "explicacion": "Estas relaciones son invariantes de la matriz independientes de la base. $\\det = 0 \\iff$ algún $\\lambda_i=0 \\iff A$ es singular. El polinomio característico es $p(\\lambda) = \\det(A-\\lambda I) = (-1)^n(\\lambda^n - \\text{tr}(A)\\lambda^{n-1} + \\dots \\pm \\det(A))$."
     },
     {
      "id": "arp4-q7",
      "tipo": "conceptual",
      "enunciado": "¿Cuándo es una matriz simétrica positiva definida (SPD)? ¿Por qué toda matriz de covarianza es semidefinida positiva? ¿Cuándo es estrictamente positiva definida?",
-     "solucion": "SPD: A simétrica con xᵀAx > 0 para todo x≠0 (equivalente: todos los valores propios > 0; o todos los menores principales > 0 — criterio de Sylvester). Covarianza Σ = E[(X−μ)(X−μ)ᵀ]: xᵀΣx = E[(xᵀ(X−μ))²] ≥ 0 → semidefinida positiva. Es SPD si no hay combinación lineal determinista de los componentes (sin multicolinealidad perfecta).",
+     "solucion": "SPD: $A$ simétrica con $x^\\top A x > 0$ para todo $x\\ne0$ (equivalente: todos los valores propios $>0$; o todos los menores principales $>0$ — criterio de Sylvester). Covarianza $\\Sigma = E[(X-\\mu)(X-\\mu)^\\top]$: $x^\\top\\Sigma x = E[(x^\\top(X-\\mu))^2] \\ge 0$ → semidefinida positiva. Es SPD si no hay combinación lineal determinista de los componentes (sin multicolinealidad perfecta).",
      "explicacion": "En finanzas: la matriz de covarianza de retornos debe ser SPD para invertirla (optimización de Markowitz). Si hay activos perfectamente correlacionados, la matriz es singular y el sistema es indeterminado."
     },
     {
      "id": "arp4-q8",
      "tipo": "calculo",
-     "enunciado": "Aplica Newton-Raphson para encontrar √2 empezando de x₀ = 1.5. Escribe la iteración y calcula 3 pasos. ¿Cuál es la tasa de convergencia?",
-     "solucion": "f(x) = x²−2, f'(x) = 2x. Iteración: xₙ₊₁ = xₙ − (xₙ²−2)/(2xₙ) = (xₙ+2/xₙ)/2. x₀=1.5 → x₁=1.41667 → x₂=1.41422 → x₃=1.41421356. √2 ≈ 1.41421356. Convergencia cuadrática: el error se cuadra en cada paso (εₙ₊₁ ≈ C·εₙ²).",
-     "explicacion": "Newton-Raphson tiene convergencia cuadrática cuando f'(x*)≠0 y x₀ es suficientemente cercano a la raíz. Consecuencia práctica: el número de dígitos correctos se duplica en cada iteración. Alternativa cuando f' es difícil: método de la secante (convergencia superlineal, orden φ≈1.618)."
+     "enunciado": "Aplica Newton-Raphson para encontrar $\\sqrt2$ empezando de $x_0 = 1.5$. Escribe la iteración y calcula 3 pasos. ¿Cuál es la tasa de convergencia?",
+     "solucion": "$f(x) = x^2-2$, $f'(x) = 2x$. Iteración: $x_{n+1} = x_n - (x_n^2-2)/(2x_n) = (x_n+2/x_n)/2$. $x_0=1.5$ → $x_1=1.41667$ → $x_2=1.41422$ → $x_3=1.41421356$. $\\sqrt2 \\approx 1.41421356$. Convergencia cuadrática: el error se cuadra en cada paso ($\\varepsilon_{n+1} \\approx C\\,\\varepsilon_n^2$).",
+     "explicacion": "Newton-Raphson tiene convergencia cuadrática cuando $f'(x^*)\\ne0$ y $x_0$ es suficientemente cercano a la raíz. Consecuencia práctica: el número de dígitos correctos se duplica en cada iteración. Alternativa cuando $f'$ es difícil: método de la secante (convergencia superlineal, orden $\\varphi\\approx1.618$)."
     },
     {
      "id": "arp4-q9",
      "tipo": "calculo",
-     "enunciado": "Problema de Markowitz: minimiza la varianza del portafolio xᵀΣx sujeto a 1ᵀx=1 (pesos suman 1) y μᵀx = r (retorno objetivo r). Escribe el Lagrangiano y las condiciones de primer orden.",
-     "solucion": "L = ½xᵀΣx − λ(μᵀx−r) − γ(1ᵀx−1). CPO: ∂L/∂x = Σx − λμ − γ1 = 0 → x\\* = Σ⁻¹(λμ+γ1). Sustituyendo en las restricciones: 2×2 sistema para (λ,γ). Solución: x\\* es combinación de dos portafolios (mutual fund theorem).",
-     "explicacion": "El Lagrangiano transforma un problema restringido en uno no-restringido. CPO ∇f = λ∇g implica que el gradiente del objetivo es proporcional al de la restricción activa. Para n activos: Σx\\* = λμ + γ1 — un sistema lineal n×n en x\\*."
+     "enunciado": "Problema de Markowitz: minimiza la varianza del portafolio $x^\\top\\Sigma x$ sujeto a $\\mathbf 1^\\top x=1$ (pesos suman 1) y $\\mu^\\top x = r$ (retorno objetivo $r$). Escribe el Lagrangiano y las condiciones de primer orden.",
+     "solucion": "$L = \\tfrac12 x^\\top\\Sigma x - \\lambda(\\mu^\\top x-r) - \\gamma(\\mathbf 1^\\top x-1)$. CPO: $\\partial L/\\partial x = \\Sigma x - \\lambda\\mu - \\gamma\\mathbf 1 = 0$ → $x^* = \\Sigma^{-1}(\\lambda\\mu+\\gamma\\mathbf 1)$. Sustituyendo en las restricciones: sistema $2\\times2$ para $(\\lambda,\\gamma)$. Solución: $x^*$ es combinación de dos portafolios (mutual fund theorem).",
+     "explicacion": "El Lagrangiano transforma un problema restringido en uno no-restringido. CPO $\\nabla f = \\lambda\\nabla g$ implica que el gradiente del objetivo es proporcional al de la restricción activa. Para $n$ activos: $\\Sigma x^* = \\lambda\\mu + \\gamma\\mathbf 1$ — un sistema lineal $n\\times n$ en $x^*$."
     },
     {
      "id": "arp4-q10",
      "tipo": "calculo",
-     "enunciado": "Calcula la función generatriz de momentos M_X(t) = E[e^{tX}] para X ~ N(0,1) y X ~ Exp(λ). Úsala para calcular E[X] y E[X²].",
-     "solucion": "Normal N(0,1): M(t) = e^{t²/2}. Momentos: M'(0)=0=E[X]; M''(0)=1=E[X²]. Exp(λ): M(t) = λ/(λ−t) para t<λ. Momentos: M'(0)=1/λ=E[X]; M''(0)=2/λ²=E[X²].",
-     "explicacion": "La mgf codifica todos los momentos: E[X^n] = M^{(n)}(0). Para sumas de independientes: M_{X+Y}(t) = M_X(t)·M_Y(t). La mgf de N(μ,σ²) es e^{μt+σ²t²/2}: el argumento del exponente justifica E[e^X] = e^{μ+σ²/2}."
+     "enunciado": "Calcula la función generatriz de momentos $M_X(t) = E[e^{tX}]$ para $X \\sim N(0,1)$ y $X \\sim \\text{Exp}(\\lambda)$. Úsala para calcular $E[X]$ y $E[X^2]$.",
+     "solucion": "Normal $N(0,1)$: $M(t) = e^{t^2/2}$. Momentos: $M'(0)=0=E[X]$; $M''(0)=1=E[X^2]$. $\\text{Exp}(\\lambda)$: $M(t) = \\lambda/(\\lambda-t)$ para $t<\\lambda$. Momentos: $M'(0)=1/\\lambda=E[X]$; $M''(0)=2/\\lambda^2=E[X^2]$.",
+     "explicacion": "La mgf codifica todos los momentos: $E[X^n] = M^{(n)}(0)$. Para sumas de independientes: $M_{X+Y}(t) = M_X(t)\\,M_Y(t)$. La mgf de $N(\\mu,\\sigma^2)$ es $e^{\\mu t+\\sigma^2 t^2/2}$: el argumento del exponente justifica $E[e^X] = e^{\\mu+\\sigma^2/2}$."
     },
     {
      "id": "arp4-q11",
      "tipo": "calculo",
-     "enunciado": "Descompón A = \\[\\[4,2],[2,3]] en sus valores y vectores propios. Verifica que A = PΛP⁻¹.",
-     "solucion": "det(A−λI) = (4−λ)(3−λ)−4 = λ²−7λ+8 = 0 → λ = (7±√17)/2 ≈ 5.56, 1.44. Para λ₁≈5.56: (A−λ₁I)v=0 → v₁ ∝ (2, λ₁−4) = (2, 1.56). Para λ₂≈1.44: v₂ ∝ (2, 1.44−4) = (2,−2.56). Verificación: tr(A)=7=λ₁+λ₂ ✓; det(A)=8=λ₁λ₂ ✓.",
-     "explicacion": "Descomposición espectral A = PΛP⁻¹ (P = matriz de vectores propios por columnas). Para A simétrica: P es ortogonal (P⁻¹=Pᵀ) — descomposición espectral. PCA = descomposición espectral de la covarianza: los valores propios son las varianzas explicadas."
+     "enunciado": "Descompón $A = \\begin{pmatrix}4&2\\\\2&3\\end{pmatrix}$ en sus valores y vectores propios. Verifica que $A = P\\Lambda P^{-1}$.",
+     "solucion": "$\\det(A-\\lambda I) = (4-\\lambda)(3-\\lambda)-4 = \\lambda^2-7\\lambda+8 = 0$ → $\\lambda = (7\\pm\\sqrt{17})/2 \\approx 5.56, 1.44$. Para $\\lambda_1\\approx5.56$: $(A-\\lambda_1 I)v=0$ → $v_1 \\propto (2, \\lambda_1-4) = (2, 1.56)$. Para $\\lambda_2\\approx1.44$: $v_2 \\propto (2, 1.44-4) = (2,-2.56)$. Verificación: $\\text{tr}(A)=7=\\lambda_1+\\lambda_2$ ✓; $\\det(A)=8=\\lambda_1\\lambda_2$ ✓.",
+     "explicacion": "Descomposición espectral $A = P\\Lambda P^{-1}$ ($P$ = matriz de vectores propios por columnas). Para $A$ simétrica: $P$ es ortogonal ($P^{-1}=P^\\top$) — descomposición espectral. PCA = descomposición espectral de la covarianza: los valores propios son las varianzas explicadas."
     },
     {
      "id": "arp4-q12",
      "tipo": "calculo",
-     "enunciado": "Calcula ∫₀^∞ x^n·e^{−x} dx. ¿Cuál es la conexión con la función Gamma y el factorial?",
-     "solucion": "∫₀^∞ x^n e^{−x} dx = n! (función Gamma: Γ(n+1) = n!). Dem. por partes: ∫x^n e^{-x} dx = [−x^n e^{-x}]₀^∞ + n∫x^{n-1}e^{-x}dx = n·Γ(n) → Γ(n+1) = n·Γ(n). Con Γ(1)=1: Γ(n+1)=n!.",
-     "explicacion": "La función Gamma extiende el factorial a reales: Γ(1/2) = √π. Aparece en la distribución chi-cuadrado (Γ(n/2)), t-Student, Beta, y en la normalización de muchas densidades. En entrevistas: ∫₀^∞ e^{-x²} dx = √π/2 → Gaussian integral."
+     "enunciado": "Calcula $\\int_0^\\infty x^n e^{-x}\\,dx$. ¿Cuál es la conexión con la función Gamma y el factorial?",
+     "solucion": "$\\int_0^\\infty x^n e^{-x}\\,dx = n!$ (función Gamma: $\\Gamma(n+1) = n!$). Dem. por partes: $\\int x^n e^{-x}\\,dx = [-x^n e^{-x}]_0^\\infty + n\\int x^{n-1}e^{-x}\\,dx = n\\cdot\\Gamma(n)$ → $\\Gamma(n+1) = n\\cdot\\Gamma(n)$. Con $\\Gamma(1)=1$: $\\Gamma(n+1)=n!$.",
+     "explicacion": "La función Gamma extiende el factorial a reales: $\\Gamma(1/2) = \\sqrt\\pi$. Aparece en la distribución chi-cuadrado ($\\Gamma(n/2)$), t-Student, Beta, y en la normalización de muchas densidades. En entrevistas: $\\int_0^\\infty e^{-x^2}\\,dx = \\sqrt\\pi/2$ → integral gaussiana."
     },
     {
      "id": "arp4-q13",
      "tipo": "calculo",
-     "enunciado": "Regla trapezoidal: aproxima ∫₀¹ e^{-x²} dx con n=4 subintervalos. ¿Cuál es el orden del error?",
-     "solucion": "h = 0.25. Nodos: x₀=0, x₁=0.25, x₂=0.5, x₃=0.75, x₄=1. Valores: e^0=1, e^{-0.0625}≈0.9394, e^{-0.25}≈0.7788, e^{-0.5625}≈0.5698, e^{-1}≈0.3679. Trampa: h/2·[f₀ + 2f₁ + 2f₂ + 2f₃ + f₄] = 0.125·[1 + 1.8788 + 1.5576 + 1.1396 + 0.3679] ≈ 0.125·5.9439 ≈ 0.7430. Exacto: erfc(1)×√π/2 ≈ 0.7468. Error ∝ h².",
-     "explicacion": "La regla trapezoidal tiene error O(h²). Simpson tiene O(h⁴). Para mayor precisión: Gauss-Legendre (exacta para polinomios de grado ≤ 2n−1 con n puntos). En Monte Carlo: error ∝ 1/√N independiente de la dimensión — mejor para integrales de alta dimensión."
+     "enunciado": "Regla trapezoidal: aproxima $\\int_0^1 e^{-x^2}\\,dx$ con $n=4$ subintervalos. ¿Cuál es el orden del error?",
+     "solucion": "$h = 0.25$. Nodos: $x_0=0, x_1=0.25, x_2=0.5, x_3=0.75, x_4=1$. Valores: $e^0=1$, $e^{-0.0625}\\approx0.9394$, $e^{-0.25}\\approx0.7788$, $e^{-0.5625}\\approx0.5698$, $e^{-1}\\approx0.3679$. Trapecio: $\\tfrac{h}{2}[f_0 + 2f_1 + 2f_2 + 2f_3 + f_4] = 0.125[1 + 1.8788 + 1.5576 + 1.1396 + 0.3679] \\approx 0.125\\cdot5.9439 \\approx 0.7430$. Exacto: $\\text{erf}(1)\\cdot\\sqrt\\pi/2 \\approx 0.7468$. Error $\\propto h^2$.",
+     "explicacion": "La regla trapezoidal tiene error $O(h^2)$. Simpson tiene $O(h^4)$. Para mayor precisión: Gauss-Legendre (exacta para polinomios de grado $\\le 2n-1$ con $n$ puntos). En Monte Carlo: error $\\propto 1/\\sqrt N$ independiente de la dimensión — mejor para integrales de alta dimensión."
     },
     {
      "id": "arp4-q14",
      "tipo": "conceptual",
-     "enunciado": "¿Qué es la transformada de Fourier de una función f(x)? ¿Por qué se usa en probabilidad (función característica)? Calcula la función característica de N(0,1).",
-     "solucion": "F̂(ω) = ∫_{-∞}^∞ f(x)e^{−iωx} dx. En probabilidad: función característica φ_X(t) = E[e^{itX}]. Siempre existe (a diferencia de la mgf). Para N(0,1): φ(t) = e^{−t²/2} (misma forma que mgf con t→it).",
-     "explicacion": "La función característica identifica unívocamente la distribución. La inversa da la densidad. Usos: demostrar el TCL (φ_{X̄}(t) = φ_X(t/√n)^n → e^{−t²/2}); valorar opciones con transformada de Fourier (método de Carr-Madan) cuando la función característica es conocida pero la densidad no."
+     "enunciado": "¿Qué es la transformada de Fourier de una función $f(x)$? ¿Por qué se usa en probabilidad (función característica)? Calcula la función característica de $N(0,1)$.",
+     "solucion": "$\\hat F(\\omega) = \\int_{-\\infty}^\\infty f(x)e^{-i\\omega x}\\,dx$. En probabilidad: función característica $\\varphi_X(t) = E[e^{itX}]$. Siempre existe (a diferencia de la mgf). Para $N(0,1)$: $\\varphi(t) = e^{-t^2/2}$ (misma forma que mgf con $t\\to it$).",
+     "explicacion": "La función característica identifica unívocamente la distribución. La inversa da la densidad. Usos: demostrar el TCL ($\\varphi_{\\bar X}(t) = \\varphi_X(t/\\sqrt n)^n \\to e^{-t^2/2}$); valorar opciones con transformada de Fourier (método de Carr-Madan) cuando la función característica es conocida pero la densidad no."
     },
     {
      "id": "arp4-q15",
      "tipo": "conceptual",
      "enunciado": "¿Qué es PCA (Análisis de Componentes Principales)? ¿Cuál es el problema de optimización que resuelve? Aplica a una matriz de covarianza 2×2 sencilla.",
-     "solucion": "PCA busca direcciones ortogonales que maximizan la varianza explicada. Problema: max_{‖v‖=1} vᵀΣv → solución: v = vector propio de mayor valor propio. Para Σ=\\[\\[2,1],[1,2]]: λ₁=3 (vector (1,1)/√2), λ₂=1 (vector (1,−1)/√2). PC1 explica λ₁/(λ₁+λ₂)=75% de la varianza total.",
+     "solucion": "PCA busca direcciones ortogonales que maximizan la varianza explicada. Problema: $\\max_{\\|v\\|=1} v^\\top\\Sigma v$ → solución: $v$ = vector propio de mayor valor propio. Para $\\Sigma=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$: $\\lambda_1=3$ (vector $(1,1)/\\sqrt2$), $\\lambda_2=1$ (vector $(1,-1)/\\sqrt2$). PC1 explica $\\lambda_1/(\\lambda_1+\\lambda_2)=75\\%$ de la varianza total.",
      "explicacion": "PCA = rotación para alinear ejes con las direcciones de mayor variabilidad. Los componentes principales son los vectores propios de Σ; los valores propios son las varianzas explicadas. En finanzas: las primeras 2-3 PCs de la curva de tasas explican >95% de su movimiento (nivel, pendiente, curvatura)."
     },
     {
      "id": "arp4-q16",
      "tipo": "calculo",
-     "enunciado": "Calcula la integral gaussiana ∫_{-∞}^∞ e^{−x²} dx. Usa el truco de elevar al cuadrado en 2D y pasar a coordenadas polares.",
-     "solucion": "Sea I = ∫e^{−x²}dx. Entonces I² = ∫∫e^{−x²−y²}dxdy. En polares: x=r·cosθ, y=r·sinθ, dxdy=r dr dθ. I² = ∫₀^{2π}dθ ∫₀^∞ e^{−r²}r dr = 2π·[−e^{−r²}/2]₀^∞ = 2π·(1/2) = π. Por lo tanto I = √π. Consecuencia: la normal N(0,1/2) integra a 1; ∫_{-∞}^∞ e^{−x²/2}dx = √(2π).",
-     "explicacion": "El truco de Gaussian integral (elevar al cuadrado + coordenadas polares) es uno de los más elegantes en análisis. El resultado √π conecta la función Gamma con la distribución normal: Γ(1/2) = √π. No tiene primitiva elemental — solo existen los valores como probabilidades Φ(x)."
+     "enunciado": "Calcula la integral gaussiana $\\int_{-\\infty}^\\infty e^{-x^2}\\,dx$. Usa el truco de elevar al cuadrado en 2D y pasar a coordenadas polares.",
+     "solucion": "Sea $I = \\int e^{-x^2}\\,dx$. Entonces $I^2 = \\iint e^{-x^2-y^2}\\,dx\\,dy$. En polares: $x=r\\cos\\theta$, $y=r\\sin\\theta$, $dx\\,dy=r\\,dr\\,d\\theta$. $I^2 = \\int_0^{2\\pi}d\\theta \\int_0^\\infty e^{-r^2}r\\,dr = 2\\pi[-e^{-r^2}/2]_0^\\infty = 2\\pi\\cdot(1/2) = \\pi$. Por lo tanto $I = \\sqrt\\pi$. Consecuencia: la normal $N(0,1/2)$ integra a 1; $\\int_{-\\infty}^\\infty e^{-x^2/2}\\,dx = \\sqrt{2\\pi}$.",
+     "explicacion": "El truco de la integral gaussiana (elevar al cuadrado + coordenadas polares) es uno de los más elegantes en análisis. El resultado $\\sqrt\\pi$ conecta la función Gamma con la distribución normal: $\\Gamma(1/2) = \\sqrt\\pi$. No tiene primitiva elemental — solo existen los valores como probabilidades $\\Phi(x)$."
     }
    ]
   },
