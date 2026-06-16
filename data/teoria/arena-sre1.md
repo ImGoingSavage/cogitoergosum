@@ -1,5 +1,11 @@
 # Fundamentos SRE: riesgo, error budgets y SLOs
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+La intuición dice "más fiabilidad siempre es mejor"; el SRE (Site Reliability Engineering) demuestra que es falsa. Esta lección construye, desde cero, su idea central: **gestionar la fiabilidad como riesgo cuantificado**, no maximizar el uptime. El instrumento clave es el **error budget** ($1-\text{SLO}$), que convierte la eterna pelea entre velocidad (Dev) y estabilidad (SRE) en una métrica objetiva que el equipo se autorregula.
+
+Al terminar podrás: (1) explicar por qué el 100% de uptime es el objetivo equivocado (el usuario no lo nota, cada "nueve" cuesta ~10× y crea dependencias ocultas); (2) calcular y usar un error budget para arbitrar releases; (3) distinguir SLI (mides), SLO (objetivo) y SLA (contrato con consecuencias) con el test del "¿qué pasa si no se cumple?"; y (4) saber por qué se mide por percentiles (p99) y no por la media. El ejemplo de gastar el budget hace de hilo.
+
 SRE (Site Reliability Engineering) es lo que sale cuando un ingeniero de software diseña operaciones. Su idea central: **gestionar la fiabilidad como riesgo**, no maximizar el uptime.
 
 ## 100% es el objetivo equivocado

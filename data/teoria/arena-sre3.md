@@ -1,5 +1,11 @@
 # Troubleshooting, gestión de incidentes y postmortems sin culpa
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando algo se rompe en producción, la diferencia entre resolverlo en minutos o en horas no es talento, es **método**. Esta lección construye, desde cero, tres disciplinas del SRE: depurar como científico (método hipotético-deductivo), coordinar un incidente sin que se descontrole (el Incident Command System) y aprender de él sin buscar culpables (postmortems blameless).
+
+Al terminar podrás: (1) convertir "el sistema está lento" en un reporte accionable y probar hipótesis con cambios controlados (caballos, no cebras; correlación ≠ causa); (2) reconocer los tres fallos de un incidente mal gestionado y los roles del ICS (solo Ops modifica el sistema); y (3) entender por qué un postmortem **sin culpa** ataca causas sistémicas —porque la cultura de culpa hace que los problemas se oculten—. Conecta con la filosofía de que el error enseña, no castiga.
+
 ## Troubleshooting hipotético-deductivo
 
 Depurar es aplicar el **método hipotético-deductivo**: ante un **reporte** (esperado vs real + cómo reproducir), mira telemetría/logs, plantea **hipótesis** de causa y pruébalas —comparando el estado observado contra la teoría, o **cambiando el sistema de forma controlada** y observando—, iterando hasta la **causa raíz**, luego corrige y escribe un postmortem. Abre un **bug** por cada incidencia (registro buscable).

@@ -1,5 +1,11 @@
 # Eliminar toil, monitoreo y las cuatro señales doradas
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+¿Por qué un equipo de operaciones acaba ahogado en trabajo manual mientras el servicio crece? Esta lección construye, desde cero, dos ideas que lo evitan: el concepto de **toil** (trabajo manual, repetitivo, sin valor perdurable, que escala $O(n)$) y su límite del <50%, y las **cuatro señales doradas** —las únicas cuatro métricas que necesitas si solo puedes medir cuatro—.
+
+Al terminar podrás: (1) identificar qué es toil y qué no (no es "trabajo que no me gusta" ni overhead), y por qué sin límite crece al 100%; (2) nombrar las cuatro señales doradas (latencia, tráfico, errores, saturación) y por qué se separa la latencia de éxito de la de error; (3) alertar por síntomas (black-box) y diagnosticar con white-box; y (4) usar el p99 como early-warning de saturación. Conecta con los SLOs de [[arena-sre1]].
+
 ## Toil
 
 **Toil** = trabajo ligado a operar el servicio que es **manual, repetitivo, automatizable, táctico** (interrupt-driven), **sin valor perdurable** y que escala **O(n)** con el servicio. *No* es "trabajo que no me gusta", ni **overhead** (reuniones, RR.HH., snippets), ni el grunt work que deja una mejora permanente (eso es ingeniería).

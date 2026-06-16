@@ -1,5 +1,11 @@
 # Robustez en producción: releases, simplicidad, sobrecarga y cascada
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Los sistemas en producción fallan de formas predecibles, y el SRE tiene defensas probadas para cada una. Esta lección construye, desde cero, cuatro: cómo lanzar con seguridad (builds herméticos, lotes pequeños), por qué "lo aburrido es bueno" (la simplicidad como virtud y cada línea de código como pasivo), cómo sobrevivir a la sobrecarga (rechazar pronto, degradar antes de colapsar) y cómo evitar el fallo más temido —la **cascada**, donde la caída de un clúster tumba a los demás—.
+
+Al terminar podrás: (1) explicar qué es un build hermético y para qué sirve el cherry-pick; (2) distinguir complejidad esencial de accidental y por qué el código muerto es una bomba de tiempo (Knight Capital); (3) ordenar las defensas contra la sobrecarga (load shedding, degradación elegante); y (4) seguir la aritmética de una cascada y sus mitigaciones (límite de reintentos, backoff+jitter, capacidad N+2). El ejemplo de los dos clústeres hace de hilo.
+
 ## Ingeniería de releases
 
 Cuatro principios: **autoservicio** (cada equipo controla su release, automatizado), **alta velocidad** (lanzar frecuente → menos cambios entre versiones → testing/troubleshooting más fáciles; *Push on Green* despliega todo build que pasa los tests), **builds herméticos** (insensibles a lo instalado en la máquina: mismas fuentes + revisión → resultado **idéntico y reproducible**; versiona también las herramientas) y **enforcement de políticas** (control de acceso, revisión de código). **Rama desde mainline + cherry-pick** de los fixes → se sabe el contenido exacto de cada release sin arrastrar cambios no relacionados.
