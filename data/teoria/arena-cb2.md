@@ -1,122 +1,120 @@
 # Estimación puntual: MLE, Cramér-Rao y UMVUE
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Esta lección es el **manual de construcción** de estimadores: cómo *fabricar* uno (método de momentos, MLE), cómo saber si es lo mejor posible (cota de Cramér-Rao) y cómo encontrar el mejor entre los insesgados (UMVUE, vía una receta de tres pasos). Donde [[arena-dg1]] dio el panorama y [[arena-cb1]] la teoría de suficiencia, aquí ensamblamos todo en procedimientos que puedes ejecutar en una entrevista.
+
+Al terminar podrás: (1) calcular el MLE y el estimador de momentos de una distribución; (2) escribir la cota de Cramér-Rao y saber cuándo se alcanza; (3) ejecutar la **receta de Rao-Blackwell / Lehmann-Scheffé** para hallar el UMVUE; y (4) usar priors conjugados para la versión bayesiana. Cada herramienta entra por su intuición. Los teoremas (Cramér-Rao, Lehmann-Scheffé) van en `[CAJA NEGRA OK]`.
+
+> Comparte fundamentos con [[arena-dg1]] (sesgo, MSE, Fisher) y [[arena-dg2]] (MLE, asintótica). Si esos términos te son nuevos, empieza por dg1.
+
+---
+
 ## Métodos de encontrar estimadores
 
 ### Método de momentos (MoM)
 
-Iguala los primeros k momentos muestrales mⱼ=(1/n)ΣXᵢʲ con los poblacionales μ'ⱼ(θ₁,…,θₖ) y despeja.
-
-Simple pero puede ser ineficiente. No requiere forma cerrada de la distribución.
+El más directo: los **momentos** de una distribución (media, media de los cuadrados, …) dependen de $\theta$. Iguala el momento teórico al **muestral** y despeja. Con un parámetro: pon $E[X]=\bar X$ y resuelve. Con $k$ parámetros, iguala los primeros $k$ momentos $m_j=\frac1n\sum X_i^j$ a sus expresiones teóricas $\mu_j'(\theta_1,\dots,\theta_k)$. Es simple y no exige una forma cerrada bonita, pero suele ser **ineficiente** (desperdicia información).
 
 ### Máxima verosimilitud (MLE)
 
-Maximiza L(θ|x) = Πf(xᵢ|θ), equivalentemente ℓ(θ) = Σlog f(xᵢ|θ).
+Elige el $\theta$ que hace **más probables los datos observados** (intuición completa en [[arena-dg2]]). El procedimiento:
 
-Pasos:
-1. Calcula ℓ(θ) = Σlog f(xᵢ|θ)
-2. Resuelve ∂ℓ/∂θ = 0 (ecuación de puntuación)
-3. Verifica que sea máximo (segunda derivada negativa)
+1. Escribe $\ell(\theta)=\sum_i\log f(x_i\mid\theta)$.
+2. Resuelve la ecuación de verosimilitud $\partial\ell/\partial\theta=0$.
+3. Verifica que sea **máximo** ($\partial^2\ell/\partial\theta^2<0$) y no de frontera.
 
 | Distribución | MLE |
 |-------------|-----|
-| Bernoulli(p) | p̂ = X̄ |
-| Normal(μ,σ²) | μ̂=X̄, σ̂²=(1/n)Σ(Xᵢ−X̄)² |
-| Poisson(λ) | λ̂ = X̄ |
-| Exponencial(λ) | λ̂ = 1/X̄ |
-| Uniform[0,θ] | θ̂ = X₍ₙ₎ = máx Xᵢ |
-| f(x|θ)=θx^{θ−1}, 0<x<1 | θ̂ = −n/Σlog Xᵢ |
-| Doble exponencial (Laplace) | θ̂ = mediana muestral |
+| Bernoulli$(p)$ | $\hat p=\bar X$ |
+| Normal$(\mu,\sigma^2)$ | $\hat\mu=\bar X,\ \hat\sigma^2=\frac1n\sum(X_i-\bar X)^2$ |
+| Poisson$(\lambda)$ | $\hat\lambda=\bar X$ |
+| Exponencial$(\lambda)$ | $\hat\lambda=1/\bar X$ |
+| Uniforme$[0,\theta]$ | $\hat\theta=X_{(n)}=\max X_i$ |
+| Doble exponencial (Laplace) | $\hat\theta=$ mediana muestral |
 
-**Invarianza del MLE:** Si θ̂ es MLE de θ, entonces g(θ̂) es MLE de g(θ).
+La última fila es reveladora: bajo errores Laplace el MLE es la **mediana** (no la media), porque minimizar $\sum|x_i-\theta|$ —la log-verosimilitud de Laplace— se logra en la mediana. La distribución del error decide qué estadístico es óptimo. **Invarianza:** el MLE de $g(\theta)$ es $g(\hat\theta)$.
 
 ---
 
-## Información de Fisher
+## Información de Fisher (recordatorio operativo)
 
-**I(θ) = E[(∂ log f(X|θ)/∂θ)²] = −E[∂² log f(X|θ)/∂θ²]**
+Mide la información que un dato trae sobre $\theta$ (curvatura de la log-verosimilitud; intuición en [[arena-dg1]]):
 
-Para n obs. i.i.d.: I_n(θ) = n·I(θ).
+$$I(\theta)=E\!\left[\Big(\tfrac{\partial\log f}{\partial\theta}\Big)^2\right]=-E\!\left[\tfrac{\partial^2\log f}{\partial\theta^2}\right],\qquad I_n(\theta)=n\,I(\theta).$$
 
-| Distribución | I(θ) |
+| Distribución | $I(\theta)$ |
 |-------------|------|
-| Bernoulli(p) | 1/(p(1−p)) |
-| N(μ,σ²) — para μ (σ² conocida) | 1/σ² |
-| N(μ,σ²) — para σ² (μ conocida) | 1/(2σ⁴) |
-| Poisson(λ) | 1/λ |
-| Exponencial(λ) | 1/λ² |
-| Gamma(α,β) — para β (α conocido) | α/β² |
+| Bernoulli$(p)$ | $1/(p(1-p))$ |
+| $N(\mu,\sigma^2)$ — para $\mu$ ($\sigma^2$ conocida) | $1/\sigma^2$ |
+| $N(\mu,\sigma^2)$ — para $\sigma^2$ ($\mu$ conocida) | $1/(2\sigma^4)$ |
+| Poisson$(\lambda)$ | $1/\lambda$ |
+| Exponencial$(\lambda)$ | $1/\lambda^2$ |
 
 ---
 
 ## Cota de Cramér-Rao
 
-Para todo estimador insesgado τ̂ de τ(θ):
+`[CAJA NEGRA OK]` — asume la cota; lo que importa es leerla y saber cuándo se alcanza.
 
-**Var(τ̂) ≥ [τ'(θ)]² / (n·I(θ))**
+Para todo estimador insesgado $\hat\tau$ de una cantidad $\tau(\theta)$, su varianza tiene un **suelo**:
 
-La cota se alcanza ↔ ∂ log f(x|θ)/∂θ = a(θ)[τ̂(x) − τ(θ)] para alguna función a(θ).
+$$\text{Var}(\hat\tau)\ \ge\ \frac{[\tau'(\theta)]^2}{n\,I(\theta)}.$$
 
-Esto sucede exactamente en las familias exponenciales de un parámetro.
-
-**Eficiencia:** e(τ̂) = [τ'(θ)]²/(n·I(θ)·Var(τ̂)) ∈ (0,1]; vale 1 solo si τ̂ alcanza la cota.
-
-Ejemplo: X̄ para Bernoulli(p) tiene Var=p(1−p)/n y la cota CR es p(1−p)/n → X̄ es eficiente.
+El numerador $[\tau'(\theta)]^2$ ajusta por la "sensibilidad" de lo que estimas (si $\tau$ cambia rápido con $\theta$, su estimación tiembla más). La cota **se alcanza** —el estimador es **eficiente**— exactamente cuando la score se factoriza como $\partial\log f/\partial\theta=a(\theta)[\hat\tau(x)-\tau(\theta)]$, lo que ocurre **solo en las familias exponenciales de un parámetro**. La **eficiencia** $e(\hat\tau)=[\tau'(\theta)]^2/(n\,I(\theta)\,\text{Var}(\hat\tau))\in(0,1]$ vale 1 ahí. Ejemplo: $\bar X$ para Bernoulli tiene $\text{Var}=p(1-p)/n$, que iguala la cota → $\bar X$ es eficiente.
 
 ---
 
-## UMVUE: Estimador insesgado de mínima varianza uniforme
+## UMVUE: el mejor estimador insesgado
 
-Un estimador δ* es **UMVUE** de τ(θ) si es insesgado y Var(δ*) ≤ Var(δ) para todo estimador insesgado δ y todo θ.
+El **UMVUE** ($\delta^*$) es insesgado y tiene varianza mínima para **todo** $\theta$. Se construye con dos teoremas, que en la práctica son una receta.
 
-**Teorema de Rao-Blackwell:** Si δ es insesgado y T suficiente, entonces δ* = E[δ|T] es insesgado con Var(δ*) ≤ Var(δ) para todo θ. No peor en todos los θ simultáneamente.
+`[CAJA NEGRA OK]` — asume ambos; la intuición basta para aplicarlos.
 
-**Teorema de Lehmann-Scheffé:** Si T es **suficiente y completo** y φ(T) es insesgado para τ(θ), entonces φ(T) es el único UMVUE de τ(θ).
+- **Rao-Blackwell:** si $\delta$ es insesgado y $T$ suficiente, entonces $\delta^*=E[\delta\mid T]$ es insesgado y **nunca tiene más varianza** ($\text{Var}(\delta^*)\le\text{Var}(\delta)$). Intuición: promediar sobre el ruido que $T$ ya resumió solo puede ayudar.
+- **Lehmann-Scheffé:** si $T$ es suficiente **y completo** (ver [[arena-cb1]]), cualquier función de $T$ insesgada para $\tau(\theta)$ es **el único** UMVUE.
 
-**Receta para encontrar el UMVUE:**
-1. Encuentra T suficiente y completo.
-2. Encuentra cualquier estimador insesgado δ de τ(θ).
-3. Calcula φ(T) = E[δ|T].
-4. φ(T) es el UMVUE.
-
-Ejemplos clásicos:
+**Receta para el UMVUE:**
+1. Encuentra $T$ suficiente **y completo**.
+2. Encuentra **cualquier** estimador insesgado $\delta$ de $\tau(\theta)$ (aunque sea malo).
+3. Calcula $\delta^*=E[\delta\mid T]$ (lo "Rao-Blackwellizas").
+4. $\delta^*$ es el UMVUE.
 
 | Distribución | Parámetro | UMVUE |
 |-------------|-----------|-------|
-| Bernoulli(p) | p | X̄ |
-| Bernoulli(p) | p² | X̄(X̄−1/n)·n/(n−1) = (ΣXᵢ)(ΣXᵢ−1)/(n(n−1)) |
-| N(μ,σ²) | μ | X̄ |
-| N(μ,σ²) | σ² | S² = Σ(Xᵢ−X̄)²/(n−1) |
-| N(θ,1) | θ² | X̄²−1/n |
-| Exp(λ) | 1/λ | X̄ |
+| Bernoulli$(p)$ | $p$ | $\bar X$ |
+| Bernoulli$(p)$ | $p^2$ | $\dfrac{(\sum X_i)(\sum X_i-1)}{n(n-1)}$ |
+| $N(\mu,\sigma^2)$ | $\mu$ | $\bar X$ |
+| $N(\mu,\sigma^2)$ | $\sigma^2$ | $S^2=\frac{1}{n-1}\sum(X_i-\bar X)^2$ |
+| Exp$(\lambda)$ | $1/\lambda$ | $\bar X$ |
+
+La fila de $p^2$ enseña algo: el UMVUE de una función **no** es esa función del UMVUE (no es $\bar X^2$); hay que corregir el sesgo de $\bar X^2$. El UMVUE no tiene la invarianza cómoda del MLE.
 
 ---
 
-## Estimación Bayesiana
+## Estimación Bayesiana y conjugación
 
-| Función de pérdida | Estimador de Bayes δ*(x) |
-|-------------------|--------------------------|
-| Cuadrática (θ−δ)² | Media posterior E[θ|x] |
-| Absoluta |θ−δ| | Mediana posterior |
-| 0-1 | Moda posterior (MAP) |
-
-**Familias conjugadas:**
+Si tienes un prior $\pi(\theta)$, lo combinas con los datos para un posterior, y reportas la media/mediana/moda posterior según la pérdida (cuadrática/absoluta/0-1; ver [[arena-dg1]]). El truco que lo hace tratable es la **conjugación**: ciertos priors hacen que el posterior sea de la **misma familia**, así que actualizar es solo sumar a los parámetros:
 
 | Verosimilitud | Prior conjugado | Posterior |
 |---------------|-----------------|-----------|
-| Bernoulli(p) | Beta(α,β) | Beta(α+Σxᵢ, β+n−Σxᵢ) |
-| Poisson(λ) | Gamma(α,β) | Gamma(α+Σxᵢ, β+n) |
-| N(μ,σ²) σ² conocida | N(μ₀,τ²) | N(media ponderada, varianza combinada) |
+| Bernoulli$(p)$ | Beta$(\alpha,\beta)$ | Beta$(\alpha+\sum x_i,\ \beta+n-\sum x_i)$ |
+| Poisson$(\lambda)$ | Gamma$(\alpha,\beta)$ | Gamma$(\alpha+\sum x_i,\ \beta+n)$ |
+| $N(\mu,\sigma^2)$, $\sigma^2$ conocida | $N(\mu_0,\tau^2)$ | $N(\text{media ponderada},\ \text{var. combinada})$ |
+
+Lee Beta-Binomial: el prior $\text{Beta}(\alpha,\beta)$ actúa como "$\alpha$ éxitos y $\beta$ fracasos imaginarios"; el posterior simplemente les suma los reales. La actualización bayesiana de tasas es exactamente esto (conecta con [[arena-b4]]).
 
 ---
 
-## Propiedades asintóticas del MLE
+## Propiedades asintóticas del MLE (cierre)
 
-Para familias regulares, √n(θ̂_MLE − θ) →_d N(0, 1/I(θ)).
+Para familias regulares (detalle en [[arena-dg2]]):
 
-Esto implica:
-- **Consistencia**: θ̂_MLE → θ en probabilidad
-- **Eficiencia asintótica**: alcanza la cota CR en el límite
-- **CI asintótico**: θ̂ ± z_{α/2}/√(n·I(θ̂))
+$$\sqrt{n}(\hat\theta_{\text{MLE}}-\theta)\xrightarrow{d}N\!\big(0,\ 1/I(\theta)\big),$$
+
+lo que da **consistencia**, **eficiencia asintótica** (alcanza la cota CR en el límite) y el **IC** $\hat\theta\pm z_{\alpha/2}/\sqrt{n\,I(\hat\theta)}$. El MLE es, por eso, el estimador "por defecto": casi siempre óptimo cuando $n$ es grande, aunque pueda ser sesgado en muestra finita.
+
+> **Predicción antes de seguir:** la cota de Cramér-Rao asume "condiciones de regularidad". ¿Se aplica a Uniforme$[0,\theta]$? Respuesta: **no** — su soporte depende de $\theta$, lo que rompe la regularidad. Por eso el MLE $X_{(n)}$ converge a tasa $1/n$ (¡más rápido que el habitual $1/\sqrt n$!) y la asintótica normal estándar no aplica. La uniforme es el caso borde que rompe casi todos los teoremas de este capítulo.
 
 ---
 

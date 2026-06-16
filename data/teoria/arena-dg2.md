@@ -1,142 +1,137 @@
 # Máxima verosimilitud y familias exponenciales
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+El **MLE** (estimador de máxima verosimilitud) es el caballo de batalla de la estadística: una receta casi automática que, ante cualquier modelo, te da el parámetro "que mejor explica los datos". Esta lección lo construye desde cero —qué es la verosimilitud, cómo se maximiza, por qué su distribución es normal con $n$ grande— y muestra por qué en las **familias exponenciales** todo sale limpio. También conecta dos cosas que parecían ajenas: el MLE bajo errores normales **es** la regresión por mínimos cuadrados.
+
+Al terminar podrás: (1) plantear y resolver la ecuación de verosimilitud para distribuciones comunes; (2) usar la invarianza del MLE para estimar $g(\theta)$ sin re-optimizar; (3) reconocer los tres tests asintóticos (Wald, LRT, Score) y cuándo usar cada uno; y (4) ver el OLS como un MLE. La intuición primero; la fórmula, cuando aclara. Para la equivalencia asintótica de los tests uso `[CAJA NEGRA OK]`.
+
+> Esta lección profundiza el MLE que [[arena-dg1]] introdujo. Si "verosimilitud", "información de Fisher" o "estadístico suficiente" te suenan nuevos, empieza por ahí.
+
+---
+
 ## La función de verosimilitud
 
-Dado un modelo paramétrico f(x|θ) y observaciones x₁,...,xₙ i.i.d.:
+La idea raíz: **dado lo que observé, ¿qué valor de $\theta$ lo hace más probable?** Si lanzaste 10 monedas y salieron 7 caras, el $p$ que mejor lo explica es 0.7. Formalizamos esa pregunta con la **verosimilitud**: la densidad conjunta de los datos, pero leída como función de $\theta$ (los datos quedan fijos):
 
-**L(θ|x) = ∏ᵢ f(xᵢ|θ)**
+$$L(\theta\mid x) = \prod_{i=1}^n f(x_i\mid\theta).$$
 
-**ℓ(θ|x) = Σᵢ ln f(xᵢ|θ)** — log-verosimilitud (más fácil de optimizar)
+Como multiplicar muchos términos es incómodo (y numéricamente traicionero), se trabaja con su logaritmo, que convierte el producto en suma —y como el log es creciente, maximizar una o la otra da el mismo $\theta$:
 
-El MLE es: **θ̂ = argmax_θ ℓ(θ|x)**
+$$\ell(\theta\mid x) = \sum_{i=1}^n \ln f(x_i\mid\theta).$$
 
-Condición de primer orden (cuando el máximo es interior): **∂ℓ/∂θ = 0** (ecuación de verosimilitud)
+El **MLE** es el punto que maximiza esa log-verosimilitud, $\hat\theta=\arg\max_\theta \ell(\theta\mid x)$. Cuando el máximo es interior y la curva es suave, se halla derivando e igualando a cero — la **ecuación de verosimilitud**:
+
+$$\frac{\partial\ell}{\partial\theta}=0.$$
+
+Cuidado conceptual clave: $L(\theta)$ **no** es una densidad de probabilidad de $\theta$ (no integra a 1 sobre $\theta$). Es "compatibilidad de cada $\theta$ con los datos". El MLE no es una probabilidad.
 
 ---
 
 ## MLE para distribuciones comunes
 
-| Distribución | Log-verosimilitud | MLE |
+| Distribución | Log-verosimilitud (esquema) | MLE |
 |-------------|-------------------|-----|
-| Bernoulli(p) | xΣlnp+(n-Σx)ln(1-p) | p̂=X̄ |
-| Poisson(λ) | -nλ+Σx·lnλ | λ̂=X̄ |
-| N(μ,σ²) | -n/2·ln(σ²)-Σ(x-μ)²/(2σ²) | μ̂=X̄; σ̂²=Σ(x-X̄)²/n |
-| Exp(λ) | n·lnλ-λΣx | λ̂=1/X̄ |
-| Gamma(α,β) — β desconocido | n·α·lnβ+(α-1)Σlnx-βΣx | β̂=X̄/α (α fijo) |
+| Bernoulli$(p)$ | $(\sum x)\ln p+(n-\sum x)\ln(1-p)$ | $\hat p=\bar X$ |
+| Poisson$(\lambda)$ | $-n\lambda+(\sum x)\ln\lambda$ | $\hat\lambda=\bar X$ |
+| $N(\mu,\sigma^2)$ | $-\tfrac n2\ln\sigma^2-\tfrac{\sum(x-\mu)^2}{2\sigma^2}$ | $\hat\mu=\bar X;\ \hat\sigma^2=\tfrac1n\sum(x-\bar X)^2$ |
+| Exp$(\lambda)$ | $n\ln\lambda-\lambda\sum x$ | $\hat\lambda=1/\bar X$ |
 
-**Nota:** El MLE de σ² para la normal (÷n) es sesgado; la varianza muestral S² (÷n-1) es insesgada.
+Mira el patrón: casi todos los MLE son **el promedio** (o una función simple de él). No es coincidencia; lo explica la sección de familias exponenciales. **Nota importante:** el MLE de $\sigma^2$ divide por $n$ y es **sesgado** (subestima); la varianza muestral $S^2$ divide por $n-1$ y es insesgada. El MLE es óptimo asintóticamente, no necesariamente insesgado en muestra finita.
 
 ---
 
 ## Propiedades asintóticas del MLE
 
-Para n grande, bajo condiciones de regularidad:
+Esta es la razón por la que el MLE domina la práctica. Con $n$ grande y condiciones de regularidad, el MLE se distribuye **normal alrededor del valor real**, con varianza igual al inverso de la información de Fisher:
 
-**√n(θ̂_MLE − θ) →^d N(0, 1/I(θ))**
+$$\sqrt{n}\,(\hat\theta_{\text{MLE}}-\theta)\xrightarrow{d}N\!\Big(0,\ \tfrac{1}{I(\theta)}\Big), \qquad\text{o sea}\qquad \hat\theta_{\text{MLE}}\ \approx\ N\!\Big(\theta,\ \tfrac{1}{n\,I(\theta)}\Big).$$
 
-Equivalentemente: **θ̂_MLE ≈ N(θ, 1/(n·I(θ)))**
+Reconoce las piezas: el centro es el valor verdadero $\theta$ (consistencia), y la varianza $1/(nI(\theta))$ es **justo la cota de Cramér-Rao** (eficiencia asintótica, ver [[arena-dg1]]). De aquí salen, casi gratis, dos herramientas:
 
-Esto da:
-- IC del (1-α)%: θ̂ ± z_{α/2} / √(n·I(θ̂))
-- Test de Wald: z = (θ̂-θ₀) · √(n·I(θ̂)) ~ N(0,1) bajo H₀
+- **Intervalo de confianza** del $(1-\alpha)$: $\ \hat\theta \pm z_{\alpha/2}\,/\sqrt{n\,I(\hat\theta)}$.
+- **Test de Wald** para $H_0:\theta=\theta_0$: $\ z=(\hat\theta-\theta_0)\sqrt{n\,I(\hat\theta)}\sim N(0,1)$ bajo $H_0$.
 
 ---
 
 ## Invarianza del MLE
 
-**Si θ̂ es MLE de θ, entonces g(θ̂) es MLE de g(θ)**
+Una propiedad de oro por lo barata: **si $\hat\theta$ es el MLE de $\theta$, entonces $g(\hat\theta)$ es el MLE de $g(\theta)$**, para cualquier función $g$. No hay que volver a optimizar; enchufas el MLE en $g$.
 
-Ejemplos:
-- MLE de λ~Exp es λ̂=1/X̄ → MLE de E[X]=1/λ es X̄
-- MLE de p~Bernoulli es p̂=X̄ → MLE de odds p/(1-p) es p̂/(1-p̂)
-- MLE de σ² es σ̂² → MLE de σ es √σ̂² = σ̂
+- MLE de $\lambda$ en Exp es $\hat\lambda=1/\bar X$ → MLE de la media $E[X]=1/\lambda$ es $\bar X$.
+- MLE de $p$ es $\bar X$ → MLE de los *odds* $p/(1-p)$ es $\bar X/(1-\bar X)$.
+- MLE de $\sigma^2$ es $\hat\sigma^2$ → MLE de $\sigma$ es $\sqrt{\hat\sigma^2}$.
+
+(La media posterior bayesiana **no** tiene esta propiedad: $E[g(\theta)]\ne g(E[\theta])$ en general. Es parte de por qué el MLE es tan cómodo.)
 
 ---
 
 ## Los tres tests asintóticos
 
-Sean H₀:θ=θ₀ vs H₁:θ≠θ₀.
+Para contrastar $H_0:\theta=\theta_0$ contra $H_1:\theta\ne\theta_0$ hay tres estadísticos clásicos, y la gracia es **qué mide cada uno sobre la colina de la log-verosimilitud**:
 
-| Test | Estadístico | Distribución bajo H₀ |
-|------|-------------|----------------------|
-| Wald | (θ̂-θ₀)²·n·I(θ̂) | χ²(1) |
-| LRT (razón de veros.) | -2·[ℓ(θ₀)-ℓ(θ̂)] | χ²(1) |
-| Score (Rao) | [∂ℓ/∂θ|_{θ₀}]²/(n·I(θ₀)) | χ²(1) |
+| Test | Mide… | Estadístico | Distribución bajo $H_0$ |
+|------|-------|-------------|----------------------|
+| **Wald** | qué tan lejos cae $\hat\theta$ del pico de $\theta_0$ | $(\hat\theta-\theta_0)^2\,n\,I(\hat\theta)$ | $\chi^2(1)$ |
+| **LRT** | cuánto baja la colina de $\hat\theta$ a $\theta_0$ | $-2[\ell(\theta_0)-\ell(\hat\theta)]$ | $\chi^2(1)$ |
+| **Score (Rao)** | qué tan inclinada está la colina en $\theta_0$ | $[\partial\ell/\partial\theta\,|_{\theta_0}]^2/(n\,I(\theta_0))$ | $\chi^2(1)$ |
 
-Los tres son asintóticamente equivalentes bajo H₀ y bajo alternativas locales.
-
-Para r restricciones: sustituir χ²(1) por χ²(r).
+`[CAJA NEGRA OK]` — *Qué asumir:* que los tres son asintóticamente equivalentes bajo $H_0$ y bajo alternativas locales. *Qué sí razonar:* su geometría y su coste de cómputo: Wald solo necesita $\hat\theta$; el Score solo necesita $\theta_0$ (útil cuando $\hat\theta$ es caro de calcular); el LRT necesita **ambos**. Para $r$ restricciones, se cambia $\chi^2(1)$ por $\chi^2(r)$.
 
 ---
 
 ## Test de razón de verosimilitudes (LRT)
 
-H₀: θ ∈ Θ₀ vs H₁: θ ∈ Θ₁.
+El más usado para **comparar modelos anidados** (un modelo simple $\Theta_0$ dentro de uno general $\Theta$). Compara la mejor verosimilitud que alcanza cada uno:
 
-**Λ = sup_{θ∈Θ₀} L(θ|x) / sup_{θ∈Θ} L(θ|x)**
+$$\Lambda = \frac{\sup_{\theta\in\Theta_0} L(\theta\mid x)}{\sup_{\theta\in\Theta} L(\theta\mid x)}\in(0,1].$$
 
-**−2 ln Λ →^d χ²(r)** donde r = dim(Θ) − dim(Θ₀)
+Si $\Lambda$ es pequeño, el modelo grande explica los datos **mucho** mejor que el restringido → evidencia contra $H_0$. El resultado mágico (teorema de Wilks):
 
-Λ ∈ (0,1]: cuando Λ es pequeño, los datos son mucho más compatibles con Θ que con Θ₀.
+$$-2\ln\Lambda\ \xrightarrow{d}\ \chi^2(r),\qquad r=\dim(\Theta)-\dim(\Theta_0),$$
+
+donde $r$ es el número de restricciones (parámetros que el modelo simple fija). Es el motor de la selección de modelos por verosimilitud y el ancestro de AIC/BIC.
 
 ---
 
 ## Interpretación geométrica del MLE
 
-La log-verosimilitud ℓ(θ) es una función de θ (no de los datos):
-- **Curvatura alta** en θ̂ → información alta → estimación precisa
-- **Curvatura baja** → información baja → estimación imprecisa
+Repasa la imagen de la colina, porque cierra el círculo con la información de Fisher. La log-verosimilitud $\ell(\theta)$ es una función de $\theta$ con un pico en $\hat\theta$:
 
-La matriz de información observada: **J(θ̂) = −∂²ℓ/∂θ²|_{θ=θ̂}**
+- **Curvatura alta** en el pico (colina puntiaguda) → mucha información → estimación **precisa** (poca varianza).
+- **Curvatura baja** (colina plana) → poca información → estimación **imprecisa**.
 
-Aproximación: Var(θ̂) ≈ 1/J(θ̂) (información observada vs. esperada)
-
----
-
-## MLE para modelos de regresión
-
-Para Y=Xβ+ε con ε~N(0,σ²):
-
-ℓ(β,σ²) = -n/2·ln(σ²) - (Y-Xβ)'(Y-Xβ)/(2σ²)
-
-**Maximizar respecto a β:** ∂ℓ/∂β=0 → X'Xβ = X'Y → **β̂=(X'X)⁻¹X'Y** (OLS)
-
-**Maximizar respecto a σ²:** σ̂²=(Y-Xβ̂)'(Y-Xβ̂)/n (sesgado — divide por n, no n-p)
-
-El OLS = MLE bajo normalidad de los errores.
+La curvatura observada en tus datos concretos es la **información observada** $J(\hat\theta)=-\partial^2\ell/\partial\theta^2\big|_{\hat\theta}$, y da una aproximación práctica a la varianza: $\text{Var}(\hat\theta)\approx 1/J(\hat\theta)$. (Es el primo "muestral" de la información esperada $I(\theta)$.)
 
 ---
 
-## Verosimilitud perfilada
+## MLE para modelos de regresión: el OLS reaparece
 
-Cuando el modelo tiene parámetros de interés θ y "nuisance parameters" η:
+Aquí está la conexión que vale oro en entrevista. Para $Y=X\beta+\varepsilon$ con errores normales $\varepsilon\sim N(0,\sigma^2)$, la log-verosimilitud es
 
-**L_P(θ) = max_η L(θ,η|x)**
+$$\ell(\beta,\sigma^2)=-\tfrac n2\ln\sigma^2-\frac{(Y-X\beta)^\top(Y-X\beta)}{2\sigma^2}.$$
 
-La verosimilitud perfilada solo depende de θ y se puede analizar como si fuera una verosimilitud estándar.
+Maximizar en $\beta$ equivale a **minimizar** $\lVert Y-X\beta\rVert^2$ (la suma de cuadrados de los residuos), porque $\beta$ solo aparece ahí y con signo menos. La solución es la fórmula de mínimos cuadrados:
 
-Ejemplo: para N(μ,σ²) con σ² desconocido, la verosimilitud perfilada de μ es proporcional a una t-Student.
+$$\hat\beta=(X^\top X)^{-1}X^\top Y\quad(\text{OLS}).$$
 
----
-
-## Familias exponenciales y el MLE
-
-Para familia exponencial f(x|θ) = h(x)·exp(η(θ)·T(x) − A(θ)):
-
-**Ecuación de verosimilitud: E_θ[T(X)] = (1/n)ΣT(xᵢ)**
-
-El MLE igualal estadístico suficiente T a su valor esperado bajo el modelo. Esto hace que el MLE sea fácil de calcular y que la solución sea única (la log-verosimilitud es cóncava para familias exponenciales canónicas).
+Es decir: **OLS = MLE bajo errores normales**. (Si los errores fueran Laplace en vez de normales, el MLE minimizaría $\sum|\varepsilon_i|$ → regresión robusta LAD.) El MLE de $\sigma^2$ vuelve a dividir por $n$ (sesgado; la versión insesgada divide por $n-p$).
 
 ---
 
-## Diagnósticos de convergencia del MLE
+## Familias exponenciales: por qué todo sale limpio
 
-1. Verifica que ∂²ℓ/∂θ² < 0 en θ̂ (máximo, no mínimo)
-2. Verifica que la ecuación de verosimilitud tiene solución única
-3. Para el MLE numérico: Newton-Raphson converge cuadráticamente
+Casi todas las distribuciones útiles (Bernoulli, Poisson, normal, gamma…) comparten una forma común, la **familia exponencial**:
 
-**Newton-Raphson para el MLE:**
-θₙ₊₁ = θₙ − [∂²ℓ/∂θ²]⁻¹ · ∂ℓ/∂θ  evaluado en θₙ
+$$f(x\mid\theta)=h(x)\,\exp\big(\eta(\theta)\,T(x)-A(\theta)\big),$$
+
+donde $T(x)$ es el estadístico suficiente y $A(\theta)$ normaliza. La consecuencia práctica: la ecuación de verosimilitud se vuelve una identidad bellísima —**el MLE iguala el estadístico suficiente a su esperanza**:
+
+$$E_\theta[T(X)] = \tfrac1n\sum_i T(x_i).$$
+
+Esto explica por qué tantos MLE son "el promedio": para Poisson, $T=\sum x$ y $E[\sum x]=n\lambda$, así que $\hat\lambda=\bar X$. Además, en familias exponenciales canónicas la log-verosimilitud es **cóncava**, así que el máximo es **único** y fácil de hallar (sin mínimos locales). Es el laboratorio donde toda la teoría funciona sin sobresaltos.
+
+> **Predicción antes de seguir:** para Uniforme$[0,\theta]$, ¿el MLE sale de $\partial\ell/\partial\theta=0$? Respuesta: **no**. La verosimilitud $L(\theta)=\theta^{-n}$ para $\theta\ge\max x_i$ **decrece** sin tener derivada cero; el MLE es la **frontera** $\hat\theta=\max x_i$. Derivar a ciegas falla cuando el soporte depende de $\theta$ (la Uniforme no es familia exponencial). Siempre verifica si el máximo es interior o de borde.
 
 ---
 

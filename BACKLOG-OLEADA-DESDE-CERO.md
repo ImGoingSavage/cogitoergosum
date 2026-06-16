@@ -17,14 +17,14 @@
 | Cluster | Unidades | Estado |
 |---|---|---|
 | **1. quant-prob** (Probabilidad, esperanza y conteo) | 25 | ✅ **COMPLETO** (v82–v87) |
-| 2. stats-inf (Estadística aplicada e inferencia) | 16 | ⬜ pendiente |
+| 2. stats-inf (Estadística aplicada e inferencia) | 16 | 🟡 4/16 (lote 1 v91) |
 | 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ⬜ pendiente |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **34 / 118 hechas** |
+| | **118** | **38 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -68,12 +68,12 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-q7` — Finanzas avanzadas: bonos, Greeks y procesos
 - [x] `arena-q6` — Estadística inferencial: distribuciones y estimación
 
-### 2. stats-inf — Estadística aplicada e inferencia (16) — ⬜
+### 2. stats-inf — Estadística aplicada e inferencia (16) — 🟡 4/16 (lote 1 v91)
 
-- [ ] `arena-dg1` — Estimación puntual y propiedades de estimadores
-- [ ] `arena-dg2` — Máxima verosimilitud y familias exponenciales
-- [ ] `arena-cb1` — Suficiencia, completitud y Basu
-- [ ] `arena-cb2` — MLE, Cramér-Rao y UMVUE
+- [x] `arena-dg1` — Estimación puntual y propiedades de estimadores
+- [x] `arena-dg2` — Máxima verosimilitud y familias exponenciales
+- [x] `arena-cb1` — Suficiencia, completitud y Basu
+- [x] `arena-cb2` — MLE, Cramér-Rao y UMVUE
 - [ ] `arena-dg3` — Intervalos de confianza y tests de hipótesis
 - [ ] `arena-cb3` — NP Lemma, LRT y tests UMP
 - [ ] `arena-cb4` — Intervalos de confianza y métodos asintóticos

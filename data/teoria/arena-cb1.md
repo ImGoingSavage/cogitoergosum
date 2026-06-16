@@ -1,97 +1,104 @@
 # Suficiencia, estadísticos completos y el principio de verosimilitud
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Cuando estimas un parámetro, no todos los detalles de tus datos importan: parte es señal sobre $\theta$ y parte es ruido. Esta lección construye, desde cero, la teoría que separa una cosa de la otra: la **suficiencia** (qué resumen de los datos contiene toda la información sobre $\theta$), la **completitud** (cuándo ese resumen es además único) y el **teorema de Basu** (cómo la completitud regala independencias gratis). Es la maquinaria fina detrás de "el mejor estimador insesgado".
+
+Al terminar podrás: (1) usar el criterio de factorización para detectar un estadístico suficiente; (2) reconocer la familia exponencial como el lugar donde la suficiencia se comprime a dimensión fija; (3) distinguir suficiente de completo y entender por qué hace falta lo segundo para el UMVUE; y (4) aplicar Basu para deducir independencias sin integrar. Cada concepto entra por un ejemplo. Los teoremas duros (completitud, Basu) van en `[CAJA NEGRA OK]`: la intuición es obligatoria; la prueba, opcional.
+
+> Esta lección es la capa profunda de la suficiencia que [[arena-dg1]] introdujo y que [[arena-cb2]] usará para construir UMVUEs.
+
+---
+
 ## Estadístico suficiente
 
-T(X) es **suficiente** para θ si la distribución condicional de X dado T(X)=t no depende de θ.
+Vuelve al ejemplo raíz: lanzas una moneda 5 veces y sale $(1,0,1,1,0)$. Para estimar $p$, ¿importa el **orden**? No: basta saber que hubo **3 éxitos**. El total $\sum X_i$ ya contiene toda la información sobre $p$; las posiciones son ruido. Eso es la **suficiencia**: $T(X)$ es suficiente para $\theta$ si, sabiendo $T$, los datos crudos no añaden nada más sobre $\theta$ (la distribución de $X$ dado $T=t$ no depende de $\theta$).
 
-Intuición: T captura toda la información que los datos contienen sobre θ; el resto es "ruido".
+Detectarlo con la definición es engorroso; el atajo es el **criterio de factorización (Fisher-Neyman):**
 
-**Criterio de factorización (Fisher-Neyman):**
+$$f(x\mid\theta) = g(T(x),\theta)\cdot h(x).$$
 
-f(x|θ) = g(T(x), θ) · h(x)
-
-T es suficiente ↔ la verosimilitud L(θ|x) solo depende de x a través de T(x).
+$T$ es suficiente si y solo si la densidad se parte así, con toda la dependencia de $\theta$ encerrada en $g$ (a través de $T$) y un factor $h(x)$ libre de $\theta$. Dicho de otro modo: **la verosimilitud solo toca los datos a través de $T(x)$**.
 
 | Distribución | Estadístico suficiente |
 |-------------|----------------------|
-| Bernoulli(p) | T = ΣXᵢ |
-| Normal N(μ,σ²) — ambos desconocidos | T = (ΣXᵢ, ΣXᵢ²) |
-| Poisson(λ) | T = ΣXᵢ |
-| Uniform[0,θ] | T = X₍ₙ₎ = máx Xᵢ |
-| Gamma(α,β) — α conocida | T = ΣXᵢ |
-| Exponencial(θ) desplazada f(x|θ)=e^{iθ−x} | T = mín(Xᵢ/i) |
+| Bernoulli$(p)$ | $T=\sum X_i$ |
+| Normal $N(\mu,\sigma^2)$ — ambos desconocidos | $T=(\sum X_i,\ \sum X_i^2)$ |
+| Poisson$(\lambda)$ | $T=\sum X_i$ |
+| Uniforme$[0,\theta]$ | $T=X_{(n)}=\max X_i$ |
+| Gamma$(\alpha,\beta)$ — $\alpha$ conocida | $T=\sum X_i$ |
 
 ---
 
 ## Familias exponenciales
 
-Para f(x|θ) = h(x)c(θ) exp(Σ wₖ(θ)tₖ(x)), los estadísticos suficientes son T = (Σtₖ(X₁),…,Σtₖ(Xₙ)).
+La razón de que tantos suficientes sean sumas: pertenecen a la **familia exponencial**
 
-Ejemplos: toda la tabla anterior pertenece a la familia exponencial (salvo la uniforme).
+$$f(x\mid\theta)=h(x)\,c(\theta)\,\exp\!\Big(\sum_k w_k(\theta)\,t_k(x)\Big),$$
+
+cuyos estadísticos suficientes son $T=\big(\sum t_1(X_i),\dots,\sum t_k(X_i)\big)$ — sumas de las funciones $t_k$. Toda la tabla anterior es familia exponencial **salvo la uniforme** (cuyo soporte depende de $\theta$, lo que la deja fuera). Esta es la clave de por qué la uniforme se comporta distinto en casi todos los teoremas.
 
 ---
 
 ## Estadístico minimal suficiente
 
-T es **minimal suficiente** si es función de todo estadístico suficiente — es la compresión máxima sin pérdida de información.
+Puede haber muchos estadísticos suficientes (los datos completos lo son, trivialmente). El **minimal suficiente** es la **compresión máxima**: es función de cualquier otro suficiente, así que no se puede comprimir más sin perder información sobre $\theta$.
 
-**Criterio de Lehmann-Scheffé:** T(x) es minimal suficiente si
+`[CAJA NEGRA OK]` — asume el criterio; su prueba no aporta a usarlo. **Criterio de Lehmann-Scheffé:** $T(x)$ es minimal suficiente cuando el cociente de verosimilitudes $L(\theta\mid x)/L(\theta\mid y)$ **no depende de $\theta$** exactamente si $T(x)=T(y)$. Intuición: dos muestras son "equivalentes para $\theta$" precisamente cuando tienen el mismo $T$.
 
-L(θ|x)/L(θ|y) no depende de θ ↔ T(x) = T(y).
-
-Ejemplos de estadísticos minimales:
-
-| Distribución | Estadístico minimal suficiente |
+| Distribución | Minimal suficiente |
 |-------------|-------------------------------|
-| Normal N(μ,σ²) | (X̄, S²) |
-| Cauchy(θ,1) | Estadísticos de orden (X₍₁₎,…,X₍ₙ₎) |
-| Uniforme U(θ,θ+1) | (X₍₁₎, X₍ₙ₎) |
-| Logística loc. μ | Estadísticos de orden |
+| Normal $N(\mu,\sigma^2)$ | $(\bar X,\ S^2)$ |
+| Cauchy$(\theta,1)$ | estadísticos de orden $(X_{(1)},\dots,X_{(n)})$ |
+| Uniforme $U(\theta,\theta+1)$ | $(X_{(1)},\ X_{(n)})$ |
+
+Observa el caso Cauchy: **no hay compresión**. Hay que retener *todos* los datos ordenados. Fuera de la familia exponencial, la naturaleza no siempre te deja resumir.
 
 ---
 
 ## Completitud
 
-T es **completo** para una familia de distribuciones si:
+Suficiente no es suficiente (valga el juego) para garantizar **unicidad**. Para eso está la **completitud**, una condición técnica con una lectura simple: el estadístico $T$ es completo si **ningún cambio de variable no trivial de $T$ tiene esperanza cero para todo $\theta$**. Formalmente:
 
-E[g(T)] = 0 para todo θ ⟹ g(T) = 0 a.s. para todo θ.
+$$E[g(T)]=0\ \text{ para todo }\theta\ \Longrightarrow\ g(T)=0\ \text{(casi seguramente)}.$$
 
-Regla práctica: las familias exponenciales de rango completo tienen estadístico suficiente completo.
+`[CAJA NEGRA OK]` — *Qué asumir:* que la completitud convierte "una función insesgada de $T$" en "**la única** función insesgada de $T$". *Por qué importa:* sin unicidad no hay "mejor estimador" bien definido. *Regla práctica:* las **familias exponenciales de rango completo** tienen estadístico suficiente **completo** — así que en la práctica casi siempre lo tienes.
 
-Ejemplo: X₁,…,Xₙ i.i.d. N(μ,σ²) con ambos parámetros desconocidos: T=(ΣXᵢ, ΣXᵢ²) es suficiente y **completo**.
-
-Contraejemplo: familia n(θ, aθ²) con a conocido: (ΣXᵢ, ΣXᵢ²) es suficiente pero **no completo** (el espacio paramétrico no contiene un abierto en ℝ²).
+- **Ejemplo:** $N(\mu,\sigma^2)$ con ambos desconocidos: $T=(\sum X_i,\sum X_i^2)$ es suficiente **y completo**.
+- **Contraejemplo:** $N(\theta,a\theta^2)$ con $a$ conocido: $(\sum X_i,\sum X_i^2)$ es suficiente pero **no completo**, porque el espacio de parámetros es una curva (no un abierto): existe una combinación de $T$ con esperanza cero. Suficiente sin completo no basta para el UMVUE.
 
 ---
 
 ## Estadístico ancilario
 
-V(X) es **ancilario** para θ si su distribución no depende de θ.
+El opuesto de un suficiente: un estadístico $V(X)$ es **ancilario** para $\theta$ si su distribución **no depende de $\theta$** — es ciego al parámetro. Ejemplos:
 
-Ejemplos:
-- X₁ − X₂ para una familia de localización
-- S² en N(μ,σ²) cuando se estima μ con σ² desconocida (la distribución de S² no depende de μ)
-- (Xᵢ − X̄)/S en cualquier familia de localización-escala
+- $X_1-X_2$ en una familia de **localización** (un corrimiento de $\theta$ cancela en la diferencia).
+- $S^2$ en $N(\mu,\sigma^2)$ cuando estimas $\mu$ con $\sigma^2$ conocida (la dispersión no informa de la media).
+- $(X_i-\bar X)/S$ en cualquier familia de localización-escala.
+
+¿Para qué sirve algo que ignora $\theta$? Para construir **pivotes** (intervalos de confianza, ver [[arena-cb4]]) y, vía Basu, para deducir independencias.
 
 ---
 
 ## Teorema de Basu
 
-Si T es **completo y suficiente** y V es **ancilario**, entonces T ⊥ V.
+`[CAJA NEGRA OK]` — un resultado tan útil como su prueba es prescindible para usarlo.
 
-Aplicaciones clásicas:
-- X̄ ⊥ S² en N(μ,σ²) (X̄ es completo suficiente para μ con σ² conocida; S² es ancilario para μ)
-- X₍₁₎ ⊥ Sₙ en la exponencial desplazada (donde Sₙ = estadísticos de escala)
+**Si $T$ es completo y suficiente, y $V$ es ancilario, entonces $T$ y $V$ son independientes.** La intuición: $T$ contiene toda la información de $\theta$ y $V$ no contiene ninguna; siendo $T$ además *completo* (no le sobra estructura), no queda nada que los ligue. Aplicaciones clásicas que de otro modo requerirían integrales feas:
+
+- $\bar X \perp S^2$ en la normal (la media muestral y la varianza muestral son independientes — un hecho central en la construcción de la $t$-Student).
 
 ---
 
 ## Principio de suficiencia y de verosimilitud
 
-**Principio de suficiencia formal:** Si T(x)=T(y), entonces cualquier inferencia sobre θ debe ser la misma para x que para y.
+Dos principios que cierran la lógica del capítulo:
 
-**Principio de verosimilitud (Birnbaum):** Toda la información de x sobre θ está contenida en L(θ|x) ∝ f(x|θ).
+- **Principio de suficiencia:** si $T(x)=T(y)$, cualquier inferencia sobre $\theta$ **debe ser la misma** para $x$ que para $y$. Lo que el suficiente borra es, por definición, irrelevante.
+- **Principio de verosimilitud (Birnbaum):** toda la información de los datos sobre $\theta$ está en la **función de verosimilitud** $L(\theta\mid x)\propto f(x\mid\theta)$. Dos datasets con la misma $L$ (salvo constante) deben dar la misma inferencia.
 
-Consecuencia: la función de verosimilitud es uno-a-uno con el estadístico minimal suficiente en familias regulares.
+Consecuencia: en familias regulares, la verosimilitud es uno-a-uno con el minimal suficiente. Es el fundamento de comparar modelos por razón de verosimilitudes ([[arena-cb3]]).
 
 ---
 

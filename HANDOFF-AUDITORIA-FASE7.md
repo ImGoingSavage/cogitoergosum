@@ -371,6 +371,21 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   sugerido por el backlog: `stats-inf` (16), `dsa` (6), `system-design`/`conductual` (4
   c/u), `causal-health` (22), `ml-systems` (32). El patrón de trabajo de este cluster
   (reescribir solo la mitad superior, conservar la inferior curada) aplica a los demás.
+- 🟡 **Cluster 2 (stats-inf) reescrito DESDE CERO — EN CURSO (sw.js v91).** Edgar pidió
+  seguir con este cluster (2026-06-15). Estas lecciones eran las **más secas**: la mitad
+  superior eran fichas de fórmulas en **texto plano/Unicode** (sin LaTeX). El trabajo es
+  doble: reescribir el núcleo from-zero **y** pasar la matemática nueva a **LaTeX**
+  (`$…$`/`$$…$$`). La mitad inferior curada (mini-ejemplo→retrieval) se conserva verbatim
+  (sigue con su Unicode original, que ya pasaba el smoke). Por la densidad matemática se
+  usa `[CAJA NEGRA OK]` en los teoremas pesados (Cramér-Rao, Lehmann-Scheffé, Basu,
+  equivalencia Wald/LRT/Score): intuición obligatoria, prueba opcional. Hay solape natural
+  entre dg1/dg2/cb1/cb2 (suficiencia, MLE, CR, UMVUE) → cada lección se sostiene sola pero
+  cruza con [[ ]] para no duplicar. **Lote 1 (v91):** `dg1` (estimación puntual: sesgo,
+  MSE, Fisher, CR, suficiencia, MLE, UMVUE — la fundacional), `dg2` (MLE + familias
+  exponenciales + OLS=MLE + 3 tests), `cb1` (suficiencia/completitud/Basu), `cb2` (recetas
+  MLE/CR/UMVUE + conjugación). Validado: smoke threw=0 rawDisplayMath=0, KaTeX 0 throws.
+  **Pendiente:** lote 2 (`dg3`, `cb3`, `cb4`, `dg4`), lote 3 (`pst1-4`), lote 4 (`isl1-4`);
+  orden en `BACKLOG-OLEADA-DESDE-CERO.md`.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*
