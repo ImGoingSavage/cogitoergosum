@@ -41,6 +41,7 @@ import * as CuentaUI from './cuentaUI.js';
 import * as MentorChat from './mentorChat.js';
 import * as MentorLocal from './mentorLocal.js';
 import * as Claustro from './claustro.js';
+import { renderInline } from './markdown.js';
 import * as Pizarra from './pizarra.js';
 
 const MIN_DESCONSTRUCCION = 200;
@@ -476,7 +477,7 @@ function renderizarSesion() {
   if (!a || !p) return;
 
   $('problema-titulo').textContent = p.titulo;
-  $('problema-enunciado').textContent = p.enunciado;
+  $('problema-enunciado').innerHTML = renderInline(p.enunciado);
   $('problema-dificultad').innerHTML = '●'.repeat(p.dificultad) + '○'.repeat(5 - p.dificultad);
   $('badge-revision').hidden = !a.esRevision;
   $('guia-revision').hidden = !a.esRevision;
@@ -702,7 +703,7 @@ function agregarHintAlDOM(nivel, texto, fuente) {
   const li = document.createElement('li');
   li.className = 'hint-item';
   li.innerHTML = `<span class="hint-nivel">Pista ${nivel}</span>${fuente === 'ia' ? '<span class="hint-ia">mentor IA</span>' : ''}<p></p>`;
-  li.querySelector('p').textContent = texto;
+  li.querySelector('p').innerHTML = renderInline(texto);
   $('hints-lista').appendChild(li);
 }
 
@@ -745,8 +746,8 @@ function revelarSolucion(soloRender = false) {
   actualizarTimerControles();
   MentorChat.actualizarSuperficiesIA(); // el mentor pasa a modo revisión; el chat se archiva con la sesión
 
-  $('solucion-texto').textContent = p.solucion;
-  $('explicacion-texto').textContent = p.explicacion;
+  $('solucion-texto').innerHTML = renderInline(p.solucion);
+  $('explicacion-texto').innerHTML = renderInline(p.explicacion);
   $('seccion-solucion').hidden = false;
   $('seccion-reflexion').hidden = false;
   $('btn-revelar').hidden = true;
@@ -961,8 +962,8 @@ function mostrarEstadoCompletado(p) {
   $('fieldset-prediccion').hidden = true;
   $('btn-hint').disabled = true;
   $('bloqueo-mensaje').textContent = '';
-  $('solucion-texto').textContent = p.solucion;
-  $('explicacion-texto').textContent = p.explicacion;
+  $('solucion-texto').innerHTML = renderInline(p.solucion);
+  $('explicacion-texto').innerHTML = renderInline(p.explicacion);
   $('seccion-solucion').hidden = false;
   $('seccion-resultado').hidden = false;
   const ultima = Storage.load('historial').at(-1);
@@ -1058,7 +1059,7 @@ function abrirPisoMinimo() {
   if (!pisoRecuerdo) return;
   const p = problemas.find((x) => x.id === pisoRecuerdo.problemId);
   $('piso-titulo').textContent = p?.titulo ?? `Problema #${pisoRecuerdo.problemId}`;
-  $('piso-enunciado').textContent = p?.enunciado ?? '';
+  $('piso-enunciado').innerHTML = renderInline(p?.enunciado ?? '');
   $('piso-recuerdo').value = '';
   $('piso-contador').textContent = `0 / ${MIN_PISO} caracteres`;
   $('btn-piso-completar').disabled = true;
@@ -1111,7 +1112,7 @@ function completarPisoMinimo() {
   } else {
     const p = problemas.find((x) => x.id === pisoRecuerdo.problemId);
     const e = document.createElement('p');
-    e.textContent = p?.explicacion ?? '';
+    e.innerHTML = renderInline(p?.explicacion ?? '');
     ficha.appendChild(e);
   }
   ficha.hidden = false;
