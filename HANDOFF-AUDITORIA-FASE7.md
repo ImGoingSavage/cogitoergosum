@@ -384,8 +384,13 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   MSE, Fisher, CR, suficiencia, MLE, UMVUE — la fundacional), `dg2` (MLE + familias
   exponenciales + OLS=MLE + 3 tests), `cb1` (suficiencia/completitud/Basu), `cb2` (recetas
   MLE/CR/UMVUE + conjugación). Validado: smoke threw=0 rawDisplayMath=0, KaTeX 0 throws.
-  **Pendiente:** lote 2 (`dg3`, `cb3`, `cb4`, `dg4`), lote 3 (`pst1-4`), lote 4 (`isl1-4`);
-  orden en `BACKLOG-OLEADA-DESDE-CERO.md`.
+  **Lote 2 (v92):** `dg3` (IC + tests + p-valor + tamaño muestra + tests múltiples),
+  `cb3` (Neyman-Pearson, MLR, UMP, LRT/Wilks, Lindley), `cb4` (pivotes, inversión de
+  tests, **delta method**, transformaciones estabilizadoras), `dg4` (teoría de decisión,
+  James-Stein, regresión/Gauss-Markov, ridge/lasso, logística, ANOVA, AIC/BIC). Validado:
+  smoke threw=0 rawDisplayMath=0, KaTeX 0 throws. **Pendiente:** lote 3 (`pst1-4`,
+  Practical Statistics — EDA/bootstrap/permutación/regresión), lote 4 (`isl1-4`, ISL —
+  marco/sesgo-varianza/regresión/regularización/árboles). Orden en el backlog.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

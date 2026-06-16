@@ -1,174 +1,96 @@
 # Teoría de la decisión, regresión y modelos lineales
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Esta lección cierra el cluster uniendo tres hilos: **cómo decidir bien bajo incertidumbre** (teoría de la decisión y la sorprendente paradoja de Stein), **el modelo lineal** (OLS, Gauss-Markov, R²) y sus **extensiones** (regularización, logística, ANOVA, selección de modelo). El hilo conductor: casi todo se reduce a un trade-off entre sesgo y varianza, y a elegir la métrica correcta para penalizar el error.
+
+Al terminar podrás: (1) leer una función de pérdida y el riesgo, y entender por qué encoger (shrinkage) puede dominar al estimador insesgado; (2) estimar e interpretar una regresión lineal sabiendo qué garantiza Gauss-Markov; (3) reconocer la multicolinealidad y por qué ridge/lasso la curan; y (4) comparar modelos con AIC/BIC/CV en vez de R². Cada idea entra por su intuición. La paradoja de Stein va con su intuición de regularización, no con su prueba.
+
+> Conecta el OLS=MLE de [[arena-dg2]] con el ML aplicado de [[arena-ads3]] y la inferencia causal de regresión de [[arena-pst4]].
+
+---
+
 ## Teoría de la decisión
 
-**Función de pérdida:** L(θ, δ) = costo de tomar decisión δ cuando el verdadero parámetro es θ.
-
-**Riesgo frecuentista:** R(θ,δ) = E[L(θ,δ(X))]
-
-**Riesgo de Bayes:** r(δ) = E_π[R(θ,δ)] = ∫ R(θ,δ) π(θ) dθ
+Estimar es **decidir**, y toda decisión tiene un costo. La **función de pérdida** $L(\theta,\delta)$ mide el costo de elegir $\delta$ cuando la verdad es $\theta$. Promediando sobre los datos obtienes el **riesgo frecuentista** $R(\theta,\delta)=E[L(\theta,\delta(X))]$; promediando además sobre un prior, el **riesgo de Bayes** $r(\delta)=\int R(\theta,\delta)\,\pi(\theta)\,d\theta$. La gracia: **la pérdida que elijas determina el estimador óptimo**.
 
 | Pérdida | Estimador óptimo |
 |---------|-----------------|
-| Cuadrática (θ-δ)² | Media posterior (Bayes) / X̄ (frecuentista insesgado) |
-| Absoluta |θ-δ| | Mediana posterior |
-| 0-1 | Moda posterior (MAP) |
-| Asimétrica | Pérdidas distintas para sobreestimar/subestimar |
+| Cuadrática $(\theta-\delta)^2$ | media posterior / $\bar X$ |
+| Absoluta $\lvert\theta-\delta\rvert$ | mediana posterior |
+| 0-1 | moda posterior (MAP) |
 
----
+Si penalizas el error al cuadrado, la media minimiza; si lo penalizas en valor absoluto, la mediana (más robusta a outliers). No hay un "mejor estimador" universal — depende de cómo cuesta equivocarse.
 
 ## Admisibilidad y la paradoja de Stein
 
-Un estimador δ₁ **domina** a δ₂ si R(θ,δ₁) ≤ R(θ,δ₂) para todo θ, estrictamente para alguno.
+Un estimador $\delta_1$ **domina** a $\delta_2$ si $R(\theta,\delta_1)\le R(\theta,\delta_2)$ para todo $\theta$ (y estricto en alguno). Un estimador es **admisible** si nadie lo domina. Aquí viene uno de los resultados más contraintuitivos de la estadística:
 
-δ es **admisible** si ningún estimador lo domina.
+**Paradoja de Stein ($d\ge 3$):** al estimar $d\ge 3$ medias normales independientes, el estimador "obvio" $X$ (insesgado, UMVUE) **no es admisible**. El estimador de **James-Stein**, que encoge hacia 0,
 
-**Paradoja de Stein (d≥3):** Para d≥3 variables N(θᵢ,1), el estimador X (insesgado, UMVUE) NO es admisible bajo pérdida cuadrática total. El estimador de **James-Stein** lo domina:
+$$\hat\theta_{\text{JS}}=\Big(1-\frac{d-2}{\lVert X\rVert^2}\Big)X,$$
 
-θ̂_JS = (1 - (d-2)/||X||²) · X
+lo **domina** en MSE total — ¡aunque las medias no tengan nada que ver entre sí! La intuición (que el ML redescubriría como regularización): encoger introduce **sesgo** pero recorta tanta **varianza** que el MSE total baja. Para $d=1,2$, $\bar X$ es admisible; para $d\ge3$, encoger gana.
 
-Lección: para d=1,2: X̄ es admisible. Para d≥3: shrinkage estimators son mejores.
+## Regresión lineal simple: modelo y estimación
 
----
+El modelo más usado del mundo: $Y_i=\beta_0+\beta_1 x_i+\varepsilon_i$, con errores de media 0, varianza constante $\sigma^2$ e independientes. El **OLS** elige $\beta$ minimizando la suma de cuadrados de los residuos $\sum(y_i-\beta_0-\beta_1 x_i)^2$. La solución:
 
-## Regresión lineal simple — modelo y estimación
+$$\hat\beta_1=\frac{S_{xy}}{S_{xx}}=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2},\qquad \hat\beta_0=\bar y-\hat\beta_1\bar x.$$
 
-**Modelo:** Yᵢ = β₀ + β₁xᵢ + εᵢ
-
-Supuestos: E[εᵢ]=0, Var[εᵢ]=σ², independencia.
-
-**OLS** (Ordinary Least Squares) minimiza SS_res = Σ(yᵢ-β₀-β₁xᵢ)²:
-
-**β̂₁ = S_{xy} / S_{xx}** donde S_{xy}=Σ(xᵢ-x̄)(yᵢ-ȳ), S_{xx}=Σ(xᵢ-x̄)²
-
-**β̂₀ = ȳ − β̂₁·x̄**
-
-Valores ajustados: ŷᵢ = β̂₀ + β̂₁xᵢ
-
-Residuos: êᵢ = yᵢ − ŷᵢ (perpendiculares al espacio de las covariables)
-
----
+Lee $\hat\beta_1$: es la **covarianza** de $x$ e $y$ normalizada por la **varianza** de $x$ — "cuánto sube $y$ por unidad de $x$". Los residuos $\hat e_i=y_i-\hat y_i$ son, geométricamente, **perpendiculares** al espacio de las covariables (la recta es la proyección de $y$).
 
 ## Teorema de Gauss-Markov
 
-Bajo E[ε]=0, Var[ε]=σ²I (errores con media 0, varianza constante, independientes):
+`[CAJA NEGRA OK]` — asume el resultado; su valor es saber **qué garantiza y qué no**.
 
-**β̂_OLS es BLUE:** Best Linear Unbiased Estimator.
-
-"Mejor" = mínima varianza entre todos los estimadores lineales insesgados.
-
-**Bajo normalidad (ε~N):** β̂_OLS = β̂_MLE, y los estadísticos t y F son exactos.
-
----
+Bajo errores con media 0, varianza constante e independientes (¡sin pedir normalidad!), el OLS es **BLUE**: el **mejor estimador lineal insesgado** (menor varianza entre todos los lineales insesgados). Si **además** los errores son normales, entonces OLS $=$ MLE y los estadísticos $t$ y $F$ son **exactos** (no solo asintóticos). La normalidad no se necesita para que OLS sea óptimo entre lineales; se necesita para la inferencia exacta.
 
 ## Descomposición SS y R²
 
-SS_tot = SS_reg + SS_res
+La variabilidad total de $y$ se parte en lo que el modelo explica y lo que queda: $SS_{\text{tot}}=SS_{\text{reg}}+SS_{\text{res}}$. El **R²** es la fracción explicada:
 
-| Término | Fórmula | df |
-|---------|---------|---|
-| SS_tot | Σ(yᵢ-ȳ)² | n-1 |
-| SS_reg | Σ(ŷᵢ-ȳ)² | p |
-| SS_res | Σ(yᵢ-ŷᵢ)² | n-p-1 |
+$$R^2=\frac{SS_{\text{reg}}}{SS_{\text{tot}}}=1-\frac{SS_{\text{res}}}{SS_{\text{tot}}}\in[0,1].$$
 
-**R² = SS_reg/SS_tot = 1 - SS_res/SS_tot ∈ [0,1]**
-
-R² nunca baja al añadir variables (siempre hay más para explicar).
-
-**R² ajustado** = 1 - (SS_res/(n-p-1))/(SS_tot/(n-1)) — penaliza por p.
-
----
+La **trampa**: $R^2$ **nunca baja** al añadir variables (siempre hay algo más que ajustar, aunque sea ruido). Por eso no sirve para comparar modelos de distinto tamaño. El **R² ajustado** penaliza por el número de predictores $p$ y sí puede bajar si una variable no aporta.
 
 ## Tests en regresión múltiple
 
-**Test F global** (H₀:β₁=…=βₚ=0):
-
-F = (SS_reg/p) / (SS_res/(n-p-1)) ~ F(p, n-p-1) bajo H₀
-
-**Test t individual** (H₀:βⱼ=0):
-
-t = β̂ⱼ / SE(β̂ⱼ) ~ t(n-p-1) bajo H₀
-
-donde SE(β̂ⱼ) = σ̂·√[(X'X)⁻¹]_{jj}
-
----
+- **Test F global** ($H_0:\beta_1=\dots=\beta_p=0$, "el modelo no explica nada"): $F=\dfrac{SS_{\text{reg}}/p}{SS_{\text{res}}/(n-p-1)}\sim F(p,n-p-1)$.
+- **Test t individual** ($H_0:\beta_j=0$): $t=\hat\beta_j/\text{SE}(\hat\beta_j)$, con $\text{SE}(\hat\beta_j)=\hat\sigma\sqrt{[(X^\top X)^{-1}]_{jj}}$.
 
 ## Multicolinealidad
 
-Cuando dos o más predictores están altamente correlacionados:
-- β̂_OLS sigue siendo insesgado
-- Pero Var(β̂) se infla — tests poco potentes
+Cuando dos predictores están muy correlacionados, el modelo no puede separar sus efectos: $\hat\beta$ sigue **insesgado**, pero su **varianza se infla** (tests débiles, signos inestables). Se mide con el **VIF** $=1/(1-R_j^2)$, donde $R_j^2$ es el R² de regresar $X_j$ sobre los demás predictores; $\text{VIF}>10$ es problema serio. Curas: eliminar variables redundantes, **ridge**, o regresión sobre componentes PCA.
 
-**VIF (Variance Inflation Factor):**
+## Ridge y Lasso: regularización
 
-VIF_j = 1/(1-R²_j)
+Para combatir colinealidad y sobreajuste, se penaliza el tamaño de los coeficientes:
 
-donde R²_j es el R² de la regresión de Xⱼ sobre los demás predictores.
+- **Ridge (L2):** minimiza $\lVert Y-X\beta\rVert^2+\lambda\lVert\beta\rVert^2$, con solución cerrada $\hat\beta_{\text{ridge}}=(X^\top X+\lambda I)^{-1}X^\top Y$. Encoge todos los coeficientes hacia 0 pero **ninguno a 0 exacto**.
+- **Lasso (L1):** minimiza $\lVert Y-X\beta\rVert^2+\lambda\sum|\beta_j|$. Sin forma cerrada, pero **anula** coeficientes → selección automática de variables.
 
-VIF > 10 → problema severo.
-
-**Soluciones:** eliminar variables colineales, ridge regression, PCA regression.
-
----
-
-## Ridge y Lasso — regularización
-
-### Ridge (L2):
-min_β ||Y-Xβ||² + λ||β||²
-
-**β̂_ridge = (X'X + λI)⁻¹X'Y**
-
-Encoge todos los coeficientes hacia 0, pero ninguno queda exactamente en 0.
-
-### Lasso (L1):
-min_β ||Y-Xβ||² + λΣ|βⱼ|
-
-No tiene forma cerrada. Puede anular coeficientes → selección de variables automática.
-
-| Propiedad | Ridge | Lasso |
-|-----------|-------|-------|
-| Solución cerrada | Sí | No |
-| Sparsity | No | Sí |
-| Maneja multicolinealidad | Bien | Selecciona uno |
-
----
+La conexión profunda: ridge **es** James-Stein/shrinkage, y equivale a un prior normal sobre $\beta$. Regularizar es cambiar sesgo por varianza, justo lo que Stein demostró óptimo.
 
 ## Regresión logística
 
-**Modelo:** log(p/(1-p)) = β₀ + β₁X (log-odds es lineal)
+Cuando $Y$ es binaria (0/1), no modelas $Y$ sino la **probabilidad**, forzando que el **log-odds** sea lineal:
 
-**P(Y=1|X) = σ(β₀+β₁X) = 1/(1+e^{-(β₀+β₁X)})**
+$$\log\frac{p}{1-p}=\beta_0+\beta_1 X\quad\Longleftrightarrow\quad P(Y=1\mid X)=\sigma(\beta_0+\beta_1 X)=\frac{1}{1+e^{-(\beta_0+\beta_1 X)}}.$$
 
-El MLE maximiza la log-verosimilitud bernoulli — no tiene forma cerrada; se resuelve con Newton-Raphson o descenso de gradiente.
+La sigmoide $\sigma$ comprime cualquier número real a $(0,1)$. El MLE maximiza la log-verosimilitud Bernoulli (sin forma cerrada → Newton-Raphson o descenso de gradiente). Interpretación clave: $\beta_1$ es el cambio en log-odds por unidad de $X$, y $e^{\beta_1}$ es el **odds ratio**.
 
-**Interpretación:** β₁ = cambio en log-odds por unidad de X. e^{β₁} = odds ratio.
+## ANOVA y selección de modelo
 
----
+**ANOVA de una vía** ($H_0:\mu_1=\dots=\mu_k$) compara la variabilidad **entre** grupos con la variabilidad **dentro** de grupos vía $F=MS_B/MS_W$. Es un caso especial de regresión con predictores indicadores (dummies). **Selección de modelo:**
 
-## ANOVA de una vía
+- **AIC** $=-2\ell(\hat\theta)+2p$ — penaliza la complejidad; orientado a **predicción**.
+- **BIC** $=-2\ell(\hat\theta)+p\ln n$ — penaliza más fuerte con $n$ grande; orientado a **identificar el modelo correcto**.
+- **Cross-validation:** estima el error fuera de muestra rotando particiones.
 
-Datos: grupos 1,...,k con nⱼ obs cada uno. H₀:μ₁=…=μₖ.
+Menor AIC/BIC → mejor. Todos comparten la moraleja: penaliza la complejidad, no premies el ajuste bruto.
 
-| Fuente | SS | df | MS | F |
-|--------|-----|---|-----|---|
-| Entre grupos | n·Σ(ȳⱼ-ȳ)² | k-1 | MS_B | MS_B/MS_W |
-| Dentro de grupos | ΣΣ(yᵢⱼ-ȳⱼ)² | n-k | MS_W | |
-
-F ~ F(k-1, n-k) bajo H₀.
-
-ANOVA es un caso especial de regresión lineal con predictores indicadores (dummies).
-
----
-
-## Criterios de selección de modelo
-
-**AIC = -2ℓ(θ̂) + 2p** — penaliza por número de parámetros p.
-
-**BIC = -2ℓ(θ̂) + p·ln(n)** — penaliza más fuerte para n grande.
-
-**Cross-validation (k-fold):** divide datos en k partes; ajusta en k-1, evalúa en 1; rota y promedia.
-
-Menor AIC/BIC → mejor modelo. Para selección consistente de modelo: BIC. Para predicción: AIC o CV.
+> **Predicción antes de seguir:** añades 5 variables aleatorias (puro ruido) a tu regresión. ¿Qué pasa con R² y con R² ajustado? Respuesta: $R^2$ **sube** (o no baja) — siempre, porque el ruido explica algo del train por azar; $R^2$ ajustado, AIC, BIC y CV **empeoran**, penalizando las variables inútiles. Por eso comparar modelos por R² es un error clásico: confunde "ajusta más el train" con "predice mejor".
 
 ---
 

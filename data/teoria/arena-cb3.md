@@ -1,106 +1,84 @@
 # Contraste de hipótesis: NP Lemma, LRT y tests UMP
 
-## Configuración básica
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-Hipótesis: H₀: θ∈Θ₀ vs H₁: θ∈Θ₁ (Θ = Θ₀∪Θ₁)
+[[arena-dg3]] te enseñó a *usar* tests (t, χ², z). Esta lección responde la pregunta de fondo: **¿cuál es el mejor test posible?** La respuesta, sorprendentemente limpia, es el **lema de Neyman-Pearson**: el test óptimo siempre compara verosimilitudes contra un umbral. De ahí se construye todo: cuándo existe un test "uniformemente más potente" (UMP), qué hacer cuando no existe (el LRT universal), y por qué un p-valor pequeño no significa "$H_0$ improbable".
 
-**Función de potencia:** β(θ) = Pθ(X∈R) — probabilidad de rechazar H₀ cuando θ es el verdadero valor.
+Al terminar podrás: (1) aplicar el lema NP para hallar el test más potente; (2) reconocer la **razón de verosimilitud monótona (MLR)** que extiende la optimalidad a tests unilaterales; (3) saber cuándo **no** existe UMP y recurrir al LRT; y (4) entender la distribución asintótica $\chi^2$ del LRT (Wilks). Cada idea entra por su intuición. Los teoremas (NP, Wilks) van en `[CAJA NEGRA OK]`: la intuición es lo que se evalúa.
+
+> Profundiza el LRT que [[arena-dg2]] introdujo y la teoría de errores de [[arena-dg3]].
+
+---
+
+## Configuración: potencia y los dos errores
+
+Contrastamos $H_0:\theta\in\Theta_0$ contra $H_1:\theta\in\Theta_1$. La herramienta central es la **función de potencia** $\beta(\theta)=P_\theta(X\in R)$: la probabilidad de rechazar $H_0$ cuando el valor verdadero es $\theta$. Es una sola curva que captura ambos errores según dónde caiga $\theta$:
 
 | Error | Definición | Probabilidad |
 |-------|------------|--------------|
-| Tipo I (falso positivo) | Rechazar H₀ cuando θ∈Θ₀ | α = sup_{θ∈Θ₀} β(θ) |
-| Tipo II (falso negativo) | Aceptar H₀ cuando θ∈Θ₁ | 1−β(θ), θ∈Θ₁ |
+| Tipo I (falso positivo) | rechazar $H_0$ siendo cierta | $\alpha=\sup_{\theta\in\Theta_0}\beta(\theta)$ |
+| Tipo II (falso negativo) | no rechazar siendo falsa | $1-\beta(\theta)$, con $\theta\in\Theta_1$ |
 
-**Nivel de significancia:** α = tamaño del test (máx error tipo I).  
-**Potencia:** β(θ) para θ∈Θ₁ (queremos maximizarla).
-
----
-
-## Lema de Neyman-Pearson (NP)
-
-Para testar H₀: θ=θ₀ vs H₁: θ=θ₁ (hipótesis simples), el **test más potente de tamaño α** rechaza H₀ cuando:
-
-**f(x|θ₁)/f(x|θ₀) > k**
-
-donde k se elige para que P_{θ₀}(razón > k) = α.
-
-Consecuencia: el test NP es una función del cociente de verosimilitudes. La región crítica tiene la forma {x: L(θ₁|x)/L(θ₀|x) > k}.
-
-**Ejemplo (Normal σ² conocida):** Para H₀: μ=μ₀ vs H₁: μ=μ₁ (μ₁>μ₀):
-
-El cociente es exp((μ₁−μ₀)(Σxᵢ/σ²)−...), que aumenta en Σxᵢ → rechaza si X̄>k'. Es el test z unilateral.
+El **nivel** $\alpha$ es el peor error tipo I (el supremo sobre $\Theta_0$); la **potencia** es $\beta(\theta)$ en la alternativa, y queremos **maximizarla** sujetos a no pasarnos del nivel. Todo el capítulo es: *fijo $\alpha$, ¿qué test da la potencia más alta?*
 
 ---
 
-## Razón de monotona de verosimilitudes (MLR)
+## Lema de Neyman-Pearson
 
-Una familia {f(x|θ)} tiene **MLR** en T(x) si para θ₂>θ₁, el cociente f(x|θ₂)/f(x|θ₁) es función no decreciente de T(x).
+`[CAJA NEGRA OK]` — *Qué asumir:* que el test más potente tiene la forma de abajo. *Qué sí razonar:* por qué un cociente de verosimilitudes es la decisión correcta. *Cuándo reabrir:* para probar optimalidad formalmente.
 
-Familias con MLR en X̄ (o estadístico suficiente): Normal, Poisson, Binomial, Exponencial, Gamma.
+Para hipótesis **simples** $H_0:\theta=\theta_0$ vs $H_1:\theta=\theta_1$, el test **más potente** de nivel $\alpha$ rechaza $H_0$ cuando los datos son **mucho más compatibles con $\theta_1$ que con $\theta_0$**:
 
-**No tiene MLR:** Cauchy (cola simétrica sin monotonía), distribución bimodal.
+$$\frac{f(x\mid\theta_1)}{f(x\mid\theta_0)}>k,$$
+
+con $k$ elegido para que $P_{\theta_0}(\text{razón}>k)=\alpha$. La intuición es la de un detective: cada dato es evidencia; la razón de verosimilitudes mide *cuánto* inclina la balanza hacia $\theta_1$, y rechazas cuando la inclinación supera el umbral que fija tu tolerancia a falsos positivos. Todo test óptimo es, en el fondo, **este** cociente.
+
+**Ejemplo (Normal, $\sigma^2$ conocida), $H_0:\mu=\mu_0$ vs $H_1:\mu=\mu_1$ con $\mu_1>\mu_0$:** el cociente resulta ser creciente en $\sum x_i$, así que "razón $>k$" equivale a "$\bar X>c$". El famoso **test z unilateral** no es una regla inventada: es el cociente NP disfrazado.
 
 ---
+
+## Razón de verosimilitud monótona (MLR)
+
+El lema NP solo cubre hipótesis simples. Para extenderlo a unilaterales ($H_0:\theta\le\theta_0$) necesitamos que el cociente se porte bien al variar $\theta$. Una familia tiene **MLR en $T(x)$** si, para $\theta_2>\theta_1$, el cociente $f(x\mid\theta_2)/f(x\mid\theta_1)$ es **no decreciente** en $T(x)$. Intuición: "valores más grandes de $T$ siempre apuntan a $\theta$ más grande", sin ambigüedad.
+
+Tienen MLR (en su suficiente): Normal, Poisson, Binomial, Exponencial, Gamma. **No** tiene MLR la **Cauchy** (su cociente sube y baja, sin monotonía). Esta propiedad es la que decide si existe un test óptimo único.
 
 ## Tests UMP (uniformemente más potentes)
 
-Un test φ es **UMP de nivel α** si es de nivel α y β(θ) ≥ β'(θ) para todo θ∈Θ₁ y todo test alternativo φ' de nivel α.
+Un test es **UMP de nivel $\alpha$** si tiene la mayor potencia posible **para todo $\theta$ en la alternativa**, simultáneamente. Es un ideal exigente, y el MLR es lo que lo hace alcanzable:
 
-**Corolario del MLR:** Si la familia tiene MLR en T, el test UMP de nivel α para H₀: θ≤θ₀ vs H₁: θ>θ₀ rechaza cuando T > c, donde P_{θ₀}(T>c) = α.
+**Corolario (Karlin-Rubin):** si la familia tiene MLR en $T$, el test UMP para $H_0:\theta\le\theta_0$ vs $H_1:\theta>\theta_0$ **rechaza si $T>c$**, con $c$ tal que $P_{\theta_0}(T>c)=\alpha$.
 
-| Distribución | Test UMP (unilateral) |
+| Distribución | Test UMP unilateral |
 |-------------|----------------------|
-| Normal(μ,σ²) σ² conocida, H₀: μ≤μ₀ | Rechaza si X̄ > μ₀+z_α σ/√n |
-| Poisson(λ), H₀: λ≤λ₀ | Rechaza si ΣXᵢ > c |
-| Bernoulli(p), H₀: p≤p₀ | Rechaza si ΣXᵢ > c |
-| Beta(θ,1), H₀: θ≤1 | Rechaza si Σlog Xᵢ < −c |
-| Exponencial(θ), H₀: θ≤θ₀ | Rechaza si ΣXᵢ > c |
+| Normal $\sigma^2$ conocida, $H_0:\mu\le\mu_0$ | rechaza si $\bar X>\mu_0+z_\alpha\sigma/\sqrt n$ |
+| Poisson, $H_0:\lambda\le\lambda_0$ | rechaza si $\sum X_i>c$ |
+| Bernoulli, $H_0:p\le p_0$ | rechaza si $\sum X_i>c$ |
+| Exponencial, $H_0:\theta\le\theta_0$ | rechaza si $\sum X_i>c$ |
 
-**No existe test UMP para hipótesis bilaterales** H₀: θ=θ₀ vs H₁: θ≠θ₀ en general (salvo en la familia exponencial de un parámetro, donde el test de dos colas es UMP entre los tests no sesgados).
-
----
-
-## Razón de verosimilitud (LRT)
-
-Para hipótesis compuestas, el **estadístico LRT** es:
-
-λ(x) = sup_{θ∈Θ₀} L(θ|x) / sup_{θ∈Θ} L(θ|x)
-
-Rechaza H₀ si λ(x) < k.
-
-**Distribución asintótica (Wilks):** Bajo H₀, −2 log λ(X) →_d χ²(dim Θ − dim Θ₀).
-
-Esta es la base de todos los tests F, t², chi-cuadrado y análisis de varianza.
-
-| Test | Estadístico LRT |
-|------|----------------|
-| Normal: H₀: μ=μ₀ (σ² conocida) | z = (X̄−μ₀)/(σ/√n), rechaza si |z|>z_{α/2} |
-| Normal: H₀: μ=μ₀ (σ² desconocida) | t = (X̄−μ₀)/(S/√n), rechaza si |t|>t_{n−1,α/2} |
-| Normal: H₀: σ²=σ₀² | χ² = (n−1)S²/σ₀², rechaza si χ² fuera del IC |
-| Dos medias normales iguales | t test de dos muestras |
-| Igualdad de varianzas | F = S₁²/S₂², rechaza si F fuera del IC |
+**La advertencia crucial:** **no existe UMP para hipótesis bilaterales** $H_0:\theta=\theta_0$ vs $H_1:\theta\ne\theta_0$ en general. La razón es geométrica: para $\theta>\theta_0$ el mejor test rechaza a la derecha, y para $\theta<\theta_0$ a la izquierda; ningún test maximiza la potencia en ambos lados a la vez.
 
 ---
 
-## p-valores
+## Razón de verosimilitud (LRT): el método universal
 
-El **p-valor** es la probabilidad, bajo H₀, de observar algo tan o más extremo que los datos:
+Cuando no hay UMP (bilateral, hipótesis compuestas, parámetros de estorbo), se usa el **LRT**, que generaliza el cociente NP comparando la mejor verosimilitud bajo $H_0$ con la mejor sin restricción:
 
-p(x) = sup_{θ∈Θ₀} P_{θ}(W(X) ≥ W(x))
+$$\lambda(x)=\frac{\sup_{\theta\in\Theta_0}L(\theta\mid x)}{\sup_{\theta\in\Theta}L(\theta\mid x)}\in(0,1].$$
 
-donde W es el estadístico del test. Rechaza H₀ si p ≤ α.
+Rechaza $H_0$ si $\lambda$ es **pequeño** (los datos son mucho más compatibles con el modelo libre que con el restringido). Su magia, el **teorema de Wilks**:
 
-**Paradoja de Lindley:** Para tests bilaterales, el p-valor y la probabilidad posterior P(H₀|x) pueden diferir enormemente. Con n grande y x moderado, el p-valor puede ser <.05 mientras P(H₀|x) > 0.50.
+`[CAJA NEGRA OK]` — asume el resultado asintótico; su valor es que **no necesitas la distribución exacta del estadístico**.
 
----
+$$-2\log\lambda(X)\ \xrightarrow{d}\ \chi^2\big(\dim\Theta-\dim\Theta_0\big)\quad\text{bajo }H_0.$$
 
-## Tamaño muestral
+Los grados de libertad son el número de restricciones que impone $H_0$. Esto convierte al LRT en el motor de los tests $t$, $F$, $\chi^2$ y del ANOVA — casi todos son un LRT con otro nombre.
 
-Para test bilateral de media normal: si se desea potencia β* en θ=μ₁ con nivel α:
+## p-valores y la paradoja de Lindley
 
-n ≥ (z_{α/2} + z_{β*})²·σ² / (μ₁−μ₀)²
+El **p-valor** es la probabilidad bajo $H_0$ de un estadístico tan extremo como el observado; rechazas si $p\le\alpha$. Pero cuidado con sobreinterpretarlo: la **paradoja de Lindley** muestra que, con $n$ **muy grande**, un p-valor de 0.04 puede coexistir con una probabilidad posterior $P(H_0\mid x)>0.5$ — es decir, "significativo" para el frecuentista y "probablemente cierto" para el bayesiano, **a la vez**. Un p pequeño mide *sorpresa bajo $H_0$*, no la verdad de $H_0$.
 
-Ejemplo: α=.05, β*=.90 da z_{α/2}+z_{β*}≈1.96+1.28=3.24.
+> **Predicción antes de seguir:** la Cauchy no tiene MLR. ¿Existe un test UMP unilateral para su parámetro de localización? Respuesta: **no** — sin monotonía del cociente, ni siquiera el caso unilateral admite un test óptimo único; el "mejor" test depende de cuál $\theta$ de la alternativa te importe. La MLR es justo la propiedad que salva el caso unilateral; sin ella, se cae a LRT o tests específicos.
 
 ---
 
