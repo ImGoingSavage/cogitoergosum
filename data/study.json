@@ -4980,8 +4980,14 @@
     "cyber-blue5",
     "cyber-mls1",
     "cyber-mls2",
+    "cyber-mls3",
+    "cyber-mls4",
+    "cyber-mls5",
     "cyber-llm1",
-    "cyber-llm2"
+    "cyber-llm2",
+    "cyber-llm3",
+    "cyber-llm4",
+    "cyber-llm5"
    ]
   }
  ],
@@ -26159,9 +26165,222 @@
    ]
   },
   {
+   "id": "cyber-mls3",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Ataques adversarios en inferencia: evasión y robustez",
+   "libro": "MITRE SAFE-AI / MITRE ATLAS",
+   "lectura": "data/teoria/cyber-mls3.md",
+   "dosis": 30,
+   "objetivo": "Explicar un adversarial example y por qué existe; distinguir white-box vs black-box; razonar la robustez como propiedad medible; y elegir defensas y su tradeoff.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Adversarial example: perturbación pequeña y dirigida que hace fallar al modelo",
+    "Exactitud en test ≠ robustez adversaria",
+    "White-box (con gradientes) vs black-box (por consulta; a menudo transfiere)",
+    "Adversarial training es la defensa más efectiva conocida, con tradeoff"
+   ],
+   "banco": [
+    {
+     "id": "cml3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es un adversarial example y por qué existe?",
+     "solucion": "Una entrada con una perturbación pequeña y dirigida (a veces imperceptible) que hace que el modelo se equivoque aunque a un humano le parezca normal. Existe porque el modelo aprende una frontera de decisión ajustada a los datos, no el concepto verdadero; en alta dimensión esa frontera tiene zonas frágiles que una perturbación cruza. No es un bug puntual, sino consecuencia de cómo generaliza.",
+     "explicacion": "Frontera de decisión frágil.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cml3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'alta exactitud en test' no implica robustez ante un adversario?",
+     "solucion": "Porque el test mide entradas naturales, no entradas diseñadas para fallar. La robustez adversaria es la exactitud bajo perturbaciones acotadas y dirigidas, y se mide con evaluación adversaria, no con el test natural; un modelo con 98% en test puede desplomarse bajo ataque.",
+     "explicacion": "El test no mide al adversario.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cml3-q3",
+     "tipo": "concepto",
+     "enunciado": "Distingue ataques white-box de black-box y explica la 'transferencia'.",
+     "solucion": "White-box: el atacante conoce el modelo (pesos/arquitectura) y calcula la perturbación óptima con los gradientes. Black-box: solo consulta entrada→salida y aproxima el ataque o entrena un sustituto. Transferencia: los adversarial examples creados en un modelo a menudo funcionan en otro, así que el atacante puede generarlos en su modelo y usarlos contra el tuyo.",
+     "explicacion": "Conocimiento del modelo y transferibilidad.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cml3-q4",
+     "tipo": "concepto",
+     "enunciado": "Un clasificador de moderación tiene 98% en test. ¿Qué riesgo de evasión hay y cómo lo defiendes?",
+     "solucion": "Un adversario añade ruido imperceptible a una imagen prohibida hasta que el modelo la marca como 'segura' (evasión); el 98% no lo cubre. Defensa proporcional: adversarial training, salida sin probabilidades finas, rate limiting, y revisión humana para casos límite de alto impacto, aceptando riesgo residual.",
+     "explicacion": "Defensa en profundidad + evaluación adversaria.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cml3-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es la defensa más efectiva conocida contra evasión y cuál es su costo?",
+     "solucion": "El adversarial training: entrenar incluyendo ejemplos adversarios. Su costo es cómputo y, a menudo, algo de exactitud en datos limpios (tradeoff exactitud limpia↔robustez), que se decide según el riesgo del despliegue. No da invulnerabilidad, pero sube significativamente la robustez.",
+     "explicacion": "Eficaz pero con tradeoff.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cml3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué ser robusto a un tipo de perturbación no garantiza robustez general?",
+     "solucion": "Porque defender contra una familia de ataques (p. ej. ruido pequeño en píxeles) puede dejar otra abierta (rotaciones, parches, cambios semánticos). La evaluación adversaria debe cubrir las amenazas realistas del despliegue, no una sola; la robustez es relativa al conjunto de ataques considerado.",
+     "explicacion": "Robustez es relativa al ataque.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 833
+  },
+  {
+   "id": "cyber-mls4",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Robo y fuga del modelo: extraction, inversion y membership inference",
+   "libro": "MITRE SAFE-AI / MITRE ATLAS",
+   "lectura": "data/teoria/cyber-mls4.md",
+   "dosis": 30,
+   "objetivo": "Explicar model extraction y su impacto; distinguir model inversion de membership inference; razonar el riesgo de compartir modelos y embeddings; y elegir controles proporcionales.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Extraction: clonar el modelo consultándolo (y habilita evasión transferible)",
+    "Inversion (cómo eran los datos) vs membership inference (quién estuvo)",
+    "Ambas nacen de la memorización; la defensa de fondo es reducirla (DP)",
+    "Compartir pesos/embeddings filtra más de lo que parece"
+   ],
+   "banco": [
+    {
+     "id": "cml4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo se roba (extrae) un modelo y qué lo facilita?",
+     "solucion": "Con suficientes pares entrada→salida, el atacante entrena un modelo sustituto que imita al tuyo, robando tu inversión en datos y cómputo (y habilitando evasión white-box transferible). Lo facilita una salida con mucha información (probabilidades exactas vs solo la etiqueta); se frena con salidas de baja resolución y rate limiting.",
+     "explicacion": "Clonar por consulta.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cml4-q2",
+     "tipo": "concepto",
+     "enunciado": "Distingue model inversion de membership inference.",
+     "solucion": "Inversion reconstruye rasgos representativos de los datos de entrenamiento (cómo eran, p. ej. el rostro 'promedio' de una clase). Membership inference determina si un individuo concreto estuvo en el entrenamiento (quién estuvo), explotando que el modelo está 'más seguro' con lo que vio. Una filtra el contenido; la otra, la pertenencia.",
+     "explicacion": "Cómo eran vs quién estuvo.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cml4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué compartir embeddings no es 'compartir números anónimos'?",
+     "solucion": "Porque los embeddings a menudo permiten reconstruir el texto/imagen original o inferir atributos sensibles; no son anónimos por ser vectores. Exponer un store de embeddings puede filtrar el contenido fuente o información sobre las personas, igual que compartir el modelo habilita inversion.",
+     "explicacion": "Un vector puede ser invertible.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cml4-q4",
+     "tipo": "concepto",
+     "enunciado": "Una API da, por imagen médica, la probabilidad detallada de cada diagnóstico, sin límites. ¿Qué riesgos y controles?",
+     "solucion": "Extraction (clonado, facilitado por las probabilidades finas), membership inference (saber si una persona estuvo, grave por ser datos reales) e inversion. Controles: devolver categoría/top-1 en vez de probabilidades finas; auth + rate limiting; entrenamiento con differential privacy; monitoreo de consultas anómalas; no publicar pesos ni embeddings crudos.",
+     "explicacion": "Limitar exposición + reducir memorización.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cml4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Cuál es la defensa de fondo contra la fuga por modelos y por qué?",
+     "solucion": "Reducir la memorización del modelo, idealmente con differential privacy (y regularización), porque inversion y membership inference nacen de que el modelo recuerda más de lo necesario sobre individuos. Limitar la exposición (salida, rate limiting) ayuda, pero atacar la causa (memorización) es la defensa de fondo.",
+     "explicacion": "Menos memorización, menos fuga.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cml4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué un modelo on-device cambia qué controles aplican contra extraction/inversion?",
+     "solucion": "Porque el adversario tiene los pesos: puede hacer extraction e inversion offline, sin que valgan auth ni rate limiting (no hay consultas que limitar). Debes asumirlo y minimizar lo que el modelo memoriza, no confiar en límites de servidor que en ese contexto no existen.",
+     "explicacion": "Acceso a pesos invalida límites de consulta.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 834
+  },
+  {
+   "id": "cyber-mls5",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Supply chain de modelos, gobernanza y AI RMF",
+   "libro": "MITRE SAFE-AI / MITRE ATLAS",
+   "lectura": "data/teoria/cyber-mls5.md",
+   "dosis": 30,
+   "objetivo": "Evaluar la supply chain y provenance de modelos y datos; ubicar NIST AI RMF y MITRE ATLAS; razonar riesgo residual y model cards; y ejecutar el mini-proyecto del cluster.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Supply chain de IA: datos, modelos preentrenados y librerías, cada uno con riesgo",
+    "Provenance: verificar origen e integridad; integridad ≠ confianza en el origen",
+    "MITRE ATLAS (qué ataques existen) + NIST AI RMF (cómo gobernar el riesgo)",
+    "Model card de seguridad con riesgo residual, reevaluada en el tiempo"
+   ],
+   "banco": [
+    {
+     "id": "cml5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué riesgos trae la supply chain de un sistema de IA?",
+     "solucion": "Datos de terceros que pueden estar envenenados o tener problemas de privacidad/licencia; modelos preentrenados que pueden traer backdoors o ejecutar código al cargarse según el formato (pickle); y librerías con su propia supply chain (CVEs). Un modelo de origen desconocido es un binario no confiable que ejecutarás con tus datos.",
+     "explicacion": "Datos, modelos y librerías de terceros.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cml5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué aportan respectivamente MITRE ATLAS y el NIST AI RMF?",
+     "solucion": "MITRE ATLAS es el 'ATT&CK de la IA': un catálogo de tácticas y técnicas reales contra sistemas de ML para mapear amenazas y emular. El NIST AI RMF es un marco para gestionar el riesgo de IA en cuatro funciones (Govern, Map, Measure, Manage). ATLAS dice qué ataques existen; AI RMF, cómo gobernar el riesgo de extremo a extremo.",
+     "explicacion": "Qué ataques vs cómo gobernar.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cml5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué debe llevar una model card de seguridad?",
+     "solucion": "Activos (datos, pesos, embeddings), amenazas relevantes (entrenamiento, inferencia, supply chain), controles aplicados, procedencia de datos y modelos, y el riesgo residual aceptado. Documenta el estado real de seguridad y se reevalúa al reentrenar o cambiar el contexto; sin riesgo residual, es marketing, no gobernanza.",
+     "explicacion": "Activos, amenazas, controles, procedencia, residual.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cml5-q4",
+     "tipo": "concepto",
+     "enunciado": "Despliegas un scoring de fraude con un modelo preentrenado público y datos de un proveedor. Gobierna el riesgo tipo AI RMF.",
+     "solucion": "Map: activos (modelo, datos, API) y amenazas (poisoning del proveedor, backdoor/ejecución del checkpoint, extraction/evasion). Measure: verificar integridad/origen del checkpoint, evaluación adversaria, auditar etiquetas. Manage: formato sin ejecución o carga aislada, limitar fuentes no confiables, salida de baja resolución + rate limiting, monitoreo. Govern: model card con riesgo residual y reevaluación periódica.",
+     "explicacion": "Map/Measure/Manage/Govern.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cml5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué verificar la integridad de un checkpoint (hash correcto) no basta para confiar en él?",
+     "solucion": "Porque el hash prueba que el archivo no fue alterado tras publicarse, pero no que el publicador no le pusiera un backdoor de origen. La provenance incluye confiar en la fuente (quién lo creó y con qué datos), no solo en la integridad del archivo: integridad ≠ confiabilidad del origen.",
+     "explicacion": "Integridad ≠ confianza en el origen.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cml5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué tratar la seguridad de IA como defensas sueltas en vez de un proceso gobernado falla?",
+     "solucion": "Porque sin gobernanza (Govern del AI RMF) las defensas individuales se erosionan al cambiar el sistema, nadie sabe el estado real del riesgo, y no hay reevaluación. Un sistema de IA seguro es un proceso mapeado, medido, gestionado y documentado (model card, riesgo residual) que se mantiene, no una colección de parches.",
+     "explicacion": "Proceso gobernado, no parches.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 835
+  },
+  {
    "id": "cyber-llm1",
    "bloque": "fase-8",
-   "orden": 833,
+   "orden": 836,
    "titulo": "Ciber · Seguridad de LLMs I: prompt injection directa e indirecta",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm1.md",
@@ -26232,7 +26451,7 @@
   {
    "id": "cyber-llm2",
    "bloque": "fase-8",
-   "orden": 834,
+   "orden": 837,
    "titulo": "Ciber · Seguridad de LLMs II: RAG, agentes y agencia excesiva",
    "libro": "OWASP Top 10 for LLM Applications 2025",
    "lectura": "data/teoria/cyber-llm2.md",
@@ -26299,6 +26518,219 @@
      "difficulty": "hard"
     }
    ]
+  },
+  {
+   "id": "cyber-llm3",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Fuga de datos y del system prompt: LLM02 y LLM07",
+   "libro": "OWASP Top 10 for LLM Applications 2025",
+   "lectura": "data/teoria/cyber-llm3.md",
+   "dosis": 30,
+   "objetivo": "Explicar divulgación de información sensible (LLM02); entender la fuga del system prompt (LLM07) y por qué el prompt no es un secreto; ligar la fuga al control de acceso del RAG; y diseñar controles de minimización del contexto.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "LLM02: el modelo filtra datos del entrenamiento, del RAG o del contexto que le pasas",
+    "LLM07: el system prompt es EXTRAÍBLE; trátalo como público, sin secretos",
+    "Si no debe salir, no lo pongas donde el modelo pueda alcanzarlo",
+    "La fuga del RAG es BOLA/IDOR aplicado a la recuperación"
+   ],
+   "banco": [
+    {
+     "id": "cll3-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué vías puede un LLM divulgar información sensible (LLM02)?",
+     "solucion": "Del entrenamiento (memorización → reproduce PII/secretos vistos), del contexto/RAG (recupera y muestra documentos que el usuario no debería ver, por falta de control de acceso) y de los datos que le pasas (si metes secretos/PII en el prompt, pueden salir o quedar en logs). La defensa: minimizar lo que entra, control de acceso en la recuperación y sanear la salida.",
+     "explicacion": "Entrenamiento, RAG y contexto.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cll3-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el system prompt no es un secreto (LLM07)?",
+     "solucion": "Porque es extraíble: con prompt injection o consultas astutas, el usuario suele lograr que el modelo repita sus instrucciones. Por eso hay que tratarlo como público y nunca poner ahí secretos ni reglas cuya seguridad dependa de que el usuario no las conozca (eso es seguridad por oscuridad).",
+     "explicacion": "El prompt se extrae.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cll3-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué relación hay entre la fuga de datos del RAG (LLM02) y BOLA/IDOR?",
+     "solucion": "Es el mismo fallo: si la recuperación no verifica que el usuario actual puede ver cada documento, el RAG trae y el modelo revela datos ajenos, igual que un endpoint que sirve un recurso por id sin checar dueño. El control de acceso debe aplicarse en el retrieval, por usuario y documento.",
+     "explicacion": "Control de acceso por documento.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cll3-q4",
+     "tipo": "concepto",
+     "enunciado": "Un system prompt dice 'la clave de descuento es PROMO50, nunca la reveles' y el bot accede a la base de tickets. Enumera riesgos y arreglo.",
+     "solucion": "LLM07: con 'repite tus instrucciones' se extrae PROMO50 (estaba en el prompt extraíble). LLM02: si la base de tickets no filtra por usuario, alguien ve tickets de otros; y si afinaron con tickets reales, podría reproducir PII. Arreglo: sacar el secreto del prompt (gestionarlo en el sistema); control de acceso por usuario/documento; minimizar y sanear; no afinar con PII sin DP.",
+     "explicacion": "El secreto no va en el prompt.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cll3-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'nunca reveles X' en el prompt no es un control de seguridad?",
+     "solucion": "Porque es una petición a un sistema probabilístico, no una garantía: con paráfrasis, ofuscación o inyección el modelo a veces lo revela. La seguridad real (límites de acceso, autorización de herramientas) vive en el sistema, no en una instrucción que pides amablemente al modelo.",
+     "explicacion": "Petición, no garantía.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cll3-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Cómo puede un LLM filtrar información aunque 'no la diga literalmente'?",
+     "solucion": "Por inferencia: confirma o niega, da pistas o responde de forma que permite deducir el dato sin enunciarlo. Por eso minimizar el contexto (no poner lo que no debe salir) importa incluso cuando el modelo no lo dice palabra por palabra; controlar la salida no es solo bloquear la cadena exacta.",
+     "explicacion": "Fuga indirecta por inferencia.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 838
+  },
+  {
+   "id": "cyber-llm4",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Supply chain, poisoning y consumo no acotado: LLM03, LLM04 y LLM10",
+   "libro": "OWASP Top 10 for LLM Applications 2025",
+   "lectura": "data/teoria/cyber-llm4.md",
+   "dosis": 30,
+   "objetivo": "Evaluar la supply chain de un LLM (LLM03); explicar data y model poisoning (LLM04) incluido el del RAG; razonar el consumo no acotado (LLM10); y elegir controles proporcionales.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "LLM03: modelo base, adapters, datasets, plugins y librerías; verificar provenance",
+    "LLM04: poisoning de fine-tuning, de la base del RAG (fuentes editables) y del feedback",
+    "LLM10: consumo no acotado = DoS y 'denial of wallet'; el costo por petición lo vuelve urgente",
+    "Cuidado con el poisoning lento"
+   ],
+   "banco": [
+    {
+     "id": "cll4-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Qué componentes forman la supply chain de un sistema LLM (LLM03)?",
+     "solucion": "El modelo base, los fine-tunes/adapters de terceros, los datasets de entrenamiento y de RAG, los plugins/herramientas y las librerías. Cada uno es una dependencia con riesgo (backdoor, ejecución al cargar, plugin vulnerable); la defensa es verificar provenance (origen e integridad) y aplicar SBOM/SCA a las librerías.",
+     "explicacion": "Todo lo que ensamblas es dependencia.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cll4-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué vías ocurre el poisoning de un LLM (LLM04)?",
+     "solucion": "Fine-tune poisoning (datos de ajuste manipulados → sesgos/backdoors), RAG poisoning (un atacante coloca un documento envenenado o con inyección indirecta en una base editable) y feedback poisoning (reentrenar con feedback de usuarios sin curar). Se mitiga curando y verificando fuentes, controlando quién escribe en el RAG y tratando lo recuperado como no confiable.",
+     "explicacion": "Ajuste, RAG y feedback.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cll4-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el 'consumo no acotado' (LLM10) y por qué es más urgente que en software clásico?",
+     "solucion": "Que sin límites un atacante (o bug) agota recursos (DoS), dispara costos enormes ('denial of wallet' en APIs de pago) o abusa de la ventana de contexto con entradas gigantes. Es más urgente porque cada inferencia cuesta cómputo y dinero, así que el abuso se traduce directamente en daño financiero. Se frena con rate limiting, cuotas y límites de longitud.",
+     "explicacion": "Costo por petición = daño financiero.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cll4-q4",
+     "tipo": "concepto",
+     "enunciado": "Un asistente usa modelo base público, se afina con datos de un proveedor, hace RAG sobre un wiki editable por cualquier empleado y expone API sin límites. Riesgos y controles.",
+     "solucion": "LLM03: modelo/adapter podría traer backdoor o ejecutar código al cargar → verificar procedencia, formato sin ejecución, carga aislada. LLM04: el wiki editable es canal de poisoning/inyección → controlar quién escribe, tratar lo recuperado como no confiable. LLM10: prompts enormes masivos → rate limiting, límites de tokens, cuotas.",
+     "explicacion": "Tres riesgos frecuentes, controles baratos.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cll4-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué confiar en un modelo 'por ser popular' es un error de supply chain?",
+     "solucion": "Porque la popularidad no es procedencia verificada: un modelo o adapter popular puede haber sido secuestrado, contener un backdoor o ejecutar código al cargarse según el formato. Hay que verificar origen e integridad y preferir formatos sin ejecución, igual que con las dependencias de software.",
+     "explicacion": "Popularidad ≠ procedencia.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cll4-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué el poisoning 'lento' evade muchos controles?",
+     "solucion": "Porque introduce pocos documentos o ejemplos envenenados a lo largo del tiempo, quedando bajo los umbrales que detectan cambios bruscos. Requiere monitorear la deriva del comportamiento del modelo (no solo cambios puntuales), igual que la exfiltración 'lenta y baja' evade los umbrales de volumen.",
+     "explicacion": "Bajo el radar de cambios bruscos.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 839
+  },
+  {
+   "id": "cyber-llm5",
+   "bloque": "fase-8",
+   "titulo": "Ciber · Gobernar un sistema con LLMs: red teaming, evaluación y defensa en profundidad",
+   "libro": "OWASP Top 10 for LLM Applications 2025",
+   "lectura": "data/teoria/cyber-llm5.md",
+   "dosis": 30,
+   "objetivo": "Montar defensa en profundidad para un sistema LLM; hacer red teaming/evaluación adversaria; ubicar al humano y al monitoreo en el lazo; y ejecutar el mini-proyecto del cluster.",
+   "heuristicas": [],
+   "metadata": {
+    "ruta": "cyber",
+    "nivel": 3
+   },
+   "ideas_clave": [
+    "Ninguna mitigación de LLM es perfecta: se apilan capas (entrada, contexto, capacidades, salida, acción, operación)",
+    "Red teaming = emulación adversaria aplicada a IA; continuo y gatea cambios",
+    "Humano en el lazo para lo sensible/irreversible; monitoreo de entradas/salidas",
+    "Construir IA segura es aplicar toda la ciberseguridad a la vez"
+   ],
+   "banco": [
+    {
+     "id": "cll5-q1",
+     "tipo": "concepto",
+     "enunciado": "¿Cuáles son las capas de defensa en profundidad de un sistema LLM?",
+     "solucion": "Entrada (contenido externo/RAG no confiable, control de acceso por documento), contexto (sin secretos en el prompt, minimizar, procedencia del modelo), capacidades (agencia mínima: pocas herramientas, permisos estrechos, aislamiento), salida (tratarla como no confiable, validar/sanear), acción (humano en el lazo para lo sensible) y operación (rate limiting, cuotas, monitoreo). Que una capa falle no debe causar daño.",
+     "explicacion": "Seis capas independientes.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cll5-q2",
+     "tipo": "concepto",
+     "enunciado": "¿Qué es el red teaming de LLMs y por qué es continuo?",
+     "solucion": "Probar sistemáticamente y de forma autorizada el sistema con prompt injections directas/indirectas, intentos de extraer el system prompt, de usar mal una herramienta, de filtrar datos del RAG o evadir filtros; lo que logra pasar es una brecha a cerrar. Es continuo porque cada cambio (modelo, prompt, herramienta nuevos) puede abrir brechas, así que se re-evalúa tras cada cambio.",
+     "explicacion": "Emulación adversaria aplicada a IA.",
+     "difficulty": "easy"
+    },
+    {
+     "id": "cll5-q3",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué no existe una 'defensa definitiva' contra prompt injection y qué se hace en su lugar?",
+     "solucion": "Porque el LLM no separa de forma fiable instrucciones de contenido y el lenguaje natural no se filtra perfectamente; no hay un equivalente a la parametrización de SQL. En su lugar se apila defensa en profundidad y se limita el impacto (agencia mínima, salida validada, humano en el lazo) para que una inyección exitosa no se traduzca en daño.",
+     "explicacion": "Limitar el impacto, no impedir lo imposible.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cll5-q4",
+     "tipo": "concepto",
+     "enunciado": "Vas a desplegar un asistente RAG con herramientas (correo, tickets). Describe su gobernanza integrada.",
+     "solucion": "Capas: RAG con control de acceso por usuario y contenido no confiable; sin secretos en el prompt; agencia mínima (correo solo interno con confirmación humana); salida validada antes de actuar; rate limiting/cuotas; monitoreo. Red teaming antes de lanzar (inyección indirecta, extraer prompt, exfiltrar, abusar consumo) y re-evaluar en cada cambio. Riesgo residual aceptado, documentado y vigilado.",
+     "explicacion": "Capas + red teaming + monitoreo.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cll5-q5",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué los cambios (modelo nuevo, herramienta nueva) deben 'gatearse' y no solo evaluarse al inicio?",
+     "solucion": "Porque una capacidad o agente nuevo amplía la superficie y puede invalidar las pruebas previas: lo que era seguro deja de serlo. La gobernanza debe gatear los cambios (evaluar/red-teamear antes de habilitarlos), especialmente en sistemas multi-agente o modelos que se actualizan solos, no evaluar una sola vez al lanzar.",
+     "explicacion": "Evaluar antes de habilitar cada cambio.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cll5-q6",
+     "tipo": "concepto",
+     "enunciado": "¿Por qué 'construir IA segura es aplicar toda la ciberseguridad a la vez'?",
+     "solucion": "Porque un sistema LLM seguro combina defensa en profundidad (ms2), agencia mínima = least privilege (ms2/web2), salida no confiable = validación (dev1/web1), red teaming = emulación adversaria (blue5), monitoreo y respuesta (blue2/blue4) y gobernanza/riesgo residual (mls5/ms5). Es un sistema que lee datos no confiables y actúa, así que hereda todos los riesgos de la ruta a la vez.",
+     "explicacion": "Integra toda la fase.",
+     "difficulty": "hard"
+    }
+   ],
+   "orden": 840
   }
  ]
 }
