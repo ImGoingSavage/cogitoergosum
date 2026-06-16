@@ -2,6 +2,12 @@
 
 > El **toolkit cuasi-experimental econométrico** de Cunningham. Complementa [[arena-h3]] (What If) y [[arena-h15]] (Pearl) con la mirada de economía: matching, IV/2SLS, RDD, DiD, panel, control sintético.
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+¿Por qué a veces "los tratados resultan peor" cuando el tratamiento en realidad ayuda? Esta lección construye, desde cero, la respuesta que vertebra toda la inferencia causal observacional: el **sesgo de selección**. Con la notación de resultados potenciales descompone la ingenua diferencia de medias en su parte causal (el efecto) y su parte tramposa (la diferencia de base entre quienes se tratan y quienes no), y muestra que **aleatorizar significa, exactamente, igualar esa base**.
+
+Al terminar podrás: (1) distinguir ATE, ATT y ATU y cuándo difieren; (2) enunciar las dos partes de SUTVA; (3) descomponer la diferencia naïve en efecto + sesgo de selección + sesgo heterogéneo; y (4) reconocer un tratamiento "endógeno" que pide un diseño cuasi-experimental. El ejemplo de 4 pacientes hace ver el sesgo a ojo. Es la puerta de entrada al toolkit econométrico de los lotes siguientes (matching, IV, RDD, DiD).
+
 ## Resultados potenciales
 
 Cada unidad tiene **Y¹** (con tratamiento) e **Y⁰** (sin él); efecto individual δᵢ=Y¹ᵢ−Y⁰ᵢ. **Switching equation** Y = D·Y¹ + (1−D)·Y⁰: solo observamos uno (problema fundamental → datos faltantes).

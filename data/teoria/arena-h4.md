@@ -2,6 +2,12 @@
 
 > El enfoque **estructural**: cada sesgo es una estructura de caminos en el DAG. El lenguaje de **d-separación** dice qué ajustar y qué NO. Complementa [[arena-h1]] (definiciones básicas confundidor/mediador/collider).
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Los tres grandes sesgos de un estudio —confundimiento, selección y medición— suelen tratarse como un saco de "cosas que salen mal". Esta lección construye, desde cero, la idea que los unifica: **cada sesgo es una estructura concreta de caminos en el DAG**, y la **d-separación** es la regla mecánica que dice qué ajustar y qué no. Con ese lenguaje, "¿controlo por esta variable?" deja de ser intuición y pasa a ser una lectura del grafo.
+
+Al terminar podrás: (1) cerrar un camino trasero con el criterio backdoor y reconocer la d-separación; (2) distinguir confundimiento (causa común anterior) de sesgo de selección (efecto común condicionado, incluida la censura informativa → IPCW); (3) saber por qué el error de medición no diferencial atenúa hacia el nulo y el diferencial no; y (4) evitar ajustar mediadores, colliders o instrumentos. Cada estructura entra por un ejemplo.
+
 ## Confundimiento y criterio de la puerta trasera
 
 **Confundimiento** = A e Y comparten una **causa común**, abriendo un **camino trasero** A ← C → Y que transmite asociación no causal. Ver [[confundimiento-backdoor]].

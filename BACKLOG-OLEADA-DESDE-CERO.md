@@ -22,9 +22,9 @@
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ⬜ pendiente |
-| 7. causal-health (Causalidad y Health AI / RWE) | 22 | 🟡 4/22 (lote 1 v95) |
+| 7. causal-health (Causalidad y Health AI / RWE) | 22 | 🟡 8/22 (lotes 1-2 v95-v96) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **54 / 118 hechas** |
+| | **118** | **58 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -156,10 +156,10 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-h16` — Diagramas, junciones y paradojas (Pearl)
 - [x] `arena-h1` — DAGs y adjustment sets
 - [x] `arena-h17` — do-operator, back-door, front-door y do-calculus
-- [ ] `arena-h3` — Contrafactuales, experimentos e identificación
-- [ ] `arena-h19` — Resultados potenciales y sesgo de selección (Mixtape)
-- [ ] `arena-h4` — Confundimiento, selección y sesgo de medición
-- [ ] `arena-h18` — Contrafactuales y mediación (Pearl)
+- [x] `arena-h3` — Contrafactuales, experimentos e identificación
+- [x] `arena-h19` — Resultados potenciales y sesgo de selección (Mixtape)
+- [x] `arena-h4` — Confundimiento, selección y sesgo de medición
+- [x] `arena-h18` — Contrafactuales y mediación (Pearl)
 - [ ] `arena-h5` — Modelos: IP weighting, g-fórmula, PS, IV
 - [ ] `arena-h20` — Matching, subclasificación y propensity score
 - [ ] `arena-h21` — Variables instrumentales y RDD

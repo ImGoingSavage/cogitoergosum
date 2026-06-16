@@ -1,5 +1,11 @@
 # La causalidad según Pearl IV: contrafactuales y mediación
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+El peldaño más alto de la escalera: **"¿qué habría pasado con ESTE caso si las cosas hubieran sido distintas?"**. Ni los datos ni los experimentos lo responden —un experimento da promedios, no el destino de un individuo en un mundo que no ocurrió—. Esta lección construye, desde cero, la maquinaria que sí: el **modelo causal estructural (SCM)** y su algoritmo de tres pasos, más el **análisis de mediación** (por qué canal viaja un efecto) y la distinción legal/preventiva entre causa **necesaria** y **suficiente**.
+
+Al terminar podrás: (1) computar un contrafactual con abducción → acción → predicción; (2) ver que el contrafactual de Pearl y el resultado potencial de Rubin son el mismo concepto en dos idiomas; (3) descomponer un efecto en directo e indirecto (NDE/NIE) y saber por qué Baron-Kenny falla con interacción; y (4) separar PN ("but-for", culpa) de PS (suficiencia, prevención). Cada idea entra por un ejemplo concreto.
+
 ## Contrafactuales (peldaño 3)
 
 '¿Qué **habría** pasado con Y para ESTE caso si X hubiera sido distinto, dado lo observado?'. No se obtienen ni con datos (peldaño 1) ni con experimentos (peldaño 2, que dan **promedios**): un contrafactual es sobre un **individuo** en un mundo que no ocurrió. Requiere un **Modelo Causal Estructural (SCM)**.

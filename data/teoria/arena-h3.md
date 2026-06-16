@@ -1,5 +1,11 @@
 # Inferencia causal I: contrafactuales, experimentos e identificación
 
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Esta lección construye, desde cero, el otro gran lenguaje de la causalidad (el de Neyman-Rubin, complementario al grafo de Pearl): los **resultados potenciales**. La idea raíz es a la vez simple y demoledora: cada individuo tiene dos destinos —con tratamiento y sin él— pero solo observamos uno, así que la inferencia causal es, en el fondo, un problema de **datos faltantes**. De ahí salen las tres condiciones que cualquier estimación causal debe cumplir antes de tocar los datos.
+
+Al terminar podrás: (1) distinguir asociación ($E[Y\mid A]$) de causación ($E[Y^a]$) y saber cuándo coinciden; (2) explicar por qué la aleatorización da intercambiabilidad; (3) verificar las tres condiciones de identificación (intercambiabilidad, positividad, consistencia); y (4) estimar un efecto por estandarización. Cada idea entra por un ejemplo numérico. Conecta con el lenguaje gráfico de [[arena-h15]].
+
 ## El efecto causal como contraste contrafactual
 
 Cada individuo tiene **resultados potenciales**: Y^{a=1} (bajo tratamiento) y Y^{a=0} (sin él). Hay **efecto causal individual** si Y^{a=1}≠Y^{a=0}, pero solo observamos UNO (el del tratamiento recibido): **problema fundamental** de la inferencia causal → es un problema de **datos faltantes**.

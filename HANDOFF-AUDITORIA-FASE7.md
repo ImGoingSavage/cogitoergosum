@@ -418,8 +418,11 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   (como `s1`), por lo que dan `closers:false` en el smoke — es su estado original, NO
   regresión. **Lote 1 (v95):** `h15` (escalera de Pearl), `h16` (junciones/paradojas),
   `h1` (DAGs/adjustment sets), `h17` (do-operator/back-door/front-door/do-calculus).
-  Validado: smoke threw=0, KaTeX 0 throws. **Pendiente:** lotes 2-5 (`h3,h19,h4,h18` /
-  `h5,h20,h21,h22` / `h2,h6,h7,h8` / `h9,h10,h11,h12,h13,h14`); orden en el backlog.
+  **Lote 2 (v96):** `h3` (resultados potenciales, 3 condiciones de identificación),
+  `h19` (Mixtape: sesgo de selección, ATE/ATT/ATU, SUTVA), `h4` (sesgos estructurales:
+  confundimiento/selección/medición, d-separación), `h18` (contrafactuales/SCM, mediación
+  NDE/NIE, PN/PS). Validado: smoke threw=0, KaTeX 0 throws. **Pendiente:** lotes 3-5
+  (`h5,h20,h21,h22` / `h2,h6,h7,h8` / `h9,h10,h11,h12,h13,h14`); orden en el backlog.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*
