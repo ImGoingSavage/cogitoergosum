@@ -15,3 +15,7 @@ test-seed.html
 # Capturas de sesiones de trabajo (material personal; el nombre lleva
 # espacio final, por eso el comodín)
 Estado actual*
+
+# Videos de trabajo (no relevantes para la app)
+*.mov
+*.mp4.bak
