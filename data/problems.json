@@ -6826,7 +6826,7 @@
         "P(kp) $= p$ para infinitos k contradice que P tenga grado $\\ge 1$ (tomaría el valor p más de n veces). Contradicción."
       ],
       "solucion": "No existe. Supón que $P(0)=p$ es primo. Como $a-b$ divide a $P(a)-P(b)$, se tiene p | P(kp) − P(0), de modo que p | P(kp) para todo $k \\ge 1$. Si todos esos valores son primos y divisibles por p, entonces P(kp) $= p$ para infinitos k. Pero un polinomio de grado $\\ge 1$ no puede tomar el mismo valor más de su grado de veces. Contradicción: no hay tal polinomio.",
-      "explicacion": "Argumento de Euler por contradicción: la divisibilidad $a-b | P(a)-P(b)$ fuerza la repetición de un valor, prohibida por el teorema fundamental del álgebra. Verificado con Python: el mecanismo P(kp) ≡ 0 (mód p) con valor compuesto se cumple para $x^2+x+41, x^3+3x+17$, etc.",
+      "explicacion": "Argumento de Euler por contradicción: la divisibilidad $a-b \\mid P(a)-P(b)$ fuerza la repetición de un valor, prohibida por el teorema fundamental del álgebra. Verificado con Python: el mecanismo $P(kp) \\equiv 0$ (mód p) con valor compuesto se cumple para $x^2+x+41, x^3+3x+17$, etc.",
       "tiempo_estimado": 22,
       "conceptos": [
         "argumento por contradicción",
@@ -6853,7 +6853,7 @@
       "titulo": "El desplazamiento cíclico con sumas parciales positivas",
       "estrategia": "inversion",
       "dificultad": 4,
-      "enunciado": "Dada una sucesión de enteros $x_1, x_2, \\dots , x_n$ cuya suma es 1, demuestra que exactamente uno de los n desplazamientos cíclicos — x₁,…,xₙ ; x₂,…,xₙ,x₁ ; … ; xₙ,x₁,…,xₙ₋₁ — tiene todas sus sumas parciales positivas.",
+      "enunciado": "Dada una sucesión de enteros $x_1, x_2, \\dots, x_n$ cuya suma es 1, demuestra que exactamente uno de los $n$ desplazamientos cíclicos — $x_1,\\dots,x_n$ ; $x_2,\\dots,x_n,x_1$ ; … ; $x_n,x_1,\\dots,x_{n-1}$ — tiene todas sus sumas parciales positivas.",
       "hints": [
         "Es un problema de existencia y unicidad. Construye una función de sumas acumuladas y trabaja hacia atrás desde su comportamiento.",
         "Define $S_0=0, S_k = x_1+\\cdots +x_k$. Como la suma total es 1, al extender periódicamente se cumple $S_{k+n} = S_k + 1$: la gráfica 'sube' una unidad por vuelta.",
@@ -7037,7 +7037,7 @@
       "hints": [
         "Procede por construcción greedy / inducción fuerte: dado N, ¿qué Fibonacci le restarías primero?",
         "Toma el mayor número de Fibonacci F que no exceda a N. Resta: el residuo $N - F$ es menor que N. ¿Qué tan pequeño es?",
-        "Si F es el mayor Fibonacci $\\le N$, entonces N − F < F_{siguiente} − F = F_{anterior}, así que el residuo es estrictamente menor que F y no volverás a usar F.",
+        "Si $F$ es el mayor Fibonacci $\\le N$, entonces $N - F < F_{\\text{siguiente}} - F = F_{\\text{anterior}}$, así que el residuo es estrictamente menor que $F$ y no volverás a usar $F$.",
         "Por inducción fuerte, el residuo $N - F$ (menor que N) se escribe como suma de Fibonacci distintos, todos menores que F, así que F no se repite.",
         "Restar siempre el mayor Fibonacci posible (algoritmo greedy) descompone N en Fibonacci distintos. Esta es la representación de Zeckendorf."
       ],
@@ -7325,11 +7325,11 @@
       "hints": [
         "Los coeficientes $1/\\sqrt{2}$ sugieren una rotación de 45°. ¿Qué cantidad preserva una rotación de la pareja (a, b)?",
         "Calcula $((a+b)/\\sqrt{2})^2 + ((a-b)/\\sqrt{2})^2$. Simplifica y descubre qué se conserva.",
-        "((a+b)/√2)² + ((a−b)/√2)² = (a²+2ab$+b^2 + a^2-2$ab+b²)/2 = a² + b². La operación preserva la suma de cuadrados de la pareja, y por tanto del TRÍO completo.",
+        "$((a+b)/\\sqrt{2})^2 + ((a-b)/\\sqrt{2})^2 = (a^2+2ab+b^2 + a^2-2ab+b^2)/2 = a^2 + b^2$. La operación preserva la suma de cuadrados de la pareja, y por tanto del TRÍO completo.",
         "Calcula la suma de cuadrados de la terna inicial $(\\sqrt{2}, 2, 1/\\sqrt{2})$ y de la objetivo $(1, \\sqrt{2}, 1+\\sqrt{2})$.",
         "Inicial: $2 + 4 + 1/2 = 6.5$. Objetivo: $1 + 2 + (1+\\sqrt{2})^2 = 3 + (3+2\\sqrt{2}) = 6 + 2\\sqrt{2} \\approx 8.83$. Como $6.5 \\ne 6+2\\sqrt{2}$, es IMPOSIBLE."
       ],
-      "solucion": "No es posible. La operación (a,b) ↦ ((a+b)/√2, (a−b)/√2) es una rotación que preserva $a^2 + b^2$, así que la suma de cuadrados de toda la terna es invariante. La inicial es $(\\sqrt{2})^2 + 2^2 + (1/\\sqrt{2})^2 = 2 + 4 + 0.5 = 6.5$, y la objetivo $1^2 + (\\sqrt{2})^2 + (1+\\sqrt{2})^2 = 1 + 2 + (3 + 2\\sqrt{2}) = 6 + 2\\sqrt{2} \\approx 8.83$. Como $6.5 \\ne 6 + 2\\sqrt{2}$, no hay forma de transformar una en la otra.",
+      "solucion": "No es posible. La operación $(a,b) \\mapsto ((a+b)/\\sqrt{2}, (a-b)/\\sqrt{2})$ es una rotación que preserva $a^2 + b^2$, así que la suma de cuadrados de toda la terna es invariante. La inicial es $(\\sqrt{2})^2 + 2^2 + (1/\\sqrt{2})^2 = 2 + 4 + 0.5 = 6.5$, y la objetivo $1^2 + (\\sqrt{2})^2 + (1+\\sqrt{2})^2 = 1 + 2 + (3 + 2\\sqrt{2}) = 6 + 2\\sqrt{2} \\approx 8.83$. Como $6.5 \\ne 6 + 2\\sqrt{2}$, no hay forma de transformar una en la otra.",
       "explicacion": "Invariante cuadrático por rotación ortogonal: comparar la suma de cuadrados al inicio y al final prueba la imposibilidad de inmediato. Verificado con Python: $6.5 \\ne 6 + 2\\sqrt{2} (8.828\\dots )$.",
       "tiempo_estimado": 18,
       "conceptos": [
@@ -7471,10 +7471,10 @@
         "A cada número asígnale un vector de 9 bits (un bit por primo): 0 si el exponente es par, 1 si impar. Dos números con el mismo vector tienen producto que es un CUADRADO perfecto.",
         "Hay $2^9 = 512$ vectores posibles. Con muchos más de 512 números, el casillero da pares cuyo producto es cuadrado. Repite el truco sobre las raíces de esos cuadrados.",
         "Si tienes $3\\cdot 2^9+1 = 1537$ números, puedes extraer $2^9+1 = 513$ pares disjuntos de producto cuadrado; sus raíces son otros tantos enteros, y entre 513 raíces hay dos cuyo producto es cuadrado.",
-        "Esas dos raíces √(ab) y √(cd) con producto cuadrado dan abcd = (√(ab)·√(cd))$^2 \\cdot \\dots$ una cuarta potencia. Como $1985 \\ge 1537, M$ contiene tales cuatro elementos."
+        "Esas dos raíces $\\sqrt{ab}$ y $\\sqrt{cd}$ con producto cuadrado dan $abcd = (\\sqrt{ab}\\cdot\\sqrt{cd})^2$, una cuarta potencia. Como $1985 \\ge 1537$, $M$ contiene tales cuatro elementos."
       ],
-      "solucion": "Asocia a cada número un vector en (ℤ/2)⁹ que registre la paridad del exponente de cada primo $\\le 26$ (hay 9 tales primos). Dos números con el mismo vector tienen producto cuadrado. Como $1985 \\ge 3\\cdot 2^9 + 1 = 1537$, se pueden extraer $2^9 + 1 = 513$ pares disjuntos de producto cuadrado; tomando la raíz cuadrada de cada producto se obtienen 513 enteros, y entre ellos (por casillero sobre los mismos 512 vectores) dos tienen producto cuadrado. Esos dos provienen de cuatro elementos a, b, c, d de M con abcd igual a una cuarta potencia.",
-      "explicacion": "Casillero iterado sobre vectores de paridad de exponentes en (ℤ/2)⁹: cuadrado de cuadrados $=$ cuarta potencia. Es un problema de la IMO 1985. Verificado con Python: $1985 \\ge 3\\cdot 2^9 + 1 = 1537$.",
+      "solucion": "Asocia a cada número un vector en $(\\mathbb{Z}/2)^9$ que registre la paridad del exponente de cada primo $\\le 26$ (hay 9 tales primos). Dos números con el mismo vector tienen producto cuadrado. Como $1985 \\ge 3\\cdot 2^9 + 1 = 1537$, se pueden extraer $2^9 + 1 = 513$ pares disjuntos de producto cuadrado; tomando la raíz cuadrada de cada producto se obtienen 513 enteros, y entre ellos (por casillero sobre los mismos 512 vectores) dos tienen producto cuadrado. Esos dos provienen de cuatro elementos $a, b, c, d$ de $M$ con $abcd$ igual a una cuarta potencia.",
+      "explicacion": "Casillero iterado sobre vectores de paridad de exponentes en $(\\mathbb{Z}/2)^9$: cuadrado de cuadrados $=$ cuarta potencia. Es un problema de la IMO 1985. Verificado con Python: $1985 \\ge 3\\cdot 2^9 + 1 = 1537$.",
       "tiempo_estimado": 30,
       "conceptos": [
         "principio del casillero",
@@ -7654,7 +7654,7 @@
         "La suma telescópica da una cota constante; sumando el 1 inicial se obtiene un total estrictamente menor que $3/2$."
       ],
       "solucion": "Para $k \\ge 2$ se tiene $1/k^3 < 1/((k-1)k(k+1)) = \\frac{1}{2}[1/((k-1)k) - 1/(k(k+1))]$. Sumando desde $k=2$ hasta n, la parte derecha telescopa y queda $\\frac{1}{2}[1/2 - 1/(n(n+1))] < 1/4$. Por tanto $1 + \\sum _{k=2}^n 1/k^3 < 1 + 1/4 < 3/2$.",
-      "explicacion": "Acotar por una fracción telescópica $(1/((k-1)k(k+1)))$ y dejar que la suma colapse. La serie real converge a la constante de Apéry ζ(3) ≈ 1.202 < 1.5. Verificado con Python: la suma parcial (hasta 200000) es $\\approx 1.202$, por debajo de $3/2$.",
+      "explicacion": "Acotar por una fracción telescópica $(1/((k-1)k(k+1)))$ y dejar que la suma colapse. La serie real converge a la constante de Apéry $\\zeta(3) \\approx 1.202 < 1.5$. Verificado con Python: la suma parcial (hasta 200000) es $\\approx 1.202$, por debajo de $3/2$.",
       "tiempo_estimado": 22,
       "conceptos": [
         "telescopaje",
@@ -7792,13 +7792,13 @@
       "enunciado": "Sean $a_1, a_2, \\dots , a_n$ enteros positivos DISTINTOS. Demuestra que $a_1^2 + a_2^2 + \\cdots + a_n^2 \\ge (2n+1)/3 \\cdot (a_1 + a_2 + \\cdots + a_n)$.",
       "hints": [
         "Usa el principio del extremo: la desigualdad es 'más apretada' cuando los $a_i$ son lo más pequeños posible. ¿Cuál es el peor caso?",
-        "Como son enteros positivos distintos, el caso extremo (que minimiza Σa$_i^2$ para un Σa$_i$ dado) es ${1, 2, \\dots , n}$. Verifica la desigualdad ahí con igualdad.",
-        "Para ${1,\\dots ,n}$: Σa$_i^2 = n(n+1)(2n+1)/6$ y Σa$_i = n(n+1)/2$. El cociente Σa$_i^2/$Σa$_i = (2n+1)/3$. ¡Igualdad!",
+        "Como son enteros positivos distintos, el caso extremo (que minimiza $\\sum a_i^2$ para un $\\sum a_i$ dado) es $\\{1, 2, \\dots, n\\}$. Verifica la desigualdad ahí con igualdad.",
+        "Para $\\{1,\\dots,n\\}$: $\\sum a_i^2 = n(n+1)(2n+1)/6$ y $\\sum a_i = n(n+1)/2$. El cociente $\\sum a_i^2/\\sum a_i = (2n+1)/3$. ¡Igualdad!",
         "Para el caso general, ordena $a_1 < a_2 < \\cdots < a_n$; como son distintos, $a_k \\ge k$. Compara cada $a_k^2 - (2n+1)/3\\cdot a_k$ con el de k.",
         "Un argumento de reordenamiento/intercambio muestra que aumentar cualquier $a_k$ por encima de k solo agranda el lado izquierdo más rápido que el derecho, preservando la desigualdad."
       ],
-      "solucion": "Como los $a_i$ son enteros positivos distintos, ordénalos $a_1 < \\cdots < a_n$, de modo que $a_k \\ge k$. El caso extremo ${1, 2, \\dots , n}$ da igualdad: Σk$^2 = n(n+1)(2n+1)/6$ y Σk $= n(n+1)/2$, cuyo cociente es exactamente $(2n+1)/3$. Para el caso general, sustituir cada $a_k$ por un valor $\\ge k$ incrementa Σa$_i^2$ al menos tan rápido como $(2n+1)/3\\cdot$Σa$_i$ (pues $2a_k-1 \\ge (2n+1)/3$ no siempre, pero el balance acumulado lo garantiza por el orden), preservando la desigualdad. Por tanto Σa$_i^2 \\ge (2n+1)/3\\cdot$Σa$_i$.",
-      "explicacion": "Principio del extremo: el conjunto ${1,\\dots ,n}$ es el caso de igualdad, y todo otro conjunto de enteros distintos solo puede agrandar el lado izquierdo relativamente. Verificado con Python: 4000 muestras de enteros distintos cumplen Σa$_i^2 \\ge (2n+1)/3\\cdot$Σa$_i$.",
+      "solucion": "Como los $a_i$ son enteros positivos distintos, ordénalos $a_1 < \\cdots < a_n$, de modo que $a_k \\ge k$. El caso extremo $\\{1, 2, \\dots, n\\}$ da igualdad: $\\sum k^2 = n(n+1)(2n+1)/6$ y $\\sum k = n(n+1)/2$, cuyo cociente es exactamente $(2n+1)/3$. Para el caso general, sustituir cada $a_k$ por un valor $\\ge k$ incrementa $\\sum a_i^2$ al menos tan rápido como $\\tfrac{2n+1}{3}\\cdot\\sum a_i$ (pues $2a_k-1 \\ge (2n+1)/3$ no siempre, pero el balance acumulado lo garantiza por el orden), preservando la desigualdad. Por tanto $\\sum a_i^2 \\ge \\tfrac{2n+1}{3}\\cdot\\sum a_i$.",
+      "explicacion": "Principio del extremo: el conjunto $\\{1,\\dots,n\\}$ es el caso de igualdad, y todo otro conjunto de enteros distintos solo puede agrandar el lado izquierdo relativamente. Verificado con Python: 4000 muestras de enteros distintos cumplen $\\sum a_i^2 \\ge \\tfrac{2n+1}{3}\\cdot\\sum a_i$.",
       "tiempo_estimado": 28,
       "conceptos": [
         "principio del extremo",
@@ -7936,7 +7936,7 @@
       "enunciado": "Demuestra que la sucesión de Fibonacci satisface $F_{2n+1} = F_{n+1}^2 + F_n^2$ para todo $n \\ge 0$.",
       "hints": [
         "Calcula casos pequeños para convencerte y luego prueba por inducción usando la recurrencia de Fibonacci.",
-        "Verifica $n=1: F_3 = 2$ y F₂² + F₁² = 1 + 1 = 2. ✓. Busca una identidad auxiliar que ligue $F_{m+n}$ con $F_m, F_n$.",
+        "Verifica $n=1$: $F_3 = 2$ y $F_2^2 + F_1^2 = 1 + 1 = 2$. ✓. Busca una identidad auxiliar que ligue $F_{m+n}$ con $F_m, F_n$.",
         "La identidad de adición $F_{m+n} = F_{m+1}F_n + F_m F_{n-1}$ es la herramienta. Tómala con $m = n+1 (o m = n)$ para generar $F_{2n+1}$.",
         "Con $m = n: F_{2n} = F_{n+1}F_n + F_n F_{n-1}$. Con $m = n+1: F_{2n+1} = F_{n+1}F_{n+1}$... reescribe usando $F_{n+1} = F_n + F_{n-1}$.",
         "Aplicando la identidad de adición con $m=n+1: F_{2n+1} = F_{n+1}^2 + F_n^2$, que es justo lo pedido."
@@ -7972,7 +7972,7 @@
       "enunciado": "Demuestra que la sucesión de Fibonacci satisface $F_{3n} = F_{n+1}^3 + F_n^3 - F_{n-1}^3$ para todo $n \\ge 0$.",
       "hints": [
         "Verifica casos pequeños y apóyate en la identidad de adición de Fibonacci aplicada dos veces.",
-        "$n=1: F_3 = 2$ y F₂³ + F₁³ − F₀³ = 1 + 1 − 0 = 2. ✓. Escribe $F_{3n} = F_{2n+n}$ y usa la identidad de adición.",
+        "$n=1$: $F_3 = 2$ y $F_2^3 + F_1^3 - F_0^3 = 1 + 1 - 0 = 2$. ✓. Escribe $F_{3n} = F_{2n+n}$ y usa la identidad de adición.",
         "$F_{3n} = F_{2n+n} = F_{2n+1}F_n + F_{2n}F_{n-1}$. Sustituye $F_{2n+1} = F_{n+1}^2+F_n^2$ y $F_{2n} = F_n(F_{n+1}+F_{n-1})$.",
         "Tras sustituir, expande y agrupa los cubos. Usa $F_{n+1} = F_n + F_{n-1}$ para reducir todo a $F_{n+1}, F_n, F_{n-1}$.",
         "El álgebra colapsa en $F_{n+1}^3 + F_n^3 - F_{n-1}^3$ (los términos cruzados se cancelan usando la recurrencia). Queda probada la identidad."
@@ -8009,11 +8009,11 @@
       "hints": [
         "Compara las sumas parciales para n pequeños y busca por qué ambos lados crecen igual. O transforma la suma alternante.",
         "La suma alternante del lado derecho es $\\sum _{k=1}^{2n} (-1)^{k+1}/k$. Sepárala en términos impares (positivos) y pares (negativos).",
-        "Σ_{k=1}^{2n} (−1)^{k+1}/k = Σ_{impares} 1/k − Σ_{pares} 1/k. Suma y resta la suma de los pares para completar la armónica entera.",
-        "= (Σ_{k=1}^{2n} 1/k − 2·Σ_{pares ≤ 2n} 1/k) ... y Σ_{pares} 1/k = ½ Σ_{j=1}^{n} 1/j. Sustituye.",
+        "$\\sum_{k=1}^{2n} (-1)^{k+1}/k = \\sum_{\\text{impares}} 1/k - \\sum_{\\text{pares}} 1/k$. Suma y resta la suma de los pares para completar la armónica entera.",
+        "$= \\left(\\sum_{k=1}^{2n} 1/k - 2\\cdot\\sum_{\\text{pares}\\le 2n} 1/k\\right)$ … y $\\sum_{\\text{pares}} 1/k = \\tfrac12 \\sum_{j=1}^{n} 1/j$. Sustituye.",
         "Resulta $\\sum _{k=1}^{2n} 1/k - \\sum _{j=1}^{n} 1/j = \\sum _{k=n+1}^{2n} 1/k$, que es el lado izquierdo. Identidad probada."
       ],
-      "solucion": "Ambos lados son iguales. El lado derecho es Σ_{k=1}^{2n} (−1)^{k+1}/k = Σ_{k=1}^{2n} 1/k − 2·Σ_{pares ≤ 2n} 1/k. Como Σ_{pares ≤ 2n} 1/k = ½ Σ_{j=1}^{n} 1/j, esto vale $\\sum _{k=1}^{2n} 1/k - \\sum _{j=1}^{n} 1/j = \\sum _{k=n+1}^{2n} 1/k$, que es el lado izquierdo.",
+      "solucion": "Ambos lados son iguales. El lado derecho es $\\sum_{k=1}^{2n} (-1)^{k+1}/k = \\sum_{k=1}^{2n} 1/k - 2\\cdot\\sum_{\\text{pares}\\le 2n} 1/k$. Como $\\sum_{\\text{pares}\\le 2n} 1/k = \\tfrac12 \\sum_{j=1}^{n} 1/j$, esto vale $\\sum_{k=1}^{2n} 1/k - \\sum_{j=1}^{n} 1/j = \\sum_{k=n+1}^{2n} 1/k$, que es el lado izquierdo.",
       "explicacion": "Reescribir la suma alternante restando dos veces los términos pares revela que iguala una 'cola' de la serie armónica. Verificado con Python (aritmética exacta de fracciones): la identidad se cumple para $n = 1..39$.",
       "tiempo_estimado": 20,
       "conceptos": [
@@ -8085,7 +8085,7 @@
         "Conjetura: n debe ser una potencia de un primo impar, $n = p^k$. Verifica que ahí todo par de divisores coprimos es ${1, p^j}$, y $1 + p^j - 1 = p^j$ sí divide.",
         "Si n tuviera dos primos distintos p, q, entonces p y q serían divisores coprimos con p+q−1 ∤ n (en general). Luego la respuesta es: $n =$ potencia de un primo impar."
       ],
-      "solucion": "La respuesta es: n debe ser una potencia de un primo impar ($n = p^k$ con p primo impar, $k \\ge 1$). En ese caso, cualquier par de divisores coprimos es de la forma ${1, p^j}$, y $1 + p^j - 1 = p^j$ divide a n; la condición se cumple. Recíprocamente, si n tuviera dos primos distintos $p < q$ como factores, entonces p y q serían divisores coprimos pero $p + q - 1$ no divide a n en general (por ejemplo n=15: 3+5−1=7 ∤ 15), violando la propiedad. Por tanto los únicos n impares $> 1$ válidos son las potencias de primos impares.",
+      "solucion": "La respuesta es: $n$ debe ser una potencia de un primo impar ($n = p^k$ con $p$ primo impar, $k \\ge 1$). En ese caso, cualquier par de divisores coprimos es de la forma $\\{1, p^j\\}$, y $1 + p^j - 1 = p^j$ divide a $n$; la condición se cumple. Recíprocamente, si $n$ tuviera dos primos distintos $p < q$ como factores, entonces $p$ y $q$ serían divisores coprimos pero $p + q - 1$ no divide a $n$ en general (por ejemplo $n=15$: $3+5-1=7 \\nmid 15$), violando la propiedad. Por tanto los únicos $n$ impares $> 1$ válidos son las potencias de primos impares.",
       "explicacion": "Buscar el patrón experimentando con casos pequeños y demostrar la caracterización: la condición fuerza un único factor primo. Verificado con Python: los n impares $< 300$ que cumplen la propiedad son exactamente las potencias de primos impares $(3,5,7,9,11,13,\\dots ,25,27)$.",
       "tiempo_estimado": 26,
       "conceptos": [
@@ -8154,10 +8154,10 @@
         "Resuelve la recurrencia lineal: halla su polinomio característico factorizando la ecuación asociada.",
         "El polinomio característico es $x^4 - 2x^3 - x^2 + 2x + 1 = 0$. Intenta factorizarlo; sospecha que es un cuadrado perfecto de un cuadrático.",
         "$x^4 - 2x^3 - x^2 + 2x + 1 = (x^2 - x - 1)^2$. Las raíces son las de $x^2 - x - 1 = 0$ (¡las de Fibonacci!), cada una DOBLE.",
-        "Con raíces dobles $\\phi$ y ψ (la razón áurea y su conjugada), la solución general es aₙ = (A + Bn)φⁿ + (C + Dn)ψⁿ. Ajusta a las condiciones iniciales.",
-        "Resulta aₙ = n·Fₙ (n por el n-ésimo Fibonacci). Como $a_n = n\\cdot F_n$, claramente $n | a_n$."
+        "Con raíces dobles $\\phi$ y $\\psi$ (la razón áurea y su conjugada), la solución general es $a_n = (A + Bn)\\phi^n + (C + Dn)\\psi^n$. Ajusta a las condiciones iniciales.",
+        "Resulta $a_n = n\\cdot F_n$ ($n$ por el $n$-ésimo Fibonacci). Como $a_n = n\\cdot F_n$, claramente $n \\mid a_n$."
       ],
-      "solucion": "n divide a $a_n$ porque aₙ = n·Fₙ (n por el n-ésimo número de Fibonacci). En efecto, el polinomio característico de la recurrencia es $x^4 - 2x^3 - x^2 + 2x + 1 = (x^2 - x - 1)^2$, con las raíces de Fibonacci φ, ψ cada una DOBLE. La solución general es aₙ = (A+Bn)φⁿ + (C+Dn)ψⁿ, y ajustando a $a_0=0, a_1=1, a_2=2, a_3=6$ se obtiene $a_n = n\\cdot F_n$. Como $F_n$ es entero, $n | a_n$.",
+      "solucion": "$n$ divide a $a_n$ porque $a_n = n\\cdot F_n$ ($n$ por el $n$-ésimo número de Fibonacci). En efecto, el polinomio característico de la recurrencia es $x^4 - 2x^3 - x^2 + 2x + 1 = (x^2 - x - 1)^2$, con las raíces de Fibonacci $\\phi, \\psi$ cada una DOBLE. La solución general es $a_n = (A+Bn)\\phi^n + (C+Dn)\\psi^n$, y ajustando a $a_0=0, a_1=1, a_2=2, a_3=6$ se obtiene $a_n = n\\cdot F_n$. Como $F_n$ es entero, $n \\mid a_n$.",
       "explicacion": "Resolver la recurrencia lineal vía el polinomio característico (un cuadrado perfecto con raíces dobles de Fibonacci) revela la forma cerrada $a_n = n\\cdot F_n$, que hace la divisibilidad evidente. Verificado con Python: $n | a_n$ para $n = 1..60 (y a_n = n\\cdot F_n)$.",
       "tiempo_estimado": 28,
       "conceptos": [
@@ -8191,9 +8191,9 @@
         "Con $m = n = 0: 2a_0 = \\frac{1}{2}(2a_0) \\Rightarrow a_0 = 0$. Con $m = 1, n = 0: a_1 + a_1 = \\frac{1}{2}(a_2 + a_0) \\Rightarrow a_2 = 4$ (usando $a_1=1, a_0=0$).",
         "Con $m = n = 1: a_2 + a_0 = \\frac{1}{2}(a_2 + a_2) \\Rightarrow$ identidad. Con $m=2,n=1: a_3 + a_1 = \\frac{1}{2}(a_4 + a_2)$. Sigue calculando: $a_2=4, a_3=9, a_4=16$.",
         "El patrón es claro: $a_n = n^2$. Verifícalo en la ecuación funcional.",
-        "Comprueba: (m+n)² + (m−n)² = 2m² + 2n² = ½(4m² + 4n²) = ½(a_{2m} + a_{2n}). ✓ La respuesta es $a_n = n^2$."
+        "Comprueba: $(m+n)^2 + (m-n)^2 = 2m^2 + 2n^2 = \\tfrac12(4m^2 + 4n^2) = \\tfrac12(a_{2m} + a_{2n})$. ✓ La respuesta es $a_n = n^2$."
       ],
-      "solucion": "$a_n = n^2$. Sustituyendo valores pequeños se obtiene $a_0 = 0$ (de m=n=0), a₂ = 4 (de m=1, n=0), a₃ = 9, a₄ = 16, …, sugiriendo $a_n = n^2$. Esta fórmula satisface la ecuación: $(m+n)^2 + (m-n)^2 = 2m^2 + 2n^2 = \\frac{1}{2}(4m^2 + 4n^2) = \\frac{1}{2}(a_{2m} + a_{2n})$, y $a_1 = 1$. Como la recurrencia determina la sucesión a partir de $a_0$ y $a_1$, la solución es única: $a_n = n^2$.",
+      "solucion": "$a_n = n^2$. Sustituyendo valores pequeños se obtiene $a_0 = 0$ (de $m=n=0$), $a_2 = 4$ (de $m=1, n=0$), $a_3 = 9$, $a_4 = 16$, …, sugiriendo $a_n = n^2$. Esta fórmula satisface la ecuación: $(m+n)^2 + (m-n)^2 = 2m^2 + 2n^2 = \\tfrac{1}{2}(4m^2 + 4n^2) = \\tfrac{1}{2}(a_{2m} + a_{2n})$, y $a_1 = 1$. Como la recurrencia determina la sucesión a partir de $a_0$ y $a_1$, la solución es única: $a_n = n^2$.",
       "explicacion": "Buscar el patrón evaluando casos pequeños y verificar la fórmula candidata en la ecuación funcional (que codifica la 'ley del paralelogramo'). Verificado con Python: $a_n = n^2$ satisface la identidad para 2000 pares (m,n) y $a_1 = 1$.",
       "tiempo_estimado": 24,
       "conceptos": [
@@ -8262,7 +8262,7 @@
         "Calcula varios términos y mira los residuos módulo 3. Busca una recurrencia EXACTA (sin techo) que la sucesión satisfaga.",
         "Calcula: $x_1=4, x_2=19, x_3=\\lceil 361/4\\rceil =91, x_4=\\lceil 91^2/19\\rceil =\\lceil 8281/19\\rceil =436, x_5=\\lceil 436^2/91\\rceil =2089$. Mira $x_n$ mód 3: 1,1,1,1,1.",
         "Conjetura que $(x_n)$ satisface una recurrencia lineal exacta. Prueba $x_{n+1} = a\\cdot x_n + b\\cdot x_{n-1}$: ajusta con los primeros términos.",
-        "Resulta $x_{n+1} = 5x_n - x_{n-1}$ (verifica: 5·19−4 = 91 ✓, 5·91−19 = 436 ✓, 5·436−91 = 2089 ✓), y el techo es exacto porque $x_n^2/x_{n-1}$ es casi entero.",
+        "Resulta $x_{n+1} = 5x_n - x_{n-1}$ (verifica: $5\\cdot19-4 = 91$ ✓, $5\\cdot91-19 = 436$ ✓, $5\\cdot436-91 = 2089$ ✓), y el techo es exacto porque $x_n^2/x_{n-1}$ es casi entero.",
         "Módulo 3, la recurrencia $x_{n+1} = 5x_n - x_{n-1} \\equiv 2x_n - x_{n-1}$; con $x_1 \\equiv x_2 \\equiv 1$, induce $x_n \\equiv 1$ (mód 3) para todo n. Luego $3 | x_n - 1$."
       ],
       "solucion": "$x_n \\equiv 1$ (mód 3) para todo n, así que $3 | x_n - 1$. La sucesión satisface en realidad la recurrencia lineal exacta $x_{n+1} = 5x_n - x_{n-1}$ (el techo no agrega nada porque $x_n^2/x_{n-1}$ resulta entero o casi entero, dando exactamente ese valor): $5\\cdot 19-4 = 91, 5\\cdot 91-19 = 436, 5\\cdot 436-91 = 2089$, etc. Módulo 3 esto es $x_{n+1} \\equiv 2x_n - x_{n-1}$, y como $x_1 \\equiv x_2 \\equiv 1$ (mód 3), por inducción $x_n \\equiv 1$ (mód 3) para todo n.",
@@ -8588,8 +8588,8 @@
         "Si la suma de todos los grados es par, ¿cuántos sumandos impares puede haber? Una suma de números es par solo si hay un número PAR de sumandos impares.",
         "Por tanto el número de vértices (personas) de grado impar (número impar de hermanos) es par."
       ],
-      "solucion": "Construye el grafo donde las personas son vértices y dos se unen si son hermanos; el grado de cada persona es su número de hermanos. Por el lema del apretón de manos, la suma de todos los grados es par (es 2·#aristas). Una suma de enteros es par solo si la cantidad de sumandos impares es par; luego el número de personas con grado impar — es decir, con un número impar de hermanos — es par.",
-      "explicacion": "Lema del apretón de manos: $\\sum$ grados = 2·#aristas es par, así que la cantidad de vértices de grado impar es par. Verificado con Python: en 2000 grafos aleatorios, el número de vértices de grado impar siempre es par.",
+      "solucion": "Construye el grafo donde las personas son vértices y dos se unen si son hermanos; el grado de cada persona es su número de hermanos. Por el lema del apretón de manos, la suma de todos los grados es par (es $2\\cdot\\#\\text{aristas}$). Una suma de enteros es par solo si la cantidad de sumandos impares es par; luego el número de personas con grado impar — es decir, con un número impar de hermanos — es par.",
+      "explicacion": "Lema del apretón de manos: $\\sum$ grados $= 2\\cdot\\#\\text{aristas}$ es par, así que la cantidad de vértices de grado impar es par. Verificado con Python: en 2000 grafos aleatorios, el número de vértices de grado impar siempre es par.",
       "tiempo_estimado": 12,
       "conceptos": [
         "lema del apretón de manos",
@@ -8656,11 +8656,11 @@
       "hints": [
         "Modela los apretones como aristas de un grafo sobre las personas. ¿Qué cuenta el grado de cada vértice?",
         "El grado de una persona es el número de apretones que ha dado. Buscas cuántas personas tienen grado impar.",
-        "Usa el lema del apretón de manos (que toma su nombre justo de este problema): la suma de todos los grados es 2·#aristas, un número par.",
+        "Usa el lema del apretón de manos (que toma su nombre justo de este problema): la suma de todos los grados es $2\\cdot\\#\\text{aristas}$, un número par.",
         "Una suma de enteros es par solo si el número de sumandos impares es par.",
         "Por tanto la cantidad de personas con grado impar (número impar de apretones) es par."
       ],
-      "solucion": "Modela los apretones como un grafo: personas $=$ vértices, apretones $=$ aristas; el grado de cada persona es cuántas manos estrechó. Por el lema del apretón de manos, $\\sum$ grados = 2·#aristas es par. Como una suma es par solo si la cantidad de sumandos impares es par, el número de personas que dieron la mano un número impar de veces es par.",
+      "solucion": "Modela los apretones como un grafo: personas $=$ vértices, apretones $=$ aristas; el grado de cada persona es cuántas manos estrechó. Por el lema del apretón de manos, $\\sum$ grados $= 2\\cdot\\#\\text{aristas}$ es par. Como una suma es par solo si la cantidad de sumandos impares es par, el número de personas que dieron la mano un número impar de veces es par.",
       "explicacion": "El lema homónimo: la paridad de la suma de grados obliga a que los vértices de grado impar sean un número par. Verificado con Python: en 2000 grafos aleatorios el conteo de grados impares siempre es par.",
       "tiempo_estimado": 10,
       "conceptos": [
@@ -8727,7 +8727,7 @@
       "enunciado": "Sea $a_0 = 1$ y $a_{n+1} = 3a_n + 2$ para todo entero no negativo n. Demuestra que $a_n = 2\\cdot 3^n - 1$.",
       "hints": [
         "Verifica la fórmula en $n = 0$ y luego prueba el paso inductivo: supón que vale para n y dedúcela para $n+1$.",
-        "Base: a₀ = 2·3⁰ − 1 = 2 − 1 = 1. ✓. Supón $a_n = 2\\cdot 3^n - 1$ (hipótesis inductiva).",
+        "Base: $a_0 = 2\\cdot 3^0 - 1 = 2 - 1 = 1$. ✓. Supón $a_n = 2\\cdot 3^n - 1$ (hipótesis inductiva).",
         "Sustituye la hipótesis en la recurrencia: $a_{n+1} = 3a_n + 2 = 3(2\\cdot 3^n - 1) + 2$.",
         "Desarrolla: $3\\cdot 2\\cdot 3^n - 3 + 2 = 2\\cdot 3^{n+1} - 1$.",
         "Eso es justo la fórmula para $n+1$, completando la inducción."
@@ -8762,7 +8762,7 @@
       "enunciado": "Sea $a_0 = 1$ y $a_{n+1} = 4a_n - 1$ para todo entero no negativo n. Demuestra que $a_n = (2\\cdot 4^n + 1)/3$.",
       "hints": [
         "Verifica la base y luego el paso inductivo sustituyendo la fórmula en la recurrencia.",
-        "Base: a₀ = (2·4⁰ + 1)/3 = (2+1)/3 = 1. ✓. Supón $a_n = (2\\cdot 4^n + 1)/3$.",
+        "Base: $a_0 = (2\\cdot 4^0 + 1)/3 = (2+1)/3 = 1$. ✓. Supón $a_n = (2\\cdot 4^n + 1)/3$.",
         "Sustituye: $a_{n+1} = 4a_n - 1 = 4\\cdot (2\\cdot 4^n + 1)/3 - 1$.",
         "$= (8\\cdot 4^n + 4)/3 - 1 = (8\\cdot 4^n + 4 - 3)/3 = (2\\cdot 4^{n+1} + 1)/3$.",
         "Eso es la fórmula para $n+1$, cerrando la inducción."
@@ -9083,7 +9083,7 @@
       "enunciado": "Sea $a_0 = 1$ y $a_{n+1} = 10a_n - 1$ para todo entero no negativo n. Demuestra que $a_n = (8\\cdot 10^n + 1)/9$.",
       "hints": [
         "Verifica la base y luego el paso inductivo sustituyendo la fórmula en la recurrencia.",
-        "Base: a₀ = (8·10⁰ + 1)/9 = (8+1)/9 = 1. ✓. Supón $a_n = (8\\cdot 10^n + 1)/9$.",
+        "Base: $a_0 = (8\\cdot 10^0 + 1)/9 = (8+1)/9 = 1$. ✓. Supón $a_n = (8\\cdot 10^n + 1)/9$.",
         "Sustituye: $a_{n+1} = 10a_n - 1 = 10\\cdot (8\\cdot 10^n + 1)/9 - 1$.",
         "$= (80\\cdot 10^n + 10)/9 - 1 = (80\\cdot 10^n + 10 - 9)/9 = (8\\cdot 10^{n+1} + 1)/9$.",
         "Eso es la fórmula para $n+1$, completando la inducción."
@@ -9190,7 +9190,7 @@
       "enunciado": "Demuestra que $3^n > n^4$ para todo entero $n \\ge 8$.",
       "hints": [
         "Inducción a partir de $n = 8$. Verifica la base y luego el paso multiplicando por 3.",
-        "Base $n=8: 3^8 = 6561$ y $8^4 = 4096$, así que 3⁸ > 8⁴. ✓. Supón $3^n > n^4$.",
+        "Base $n=8$: $3^8 = 6561$ y $8^4 = 4096$, así que $3^8 > 8^4$. ✓. Supón $3^n > n^4$.",
         "Para el paso, $3^{n+1} = 3\\cdot 3^n > 3n^4$. Basta probar que $3n^4 \\ge (n+1)^4$ para $n \\ge 8$.",
         "$3n^4 \\ge (n+1)^4$ equivale a $3 \\ge (1 + 1/n)^4$. ¿Qué tan grande es $(1+1/n)^4$ para $n \\ge 8$?",
         "Para $n \\ge 8, (1 + 1/n)^4 \\le (9/8)^4 = 6561/4096 \\approx 1.60 < 3$, así que $3n^4 > (n+1)^4$ y la inducción cierra."
@@ -9226,7 +9226,7 @@
       "enunciado": "La suma de cien números reales dados es cero. Demuestra que al menos 99 de las sumas por parejas (sumas de dos de ellos) son no negativas. ¿Es óptimo este resultado?",
       "hints": [
         "Ordena los números $a_1 \\le a_2 \\le \\cdots \\le a_{100}$ y razona sobre las sumas $a_i + a_j$ usando que el total es 0.",
-        "Distingue según el signo de $a_{50} + a_{99}$. Si $a_{50} + a_{99} \\ge 0$, entonces $a_i + a_{99} \\ge 0$ para i ≥ 50 (51 sumas) y $a_i + a_{100} \\ge a_i + a_{99}$ para i de 50 a 98 (49 sumas más).",
+        "Distingue según el signo de $a_{50} + a_{99}$. Si $a_{50} + a_{99} \\ge 0$, entonces $a_i + a_{99} \\ge 0$ para $i \\ge 50$ (51 sumas) y $a_i + a_{100} \\ge a_i + a_{99}$ para $i$ de 50 a 98 (49 sumas más).",
         "Esas dos familias dan $51 + 49 = 100$ sumas no negativas (cuida el solapamiento; quedan $\\ge 99$).",
         "Si $a_{50} + a_{99} < 0$, demuestra que $a_n + a_{100} \\ge 0$ para todos: como la suma total es 0 y los pequeños son muy negativos, $a_1 + a_{100} \\ge 0$, dando 99 sumas con $a_{100}$.",
         "En ambos casos hay $\\ge 99$ sumas no negativas. El óptimo: con $a_{100} = 99$ y $a_1 = \\cdots = a_{99} = -1$ (suma 0), exactamente 99 sumas son no negativas (las que incluyen $a_{100}$)."
@@ -9442,7 +9442,7 @@
       "enunciado": "Sea $a_0 = a_1 = 1$ y $a_{n+2} = a_{n+1} + 5a_n$ para todo $n \\ge 0$. Demuestra que $a_n \\le 3^n$ para todo $n \\ge 0$.",
       "hints": [
         "Inducción FUERTE (usa los dos casos anteriores). Verifica las dos bases y luego el paso.",
-        "Bases: $a_0 = 1 \\le 3^0 = 1$ y a₁ = 1 ≤ 3¹ = 3. ✓. Supón $a_k \\le 3^k$ para todo $k \\le n+1$.",
+        "Bases: $a_0 = 1 \\le 3^0 = 1$ y $a_1 = 1 \\le 3^1 = 3$. ✓. Supón $a_k \\le 3^k$ para todo $k \\le n+1$.",
         "Acota $a_{n+2}$ usando la recurrencia y la hipótesis: $a_{n+2} = a_{n+1} + 5a_n \\le 3^{n+1} + 5\\cdot 3^n$.",
         "Factoriza $3^n: 3^{n+1} + 5\\cdot 3^n = 3^n(3 + 5) = 8\\cdot 3^n$. Compáralo con $3^{n+2} = 9\\cdot 3^n$.",
         "$8\\cdot 3^n \\le 9\\cdot 3^n = 3^{n+2}$, así que $a_{n+2} \\le 3^{n+2}$. La inducción fuerte cierra."
@@ -9549,13 +9549,13 @@
       "dificultad": 2,
       "enunciado": "Encuentra una fórmula cerrada (sin signos de sumatoria) para la expresión $\\sum _{i=1}^n i(i + 1) = 1\\cdot 2 + 2\\cdot 3 + \\cdots + n(n+1)$.",
       "hints": [
-        "Separa $i(i+1) = i^2 + i$ y usa las fórmulas conocidas de Σi$^2$ y Σi. O busca un patrón telescópico.",
+        "Separa $i(i+1) = i^2 + i$ y usa las fórmulas conocidas de $\\sum i^2$ y $\\sum i$. O busca un patrón telescópico.",
         "$\\sum i(i+1) = \\sum i^2 + \\sum i = n(n+1)(2n+1)/6 + n(n+1)/2$. Factoriza $n(n+1)$.",
         "$= n(n+1)[(2n+1)/6 + 1/2] = n(n+1)[(2n+1+3)/6] = n(n+1)(2n+4)/6$.",
         "$= n(n+1)\\cdot 2(n+2)/6 = n(n+1)(n+2)/3$.",
         "Alternativamente, $i(i+1) = [i(i+1)(i+2) - (i-1)i(i+1)]/3$ telescopa directamente a $n(n+1)(n+2)/3$."
       ],
-      "solucion": "$\\sum _{i=1}^n i(i+1) = n(n+1)(n+2)/3$. Separando $i(i+1) = i^2 + i$ y usando Σi$^2 = n(n+1)(2n+1)/6$, Σi $= n(n+1)/2$, se factoriza $n(n+1)$ y se obtiene $n(n+1)(n+2)/3$. (También sale por telescopaje: $i(i+1) = [i(i+1)(i+2) - (i-1)i(i+1)]/3$.)",
+      "solucion": "$\\sum_{i=1}^n i(i+1) = n(n+1)(n+2)/3$. Separando $i(i+1) = i^2 + i$ y usando $\\sum i^2 = n(n+1)(2n+1)/6$, $\\sum i = n(n+1)/2$, se factoriza $n(n+1)$ y se obtiene $n(n+1)(n+2)/3$. (También sale por telescopaje: $i(i+1) = [i(i+1)(i+2) - (i-1)i(i+1)]/3$.)",
       "explicacion": "Buscar el patrón vía descomposición o telescopaje; el resultado es 3 veces un coeficiente binomial: $n(n+1)(n+2)/3 = 2\\cdot C(n+2, 3)$. Verificado con Python: $\\sum i(i+1) = n(n+1)(n+2)/3$ para $n = 1..39$.",
       "tiempo_estimado": 14,
       "conceptos": [
@@ -9587,11 +9587,11 @@
       "hints": [
         "Resuelve la recurrencia lineal: halla su ecuación característica y observa si tiene raíz doble.",
         "La ecuación característica es $x^2 - 6x + 9 = 0$, es decir $(x - 3)^2 = 0$: raíz DOBLE $x = 3$.",
-        "Con raíz doble r, la solución general es aₙ = (A + Bn)$\\cdot 3^n$. Ajusta A y B con las condiciones iniciales.",
+        "Con raíz doble $r$, la solución general es $a_n = (A + Bn)\\cdot 3^n$. Ajusta $A$ y $B$ con las condiciones iniciales.",
         "$a_0 =$ A $= 0$, así que A $= 0. a_1 = (0 + B)\\cdot 3 = 3B = 1$, así que $B = 1/3$.",
         "Entonces $a_n = (n/3)\\cdot 3^n = n\\cdot 3^{n-1}$. Verifica que cumple la recurrencia."
       ],
-      "solucion": "$a_n = n\\cdot 3^{n-1}$. La ecuación característica $x^2 - 6x + 9 = (x-3)^2 = 0$ tiene la raíz doble 3, así que la solución general es aₙ = (A + Bn)$\\cdot 3^n$. De $a_0 =$ A $= 0$ y $a_1 = 3B = 1$ se obtiene A $= 0, B = 1/3$, luego $a_n = (n/3)\\cdot 3^n = n\\cdot 3^{n-1}$.",
+      "solucion": "$a_n = n\\cdot 3^{n-1}$. La ecuación característica $x^2 - 6x + 9 = (x-3)^2 = 0$ tiene la raíz doble 3, así que la solución general es $a_n = (A + Bn)\\cdot 3^n$. De $a_0 = A = 0$ y $a_1 = 3B = 1$ se obtiene $A = 0$, $B = 1/3$, luego $a_n = (n/3)\\cdot 3^n = n\\cdot 3^{n-1}$.",
       "explicacion": "Resolver una recurrencia lineal con raíz característica doble: la solución incorpora el factor n. Verificado con Python: $a_n = n\\cdot 3^{n-1} (= 0, 1, 6, 27, 108, \\dots )$ para $n = 0..20$.",
       "tiempo_estimado": 18,
       "conceptos": [
