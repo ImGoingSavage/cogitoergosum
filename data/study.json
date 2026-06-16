@@ -8041,82 +8041,82 @@
     "ruta": "quant"
    },
    "ideas_clave": [
-    "Monty Hall: el anfitrión con información concentra las 2/3 de probabilidad en la puerta no elegida.",
+    "Monty Hall: el anfitrión con información concentra las $2/3$ de probabilidad en la puerta no elegida.",
     "Bayes con tasa base baja: prevalencia del 0.5% aplasta el 93% de especificidad → solo 6.7% de positivos están enfermos.",
-    "P(triángulo de palo roto) = 1/4: condición de triángulo ⟺ cada trozo < 1/2.",
-    "Cadena de Markov para consecutivos: E[2 H] = 6, E[3 H] = 14 con moneda justa (E = Σ 2^k).",
-    "Bolas en frascos: poner 1 blanca sola en un frasco garantiza P=1 para ese frasco → óptimo ≈ 74.75%."
+    "$P(\\text{triángulo de palo roto}) = 1/4$: condición de triángulo $\\iff$ cada trozo $< 1/2$.",
+    "Cadena de Markov para consecutivos: $E[\\text{2 H}] = 6$, $E[\\text{3 H}] = 14$ con moneda justa ($E = \\sum 2^k$).",
+    "Bolas en frascos: poner 1 blanca sola en un frasco garantiza $P=1$ para ese frasco → óptimo $\\approx 74.75\\%$."
    ],
    "banco": [
     {
      "id": "arq4-q1",
      "tipo": "quiz",
      "enunciado": "Monty Hall: tienes 3 puertas. Elegiste la puerta 3. El anfitrión abre la 2 (siempre vacía) y te ofrece cambiar a la 1. ¿Deberías cambiar? Justifica con probabilidades.",
-     "solucion": "SÍ, cambia. P(ganar si cambias) = 2/3; P(ganar si te quedas) = 1/3. Razonamiento: al elegir la 3, P(premio en 3) = 1/3 y P(premio en {1 ó 2}) = 2/3. Cuando el anfitrión revela que la 2 está vacía (con su información), esas 2/3 se concentran en la 1.",
-     "explicacion": "Error clásico: 'quedan 2 puertas → P=1/2 cada una'. Incorrecto: el anfitrión actúa con información, no al azar. Su acción no redistribuye uniformemente. Verificar por fuerza bruta: de 3 escenarios igualmente probables, cambiar gana en 2."
+     "solucion": "SÍ, cambia. $P(\\text{ganar si cambias}) = 2/3$; $P(\\text{ganar si te quedas}) = 1/3$. Razonamiento: al elegir la 3, $P(\\text{premio en 3}) = 1/3$ y $P(\\text{premio en 1 ó 2}) = 2/3$. Cuando el anfitrión revela que la 2 está vacía (con su información), esas $2/3$ se concentran en la 1.",
+     "explicacion": "Error clásico: 'quedan 2 puertas → $P=1/2$ cada una'. Incorrecto: el anfitrión actúa con información, no al azar. Su acción no redistribuye uniformemente. Verificar por fuerza bruta: de 3 escenarios igualmente probables, cambiar gana en 2."
     },
     {
      "id": "arq4-q2",
      "tipo": "quiz",
      "enunciado": "Enfermedad con prevalencia 0.5%. Test: 100% sensible, 7% falsos positivos. Un desconocido da positivo. ¿Cuál es P(tiene la enfermedad)?",
-     "solucion": "≈ 6.7%. Por Bayes: P(E|+) = P(+|E)·P(E)/P(+) = 1×0.005/(1×0.005 + 0.07×0.995) = 0.005/0.07465 ≈ 0.067. En 10,000 personas: 50 enfermos dan +, ~697 sanos dan falso +. Ratio: 50/747 ≈ 6.7%.",
-     "explicacion": "La tasa base (0.5%) domina. Error clásico del médico: confundir P(+|E)=93% de especificidad con P(E|+). Son probabilidades condicionadas en sentidos opuestos."
+     "solucion": "$\\approx 6.7\\%$. Por Bayes: $P(E\\mid+) = \\dfrac{P(+\\mid E)\\,P(E)}{P(+)} = \\dfrac{1\\times0.005}{1\\times0.005 + 0.07\\times0.995} = \\dfrac{0.005}{0.07465} \\approx 0.067$. En 10\\,000 personas: 50 enfermos dan $+$, $\\approx697$ sanos dan falso $+$. Ratio: $50/747 \\approx 6.7\\%$.",
+     "explicacion": "La tasa base ($0.5\\%$) domina. Error clásico del médico: confundir $P(+\\mid E)=93\\%$ de especificidad con $P(E\\mid+)$. Son probabilidades condicionadas en sentidos opuestos."
     },
     {
      "id": "arq4-q3",
      "tipo": "quiz",
      "enunciado": "Partes un palo al azar en dos puntos elegidos uniformemente en [0,1]. ¿Cuál es la probabilidad de que los tres trozos formen un triángulo?",
-     "solucion": "1/4. Condición de triángulo: cada trozo < 1/2. El espacio muestral es el triángulo {0<X<Y<1} en el plano. La región favorable (todos los trozos <1/2) es el triángulo central con área = 1/4 del espacio total.",
-     "explicacion": "Geometría probabilística: espacio = triángulo superior, región favorable = triángulo interior centrado. Área favorable / área total = (1/2 × 1/2 × 1/2)/(1/2 × 1/1) = 1/8 / (1/2) = 1/4."
+     "solucion": "$1/4$. Condición de triángulo: cada trozo $< 1/2$. El espacio muestral es el triángulo $\\{0<X<Y<1\\}$ en el plano. La región favorable (todos los trozos $<1/2$) es el triángulo central con área $= 1/4$ del espacio total.",
+     "explicacion": "Geometría probabilística: espacio = triángulo superior, región favorable = triángulo interior centrado. Área favorable / área total $= \\dfrac{1/2 \\times 1/2 \\times 1/2}{1/2 \\times 1} = \\dfrac{1/8}{1/2} = 1/4$."
     },
     {
      "id": "arq4-q4",
      "tipo": "quiz",
      "enunciado": "Tienes dos hijos y uno de ellos es una niña (no sabes nada del otro). ¿Cuál es P(ambos sean niñas)?",
-     "solucion": "1/3. El espacio muestral equiprobable dado 'al menos una niña' es {NN, NV, VN}. Solo {NN} da ambas niñas. P = 1/3. Contraste: si una niña específica te abre la puerta (identidad conocida), P = 1/2.",
-     "explicacion": "Diferencia sutil: 'al menos una niña' vs 'esta niña específica'. La condición más débil preserva más ambigüedad → P menor. El espacio muestral original era {NN, NV, VN, VV}; la condición elimina VV."
+     "solucion": "$1/3$. El espacio muestral equiprobable dado 'al menos una niña' es $\\{NN, NV, VN\\}$. Solo $\\{NN\\}$ da ambas niñas. $P = 1/3$. Contraste: si una niña específica te abre la puerta (identidad conocida), $P = 1/2$.",
+     "explicacion": "Diferencia sutil: 'al menos una niña' vs 'esta niña específica'. La condición más débil preserva más ambigüedad → $P$ menor. El espacio muestral original era $\\{NN, NV, VN, VV\\}$; la condición elimina VV."
     },
     {
      "id": "arq4-q5",
      "tipo": "quiz",
      "enunciado": "De una baraja de 52 cartas sacas 2 sin reposición. ¿Cuál es P(ambas son Reyes)?",
-     "solucion": "1/221 ≈ 0.45%. Dos métodos: (1) C(4,2)/C(52,2) = 6/1326 = 1/221. (2) P(1ª Rey)×P(2ª Rey|1ª Rey) = (4/52)×(3/51) = 12/2652 = 1/221.",
+     "solucion": "$1/221 \\approx 0.45\\%$. Dos métodos: (1) $\\binom{4}{2}/\\binom{52}{2} = 6/1326 = 1/221$. (2) $P(R_1)\\times P(R_2\\mid R_1) = (4/52)\\times(3/51) = 12/2652 = 1/221$, donde $R_i$ = «la $i$-ésima carta es Rey».",
      "explicacion": "Sin reposición: la segunda extracción es condicional a la primera. El denominador cambia de 52 a 51."
     },
     {
      "id": "arq4-q6",
      "tipo": "quiz",
      "enunciado": "X e Y se eligen independientemente de Uniforme[0,1]. ¿Cuál es P(XY > 1/2)?",
-     "solucion": "1/2 − ln(2)/2 ≈ 15.3%. La región {XY>1/2} está acotada por la hipérbola y=1/(2x) para x∈[1/2,1]. Área = ∫₁/₂¹ (1 − 1/(2x))dx = [x − (ln x)/2]₁/₂¹ = (1−0) − (1/2 + ln(2)/2) = 1/2 − ln(2)/2.",
-     "explicacion": "Para x<1/2, la hipérbola y=1/(2x)>1 queda fuera del cuadrado [0,1]² → no hay área favorable ahí. Solo integramos en [1/2,1]."
+     "solucion": "$1/2 - \\ln(2)/2 \\approx 15.3\\%$. La región $\\{XY>1/2\\}$ está acotada por la hipérbola $y=1/(2x)$ para $x\\in[1/2,1]$. Área $= \\int_{1/2}^{1}\\left(1 - \\dfrac{1}{2x}\\right)dx = \\left[x - \\dfrac{\\ln x}{2}\\right]_{1/2}^{1} = (1-0) - \\left(\\tfrac12 + \\dfrac{\\ln 2}{2}\\right) = \\dfrac12 - \\dfrac{\\ln 2}{2}$.",
+     "explicacion": "Para $x<1/2$, la hipérbola $y=1/(2x)>1$ queda fuera del cuadrado $[0,1]^2$ → no hay área favorable ahí. Solo integramos en $[1/2,1]$."
     },
     {
      "id": "arq4-q7",
      "tipo": "quiz",
      "enunciado": "Un frasco tiene 999 monedas justas y 1 moneda con dos caras. Sacas una al azar, la lanzas 10 veces y obtienes 10 caras. ¿Cuál es P(es la de dos caras)?",
-     "solucion": "1024/2023 ≈ 50.6%. Por Bayes: P(2C|10H) = P(10H|2C)·P(2C)/P(10H) = 1·(1/1000) / [1/1000 + (1/1024)·(999/1000)] = 1024/(1024+999) = 1024/2023.",
-     "explicacion": "La moneda de dos caras es rara (1/1000) pero produce 10H con certeza. La justa produce 10H con probabilidad 1/1024 ≈ 0.001. Los dos efectos casi se cancelan, resultando en ~50-50 posterior."
+     "solucion": "$1024/2023 \\approx 50.6\\%$. Por Bayes: $P(2C\\mid 10H) = \\dfrac{P(10H\\mid 2C)\\,P(2C)}{P(10H)} = \\dfrac{1\\cdot(1/1000)}{1/1000 + (1/1024)\\cdot(999/1000)} = \\dfrac{1024}{1024+999} = \\dfrac{1024}{2023}$.",
+     "explicacion": "La moneda de dos caras es rara ($1/1000$) pero produce 10H con certeza. La justa produce 10H con probabilidad $1/1024 \\approx 0.001$. Los dos efectos casi se cancelan, resultando en $\\approx$50-50 posterior."
     },
     {
      "id": "arq4-q8",
      "tipo": "quiz",
      "enunciado": "Lanzas una moneda justa. ¿Cuántos lanzamientos esperas para (a) 2 caras consecutivas? (b) 3 caras consecutivas?",
-     "solucion": "(a) 6. (b) 14. Sistema de estados: sea Eₖ el valor esperado de lanzamientos adicionales desde el estado 'k caras consecutivas acumuladas'. Para p=1/2: E₀ = 1/p²+1/p = 6; para 3 consecutivas: E₀ = 1/p+1/p²+1/p³ = 2+4+8 = 14.",
-     "explicacion": "Recurrencia: E₀ = 1 + (1−p)E₀ + p·E₁; E₁ = 1 + (1−p)E₀. Resolviendo: p·E₀ = 1+p·E₁ y E₁ = 1+(1−p)E₀. Patrón general: E[k consecutivas] = Σⱼ₌₁ᵏ (1/p)ʲ."
+     "solucion": "(a) 6. (b) 14. Sistema de estados: sea $E_k$ el valor esperado de lanzamientos adicionales desde el estado '$k$ caras consecutivas acumuladas'. Para $p=1/2$: $E_0 = 1/p^2+1/p = 6$; para 3 consecutivas: $E_0 = 1/p+1/p^2+1/p^3 = 2+4+8 = 14$.",
+     "explicacion": "Recurrencia: $E_0 = 1 + (1-p)E_0 + p\\,E_1$; $E_1 = 1 + (1-p)E_0$. Resolviendo: $p\\,E_0 = 1+p\\,E_1$ y $E_1 = 1+(1-p)E_0$. Patrón general: $E[k\\text{ consecutivas}] = \\sum_{j=1}^{k} (1/p)^j$."
     },
     {
      "id": "arq4-q9",
      "tipo": "quiz",
      "enunciado": "Revólver de 6 recámaras: 2 balas contiguas cargadas. Se giró el tambor al azar y sobreviviste al primer disparo. ¿Prefieres girar de nuevo o disparar directamente la siguiente recámara?",
-     "solucion": "NO gires: P(sobrevivir|no girar) = 3/4 = 75% > P(sobrevivir|girar) = 4/6 ≈ 66.7%. Dado que sobreviviste, las posiciones iniciales de las balas son {2,3},{3,4},{4,5},{5,6} (igualmente probables). Solo si las balas son {2,3} la recámara 2 dispara → P(disparo) = 1/4.",
-     "explicacion": "Clave: condicionar en haber sobrevivido elimina las posiciones {1,2} y {6,1}. Entre las 4 posiciones restantes, solo una pone una bala en la siguiente recámara."
+     "solucion": "NO gires: $P(\\text{sobrevivir}\\mid\\text{no girar}) = 3/4 = 75\\% > P(\\text{sobrevivir}\\mid\\text{girar}) = 4/6 \\approx 66.7\\%$. Dado que sobreviviste, las posiciones iniciales de las balas son $\\{2,3\\},\\{3,4\\},\\{4,5\\},\\{5,6\\}$ (igualmente probables). Solo si las balas son $\\{2,3\\}$ la recámara 2 dispara → $P(\\text{disparo}) = 1/4$.",
+     "explicacion": "Clave: condicionar en haber sobrevivido elimina las posiciones $\\{1,2\\}$ y $\\{6,1\\}$. Entre las 4 posiciones restantes, solo una pone una bala en la siguiente recámara."
     },
     {
      "id": "arq4-q10",
      "tipo": "quiz",
      "enunciado": "Tienes 50 bolas blancas y 50 negras, y 2 frascos. Distribúyelas como quieras. Con ojos vendados se elige un frasco al azar y luego una bola al azar. ¿Cómo maximizas P(bola blanca)?",
-     "solucion": "P máxima ≈ 74.75%: pon exactamente 1 bola blanca en el frasco A y 49 blancas + 50 negras en el frasco B. P = 1/2·(1) + 1/2·(49/99) = 1/2 + 49/198 ≈ 0.7475.",
-     "explicacion": "Intuición: el frasco A garantiza P=1 cuando se elige ese frasco. El frasco B tiene la mayor proporción posible de blancas dado lo que queda. Cualquier bola adicional en A 'diluye' la garantía sin compensar la pérdida en B."
+     "solucion": "$P$ máxima $\\approx 74.75\\%$: pon exactamente 1 bola blanca en el frasco A y 49 blancas + 50 negras en el frasco B. $P = \\tfrac12\\cdot(1) + \\tfrac12\\cdot(49/99) = 1/2 + 49/198 \\approx 0.7475$.",
+     "explicacion": "Intuición: el frasco A garantiza $P=1$ cuando se elige ese frasco. El frasco B tiene la mayor proporción posible de blancas dado lo que queda. Cualquier bola adicional en A 'diluye' la garantía sin compensar la pérdida en B."
     }
    ]
   },
@@ -10799,7 +10799,7 @@
    },
    "ideas_clave": [
     "Bayes mezcla prior (tasa base) y verosimilitud; el resultado vive entre ambos.",
-    "Simetría: condicionado a 'rangos distintos', 'mía mayor' = ½.",
+    "Simetría: condicionado a 'rangos distintos', 'mía mayor' $= \\tfrac12$.",
     "Linealidad de la esperanza suma indicadores sin exigir independencia.",
     "Una matriz de correlaciones válida debe ser semidefinida positiva.",
     "La Cauchy tiene varianza infinita: rompe el TLC y la ley de promedios."
@@ -10809,70 +10809,70 @@
      "id": "arena-q9-q1",
      "tipo": "quiz",
      "enunciado": "Una bolsa tiene 9 monedas normales y 1 de dos caras. Sacas una y sale cara 3 veces seguidas. ¿Probabilidad de que sea la de dos caras?",
-     "solucion": "8/17 ≈ 0.47. Bayes: P=(1·1/10)/(1·1/10 + (1/8)·9/10)=(1/10)/(1/10+9/80)=8/17.",
-     "explicacion": "La verosimilitud (1 vs 1/8) empuja hacia la trucada, pero la tasa base (1/10 vs 9/10) la frena; el resultado vive entre ambas. Mismo motor que el VPP de un test médico."
+     "solucion": "$8/17 \\approx 0.47$. Bayes: $P=\\dfrac{1\\cdot 1/10}{1\\cdot 1/10 + (1/8)\\cdot 9/10}=\\dfrac{1/10}{1/10+9/80}=\\dfrac{8}{17}$.",
+     "explicacion": "La verosimilitud ($1$ vs $1/8$) empuja hacia la trucada, pero la tasa base ($1/10$ vs $9/10$) la frena; el resultado vive entre ambas. Mismo motor que el VPP de un test médico."
     },
     {
      "id": "arena-q9-q2",
      "tipo": "quiz",
      "enunciado": "Sacas una moneda 'de aspecto normal' del bolsillo y salen 3 caras seguidas. ¿Probabilidad de que la siguiente sea cara? ¿Y si hubieran salido 100 caras?",
-     "solucion": "Con 3 caras: 1/2 (si la crees justa, los tiros son independientes). Con 100 caras: necesitas un prior. Si crees que es de dos caras con prob p, entonces P(2caras | N caras)=p/(p+(1−p)2^{−N}) → ≈1 para N grande.",
-     "explicacion": "Sin información extra, una moneda normal es justa y el pasado no afecta. Un dato extremo (P=2^{−100} bajo 'justa') activa el razonamiento bayesiano."
+     "solucion": "Con 3 caras: $1/2$ (si la crees justa, los tiros son independientes). Con 100 caras: necesitas un prior. Si crees que es de dos caras con prob $p$, entonces $P(\\text{2 caras}\\mid N\\text{ caras})=\\dfrac{p}{p+(1-p)2^{-N}} \\to \\approx 1$ para $N$ grande.",
+     "explicacion": "Sin información extra, una moneda normal es justa y el pasado no afecta. Un dato extremo ($P=2^{-100}$ bajo 'justa') activa el razonamiento bayesiano."
     },
     {
      "id": "arena-q9-q3",
      "tipo": "quiz",
      "enunciado": "Mazo ordenado A>K>Q>…>2 (con palos, 52 cartas). Tú sacas una carta y luego yo otra. ¿Probabilidad de que mi carta sea mayor que la tuya?",
-     "solucion": "24/51. Casos: igual rango con prob 3/51; distinto rango con prob 48/51 y por simetría ½. P(mía mayor)=½·48/51=24/51≈0.471.",
+     "solucion": "$24/51$. Casos: igual rango con prob $3/51$; distinto rango con prob $48/51$ y por simetría $\\tfrac12$. $P(\\text{mía mayor})=\\tfrac12\\cdot 48/51=24/51\\approx 0.471$.",
      "explicacion": "La simetría colapsa el conteo: condicionado a rangos distintos, 'mía mayor' y 'tuya mayor' son igualmente probables."
     },
     {
      "id": "arena-q9-q4",
      "tipo": "quiz",
      "enunciado": "Cajón con 2 calcetines rojos y 2 negros. Sacas 2 al azar. ¿Probabilidad de que emparejen (mismo color)?",
-     "solucion": "1/3. Tras sacar el primero quedan 3 calcetines y solo 1 empareja con él → 1/3.",
-     "explicacion": "No depende del color del primero. Generaliza: con n colores y un par de cada uno, P(par)=1/(2n−1)."
+     "solucion": "$1/3$. Tras sacar el primero quedan 3 calcetines y solo 1 empareja con él → $1/3$.",
+     "explicacion": "No depende del color del primero. Generaliza: con $n$ colores y un par de cada uno, $P(\\text{par})=1/(2n-1)$."
     },
     {
      "id": "arena-q9-q5",
      "tipo": "quiz",
      "enunciado": "Sacas 2 cartas de un mazo. ¿Probabilidad de que ambas sean ases (a) con reposición y (b) sin reposición?",
-     "solucion": "(a) con reposición: (1/13)²=1/169. (b) sin reposición: (1/13)·(3/51)=1/221.",
+     "solucion": "(a) con reposición: $(1/13)^2=1/169$. (b) sin reposición: $(1/13)\\cdot(3/51)=1/221$.",
      "explicacion": "Con reposición los eventos son independientes e idénticos; sin reposición, la segunda probabilidad se condiciona en que ya salió un as (quedan 3 de 51)."
     },
     {
      "id": "arena-q9-q6",
      "tipo": "quiz",
      "enunciado": "Lanzas una moneda justa 1 000 000 de veces. ¿Número esperado de cadenas '6 caras seguidas de 6 cruces' (CCCCCCXXXXXX)?",
-     "solucion": "(10⁶−11)/2¹² ≈ 244.14. Hay 10⁶−11 posiciones de inicio posibles; cada una contiene el patrón de 12 símbolos con probabilidad 2^{−12}. Por linealidad de la esperanza, suma los indicadores.",
+     "solucion": "$(10^6-11)/2^{12} \\approx 244.14$. Hay $10^6-11$ posiciones de inicio posibles; cada una contiene el patrón de 12 símbolos con probabilidad $2^{-12}$. Por linealidad de la esperanza, suma los indicadores.",
      "explicacion": "La linealidad de la esperanza NO requiere independencia (las ventanas se solapan): por eso basta multiplicar nº de posiciones por la probabilidad puntual."
     },
     {
      "id": "arena-q9-q7",
      "tipo": "quiz",
      "enunciado": "Torneo eliminatorio con 2ⁿ equipos; el de mayor ranking siempre gana. Emparejamientos iniciales al azar. ¿Probabilidad de que el 2.º mejor equipo juegue la final?",
-     "solucion": "2^{n−1}/(2ⁿ−1). El 2.º mejor llega a la final solo si NO cae en la misma mitad del cuadro que el mejor; de los 2ⁿ−1 lugares restantes, 2^{n−1} están en la otra mitad.",
-     "explicacion": "El mejor siempre llega a la final; el 2.º solo si está en la otra rama. Para n=2: 2/3; n=3: 4/7; n→∞ tiende a 1/2."
+     "solucion": "$2^{n-1}/(2^n-1)$. El 2.º mejor llega a la final solo si NO cae en la misma mitad del cuadro que el mejor; de los $2^n-1$ lugares restantes, $2^{n-1}$ están en la otra mitad.",
+     "explicacion": "El mejor siempre llega a la final; el 2.º solo si está en la otra rama. Para $n=2$: $2/3$; $n=3$: $4/7$; $n\\to\\infty$ tiende a $1/2$."
     },
     {
      "id": "arena-q9-q8",
      "tipo": "quiz",
      "enunciado": "¿Es posible que tres activos A,B,C tengan ρ(A,B)=0.9, ρ(B,C)=0.8 y ρ(A,C)=0.1?",
-     "solucion": "No. La matriz de correlaciones \\[\\[1,.9,.1],[.9,1,.8],[.1,.8,1]] tiene determinante −0.316<0, luego no es semidefinida positiva, así que no puede ser una matriz de covarianzas válida.",
+     "solucion": "No. La matriz de correlaciones $\\begin{pmatrix}1 & 0.9 & 0.1\\\\ 0.9 & 1 & 0.8\\\\ 0.1 & 0.8 & 1\\end{pmatrix}$ tiene determinante $-0.316<0$, luego no es semidefinida positiva, así que no puede ser una matriz de covarianzas válida.",
      "explicacion": "Las correlaciones están encadenadas: deben formar una matriz PSD. Es una desigualdad tipo triangular sobre los ángulos entre vectores."
     },
     {
      "id": "arena-q9-q9",
      "tipo": "quiz",
      "enunciado": "Da un ejemplo de distribución con varianza infinita y explica por qué importa.",
-     "solucion": "La distribución de Cauchy, densidad 1/(π(1+x²)). ∫x²·f(x)dx diverge (el integrando → 1), así que la varianza es infinita; ni siquiera tiene media propia (solo en valor principal).",
+     "solucion": "La distribución de Cauchy, densidad $\\dfrac{1}{\\pi(1+x^2)}$. $\\int x^2 f(x)\\,dx$ diverge (el integrando $\\to 1$), así que la varianza es infinita; ni siquiera tiene media propia (solo en valor principal).",
      "explicacion": "Es el contraejemplo estándar al TLC y a 'promediar reduce el ruido': la media muestral de Cauchy no converge. Surge como cociente de dos normales centradas."
     },
     {
      "id": "arena-q9-q10",
      "tipo": "acertijo",
      "enunciado": "Ruleta rusa: dos balas en recámaras CONTIGUAS de un revólver de 6 tiros. Se gira el tambor, aprietas el gatillo y no dispara. Eres el siguiente: ¿giras de nuevo o disparas directo?",
-     "solucion": "Disparas directo. Si giras: 2/6=1/3 de morir. Si no giras: el primer disparo vacío te dejó en una de las 4 recámaras vacías; solo 1 de esas 4 precede a una bala, así que P(morir)=1/4 < 1/3.",
+     "solucion": "Disparas directo. Si giras: $2/6=1/3$ de morir. Si no giras: el primer disparo vacío te dejó en una de las 4 recámaras vacías; solo 1 de esas 4 precede a una bala, así que $P(\\text{morir})=1/4 < 1/3$.",
      "explicacion": "La contigüidad de las balas es la clave: condicionado a un disparo vacío, la posición no es uniforme entre las cargadas. No girar aprovecha esa información."
     }
    ]
