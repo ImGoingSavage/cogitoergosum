@@ -13294,10 +13294,10 @@
       "enunciado": "En el triángulo ABC, el punto X está sobre el lado CB con CX $= 2\\cdot$BX, y el punto Y está sobre el lado AB con AY $= 3\\cdot$BY. Si el área de ABC es 144, ¿cuál es el área del triángulo BXY?",
       "hints": [
         "El triángulo BXY comparte el ángulo en B con el triángulo BCA. ¿Qué fórmula de área usa dos lados y el ángulo entre ellos?",
-        "Área $= (1/2)\\cdot$(lado1)·(lado2)·sen(ángulo). El sen(B) es el mismo para ambos triángulos: se cancela.",
+        "Área $= \\tfrac12\\cdot\\text{lado}_1\\cdot\\text{lado}_2\\cdot\\operatorname{sen}(\\text{ángulo})$. El $\\operatorname{sen}(B)$ es el mismo para ambos triángulos: se cancela.",
         "Como CX $= 2\\cdot$BX, todo el lado CB mide BX + CX $= 3\\cdot$BX, así que BX $=$ CB/3.",
         "Como AY $= 3\\cdot$BY, todo el lado AB mide BY + AY $= 4\\cdot$BY, así que BY $=$ AB/4.",
-        "[BXY]/[BCA$] =$ (BX/BC)·(BY/BA) $= (1/3)\\cdot (1/4) = 1/12$, luego [BXY$] = 144/12 = 12$."
+        "$[BXY]/[BCA] = (BX/BC)\\cdot(BY/BA) = (1/3)\\cdot(1/4) = 1/12$, luego $[BXY] = 144/12 = 12$."
       ],
       "solucion": "Ambos triángulos comparten el ángulo B, así que la razón de áreas es el producto de las razones de los lados que lo forman: $(BX/BC)\\cdot(BY/BA)$. Con $BX = BC/3$ y $BY = BA/4$, la razón es $1/12$ y $[BXY] = 144\\cdot(1/12) = 12$. Verificado con Python.",
       "explicacion": "El invariante es sen(B): al compartir el ángulo, la razón de áreas no depende de su valor. Reducir áreas a productos de razones de lados es una de las herramientas más potentes de la geometría de competencia.",
@@ -13331,7 +13331,7 @@
       "hints": [
         "Recuerda la relación que SIEMPRE liga área, base y altura de un triángulo.",
         "Área $=$ (base $\\cdot$ altura) / 2. Aquí la base es el lado de longitud 7.",
-        "Sustituye lo que sabes: 42 = (7 · altura) / 2.",
+        "Sustituye lo que sabes: $42 = (7 \\cdot \\text{altura}) / 2$.",
         "Despeja: $7 \\cdot$ altura $= 84$.",
         "altura $= 84 / 7 = 12$."
       ],
@@ -13477,7 +13477,7 @@
         "Divide los datos por un factor común: 6 y 3.6 son 5 y 3 multiplicados por 1.2.",
         "La terna $3-4-5$ es la más famosa. Si la hipotenusa $6 = 5\\cdot 1.2$ y un cateto $3.6 = 3\\cdot 1.2\\dots$",
         "$\\dots$el cateto que falta debería ser $4\\cdot 1.2$.",
-        "$4 \\cdot 1.2 = 4.8$. Comprueba: 3.6² + 4.8² = 12.96 + 23.04 = 36 = 6². ✓"
+        "$4 \\cdot 1.2 = 4.8$. Comprueba: $3.6^2 + 4.8^2 = 12.96 + 23.04 = 36 = 6^2$. ✓"
       ],
       "solucion": "Los datos son la terna $3-4-5$ escalada por 1.2: hipotenusa $5\\cdot 1.2 = 6$, cateto $3\\cdot 1.2 = 3.6$, así que el otro cateto es $4\\cdot 1.2 = 4.8$. Verificado: $3.6^2 + 4.8^2 = 36 = 6^2$.",
       "explicacion": "Las ternas pitagóricas se conservan al multiplicar por cualquier factor: si (a,b,c) funciona, (ka,kb,kc) también. Reconocer el patrón evita raíces cuadradas feas.",
@@ -13513,7 +13513,7 @@
         "$45 = 3\\cdot 15$ y $24 = 3\\cdot 8$, así que ambos son múltiplos de 3: piensa en la terna (8, 15, 17).",
         "Catetos $24 = 8\\cdot 3$ y $45 = 15\\cdot 3$ corresponden a (8,15,17) escalada por 3.",
         "Entonces la hipotenusa es $17\\cdot 3$.",
-        "$17 \\cdot 3 = 51$. Comprueba: 24² + 45² = 576 + 2025 = 2601 = 51². ✓"
+        "$17 \\cdot 3 = 51$. Comprueba: $24^2 + 45^2 = 576 + 2025 = 2601 = 51^2$. ✓"
       ],
       "solucion": "$24 = 8\\cdot 3$ y $45 = 15\\cdot 3$ son la terna (8,15,17) multiplicada por 3, así que la hipotenusa es $17\\cdot 3 = 51$. Verificado: $24^2 + 45^2 = 2601 = 51^2$.",
       "explicacion": "Memorizar unas pocas ternas primitivas —(3,4,5),(5,12,13),(8,15,17),(7,24,25)— y reconocer sus múltiplos convierte cálculos pesados en multiplicaciones mentales.",
@@ -13549,7 +13549,7 @@
         "Quitando $\\sqrt{2}$: cateto 5, hipotenusa 13. ¿Qué terna empieza con 5 y termina en 13?",
         "La terna (5, 12, 13). El cateto faltante sin el factor es 12.",
         "Como todo está multiplicado por $\\sqrt{2}$, el cateto buscado es $12\\sqrt{2}$.",
-        "Comprueba: (5√2)² + (12√2)² = 50 + 288 = 338 = (13√2)². ✓"
+        "Comprueba: $(5\\sqrt{2})^2 + (12\\sqrt{2})^2 = 50 + 288 = 338 = (13\\sqrt{2})^2$. ✓"
       ],
       "solucion": "Factorizando $\\sqrt{2}$, los datos son la terna (5,12,13): cateto $5\\sqrt{2}$, hipotenusa $13\\sqrt{2}$, así que el otro cateto es $12\\sqrt{2}$. Verificado: $(5\\sqrt{2})^2 + (12\\sqrt{2})^2 = 50 + 288 = 338 = (13\\sqrt{2})^2$.",
       "explicacion": "El patrón pitagórico se conserva incluso con factores irracionales: (5,12,13) escalada por $\\sqrt{2}$ sigue siendo rectángulo. Buscar el factor común simplifica antes de operar.",
@@ -13585,7 +13585,7 @@
         "En un $30-60-90$ los lados están en razón $1 : \\sqrt{3} : 2$ (frente a 30°, frente a 60°, hipotenusa).",
         "La hipotenusa corresponde al '2' de la razón; aquí vale 10, así que la unidad es 5.",
         "El cateto opuesto a 30° es el $'1' = 5$; el opuesto a 60° es $'\\sqrt{3}' = 5\\sqrt{3}$.",
-        "Catetos: 5 y $5\\sqrt{3}$. Comprueba: 5² + (5√3)² = 25 + 75 = 100 = 10². ✓"
+        "Catetos: 5 y $5\\sqrt{3}$. Comprueba: $5^2 + (5\\sqrt{3})^2 = 25 + 75 = 100 = 10^2$. ✓"
       ],
       "solucion": "En un triángulo $30-60-90$ los lados están en razón $1 : \\sqrt{3} : 2$. Con hipotenusa 10 (el '2'), la unidad es 5: el cateto opuesto a 30° mide 5 y el opuesto a 60° mide $5\\sqrt{3}$. Verificado: $5^2 + (5\\sqrt{3})^2 = 100$.",
       "explicacion": "Los triángulos $30-60-90$ y $45-45-90$ aparecen una y otra vez; conocer sus razones ($1:\\sqrt{3}:2$ y $1:1:\\sqrt{2}$) ahorra usar Pitágoras cada vez. Es reconocer un patrón, no calcular.",
@@ -13621,7 +13621,7 @@
         "En un $45-45-90$ los lados están en razón $1 : 1 : \\sqrt{2}$ (cateto : cateto : hipotenusa).",
         "La hipotenusa es siempre el cateto multiplicado por $\\sqrt{2}$.",
         "Aquí el cateto es 7.",
-        "Hipotenusa $= 7\\sqrt{2}$. Comprueba: 7² + 7² = 98 = (7√2)². ✓"
+        "Hipotenusa $= 7\\sqrt{2}$. Comprueba: $7^2 + 7^2 = 98 = (7\\sqrt{2})^2$. ✓"
       ],
       "solucion": "En un triángulo $45-45-90$ la hipotenusa es el cateto por $\\sqrt{2}: 7\\sqrt{2}$. Verificado: $7^2 + 7^2 = 98 = (7\\sqrt{2})^2$.",
       "explicacion": "El $45-45-90$ es la mitad de un cuadrado partido por su diagonal; por eso la diagonal de un cuadrado de lado s mide $s\\sqrt{2}$. Patrón fijo, sin cálculos.",
@@ -13693,7 +13693,7 @@
         "Si los catetos son 22 y b y la hipotenusa c, entonces $c^2 - b^2 = 22^2$, es decir $(c - b)(c + b) = 484$.",
         "$c - b$ y $c + b$ tienen la misma paridad y su producto 484 es par, así que ambos deben ser pares. Escribe $c - b = 2$ y $c + b = 242$.",
         "Resolviendo: $c = 122$ y $b = 120$.",
-        "Perímetro $= 22 + 120 + 122 = 264$. Comprueba: 22² + 120² = 484 + 14400 = 14884 = 122². ✓"
+        "Perímetro $= 22 + 120 + 122 = 264$. Comprueba: $22^2 + 120^2 = 484 + 14400 = 14884 = 122^2$. ✓"
       ],
       "solucion": "Con catetos 22 y b e hipotenusa $c: (c-b)(c+b) = 484$. Tomando $c-b = 2, c+b = 242 \\Rightarrow c = 122, b = 120$. Perímetro $= 22 + 120 + 122 = 264$. Verificado: $22^2 + 120^2 = 14884 = 122^2$.",
       "explicacion": "La factorización $c^2 - b^2 = (c-b)(c+b)$ es el motor para generar ternas pitagóricas a partir de un cateto dado. La restricción de paridad (ambos factores pares) descarta combinaciones imposibles.",
@@ -13803,9 +13803,9 @@
         "La altura cae sobre la mitad de la base: forma un $30-60-90$ con hipotenusa 6 y base 3.",
         "En razón $1:\\sqrt{3}:2$, la altura (opuesta a 60°) es $3\\sqrt{3}$.",
         "Área $=$ base$\\cdot$altura$/2 = 6\\cdot (3\\sqrt{3})/2$.",
-        "$= 9\\sqrt{3}$. (En general, el área de un equilátero de lado s es $s^2\\sqrt{3}/4$.)"
+        "$= 9\\sqrt{3}$. (En general, el área de un equilátero de lado $s$ es $s^2\\sqrt{3}/4$.)"
       ],
-      "solucion": "La altura de un equilátero de lado 6 es $6\\cdot \\sqrt{3}/2 = 3\\sqrt{3}$. Área $= 6\\cdot 3\\sqrt{3}/2 = 9\\sqrt{3}$. (Fórmula general: $s^2\\sqrt{3}/4 = 36\\sqrt{3}/4 = 9\\sqrt{3}$.) Verificado con Python.",
+      "solucion": "La altura de un equilátero de lado 6 es $6\\cdot\\sqrt{3}/2 = 3\\sqrt{3}$. Área $= 6\\cdot 3\\sqrt{3}/2 = 9\\sqrt{3}$. (Fórmula general: $s^2\\sqrt{3}/4 = 36\\sqrt{3}/4 = 9\\sqrt{3}$.) Verificado con Python.",
       "explicacion": "Del patrón $30-60-90$ sale la fórmula que conviene memorizar: área de un equilátero $= s^2\\sqrt{3}/4$. Reconocer el triángulo especial dentro de la figura es la clave.",
       "tiempo_estimado": 12,
       "conceptos": [
@@ -13841,7 +13841,7 @@
         "Área $= (256/3)\\cdot \\sqrt{3}/4 = 64\\sqrt{3}/3$.",
         "Atajo: para un equilátero, área $=$ altura$^2/\\sqrt{3} = 64/\\sqrt{3} = 64\\sqrt{3}/3 \\approx 36.95$."
       ],
-      "solucion": "altura $= s\\sqrt{3}/2 = 8 \\Rightarrow s = 16/\\sqrt{3}, s^2 = 256/3$. Área $= (256/3)(\\sqrt{3}/4) = 64\\sqrt{3}/3 \\approx 36.95$. (Atajo: área $= h^2/\\sqrt{3}$.) Verificado con Python.",
+      "solucion": "altura $= s\\sqrt{3}/2 = 8 \\Rightarrow s = 16/\\sqrt{3}$, $s^2 = 256/3$. Área $= (256/3)(\\sqrt{3}/4) = 64\\sqrt{3}/3 \\approx 36.95$. (Atajo: área $= h^2/\\sqrt{3}$.) Verificado con Python.",
       "explicacion": "Cuando se conoce la altura en vez del lado, el mismo patrón $30-60-90$ se usa al revés. El atajo área $= h^2/\\sqrt{3}$ evita pasar por el lado.",
       "tiempo_estimado": 14,
       "conceptos": [
@@ -14093,7 +14093,7 @@
         "El producto de dos términos cuya suma $(x/6 + y/8 = 1)$ es fija se maximiza cuando son iguales: $x/6 = y/8 = 1/2$.",
         "Entonces $x = 3$, y $= 4$ y área $= 12$ (la mitad del área del triángulo)."
       ],
-      "solucion": "Con el ángulo recto en el origen y vértice (x,y) sobre la hipotenusa $x/6 + y/8 = 1$, el área $x\\cdot y$ se maximiza cuando $x/6 = y/8 = 1/2$, o sea $x = 3$, y $= 4$: área $= 12$. (En general, ab$/4 = 6\\cdot 8/4$.) Verificado con Python.",
+      "solucion": "Con el ángulo recto en el origen y vértice $(x,y)$ sobre la hipotenusa $x/6 + y/8 = 1$, el área $x\\cdot y$ se maximiza cuando $x/6 = y/8 = 1/2$, o sea $x = 3$, $y = 4$: área $= 12$. (En general, $ab/4 = 6\\cdot 8/4$.) Verificado con Python.",
       "explicacion": "El máximo rectángulo inscrito en un triángulo rectángulo ocupa exactamente la mitad de su área y tiene como vértices los puntos medios de los catetos. AM-GM cierra la optimización.",
       "tiempo_estimado": 20,
       "conceptos": [
@@ -14379,10 +14379,10 @@
         "Área $=$ base$\\cdot$altura$/2 \\Rightarrow 60 = 10\\cdot h/2 \\Rightarrow h = 12$.",
         "La altura llega al punto medio de la base, partiéndola en dos mitades de 5.",
         "Cada lado igual es la hipotenusa de un triángulo rectángulo con catetos 5 y 12.",
-        "Lado $= \\sqrt{(5^2 + 12^2)} = 13$ (terna $5-12-13$). Perímetro $= 10 + 13 + 13 = 36$."
+        "Lado $= \\sqrt{5^2 + 12^2} = 13$ (terna 5-12-13). Perímetro $= 10 + 13 + 13 = 36$."
       ],
       "solucion": "$h = 2\\cdot 60/10 = 12$. Cada lado igual $= \\sqrt{(5^2 + 12^2)} = 13$. Perímetro $= 10 + 2\\cdot 13 = 36$. Verificado con Python.",
-      "explicacion": "Se trabaja hacia atrás (área $\\to$ altura) y luego hacia adelante con la simetría del isósceles y Pitágoras (aquí, la terna $5-12-13$). Combinar inversión con un patrón conocido acelera el cierre.",
+      "explicacion": "Se trabaja hacia atrás (área $\\to$ altura) y luego hacia adelante con la simetría del isósceles y Pitágoras (aquí, la terna 5-12-13). Combinar inversión con un patrón conocido acelera el cierre.",
       "tiempo_estimado": 14,
       "conceptos": [
         "área → altura",
@@ -14556,13 +14556,13 @@
       "enunciado": "Un círculo tiene área $49\\pi$. ¿Cuál es su circunferencia (perímetro)?",
       "hints": [
         "Del área retrocede al radio; luego pasa del radio a la circunferencia.",
-        "Área $=$ πr$^2 = 49\\pi \\Rightarrow r^2 = 49$.",
+        "Área $= \\pi r^2 = 49\\pi \\Rightarrow r^2 = 49$.",
         "$r = 7$.",
-        "Circunferencia $= 2$πr.",
+        "Circunferencia $= 2\\pi r$.",
         "$= 2\\pi \\cdot 7 = 14\\pi \\approx 43.98$."
       ],
-      "solucion": "πr$^2 = 49\\pi \\Rightarrow r^2 = 49 \\Rightarrow r = 7$. Circunferencia $= 2$πr $= 14\\pi$. Verificado con Python.",
-      "explicacion": "El radio es el 'puente' entre área (πr$^2$) y circunferencia (2πr): conocido uno, se recupera el radio y se llega al otro. Trabajar hacia atrás en dos pasos cortos.",
+      "solucion": "$\\pi r^2 = 49\\pi \\Rightarrow r^2 = 49 \\Rightarrow r = 7$. Circunferencia $= 2\\pi r = 14\\pi$. Verificado con Python.",
+      "explicacion": "El radio es el 'puente' entre área ($\\pi r^2$) y circunferencia ($2\\pi r$): conocido uno, se recupera el radio y se llega al otro. Trabajar hacia atrás en dos pasos cortos.",
       "tiempo_estimado": 8,
       "conceptos": [
         "área del círculo",
@@ -15354,7 +15354,7 @@
         "Suma: $16 + 81 + 625 = 722$."
       ],
       "solucion": "$t(n) = 5$ (primo) obliga a $n = p^4$. Los menores que 1000 son $2^4 = 16, 3^4 = 81, 5^4 = 625$. Su suma es 722. Verificado con Python.",
-      "explicacion": "Que el número de divisores sea PRIMO restringe muchísimo la forma del número: solo potencias p^(primo$-1$). Reconocer ese patrón convierte una búsqueda en una lista corta.",
+      "explicacion": "Que el número de divisores sea PRIMO restringe muchísimo la forma del número: solo potencias $p^{\\text{primo}-1}$. Reconocer ese patrón convierte una búsqueda en una lista corta.",
       "tiempo_estimado": 14,
       "conceptos": [
         "t(n) primo ⇒ p⁴",
@@ -15384,7 +15384,7 @@
       "enunciado": "¿Cuál es el dígito de las unidades de $13^{19} \\cdot 19^{13}$?",
       "hints": [
         "El dígito de las unidades del producto es el producto de los dígitos de las unidades; calcula cada uno por su ciclo.",
-        "Unidades de $13^n =$ unidades de $3^n$, que ciclan 3, 9, 7, 1 (periodo 4). 19 ≡ 3 (mód 4) → 3er término $= 7$.",
+        "Unidades de $13^n =$ unidades de $3^n$, que ciclan 3, 9, 7, 1 (periodo 4). $19 \\equiv 3$ (mód 4) → 3er término $= 7$.",
         "Unidades de $19^n =$ unidades de $9^n$, que ciclan 9, 1 (periodo 2). 13 es impar $\\to 9$.",
         "Multiplica los dígitos: $7\\cdot 9 = 63$.",
         "El dígito de las unidades es 3."
@@ -15425,7 +15425,7 @@
         "Reduce el exponente módulo $6: 2005 = 6\\cdot 334 + 1$, así que $2005 \\equiv 1$ (mód 6).",
         "El primer término del ciclo es 5, así que $5^{2005} \\equiv 5$ (mód 7)."
       ],
-      "solucion": "Las potencias de 5 módulo 7 ciclan 5, 4, 6, 2, 3, 1 (periodo 6). Como $2005 \\equiv 1$ (mód 6), 5²⁰⁰⁵ ≡ 5¹ ≡ 5 (mód 7). El residuo es 5. Verificado con Python.",
+      "solucion": "Las potencias de 5 módulo 7 ciclan 5, 4, 6, 2, 3, 1 (periodo 6). Como $2005 \\equiv 1$ (mód 6), $5^{2005} \\equiv 5^1 \\equiv 5$ (mód 7). El residuo es 5. Verificado con Python.",
       "explicacion": "Los residuos de las potencias módulo un primo también ciclan (aquí periodo $6 = p-1$, el teorema de Fermat). Reducir el exponente módulo el periodo es el patrón universal.",
       "tiempo_estimado": 18,
       "conceptos": [
@@ -16025,7 +16025,7 @@
         "Llama K a la edad y prueba K de 13 a 19, revisando las dos condiciones para cada valor.",
         "Primera condición: K y $K^2$ terminan en el mismo dígito. Calcula $K^2$ para cada edad.",
         "$13^2=169, 14^2=196, 15^2=225, 16^2=256, 17^2=289, 18^2=324, 19^2=361$. Coinciden en el último dígito $K = 15 (225)$ y $K = 16 (256)$.",
-        "Segunda condición: $K + K^2$ no múltiplo de $10. 15 + 225 = 240$ (sí múltiplo de 10, se descarta); 16 + 256 = 272 (no).",
+        "Segunda condición: $K + K^2$ no múltiplo de 10. $15 + 225 = 240$ (sí múltiplo de 10, se descarta); $16 + 256 = 272$ (no).",
         "Karen tiene 16 años."
       ],
       "solucion": "Probando 13..19, el último dígito de $K^2$ coincide con el de K solo en $K = 15$ y $K = 16$. De esos, $15+225 = 240$ es múltiplo de 10 (descartado) y $16+256 = 272$ no lo es. Karen tiene 16. Verificado con Python.",
@@ -16063,7 +16063,7 @@
         "Solo $7\\cdot 9 = 63$ termina en 3.",
         "El otro entero termina en 9."
       ],
-      "solucion": "Buscamos d con $7\\cdot d \\equiv 3$ (mód 10): 7·9 = 63 termina en 3. El otro entero termina en 9. Verificado con Python.",
+      "solucion": "Buscamos $d$ con $7\\cdot d \\equiv 3$ (mód 10): $7\\cdot9 = 63$ termina en 3. El otro entero termina en 9. Verificado con Python.",
       "explicacion": "Conocido el dígito de unidades del producto y de un factor, el del otro se recupera resolviendo una congruencia módulo 10. Como el producto es impar, basta probar dígitos impares.",
       "tiempo_estimado": 10,
       "conceptos": [
@@ -16099,7 +16099,7 @@
         "Ese es el inverso de 3 módulo 10.",
         "El otro número termina en 7."
       ],
-      "solucion": "Buscamos d con $3\\cdot d \\equiv 1$ (mód 10): 3·7 = 21. El otro número termina en 7 (7 es el inverso de 3 módulo 10). Verificado con Python.",
+      "solucion": "Buscamos $d$ con $3\\cdot d \\equiv 1$ (mód 10): $3\\cdot7 = 21$. El otro número termina en 7 (7 es el inverso de 3 módulo 10). Verificado con Python.",
       "explicacion": "Hallar el dígito que multiplicado da unidades 1 es encontrar el 'inverso multiplicativo módulo 10'. Solo los dígitos coprimos con 10 (1,3,7,9) tienen inverso.",
       "tiempo_estimado": 10,
       "conceptos": [
@@ -16776,7 +16776,7 @@
       "hints": [
         "'No todas del mismo color' pide el complemento de 'las tres del mismo color'.",
         "Maneras de elegir 3 cartas de 52: C(52,3). Maneras de que las 3 sean del mismo color: $2\\cdot C(26,3)$ (rojas o negras).",
-        "P(las tres del mismo color) = 2·C(26,3)/C(52,3).",
+        "$P(\\text{las tres del mismo color}) = 2\\cdot\\binom{26}{3}/\\binom{52}{3}$.",
         "$C(26,3) = 2600$ y $C(52,3) = 22100$, así que P(mismo color) $= 5200/22100 = 4/17$.",
         "P(no todas del mismo color) $= 1 - 4/17 = 13/17$."
       ],
@@ -17207,7 +17207,7 @@
         "Prueba: $(5/6)^3 \\approx 0.579 > 0.5; (5/6)^4 \\approx 0.482 < 0.5$.",
         "El menor n es 4."
       ],
-      "solucion": "Se necesita $(5/6)^n \\le 1/2. (5/6)^3 \\approx 0.579$ (no basta), (5/6)⁴ ≈ 0.482 (sí). El menor número de lanzamientos es 4. Verificado con Python.",
+      "solucion": "Se necesita $(5/6)^n \\le 1/2$. $(5/6)^3 \\approx 0.579$ (no basta), $(5/6)^4 \\approx 0.482$ (sí). El menor número de lanzamientos es 4. Verificado con Python.",
       "explicacion": "Otra vez el complemento convierte 'al menos un éxito' en 'ningún éxito', cuya probabilidad decae geométricamente. Se busca el menor entero que cruza el umbral.",
       "tiempo_estimado": 12,
       "conceptos": [
@@ -17666,7 +17666,7 @@
         "Juntas $= 2\\cdot 4! = 2\\cdot 24 = 48$.",
         "No juntas $= 120 - 48 = 72$."
       ],
-      "solucion": "Total $= 5! = 120$. Juntas (bloque de 2) = 2·4! = 48. No juntas $= 120 - 48 = 72$. Verificado con Python.",
+      "solucion": "Total $= 5! = 120$. Juntas (bloque de 2) $= 2\\cdot4! = 48$. No juntas $= 120 - 48 = 72$. Verificado con Python.",
       "explicacion": "La condición 'no adyacentes' se cuenta restando del total los casos 'adyacentes', que se cuentan fácil agrupando a los dos en un bloque. Es conteo complementario sobre arreglos.",
       "tiempo_estimado": 12,
       "conceptos": [
@@ -17879,7 +17879,7 @@
         "$1/p + 1/q + 1/r =$ (suma de pares)/(producto) $= 11/6$.",
         "(Verifica: las raíces son $1, 2, 3; 1 + 1/2 + 1/3 = 11/6$.)"
       ],
-      "solucion": "$1/p + 1/q + 1/r =$ (pq+qr+rp)/(pqr) = 11/6 (por Vieta; las raíces son 1, 2, 3). Verificado con Python.",
+      "solucion": "$1/p + 1/q + 1/r = (pq+qr+rp)/(pqr) = 11/6$ (por Vieta; las raíces son 1, 2, 3). Verificado con Python.",
       "explicacion": "Vieta da todas las funciones simétricas de las raíces de un cúbico: suma, suma de pares y producto. La suma de recíprocos es solo el cociente de dos de ellas.",
       "tiempo_estimado": 14,
       "conceptos": [
@@ -18130,7 +18130,7 @@
         "$= 25$ (que es $|3 + 4i|^2$)."
       ],
       "solucion": "$(3 + 4i)(3 - 4i) = 3^2 + 4^2 = 25 = |3 + 4i|^2$. Verificado con Python.",
-      "explicacion": "El producto de conjugados z·z̄ = |z|² es real e invariante: elimina la parte imaginaria. Es la base de la racionalización de denominadores complejos.",
+      "explicacion": "El producto de conjugados $z\\cdot\\bar z = |z|^2$ es real e invariante: elimina la parte imaginaria. Es la base de la racionalización de denominadores complejos.",
       "tiempo_estimado": 8,
       "conceptos": [
         "conjugado complejo",
@@ -18233,7 +18233,7 @@
       "hints": [
         "Primero halla el último término; luego usa la fórmula de la suma de una progresión aritmética.",
         "Diferencia común $d = 3$; término $50 = 2 + 49\\cdot 3 = 149$.",
-        "La suma es (número de términos)·(primer + último)/2.",
+        "La suma es $(\\text{número de términos})\\cdot(\\text{primer} + \\text{último})/2$.",
         "$= 50\\cdot (2 + 149)/2$.",
         "$= 50\\cdot 151/2 = 3775$."
       ],
@@ -18489,7 +18489,7 @@
         "$x = 27/99$.",
         "Simplifica: $27/99 = 3/11$."
       ],
-      "solucion": "Sea x = 0.27̄; 100x − x = 27 ⇒ x = 27/99 = 3/11. Verificado con Python.",
+      "solucion": "Sea $x = 0.\\overline{27}$; $100x - x = 27 \\Rightarrow x = 27/99 = 3/11$. Verificado con Python.",
       "explicacion": "El patrón periódico se elimina restando dos múltiplos del número. Un bloque de k cifras se atrapa multiplicando por $10^k$. Todo decimal periódico es racional.",
       "tiempo_estimado": 12,
       "conceptos": [
@@ -18555,7 +18555,7 @@
       "hints": [
         "Halla el término 15 y luego promedia extremos por el número de términos.",
         "Diferencia común $d = 3$; término $15 = 1 + 14\\cdot 3 = 43$.",
-        "Suma $=$ (número de términos)·(primer + último)/2.",
+        "Suma $= (\\text{número de términos})\\cdot(\\text{primer} + \\text{último})/2$.",
         "$= 15\\cdot (1 + 43)/2$.",
         "$= 15\\cdot 44/2 = 15\\cdot 22 = 330$."
       ],
@@ -18695,8 +18695,8 @@
       "enunciado": "Dos números positivos suman 10. ¿Cuál es el mayor valor posible de su producto?",
       "hints": [
         "Con suma fija, el producto de dos positivos es máximo cuando son iguales (AM-GM).",
-        "Sean a y b con a $+ b = 10$. Por AM-GM, √(ab) $\\le (a + b)/2$.",
-        "√(ab) $\\le 5$, así que ab $\\le 25$.",
+        "Sean $a$ y $b$ con $a + b = 10$. Por AM-GM, $\\sqrt{ab} \\le (a + b)/2$.",
+        "$\\sqrt{ab} \\le 5$, así que $ab \\le 25$.",
         "La igualdad ocurre cuando a $= b = 5$.",
         "El producto máximo es 25."
       ],
@@ -18806,7 +18806,7 @@
         "El mínimo es $2\\sqrt{6}$."
       ],
       "solucion": "Por AM-GM, $2x + 3/x \\ge 2\\sqrt ((2x)(3/x)) = 2\\sqrt{6}$, con igualdad en $x = \\sqrt{(3/2)}$. El mínimo es $2\\sqrt{6} \\approx 4.90$. Verificado con Python.",
-      "explicacion": "AM-GM se aplica a cualquier par de términos positivos con producto constante, aun con coeficientes. El mínimo de ax $+ b/x$ es 2√(ab).",
+      "explicacion": "AM-GM se aplica a cualquier par de términos positivos con producto constante, aun con coeficientes. El mínimo de $ax + b/x$ es $2\\sqrt{ab}$.",
       "tiempo_estimado": 12,
       "conceptos": [
         "AM-GM",
@@ -18875,7 +18875,7 @@
         "$a + b + c \\ge 3\\cdot 2 = 6$, con igualdad cuando a $= b = c = 2$.",
         "El mínimo es 6."
       ],
-      "solucion": "Por AM-GM con tres variables, a + b + c ≥ 3∛(abc) $= 3\\sqrt[3]{8} = 6$, con igualdad en a $= b = c = 2$. El mínimo es 6. Verificado con Python.",
+      "solucion": "Por AM-GM con tres variables, $a + b + c \\ge 3\\sqrt[3]{abc} = 3\\sqrt[3]{8} = 6$, con igualdad en $a = b = c = 2$. El mínimo es 6. Verificado con Python.",
       "explicacion": "AM-GM se generaliza a n variables: la suma es mínima (con producto fijo) cuando todas son iguales. Aquí $\\sqrt[3]{8} = 2$ fija el óptimo simétrico.",
       "tiempo_estimado": 16,
       "conceptos": [
