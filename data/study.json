@@ -8242,117 +8242,117 @@
     "session": "2026-06-12"
    },
    "ideas_clave": [
-    "La regla 68-95-99.7 conecta σ con probabilidades concretas.",
+    "La regla 68-95-99.7 conecta $\\sigma$ con probabilidades concretas.",
     "LGN y CLT son proposiciones distintas: convergencia puntual vs distribucional.",
-    "La ley de la esperanza total E[X] = E[E[X|Y]] reduce cálculos complejos.",
-    "El error estándar σ/√n mide la precisión del estimador, no la variabilidad del dato.",
+    "La ley de la esperanza total $E[X] = E[E[X\\mid Y]]$ reduce cálculos complejos.",
+    "El error estándar $\\sigma/\\sqrt n$ mide la precisión del estimador, no la variabilidad del dato.",
     "MLE bajo normalidad = mínimos cuadrados."
    ],
    "banco": [
     {
      "id": "arq6-q1",
      "tipo": "quiz",
-     "enunciado": "Para una distribución normal, ¿qué porcentaje de los datos cae dentro de μ±σ, μ±2σ y μ±3σ? ¿Qué significa que un dato esté a 4σ de la media?",
-     "solucion": "μ±1σ: 68.27%; μ±2σ: 95.45%; μ±3σ: 99.73%. A 4σ: probabilidad ≈0.0063% (≈1 en 15 800). Regla mnemónica: 68-95-99.7 ('la regla empírica').",
-     "explicacion": "Señal: 'datos normalmente distribuidos'. Anclaje: 2σ cubre 95%; un valor a 3σ ya es muy inusual. En finanzas, 4σ diario implica que estadísticamente ocurre una vez cada ~60 años — pero ocurre con mayor frecuencia por colas pesadas reales."
+     "enunciado": "Para una distribución normal, ¿qué porcentaje de los datos cae dentro de $\\mu\\pm\\sigma$, $\\mu\\pm2\\sigma$ y $\\mu\\pm3\\sigma$? ¿Qué significa que un dato esté a $4\\sigma$ de la media?",
+     "solucion": "$\\mu\\pm1\\sigma$: 68.27%; $\\mu\\pm2\\sigma$: 95.45%; $\\mu\\pm3\\sigma$: 99.73%. A $4\\sigma$: probabilidad $\\approx0.0063\\%$ ($\\approx$1 en 15 800). Regla mnemónica: 68-95-99.7 ('la regla empírica').",
+     "explicacion": "Señal: 'datos normalmente distribuidos'. Anclaje: $2\\sigma$ cubre 95%; un valor a $3\\sigma$ ya es muy inusual. En finanzas, $4\\sigma$ diario implica que estadísticamente ocurre una vez cada ~60 años — pero ocurre con mayor frecuencia por colas pesadas reales."
     },
     {
      "id": "arq6-q2",
      "tipo": "conceptual",
      "enunciado": "Explica la diferencia entre la Ley de los Grandes Números (LGN) y el Teorema Central del Límite (TCL). ¿Pueden aplicarse a distribuciones con varianza infinita?",
-     "solucion": "LGN: la media muestral X̄_n converge en probabilidad a μ (el promedio se estabiliza). TCL: la distribución de √n(X̄_n − μ)/σ converge a N(0,1) (la media estandarizada se vuelve normal). La LGN solo requiere E[X] < ∞; el TCL clásico requiere σ² < ∞. Con varianza infinita (Cauchy): la LGN falla, el TCL no aplica en su forma estándar.",
-     "explicacion": "Error clásico: confundir 'la media se acerca a μ' (LGN) con 'la distribución de la media es normal' (TCL). La LGN es sobre el límite puntual; el TCL es sobre la forma de la distribución."
+     "solucion": "LGN: la media muestral $\\bar X_n$ converge en probabilidad a $\\mu$ (el promedio se estabiliza). TCL: la distribución de $\\sqrt n(\\bar X_n - \\mu)/\\sigma$ converge a $N(0,1)$ (la media estandarizada se vuelve normal). La LGN solo requiere $E[X] < \\infty$; el TCL clásico requiere $\\sigma^2 < \\infty$. Con varianza infinita (Cauchy): la LGN falla, el TCL no aplica en su forma estándar.",
+     "explicacion": "Error clásico: confundir 'la media se acerca a $\\mu$' (LGN) con 'la distribución de la media es normal' (TCL). La LGN es sobre el límite puntual; el TCL es sobre la forma de la distribución."
     },
     {
      "id": "arq6-q3",
      "tipo": "calculo",
-     "enunciado": "El tiempo de espera en una tienda tiene σ = 5 minutos. Si tomas muestras de n = 100 clientes, ¿cuál es el error estándar de la media muestral? ¿Y con n = 400?",
-     "solucion": "σ_X̄ = σ/√n. Con n=100: σ_X̄ = 5/√100 = 0.5 min. Con n=400: σ_X̄ = 5/√400 = 0.25 min. Para reducir el error a la mitad se necesita cuadruplicar el tamaño muestral.",
-     "explicacion": "El error estándar escala con 1/√n, no con 1/n. Esta dependencia de √n es la misma raíz de la escala de volatilidad en finanzas: ambas vienen de que la varianza de n i.i.d. es n·σ²."
+     "enunciado": "El tiempo de espera en una tienda tiene $\\sigma = 5$ minutos. Si tomas muestras de $n = 100$ clientes, ¿cuál es el error estándar de la media muestral? ¿Y con $n = 400$?",
+     "solucion": "$\\sigma_{\\bar X} = \\sigma/\\sqrt n$. Con $n=100$: $\\sigma_{\\bar X} = 5/\\sqrt{100} = 0.5$ min. Con $n=400$: $\\sigma_{\\bar X} = 5/\\sqrt{400} = 0.25$ min. Para reducir el error a la mitad se necesita cuadruplicar el tamaño muestral.",
+     "explicacion": "El error estándar escala con $1/\\sqrt n$, no con $1/n$. Esta dependencia de $\\sqrt n$ es la misma raíz de la escala de volatilidad en finanzas: ambas vienen de que la varianza de $n$ i.i.d. es $n\\sigma^2$."
     },
     {
      "id": "arq6-q4",
      "tipo": "conceptual",
-     "enunciado": "Define el p-valor correctamente. ¿Qué afirmación es incorrecta: (A) P(datos tan extremos | H₀ verdadera) = 0.03, o (B) P(H₀ verdadera | estos datos) = 0.03?",
-     "solucion": "El p-valor es P(observar datos al menos tan extremos | H₀ es verdadera) → (A) es la definición correcta. (B) es incorrecto: P(H₀ | datos) requiere Bayes con probabilidad a priori de H₀. Un p-valor = 0.03 no significa '3% de probabilidad de que la hipótesis nula sea cierta'.",
-     "explicacion": "El error de transposición ('confundir P(A|B) con P(B|A)') es el más frecuente en estadística. Un p-valor bajo solo dice que los datos serían improbables si H₀ fuese verdadera; no cuantifica la verdad de H₀."
+     "enunciado": "Define el p-valor correctamente. ¿Qué afirmación es incorrecta: (A) $P(\\text{datos tan extremos}\\mid H_0\\text{ verdadera}) = 0.03$, o (B) $P(H_0\\text{ verdadera}\\mid\\text{estos datos}) = 0.03$?",
+     "solucion": "El p-valor es $P(\\text{observar datos al menos tan extremos}\\mid H_0\\text{ es verdadera})$ → (A) es la definición correcta. (B) es incorrecto: $P(H_0\\mid\\text{datos})$ requiere Bayes con probabilidad a priori de $H_0$. Un p-valor $= 0.03$ no significa '3% de probabilidad de que la hipótesis nula sea cierta'.",
+     "explicacion": "El error de transposición ('confundir $P(A\\mid B)$ con $P(B\\mid A)$') es el más frecuente en estadística. Un p-valor bajo solo dice que los datos serían improbables si $H_0$ fuese verdadera; no cuantifica la verdad de $H_0$."
     },
     {
      "id": "arq6-q5",
      "tipo": "quiz",
      "enunciado": "Define error tipo I y error tipo II en una prueba de hipótesis. ¿Cuál es más grave en un test de detección de cáncer? ¿Y en un test de spam?",
-     "solucion": "Tipo I (α): rechazar H₀ cuando es verdadera (falso positivo). Tipo II (β): no rechazar H₀ cuando es falsa (falso negativo). En detección de cáncer: Tipo II es más grave (no detectar cáncer real). En spam: Tipo I puede ser más grave (bloquear correo legítimo).",
-     "explicacion": "El contexto determina cuál error es peor. Reducir α aumenta β (y viceversa) para n fijo. Solo aumentar n reduce ambos simultáneamente."
+     "solucion": "Tipo I ($\\alpha$): rechazar $H_0$ cuando es verdadera (falso positivo). Tipo II ($\\beta$): no rechazar $H_0$ cuando es falsa (falso negativo). En detección de cáncer: Tipo II es más grave (no detectar cáncer real). En spam: Tipo I puede ser más grave (bloquear correo legítimo).",
+     "explicacion": "El contexto determina cuál error es peor. Reducir $\\alpha$ aumenta $\\beta$ (y viceversa) para $n$ fijo. Solo aumentar $n$ reduce ambos simultáneamente."
     },
     {
      "id": "arq6-q6",
      "tipo": "conceptual",
-     "enunciado": "¿Qué es el poder estadístico de una prueba? Si β = 0.20, ¿cuál es el poder? ¿Qué factores lo aumentan?",
-     "solucion": "Poder = P(rechazar H₀ | H₁ es verdadera) = 1 − β. Si β = 0.20, poder = 80%. Factores que lo aumentan: mayor n (el más fácil), mayor tamaño del efecto real, menor varianza en los datos, mayor α (pero a costa de más falsos positivos).",
+     "enunciado": "¿Qué es el poder estadístico de una prueba? Si $\\beta = 0.20$, ¿cuál es el poder? ¿Qué factores lo aumentan?",
+     "solucion": "Poder $= P(\\text{rechazar }H_0\\mid H_1\\text{ es verdadera}) = 1 - \\beta$. Si $\\beta = 0.20$, poder $= 80\\%$. Factores que lo aumentan: mayor $n$ (el más fácil), mayor tamaño del efecto real, menor varianza en los datos, mayor $\\alpha$ (pero a costa de más falsos positivos).",
      "explicacion": "Un estudio con poder bajo puede fallar en detectar efectos reales. En ciencia de datos: poder 80% es el umbral convencional. Al diseñar experimentos A/B, el cálculo de poder determina el tamaño muestral necesario."
     },
     {
      "id": "arq6-q7",
      "tipo": "calculo",
-     "enunciado": "Sean X e Y con Var(X) = 4, Var(Y) = 9, Cov(X,Y) = 3. Calcula Var(X + Y) y Var(X − Y). ¿Cuándo Var(X+Y) = Var(X) + Var(Y)?",
-     "solucion": "Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y) = 4 + 9 + 6 = 19. Var(X−Y) = Var(X) + Var(Y) − 2Cov(X,Y) = 4 + 9 − 6 = 7. Igualdad cuando Cov = 0, es decir, X e Y son no correlacionadas.",
+     "enunciado": "Sean $X$ e $Y$ con $\\text{Var}(X) = 4$, $\\text{Var}(Y) = 9$, $\\text{Cov}(X,Y) = 3$. Calcula $\\text{Var}(X + Y)$ y $\\text{Var}(X - Y)$. ¿Cuándo $\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y)$?",
+     "solucion": "$\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y) + 2\\text{Cov}(X,Y) = 4 + 9 + 6 = 19$. $\\text{Var}(X-Y) = \\text{Var}(X) + \\text{Var}(Y) - 2\\text{Cov}(X,Y) = 4 + 9 - 6 = 7$. Igualdad cuando $\\text{Cov} = 0$, es decir, $X$ e $Y$ son no correlacionadas.",
      "explicacion": "Señal: 'varianza de suma de variables'. Correlación positiva infla la varianza conjunta; negativa la reduce. En portfolios: activos negativamente correlacionados reducen el riesgo total. Nota: independencia implica no correlación, pero no al revés."
     },
     {
      "id": "arq6-q8",
      "tipo": "calculo",
-     "enunciado": "¿Cuál es el rango posible del coeficiente de correlación ρ(X,Y)? Demuestra que |ρ| ≤ 1. ¿Cuándo ρ = 1 exactamente?",
-     "solucion": "ρ = Cov(X,Y)/(σ_X·σ_Y), con ρ ∈ [−1, 1]. Demostración: Cauchy-Schwarz: [E[XY]]² ≤ E[X²]E[Y²], y aplicando a variables centradas. ρ = 1 si y solo si Y = aX + b con a > 0 (relación lineal perfecta positiva); ρ = −1 si a < 0.",
-     "explicacion": "ρ mide solo relación lineal. Dos variables pueden tener ρ = 0 y una relación cuadrática perfecta (Y = X²). Error frecuente: interpretar ρ ≈ 0 como independencia."
+     "enunciado": "¿Cuál es el rango posible del coeficiente de correlación $\\rho(X,Y)$? Demuestra que $|\\rho| \\le 1$. ¿Cuándo $\\rho = 1$ exactamente?",
+     "solucion": "$\\rho = \\text{Cov}(X,Y)/(\\sigma_X\\sigma_Y)$, con $\\rho \\in [-1, 1]$. Demostración: Cauchy-Schwarz: $[E[XY]]^2 \\le E[X^2]E[Y^2]$, y aplicando a variables centradas. $\\rho = 1$ si y solo si $Y = aX + b$ con $a > 0$ (relación lineal perfecta positiva); $\\rho = -1$ si $a < 0$.",
+     "explicacion": "$\\rho$ mide solo relación lineal. Dos variables pueden tener $\\rho = 0$ y una relación cuadrática perfecta ($Y = X^2$). Error frecuente: interpretar $\\rho \\approx 0$ como independencia."
     },
     {
      "id": "arq6-q9",
      "tipo": "conceptual",
-     "enunciado": "En una regresión lineal simple Y = β₀ + β₁X + ε, ¿qué mide R²? ¿Puede R² ser negativo? ¿Qué problema tiene R² ajustado vs R²?",
-     "solucion": "R² = 1 − SSR/SST = fracción de varianza de Y explicada por X. Va de 0 a 1 en regresión OLS con intercepto. En scikit-learn con `score()` puede ser negativo si el modelo es peor que predecir siempre la media. R² ajustado penaliza predictores adicionales: R²_adj = 1 − (1−R²)(n−1)/(n−p−1); R² nunca baja al agregar variables, R² ajustado sí.",
-     "explicacion": "Señal: 'bondad de ajuste de regresión'. Trampa: R² alto no implica causalidad ni buen modelo predictivo; puede haber sobreajuste o variables confundidoras."
+     "enunciado": "En una regresión lineal simple $Y = \\beta_0 + \\beta_1 X + \\varepsilon$, ¿qué mide $R^2$? ¿Puede $R^2$ ser negativo? ¿Qué problema tiene $R^2$ ajustado vs $R^2$?",
+     "solucion": "$R^2 = 1 - \\text{SSR}/\\text{SST} =$ fracción de varianza de $Y$ explicada por $X$. Va de 0 a 1 en regresión OLS con intercepto. En scikit-learn con `score()` puede ser negativo si el modelo es peor que predecir siempre la media. $R^2$ ajustado penaliza predictores adicionales: $R^2_\\text{adj} = 1 - (1-R^2)(n-1)/(n-p-1)$; $R^2$ nunca baja al agregar variables, $R^2$ ajustado sí.",
+     "explicacion": "Señal: 'bondad de ajuste de regresión'. Trampa: $R^2$ alto no implica causalidad ni buen modelo predictivo; puede haber sobreajuste o variables confundidoras."
     },
     {
      "id": "arq6-q10",
      "tipo": "calculo",
-     "enunciado": "Sea Y el número de lanzamientos de una moneda justa hasta obtener cara. Calcula E[Y] usando la ley de la esperanza total condicionando en el primer resultado.",
-     "solucion": "E[Y] = E[E[Y|primer lanzamiento]]. Con probabilidad 1/2, obtienes cara en el primer intento: E[Y|H] = 1. Con probabilidad 1/2, obtienes cruz: E[Y|T] = 1 + E[Y] (el proceso se reinicia). Entonces E[Y] = 1/2·1 + 1/2·(1 + E[Y]) → E[Y] = 1 + E[Y]/2 → E[Y] = 2.",
-     "explicacion": "Ley de la esperanza total: E[X] = E[E[X|Y]]. Es la herramienta estándar para calcular E cuando hay una estructura condicional natural. Señal: 'calcular E[] con reinicio o ramificación'."
+     "enunciado": "Sea $Y$ el número de lanzamientos de una moneda justa hasta obtener cara. Calcula $E[Y]$ usando la ley de la esperanza total condicionando en el primer resultado.",
+     "solucion": "$E[Y] = E[E[Y\\mid\\text{primer lanzamiento}]]$. Con probabilidad $1/2$, obtienes cara en el primer intento: $E[Y\\mid H] = 1$. Con probabilidad $1/2$, obtienes cruz: $E[Y\\mid T] = 1 + E[Y]$ (el proceso se reinicia). Entonces $E[Y] = \\tfrac12\\cdot1 + \\tfrac12(1 + E[Y])$ → $E[Y] = 1 + E[Y]/2$ → $E[Y] = 2$.",
+     "explicacion": "Ley de la esperanza total: $E[X] = E[E[X\\mid Y]]$. Es la herramienta estándar para calcular $E$ cuando hay una estructura condicional natural. Señal: 'calcular $E[]$ con reinicio o ramificación'."
     },
     {
      "id": "arq6-q11",
      "tipo": "calculo",
-     "enunciado": "Enuncia la ley de la varianza total. Aplícala: X es el resultado de un dado justo (1-6). Y = X². Calcula Var(Y).",
-     "solucion": "Ley: Var(X) = E[Var(X|Y)] + Var(E[X|Y]). Para Y = X²: E[Y] = E[X²] = (1+4+9+16+25+36)/6 = 91/6 ≈ 15.17. E[Y²] = E[X⁴] = (1+16+81+256+625+1296)/6 = 2275/6. Var(Y) = E[Y²] − (E[Y])² = 2275/6 − (91/6)² = 2275/6 − 8281/36 = 13650/36 − 8281/36 = 5369/36 ≈ 149.1.",
+     "enunciado": "Enuncia la ley de la varianza total. Aplícala: $X$ es el resultado de un dado justo (1-6). $Y = X^2$. Calcula $\\text{Var}(Y)$.",
+     "solucion": "Ley: $\\text{Var}(X) = E[\\text{Var}(X\\mid Y)] + \\text{Var}(E[X\\mid Y])$. Para $Y = X^2$: $E[Y] = E[X^2] = (1+4+9+16+25+36)/6 = 91/6 \\approx 15.17$. $E[Y^2] = E[X^4] = (1+16+81+256+625+1296)/6 = 2275/6$. $\\text{Var}(Y) = E[Y^2] - (E[Y])^2 = 2275/6 - (91/6)^2 = 2275/6 - 8281/36 = 13650/36 - 8281/36 = 5369/36 \\approx 149.1$.",
      "explicacion": "La ley de varianza total separa la varianza en dos componentes: varianza media condicional y varianza de la esperanza condicional. Útil en modelos mixtos y análisis de varianza (ANOVA)."
     },
     {
      "id": "arq6-q12",
      "tipo": "calculo",
-     "enunciado": "El problema del coleccionista de cupones: hay n tipos distintos de cupones, distribuidos uniformemente. ¿Cuántos cupones necesitas comprar en expectativa para completar la colección? Calcula para n = 4.",
-     "solucion": "E[T] = n·(1 + 1/2 + 1/3 + … + 1/n) = n·H_n. Para n=4: E[T] = 4·(1 + 1/2 + 1/3 + 1/4) = 4·(25/12) = 25/3 ≈ 8.33. Derivación: cuando tienes k cupones distintos, la probabilidad de obtener uno nuevo es (n−k)/n, así que el tiempo esperado en este estado es n/(n−k). Suma: Σ n/(n−k) para k=0..n−1.",
-     "explicacion": "Señal: 'coleccionar todos los tipos'. Linealidad de E[]: E[T] = suma de E[tiempo entre tipos]. Este problema aparece en hashing, caching y cobertura de casos de prueba."
+     "enunciado": "El problema del coleccionista de cupones: hay $n$ tipos distintos de cupones, distribuidos uniformemente. ¿Cuántos cupones necesitas comprar en expectativa para completar la colección? Calcula para $n = 4$.",
+     "solucion": "$E[T] = n(1 + 1/2 + 1/3 + \\dots + 1/n) = n H_n$. Para $n=4$: $E[T] = 4(1 + 1/2 + 1/3 + 1/4) = 4\\cdot(25/12) = 25/3 \\approx 8.33$. Derivación: cuando tienes $k$ cupones distintos, la probabilidad de obtener uno nuevo es $(n-k)/n$, así que el tiempo esperado en este estado es $n/(n-k)$. Suma: $\\sum n/(n-k)$ para $k=0..n-1$.",
+     "explicacion": "Señal: 'coleccionar todos los tipos'. Linealidad de $E[]$: $E[T] =$ suma de $E[\\text{tiempo entre tipos}]$. Este problema aparece en hashing, caching y cobertura de casos de prueba."
     },
     {
      "id": "arq6-q13",
      "tipo": "conceptual",
      "enunciado": "¿Por qué la Estimación de Máxima Verosimilitud (MLE) para una distribución normal equivale a mínimos cuadrados? ¿Qué asume sobre los errores?",
-     "solucion": "Para ε_i ~ N(0, σ²) i.i.d., la log-verosimilitud es: ℓ(β) = −(n/2)log(2πσ²) − (1/2σ²)·Σ(y_i − xᵢᵀβ)². Maximizar ℓ respecto a β equivale a minimizar Σ(y_i − xᵢᵀβ)² (SSR). Asunción clave: errores normales, homocedásticos, no correlacionados.",
+     "solucion": "Para $\\varepsilon_i \\sim N(0, \\sigma^2)$ i.i.d., la log-verosimilitud es $\\ell(\\beta) = -(n/2)\\log(2\\pi\\sigma^2) - (1/2\\sigma^2)\\sum(y_i - x_i^\\top\\beta)^2$. Maximizar $\\ell$ respecto a $\\beta$ equivale a minimizar $\\sum(y_i - x_i^\\top\\beta)^2$ (SSR). Asunción clave: errores normales, homocedásticos, no correlacionados.",
      "explicacion": "Si los errores no son normales, MLE y OLS pueden diferir. Para errores Laplace (distribución de doble exponencial), MLE corresponde a mínimos de valor absoluto (LAD regression), más robusta a outliers."
     },
     {
      "id": "arq6-q14",
      "tipo": "conceptual",
-     "enunciado": "Si Z₁, Z₂, …, Zₙ son N(0,1) independientes, ¿cuál es la distribución de Q = Σ Zᵢ²? ¿Cuál es E[Q] y Var(Q)?",
-     "solucion": "Q ~ χ²(n) (chi-cuadrado con n grados de libertad). E[Q] = n; Var(Q) = 2n. La distribución χ² surge naturalmente en pruebas de bondad de ajuste, prueba F, estimación de varianza (n·S²/σ² ~ χ²(n−1)), y en la distribución t de Student (t = Z/√(χ²(k)/k)).",
-     "explicacion": "Señal: 'suma de cuadrados de normales estándar'. La familia chi-cuadrado conecta con las distribuciones t y F: Z²/1 ~ χ²(1); χ²(n)/n → 1 por LGN cuando n→∞."
+     "enunciado": "Si $Z_1, Z_2, \\dots, Z_n$ son $N(0,1)$ independientes, ¿cuál es la distribución de $Q = \\sum Z_i^2$? ¿Cuál es $E[Q]$ y $\\text{Var}(Q)$?",
+     "solucion": "$Q \\sim \\chi^2(n)$ (chi-cuadrado con $n$ grados de libertad). $E[Q] = n$; $\\text{Var}(Q) = 2n$. La distribución $\\chi^2$ surge naturalmente en pruebas de bondad de ajuste, prueba F, estimación de varianza ($n S^2/\\sigma^2 \\sim \\chi^2(n-1)$), y en la distribución t de Student ($t = Z/\\sqrt{\\chi^2(k)/k}$).",
+     "explicacion": "Señal: 'suma de cuadrados de normales estándar'. La familia chi-cuadrado conecta con las distribuciones t y F: $Z^2 \\sim \\chi^2(1)$; $\\chi^2(n)/n \\to 1$ por LGN cuando $n\\to\\infty$."
     },
     {
      "id": "arq6-q15",
      "tipo": "calculo",
-     "enunciado": "Si X ~ N(μ, σ²), ¿cuál es la distribución de Y = aX + b? ¿Y si X₁, X₂ son N(μ₁,σ₁²) y N(μ₂,σ₂²) independientes, cuál es la distribución de X₁ + X₂?",
-     "solucion": "Y = aX + b ~ N(aμ + b, a²σ²). Para la suma: X₁ + X₂ ~ N(μ₁ + μ₂, σ₁² + σ₂²) (las normales son cerradas bajo sumas de independientes). La varianza suma (no los desvíos estándar).",
-     "explicacion": "Señal: 'transformación lineal de normal' o 'suma de normales'. El cierre bajo transformaciones lineales y convolución es la propiedad más útil de la distribución normal. Si hay correlación: Var(X₁+X₂) = σ₁² + σ₂² + 2ρσ₁σ₂."
+     "enunciado": "Si $X \\sim N(\\mu, \\sigma^2)$, ¿cuál es la distribución de $Y = aX + b$? ¿Y si $X_1, X_2$ son $N(\\mu_1,\\sigma_1^2)$ y $N(\\mu_2,\\sigma_2^2)$ independientes, cuál es la distribución de $X_1 + X_2$?",
+     "solucion": "$Y = aX + b \\sim N(a\\mu + b, a^2\\sigma^2)$. Para la suma: $X_1 + X_2 \\sim N(\\mu_1 + \\mu_2, \\sigma_1^2 + \\sigma_2^2)$ (las normales son cerradas bajo sumas de independientes). La varianza suma (no los desvíos estándar).",
+     "explicacion": "Señal: 'transformación lineal de normal' o 'suma de normales'. El cierre bajo transformaciones lineales y convolución es la propiedad más útil de la distribución normal. Si hay correlación: $\\text{Var}(X_1+X_2) = \\sigma_1^2 + \\sigma_2^2 + 2\\rho\\sigma_1\\sigma_2$."
     }
    ]
   },
@@ -8656,124 +8656,124 @@
     "session": "2026-06-13"
    },
    "ideas_clave": [
-    "Stars and bars: Σxᵢ=n con xᵢ≥0 → C(n+k−1,k−1) soluciones.",
-    "Derangements: D(n)/n! → 1/e ≈ 37% de permutaciones son desarreglos.",
-    "Ruina del jugador (p=1/2): P(llegar a N | inicio k) = k/N; duración esperada = k(N−k).",
-    "Coupon collector con n: E[T] = n·Hₙ.",
-    "E[máx de n uniformes en {1..N}] = n(N+1)/(n+1)."
+    "Stars and bars: $\\sum x_i=n$ con $x_i\\ge0$ → $\\binom{n+k-1}{k-1}$ soluciones.",
+    "Derangements: $D(n)/n! \\to 1/e \\approx 37\\%$ de permutaciones son desarreglos.",
+    "Ruina del jugador ($p=1/2$): $P(\\text{llegar a }N\\mid\\text{inicio }k) = k/N$; duración esperada $= k(N-k)$.",
+    "Coupon collector con $n$: $E[T] = n H_n$.",
+    "$E[\\max\\text{ de }n\\text{ uniformes en }\\{1..N\\}] = n(N+1)/(n+1)$."
    ],
    "banco": [
     {
      "id": "arp2-q1",
      "tipo": "calculo",
-     "enunciado": "¿De cuántas maneras puedes caminar de (0,0) a (m,n) en una retícula, moviéndote solo derecha o arriba? Calcula para (4,3) y generaliza.",
-     "solucion": "C(m+n, n). Para (4,3): C(7,3) = 35. Razón: el camino tiene m+n pasos, de los cuales n son hacia arriba (el resto, a la derecha); elegir qué n pasos son 'arriba' determina el camino.",
-     "explicacion": "Señal: 'contar caminos en retícula con movimientos restringidos'. El argumento es biyección: camino ↔ secuencia de n Us y m Rs. Generalización: con obstáculos, usa programación dinámica o reflexión."
+     "enunciado": "¿De cuántas maneras puedes caminar de $(0,0)$ a $(m,n)$ en una retícula, moviéndote solo derecha o arriba? Calcula para $(4,3)$ y generaliza.",
+     "solucion": "$\\binom{m+n}{n}$. Para $(4,3)$: $\\binom{7}{3} = 35$. Razón: el camino tiene $m+n$ pasos, de los cuales $n$ son hacia arriba (el resto, a la derecha); elegir qué $n$ pasos son 'arriba' determina el camino.",
+     "explicacion": "Señal: 'contar caminos en retícula con movimientos restringidos'. El argumento es biyección: camino ↔ secuencia de $n$ Us y $m$ Rs. Generalización: con obstáculos, usa programación dinámica o reflexión."
     },
     {
      "id": "arp2-q2",
      "tipo": "calculo",
      "enunciado": "Inclusión-exclusión: en una baraja de 52 cartas, ¿cuál es la probabilidad de que una mano de 5 cartas contenga al menos un as?",
-     "solucion": "P = 1 − C(48,5)/C(52,5) = 1 − (48!47!·…·44!) / (52!·…·48!) = 1 − 1712304/2598960 ≈ 1 − 0.6588 = 0.3412. Complemento: probabilidad de CERO ases = C(48,5)/C(52,5).",
-     "explicacion": "Complemento es más fácil que inclusión-exclusión directa aquí. General: P(al menos uno de A,B,…) = 1 − P(ninguno). Si los eventos fueran independientes: 1 − (1−p)^n, pero aquí no lo son (barajas sin reemplazo)."
+     "solucion": "$P = 1 - \\binom{48}{5}/\\binom{52}{5} = 1 - 1712304/2598960 \\approx 1 - 0.6588 = 0.3412$. Complemento: probabilidad de CERO ases $= \\binom{48}{5}/\\binom{52}{5}$.",
+     "explicacion": "Complemento es más fácil que inclusión-exclusión directa aquí. General: $P(\\text{al menos uno}) = 1 - P(\\text{ninguno})$. Si los eventos fueran independientes: $1 - (1-p)^n$, pero aquí no lo son (barajas sin reemplazo)."
     },
     {
      "id": "arp2-q3",
      "tipo": "calculo",
-     "enunciado": "Stars and bars: ¿cuántas soluciones enteras no negativas tiene x₁ + x₂ + x₃ + x₄ = 10? ¿Y si cada xᵢ ≥ 1?",
-     "solucion": "Sin restricción (xᵢ ≥ 0): C(n+k−1, k−1) = C(10+3, 3) = C(13,3) = 286. Con xᵢ ≥ 1: sustituye yᵢ = xᵢ−1 → Σyᵢ = 6 → C(6+3,3) = C(9,3) = 84.",
-     "explicacion": "Señal: 'distribución de n objetos idénticos en k cajas'. Visualiza n estrellas separadas por k−1 barras; el número de disposiciones es C(n+k−1, k−1). La sustitución yᵢ = xᵢ − mín traslada el problema."
+     "enunciado": "Stars and bars: ¿cuántas soluciones enteras no negativas tiene $x_1 + x_2 + x_3 + x_4 = 10$? ¿Y si cada $x_i \\ge 1$?",
+     "solucion": "Sin restricción ($x_i \\ge 0$): $\\binom{n+k-1}{k-1} = \\binom{13}{3} = 286$. Con $x_i \\ge 1$: sustituye $y_i = x_i-1$ → $\\sum y_i = 6$ → $\\binom{9}{3} = 84$.",
+     "explicacion": "Señal: 'distribución de $n$ objetos idénticos en $k$ cajas'. Visualiza $n$ estrellas separadas por $k-1$ barras; el número de disposiciones es $\\binom{n+k-1}{k-1}$. La sustitución $y_i = x_i - \\min$ traslada el problema."
     },
     {
      "id": "arp2-q4",
      "tipo": "calculo",
      "enunciado": "¿Cuántas formas hay de ordenar las letras de MISSISSIPPI? ¿Cuántas permutaciones de 4 de sus letras distintas empiezan por M?",
-     "solucion": "MISSISSIPPI: 11 letras con M×1, I×4, S×4, P×2. Permutaciones = 11!/(1!·4!·4!·2!) = 39916800/(1·24·24·2) = 34650. Letras distintas: {M,I,S,P} → 4; permutaciones de 4 que empiezan por M = 3! = 6.",
+     "solucion": "MISSISSIPPI: 11 letras con M×1, I×4, S×4, P×2. Permutaciones $= 11!/(1!\\cdot4!\\cdot4!\\cdot2!) = 39916800/(1\\cdot24\\cdot24\\cdot2) = 34650$. Letras distintas: $\\{M,I,S,P\\}$ → 4; permutaciones de 4 que empiezan por M $= 3! = 6$.",
      "explicacion": "Señal: 'ordenar con repetición'. Divide n! entre el factorial de cada multiplicidad. Si se pide 'empieza por X': fija X en la primera posición y cuenta el resto."
     },
     {
      "id": "arp2-q5",
      "tipo": "calculo",
-     "enunciado": "Define desarreglo D(n) como permutación de {1,…,n} sin punto fijo. Da la fórmula y calcula D(4). ¿Cuánto es D(n)/n! cuando n→∞?",
-     "solucion": "D(n) = n! · Σ_{k=0}^{n} (−1)^k/k!. D(4) = 24·(1−1+1/2−1/6+1/24) = 24·(9/24) = 9. Para n→∞: D(n)/n! → e^{−1} ≈ 0.3679.",
-     "explicacion": "Señal: 'distribución de sobres a destinatarios equivocados'. La fórmula viene de inclusión-exclusión sobre eventos Aᵢ = 'elemento i en su lugar'. La convergencia a 1/e es notable: ~37% de permutaciones aleatorias no tienen ningún punto fijo."
+     "enunciado": "Define desarreglo $D(n)$ como permutación de $\\{1,\\dots,n\\}$ sin punto fijo. Da la fórmula y calcula $D(4)$. ¿Cuánto es $D(n)/n!$ cuando $n\\to\\infty$?",
+     "solucion": "$D(n) = n!\\sum_{k=0}^{n} (-1)^k/k!$. $D(4) = 24(1-1+1/2-1/6+1/24) = 24\\cdot(9/24) = 9$. Para $n\\to\\infty$: $D(n)/n! \\to e^{-1} \\approx 0.3679$.",
+     "explicacion": "Señal: 'distribución de sobres a destinatarios equivocados'. La fórmula viene de inclusión-exclusión sobre eventos $A_i =$ 'elemento $i$ en su lugar'. La convergencia a $1/e$ es notable: ~37% de permutaciones aleatorias no tienen ningún punto fijo."
     },
     {
      "id": "arp2-q6",
      "tipo": "calculo",
-     "enunciado": "Sacas 3 cartas (con reemplazo) de un mazo de 10 cartas numeradas del 1 al 10. ¿Cuál es el valor esperado del máximo? Generaliza para n extracciones de {1,…,N}.",
-     "solucion": "E[max de n extracciones de {1,…,N}] = n(N+1)/(n+1). Para n=3, N=10: E = 3×11/4 = 8.25. Derivación: P(max ≤ k) = (k/N)^n → E[max] = Σ_{k=1}^{N} P(max ≥ k) = Σ(1 − ((k−1)/N)^n) = N − Σ(j/N)^n para j=0..N−1.",
-     "explicacion": "Señal: 'valor esperado de estadística de orden en uniforme discreta'. La fórmula n(N+1)/(n+1) es elegante: el k-ésimo orden estadístico de n uniformes {1..N} tiene E[X_(k)] = k(N+1)/(n+1)."
+     "enunciado": "Sacas 3 cartas (con reemplazo) de un mazo de 10 cartas numeradas del 1 al 10. ¿Cuál es el valor esperado del máximo? Generaliza para $n$ extracciones de $\\{1,\\dots,N\\}$.",
+     "solucion": "$E[\\max\\text{ de }n\\text{ extracciones de }\\{1,\\dots,N\\}] = n(N+1)/(n+1)$. Para $n=3, N=10$: $E = 3\\times11/4 = 8.25$. Derivación: $P(\\max \\le k) = (k/N)^n$ → $E[\\max] = \\sum_{k=1}^{N} P(\\max \\ge k) = \\sum(1 - ((k-1)/N)^n) = N - \\sum_{j=0}^{N-1}(j/N)^n$.",
+     "explicacion": "Señal: 'valor esperado de estadística de orden en uniforme discreta'. La fórmula $n(N+1)/(n+1)$ es elegante: el $k$-ésimo orden estadístico de $n$ uniformes $\\{1..N\\}$ tiene $E[X_{(k)}] = k(N+1)/(n+1)$."
     },
     {
      "id": "arp2-q7",
      "tipo": "calculo",
-     "enunciado": "Ruina del jugador con barrera: empiezas con \\$3, quieres llegar a \\$10, ganas \\$1 con p=1/2 y pierdes \\$1 con q=1/2. ¿Cuál es la probabilidad de arruinarte (llegar a \\$0)? ¿Y con p=0.4?",
-     "solucion": "p=1/2: P(arruinarse) = 1 − P(llegar a 10) = 1 − 3/10 = 7/10. P(llegar a N | inicio k, p=1/2) = k/N. Para p=0.4 (q/p = 3/2): P(llegar a 10 | inicio 3) = (1−(3/2)^3)/(1−(3/2)^10) = (1−27/8)/(1−57.67) ≈ (−19/8)/(−56.67) ≈ 0.042. Probabilidad de arruinarse ≈ 0.958.",
-     "explicacion": "Señal: 'caminar hasta absorción en uno de dos extremos'. Para p=1/2: proporcional al inicio. Para p≠1/2: ratio geométrico (q/p)^k. El desfavorecido (p<1/2) tiene probabilidad de ganar exponencialmente baja."
+     "enunciado": "Ruina del jugador con barrera: empiezas con \\$3, quieres llegar a \\$10, ganas \\$1 con $p=1/2$ y pierdes \\$1 con $q=1/2$. ¿Cuál es la probabilidad de arruinarte (llegar a \\$0)? ¿Y con $p=0.4$?",
+     "solucion": "$p=1/2$: $P(\\text{arruinarse}) = 1 - P(\\text{llegar a 10}) = 1 - 3/10 = 7/10$. $P(\\text{llegar a }N\\mid\\text{inicio }k, p=1/2) = k/N$. Para $p=0.4$ ($q/p = 3/2$): $P(\\text{llegar a 10}\\mid\\text{inicio 3}) = (1-(3/2)^3)/(1-(3/2)^{10}) = (1-27/8)/(1-57.67) \\approx 0.042$. Probabilidad de arruinarse $\\approx 0.958$.",
+     "explicacion": "Señal: 'caminar hasta absorción en uno de dos extremos'. Para $p=1/2$: proporcional al inicio. Para $p\\ne1/2$: ratio geométrico $(q/p)^k$. El desfavorecido ($p<1/2$) tiene probabilidad de ganar exponencialmente baja."
     },
     {
      "id": "arp2-q8",
      "tipo": "calculo",
-     "enunciado": "Duración esperada del juego de la ruina: empiezas con $k, barreras en 0 y N, moneda justa (p=1/2). ¿Cuántos pasos en promedio hasta absorción?",
-     "solucion": "E[T | inicio k, p=1/2] = k(N−k). Para k=5, N=10: E[T] = 5×5 = 25. Para k=3, N=10: E[T] = 3×7 = 21. Máximo en k = N/2 (centro).",
-     "explicacion": "La fórmula sigue de la ecuación de balance: E[T|k] = 1 + (E[T|k+1] + E[T|k−1])/2. Sistema lineal de N−1 ecuaciones → solución k(N−k). Para p≠1/2 la fórmula es más compleja."
+     "enunciado": "Duración esperada del juego de la ruina: empiezas con \\$$k$, barreras en 0 y $N$, moneda justa ($p=1/2$). ¿Cuántos pasos en promedio hasta absorción?",
+     "solucion": "$E[T\\mid\\text{inicio }k, p=1/2] = k(N-k)$. Para $k=5, N=10$: $E[T] = 5\\times5 = 25$. Para $k=3, N=10$: $E[T] = 3\\times7 = 21$. Máximo en $k = N/2$ (centro).",
+     "explicacion": "La fórmula sigue de la ecuación de balance: $E[T\\mid k] = 1 + (E[T\\mid k+1] + E[T\\mid k-1])/2$. Sistema lineal de $N-1$ ecuaciones → solución $k(N-k)$. Para $p\\ne1/2$ la fórmula es más compleja."
     },
     {
      "id": "arp2-q9",
      "tipo": "conceptual",
-     "enunciado": "Enuncia la aproximación de Poisson al binomial. ¿Bajo qué condiciones es válida? Estima P(0 defectos en 1000 piezas con tasa de defecto 0.3%).",
-     "solucion": "Bin(n,p) ≈ Poisson(λ) con λ = np cuando n→∞, p→0, np=λ fijo. Para n=1000, p=0.003: λ=3. P(X=0) = e^{−3} ≈ 0.0498. Exacto: (1−0.003)^{1000} ≈ e^{−3} ≈ 0.0498.",
-     "explicacion": "La aproximación de Poisson es el límite de eventos raros (p→0) con muchas oportunidades (n→∞). Útil para conteo de llegadas, defectos, accidentes. E[Poisson(λ)] = Var[Poisson(λ)] = λ — si Var >> Media, el modelo es sobre-disperso."
+     "enunciado": "Enuncia la aproximación de Poisson al binomial. ¿Bajo qué condiciones es válida? Estima $P(\\text{0 defectos en 1000 piezas con tasa de defecto }0.3\\%)$.",
+     "solucion": "$\\text{Bin}(n,p) \\approx \\text{Poisson}(\\lambda)$ con $\\lambda = np$ cuando $n\\to\\infty$, $p\\to0$, $np=\\lambda$ fijo. Para $n=1000, p=0.003$: $\\lambda=3$. $P(X=0) = e^{-3} \\approx 0.0498$. Exacto: $(1-0.003)^{1000} \\approx e^{-3} \\approx 0.0498$.",
+     "explicacion": "La aproximación de Poisson es el límite de eventos raros ($p\\to0$) con muchas oportunidades ($n\\to\\infty$). Útil para conteo de llegadas, defectos, accidentes. $E[\\text{Poisson}(\\lambda)] = \\text{Var}[\\text{Poisson}(\\lambda)] = \\lambda$ — si Var $\\gg$ Media, el modelo es sobre-disperso."
     },
     {
      "id": "arp2-q10",
      "tipo": "conceptual",
      "enunciado": "La distribución geométrica tiene la propiedad de falta de memoria. Enuncia esta propiedad formalmente. ¿Qué distribución continua tiene la misma propiedad?",
-     "solucion": "P(X > m+n | X > m) = P(X > n). En palabras: dado que ya esperaste m intentos sin éxito, el tiempo restante tiene la misma distribución. Equivalente continuo: distribución exponencial, con P(X > s+t | X > s) = P(X > t).",
+     "solucion": "$P(X > m+n \\mid X > m) = P(X > n)$. En palabras: dado que ya esperaste $m$ intentos sin éxito, el tiempo restante tiene la misma distribución. Equivalente continuo: distribución exponencial, con $P(X > s+t \\mid X > s) = P(X > t)$.",
      "explicacion": "La falta de memoria caracteriza a la geométrica (discreta) y a la exponencial (continua): son las ÚNICAS distribuciones con esta propiedad en sus respectivos dominios. Implica que el proceso no 'recuerda' cuánto tiempo lleva esperando."
     },
     {
      "id": "arp2-q11",
      "tipo": "calculo",
-     "enunciado": "Sean X₁,…,Xₙ i.i.d. con distribución Uniforme[0,1]. Calcula E[X_(1)] (el mínimo) y E[X_(n)] (el máximo). Generaliza a E[X_(k)].",
-     "solucion": "E[X_(k)] = k/(n+1). E[mín] = 1/(n+1); E[máx] = n/(n+1). Derivación: F_{(k)}(x) = Σ_{j=k}^{n} C(n,j) x^j (1−x)^{n−j} → E[X_(k)] = ∫₀¹ [1−F_{(k)}(x)] dx = k/(n+1) (por simetría o Beta distribution).",
-     "explicacion": "Señal: 'estadísticas de orden de uniformes'. Los n uniformes dividen [0,1] en n+1 intervalos de igual longitud esperada 1/(n+1). Esto explica las fórmulas: el k-ésimo punto divide en k segmentos de longitud esperada 1/(n+1)."
+     "enunciado": "Sean $X_1,\\dots,X_n$ i.i.d. con distribución Uniforme$[0,1]$. Calcula $E[X_{(1)}]$ (el mínimo) y $E[X_{(n)}]$ (el máximo). Generaliza a $E[X_{(k)}]$.",
+     "solucion": "$E[X_{(k)}] = k/(n+1)$. $E[\\min] = 1/(n+1)$; $E[\\max] = n/(n+1)$. Derivación: $F_{(k)}(x) = \\sum_{j=k}^{n} \\binom{n}{j} x^j (1-x)^{n-j}$ → $E[X_{(k)}] = \\int_0^1 [1-F_{(k)}(x)]\\,dx = k/(n+1)$ (por simetría o distribución Beta).",
+     "explicacion": "Señal: 'estadísticas de orden de uniformes'. Los $n$ uniformes dividen $[0,1]$ en $n+1$ intervalos de igual longitud esperada $1/(n+1)$. Esto explica las fórmulas: el $k$-ésimo punto divide en $k$ segmentos de longitud esperada $1/(n+1)$."
     },
     {
      "id": "arp2-q12",
      "tipo": "conceptual",
-     "enunciado": "Enuncia la desigualdad de Markov y la de Chebyshev. ¿Cuál es más fuerte? Aplica Chebyshev para acotar P(|X−μ| ≥ 2σ).",
-     "solucion": "Markov: P(X ≥ a) ≤ E[X]/a (para X ≥ 0, a > 0). Chebyshev: P(|X−μ| ≥ kσ) ≤ 1/k². Chebyshev es más fuerte: usa la varianza. P(|X−μ| ≥ 2σ) ≤ 1/4 = 25%. (Para la normal: P(|X−μ| ≥ 2σ) ≈ 4.6%, mucho mejor con la distribución exacta.)",
-     "explicacion": "Estas cotas son universales (valen para CUALQUIER distribución con E[X] o Var[X] finita). Su utilidad es en pruebas teóricas, no como estimaciones numéricas precisas. La desigualdad de Jensen (E[f(X)] ≥ f(E[X]) para f convexa) es una prima importante."
+     "enunciado": "Enuncia la desigualdad de Markov y la de Chebyshev. ¿Cuál es más fuerte? Aplica Chebyshev para acotar $P(|X-\\mu| \\ge 2\\sigma)$.",
+     "solucion": "Markov: $P(X \\ge a) \\le E[X]/a$ (para $X \\ge 0$, $a > 0$). Chebyshev: $P(|X-\\mu| \\ge k\\sigma) \\le 1/k^2$. Chebyshev es más fuerte: usa la varianza. $P(|X-\\mu| \\ge 2\\sigma) \\le 1/4 = 25\\%$. (Para la normal: $P(|X-\\mu| \\ge 2\\sigma) \\approx 4.6\\%$, mucho mejor con la distribución exacta.)",
+     "explicacion": "Estas cotas son universales (valen para CUALQUIER distribución con $E[X]$ o $\\text{Var}[X]$ finita). Su utilidad es en pruebas teóricas, no como estimaciones numéricas precisas. La desigualdad de Jensen ($E[f(X)] \\ge f(E[X])$ para $f$ convexa) es una prima importante."
     },
     {
      "id": "arp2-q13",
      "tipo": "conceptual",
      "enunciado": "Enuncia la desigualdad de Jensen para funciones convexas. Da dos aplicaciones: una en finanzas y una en probabilidad.",
-     "solucion": "Jensen: si f es convexa, E[f(X)] ≥ f(E[X]). (Invertido para f cóncava.) Finanzas: E[e^X] ≥ e^{E[X]} — el precio esperado de una acción con retorno log-normal supera e^{retorno esperado} (la prima +σ²/2). Probabilidad: E[X²] ≥ (E[X])² → Var(X) ≥ 0.",
+     "solucion": "Jensen: si $f$ es convexa, $E[f(X)] \\ge f(E[X])$. (Invertido para $f$ cóncava.) Finanzas: $E[e^X] \\ge e^{E[X]}$ — el precio esperado de una acción con retorno log-normal supera $e^{\\text{retorno esperado}}$ (la prima $+\\sigma^2/2$). Probabilidad: $E[X^2] \\ge (E[X])^2$ → $\\text{Var}(X) \\ge 0$.",
      "explicacion": "La intuición: una función convexa tiene una 'sección parabólica' que siempre queda por encima de la tangente. Aplicaciones: seguros (E[utilidad(pérdida)] < utilidad(E[pérdida])), opciones, medias de Hölder."
     },
     {
      "id": "arp2-q14",
      "tipo": "calculo",
-     "enunciado": "Una variable aleatoria X tiene P(X=−1)=1/3, P(X=0)=1/3, P(X=1)=1/3. ¿Cuántas observaciones i.i.d. necesitas para que P(|X̄ − 0| > 0.01) ≤ 0.01 por Chebyshev?",
-     "solucion": "Var(X) = E[X²] = (1+0+1)/3 = 2/3. Por Chebyshev: P(|X̄|>ε) ≤ Var(X̄)/ε² = (2/3)/n / (0.01)² = (2/3)/(n·0.0001). Queremos ≤ 0.01: (2/3)/(n·0.0001) ≤ 0.01 → n ≥ (2/3)/(0.01·0.0001) = 666 667.",
-     "explicacion": "Chebyshev da cotas conservadoras. En la práctica, con CLT: X̄ ≈ N(0, (2/3)/n) → necesitarías solo n ≈ (2/3)×(2.576/0.01)² ≈ 44 000. La diferencia ilustra que Chebyshev no asume la forma de la distribución."
+     "enunciado": "Una variable aleatoria $X$ tiene $P(X=-1)=1/3$, $P(X=0)=1/3$, $P(X=1)=1/3$. ¿Cuántas observaciones i.i.d. necesitas para que $P(|\\bar X - 0| > 0.01) \\le 0.01$ por Chebyshev?",
+     "solucion": "$\\text{Var}(X) = E[X^2] = (1+0+1)/3 = 2/3$. Por Chebyshev: $P(|\\bar X|>\\varepsilon) \\le \\text{Var}(\\bar X)/\\varepsilon^2 = \\dfrac{(2/3)/n}{(0.01)^2} = \\dfrac{2/3}{n\\cdot0.0001}$. Queremos $\\le 0.01$: $\\dfrac{2/3}{n\\cdot0.0001} \\le 0.01$ → $n \\ge \\dfrac{2/3}{0.01\\cdot0.0001} = 666\\,667$.",
+     "explicacion": "Chebyshev da cotas conservadoras. En la práctica, con CLT: $\\bar X \\approx N(0, (2/3)/n)$ → necesitarías solo $n \\approx (2/3)\\times(2.576/0.01)^2 \\approx 44\\,000$. La diferencia ilustra que Chebyshev no asume la forma de la distribución."
     },
     {
      "id": "arp2-q15",
      "tipo": "calculo",
-     "enunciado": "Lanzas un dado de 6 caras repetidamente. ¿Cuántos lanzamientos esperas hasta obtener todas las caras al menos una vez? (Coupon collector con n=6.)",
-     "solucion": "E[T] = 6·H₆ = 6·(1+1/2+1/3+1/4+1/5+1/6) = 6·49/20 = 6×2.45 = 14.7. Más precisamente: 6·(1+0.5+0.333+0.25+0.2+0.167) = 6×2.45 = 14.7 lanzamientos.",
-     "explicacion": "Señal: 'esperar hasta completar todos los tipos'. Etapas: cuando tienes k caras distintas, la tasa de éxito es (6−k)/6, por lo que E[espera en etapa k] = 6/(6−k). La suma es E[T] = 6×H₆."
+     "enunciado": "Lanzas un dado de 6 caras repetidamente. ¿Cuántos lanzamientos esperas hasta obtener todas las caras al menos una vez? (Coupon collector con $n=6$.)",
+     "solucion": "$E[T] = 6 H_6 = 6(1+1/2+1/3+1/4+1/5+1/6) = 6\\cdot49/20 = 6\\times2.45 = 14.7$ lanzamientos.",
+     "explicacion": "Señal: 'esperar hasta completar todos los tipos'. Etapas: cuando tienes $k$ caras distintas, la tasa de éxito es $(6-k)/6$, por lo que $E[\\text{espera en etapa }k] = 6/(6-k)$. La suma es $E[T] = 6 H_6$."
     },
     {
      "id": "arp2-q16",
      "tipo": "calculo",
-     "enunciado": "Sean X ~ Exp(λ) e Y ~ Exp(μ) independientes. ¿Cuál es P(X < Y)? ¿Cuál es la distribución de min(X,Y)?",
-     "solucion": "P(X < Y) = λ/(λ+μ). min(X,Y) ~ Exp(λ+μ). Derivación de P(X<Y): integra P(X<Y) = ∫₀^∞ P(X<y)·fY(y)dy = ∫₀^∞ (1−e^{−λy})·μe^{−μy}dy = 1 − μ/(λ+μ) = λ/(λ+μ).",
-     "explicacion": "Señal: 'competencia de dos exponenciales'. El mínimo de independientes Exp(λ_i) es Exp(Σλᵢ): los tiempos de Poisson compiten y la tasa de que cualquiera dispare es la suma de tasas. P(X<Y) = λ/(λ+μ): proporcional a la tasa propia."
+     "enunciado": "Sean $X \\sim \\text{Exp}(\\lambda)$ e $Y \\sim \\text{Exp}(\\mu)$ independientes. ¿Cuál es $P(X < Y)$? ¿Cuál es la distribución de $\\min(X,Y)$?",
+     "solucion": "$P(X < Y) = \\lambda/(\\lambda+\\mu)$. $\\min(X,Y) \\sim \\text{Exp}(\\lambda+\\mu)$. Derivación de $P(X<Y)$: $\\int_0^\\infty P(X<y)f_Y(y)\\,dy = \\int_0^\\infty (1-e^{-\\lambda y})\\mu e^{-\\mu y}\\,dy = 1 - \\mu/(\\lambda+\\mu) = \\lambda/(\\lambda+\\mu)$.",
+     "explicacion": "Señal: 'competencia de dos exponenciales'. El mínimo de independientes $\\text{Exp}(\\lambda_i)$ es $\\text{Exp}(\\sum\\lambda_i)$: los tiempos de Poisson compiten y la tasa de que cualquiera dispare es la suma de tasas. $P(X<Y) = \\lambda/(\\lambda+\\mu)$: proporcional a la tasa propia."
     }
    ]
   },
