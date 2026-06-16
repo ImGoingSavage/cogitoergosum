@@ -8,6 +8,13 @@
       "descripcion": "La ronda de mesa quant: Bayes y tasa base, linealidad de la esperanza, conteo, procesos estocásticos y no-arbitraje. Agrupa Heard on the Street, Practical Guide, Joshi, Blitzstein y Fifty Challenging Problems.",
       "secuencia": "Del cimiento al capstone: fundamentos de probabilidad y conteo → las dos herramientas de poder (linealidad de la esperanza y Bayes) → distribuciones y variables conjuntas → consolidación de lo condicional y sus paradojas → brainteasers e invariantes → parada óptima → procesos estocásticos → finanzas cuantitativas → puente a la inferencia.",
       "sim": "cluster-quant-prob.json",
+      "referencias": [
+        "Blitzstein, J. K., & Hwang, J. (2019). Introduction to Probability (2nd ed.). CRC Press.",
+        "Crack, T. W. Heard on the Street (15th ed.).",
+        "Zhou, X. A Practical Guide to Quantitative Finance Interviews.",
+        "Joshi, M., Denson, N., & Downes, A. Quant Job Interview Questions and Answers.",
+        "Mosteller, F. Fifty Challenging Problems in Probability with Solutions."
+      ],
       "unidades": [
         "arena-b1",
         "arena-p1",
@@ -43,6 +50,12 @@
       "descripcion": "Estimación (MLE, sesgo-varianza, suficiencia), contraste de hipótesis e intervalos, y ML estadístico. Agrupa DeGroot, Casella & Berger, Practical Statistics e ISLP.",
       "secuencia": "Teoría primero, aplicación después: estimación puntual y MLE → suficiencia y cotas (Cramér-Rao) → intervalos y tests (incl. Neyman-Pearson y asintóticos) → teoría de la decisión y regresión → estadística aplicada (robustez, bootstrap, permutación) → aprendizaje estadístico (sesgo-varianza, regularización, árboles).",
       "sim": "cluster-stats-inf.json",
+      "referencias": [
+        "DeGroot, M. H., & Schervish, M. J. (2012). Probability and Statistics (4th ed.). Addison-Wesley.",
+        "Casella, G., & Berger, R. L. (2002). Statistical Inference (2nd ed.). Duxbury.",
+        "Bruce, P., & Bruce, A. Practical Statistics for Data Scientists. O'Reilly.",
+        "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). An Introduction to Statistical Learning (2nd ed.). Springer."
+      ],
       "unidades": [
         "arena-dg1",
         "arena-dg2",
@@ -69,6 +82,9 @@
       "descripcion": "La ronda de coding: reconocer el patrón (DP, hashing, ventana, grafos) y comunicar complejidad antes de codificar. Cracking the Coding Interview.",
       "secuencia": "De la estructura base al patrón difícil: arrays/cadenas/hash → el hashing como memoria comprada → ordenamiento y búsqueda binaria → árboles y grafos → recursión y programación dinámica (el clímax) → SQL window functions como coda aplicada.",
       "sim": "cluster-dsa.json",
+      "referencias": [
+        "McDowell, G. L. Cracking the Coding Interview (6th ed.). CareerCup."
+      ],
       "unidades": [
         "arena-cc1",
         "arena-m1",
@@ -85,6 +101,9 @@
       "descripcion": "La ronda de system design: requisitos, estimación de capacidad, consistencia/particionado, y trade-offs explícitos. Alex Xu.",
       "secuencia": "De los cimientos a los casos completos: escalabilidad y estimación de capacidad → bloques distribuidos fundamentales → sistemas de datos a escala → sistemas en tiempo real y de medios.",
       "sim": "cluster-system-design.json",
+      "referencias": [
+        "Xu, A. System Design Interview: An Insider's Guide."
+      ],
       "unidades": [
         "arena-sd1",
         "arena-sd2",
@@ -99,6 +118,11 @@
       "descripcion": "La ronda de DS de producto: SQL/product sense, feature engineering, ML clásico, A/B testing y del modelo al sistema. Ace/Cracking the DS Interview + Huyen.",
       "secuencia": "El pipeline mental del DS: probabilidad y estadística → SQL, product sense y A/B testing → feature engineering → ML aplicado y deep learning → del modelo al sistema (MLOps, skew/drift) → comunicación y toolkit.",
       "sim": "cluster-ds-applied.json",
+      "referencias": [
+        "Singh, K., & Huo, N. Ace the Data Science Interview.",
+        "Gonzalez, M., & Stubberfield, N. Cracking the Data Science Interview.",
+        "Huyen, C. (2022). Designing Machine Learning Systems. O'Reilly."
+      ],
       "unidades": [
         "arena-ads1",
         "arena-ads2",
@@ -118,6 +142,16 @@
       "descripcion": "La ronda de diseño de sistemas ML end-to-end: pipelines, despliegue, monitoreo, distribution shift, observabilidad e interpretabilidad. Reliable ML, Designing ML Systems, ML Design Patterns.",
       "secuencia": "El ciclo de vida de un sistema de ML: antes del ML y encuadre → datos y patrones de representación → patrones de entrenamiento → despliegue y serving → monitoreo y distribution shift → confiabilidad y SRE → observabilidad → deuda técnica → reproducibilidad, IA responsable e interpretabilidad.",
       "sim": "cluster-ml-systems.json",
+      "referencias": [
+        "Huyen, C. (2022). Designing Machine Learning Systems. O'Reilly.",
+        "Lakshmanan, V., Robinson, S., & Munn, M. Machine Learning Design Patterns. O'Reilly.",
+        "Chen, C., Murphy, N., & Parisa, N. Reliable Machine Learning. O'Reilly.",
+        "Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. Site Reliability Engineering: How Google Runs Production Systems. O'Reilly.",
+        "Majors, C., Fong-Jones, L., & Miranda, G. Observability Engineering: Achieving Production Excellence. O'Reilly.",
+        "Sculley, D., et al. (2015). Hidden Technical Debt in Machine Learning Systems. NIPS 2015.",
+        "Zinkevich, M. Rules of Machine Learning: Best Practices for ML Engineering. Google.",
+        "Molnar, C. Interpretable Machine Learning."
+      ],
       "unidades": [
         "arena-rom1",
         "arena-dmls1",
@@ -160,6 +194,13 @@
       "descripcion": "La ronda causal: ver vs hacer (do-operator), confundidores/colliders/mediadores, target trial, supervivencia y Real-World Evidence sobre OMOP. What-If, Mixtape, OHDSI.",
       "secuencia": "De la idea a la evidencia a escala: la escalera de la causalidad y los DAGs → identificación (do-operator, back-door/front-door) → resultados potenciales y sesgos → mediación → métodos de estimación (IPW, PS, IV, RDD, DiD) → diseño (target trial) → análisis de supervivencia → Real-World Evidence sobre OMOP (OHDSI).",
       "sim": "cluster-causal-health.json",
+      "referencias": [
+        "Pearl, J., & Mackenzie, D. (2018). The Book of Why: The New Science of Cause and Effect. Basic Books.",
+        "Hernán, M. A., & Robins, J. M. Causal Inference: What If.",
+        "Cunningham, S. (2021). Causal Inference: The Mixtape. Yale University Press.",
+        "Kleinbaum, D. G., & Klein, M. Survival Analysis: A Self-Learning Text (3rd ed.). Springer.",
+        "OHDSI Community. The Book of OHDSI."
+      ],
       "unidades": [
         "arena-h15",
         "arena-h16",
@@ -192,6 +233,9 @@
       "descripcion": "La ronda conductual: STAR, conflicto/colaboración, fracaso y aprendizaje, e influir sin autoridad. Build a Career in Data Science.",
       "secuencia": "De lo interpersonal a lo estratégico: conflicto, colaboración y comunicación (STAR) → fracaso, ambigüedad y feedback → liderazgo, iniciativa e impacto → data science aplicada, stakeholders y carrera.",
       "sim": "cluster-conductual.json",
+      "referencias": [
+        "Robinson, E., & Nolis, J. Build a Career in Data Science. Manning."
+      ],
       "unidades": [
         "arena-c1",
         "arena-c2",

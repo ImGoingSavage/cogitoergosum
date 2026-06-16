@@ -529,6 +529,25 @@ function crearClusterAcordeon(c, unidades, b) {
     cuerpo.appendChild(examWrap);
   }
 
+  // Referencias bibliográficas: fuentes que sirvieron de base para el cluster.
+  if (c.id !== '__otras' && Array.isArray(c.referencias) && c.referencias.length) {
+    const refWrap = document.createElement('div');
+    refWrap.className = 'cluster-referencias';
+    const refTit = document.createElement('p');
+    refTit.className = 'cluster-ref-titulo';
+    refTit.textContent = 'Referencias';
+    refWrap.appendChild(refTit);
+    const refList = document.createElement('ul');
+    refList.className = 'cluster-ref-lista';
+    c.referencias.forEach((ref) => {
+      const li2 = document.createElement('li');
+      li2.textContent = ref;
+      refList.appendChild(li2);
+    });
+    refWrap.appendChild(refList);
+    cuerpo.appendChild(refWrap);
+  }
+
   cab.addEventListener('click', () => {
     const ahora = cuerpo.hidden;
     cuerpo.hidden = !ahora;

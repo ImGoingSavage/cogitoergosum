@@ -1781,6 +1781,31 @@ button.secundario.peligro:hover:not(:disabled) {
 .cluster-exam-wrap { margin-top: 8px; }
 .cluster-exam-launch { width: 100%; }
 
+/* Referencias bibliográficas de cada cluster */
+.cluster-referencias {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--borde);
+}
+.cluster-ref-titulo {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  margin: 0 0 6px;
+}
+.cluster-ref-lista {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+.cluster-ref-lista li {
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
 /* Selector de dificultad (lección y examen de cluster) */
 .quiz-dif-selector {
   display: flex;
