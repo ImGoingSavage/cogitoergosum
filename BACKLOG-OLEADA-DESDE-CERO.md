@@ -18,13 +18,13 @@
 |---|---|---|
 | **1. quant-prob** (Probabilidad, esperanza y conteo) | 25 | ✅ **COMPLETO** (v82–v87) |
 | 2. stats-inf (Estadística aplicada e inferencia) | 16 | ✅ **COMPLETO** (v91–v94) |
-| 3. dsa (Estructuras de datos y algoritmos) | 6 | ⬜ pendiente |
+| 3. dsa (Estructuras de datos y algoritmos) | 6 | ✅ **COMPLETO** (v107) |
 | 4. system-design (Diseño de sistemas) | 4 | ⬜ pendiente |
 | 5. ds-applied (Ciencia de datos aplicada) | 9 | ✅ **COMPLETO** (v88–v90) |
 | 6. ml-systems (ML Systems y feature pipelines) | 32 | ✅ **COMPLETO** (v100–v106) |
 | 7. causal-health (Causalidad y Health AI / RWE) | 22 | ✅ **COMPLETO** (v95–v99) |
 | 8. conductual (Conductual y comunicación) | 4 | ⬜ pendiente |
-| | **118** | **104 / 118 hechas** |
+| | **118** | **110 / 118 hechas** |
 
 > El orden de las unidades dentro de cada cluster es el **orden didáctico** de
 > `data/entrevista/_taxonomia.json` (cimientos → avanzado). Trabaja en ese orden;
@@ -87,14 +87,14 @@ subiendo `VERSION` en `sw.js`, y actualiza este backlog + `HANDOFF` §7.
 - [x] `arena-isl3` — Remuestreo, selección y regularización
 - [x] `arena-isl4` — No linealidad, árboles, SVM y no supervisado
 
-### 3. dsa — Estructuras de datos y algoritmos (MAANG) (6) — ⬜
+### 3. dsa — Estructuras de datos y algoritmos (MAANG) (6) — ✅ COMPLETO (v107)
 
-- [ ] `arena-cc1` — Arrays, cadenas y tablas hash
-- [ ] `arena-m1` — Hashing, frecuencia y memoria comprada
-- [ ] `arena-cc4` — Ordenamiento, búsqueda binaria y bits
-- [ ] `arena-cc2` — Árboles, grafos y búsqueda
-- [ ] `arena-cc3` — Recursión y programación dinámica
-- [ ] `arena-m2` — SQL Window Functions
+- [x] `arena-cc1` — Arrays, cadenas y tablas hash
+- [x] `arena-m1` — Hashing, frecuencia y memoria comprada
+- [x] `arena-cc4` — Ordenamiento, búsqueda binaria y bits
+- [x] `arena-cc2` — Árboles, grafos y búsqueda
+- [x] `arena-cc3` — Recursión y programación dinámica
+- [x] `arena-m2` — SQL Window Functions
 
 ### 4. system-design — Diseño de sistemas (MAANG) (4) — ⬜
 

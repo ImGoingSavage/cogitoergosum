@@ -463,6 +463,20 @@ Trabaja en **lotes de 5-8 lecciones** (típicamente un sub-libro completo, p. ej
   (22) + ml-systems (32) = **104/118**. **Pendiente: solo 3 clusters cortos:** `dsa` (6),
   `system-design` (4), `conductual` (4). Revisar su estilo: probablemente narrativos (solo
   espina) salvo `dsa` que puede tener algo de pseudocódigo/complejidad. Mismo workflow por lote.
+- ✅ **Cluster 3 (dsa) reescrito DESDE CERO con EMPEÑO — HECHO (sw.js v107).** Edgar pidió
+  esfuerzo extra aquí (2026-06-15): no solo espina, **reescritura profunda** del núcleo
+  (como dg/cb de stats-inf), porque la mitad superior era fichas secas con pseudocódigo.
+  Tratamiento: espina + intuición ANTES de cada estructura/algoritmo + ejemplos trabajados
+  a mano + complejidad razonada + forcejeo socrático, **todo en prosa ORIGINAL** (el prompt
+  prohíbe reproducir texto de los libros literal/casi-literal aunque estén comprados; se
+  enseña el mismo material con fraseo propio). Math a LaTeX donde aplica. **Lote único (v107):**
+  `cc1` (arrays/hash/sliding window/two pointers — además se reformateó el literal de matriz
+  `[[1,3],…]` a bloque de código → **rawLinks ahora 0** en todo el corpus, y se arregló un
+  enlace roto a `[[arena-h20]]`), `m1` (patrones de hash + ciclo de Floyd), `cc4` (ordenamiento/
+  binaria sobre la respuesta/heaps/XOR), `cc2` (BFS/DFS/topo sort/Dijkstra/Union-Find/Trie),
+  `cc3` (DP: estado/recurrencia/knapsack/LCS), `m2` (SQL window functions). m1/m2 conservan
+  su cierre propio (Señales/Ejercicio) → `closers:false`/`Mini:false` en el smoke, su estado
+  original. Validado: smoke threw=0 rawDisplayMath=0 rawLinks=0, KaTeX 0 throws.
 - Render de `$$` multi-línea si aparece la necesidad. *(Pendiente — hoy 0 casos en el corpus.)*
 - Metadata de heurísticas por problema en `banco[]` (requiere migración de
   esquema → consultar a Edgar antes). *(Pendiente — gated.)*

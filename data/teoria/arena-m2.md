@@ -1,142 +1,91 @@
 # SQL Window Functions
 
-## El problema que resuelven
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-Las funciones de ventana calculan valores sobre un conjunto de filas relacionadas **sin colapsar las filas en grupos**. Esto las distingue del `GROUP BY`: con `GROUP BY` pierdes las filas individuales; con `OVER`, las conservas con el valor calculado añadido.
+Hay un momento en casi toda entrevista de SQL en que `GROUP BY` deja de alcanzar: necesitas un cálculo **sobre un grupo** —un ranking, un acumulado, una comparación con la fila anterior— pero **sin perder las filas individuales**. Esa es exactamente la frontera que cruzan las *window functions*. Esta lección las construye desde cero: su anatomía (`PARTITION BY` / `ORDER BY` / frame), las familias que más aparecen (ranking, desplazamiento, agregados como ventana) y la trampa de orden de evaluación que hace que `WHERE rn = 1` falle.
+
+Al terminar podrás: (1) explicar qué hace una window function que un `GROUP BY` no (conservar la fila y añadir el cálculo); (2) elegir entre `ROW_NUMBER`, `RANK` y `DENSE_RANK` según cómo trates los empates; (3) comparar cada fila con su período anterior usando `LAG`/`LEAD`; y (4) usar el patrón CTE para filtrar el resultado de una ventana sin chocar con el orden de evaluación de SQL. Cada función entra por el problema que resuelve. La idea de fondo: **la ventana conserva la fila y calcula sobre su vecindad**, y ese gesto reaparece en cohortes, paneles (LAG = diferencias) y streams.
 
 ---
 
-## Anatomía de una función de ventana
+## El problema que resuelven: agregar sin colapsar
+
+`GROUP BY` resume: convierte muchas filas de un grupo en **una**. Pero a veces quieres el resumen *junto a* cada fila original —"el total de su categoría", "su posición en el ranking", "cuánto cambió desde la semana pasada"—. Una **window function** hace eso: calcula sobre un conjunto de filas relacionadas y **devuelve el resultado en cada fila**, sin colapsarlas. Es la diferencia entre un *aggregate* (colapsa) y un *transform* (conserva la fila y le añade una columna calculada).
+
+## Anatomía
 
 ```sql
-función() OVER (
-    PARTITION BY columna_de_agrupación
-    ORDER BY columna_de_ordenación
-    ROWS/RANGE BETWEEN límite_inferior AND límite_superior
+funcion() OVER (
+    PARTITION BY columna_de_grupo      -- el "grupo", como GROUP BY pero sin colapsar
+    ORDER BY columna_de_orden          -- orden dentro de la partición (necesario para ranking/acumulados)
+    ROWS/RANGE BETWEEN inf AND sup     -- el "frame": cuántas filas alrededor entran al cálculo
 )
 ```
 
-- `PARTITION BY`: define el "grupo" dentro del cual opera la función (como `GROUP BY` pero sin colapsar)
-- `ORDER BY`: ordena las filas dentro de la partición (obligatorio para funciones de ranking y acumulados)
-- `ROWS/RANGE BETWEEN`: define el frame de filas (cuántas filas "anteriores" o "siguientes" incluye el cálculo)
+Las tres piezas: `PARTITION BY` corta el conjunto en grupos independientes; `ORDER BY` ordena dentro de cada grupo (obligatorio para rankings y acumulados); el **frame** (`ROWS`/`RANGE BETWEEN`) define cuántas filas vecinas entran (por ejemplo, "las 6 anteriores y la actual" para un promedio móvil de 7).
 
----
+## Las familias que más se preguntan
 
-## Las funciones más usadas en entrevistas
-
-### Ranking
+**Ranking** — numerar dentro de cada partición. La elección depende de **cómo tratas los empates**:
 
 ```sql
-ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY fecha)
--- 1, 2, 3, 4... sin empates (arbitrario en empates)
-
-RANK() OVER (PARTITION BY user_id ORDER BY puntos DESC)
--- 1, 1, 3, 4... empates reciben el mismo número, el siguiente salta
-
-DENSE_RANK() OVER (PARTITION BY user_id ORDER BY puntos DESC)
--- 1, 1, 2, 3... empates reciben el mismo número, no hay salto
+ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY fecha)   -- 1,2,3,4  sin empates (arbitrario si hay)
+RANK()       OVER (PARTITION BY user_id ORDER BY pts DESC) -- 1,1,3,4  empate comparte, luego salta
+DENSE_RANK() OVER (PARTITION BY user_id ORDER BY pts DESC) -- 1,1,2,3  empate comparte, sin salto
 ```
 
-**Cuándo usar cada uno:**
-- `ROW_NUMBER`: cuando necesitas exactamente 1 fila (segunda compra de un usuario, primera sesión). Los empates en la columna de orden son desempates arbitrarios.
-- `RANK`: cuando dos posiciones empatadas deben compartir el número (resultados deportivos, rankings de empleados).
-- `DENSE_RANK`: como RANK pero los números son consecutivos.
+Usa `ROW_NUMBER` cuando necesitas **exactamente una** fila por grupo (la 2ª compra de un usuario, su 1ª sesión); `RANK` cuando los empates deben compartir posición (resultados deportivos); `DENSE_RANK` igual pero con números consecutivos.
 
-### Desplazamiento
+**Desplazamiento** — mirar la fila vecina:
 
 ```sql
-LAG(columna, n, default) OVER (PARTITION BY ... ORDER BY ...)
--- valor de la fila n posiciones atrás
-
-LEAD(columna, n, default) OVER (PARTITION BY ... ORDER BY ...)
--- valor de la fila n posiciones adelante
+LAG(col, n, default)  OVER (PARTITION BY ... ORDER BY ...)   -- valor n filas atrás
+LEAD(col, n, default) OVER (PARTITION BY ... ORDER BY ...)   -- valor n filas adelante
 ```
 
-Útil para comparar con el período anterior: "¿subió o bajó el KPI esta semana vs la anterior?"
+`LAG` es la herramienta de "¿subió o bajó respecto al período anterior?" — comparas cada fila con su predecesora.
 
-### Agregados como ventana
+**Agregados como ventana** — `SUM`, `AVG`, `COUNT` con `OVER`. El comportamiento cambia con `ORDER BY`:
 
 ```sql
-SUM(monto) OVER (PARTITION BY user_id)
--- total del usuario para cada fila (sin ORDER BY = total de la partición)
-
-SUM(monto) OVER (PARTITION BY user_id ORDER BY fecha)
--- acumulado del usuario hasta esa fecha (con ORDER BY = acumulado)
-
-AVG(monto) OVER (PARTITION BY categoria ORDER BY fecha ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)
--- promedio móvil de 7 días por categoría
+SUM(monto) OVER (PARTITION BY user_id)                 -- total del usuario, repetido en cada fila
+SUM(monto) OVER (PARTITION BY user_id ORDER BY fecha)  -- acumulado hasta esa fecha (running total)
+AVG(monto) OVER (PARTITION BY cat ORDER BY fecha
+                 ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)  -- promedio móvil de 7 días
 ```
 
----
+Sin `ORDER BY`, el agregado es el **total de la partición**; con `ORDER BY`, se vuelve **acumulado**.
 
-## El patrón CTE: materializar antes de filtrar
+## La trampa del orden de evaluación: usa un CTE
 
-El error más frecuente: intentar filtrar con `WHERE rn = 1` en la misma query que calcula el `ROW_NUMBER`. No funciona porque `WHERE` se evalúa antes que las funciones de ventana.
+El error más común: intentar filtrar el ranking en el mismo `WHERE`.
 
-**Correcto:**
+```sql
+-- INCORRECTO: WHERE se evalúa ANTES que las window functions
+SELECT user_id, order_id,
+       ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS rn
+FROM orders
+WHERE rn = 2;   -- ERROR: rn aún no existe cuando WHERE corre
+```
+
+SQL evalúa `WHERE` **antes** de calcular las funciones de ventana, así que el alias `rn` no existe todavía. La solución es materializar el cálculo en un CTE (o subconsulta) y filtrar **fuera**:
 
 ```sql
 WITH ranked AS (
-    SELECT
-        user_id,
-        order_id,
-        created_at,
-        ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS rn
+    SELECT user_id, order_id, created_at,
+           ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS rn
     FROM orders
 )
 SELECT user_id, order_id, created_at
 FROM ranked
-WHERE rn = 2;  -- segunda compra de cada usuario
+WHERE rn = 2;   -- la 2ª compra de cada usuario
 ```
 
-**Incorrecto:**
+> **Predicción antes de seguir:** quieres "el porcentaje que cada producto representa sobre el total de **su** categoría". ¿Subconsulta correlacionada o window? Respuesta: **window** — `monto / SUM(monto) OVER (PARTITION BY categoria)` calcula el denominador por categoría en cada fila, sin `GROUP BY` ni subconsulta. Una sola pasada, legible.
 
-```sql
--- Esto falla: no puedes referenciar el alias de la función de ventana en WHERE
-SELECT user_id, order_id,
-       ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS rn
-FROM orders
-WHERE rn = 2;  -- ERROR
-```
+## ROWS vs RANGE (el matiz con fechas duplicadas)
 
----
-
-## ROWS vs RANGE: la diferencia que importa con duplicados
-
-```sql
-SUM(monto) OVER (PARTITION BY user_id ORDER BY fecha
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
--- incluye filas físicas hasta la actual: determinístico
-
-SUM(monto) OVER (PARTITION BY user_id ORDER BY fecha
-    RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
--- incluye todas las filas con el mismo valor de fecha que la actual
--- (comportamiento default si omites ROWS/RANGE con ORDER BY)
-```
-
-Con `RANGE`, si dos filas tienen la misma fecha, ambas obtienen el mismo acumulado (el total hasta esa fecha inclusive para todas las filas iguales). Con `ROWS`, cada fila tiene su acumulado incremental.
-
-En entrevistas: menciona esta distinción si el entrevistador hace preguntas sobre fechas duplicadas.
-
----
-
-## Ejemplo completo: porcentaje por categoría
-
-"Para cada producto, el porcentaje que representa sobre el total de ventas de su categoría."
-
-```sql
-SELECT
-    producto_id,
-    categoria_id,
-    monto,
-    ROUND(
-        monto * 100.0 / SUM(monto) OVER (PARTITION BY categoria_id),
-        2
-    ) AS pct_categoria
-FROM ventas;
-```
-
-`SUM OVER` sin `ORDER BY` = total de la partición. No hace falta subquery correlacionada ni `GROUP BY`. La función de ventana calcula el denominador para cada fila sin agruparlas.
+Con `ORDER BY` pero sin frame explícito, el default es `RANGE`, que agrupa **todas las filas con el mismo valor de orden**: si dos filas comparten fecha, ambas reciben el mismo acumulado (el total hasta esa fecha inclusive). `ROWS` cuenta filas **físicas** una a una, dando un acumulado incremental por fila. Menciona esta distinción si el entrevistador pregunta por fechas duplicadas; usar el default `RANGE` cuando querías `ROWS` produce acumulados "saltados".
 
 ---
 

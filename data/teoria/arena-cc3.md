@@ -1,192 +1,71 @@
 # Recursión y programación dinámica
 
-## El patrón de DP en 4 pasos
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-1. **Define el estado:** ¿qué es dp[i]? (la respuesta al subproblema de tamaño i)
-2. **Recurrencia:** cómo dp[i] depende de estados anteriores
-3. **Caso base:** dp[0], dp[1], etc.
-4. **Orden de llenado:** bottom-up (tabulation) o top-down (memoization)
+La programación dinámica (DP) intimida porque parece magia, pero en el fondo es una sola idea humilde: **recursión con memoria**. Si un problema se resuelve combinando soluciones de subproblemas, y esos subproblemas **se repiten**, entonces calcularlos una vez y guardarlos convierte un algoritmo exponencial en uno lineal o polinómico. Esta lección construye desde cero el método de cuatro pasos para *derivar* una DP, y lo aplica a la galería de problemas que toda entrevista recicla (Fibonacci, monedas, LCS, edit distance, mochila).
 
-**Memoization vs Tabulation:**
-- Memoization (top-down): recursión + diccionario de caché. Fácil de derivar, llena solo los subproblemas necesarios.
-- Tabulation (bottom-up): bucle iterativo. Sin overhead de recursión, mejor para espacio.
+Al terminar podrás: (1) plantear una DP definiendo estado, recurrencia, caso base y orden de llenado; (2) elegir entre memoización (top-down) y tabulación (bottom-up); (3) reconocer la recurrencia preguntándote "¿qué pasó en el último paso?"; y (4) saber cuándo el **greedy** basta y cuándo traiciona (el contraejemplo de las monedas). Cada problema entra por su intuición y un mini-ejemplo llenando la tabla a mano. La regla de fondo: **encuentra el estado mínimo que captura todo lo necesario para decidir.**
 
 ---
 
-## Fibonacci — el arquetipo
+## El método de cuatro pasos
 
-```
-dp[0] = 0, dp[1] = 1
-dp[i] = dp[i-1] + dp[i-2]
-```
+Toda DP se deriva respondiendo cuatro preguntas, en orden:
+
+1. **Define el estado:** ¿qué significa `dp[i]`? (la respuesta al subproblema de "tamaño" $i$).
+2. **Recurrencia:** ¿cómo se construye `dp[i]` a partir de estados ya resueltos?
+3. **Caso base:** los valores iniciales (`dp[0]`, `dp[1]`…) que no dependen de nadie.
+4. **Orden de llenado:** *bottom-up* (un bucle que va de lo chico a lo grande) o *top-down* (recursión que cachea).
+
+La diferencia entre los dos estilos de llenado:
+
+- **Memoización (top-down):** escribes la recursión natural y le pones un diccionario de caché. Fácil de derivar y solo calcula los subproblemas que realmente necesitas, a costa del overhead de la pila de recursión.
+- **Tabulación (bottom-up):** un bucle iterativo que llena la tabla en orden. Sin overhead de recursión y suele permitir optimizar el espacio (a menudo guardas solo las últimas filas).
+
+## Fibonacci: el arquetipo que muestra el ahorro
+
+La recurrencia `dp[i] = dp[i-1] + dp[i-2]` con `dp[0]=0, dp[1]=1` es la DP más simple, y revela por qué la memoria importa:
 
 | Implementación | Tiempo | Espacio |
 |---------------|--------|---------|
-| Recursión naive | O(2^n) | O(n) pila |
-| Memoization | O(n) | O(n) |
-| Tabulation | O(n) | O(n) |
-| Optimizado (solo 2 vars) | O(n) | O(1) |
+| Recursión ingenua | $O(2^n)$ | $O(n)$ pila |
+| Memoización | $O(n)$ | $O(n)$ |
+| Tabulación | $O(n)$ | $O(n)$ |
+| Solo 2 variables | $O(n)$ | $O(1)$ |
 
-**Matrix exponentiation:** Fib(n) en O(log n) — relevante para n muy grande.
+La recursión ingenua es exponencial porque **recalcula** `fib(n-2)` una y otra vez; la memoización lo arregla guardando cada resultado. Y como `dp[i]` solo mira dos atrás, ni siquiera necesitas la tabla entera: dos variables bastan ($O(1)$ espacio). *Subir escaleras de 1 o 2 pasos* es literalmente este Fibonacci.
 
----
+## Monedas: la trampa del greedy
 
-## Subida de escaleras / combinaciones de monedas
+Dos problemas clásicos sobre un conjunto de monedas:
 
-**Climbing Stairs (k pasos permitidos):**
+- **Mínimo de monedas para sumar `amount`:** `dp[0]=0`; `dp[j] = min(dp[j-coin] + 1)` sobre cada moneda. La intuición: "¿qué moneda usé *de última*?". Cada opción se apoya en un subproblema ya resuelto. $O(\text{amount}\times|\text{coins}|)$.
+- **Número de formas de sumar `amount`:** `dp[0]=1`; para cada moneda, para cada `j` de `coin` a `amount`: `dp[j] += dp[j-coin]`. El **orden de los bucles importa**: la moneda en el bucle externo evita contar `(1,3)` y `(3,1)` como formas distintas.
 
-dp[i] = Σ dp[i−j] para j en pasos_permitidos
+> **Predicción antes de seguir:** ¿el greedy (toma siempre la moneda más grande que quepa) da el óptimo? Con monedas `{1,3,4}` y `amount=6`, el greedy hace `4+1+1 = 3` monedas; la DP encuentra `3+3 = 2`. El greedy **falla** con monedas arbitrarias; solo es seguro con sistemas "canónicos" como `{1,5,10,25}`. La lección: desconfía del greedy salvo que un *exchange argument* lo justifique.
 
-Para pasos={1,2}: dp[i]=dp[i-1]+dp[i-2] (idéntico a Fibonacci).
+## Problemas de dos secuencias: LCS y edit distance
 
-**Coin Change (mínimo de monedas):**
+Cuando el problema compara **dos** cadenas, el estado es bidimensional: `dp[i][j]` resuelve los prefijos `X[1..i]` y `Y[1..j]`.
 
-dp[0]=0; dp[amount] = min(dp[amount-coin]+1) para cada coin.
+- **Subsecuencia común más larga (LCS):** si `X[i]==Y[j]`, los últimos caracteres coinciden → `dp[i][j] = dp[i-1][j-1] + 1`; si no, `dp[i][j] = max(dp[i-1][j], dp[i][j-1])`. $O(mn)$.
+- **Edit distance (Levenshtein):** mínimo de inserciones/borrados/reemplazos para convertir A en B. Si los últimos caracteres coinciden, no cuesta nada (`dp[i-1][j-1]`); si no, pagas 1 más el mínimo de las tres operaciones. Casos base: `dp[i][0]=i` (borrar todo), `dp[0][j]=j` (insertar todo).
 
-Tiempo: O(amount × |coins|), espacio: O(amount).
+Ambas son el mismo patrón —"¿el último carácter coincidió o no?"— y aparecen en diff de archivos y alineamiento de ADN.
 
-**Coin Change 2 (número de formas):**
+## Mochila y sus parientes
 
-dp[0]=1; para cada coin: para cada j de coin a amount: dp[j] += dp[j-coin].
-
-El orden de los loops importa: coin en el externo evita permutaciones duplicadas.
-
----
-
-## Subsecuencia común más larga (LCS)
-
-X[1..m], Y[1..n]. LCS(X,Y) = longitud de la subsecuencia común más larga.
+La **mochila 0/1** ($n$ ítems con peso $w_i$ y valor $v_i$, capacidad $W$) es el arquetipo de "decisión bajo recurso limitado". Con la optimización a 1D:
 
 ```
-dp[i][j] = LCS de X[1..i] y Y[1..j]
-
-Si X[i] == Y[j]: dp[i][j] = dp[i-1][j-1] + 1
-Else:            dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+para cada item i:
+    para j de W bajando hasta w_i:     # orden INVERSO: cada ítem una vez
+        dp[j] = max(dp[j], dp[j - w_i] + v_i)
 ```
 
-**Tiempo:** O(mn), **Espacio:** O(mn) o O(min(m,n)) optimizado.
+El detalle decisivo es el **orden inverso** de `j`: recorrer hacia atrás garantiza que cada ítem se use a lo sumo una vez (0/1); recorrer hacia adelante permitiría reusarlo (esa es la **mochila ilimitada**, y también el *rod cutting*). $O(nW)$ tiempo, $O(W)$ espacio. La pregunta-recurrencia es siempre la misma: "¿incluyo el último ítem o no?".
 
-**Aplicaciones:** diff de archivos, DNA alignment, edit distance.
-
----
-
-## Distancia de edición (Edit Distance / Levenshtein)
-
-Costo mínimo de convertir palabra A en B usando insert, delete, replace (costo 1 cada uno).
-
-```
-dp[i][j] = edit distance entre A[1..i] y B[1..j]
-
-Si A[i] == B[j]: dp[i][j] = dp[i-1][j-1]
-Else:            dp[i][j] = 1 + min(dp[i-1][j],    # delete en A
-                                     dp[i][j-1],    # insert en A
-                                     dp[i-1][j-1])  # replace
-```
-
-Caso base: dp[i][0]=i (borrar i chars de A), dp[0][j]=j (insertar j chars).
-
----
-
-## Mochila 0/1 (0/1 Knapsack)
-
-n items, cada uno con peso wᵢ y valor vᵢ. Capacidad W. Maximizar valor sin exceder W.
-
-```
-dp[j] = max valor con capacidad j
-
-Para cada item i (de 1 a n):
-  Para j de W a wᵢ (orden inverso — 0/1: cada item una vez):
-    dp[j] = max(dp[j], dp[j - wᵢ] + vᵢ)
-```
-
-**Tiempo:** O(nW), **Espacio:** O(W) con la optimización de 1D.
-
-**Unbounded knapsack** (items ilimitados): recorre j hacia adelante.
-
----
-
-## Corte de varilla (Rod Cutting)
-
-Varilla de longitud n, precio pᵢ por varilla de longitud i. Maximizar ingreso.
-
-Equivalente a unbounded knapsack con longitudes como "pesos" y precios como valores.
-
-dp[j] = max(pᵢ + dp[j−i]) para i de 1 a j.
-
----
-
-## Subcadena palindrómica más larga
-
-dp[i][j] = True si s[i..j] es palíndromo.
-
-```
-dp[i][i] = True (base: un carácter)
-dp[i][i+1] = (s[i]==s[i+1])
-
-Para len de 3 a n:
-  Para i: j = i+len-1
-    dp[i][j] = (s[i]==s[j]) and dp[i+1][j-1]
-```
-
-La respuesta es el máximo len tal que dp[i][j]=True.
-
-Tiempo O(n²). Alternativa: Manacher's algorithm en O(n).
-
----
-
-## Decodificación de string (Decode Ways)
-
-'1' → 'A', ..., '26' → 'Z'. Cuenta formas de decodificar una cadena de dígitos.
-
-```
-dp[0]=1, dp[1]=1 (si s[0]!='0')
-Para i de 2 a n:
-  Si s[i-1]!='0': dp[i] += dp[i-1]   (toma un dígito)
-  Si s[i-2..i-1] en [10..26]: dp[i] += dp[i-2]  (toma dos dígitos)
-```
-
-Trampa: '0' no puede ser un dígito solo; '30' o '00' no es válido como par.
-
----
-
-## DP con bitmask
-
-Para n pequeño (≤20), el estado puede incluir un conjunto de elementos usados codificado como bitmask.
-
-**Traveling Salesman Problem (TSP):** dp[mask][i] = costo mínimo de visitar los nodos en mask y terminar en nodo i.
-
-```
-dp[(1<<n)-1][i] = camino completo terminando en i.
-```
-
-Tiempo: O(2^n · n²). Factible hasta n≈20.
-
----
-
-## Greedy vs DP
-
-| Problema | Greedy | DP |
-|---------|--------|-----|
-| Coin change (monedas arbitrarias) | ✗ puede fallar | ✓ |
-| Coin change (monedas {1,5,10,25}) | ✓ funciona | ✓ |
-| Interval scheduling (max no-solapados) | ✓ ordena por fin | ✓ |
-| Knapsack 0/1 | ✗ | ✓ |
-| Fractional Knapsack | ✓ ratio v/w | — |
-| Shortest path (pesos ≥ 0) | Dijkstra (greedy) | Bellman-Ford (DP) |
-
-**Cuándo greedy:** cuando la elección localmente óptima lleva a la global. Demostrar con exchange argument.
-
----
-
-## Máxima ganancia en bolsa (k transacciones)
-
-dp[k][i] = max ganancia con k transacciones hasta el día i.
-
-dp[k][i] = max(dp[k][i-1], prices[i] + max_{j<i}(dp[k-1][j] - prices[j]))
-
-Con k=1: una transacción → O(n) con un pase.
-Con k=∞: acumula todos los incrementos positivos.
-Con k=2: dos transacciones → dp 2D O(n).
+Otros que vale reconocer de un vistazo: **palíndromo más largo** (`dp[i][j]` = "¿`s[i..j]` es palíndromo?", construyendo por longitud), **decode ways** (cuidado con el `'0'`, que no decodifica solo), **DP con bitmask** (para $n\le 20$, codifica el subconjunto usado en los bits de un entero; base del TSP en $O(2^n n^2)$), y **DP de transacciones bursátiles** ($k$ compraventas con `dp[k][i]`).
 
 ---
 

@@ -1,184 +1,77 @@
 # Árboles, grafos y búsqueda
 
-## BFS vs DFS — cuándo usar cada uno
+## De qué trata esta lección (y qué sabrás hacer al final)
+
+Un grafo es la abstracción de las **relaciones** —ciudades y carreteras, cursos y prerrequisitos, páginas y enlaces—, y un árbol es su caso particular sin ciclos. Esta lección construye desde cero las dos formas de recorrerlos (**BFS** y **DFS**) y, sobre ellas, los algoritmos que casi todas las entrevistas reciclan: camino más corto, detección de ciclos, orden topológico, BST, LCA, Dijkstra, Union-Find y Trie. La habilidad clave no es codificarlos de memoria, sino **leer el enunciado y saber cuál pide**.
+
+Al terminar podrás: (1) elegir BFS (camino más corto en pasos) o DFS (ciclos, orden topológico) por la pregunta; (2) detectar ciclos correctamente en grafos dirigidos (estado "gris" en la pila de recursión) y no dirigidos; (3) producir un orden topológico con el algoritmo de Kahn y reconocerlo como "¿se pueden completar todas las tareas?"; y (4) saber cuándo Dijkstra, Union-Find o un Trie son la herramienta. Cada algoritmo entra por su intuición y un mini-ejemplo a mano.
+
+---
+
+## BFS vs DFS: la pregunta decide
+
+Las dos recorren todo el grafo visitando cada nodo una vez, pero difieren en **el orden** y eso cambia para qué sirven.
 
 | | BFS | DFS |
 |-|-----|-----|
-| Estructura | Cola (queue) | Pila (stack) / recursión |
-| Encuentra | Camino **más corto** (sin pesos) | Cualquier camino |
-| Uso en árboles | Nivel por nivel | Pre/in/post-orden |
-| Uso en grafos | Shortest path, componentes | Ciclos, topo sort, componentes |
-| Espacio | O(ancho máximo) | O(profundidad máxima) |
-| Implementación | Iterativa (queue) | Recursiva o iterativa (stack) |
+| Estructura | cola (FIFO) | pila / recursión (LIFO) |
+| Encuentra | camino **más corto** (sin pesos) | cualquier camino |
+| En grafos | shortest path, componentes | ciclos, orden topológico |
+| Espacio | $O(\text{ancho máx})$ | $O(\text{profundidad máx})$ |
 
-**Regla de oro:**
-- ¿Camino más corto o mínimo de pasos? → **BFS**
-- ¿Exploración exhaustiva, ciclos, orden topológico? → **DFS**
+La intuición: **BFS** explora en "anillos" concéntricos desde el origen —primero los vecinos a distancia 1, luego a 2, etc.—, así que la primera vez que toca un nodo lo hace por el camino más corto *en número de aristas*. **DFS** se hunde por una rama hasta el fondo antes de retroceder, lo que lo hace natural para "¿hay un ciclo?" y "¿en qué orden respetar dependencias?". Regla de oro: *¿mínimo de pasos? → BFS. ¿exploración exhaustiva, ciclos, topo sort? → DFS.*
 
----
-
-## BFS estándar en grafo
+El BFS estándar en un grafo, con su distancia:
 
 ```
-queue = [nodo_inicio]
-visitados = {nodo_inicio}
-distancia = {nodo_inicio: 0}
-
-while queue:
-    nodo = queue.popleft()
-    for vecino in grafo[nodo]:
-        if vecino not in visitados:
-            visitados.add(vecino)
-            distancia[vecino] = distancia[nodo] + 1
-            queue.append(vecino)
+cola = [inicio];  visitados = {inicio};  dist = {inicio: 0}
+mientras cola:
+    u = cola.popleft()
+    para v en grafo[u]:
+        si v no en visitados:
+            visitados.add(v);  dist[v] = dist[u] + 1
+            cola.append(v)
 ```
 
-**Tiempo:** O(V+E); **Espacio:** O(V)
+$O(V+E)$ tiempo (toca cada nodo y arista una vez), $O(V)$ espacio. *Number of Islands* es esto disfrazado: lanza un BFS/DFS desde cada `'1'` no visitado, marca toda la isla, y cuenta cuántos lanzaste.
 
-**Number of Islands:** BFS/DFS desde cada '1' no visitado, marcando todo el island como visitado. Contar cuántos BFS lanzaste.
+## Detección de ciclos: cuidado con dirigido vs no dirigido
 
----
+Aquí cae mucha gente, porque la regla **cambia** según el grafo:
 
-## DFS — detección de ciclos
+- **No dirigido:** hay ciclo si el DFS encuentra un vecino ya visitado que **no es el padre** (volver por donde viniste no cuenta).
+- **Dirigido:** hay ciclo si el DFS encuentra un nodo que está **actualmente en la pila de recursión**. Se modela con tres colores: blanco (no visitado), **gris** (en la recursión activa), negro (terminado). Tocar un nodo **gris** = ciclo.
 
-**Grafo no dirigido:** ciclo ↔ DFS encuentra un nodo vecino ya visitado que NO es el padre.
+> **Predicción antes de seguir:** ¿puedes detectar ciclos en un grafo dirigido con la regla del no dirigido ("vecino ya visitado")? Respuesta: **no**. Un nodo "negro" (ya terminado) puede ser vecino legítimo sin formar ciclo; solo un nodo **gris** —en el camino actual— delata el ciclo. Confundir las dos reglas es el error clásico.
 
-**Grafo dirigido:** ciclo ↔ DFS encuentra un nodo que está en el "stack de recursión" actual (color gris).
+## Orden topológico (Kahn)
 
-Estados: blanco (no visitado), gris (en recursión), negro (terminado).
-
-Si llegas a un nodo gris → ciclo.
-
----
-
-## Orden topológico
-
-Solo para DAGs (grafos dirigidos acíclicos). Linealización de nodos tal que toda arista u→v tiene u antes de v.
-
-**Algoritmo de Kahn (BFS):**
-1. Calcula in-degree de cada nodo
-2. Añade a la cola todos los nodos con in-degree = 0
-3. Procesa: al sacar un nodo, reduce in-degree de sus vecinos
-4. Si vecino queda en 0 → añadir a la cola
-5. Si al final procesaste todos los nodos: no hay ciclo
-
-**Tiempo:** O(V+E)
-
-**Aplicaciones:** compiladores (dependencias), build systems, orden de cursos.
-
----
-
-## Árbol binario de búsqueda (BST) — propiedades
-
-En un BST: para todo nodo x, todos los valores en el subárbol izquierdo < x < todos los del derecho.
-
-| Operación | BST balanceado | BST degenerado |
-|-----------|---------------|---------------|
-| Búsqueda | O(log n) | O(n) |
-| Insert | O(log n) | O(n) |
-| Delete | O(log n) | O(n) |
-| In-order traversal | O(n) | O(n) |
-
-**El recorrido in-order de un BST produce los valores ordenados.**
-
-**Validar BST:** no basta verificar que hijo_izq < raíz < hijo_der (falla con netos). Usa min/max bounds que se heredan hacia abajo.
-
----
-
-## Ancestro Común Más Bajo (LCA)
-
-**En BST:** si ambos nodos p,q están a la izquierda de la raíz → LCA en subárbol izquierdo. Si ambos a la derecha → subárbol derecho. Si uno a cada lado → la raíz es el LCA.
-
-**En árbol binario general:**
-- Si raíz == p o raíz == q: la raíz es el LCA
-- Busca en izquierda e derecha recursivamente
-- Si ambos lados retornan non-null: la raíz actual es el LCA
-
-**Tiempo:** O(n), **Espacio:** O(h) donde h = altura del árbol.
-
----
-
-## Algoritmo de Dijkstra — camino más corto con pesos
-
-Para grafos con pesos **no negativos**.
-
-**Algoritmo:**
-1. dist[s]=0, dist[v]=∞ para v≠s
-2. Priority queue (min-heap) con (0, s)
-3. Extraer el nodo u con menor distancia
-4. Para cada vecino v: si dist[u]+peso(u,v) < dist[v], actualizar y añadir al heap
-
-**Tiempo:** O((V+E)·log V) con min-heap binario.
-
-**No funciona con pesos negativos** → usar Bellman-Ford O(VE).
-
----
-
-## Union-Find (Disjoint Set Union)
-
-Estructura para responder: "¿pertenecen x e y al mismo componente conectado?"
-
-**Operaciones:**
-- `find(x)`: retorna el representante del componente de x
-- `union(x,y)`: une los componentes de x e y
-
-**Optimizaciones:**
-- **Path compression:** al llamar find, aplana la cadena → find es O(α(n)) amortizado
-- **Union by rank:** une el árbol pequeño bajo el grande
-
-**Aplicaciones:** número de componentes, detección de ciclos, MST (Kruskal).
-
----
-
-## Trie — árbol de prefijos
-
-Estructura para almacenar strings con búsqueda O(m) donde m = longitud de la clave.
-
-Cada nodo tiene hasta 26 hijos (para el alfabeto inglés) y un flag "es_fin_de_palabra".
-
-| Operación | Trie | Hash set |
-|-----------|------|---------|
-| Búsqueda por prefijo | O(m) | O(m) pero no soporta prefijos |
-| Búsqueda exacta | O(m) | O(m) |
-| Enumerar prefijo k | O(m+output) | O(n·m) |
-
-**Usos:** autocompletado, spell checker, longest common prefix, word search en matriz.
-
----
-
-## Grafo bipartito
-
-Un grafo es **bipartito** si sus nodos se pueden colorear con 2 colores sin que dos nodos del mismo color sean adyacentes.
-
-**Test:** BFS/DFS intentando 2-colorear. Si en algún momento un vecino tiene el mismo color que el nodo actual → no bipartito (tiene ciclo impar).
-
-**Aplicación:** asignación de tareas, matchings, detección de conflictos.
-
----
-
-## Clonación de grafo
-
-Clona un grafo (nodos + aristas) sin visitar nodos dos veces:
-
-1. Usa hash map: original_nodo → clon_nodo
-2. BFS/DFS: al visitar un nodo, créa su clon si no existe
-3. Para cada vecino del original: crea su clon y añade al clon actual
-
-**Tiempo:** O(V+E), **Espacio:** O(V)
-
----
-
-## Serializar/Deserializar árbol binario
-
-Para serializar: recorrido pre-orden con marcadores de nulo ("#").
+Para un **DAG** (dirigido acíclico), un orden topológico lista los nodos de modo que toda arista $u\to v$ ponga $u$ antes que $v$ —"haz primero los prerrequisitos"—. El algoritmo de Kahn lo construye con BFS sobre los **grados de entrada** (in-degree):
 
 ```
-serialize: [1, 2, #, #, 3, 4, #, #, 5, #, #]
+calcula in-degree de cada nodo
+cola = todos los nodos con in-degree 0
+mientras cola:
+    u = cola.pop();  añade u al orden
+    para v vecino de u:
+        in-degree[v] -= 1
+        si in-degree[v] == 0: cola.append(v)
+si procesaste todos los nodos: no hay ciclo
 ```
 
-Para deserializar: reconstruye el árbol procesando los valores en pre-orden, usando recursión.
+$O(V+E)$. El chequeo final es valioso: si **quedan** nodos sin procesar (su in-degree nunca llegó a 0), hay un ciclo y el orden es imposible — que es exactamente la pregunta "¿se pueden terminar todos los cursos?" (*Course Schedule*). Aplica a compiladores, build systems y planificación.
 
-**Invariante:** pre-orden + marcadores de nulo identifican unívocamente cualquier árbol binario.
+## Árboles de búsqueda binaria (BST) y LCA
+
+Un **BST** mantiene un invariante: para todo nodo $x$, todo el subárbol izquierdo es $<x<$ todo el derecho. La consecuencia mágica: su **recorrido in-order produce los valores ordenados**. Las operaciones son $O(\log n)$ si está balanceado, pero **$O(n)$ si degenera** (insertar datos ya ordenados lo convierte en una lista). Trampa de "validar BST": comprobar solo `hijo_izq < raíz < hijo_der` **falla con los nietos**; hay que heredar cotas `(min, max)` hacia abajo.
+
+El **ancestro común más bajo (LCA)** explota el orden en un BST: si $p$ y $q$ están ambos a la izquierda de la raíz, el LCA está a la izquierda; ambos a la derecha → a la derecha; uno a cada lado → la raíz misma. En un árbol binario general, se resuelve recursivamente: si la raíz es $p$ o $q$ es el LCA; si las búsquedas izquierda y derecha devuelven ambas algo no nulo, la raíz actual es el LCA. $O(n)$ tiempo, $O(h)$ espacio (altura).
+
+## Dijkstra, Union-Find y Trie
+
+- **Dijkstra** (camino más corto con pesos **no negativos**): mantiene un min-heap de `(distancia, nodo)`, extrae el más cercano y **relaja** sus vecinos. $O((V+E)\log V)$. No funciona con pesos negativos —asume que una distancia fijada ya no mejora—; ahí va Bellman-Ford ($O(VE)$).
+- **Union-Find (DSU):** responde "¿$x$ e $y$ están en el mismo componente?" en casi $O(1)$ con dos optimizaciones, *path compression* (aplana las cadenas al consultar) y *union by rank* (cuelga el árbol chico del grande), dando $O(\alpha(n))$ amortizado. Es la base de contar componentes, detectar ciclos y el MST de Kruskal.
+- **Trie (árbol de prefijos):** guarda cadenas con búsqueda $O(m)$ ($m$=longitud) y, a diferencia de un hash set, **sí** soporta "todas las palabras que empiezan con…". Potencia autocompletado, spell-checkers y búsqueda de palabras en una matriz.
 
 ---
 

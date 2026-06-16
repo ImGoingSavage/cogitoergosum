@@ -1,159 +1,154 @@
 # Arrays, cadenas y tablas hash
 
-## La tabla hash — el arma universal de MAANG
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-Una tabla hash mapea keys a values en tiempo O(1) amortizado.
+Más de la mitad de los problemas de "coding" de una entrevista MAANG son, en el fondo, problemas de **arrays y cadenas** disfrazados. La buena noticia: casi todos se resuelven con un puñado pequeño de herramientas, y la habilidad de élite no es memorizarlas sino **reconocer cuál pide el enunciado**. Esta lección las construye desde cero —la **tabla hash** (memoria comprada para consultar en $O(1)$), la **ventana deslizante** (para lo contiguo), los **dos punteros** (para lo ordenado)— y media docena de patrones que aparecen una y otra vez.
 
-**Operaciones:** insert, lookup, delete → O(1) promedio; O(n) peor caso (todos al mismo bucket).
-
-**Factor de carga α = n/m** (n=elementos, m=buckets). Para α < 0.75: rendimiento estable.
-
-**Resolución de colisiones:**
-- **Chaining:** cada bucket es una lista enlazada. Lookup: O(1+α).
-- **Open addressing (probing lineal):** si hay colisión, prueba slot+1, slot+2,... Sensible a clusters.
-
-**Cuándo usar tabla hash:** detección de duplicados, frecuencias, lookup en O(1), two-sum, anagramas.
+Al terminar podrás: (1) elegir entre hash, ventana y punteros leyendo una palabra del enunciado ("¿existe?" / "contiguo" / "ordenado"); (2) escribir Two Sum, sliding window y merge intervals con su complejidad justificada; (3) entender por qué el $O(1)$ de un hash es *amortizado* y cuándo se rompe; y (4) reconocer la misma estructura profunda fuera de los arrays (SQL, cohortes, streams). Cada técnica entra por su intuición y un mini-ejemplo trabajado a mano.
 
 ---
 
-## Two Sum — el patrón fundamental de hash map
+## La tabla hash: la idea de "memoria comprada"
 
-Problema: dado array nums y target, retorna índices i,j tal que nums[i]+nums[j]=target.
+Empieza por la herramienta que más entrevistas resuelve, y por su intuición antes que su mecánica. Imagina que te preguntan repetidamente "¿está el número 7 en esta lista?". Con un array crudo, cada pregunta te obliga a **re-escanear** todo: $O(n)$ por consulta. Una **tabla hash** cambia ese trabajo repetido por una inversión única de memoria: guardas lo que ves en un índice y respondes futuras preguntas en **tiempo constante**. Es la diferencia entre releer la guía telefónica entera cada vez (array) y tener un índice alfabético que te lleva directo a la página (hash). La regla mental: cada vez que un problema pregunta *"¿ya vi esto?"*, *"¿cuántas veces aparece?"* o *"¿existe su pareja?"*, la respuesta casi siempre es **guarda lo visto en un mapa**.
 
-**Solución O(n) con hash map:**
-1. Para cada elemento x en el array
-2. Busca `complement = target - x` en el mapa
-3. Si existe: retorna (mapa[complement], índice actual)
-4. Si no: inserta mapa[x] = índice actual
+Cómo funciona por dentro: una función *hash* convierte una clave en un índice de un arreglo de **buckets**, y ahí se guarda el valor. Operaciones —insertar, buscar, borrar— en **$O(1)$ promedio**. El "promedio" es clave (volvemos a él abajo).
 
-**Por qué no O(n²):** el complemento se busca en O(1), no O(n).
+- **Factor de carga** $\alpha=n/m$ (elementos $n$ entre buckets $m$): mientras $\alpha$ se mantenga bajo (típicamente $<0.75$), el rendimiento es estable; al pasarse, la tabla **redimensiona** (duplica buckets y rehashea).
+- **Colisiones** (dos claves al mismo bucket) se resuelven con **encadenamiento** (cada bucket es una lista; lookup $O(1+\alpha)$) o **direccionamiento abierto** (si el slot está ocupado, prueba el siguiente; sensible a aglomeraciones).
 
-Generalización: three-sum → fijar un elemento y reducir a two-sum. Four-sum → O(n²) con hash.
+> **Predicción antes de seguir:** ¿la tabla hash garantiza $O(1)$ *siempre*? Respuesta: **no**. Es $O(1)$ **amortizado/promedio**; un adversario que fuerce a todas las claves al mismo bucket lo degrada a $O(n)$ por operación. En la entrevista, dilo así: "$O(1)$ promedio, $O(n)$ peor caso". Esa honestidad puntúa.
 
 ---
 
-## Ventana deslizante (sliding window)
+## Two Sum: el patrón canónico del hash map
 
-**Patrón:** mantener una ventana [left, right] sobre el array y actualizarla en O(1) por paso.
+El problema: dado un arreglo `nums` y un `target`, devuelve los índices $i,j$ tales que `nums[i] + nums[j] = target`. La solución ingenua prueba todos los pares: $O(n^2)$. El salto de calidad: para cada elemento $x$, lo que necesitas es saber si su **complemento** `target − x` ya apareció — y eso es justo una consulta de hash en $O(1)$.
 
-**Ventana fija (tamaño k):** suma máxima de subarray de longitud k.
-1. Calcula suma de primeros k elementos
-2. Desliza: suma += arr[right] − arr[left−1]
-3. Tiempo: O(n), espacio: O(1)
+```
+funcion twoSum(nums, target):
+    visto = {}                      # mapa valor -> índice
+    para i, x en nums:
+        c = target - x
+        si c en visto:
+            retorna (visto[c], i)   # ¡par encontrado!
+        visto[x] = i                # recuerda este valor
+    retorna ninguno
+```
 
-**Ventana variable (condición):** cadena más larga sin repetir caracteres.
-1. Usa hash map de frecuencias + puntero left
-2. right avanza siempre; left avanza solo cuando se viola la condición
-3. Tiempo: O(n), espacio: O(min(n,k)) donde k=tamaño del alfabeto
-
-**Señal de sliding window:** "subarreglo/subcadena contigua con propiedad X".
-
----
-
-## Dos punteros (two pointers)
-
-**Array ordenado:** para encontrar pares con suma objetivo:
-- left=0, right=n−1
-- Si nums[left]+nums[right] == target: encontrado
-- Si < target: left++; si > target: right--
-- Tiempo: O(n)
-
-**Partición:** Dutch National Flag (3-way partition para ordenar {0,1,2}):
-- low=0, mid=0, high=n−1
-- nums[mid]==0: swap(low,mid), low++, mid++
-- nums[mid]==1: mid++
-- nums[mid]==2: swap(mid,high), high--
-- Tiempo: O(n), un solo paso
-
-**Señal de two pointers:** array ordenado, o problema que pide pares/tríos con suma.
+Recorres el arreglo **una vez** y cada consulta es $O(1)$, así que el total es $O(n)$ tiempo y $O(n)$ espacio. La sutileza que cazan los entrevistadores: **consulta antes de insertar**. Si insertaras `x` antes de buscar su complemento, en `nums=[3,3]` con `target=6` te emparejarías contigo mismo. Generalización: *3-sum* fija un elemento y reduce el resto a un Two Sum; *4-sum* anida dos niveles para $O(n^2)$ con hash.
 
 ---
 
-## Complejidad amortizada y operaciones de arrays
+## Ventana deslizante: para subarreglos contiguos
+
+La señal inequívoca: el enunciado pide algo sobre un **subarreglo o subcadena contigua** ("la suma máxima de $k$ elementos seguidos", "la subcadena más larga sin repetir"). La idea: mantén una ventana $[\text{left}, \text{right}]$ y **actualízala en $O(1)$** al moverla, en vez de recalcular desde cero.
+
+**Ventana fija (tamaño $k$)** — suma máxima de un subarreglo de longitud $k$. Calcula la suma de los primeros $k$, luego desliza restando el que sale y sumando el que entra:
+
+```
+suma = sum(arr[0..k-1]);  mejor = suma
+para right en [k .. n-1]:
+    suma += arr[right] - arr[right-k]   # entra uno, sale uno: O(1)
+    mejor = max(mejor, suma)
+```
+
+$O(n)$ tiempo, $O(1)$ espacio. El truco es que cada paso toca solo **dos** elementos, no $k$.
+
+**Ventana variable (condición)** — la subcadena más larga sin caracteres repetidos. Aquí `right` avanza siempre; `left` solo avanza **cuando se viola** la condición. Un mapa de frecuencias detecta el repetido:
+
+```
+freq = {};  left = 0;  mejor = 0
+para right en [0 .. n-1]:
+    freq[s[right]] += 1
+    mientras freq[s[right]] > 1:     # hay un repetido: encoge por la izquierda
+        freq[s[left]] -= 1;  left += 1
+    mejor = max(mejor, right - left + 1)
+```
+
+Cada índice entra y sale de la ventana a lo sumo una vez → $O(n)$ amortizado; espacio $O(\min(n, |\text{alfabeto}|))$.
+
+---
+
+## Dos punteros: para lo ordenado
+
+Cuando el arreglo está **ordenado**, el orden mismo es estructura gratis que vuelve innecesario el hash. Para hallar un par con suma `target`, coloca un puntero en cada extremo y deja que la comparación te diga hacia dónde moverte:
+
+```
+left = 0;  right = n-1
+mientras left < right:
+    s = nums[left] + nums[right]
+    si s == target: retorna (left, right)
+    si s < target:  left += 1      # necesito más: sube el menor
+    sino:           right -= 1      # necesito menos: baja el mayor
+```
+
+$O(n)$ tiempo, $O(1)$ espacio — mejor que el hash en memoria, *porque aprovechaste el orden*. La misma idea, en su versión de **partición**, resuelve el *Dutch National Flag* (ordenar un arreglo de `{0,1,2}` en una sola pasada con tres punteros `low/mid/high`): un patrón clásico de partición in-place en $O(n)$.
+
+> **Predicción antes de seguir:** te dan un arreglo **ordenado** y te piden pares con suma dada. ¿Hash o dos punteros? Respuesta: **dos punteros** — el hash funcionaría pero gasta $O(n)$ de memoria para reconstruir un orden que ya tienes gratis. Usar hash aquí es la señal de que no leíste la palabra "ordenado".
+
+---
+
+## Complejidad amortizada de los arrays
 
 | Operación | Array dinámico | Array fijo |
 |-----------|---------------|-----------|
-| Acceso por índice | O(1) | O(1) |
-| Insert al final | O(1) amortizado | — |
-| Insert al medio | O(n) | O(n) |
-| Búsqueda lineal | O(n) | O(n) |
-| Búsqueda binaria (ordenado) | O(log n) | O(log n) |
+| Acceso por índice | $O(1)$ | $O(1)$ |
+| Insertar al final | $O(1)$ amortizado | — |
+| Insertar en medio | $O(n)$ | $O(n)$ |
+| Búsqueda lineal | $O(n)$ | $O(n)$ |
+| Búsqueda binaria (ordenado) | $O(\log n)$ | $O(\log n)$ |
 
-**Análisis amortizado:** un array dinámico duplica capacidad al llenarse. Aunque una inserción individual toma O(n), el costo por inserción promediado sobre n inserciones es O(1).
-
----
-
-## Intervalos solapados (merge intervals)
-
-Dado un conjunto de intervalos [sᵢ,eᵢ], combina los que se solapan.
-
-**Algoritmo:**
-1. Ordena por inicio sᵢ → O(n log n)
-2. Recorre: si el intervalo actual comienza ≤ fin del anterior, expande el fin
-3. Si no, añade a resultado y avanza
-
-**Invariante:** los intervalos ya procesados en resultado son disjuntos y ordenados.
-
-Ejemplo: [[1,3],[2,6],[8,10],[15,18]] → [[1,6],[8,10],[15,18]]
+El renglón sutil es "insertar al final, $O(1)$ amortizado". Un array dinámico **duplica su capacidad** cuando se llena: esa copia puntual cuesta $O(n)$, pero ocurre cada vez menos seguido (al doble, al cuádruple…). Repartido sobre $n$ inserciones, el coste por inserción promedia $O(1)$. Es el mismo razonamiento "amortizado" del rehasheo de la tabla hash: un trabajo caro pero raro se diluye.
 
 ---
 
-## Producto de array excepto el índice propio
+## Merge intervals: ordenar primero, fundir después
 
-Sin usar división: calcula result[i] = producto de todos menos nums[i].
-
-**Algoritmo O(n) en O(1) espacio extra:**
-1. Pase izquierda: result[i] = producto de nums[0..i-1]
-2. Pase derecha: acumula sufijo de derecha a izquierda y multiplica
+Dado un conjunto de intervalos $[s_i, e_i]$, fusiona los que se solapan. La clave es que el solapamiento solo se puede razonar localmente **si los intervalos vienen ordenados por inicio**:
 
 ```
-nums   = [1, 2, 3, 4]
-prefix = [1, 1, 2, 6]     # producto de todo a la izquierda
-result = [24,12,8, 6]      # multiplicar por sufijo derecho
+ordena intervalos por inicio s        # O(n log n) — domina el costo
+res = [primer intervalo]
+para cada [s, e] en el resto:
+    si s <= res.ultimo.fin:           # solapa: extiende el fin
+        res.ultimo.fin = max(res.ultimo.fin, e)
+    sino:                             # disjunto: empieza uno nuevo
+        res.append([s, e])
 ```
 
----
+El **invariante** que lo hace correcto: lo ya guardado en `res` está siempre disjunto y ordenado. Ejemplo trabajado:
 
-## Rotación de array
+```
+entrada: (1,3) (2,6) (8,10) (15,18)
+(2,6) solapa con (1,3)  -> funde a (1,6)
+(8,10) no solapa        -> nuevo
+(15,18) no solapa       -> nuevo
+salida:  (1,6) (8,10) (15,18)
+```
 
-Rotar n elementos k posiciones a la derecha:
-
-**Método de 3 reversos** (O(n) tiempo, O(1) espacio):
-1. Reversa todo el array
-2. Reversa los primeros k elementos
-3. Reversa los últimos n-k elementos
-
-Ejemplo k=2: [1,2,3,4,5] → [5,4,3,2,1] → [4,5,3,2,1] → [4,5,1,2,3] ✓
-
----
-
-## Rabin-Karp — hashing de cadenas
-
-Búsqueda de patrón de longitud m en texto de longitud n: O(n+m) esperado.
-
-Hash rodante (rolling hash): H([i+1..i+m]) = (H([i..i+m-1]) − text[i]·b^{m-1})·b + text[i+m]
-
-Actualizar el hash en O(1) por posición → O(n) total.
-
-Aplicación: detección de plagios, substring search, Longest Duplicate Substring.
+El costo lo domina el ordenamiento, $O(n\log n)$; la pasada de fusión es $O(n)$.
 
 ---
 
-## Trampa del agua (trapping rain water) — concepto
+## Tres patrones más que conviene reconocer
 
-Para cada posición i, el agua acumulada = min(max_left[i], max_right[i]) − height[i].
-
-**Precomputar:** max_left[i] = max(height[0..i]), max_right[i] = max(height[i..n-1]).
-
-**Versión O(1) espacio:** dos punteros que avanzan desde los extremos.
-
-Ilustra el principio: "la cantidad de agua depende del mínimo de las dos paredes más altas".
+- **Producto de todos menos el propio (sin división):** haz una pasada de izquierda acumulando el prefijo de productos en `result`, y otra de derecha acumulando el sufijo y multiplicándolo en sitio. $O(n)$ tiempo, $O(1)$ espacio extra. La idea: `result[i] = (producto a su izquierda) × (producto a su derecha)`, y cada lado se acumula incrementalmente.
+- **Rotar $k$ a la derecha con tres reversos:** revierte todo el arreglo, luego los primeros $k$, luego los últimos $n-k$. Mágicamente queda rotado, en $O(n)$ tiempo y $O(1)$ espacio. (Verifícalo a mano con `[1,2,3,4,5]`, $k=2$.)
+- **Rabin-Karp (hash de cadenas):** para buscar un patrón de largo $m$ en un texto de largo $n$, un **hash rodante** actualiza el hash de la ventana en $O(1)$ al avanzar una posición (resta el carácter que sale, suma el que entra), dando $O(n+m)$ esperado. Es la versión-cadena de la ventana deslizante, y la base de detección de subcadenas duplicadas.
 
 ---
 
-## Intuición: la tabla hash es *memoria comprada*
+## Mini-ejemplo trabajado: Two Sum paso a paso
 
-Antes de la fórmula, la idea profunda: una tabla hash **cambia tiempo por espacio**. En lugar de re-escanear el array (O(n) por consulta), pagas memoria una vez para poder *recordar* lo que ya viste y responder en O(1). La analogía: es la diferencia entre buscar un nombre releyendo toda la guía telefónica cada vez (array) y tener un índice que te lleva directo a la página (hash). Cada vez que un problema dice "¿ya vi esto antes?", "¿cuántas veces aparece?", "¿existe su pareja?", la respuesta casi siempre es *guarda lo visto en un mapa*.
+`nums = [2, 7, 11, 15]`, `target = 9`. Recorremos manteniendo el mapa `visto`:
+
+- `i=0, x=2`: complemento `9−2=7`, no está en `visto`. Guardamos `visto[2]=0`.
+- `i=1, x=7`: complemento `9−7=2`, **sí está** (`visto[2]=0`). Devolvemos `(0, 1)`. ✓
+
+Una sola pasada, cada consulta $O(1)$. Compara con la fuerza bruta: probar `(2,7),(2,11),(2,15),(7,11)…` es $O(n^2)$. El hash convirtió "buscar la pareja" de $O(n)$ a $O(1)$, y eso bajó el problema entero un orden de magnitud.
+
+**Predicción antes de seguir:** ¿por qué insertar *después* de consultar y no antes? Porque si guardas `visto[x]=i` antes de buscar `target−x`, en `nums=[3,3]`, `target=6` encontrarías el `3` que acabas de meter y devolverías `(0,0)` —un índice consigo mismo, inválido—. Consultar primero garantiza que el complemento sea un elemento **anterior**, distinto.
 
 ## Prototipo, contraejemplo y caso borde
 
@@ -172,7 +167,7 @@ Antes de la fórmula, la idea profunda: una tabla hash **cambia tiempo por espac
 La estructura "recordar lo visto para responder en O(1)" reaparece fuera de los arrays:
 
 - **Eventos clínicos:** deduplicar diagnósticos por `patient_id` es exactamente un *hash set* de claves vistas; contar visitas por paciente es el *hash contador* de frecuencias.
-- **Two Sum ↔ emparejar exposición-control:** "¿existe para este paciente expuesto uno de control con el mismo propensity score?" es buscar el *complemento* en un índice — el mismo patrón del complemento `target − x`, ahora sobre cohortes (conecta con [[propensity-score]] de Health AI).
+- **Two Sum ↔ emparejar exposición-control:** "¿existe para este paciente expuesto uno de control con el mismo propensity score?" es buscar el *complemento* en un índice — el mismo patrón del complemento `target − x`, ahora sobre cohortes (conecta con [[arena-h20]] de Health AI).
 - **Rolling hash ↔ ventana temporal:** el hash deslizante de Rabin-Karp es isomorfo a una ventana temporal de exposición clínica que se actualiza incrementalmente en lugar de recalcularse.
 
 Moraleja de la arista: *el array es solo el disfraz; la estructura profunda es "memoria indexada para consulta O(1)", y esa estructura es la misma en SQL, en cohortes y en streams.*

@@ -1,182 +1,101 @@
 # Ordenamiento, búsqueda binaria y manipulación de bits
 
-## Comparación de algoritmos de ordenamiento
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-| Algoritmo | Tiempo promedio | Tiempo peor | Espacio | Estable |
-|-----------|----------------|------------|---------|---------|
-| QuickSort | O(n log n) | O(n²) | O(log n) | No |
-| MergeSort | O(n log n) | O(n log n) | O(n) | Sí |
-| HeapSort | O(n log n) | O(n log n) | O(1) | No |
-| TimSort (Python) | O(n log n) | O(n log n) | O(n) | Sí |
-| InsertionSort | O(n²) | O(n²) | O(1) | Sí |
-| CountingSort | O(n+k) | O(n+k) | O(k) | Sí |
-| RadixSort | O(d·(n+k)) | O(d·(n+k)) | O(n+k) | Sí |
+Ordenar y buscar son los dos verbos más antiguos de la computación, y siguen siendo el corazón de media entrevista. Esta lección los construye desde cero con la mirada que importa en una entrevista: no recitar algoritmos, sino saber **cuál elegir y por qué**, y reconocer la **búsqueda binaria donde no hay un arreglo ordenado a la vista** —su forma más poderosa, "binaria sobre la respuesta"—. Cierra con los trucos de bits y XOR, que son invariantes de conteo disfrazados.
 
-**QuickSort vs MergeSort:**
-- QuickSort: in-place, mejor constante, pero O(n²) con pivote malo. Usar pivot aleatorio.
-- MergeSort: garantiza O(n log n), estable, pero O(n) espacio. Preferido para datos externos.
+Al terminar podrás: (1) elegir entre QuickSort, MergeSort y HeapSort por sus garantías (tiempo, espacio, estabilidad); (2) escribir una búsqueda binaria correcta —incluido el `mid` sin overflow y las variantes de primera/última ocurrencia y arreglo rotado—; (3) reconocer "mínimo X tal que condición(X)" como binaria sobre un predicado **monótono**; y (4) usar QuickSelect, heaps de tamaño $k$ y trucos de XOR (número faltante, swap sin temporal). Cada técnica entra por su intuición y un mini-ejemplo. La idea unificadora: **la búsqueda binaria sirve para cualquier propiedad monótona, no solo para arreglos ordenados.**
 
 ---
 
-## Búsqueda binaria — el patrón general
+## Elegir el ordenamiento por sus garantías
 
-**Invariante:** la respuesta siempre está en [left, right].
+| Algoritmo | Tiempo promedio | Tiempo peor | Espacio | Estable |
+|-----------|----------------|------------|---------|---------|
+| QuickSort | $O(n\log n)$ | $O(n^2)$ | $O(\log n)$ | No |
+| MergeSort | $O(n\log n)$ | $O(n\log n)$ | $O(n)$ | Sí |
+| HeapSort | $O(n\log n)$ | $O(n\log n)$ | $O(1)$ | No |
+| TimSort (Python) | $O(n\log n)$ | $O(n\log n)$ | $O(n)$ | Sí |
+| CountingSort | $O(n+k)$ | $O(n+k)$ | $O(k)$ | Sí |
+| RadixSort | $O(d(n+k))$ | $O(d(n+k))$ | $O(n+k)$ | Sí |
+
+No memorices la tabla; razónala por la pregunta del entrevistador. **¿QuickSort o MergeSort?** QuickSort es *in-place* (memoria $O(\log n)$ de la recursión) y tiene la mejor constante en la práctica, pero un pivote desafortunado lo lleva a $O(n^2)$ —por eso se elige el pivote al azar—. MergeSort **garantiza** $O(n\log n)$ y es **estable** (no reordena elementos iguales), a costa de $O(n)$ de espacio; es el preferido para datos externos o cuando la estabilidad importa. **HeapSort** es el único $O(n\log n)$ garantizado *e* in-place, pero no estable. Y los ordenamientos **no comparativos** (Counting, Radix) rompen la barrera $O(n\log n)$ explotando que las claves son enteros pequeños —cuentan en vez de comparar—.
+
+## Búsqueda binaria: el invariante de "la respuesta está en [left, right]"
+
+La búsqueda binaria divide a la mitad el espacio en cada paso, dando $O(\log n)$. Lo que la hace correcta es un **invariante**: la respuesta, si existe, siempre vive en el intervalo `[left, right]`, que va encogiendo.
 
 ```
 left, right = 0, n-1
 while left <= right:
-    mid = left + (right - left) // 2   # evita overflow
+    mid = left + (right - left) // 2     # evita overflow de (left+right)
     if arr[mid] == target: return mid
     elif arr[mid] < target: left = mid + 1
     else: right = mid - 1
 return -1
 ```
 
-**Primera/última ocurrencia:** cambia la condición de parada para seguir buscando hacia la izquierda/derecha cuando encuentras el target.
+El detalle `mid = left + (right-left)//2` no es cosmético: en lenguajes con enteros acotados, `(left+right)` puede **desbordar**; esta forma no. Variantes que conviene dominar: **primera/última ocurrencia** (al encontrar el target, no pares: sigue buscando hacia el lado correspondiente); **arreglo rotado sin duplicados** (en cada paso, un lado del `mid` está ordenado —detecta cuál comparando `arr[mid]` con `arr[left]`— y decide si el target cae en ese lado ordenado o en el otro).
 
-**Búsqueda en array rotado** (sin duplicados):
-- Si arr[mid] >= arr[left]: lado izquierdo está ordenado
-- Si target está en ese lado ordenado → busca ahí; si no → lado derecho
+## Búsqueda binaria sobre la respuesta: la versión que separa a los buenos
 
----
-
-## Búsqueda binaria sobre la respuesta
-
-Patrón: cuando el dominio de la respuesta es monótono (si X es posible, X-1 también lo es).
+Aquí está la idea más valiosa de la lección. A veces no hay arreglo que buscar, pero el **dominio de la respuesta** es monótono: si un valor $X$ "funciona", todos los mayores (o menores) también. Entonces buscas binariamente el **umbral**, evaluando un predicado en vez de comparar elementos:
 
 ```
-Busca el mínimo X tal que condición(X) == True
-
-left, right = dominio_mínimo, dominio_máximo
+# Busca el MÍNIMO X tal que condicion(X) es True
+left, right = dominio_min, dominio_max
 while left < right:
     mid = (left + right) // 2
-    if condicion(mid): right = mid
-    else: left = mid + 1
+    if condicion(mid): right = mid       # mid sirve; busca uno menor
+    else:              left = mid + 1     # mid no sirve; sube
 return left
 ```
 
-**Ejemplos:**
-- Mínima velocidad para llegar a tiempo → buscar sobre velocidades
-- Capacidad mínima de barco → buscar sobre capacidades
-- kth smallest element en matriz ordenada → buscar sobre valores
+El patrón aparece disfrazado en muchos enunciados: "mínima velocidad para llegar a tiempo", "capacidad mínima de un barco para entregar en $D$ días", "$k$-ésimo elemento más pequeño en una matriz ordenada". En todos, conviertes un problema de **optimización** en "hallar el primer True de un predicado monótono". El coste es $O(\log(\text{rango}) \times \text{costo de condicion})$.
 
----
+> **Predicción antes de seguir:** ¿puedes usar binaria sobre la respuesta si el predicado oscila (True, False, True…)? Respuesta: **no**. La binaria exige **monotonía**: que una vez que el predicado se vuelve True, siga True. Sin esa garantía, descartar media mitad es incorrecto. Antes de aplicarla, verifica que la condición sea monótona en el dominio.
 
-## QuickSelect — kth elemento en O(n) esperado
+## QuickSelect: el $k$-ésimo sin ordenar todo
 
-Para encontrar el k-ésimo elemento más pequeño sin ordenar todo:
+Si solo quieres el $k$-ésimo elemento más pequeño, ordenar todo ($O(n\log n)$) es desperdicio. **QuickSelect** reutiliza la partición de QuickSort: elige un pivote, particiona, y mira **dónde quedó el pivote**. Si quedó en la posición $k$, terminaste; si $k$ está a su izquierda, recurres solo en la izquierda (y viceversa). Como cada paso descarta un lado, el trabajo esperado es $O(n) + O(n/2) + \dots = O(n)$ esperado (peor caso $O(n^2)$, mitigado con pivote aleatorio). La variante "median of medians" lo garantiza en $O(n)$ a costa de más complejidad.
 
-1. Elige pivote, particiona: menores izquierda, mayores derecha
-2. Si el pivote queda en posición k → retorna
-3. Si k < posición pivote → recurre en la izquierda
-4. Si k > posición pivote → recurse en la derecha
+## Heaps y colas de prioridad
 
-**Tiempo:** O(n) promedio, O(n²) peor caso (con pivot aleatorio, O(n) esperado).
-
-Alternativa garantizada O(n): "Median of medians" — más complejo.
-
----
-
-## Conteo de inversiones (Merge Sort)
-
-Una **inversión** en un array es un par (i,j) con i<j pero arr[i]>arr[j].
-
-Contar inversiones en O(n log n) integrando el conteo en Merge Sort:
-- Al hacer merge, si arr[left_i] > arr[right_j]: todas las posiciones restantes de la izquierda forman inversiones con arr[right_j].
-- Sumar: inversiones += (mid - left_i + 1)
-
-**Aplicación:** mide cuán lejos está un array de estar ordenado.
-
----
-
-## HeapSort y Priority Queue
-
-**Heap (min o max):** árbol binario completo donde cada padre ≤ hijos (min-heap).
-
-Representación en array: hijo izquierdo en 2i+1, hijo derecho en 2i+2, padre en ⌊(i-1)/2⌋.
+Un **heap** es un árbol binario completo con la propiedad de que cada padre es $\le$ sus hijos (min-heap). Se guarda en un arreglo sin punteros: el hijo izquierdo de $i$ está en $2i+1$, el derecho en $2i+2$, el padre en $\lfloor(i-1)/2\rfloor$.
 
 | Operación | Min-Heap |
 |-----------|---------|
-| Insert | O(log n) |
-| Peek min | O(1) |
-| Extract min | O(log n) |
-| Build heap | O(n) — sorprendente: no O(n log n) |
+| Insert | $O(\log n)$ |
+| Peek mínimo | $O(1)$ |
+| Extract mínimo | $O(\log n)$ |
+| Build heap | $O(n)$ — sí, lineal, no $n\log n$ |
 
-**HeapSort:** build max-heap en O(n), luego extraer n veces en O(log n) → O(n log n) total, O(1) espacio.
+El "build en $O(n)$" sorprende: aunque cada *sift-down* cuesta hasta $O(\log n)$, la mayoría de los nodos están cerca de las hojas (poco que bajar), y la suma converge a $O(n)$. La regla de oro de entrevista: para los **$k$ más grandes**, usa un **min-heap de tamaño $k$** (expulsa el menor cada vez que crece) → $O(n\log k)$, mucho mejor que ordenar todo. Heaps potencian top-$k$, merge de $k$ listas ordenadas, Dijkstra y la mediana en streaming (dos heaps).
 
-**Usos comunes:** top-k elementos, merge de k listas ordenadas, Dijkstra, median dinámico (dos heaps).
+## Ordenamientos por conteo y trucos de bits
 
----
+**CountingSort** cuenta cuántas veces aparece cada valor y reconstruye: $O(n+k)$ con $k$ = rango. Solo sirve para enteros de rango chico. **RadixSort** ordena dígito por dígito (del menos al más significativo) usando CountingSort en cada uno: para enteros de 32 bits en base 256, son 4 pasadas → efectivamente $O(n)$.
 
-## RadixSort y CountingSort
-
-**CountingSort:** cuenta frecuencias de cada valor, acumula. O(n+k) donde k=rango de valores. Solo funciona para enteros pequeños.
-
-**RadixSort:** ordena dígito por dígito (del menos al más significativo), usando CountingSort en cada dígito.
-- d dígitos, base b: O(d·(n+b))
-- Para enteros de 32 bits con base 2^8: d=4 pasadas, O(4(n+256)) = O(n)
-
-**RadixSort domina** cuando d es pequeño y n es grande — útil para strings de longitud fija.
-
----
-
-## Manipulación de bits
+Los **trucos de bits** son aritmética de conjuntos en binario:
 
 | Operación | Expresión | Uso |
 |-----------|-----------|-----|
-| Es potencia de 2 | n & (n-1) == 0 | Verifica power of 2 |
-| Último bit encendido | n & (-n) | Lowest set bit |
-| Contar bits encendidos | bin(n).count('1') o Kernighan | Hamming weight |
-| XOR de dos iguales | x^x = 0 | Cancelación |
-| XOR con 0 | x^0 = x | Identidad |
-| Aislar bit k | (n >> k) & 1 | Leer bit k |
-| Encender bit k | n | (1 << k) | Set bit k |
-| Apagar bit k | n & ~(1 << k) | Clear bit k |
+| ¿Potencia de 2? | `n & (n-1) == 0` | un solo bit encendido |
+| Bit más bajo encendido | `n & (-n)` | aislar el lowest set bit |
+| Leer/encender/apagar bit $k$ | `(n>>k)&1` / `n\|(1<<k)` / `n & ~(1<<k)` | manipular bit $k$ |
+| Cancelación | `x ^ x = 0`, `x ^ 0 = x` | base de los trucos de XOR |
 
-**Kernighan bit count:** n = n & (n-1) elimina el bit más bajo → repetir hasta n=0. Itera O(número de bits encendidos).
+El **conteo de Kernighan** (`n = n & (n-1)` apaga el bit más bajo, repetido hasta 0) itera tantas veces como bits encendidos haya.
 
----
+## Trucos de XOR e invariantes de conteo
 
-## Trucos de XOR
+El XOR cumple `x^x=0` y `x^0=x`, así que **lo que aparece en par se cancela**. De ahí salen joyas:
 
-**Encontrar el número faltante** en [1..n]: XOR de 1..n y XOR de los elementos del array → el resultado es el faltante (por la propiedad x^x=0).
+- **Número faltante en $[1..n]$:** haz XOR de $1\oplus2\oplus\dots\oplus n$ contra el XOR de los elementos del arreglo; todo lo presente se cancela en pares y queda el faltante.
+- **Único sin pareja** (todos los demás aparecen dos veces): XOR de todo el arreglo.
+- **Swap sin variable temporal:** `a^=b; b^=a; a^=b` (porque `a^b^b=a` y `a^a^b=b`).
 
-**Encontrar el único elemento no duplicado** en un array donde todos los demás aparecen dos veces: XOR de todos los elementos.
-
-**Swap sin variable temporal:**
-```
-a ^= b
-b ^= a
-a ^= b
-```
-
-**Por qué funciona:** a^b^b = a; a^a^b = b.
-
----
-
-## Elemento mayoritario (Boyer-Moore Voting)
-
-Encontrar el elemento que aparece más de n/2 veces en O(n) tiempo y O(1) espacio.
-
-```
-candidate = None, count = 0
-Para cada elemento x:
-    if count == 0: candidate = x
-    count += (1 if x == candidate else -1)
-return candidate
-```
-
-**Intuición:** cada vez que el candidato "pierde" un voto contra un no-candidato, ambos se cancelan. El verdadero mayoritario siempre sobrevive.
-
----
-
-## Encontrar pico (Peak Finding)
-
-Un pico es un elemento mayor que sus vecinos. Siempre existe en cualquier array.
-
-**Búsqueda binaria:** si arr[mid] < arr[mid+1]: pico en la derecha. Si arr[mid] < arr[mid-1]: pico en la izquierda. Si ninguno: arr[mid] es pico.
-
-**Tiempo:** O(log n) — binaria sobre la monotonía local.
+Y el **voto de Boyer-Moore** halla el elemento mayoritario (>$n/2$) en $O(n)$ tiempo, $O(1)$ espacio, con la intuición de que cada voto del mayoritario y un voto contrario **se cancelan**, y el verdadero mayoritario siempre sobrevive a la cancelación. Es el mismo espíritu del XOR: un invariante de conteo.
 
 ---
 

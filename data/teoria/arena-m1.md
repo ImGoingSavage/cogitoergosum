@@ -1,69 +1,61 @@
 # Hashing, frecuencia y memoria comprada
 
-## El principio central
+## De qué trata esta lección (y qué sabrás hacer al final)
 
-Un hash map es **memoria comprada**. Pagas O(n) espacio para comprar O(1) tiempo de lookup. En cuanto ves que necesitas "¿ya vi este elemento?" o "¿existe su complemento?", el hash map es la herramienta.
+Si tuvieras que apostar a una sola estructura de datos para una entrevista de código, apostarías a la **tabla hash**. Esta lección la lleva más allá del "qué es" hacia el **cuándo** y el **cómo razonar con ella**: la idea de "memoria comprada" (pagar espacio para comprar tiempo), los tres patrones que cubren la mayoría de los problemas (complemento, frecuencia, clave canónica), y —crucial— **cuándo el hash NO es la respuesta**, porque reconocer eso vale tanto como saber usarlo.
+
+Al terminar podrás: (1) dar un análisis de complejidad honesto ($O(1)$ esperado, $O(n)$ peor caso) y defenderlo en la entrevista; (2) aplicar el patrón del complemento, el contador de frecuencias y la clave canónica; (3) resolver "subarreglo que suma $k$" reconociéndolo como Two Sum sobre sumas prefijas; y (4) saber cuándo cambiar a ventana deslizante o a detección de ciclos (Floyd) porque la restricción de espacio prohíbe el hash. Cada patrón entra por su señal y un ejemplo trabajado. Comparte raíz con [[arena-cc1]] (arrays) pero profundiza en los patrones de hashing.
 
 ---
+
+## El principio central: memoria comprada
+
+La frase que conviene grabar: una tabla hash es **memoria comprada**. Pagas $O(n)$ de espacio una vez para comprar $O(1)$ de tiempo en cada consulta futura. Toda la habilidad consiste en detectar la señal: en cuanto un problema pregunta *"¿ya vi este elemento?"*, *"¿existe su complemento?"* o *"¿cuántas veces aparece?"*, el hash map es la jugada. Es la herramienta que convierte un bucle anidado $O(n^2)$ ("para cada elemento, busca su pareja recorriendo el resto") en una sola pasada $O(n)$ ("para cada elemento, pregunta al índice si la pareja ya pasó").
 
 ## Análisis de complejidad honesto
 
 | Operación | Caso esperado | Peor caso |
 |-----------|--------------|-----------|
-| Insert    | O(1)         | O(n)      |
-| Lookup    | O(1)         | O(n)      |
-| Delete    | O(1)         | O(n)      |
+| Insert    | $O(1)$       | $O(n)$    |
+| Lookup    | $O(1)$       | $O(n)$    |
+| Delete    | $O(1)$       | $O(n)$    |
 
-El peor caso ocurre cuando todas las claves colisionan en el mismo bucket (hash function maliciosa o diseñada para el input). En Python (`dict`), el hash function es resistente a esto en práctica. Para entrevistas: menciona que el peor caso es O(n) y que el esperado es O(1) amortizado.
+El peor caso $O(n)$ ocurre cuando **todas** las claves colisionan en el mismo bucket —un input adversarial o una función hash mala—. En la práctica, las implementaciones serias (como el `dict` de Python) usan funciones resistentes a esto, así que el caso esperado domina. La frase que el entrevistador quiere oír: *"$O(1)$ amortizado esperado, $O(n)$ en el peor caso por colisiones"*. Decir solo "$O(1)$" sin el matiz es un error de rigor. El espacio es $O(n)$ en el número de elementos guardados.
 
-Espacio: O(n) donde n es el número de elementos almacenados.
+## Patrón 1: el complemento (Two Sum)
 
----
-
-## Patrón 1: Complemento (Two-Sum)
-
-**Señal:** "para cada elemento, ¿existe en el array (antes o después) un elemento relacionado?"
-
-**Jugada:** store-and-lookup. Un set de "vistos".
+**Señal:** "para cada elemento, ¿existe en el arreglo uno relacionado?". **Jugada:** guarda lo visto y consulta el complemento.
 
 ```python
 def two_sum(nums, target):
-    seen = {}          # valor -> índice
+    seen = {}                      # valor -> índice
     for i, x in enumerate(nums):
         complement = target - x
         if complement in seen:
             return [seen[complement], i]
-        seen[x] = i    # inserta DESPUÉS de buscar
+        seen[x] = i                # inserta DESPUÉS de buscar
     return []
 ```
 
-**Por qué el orden importa:** si insertaras antes de buscar, cuando `target = 0` y `nums[0] = 0`, el elemento buscaría su complemento `0` y lo encontraría en sí mismo (self-pair). Buscar primero garantiza que solo los elementos anteriores están disponibles.
+La intuición: en vez de preguntar "¿hay un par que sume `target`?" (cuadrático), reformulas a "para *este* `x`, ¿pasó antes su complemento `target − x`?" (lineal). El orden —**buscar antes de insertar**— evita el auto-emparejamiento: con `target=0` y `nums[0]=0`, insertar primero haría que el `0` se encontrara a sí mismo.
 
----
+## Patrón 2: frecuencia
 
-## Patrón 2: Frecuencia
-
-**Señal:** "¿cuántas veces aparece cada elemento?" o "¿existe algún elemento que aparece más de k veces?"
-
-**Jugada:** un diccionario de conteo (en Python: `Counter`).
+**Señal:** "¿cuántas veces aparece cada elemento?" o "¿cuál aparece más de $k$ veces?". **Jugada:** un diccionario contador (en Python, `Counter`).
 
 ```python
 from collections import Counter
 
-def most_common(nums, k):
+def aparecen_mas_de(nums, k):
     freq = Counter(nums)
-    return [x for x, count in freq.items() if count > k]
+    return [x for x, c in freq.items() if c > k]
 ```
 
-Una sola pasada O(n), lookup O(1).
+Una pasada $O(n)$ para contar, lookup $O(1)$. Es el hash en su forma más directa: el bucket *es* la cuenta.
 
----
+## Patrón 3: clave canónica (agrupar anagramas)
 
-## Patrón 3: Clave canónica (Agrupar anagramas)
-
-**Señal:** "agrupa elementos equivalentes bajo alguna transformación"
-
-**Jugada:** hash map con una representación canónica como clave.
+**Señal:** "agrupa elementos equivalentes bajo alguna transformación". **Jugada:** un hash map cuya clave es una **representación canónica** —una firma que es idéntica para todos los equivalentes—.
 
 ```python
 from collections import defaultdict
@@ -71,35 +63,28 @@ from collections import defaultdict
 def group_anagrams(words):
     groups = defaultdict(list)
     for word in words:
-        key = tuple(sorted(word))   # firma canónica
+        key = tuple(sorted(word))   # firma: las letras ordenadas
         groups[key].append(word)
     return list(groups.values())
 ```
 
-La decisión creativa es el diseño de la clave. El resto es mecánico.
+`"eat"` y `"tea"` comparten la firma `('a','e','t')`, así que caen en el mismo grupo. Toda la creatividad está en **diseñar la clave**; el resto es mecánico. Cuesta $O(n\cdot k\log k)$ ($k$ = longitud de palabra, por el ordenamiento de cada firma).
 
----
+## Cuándo el hash NO sirve: el duplicado en $O(1)$ espacio
 
-## El problema del duplicado: O(1) espacio
+Un giro revelador: un arreglo de $n+1$ enteros, todos entre $1$ y $n$, tiene al menos un duplicado. Hállalo en $O(n)$ tiempo **y $O(1)$ espacio**, sin modificar el arreglo. El hash map resolvería el tiempo pero **viola el espacio** ($O(n)$). Hay que cambiar de herramienta por completo.
 
-Un array de n+1 enteros, todos entre 1 y n. Hay al menos un duplicado. Encuéntralo en O(n) tiempo y O(1) espacio, sin modificar el array.
-
-**Por qué el hash map no sirve aquí:** O(n) espacio viola la restricción.
-
-**Solución: Floyd's Cycle Detection**
-
-Trata el array como una lista enlazada donde el nodo i apunta al nodo `arr[i]`. El duplicado crea un ciclo (dos nodos apuntan al mismo destino).
+La idea ingeniosa: trata el arreglo como una lista enlazada donde el nodo $i$ "apunta a" `nums[i]`. Como hay un valor repetido, dos nodos apuntan al mismo destino → se forma un **ciclo**. Detectarlo es la **tortuga y la liebre de Floyd**:
 
 ```python
 def find_duplicate(nums):
-    # Fase 1: detectar el ciclo
-    slow = nums[nums[0]]
-    fast = nums[nums[nums[0]]]
-    while slow != fast:
+    slow = fast = nums[0]
+    # Fase 1: la liebre alcanza a la tortuga dentro del ciclo
+    while True:
         slow = nums[slow]
         fast = nums[nums[fast]]
-
-    # Fase 2: encontrar la entrada del ciclo
+        if slow == fast: break
+    # Fase 2: dos punteros a igual velocidad hallan la entrada del ciclo
     slow = nums[0]
     while slow != fast:
         slow = nums[slow]
@@ -107,33 +92,19 @@ def find_duplicate(nums):
     return slow
 ```
 
-**Señal → jugada:** "duplicado en array de rango acotado, sin espacio extra" → ciclo de Floyd.
+La entrada del ciclo es el número duplicado. Es $O(n)$ tiempo, $O(1)$ espacio. **Señal → jugada:** "duplicado en rango acotado, sin espacio extra" → ciclo de Floyd, no hash.
 
----
+> **Predicción antes de seguir:** la restricción "$O(1)$ espacio" es la que mata al hash. ¿Por qué los entrevistadores la ponen? Porque distingue a quien *memoriza* "hash para duplicados" de quien *razona* sobre las restricciones y reconoce una estructura oculta (el ciclo). Lee siempre las restricciones de espacio antes de elegir la herramienta.
 
-## Complejidad de problemas relacionados
+## Complejidades de problemas vecinos
 
-| Problema | Complejidad óptima | Estructura |
-|----------|-------------------|------------|
-| Two Sum  | O(n) tiempo, O(n) espacio | Hash set |
-| Three Sum | O(n²) tiempo, O(1) extra | Sort + dos punteros |
-| Find duplicate (sin modificar) | O(n) tiempo, O(1) espacio | Floyd's cycle |
-| Group anagrams | O(n·k log k) tiempo, O(n·k) espacio | Hash map + sort de clave |
-| Top K frequent | O(n log k) tiempo, O(n) espacio | Hash + heap |
-
----
-
-## Casos borde que el entrevistador querrá discutir
-
-Para Two Sum:
-- Array vacío o con un elemento → retornar []
-- Múltiples soluciones válidas → ¿se pide una o todas?
-- Enteros negativos → no cambia nada, el hash map maneja cualquier entero
-
-Para Group Anagrams:
-- Strings vacíos: `sorted("")` = `[]`, es una clave válida
-- Un solo carácter: funciona igual
-- Strings muy largos: la clave es O(k log k) donde k es la longitud
+| Problema | Óptimo | Estructura |
+|----------|--------|------------|
+| Two Sum | $O(n)$ tiempo, $O(n)$ espacio | hash set |
+| Three Sum | $O(n^2)$ tiempo, $O(1)$ extra | sort + dos punteros |
+| Find duplicate (sin modificar) | $O(n)$ tiempo, $O(1)$ espacio | ciclo de Floyd |
+| Group anagrams | $O(n\,k\log k)$ | hash + sort de clave |
+| Top-K frequent | $O(n\log k)$ | hash + heap de tamaño $k$ |
 
 ---
 
