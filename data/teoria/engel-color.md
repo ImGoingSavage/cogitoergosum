@@ -61,3 +61,9 @@ Colorear es también una forma de CASILLERO (§3.3): los colores son las cajas.
 ---
 
 *Antes del quiz: reconstruye de memoria el argumento del tablero mutilado, la receta de tres pasos, la coloración (i+j) mod 4 con el censo 25/26/25/24 y la obstrucción bicolor al camino de 14 ciudades.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las coloraciones son invariantes visuales: colorear crea una cantidad conservada que vuelve imposible una configuracion. Conecta con [[zeitz-34]] y [[arena-q12]], y tambien con [[arena-b1]] cuando el argumento depende de contar clases de color en lugar de piezas individuales.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

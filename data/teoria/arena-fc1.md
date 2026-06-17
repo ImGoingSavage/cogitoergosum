@@ -164,3 +164,9 @@ Moraleja de la arista: *el $1/e$ es la firma de "esperaba uno y salió ninguno";
 ---
 
 *Retrieval: cierra y responde: (1) $E[\text{puntos fijos de permutación de }n=50]$; (2) $P(\text{ningún punto fijo}, n=6)$; (3) fórmula del ballot problem; (4) $P(k\text{-ésimo es récord en }n$ i.i.d.$)$.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+Coincidencias, urnas y emparejamientos son terreno natural para complemento e inclusion-exclusion. [[zeitz-63]] aporta el lenguaje de solapes, y [[aime-cnt]] muestra por que contar lo que no ocurre suele ser mas estable que enumerar directamente lo que si ocurre.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

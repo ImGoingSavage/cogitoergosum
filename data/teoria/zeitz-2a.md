@@ -55,3 +55,9 @@ La creatividad del resolvedor, para Zeitz, no es un don: es **tolerancia deliber
 ---
 
 *Antes del quiz: reconstruye de memoria la moraleja completa del ratón (las dos mitades), de dónde sale la confianza según Zeitz, y dos prácticas concretas de creatividad deliberada.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La psicologia del resolvedor explica por que [[polya-cuatro-pasos]] empieza con entender y no con calcular. La tolerancia a fallar, pedir feedback y sostener ambiguedad conecta con [[arena-c2]], mientras que el bucle estado-accion-observacion de [[gen-ag1]] formaliza esa adaptacion como decisiones con retroalimentacion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

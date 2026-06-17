@@ -69,3 +69,9 @@ En generatrices se trabaja **formalmente**: las series son empaques de coeficien
 ---
 
 *Antes del quiz: reconstruye de memoria la definición, los dos hechos del poder, el desarrollo completo de x/(2+x) y el doblete de evaluaciones en x = ±1.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las funciones generatrices codifican conteos como algebra para que coeficientes revelen estructura. Nacen de recurrencias como [[zeitz-64]], conectan con la combinatoria de [[arena-p2]], y regresan a [[arena-b1]] cuando una distribucion o suma se entiende mejor mediante una funcion que empaqueta casos.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

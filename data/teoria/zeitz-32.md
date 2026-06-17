@@ -69,3 +69,9 @@ Ejemplo de sabor: en la demostración de que √2 es irracional vía p² = 2q²,
 ---
 
 *Antes del quiz: reconstruye de memoria el enunciado del principio, por qué el extremo trae propiedades gratis, el argumento completo del círculo de promedios y el esquema del descenso infinito.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El principio extremo convierte una coleccion desordenada en un punto de ataque: toma el menor, mayor o mas saturado y fuerzalo. [[engel-extremo]] profundiza esa cantera, [[arena-q13]] lo usa en pruebas de logica e induccion, y [[arena-sre4]] lo refleja en produccion cuando buscas el cuello de botella o el modo de fallo limite antes de generalizar.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

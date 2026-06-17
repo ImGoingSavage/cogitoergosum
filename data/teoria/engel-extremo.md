@@ -60,3 +60,9 @@ Frases gatillo: «demuestra que existe…», «siempre hay…», «el proceso te
 ---
 
 *Antes del quiz: reconstruye de memoria la receta y por qué es «variacional», los tres hechos de base (y cuál se olvida siempre), la biyección extremal de E1 con su fórmula, la jugada del vértice más cercano de E2 y la prueba completa de Sylvester-Gallai.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El principio extremal de Engel es el compañero directo de [[zeitz-32]]. En [[arena-q13]] aparece cuando eliges el objeto minimo o maximo para forzar una contradiccion, y en [[arena-sre4]] se reconoce como buscar el caso limite que dispara cascada, sobrecarga o fallo de simplicidad.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

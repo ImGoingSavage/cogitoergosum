@@ -78,3 +78,9 @@ El flujo completo: casos pequeños → tabla → patrón → conjetura → demos
 ---
 
 *Antes del quiz: para cada una de las seis entradas, intenta decir de memoria (1) qué es en una frase y (2) una señal que la dispara.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El diccionario de heuristicas funciona como indice mental para elegir movimientos: ensuciarse las manos en [[zeitz-2b]], buscar invariantes o simetrias en [[arena-q12]], y reconocer el tipo de acertijo en [[arena-p1]]. No es una lista para memorizar; es un sistema de routing cognitivo que decide que herramienta probar segun la forma del bloqueo.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

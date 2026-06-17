@@ -54,3 +54,9 @@ Si llevas diez minutos mirando un problema sin escribir nada, no está fallando 
 ---
 
 *Antes del quiz: define de memoria ejercicio vs. problema, los tres niveles con un ejemplo de cada uno, y el contrato de lectura.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La diferencia entre ejercicio y problema prepara todo el modo Estudio: en [[polya-cuatro-pasos]] aparece como ciclo de ataque, y en [[arena-p1]] como razonamiento rapido que exige reconocer estructura bajo presion. Cuando el problema pide prueba o estrategia, [[arena-q13]] retoma la misma frontera entre aplicar una receta y construir una idea.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

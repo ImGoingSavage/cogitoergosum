@@ -63,3 +63,9 @@ El principio detrás de toda codificación: pregúntate **qué información mín
 ---
 
 *Antes del quiz: reconstruye de memoria qué es una biyección y sus dos verificaciones, la deducción completa de estrellas y barras y la codificación de las composiciones de n.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Particiones y biyecciones muestran que contar es elegir una representacion donde los objetos se vuelven comparables. [[arena-b1]] da el lenguaje probabilistico, [[arena-p2]] lo extiende a estructuras discretas, y [[aime-cnt]] lo exige cuando una cuenta directa es torpe pero una correspondencia limpia resuelve el problema.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

@@ -71,3 +71,9 @@ Dar por hecho que f es continua o diferenciable cuando el enunciado no lo dice e
 ---
 
 *Antes del quiz: reconstruye de memoria las cuatro sustituciones especiales más frecuentes, cuándo se necesita la hipótesis de regularidad en Cauchy y la tabla de las tres variantes de Cauchy con sus soluciones.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las ecuaciones funcionales exigen tratar una regla como objeto de prueba: probar valores, forzar simetrias y usar invariantes. [[arena-q13]] aporta el marco de logica y juegos de estrategia, [[zeitz-54]] recuerda el papel de identidades polinomiales, y [[aime-alg]] practica sustituciones controladas.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

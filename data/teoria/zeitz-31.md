@@ -58,3 +58,9 @@ La estructura general: **quien puede instalar y mantener una simetría del juego
 ---
 
 *Antes del quiz: reconstruye de memoria la definición de simetría como herramienta, qué autoriza exactamente un WLOG (y cuándo es trampa), las identidades s-p, y la estrategia ganadora de la mesa redonda.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La simetria reduce casos porque identifica lo que realmente cambia y lo que no. Esa misma compresion aparece en [[arena-q12]] al buscar invariantes, en [[aime-geo]] al elegir coordenadas o reflejos, y en [[zeitz-85a]] cuando una transformacion rigida conserva distancias y angulos.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

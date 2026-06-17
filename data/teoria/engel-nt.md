@@ -67,3 +67,9 @@ La generalización de Fermat a módulo compuesto (con m = p primo, φ(p) = p−1
 ---
 
 *Antes del quiz: reconstruye de memoria la fórmula útil con su deducción para sumas, la maniobra completa de Sophie Germain, el cálculo de los ceros de 100! y el contraejemplo 341.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La cantera de teoria de numeros de Engel profundiza los filtros de [[zeitz-71]] y las congruencias de [[zeitz-72]]. En entrevistas, [[arena-q13]] usa la misma caja de herramientas para pruebas cortas donde modularidad, paridad y descenso eliminan familias completas de candidatos.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

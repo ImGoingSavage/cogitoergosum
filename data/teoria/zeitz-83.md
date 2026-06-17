@@ -62,3 +62,9 @@ Y el protocolo de los problemas «de cuadrado inscrito / altura / proporción»:
 ---
 
 *Antes del quiz: reconstruye de memoria los tres atajos y la fábrica con su recíproco, la configuración completa de la altura a la hipotenusa (con Pitágoras de regalo) y el principio de comparar áreas por bases compartidas.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Area y semejanza convierten una figura en relaciones de escala. [[aime-geo]] las usa con Heron, potencia y coordenadas, [[engel-geo2]] aporta herramientas avanzadas, y [[zeitz-85b]] muestra como homotecia y semejanza espiral explican por que ciertas longitudes cambian juntas.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

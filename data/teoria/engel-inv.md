@@ -66,3 +66,9 @@ Pista de diseño: el invariante correcto suele ser **la combinación lineal que 
 ---
 
 *Antes del quiz: reconstruye de memoria el lema y las cuatro preguntas, el argumento completo de 1…2n con n impar, el monovariante de Sikinia con su doble lección (flecha + algoritmo) y por qué «las cuentas cuadran» no prueba posibilidad.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El principio de invariancia de Engel profundiza [[zeitz-34]]: si algo no cambia, restringe todo el proceso. [[arena-q12]] lo usa para brainteasers de conteo, y [[arena-cc3]] lo convierte en argumento de terminacion o correccion cuando un algoritmo recursivo debe conservar una propiedad.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

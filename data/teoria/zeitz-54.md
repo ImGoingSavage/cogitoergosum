@@ -69,3 +69,9 @@ aₙ₋ₖ = (−1)ᵏ · (suma de todos los productos de k ceros distintos)
 ---
 
 *Antes del quiz: reconstruye de memoria la prueba de una línea del teorema del resto, la jugada completa del USAMO 1975, las tres relaciones de la cúbica con sus signos y el cálculo de r²+s² sin resolver.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Polinomios, ceros y Vieta convierten raices en coeficientes y viceversa. [[engel-pol]] amplifica esa cantera, [[aime-alg]] la aplica bajo restricciones de examen, y [[arena-p4]] muestra por que la misma estructura algebraica importa en modelos y calculo financiero.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

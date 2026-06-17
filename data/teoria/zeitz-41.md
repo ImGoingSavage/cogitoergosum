@@ -65,3 +65,9 @@ La demostración de las hojas es una joya táctica: considera el **camino más l
 ---
 
 *Antes del quiz: reconstruye de memoria el lema del apretón de manos con su demostración, el corolario de los impares, la condición euleriana exacta con su porqué, y el veredicto del torneo de 9 equipos.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Los grafos recodifican relaciones para que caminos, componentes y grados hagan visible lo oculto. [[arena-cc2]] enseña busqueda en arboles y grafos, [[arena-h1]] usa DAGs para razonar causalidad y adjustment sets, y [[gen-ma2]] lleva la misma idea a orquestacion: agentes como nodos y mensajes como aristas con fallos posibles.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

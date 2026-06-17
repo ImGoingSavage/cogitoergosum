@@ -58,3 +58,9 @@ Una semejanza espiral de centro O, razón k y ángulo θ es, en números complej
 ---
 
 *Antes del quiz: reconstruye de memoria la definición de homotecia, por qué el baricentro es un centro de homotecia de razón −1/2, los dos centros de homotecia de dos círculos y qué es una semejanza espiral en términos de números complejos.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Homotecia y semejanza espiral son transformaciones donde escala y giro explican relaciones escondidas. [[aime-geo]] las necesita para reconocer semejanza, [[engel-geo2]] aporta herramientas avanzadas, y [[zeitz-42]] muestra por que los complejos son un lenguaje natural para rotar y escalar.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

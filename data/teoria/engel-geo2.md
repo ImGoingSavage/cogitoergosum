@@ -71,3 +71,9 @@ La señal de peligro: si empiezas con coordenadas cartesianas brutas sin aprovec
 ---
 
 *Antes del quiz: reconstruye de memoria la fórmula del baricentro como combinación afín, la rotación en complejos, la ley de senos con el circunradio y cuándo usar cada herramienta.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Geometria avanzada con vectores, complejos y trigonometria es el puente entre configuraciones visuales y calculo. [[aime-geo]] lo aplica en problemas cerrados, [[zeitz-42]] explica el lenguaje complejo, y [[arena-p4]] da la base algebraica para mover entre representaciones.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

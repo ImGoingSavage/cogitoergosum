@@ -78,3 +78,9 @@ Entonces 198 < Σ < 199 → **⌊Σ⌋ = 198**. La moraleja doble: telescopio co
 ---
 
 *Antes del quiz: reconstruye de memoria la comparación √19+√99 vs √20+√98, AM-GM con su cuadrado y su geometría, el massage completo de la suma de 1/√n y la señal de Cauchy-Schwarz.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las desigualdades son control de forma: AM-GM, Cauchy y massage dicen que expresiones pueden dominar a otras. [[engel-ineq]] profundiza tecnicas de competencia, [[arena-p4]] las conecta con optimizacion y calculo, y [[arena-q5]] las usa cuando derivadas y convexidad explican mercados y riesgo.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

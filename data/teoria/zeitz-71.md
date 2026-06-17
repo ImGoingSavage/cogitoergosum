@@ -63,3 +63,9 @@ Factorizar números grandes es caro; el mcd no lo necesita:
 ---
 
 *Antes del quiz: reproduce de memoria la prueba de Euclides señalando la movida crux y el malentendido de «Q es primo», explica la unicidad con el mundo de los pares, y calcula divisores de 360 desde la PPF.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Primos y divisibilidad son restricciones estructurales: factorizan el universo antes de calcular. [[engel-nt]] ofrece mas cantera de teoria de numeros, [[zeitz-72]] transforma divisibilidad en congruencias manejables, y [[arena-q13]] reutiliza esa mentalidad cuando una prueba necesita filtrar casos imposibles.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

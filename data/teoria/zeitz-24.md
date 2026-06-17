@@ -61,3 +61,9 @@ Atascado un buen rato + ningún error a la vista = **sospecha de la representaci
 ---
 
 *Antes del quiz: reconstruye de memoria qué aporta un dibujo y qué debe tener para servir, dos traducciones típicas con su señal, la señal del complemento, y cómo se desarma la mosca de los trenes.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Reformular un problema es cambiar su representacion: dibujar, traducir o mirar desde otro punto de vista. Esa idea conecta con [[arena-h1]] cuando un DAG vuelve visible un sesgo causal, con [[arena-q12]] cuando un invariante sustituye fuerza bruta, y con [[gen-rag4]] cuando el diagnostico separa recuperacion, generacion y evaluacion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

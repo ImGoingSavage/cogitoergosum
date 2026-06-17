@@ -54,3 +54,9 @@ Su gracia: permite **álgebra de errores** — O(x²)·x = O(x³), O(x²) + O(x�
 ---
 
 *Antes del quiz: reconstruye de memoria la definición ε-N, las seis vías (y cuál no necesita conocer L), el error «converge a la cota», la regla de oro euleriana y el cierre completo del producto máximo con suma 20.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El calculo de competencia une convergencia, series y manipulacion euleriana. [[arena-p4]] ofrece el marco de calculo para finanzas cuantitativas, [[arena-q5]] conecta derivadas con mercados, y [[zeitz-53]] muestra que muchas series primero se vuelven manejables por telescopio.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

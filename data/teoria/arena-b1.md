@@ -247,3 +247,9 @@ Moraleja de la arista: *para contar lo enredado, suma indicadores (la dependenci
 ---
 
 *Retrieval: cierra y responde: (1) anagramas de PROBABILITY; (2) $E[X^2]$ para $X\sim\text{Poisson}(3)$; (3) $P(\text{divisible por 2 o 3 entre 1 y 60})$; (4) $P(\text{enfermo}\mid+)$ con prevalencia $2\%$, sensibilidad $90\%$, especificidad $95\%$.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+El hogar de conteo y probabilidad se vuelve mas transferible cuando enlaza con sus canteras olimpicas: [[zeitz-61]] formaliza suma/producto/division, [[zeitz-62]] entrena particiones y biyecciones, [[zeitz-63]] controla solapes con inclusion-exclusion, [[engel-comb]] aporta practica intensa y [[aime-cnt]] muestra la version de examen bajo presion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

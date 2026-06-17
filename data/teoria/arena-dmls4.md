@@ -89,3 +89,9 @@ Moraleja de la arista: *nombra el shift por su probabilidad (P(X)/P(Y)/P(Y|X)), 
 ---
 
 *Retrieval: cierra y responde: (1) define covariate, label y concept shift por su probabilidad; (2) ¿cómo se detecta un shift?; (3) ¿qué es shadow deployment y por qué es seguro?; (4) diferencia canary de bandits.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente inter-fase
+
+Cambios de distribucion, monitoreo y pruebas en produccion conectan directamente con [[gen-resp3]]: en GenAI, cada cambio de prompt, modelo, corpus o herramienta dispara reevaluacion continua. La misma disciplina se cruza con [[cyber-mls5]], donde supply chain de modelos y AI RMF convierten drift y versionado en riesgo gobernado.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

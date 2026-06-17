@@ -68,3 +68,9 @@ Engel no se lee de corrido. El protocolo: estudiar la técnica del capítulo (es
 ---
 
 *Antes del quiz: reconstruye de memoria la tabla del IMO 1977 (qué hay en filas y columnas y de dónde sale la contradicción), por qué cota y construcción son obligatorias, y el truco del logaritmo.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La cantera combinatoria de Engel funciona como gimnasio para las tecnicas de [[zeitz-61]], [[zeitz-62]] y [[zeitz-63]]. En la Arena, [[arena-p2]] organiza esas mismas ideas como probabilidad discreta, mientras [[aime-cnt]] las prueba en problemas donde elegir casos correctos importa mas que expandir formulas.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

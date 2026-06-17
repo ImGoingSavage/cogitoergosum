@@ -94,3 +94,9 @@ Moraleja de la arista: *para un juego, pinta las posiciones perdedoras desde el 
 ---
 
 *Retrieval: cierra la página y responde — (1) leones: ¿par o impar come?; (2) pesadas para hallar 1 entre 9; (3) qué cartas giras en Wason (7,6,A,C); (4) cuántas cerillas dejar en Nim para ganar.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+La logica de entrevistas recupera tecnicas de prueba clasicas: [[zeitz-23]] para contradiccion e induccion, [[engel-ind]] para fortalecer la hipotesis, [[engel-extremo]] para elegir un objeto limite, [[engel-juegos]] para posiciones ganadoras y [[engel-fun]] para reglas que se prueban por sustitucion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

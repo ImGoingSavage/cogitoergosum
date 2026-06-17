@@ -64,3 +64,9 @@ La pregunta correcta: «¿qué función de aₙ se comporta linealmente?»
 ---
 
 *Antes del quiz: reconstruye de memoria la regla de la raíz repetida (con el factor polinomial), el criterio de estabilidad del punto fijo y la sustitución que linealiza aₙ₊₁=aₙ/(1+aₙ).*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Sucesiones y recurrencias comparten estado, transicion y condicion inicial. [[zeitz-64]] da Fibonacci y Catalan como patrones, [[arena-cc3]] los implementa en programacion dinamica, y [[arena-p2]] muestra cuando una sucesion realmente cuenta configuraciones combinatorias.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

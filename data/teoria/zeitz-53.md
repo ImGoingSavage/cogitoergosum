@@ -70,3 +70,9 @@ El patrón escala: para Σkᵖ, telescopia con u(k) = kᵖ⁺¹ y despeja usando
 ---
 
 *Antes del quiz: reconstruye de memoria por qué Gauss funciona en la aritmética y fracasa en la geométrica, el cálculo completo de Σ1/(k(k+1)) hasta 99/100, el telescopio imperfecto de Σk² y los dos errores del salto 2.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El telescopio muestra que una suma puede colapsar si eliges la forma correcta. [[arena-p4]] usa esa manipulacion en calculo y finanzas, [[aime-alg]] la entrena como algebra de competencia, y [[zeitz-9]] la lleva a series y convergencia cuando el patron se vuelve infinito.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

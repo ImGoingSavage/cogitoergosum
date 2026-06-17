@@ -66,3 +66,9 @@ Lección de fondo: **el conteo (fase 2) y la teoría de números son el mismo m�
 ---
 
 *Antes del quiz: reconstruye de memoria la definición de multiplicativa y su consecuencia, la biyección 7.3.6, el cálculo de φ(12) por PIE, la fórmula del producto y las fórmulas de d y σ.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las funciones aritmeticas d, sigma y phi cuentan estructura interna de los enteros. Dependen de la factorizacion de [[zeitz-71]], se simplifican con congruencias de [[zeitz-72]], y conectan con [[arena-b1]] porque muchas identidades son conteos de divisores vistos desde dos perspectivas.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

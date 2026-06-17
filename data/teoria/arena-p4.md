@@ -133,3 +133,9 @@ Moraleja de la arista: *casi todo es una derivada: delta/gamma son duración/con
 ---
 
 *Retrieval: sin mirar: (1) Taylor de $e^x$ hasta el 3.er término; (2) $\operatorname{tr}(A)$ y $\det(A)$ para $A=\big(\begin{smallmatrix}2&1\\1&3\end{smallmatrix}\big)$; (3) $x_1$ de Newton–Raphson en $x^2-3=0$ desde $x_0=2$; (4) qué mide cada valor propio de $\Sigma$ en PCA.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+Calculo y algebra lineal para finanzas se apoyan en una base olimpica amplia: [[zeitz-52]] para factorizacion, [[zeitz-54]] para polinomios y Vieta, [[zeitz-55]] para desigualdades, [[zeitz-42]] para complejos, [[aime-alg]] para manipulacion exacta y [[aime-geo]] cuando una representacion geometrica simplifica el calculo.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

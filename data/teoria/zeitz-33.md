@@ -60,3 +60,9 @@ Verifica los tres requisitos: agotan (✓, cuadrícula), pocas (4 < 5 ✓), comp
 ---
 
 *Antes del quiz: reconstruye de memoria las dos versiones, la forma general de los enunciados que lo piden, los tres requisitos de una buena caja y la solución completa de los cinco puntos.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El palomar es conteo con tension: demasiados objetos para pocas cajas. Su hogar natural esta en [[arena-b1]] (conteo y probabilidad), se vuelve tecnica de competencia en [[aime-cnt]], y aparece como criterio de imposibilidad junto a biyecciones y particiones en [[zeitz-62]].
+<!-- GRAFO_CONEXO_OLEADA3_END -->

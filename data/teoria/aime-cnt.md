@@ -72,3 +72,9 @@ Las técnicas de conteo se aplican al numerador y al denominador por separado. S
 ---
 
 *Antes del quiz: reconstruye de memoria la fórmula de estrellas y barras para no negativas vs. positivas, la fórmula de inclusión-exclusión para la unión de tres conjuntos, la biyección de subconjuntos sin consecutivos y el enunciado de la linealidad de la esperanza.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Conteo y probabilidad AIME vuelven tacticas a las tecnicas de [[zeitz-61]], [[zeitz-62]] y [[zeitz-63]]. [[arena-b1]] da el hogar conceptual: suma, producto, complemento y casos son el mismo lenguaje que luego se mide como probabilidad.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

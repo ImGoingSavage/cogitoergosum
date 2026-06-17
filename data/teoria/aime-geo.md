@@ -78,3 +78,9 @@ Leer exactamente qué número reportar es tan importante como el cálculo.
 ---
 
 *Antes del quiz: reconstruye de memoria la fórmula de Herón con los datos del 13-14-15, el enunciado de la potencia del punto (con el caso tangente), el recíproco para concíclicos y cuándo usar coordinate bash.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La geometria AIME exige elegir rapido entre Heron, potencia, coordenadas y semejanza. [[zeitz-82]] y [[zeitz-83]] construyen los fundamentos, mientras [[engel-geo2]] ofrece herramientas avanzadas para convertir el diagrama en relaciones calculables.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

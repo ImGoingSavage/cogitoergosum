@@ -70,3 +70,9 @@ Tras ensuciarte las manos dirás: «probé n = 1, 2, 3 y el patrón se cumple, a
 ---
 
 *Antes del quiz: reconstruye de memoria las tres búsquedas de la orientación, por qué los casos pequeños le ganan a «quedarse pensando», la pregunta exacta del penúltimo paso y las dos formas del pensamiento ilusorio.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Manos sucias, penultimo paso y pensamiento ilusorio son tacticas para romper bloqueo: [[polya-diccionario]] las organiza como heuristicas, [[arena-p1]] las ejercita en acertijos, y [[gen-eval4]] las traduce al ciclo moderno de probar prompts, medir errores y reformular con datos held-out.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

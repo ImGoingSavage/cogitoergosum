@@ -64,3 +64,9 @@ Los números de Catalan 1, 1, 2, 5, 14, 42, … aparecen dondequiera que un obje
 ---
 
 *Antes del quiz: reconstruye de memoria la estrategia local con sus dos piezas, el argumento completo del dominó (incluida la legitimidad de la partición), la respuesta de la escalera y por qué Catalan multiplica.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las recurrencias convierten una historia en estado y transicion: Fibonacci, Catalan y DP comparten esa forma. [[arena-cc3]] la implementa como recursion y programacion dinamica, [[engel-suc]] la entrena como sucesiones, y [[arena-p2]] muestra cuando la recurrencia cuenta objetos combinatorios.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

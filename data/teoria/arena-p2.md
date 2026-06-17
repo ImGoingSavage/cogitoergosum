@@ -200,3 +200,9 @@ Moraleja de la arista: *el trabajo está en reconocer el modelo, no en calcular;
 ---
 
 *Retrieval: sin mirar: (1) caminos de $(0,0)$ a $(3,3)$; (2) $P(X<Y)$ si $X\sim\text{Exp}(2)$, $Y\sim\text{Exp}(3)$; (3) $E[\max$ de 4 draws de $\{1..10\}]$; (4) $D(5)$.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+La combinatoria discreta de la Arena no vive aislada: [[zeitz-43]] empaqueta conteos en funciones generatrices, [[zeitz-64]] convierte estructuras en recurrencias, y [[engel-suc]] entrena sucesiones donde el estado correcto decide si la cuenta cierra.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

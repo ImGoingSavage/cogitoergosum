@@ -169,3 +169,9 @@ Un estudio analiza el efecto de fumar (X) sobre el cáncer de pulmón (Y). Las v
 2. ¿Qué variables ajustas para estimar el efecto total de X sobre Y?
 
 *Respuesta: Ajusta {ingreso, urbana} (confounders). No ajustes tos (es mediator del camino X → tos → diagnóstico → Y, y posiblemente collider en el diagnóstico). Efecto total: ajusta los confounders, no los mediators.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+Los DAGs causales de esta unidad son grafos con semantica: heredan la intuicion de [[zeitz-41]] sobre relaciones y caminos, pero agregan direccion causal y adjustment sets. Esa diferencia prepara el salto a [[gen-ma2]], donde el grafo de agentes tambien exige controlar que informacion cruza cada arista.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

@@ -65,3 +65,9 @@ De esa misma rotación de residuos vive el **pequeño teorema de Fermat**:
 ---
 
 *Antes del quiz: reconstruye de memoria qué operaciones sobreviven la reducción, el cálculo completo de 2¹⁰⁰⁰ mod 17, la demostración de la regla del 9 y de dónde sale la del 11, y por qué Zₚ permite dividir.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las congruencias convierten una pregunta infinita en un mundo finito donde los residuos importan. Se apoyan en [[zeitz-71]] para factorizacion y divisibilidad, alimentan problemas diofanticos en [[zeitz-74]], y conectan con [[arena-q12]] porque un residuo modulo m suele ser el invariante que no cambia.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

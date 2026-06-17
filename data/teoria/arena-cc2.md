@@ -131,3 +131,9 @@ Moraleja de la arista: *el grafo es la abstracción de las relaciones; BFS da el
 ---
 
 *Retrieval: cierra y responde: (1) cuándo usar BFS en vez de DFS; (2) complejidad de Dijkstra con min-heap; (3) cómo detectar ciclo en grafo dirigido; (4) recorrido in-order de BST y su propiedad.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+Arboles, grafos y busqueda tienen una raiz olimpica en [[zeitz-41]]: recodificar relaciones como nodos y aristas. Ese mismo gesto reaparece en causalidad con [[arena-h1]] y en agentes con [[gen-ma2]], donde la estructura del grafo decide rutas, dependencias y fallos.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

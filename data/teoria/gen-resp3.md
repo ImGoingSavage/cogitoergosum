@@ -139,3 +139,9 @@ print("drift:", hay_drift(base, hoy))       # True -> regresion silenciosa
 - LangChain. (n.d.). LangSmith: Observability and evaluation for LLM apps. [docs.smith.langchain.com](https://docs.smith.langchain.com/)
 
 *Retrieval: (1) nombra cuatro retos de producción de GenAI; (2) ¿qué se monitorea (observabilidad) y por qué?; (3) ¿por qué fijar la versión del modelo y re-evaluar ante cada cambio?; (4) ¿qué es la evaluación continua?*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente inter-fase
+
+La operacion de GenAI no empieza de cero: [[arena-dmls4]] ya enseña distribution shift, monitoreo y pruebas en produccion, y [[arena-rml3]] profundiza serving y observabilidad de modelos. En seguridad, [[cyber-blue1]] aporta la mentalidad de logs y deteccion que aqui se vuelve tracing, alertas de calidad y respuesta a regresiones.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

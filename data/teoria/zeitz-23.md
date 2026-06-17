@@ -65,3 +65,9 @@ Los huecos lógicos se esconden en la prosa borrosa («claramente», «es fácil
 ---
 
 *Antes del quiz: reconstruye de memoria qué regala exactamente la contradicción con tesis negativas, las dos piezas de la inducción con su error típico, y dónde truena el argumento de los caballos.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Contradiccion e induccion son motores de prueba que reaparecen en [[engel-ind]] como induccion fuerte y descenso, y en [[arena-cc3]] como razonamiento recursivo sobre subproblemas. En entrevistas, [[arena-q13]] usa la misma estructura cuando un juego o una logica solo cede al fortalecer la hipotesis.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

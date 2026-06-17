@@ -59,3 +59,9 @@ Receta general (composición de heurísticas que ya tienes):
 ---
 
 *Antes del quiz: reconstruye de memoria la definición de W/L con su doble propiedad, la regla única del juego perfecto, el análisis completo de Bachet 100 con tomas 1-5, los conjuntos L de las tres variantes y qué garantiza exactamente una estrategia de pareo.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Juegos de posiciones perdedoras y pareo combinan invariantes con decision secuencial. [[arena-q13]] trabaja esos argumentos en entrevistas, [[zeitz-34]] aporta propiedades que no cambian, y [[arena-q8]] conecta juegos con esperanza, parada optima y valor de actuar en el tiempo.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

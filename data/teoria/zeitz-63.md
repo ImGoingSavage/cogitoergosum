@@ -67,3 +67,9 @@ Si ni el conjunto ni su complemento son manejables, vuelve al punto 5: partir y 
 ---
 
 *Antes del quiz: reconstruye de memoria la señal del complemento con el ejemplo de los sabores, PIE para tres conjuntos, el porqué de los signos alternados (persigue a un elemento) y la corrección del error 50+33.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Complemento e inclusion-exclusion son antidotos contra contar mal por solapes. [[arena-b1]] introduce el principio en conteo basico, [[arena-fc1]] lo aplica a urnas y emparejamientos, y [[aime-cnt]] lo vuelve una decision tactica: contar lo prohibido puede ser mas barato que contar lo permitido.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

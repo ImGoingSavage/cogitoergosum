@@ -70,3 +70,9 @@ De y = 5: x² + 18x + 45 = 25 → x² + 18x + 20 = 0, y de ahí lo que pida el p
 ---
 
 *Antes del quiz: reconstruye de memoria el camino ligero de x³+y³, las dos fábricas con sus condiciones, la factorización completa de x⁴+4 y la sustitución del AIME 1983 con su cuidado.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Factorizar sin piedad es convertir expresiones opacas en estructura. [[arena-p4]] lo conecta con algebra lineal y calculo para quant, [[aime-alg]] lo practica en sustituciones y sucesiones, y [[engel-pol]] lo extiende a polinomios donde ceros y coeficientes revelan la solucion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

@@ -54,3 +54,9 @@ z = r·Cis θ = r·e^{iθ}, con r = |z|, θ = arg z. Las reglas:
 ---
 
 *Antes del quiz: reconstruye de memoria la triple identidad, el argumento 3z + 4iz completo, qué son las raíces n-ésimas en el plano y qué regalan, y el error del módulo «aditivo».*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Los numeros complejos permiten cruzar algebra y geometria sin cambiar de problema. [[engel-geo2]] usa complejos, vectores y trigonometria como lenguaje geometrico, [[aime-geo]] los traduce a problemas de examen, y [[arena-p4]] conserva la estructura algebraica que hace utiles esas transformaciones.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

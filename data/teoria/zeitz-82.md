@@ -65,3 +65,9 @@ Vocabulario: el **ángulo central** mide lo mismo que su arco. El teorema estrel
 ---
 
 *Antes del quiz: reconstruye de memoria las cuatro condiciones con el porqué del fallo de ASS, el método del fantasma y su pariente lógico, y el esquema completo de la prueba del ángulo inscrito.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Angulos y fantasmas geometricos son una forma de crear informacion que el diagrama oculta. [[aime-geo]] practica esa lectura en examenes, [[engel-geo2]] aporta vectores y trigonometria, y [[arena-p4]] recuerda que elegir coordenadas o algebraizar puede volver calculable la configuracion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

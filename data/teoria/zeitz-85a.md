@@ -54,3 +54,9 @@ La señal unificadora: **el enunciado pide minimizar, igualar o alinear** —y n
 ---
 
 *Antes del quiz: reconstruye de memoria el argumento del espejo (AP+PB=AP+PB′ y por qué ≥|AB′|), la rotación de 60° para el punto de Fermat y la traslación en el trapecio.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Reflexion, rotacion y traslacion conservan estructura; por eso una figura dificil puede moverse sin cambiar el problema. [[aime-geo]] usa esas transformaciones bajo presion, [[engel-geo2]] las combina con vectores, y [[zeitz-31]] explica la simetria que hace legitimo el movimiento.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

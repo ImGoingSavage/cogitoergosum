@@ -62,3 +62,9 @@ El punto 4 es el error conceptual más común: un invariante coincidente no es u
 ---
 
 *Antes del quiz: reconstruye de memoria las dos definiciones con la conclusión que habilita cada una, el catálogo de invariantes con su tipo de operación, y el argumento completo del acertijo 1…2026.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Invariantes y monovariantes son memoria estructural de un proceso: que no cambia y que avanza en una sola direccion. [[engel-inv]] lo desarrolla como principio de imposibilidad, [[arena-q12]] lo usa en brainteasers de conteo y juegos, y [[arena-cc3]] lo convierte en argumento de terminacion para recursion y programacion dinamica.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

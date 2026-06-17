@@ -90,3 +90,9 @@ Moraleja de la arista: *un invariante es una ley de conservación disfrazada; en
 ---
 
 *Retrieval: cierra la página y responde — (1) ¿más blanco en el tinto o al revés?; (2) roturas para $n$ cuadritos; (3) distancia mínima de la hormiga en el cubo; (4) por qué la segunda vuelta a 60 mph es imposible.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puentes de regreso
+
+Los brainteasers de invariantes y conteo se conectan hacia atras con [[zeitz-34]] y [[engel-inv]], donde se aprende a nombrar lo que no cambia. [[engel-color]] muestra invariantes visuales por coloracion, y [[zeitz-31]] agrega simetria como compresion de casos antes de contar.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

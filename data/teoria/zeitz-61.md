@@ -69,3 +69,9 @@ Las C(n, r) forman el triángulo de Pascal (cada entrada = suma de las dos de ar
 ---
 
 *Antes del quiz: reconstruye de memoria cuándo sumar/multiplicar/dividir con un ejemplo propio de cada una, la fórmula Mississippi, la corrección del error de los comités y el argumento combinatorio de 2ⁿ.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Sumar, multiplicar y dividir son la gramatica basica del conteo. [[arena-b1]] los convierte en probabilidad operativa, [[arena-p2]] los usa en combinatoria discreta, y [[aime-cnt]] los entrena bajo presion con casos, complemento y control de doble conteo.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

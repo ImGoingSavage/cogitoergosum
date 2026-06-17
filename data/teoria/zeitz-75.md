@@ -55,3 +55,9 @@ Compuestos en n = 4, 7, 10… — ¡cada 3! La tabla **experimental** apunta dir
 ---
 
 *Antes del quiz: reconstruye de memoria por qué n²+n+41 estaba condenado (el caso que se delata), la prueba completa de que ningún polinomio da solo primos (con la jugada de extraer f(u)) y la prueba del collar con el papel exacto de la primalidad.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Los ejemplos de primos, polinomios y collares son mapas de transferencia: [[zeitz-71]] explica las restricciones aritmeticas, [[zeitz-43]] muestra como empaquetar conteos, y [[arena-q12]] recuerda que simetrias e invariantes suelen ser el atajo que evita enumerar todo.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

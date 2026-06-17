@@ -64,3 +64,9 @@ El filtro también **restringe** sin matar: «mod 4 fuerza a x impar» reduce el
 ---
 
 *Antes del quiz: reconstruye de memoria las cuatro preguntas, el criterio de las lineales con el ejemplo 3x+21y=19, la maniobra de completar el producto con 1/x+1/y=1/6 y la demostración limpia de x²−y²=10.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las diofanticas se resuelven filtrando: factorizacion, paridad, modulo y acotacion. [[zeitz-71]] aporta primos y divisibilidad, [[zeitz-72]] aporta congruencias, y [[arena-q13]] retoma el habito de convertir una busqueda infinita en una prueba por casos imposibles.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

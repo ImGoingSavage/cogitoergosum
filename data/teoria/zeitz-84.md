@@ -67,3 +67,9 @@ Para razones sobre **cevianas que se cortan** (¿en qué proporción divide el p
 ---
 
 *Antes del quiz: reconstruye de memoria la checklist con los tres amigos, el enunciado de POP con tangente y recíproco, el menú de concíclicos con la elección del USAMO 1990 y las dos direcciones del lema cíclico.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El poder de la geometria elemental esta en elegir el lenguaje adecuado antes de calcular. [[aime-geo]] entrena esa eleccion en problemas cerrados, [[engel-geo2]] da tecnicas avanzadas, y [[zeitz-83]] muestra que area y semejanza suelen ser el puente mas barato hacia la solucion.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

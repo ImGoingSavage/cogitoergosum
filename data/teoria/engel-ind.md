@@ -60,3 +60,9 @@ Usos: irracionalidad de √2, imposibilidad de ciertas ecuaciones diofánticas, 
 ---
 
 *Antes del quiz: reconstruye de memoria la diferencia entre ordinaria y fuerte, cuándo fortalecer la hipótesis, la estrategia de Cauchy (dos fases) y el argumento del descenso infinito.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Induccion fuerte, fortalecida y descenso son refinamientos de [[zeitz-23]]. [[arena-cc3]] los vuelve algoritmo en recursion y DP, mientras [[arena-q13]] los usa como estrategia de prueba cuando el enunciado original debe fortalecerse para que el paso inductivo cierre.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

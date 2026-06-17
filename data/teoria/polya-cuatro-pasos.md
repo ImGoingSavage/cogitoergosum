@@ -87,3 +87,9 @@ Las preguntas de Pólya («¿cuál es la incógnita?», «¿conozco un problema 
 ---
 
 *Antes del quiz: cierra la lección e intenta reconstruir de memoria las cuatro fases, la pregunta central de cada una y las dos razones para no saltar jamás la visión retrospectiva.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+Las cuatro fases de Polya son el protocolo general que vuelve operables los problemas de [[zeitz-1]] (diferenciar ejercicio de problema): entender, planear, ejecutar y revisar. En trabajo aplicado, la misma disciplina aparece en [[arena-c4]] (stakeholders y carrera) cuando conviertes ambiguedad en un plan verificable, y en [[gen-resp4]] cuando eliges la pieza GenAI mas simple que resuelve el caso antes de construir.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

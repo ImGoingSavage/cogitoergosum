@@ -62,3 +62,9 @@ Esta restricción tiene tres usos prácticos:
 ---
 
 *Antes del quiz: reconstruye de memoria la traducción base-2→base-b para sucesiones de potencias, el protocolo Vieta+acotación, la sustitución s,p para sistemas simétricos y por qué elevar al cuadrado requiere verificación.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+El algebra AIME concentra sucesiones, Vieta y sustitucion en problemas con respuesta exacta. [[zeitz-52]] aporta factorizacion, [[zeitz-54]] aporta polinomios y Vieta, y [[arena-p4]] conecta esas tecnicas con calculo y algebra lineal de uso profesional.
+<!-- GRAFO_CONEXO_OLEADA3_END -->

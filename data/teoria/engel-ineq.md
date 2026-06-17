@@ -88,3 +88,9 @@ Ambas son las tácticas de simetría (§3.1) y de «forma simple primero» (§7.
 ---
 
 *Antes del quiz: reconstruye de memoria la cadena de cinco estaciones con fórmulas e igualdad, la prueba de (a+b)(b+c)(c+a) ≥ 8abc, los cuatro estilos para a²+b²+c² ≥ ab+bc+ca y el cierre de Nesbitt vía la forma producto.*
+
+<!-- GRAFO_CONEXO_OLEADA3_START -->
+## Puente de transferencia
+
+La cantera de desigualdades de Engel es la version intensiva de [[zeitz-55]]. Sus tecnicas se apoyan en la intuicion de optimizacion de [[arena-p4]] y reaparecen en [[arena-q5]] cuando una cota, una derivada o una convexidad decide que extremo financiero es posible.
+<!-- GRAFO_CONEXO_OLEADA3_END -->
