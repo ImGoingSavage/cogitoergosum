@@ -2214,3 +2214,208 @@ body.sin-scroll { overflow: hidden; }
   .piz-grosor-preset { width: 28px; height: 28px; }
   .leccion { padding: 18px 16px; font-size: 16.5px; }
 }
+
+/* ===================== Vista Guía (manual de uso) =====================
+   Portada editorial + paneles: misión, mapa de vistas, flujo, funciones,
+   fuentes y rutina. Estilos propios, fieles al sistema piedra/madera:
+   títulos serif, acento índigo para lo interactivo y oro de lámpara para
+   el reconocimiento bibliográfico (ceremonial). Todo va bajo #vista-guia
+   para no alterar el resto de la app. */
+
+#vista-guia { max-width: 920px; margin-inline: auto; }
+
+/* Portada / hero */
+.guia-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 10px;
+}
+#vista-guia .guia-portada h2 {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4.5vw, 36px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--texto);
+  margin-bottom: 14px;
+}
+.guia-lead {
+  font-family: var(--serif);
+  font-size: clamp(17px, 2.4vw, 19px);
+  line-height: 1.6;
+  color: var(--texto-suave);
+  max-width: 64ch;
+}
+
+/* Filas de estadística (resumen de portada / rutina mínima) */
+.guia-resumen, .guia-rutina {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 22px;
+}
+.guia-resumen p, .guia-rutina p {
+  flex: 1 1 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 14px 16px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+.guia-resumen strong, .guia-rutina strong {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--acento);
+  line-height: 1;
+}
+.guia-resumen span, .guia-rutina span {
+  font-size: 13px;
+  color: var(--texto-tenue);
+  line-height: 1.35;
+}
+
+/* Títulos de panel: sobrescriben la etiqueta diminuta por defecto de .tarjeta h2 */
+#vista-guia .guia-panel h2 {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--texto);
+  margin-bottom: 14px;
+}
+#vista-guia .guia-panel > p:not(.guia-nota) {
+  color: var(--texto-suave);
+  line-height: 1.65;
+  max-width: 68ch;
+}
+#vista-guia .guia-panel > p + p { margin-top: 12px; }
+
+/* Mapa de vistas y fuentes: rejilla de mini-secciones */
+.guia-mapa, .guia-fuentes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 6px;
+}
+.guia-mapa section, .guia-fuentes section {
+  padding: 16px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+.guia-mapa h3, .guia-fuentes h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto);
+  margin-bottom: 6px;
+  padding-left: 14px;
+  position: relative;
+}
+.guia-mapa h3::before, .guia-fuentes h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--acento);
+}
+.guia-mapa p, .guia-fuentes p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto-suave);
+}
+
+/* Flujo recomendado: pasos numerados con medallón índigo */
+.guia-pasos {
+  list-style: none;
+  counter-reset: paso;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+  padding: 0;
+}
+.guia-pasos li {
+  counter-increment: paso;
+  position: relative;
+  padding-left: 44px;
+  color: var(--texto-suave);
+  line-height: 1.6;
+}
+.guia-pasos li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--acento);
+  background: var(--acento-suave);
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+}
+.guia-pasos strong { display: block; color: var(--texto); margin-bottom: 2px; }
+
+/* Funcionalidades clave: lista de definiciones en rejilla */
+.guia-funciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 4px;
+}
+.guia-funciones div {
+  padding: 14px 16px;
+  background: var(--bg-sutil);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+.guia-funciones dt {
+  font-weight: 600;
+  color: var(--texto);
+  margin-bottom: 5px;
+}
+.guia-funciones dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto-suave);
+}
+
+/* Panel de fuentes: acento de lámpara (reconocimiento, momento ceremonial) */
+.guia-biblioteca { border-color: var(--lampara-borde); }
+.guia-biblioteca .guia-fuentes h3::before { background: var(--lampara); }
+.guia-nota {
+  margin-top: 18px;
+  padding: 14px 16px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--texto-suave);
+  border-left: 2px solid var(--lampara-borde);
+  background: var(--lampara-suave);
+  border-radius: 0 var(--radio) var(--radio) 0;
+}
+
+@media (max-width: 540px) {
+  .guia-resumen p, .guia-rutina p { flex-basis: 100%; }
+  .guia-pasos li { padding-left: 40px; }
+  #vista-guia .guia-portada h2 { font-size: clamp(23px, 7vw, 28px); }
+}
