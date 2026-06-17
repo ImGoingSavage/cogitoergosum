@@ -12,7 +12,7 @@ Al terminar podrás: (1) usar el Cox extendido para covariables cambiantes o par
 1. Covariables **genuinamente cambiantes** (estatus de trasplante, laboratorios repetidos).
 2. **Modelar la no-PH** con interacciones covariable×g(t) (X·t, X·ln t): si δ es significativo, el efecto depende del tiempo.
 
-Con términos tiempo-dependientes el **HR ya no es constante** (se evalúa en un instante). **Precaución:** la covariable en t solo usa información **hasta t**; usar el futuro = **immortal time bias**. Se implementa partiendo el tiempo en intervalos (start, stop] con el valor actual. Ver [[cox-extendido-tiempo-dependiente]].
+Con términos tiempo-dependientes el **HR ya no es constante** (se evalúa en un instante). **Precaución:** la covariable en t solo usa información **hasta t**; usar el futuro = **immortal time bias**. Se implementa partiendo el tiempo en intervalos (start, stop] con el valor actual. Ver cox-extendido-tiempo-dependiente.
 
 ## Modelos paramétricos
 
@@ -25,7 +25,7 @@ Ventajas: estimación más **eficiente** (si la forma es correcta), **predicció
 
 ## AFT (Accelerated Failure Time)
 
-Modela el efecto sobre el **TIEMPO** de supervivencia, no sobre el hazard: un **factor de aceleración** γ **estira** (γ>1, alarga la vida) o **encoge** (γ<1) el eje del tiempo. En ln T = α + γᵀX + error, el factor = exp(coef). Intuición: γ=2 ⇒ "duplica el tiempo típico hasta el evento". Ver [[modelo-parametrico-aft]].
+Modela el efecto sobre el **TIEMPO** de supervivencia, no sobre el hazard: un **factor de aceleración** γ **estira** (γ>1, alarga la vida) o **encoge** (γ<1) el eje del tiempo. En ln T = α + γᵀX + error, el factor = exp(coef). Intuición: γ=2 ⇒ "duplica el tiempo típico hasta el evento". Ver modelo-parametrico-aft.
 
 - **Weibull** es la **única** distribución a la vez **PH y AFT**; log-logística/log-normal son AFT pero no PH.
 - **HR<1 ↔ factor de aceleración >1** (mismo beneficio, escalas inversas: menos riesgo = más tiempo).

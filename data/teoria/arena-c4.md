@@ -1,6 +1,6 @@
 # Conductual IV: data science aplicada, stakeholders y carrera (STAR)
 
-> Preguntas conductuales **específicas de DS** y de carrera. Usa [[narrativa-star]] y demuestra **orientación al negocio** y **traducción** técnica. Ver [[comunicar-resultado-ds-star]].
+> Preguntas conductuales **específicas de DS** y de carrera. Usa narrativa-star y demuestra **orientación al negocio** y **traducción** técnica. Ver comunicar-resultado-ds-star.
 
 ## De qué trata esta lección (y qué sabrás hacer al final)
 

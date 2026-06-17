@@ -16,21 +16,21 @@ Un SCM = ecuaciones causa→efecto + términos de error **U** (lo idiosincrátic
 2. **Acción:** modificar el modelo con do() (imponer el antecedente hipotético).
 3. **Predicción:** recalcular Y con esos U.
 
-El contrafactual de Pearl **equivale** al **potential outcome** Y_x de Neyman-Rubin: mismo concepto, dos lenguajes. Ver [[contrafactual-modelo-estructural]].
+El contrafactual de Pearl **equivale** al **potential outcome** Y_x de Neyman-Rubin: mismo concepto, dos lenguajes. Ver contrafactual-modelo-estructural.
 
 ## Mediación
 
 Descompone el efecto de X sobre Y en **directo** (X→Y) e **indirecto** (X→M→Y) — el *mecanismo*, no solo el cuánto.
 - **Baron-Kenny** (producto de coeficientes) solo vale **sin interacción ni no linealidad**.
 - **Efectos naturales** (contrafactuales): **NDE** (mueve X con M congelado en su valor natural) y **NIE** (mueve M como respondería a X, con X fijo) → descomposición correcta con interacciones.
-- Identificar mediación exige **más supuestos**: desconfundir también M-Y (y sin confundidores de M-Y afectados por X). Ver [[analisis-mediacion-efectos]].
+- Identificar mediación exige **más supuestos**: desconfundir también M-Y (y sin confundidores de M-Y afectados por X). Ver analisis-mediacion-efectos.
 
 ## Causa necesaria vs suficiente
 
 - **PN (probabilidad de necesidad):** ¿Y NO habría ocurrido **sin** X? — causalidad **'but-for'**, central en lo **legal** (atribuir culpa).
 - **PS (probabilidad de suficiencia):** ¿X **bastaría** para producir Y? — relevante para **prevención/políticas**.
 
-Estimables combinando datos **experimentales + observacionales** bajo supuestos. Aplicaciones: responsabilidad legal, atribución del cambio climático. Ver [[causa-necesaria-suficiente]].
+Estimables combinando datos **experimentales + observacionales** bajo supuestos. Aplicaciones: responsabilidad legal, atribución del cambio climático. Ver causa-necesaria-suficiente.
 
 ---
 

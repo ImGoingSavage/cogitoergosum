@@ -19,7 +19,7 @@ El **error de entrenamiento subestima** el de test (baja al añadir flexibilidad
 
 ## Bootstrap
 
-Remuestrea **con reemplazo** (mismo n, con repeticiones/omisiones); calcula el estimador en cada réplica → su distribución empírica da el **error estándar / IC** sin fórmula teórica. Estima **incertidumbre**, no error de test. Ver [[bootstrap-resampling]].
+Remuestrea **con reemplazo** (mismo n, con repeticiones/omisiones); calcula el estimador en cada réplica → su distribución empírica da el **error estándar / IC** sin fórmula teórica. Estima **incertidumbre**, no error de test. Ver bootstrap-resampling.
 
 ## Selección de subconjuntos
 
@@ -29,7 +29,7 @@ Remuestrea **con reemplazo** (mismo n, con repeticiones/omisiones); calcula el e
 
 ## Regularización (shrinkage)
 
-- **Ridge:** RSS + λΣβⱼ² (L2). Encoge hacia 0 **sin anular** (no selecciona); baja varianza. Ver [[regularizacion]].
+- **Ridge:** RSS + λΣβⱼ² (L2). Encoge hacia 0 **sin anular** (no selecciona); baja varianza. Ver regularizacion.
 - **Lasso:** RSS + λΣ|βⱼ| (L1). La geometría con **esquinas** pone coeficientes **exactamente en 0** ⇒ **selección de variables**, modelo disperso e interpretable.
 - **Cuándo:** lasso si **pocos** predictores relevantes; ridge si **muchos** efectos pequeños. λ por **CV**; **estandarizar** siempre (la penalización depende de la escala).
 

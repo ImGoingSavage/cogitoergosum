@@ -16,21 +16,21 @@ El outcome es el **tiempo** desde un origen bien definido (t=0) hasta un evento.
 
 - **Supervivencia** S(t)=P(T>t): probabilidad de no tener el evento más allá de t; cae de 1 a 0.
 - **Hazard** h(t): tasa **instantánea** de fallo dado que se sobrevivió hasta t (una tasa, puede ser >1).
-- Relaciones: h(t)=f(t)/S(t)=−d/dt ln S(t); hazard acumulado H(t)=∫h; **S(t)=exp(−H(t))**. Ver [[funcion-supervivencia-hazard]].
+- Relaciones: h(t)=f(t)/S(t)=−d/dt ln S(t); hazard acumulado H(t)=∫h; **S(t)=exp(−H(t))**. Ver funcion-supervivencia-hazard.
 
 Hazard **constante** (exponencial), **creciente** (desgaste), **decreciente** (riesgo postoperatorio que baja).
 
 ## Censura
 
-No se observa el tiempo exacto: **derecha** (la común: fin de estudio, pérdida, retiro), **izquierda**, **intervalo**. Los censurados aportan "sobrevivió ≥ su tiempo". Supuesto crítico: **censura no informativa** (independiente del pronóstico); si es informativa (los graves abandonan), sesga. Ver [[manejar-censura-supervivencia]].
+No se observa el tiempo exacto: **derecha** (la común: fin de estudio, pérdida, retiro), **izquierda**, **intervalo**. Los censurados aportan "sobrevivió ≥ su tiempo". Supuesto crítico: **censura no informativa** (independiente del pronóstico); si es informativa (los graves abandonan), sesga. Ver manejar-censura-supervivencia.
 
 ## Kaplan-Meier
 
-Estimador **product-limit** no paramétrico: **Ŝ(t)=∏(n_j−d_j)/n_j** sobre los tiempos de evento ≤ t (n_j = en riesgo justo antes, d_j = eventos). Curva **escalonada**: baja solo en **eventos**; la censura achica el **risk set** y agranda los saltos posteriores. **Mediana** = t donde Ŝ(t)=0.5 (la media no se reporta si la cola está censurada). Ver [[estimador-kaplan-meier]].
+Estimador **product-limit** no paramétrico: **Ŝ(t)=∏(n_j−d_j)/n_j** sobre los tiempos de evento ≤ t (n_j = en riesgo justo antes, d_j = eventos). Curva **escalonada**: baja solo en **eventos**; la censura achica el **risk set** y agranda los saltos posteriores. **Mediana** = t donde Ŝ(t)=0.5 (la media no se reporta si la cola está censurada). Ver estimador-kaplan-meier.
 
 ## Log-rank
 
-Compara curvas de ≥2 grupos. H0: curvas **iguales**. Suma de **observado − esperado** por tiempo de evento → chi² (gl = grupos−1). Da igual peso a todos los tiempos → óptimo bajo **PH** y sensible a diferencias tardías. Variantes que pesan lo temprano: **Wilcoxon** (Breslow), Tarone-Ware, Peto. Es un test, no una magnitud (para eso, el HR del Cox). Ver [[prueba-log-rank]].
+Compara curvas de ≥2 grupos. H0: curvas **iguales**. Suma de **observado − esperado** por tiempo de evento → chi² (gl = grupos−1). Da igual peso a todos los tiempos → óptimo bajo **PH** y sensible a diferencias tardías. Variantes que pesan lo temprano: **Wilcoxon** (Breslow), Tarone-Ware, Peto. Es un test, no una magnitud (para eso, el HR del Cox). Ver prueba-log-rank.
 
 ---
 

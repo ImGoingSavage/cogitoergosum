@@ -13,7 +13,7 @@ Al terminar podrás: (1) leer un HR como una razón de tasas instantáneas a igu
 - **Semiparamétrico:** parte paramétrica (β) + h₀(t) libre → flexible y robusto, muy popular.
 - **Hazard ratio:** HR = exp(β·Δx); binaria → **HR=exp(β)** (>1 más riesgo, <1 protector). El h₀(t) se cancela en el cociente.
 - **Verosimilitud parcial:** estima los β usando solo el **orden** de los eventos y los risk sets, sin h₀(t).
-- Permite **curvas de supervivencia ajustadas**: Ŝ(t,X)=Ŝ₀(t)^exp(ΣβⱼXⱼ). Ver [[modelo-cox-ph]].
+- Permite **curvas de supervivencia ajustadas**: Ŝ(t,X)=Ŝ₀(t)^exp(ΣβⱼXⱼ). Ver modelo-cox-ph.
 
 **Significancia:** razón de verosimilitud (bloques/modelos anidados), Wald (coef. sueltos), score.
 
@@ -24,7 +24,7 @@ Al terminar podrás: (1) leer un HR como una razón de tasas instantáneas a igu
 ### Tres formas de evaluarlo
 1. **Gráfica:** log(−log Ŝ(t)) por categoría → deben ser **paralelas**; si se **cruzan**, no-PH.
 2. **GOF / residuos de Schoenfeld:** ¿correlacionan con el tiempo? Significativo ⇒ no-PH.
-3. **Variable tiempo-dependiente:** añadir covariable×g(t) (p. ej. X·ln t) y testear; significativo ⇒ HR depende de t. Ver [[evaluar-supuesto-ph]].
+3. **Variable tiempo-dependiente:** añadir covariable×g(t) (p. ej. X·ln t) y testear; significativo ⇒ HR depende de t. Ver evaluar-supuesto-ph.
 
 ### Si se viola PH
 - **Cox estratificado** (controlar una variable sin estimar su HR).
@@ -32,7 +32,7 @@ Al terminar podrás: (1) leer un HR como una razón de tasas instantáneas a igu
 
 ## Cox estratificado
 
-Cada estrato g recibe su **propio h₀g(t)**, con β **compartidos** (modelo sin interacción). **No** da HR para la variable de estratificación. Modelo **con interacción** = β distintos por estrato; se decide con **prueba de razón de verosimilitud**. Ver [[cox-estratificado]].
+Cada estrato g recibe su **propio h₀g(t)**, con β **compartidos** (modelo sin interacción). **No** da HR para la variable de estratificación. Modelo **con interacción** = β distintos por estrato; se decide con **prueba de razón de verosimilitud**. Ver cox-estratificado.
 
 ---
 

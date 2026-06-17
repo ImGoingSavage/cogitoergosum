@@ -16,11 +16,11 @@ Al terminar podrás: (1) clasificar cualquier pregunta causal en su peldaño; (2
 | 2 **Intervención** (hacer) | ¿Qué pasa si **hago** X? | P(Y\|do(X)) | experimentos, políticas |
 | 3 **Contrafactuales** (imaginar) | ¿Qué **habría** pasado si…? | Y_x | explicación, atribución |
 
-Cada peldaño es más poderoso: uno superior responde preguntas de los inferiores, **no al revés**. El **deep learning** vive en el peldaño 1 (ajusta asociaciones a datos, como un búho que predice sin entender). Ver [[escalera-de-la-causalidad]].
+Cada peldaño es más poderoso: uno superior responde preguntas de los inferiores, **no al revés**. El **deep learning** vive en el peldaño 1 (ajusta asociaciones a datos, como un búho que predice sin entender). Ver escalera-de-la-causalidad.
 
 ## La causalidad requiere un modelo
 
-Tesis central (**"mind over data"**): los **datos no contienen causalidad** — describen el peldaño 1. La misma tabla es compatible con A→Y, A←Y o A←C→Y; solo un **modelo causal** (DAG con supuestos) desempata y permite subir la escalera. Ver [[causalidad-requiere-modelo]].
+Tesis central (**"mind over data"**): los **datos no contienen causalidad** — describen el peldaño 1. La misma tabla es compatible con A→Y, A←Y o A←C→Y; solo un **modelo causal** (DAG con supuestos) desempata y permite subir la escalera. Ver causalidad-requiere-modelo.
 
 **Mini-Turing test:** una máquina causal debe responder preguntas de los tres niveles dado un modelo; una que solo asocia falla en intervención y contrafactuales.
 

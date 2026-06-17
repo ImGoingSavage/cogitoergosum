@@ -12,23 +12,23 @@ Los estimadores no paramétricos por estratos solo sirven con **pocos** confundi
 
 ## IP weighting y MSM
 
-Modela el **tratamiento** P(A=a|L) y pondera por **1/P(A=a|L)** → **pseudo-población** donde A ⊥ L (sin confundimiento). Sobre ella se ajusta un **Modelo Estructural Marginal (MSM)** para E[Y^a] (p. ej. logit P(Y^a=1)=β0+β1·a). **Pesos estabilizados** SW = P(A=a)/P(A=a|L): menos variables y más eficientes; cuidan (no eliminan) casi-violaciones de positividad. Ver [[ip-weighting-msm]].
+Modela el **tratamiento** P(A=a|L) y pondera por **1/P(A=a|L)** → **pseudo-población** donde A ⊥ L (sin confundimiento). Sobre ella se ajusta un **Modelo Estructural Marginal (MSM)** para E[Y^a] (p. ej. logit P(Y^a=1)=β0+β1·a). **Pesos estabilizados** SW = P(A=a)/P(A=a|L): menos variables y más eficientes; cuidan (no eliminan) casi-violaciones de positividad. Ver ip-weighting-msm.
 
 ## Estandarización / g-fórmula
 
-Modela el **outcome** E[Y|A,L], predice bajo a=1 y a=0 para cada individuo y promedia: **E[Y^a]=Σ_l E[Y|a,l]P(l)**. Es la **cara complementaria** del IP weighting (uno modela el outcome, el otro el tratamiento); bajo modelos correctos coinciden. Ver [[estandarizacion-g-formula]].
+Modela el **outcome** E[Y|A,L], predice bajo a=1 y a=0 para cada individuo y promedia: **E[Y^a]=Σ_l E[Y|a,l]P(l)**. Es la **cara complementaria** del IP weighting (uno modela el outcome, el otro el tratamiento); bajo modelos correctos coinciden. Ver estandarizacion-g-formula.
 
 ## Propensity score
 
-**π(L)=P(A=1|L)**: probabilidad de tratamiento dados los confundidores. Es un **balancing score** (condicionar en π(L) equilibra L). Cuatro usos: **estratificación**, **emparejamiento**, **ponderación** (= IP weighting), **regresión** sobre el PS. Solo controla confundidores **medidos**; la falta de **solapamiento** (common support) señala problemas de positividad. Ver [[propensity-score]].
+**π(L)=P(A=1|L)**: probabilidad de tratamiento dados los confundidores. Es un **balancing score** (condicionar en π(L) equilibra L). Cuatro usos: **estratificación**, **emparejamiento**, **ponderación** (= IP weighting), **regresión** sobre el PS. Solo controla confundidores **medidos**; la falta de **solapamiento** (common support) señala problemas de positividad. Ver propensity-score.
 
 ## Doble robustez y ML
 
-Un estimador **doblemente robusto** combina el modelo del **tratamiento** y el del **outcome**: consistente si **uno de los dos** está bien especificado (AIPW/TMLE). Con **ML** flexible para ambos modelos + **cross-fitting** (double/debiased ML) se ajusta por confundidores de alta dimensión manteniendo inferencia válida. Ver [[doble-robustez]].
+Un estimador **doblemente robusto** combina el modelo del **tratamiento** y el del **outcome**: consistente si **uno de los dos** está bien especificado (AIPW/TMLE). Con **ML** flexible para ambos modelos + **cross-fitting** (double/debiased ML) se ajusta por confundidores de alta dimensión manteniendo inferencia válida. Ver doble-robustez.
 
 ## Variable instrumental
 
-Un instrumento Z permite estimar el efecto **con confundimiento no medido** si: (i) **relevancia** (Z→A), (ii) **restricción de exclusión** (Z afecta Y solo vía A), (iii) Z e Y sin causas comunes. Estimando usual = (E[Y|Z=1]−E[Y|Z=0])/(E[A|Z=1]−E[A|Z=0]). Las 3 dan solo **bounds**; para un punto se necesita una 4ª: **homogeneidad** o **monotonicidad** (sin defiers) → IV estima el **LATE** (efecto en **compliers**). Cuidado con **instrumentos débiles** (relevancia baja → varianza y sesgo enormes). Ver [[variable-instrumental]].
+Un instrumento Z permite estimar el efecto **con confundimiento no medido** si: (i) **relevancia** (Z→A), (ii) **restricción de exclusión** (Z afecta Y solo vía A), (iii) Z e Y sin causas comunes. Estimando usual = (E[Y|Z=1]−E[Y|Z=0])/(E[A|Z=1]−E[A|Z=0]). Las 3 dan solo **bounds**; para un punto se necesita una 4ª: **homogeneidad** o **monotonicidad** (sin defiers) → IV estima el **LATE** (efecto en **compliers**). Cuidado con **instrumentos débiles** (relevancia baja → varianza y sesgo enormes). Ver variable-instrumental.
 
 ---
 

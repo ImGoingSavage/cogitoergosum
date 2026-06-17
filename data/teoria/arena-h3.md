@@ -28,13 +28,13 @@ La aleatorización asigna A por azar, independiente de los resultados potenciale
 2. **Positividad:** 0 < P(A=a|L=l) < 1 en todo estrato presente. *(parcialmente verificable)*
 3. **Consistencia:** intervención bien definida y, si A=a, Y^a=Y. *(supuesto)*
 
-Con las tres, el efecto se identifica y se estima por **estandarización** (E[Y^a]=Σ_l E[Y|a,l]P(l), modela el outcome) o **IP weighting** (pondera 1/P(A|L), modela el tratamiento). Ver [[condiciones-identificacion-causal]].
+Con las tres, el efecto se identifica y se estima por **estandarización** (E[Y^a]=Σ_l E[Y|a,l]P(l), modela el outcome) o **IP weighting** (pondera 1/P(A|L), modela el tratamiento). Ver condiciones-identificacion-causal.
 
 ## Medidas de efecto, modificación e interacción
 
 - **Diferencia de riesgos** P(Y^{a=1}=1)−P(Y^{a=0}=1) (aditiva), **razón de riesgos** (multiplicativa), **odds ratio**. Todas **marginales**.
 - **Modificación de efecto:** el efecto de A varía por estratos de un marcador V; depende de la **escala** (puede haber aditiva sin multiplicativa).
-- **Interacción:** efecto **conjunto** de DOS tratamientos A y E (se interviene a ambos; causas suficientes). Ver [[modificacion-efecto-vs-interaccion]].
+- **Interacción:** efecto **conjunto** de DOS tratamientos A y E (se interviene a ambos; causas suficientes). Ver modificacion-efecto-vs-interaccion.
 
 ---
 

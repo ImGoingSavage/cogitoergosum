@@ -13,7 +13,7 @@ Al terminar podrás: (1) leer un coeficiente como efecto **parcial** y entender 
 - **Test del coeficiente:** H0: βⱼ=0. **t = β̂ⱼ/SE(β̂ⱼ)** y su p-valor; p pequeño ⇒ hay asociación.
 - **Ajuste del modelo:** **RSE** (desviación del error, unidades de Y) y **R²** = 1 − RSS/TSS (proporción de varianza explicada, adimensional).
 
-En **regresión múltiple** cada coeficiente es un efecto **parcial** (ceteris paribus). Por eso un coeficiente puede cambiar de signo respecto a la simple: en simple absorbía el efecto de variables correlacionadas omitidas (**confounding**). Ver también [[interpretar-coeficientes-regresion]].
+En **regresión múltiple** cada coeficiente es un efecto **parcial** (ceteris paribus). Por eso un coeficiente puede cambiar de signo respecto a la simple: en simple absorbía el efecto de variables correlacionadas omitidas (**confounding**). Ver también interpretar-coeficientes-regresion.
 
 ### F-statistic (significancia global)
 Contrasta H0: **todos** los β=0. Hace falta además de los t porque, con muchos predictores, ~5% darían p<0.05 por azar (**comparaciones múltiples**); el F evalúa el modelo en conjunto. F≈1 bajo H0; F grande + p pequeño ⇒ modelo útil.
@@ -33,7 +33,7 @@ Contrasta H0: **todos** los β=0. Hace falta además de los t porque, con muchos
 - **QDA:** covarianza **por clase** ⇒ frontera **cuadrática** (más flexible, más varianza, más datos). **Naive Bayes:** features independientes dentro de cada clase.
 
 ### Evaluación
-**Matriz de confusión** (TP/FP/TN/FN) revela el tipo de error. **Sensibilidad** = TP/(TP+FN); **especificidad** = TN/(TN+FP). El **umbral** mueve el balance; la **ROC** traza sensibilidad vs (1−especificidad) y el **AUC** resume (1=perfecto, 0.5=azar). Ver [[metrica-clasificacion]].
+**Matriz de confusión** (TP/FP/TN/FN) revela el tipo de error. **Sensibilidad** = TP/(TP+FN); **especificidad** = TN/(TN+FP). El **umbral** mueve el balance; la **ROC** traza sensibilidad vs (1−especificidad) y el **AUC** resume (1=perfecto, 0.5=azar). Ver metrica-clasificacion.
 
 ---
 

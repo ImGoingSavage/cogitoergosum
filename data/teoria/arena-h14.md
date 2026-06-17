@@ -16,18 +16,18 @@ La evidencia es creíble solo si se sostienen:
 
 ## Validez clínica (fenotipos)
 
-¿La cohorte = la idea clínica? Mide **sensibilidad / especificidad / PPV** con **source record verification** (chart review, gold standard caro) o **PheValuator** (gold standard **probabilístico**, escalable). Un fenotipo mal validado mete **misclasificación** en todo el estudio. Ver [[validez-clinica-fenotipo]].
+¿La cohorte = la idea clínica? Mide **sensibilidad / especificidad / PPV** con **source record verification** (chart review, gold standard caro) o **PheValuator** (gold standard **probabilístico**, escalable). Un fenotipo mal validado mete **misclasificación** en todo el estudio. Ver validez-clinica-fenotipo.
 
 ## Validez de método
 
-- **Controles negativos:** pares exposición-outcome sin efecto causal (verdadero **RR≈1**). El mismo análisis sobre muchos: si las estimaciones **no** se centran en 1, hay **error sistemático residual** (confundimiento/selección/medición). Ver [[validez-de-metodo-controles-negativos]].
+- **Controles negativos:** pares exposición-outcome sin efecto causal (verdadero **RR≈1**). El mismo análisis sobre muchos: si las estimaciones **no** se centran en 1, hay **error sistemático residual** (confundimiento/selección/medición). Ver validez-de-metodo-controles-negativos.
 - **Controles positivos** (a menudo **sintéticos**): efecto conocido → miden **potencia**.
-- **Calibración empírica:** usa la distribución de los negativos para **ajustar p-valores e IC** por el sesgo sistemático → **IC más anchos**, menos falsos positivos. Los IC clásicos solo capturan el azar. Ver [[calibracion-empirica-pvalores]].
+- **Calibración empírica:** usa la distribución de los negativos para **ajustar p-valores e IC** por el sesgo sistemático → **IC más anchos**, menos falsos positivos. Los IC clásicos solo capturan el azar. Ver calibracion-empirica-pvalores.
 - **Diagnósticos de diseño:** balance de covariables tras PS, **equipoise**/solapamiento (positividad), MDRR (potencia). Deben **pasar** antes de creer un efecto. La **OHDSI Methods Benchmark** compara métodos por su sesgo/cobertura.
 
 ## Estudios en red
 
-El **mismo paquete** estandarizado se corre en **muchas bases** (cada una en su CDM) **sin compartir datos de paciente**: solo viajan **resultados agregados** que se meta-analizan. Da **privacidad + escala + reproducibilidad**. Con protocolo pre-registrado, diagnósticos compartidos y código abierto, supera a los estudios "a medida" (propensos a p-hacking). La generación **a gran escala** (p. ej. **LEGEND**) reporta TODOS los resultados → combate cherry-picking y sesgo de publicación. Ver [[estudios-en-red-ohdsi]].
+El **mismo paquete** estandarizado se corre en **muchas bases** (cada una en su CDM) **sin compartir datos de paciente**: solo viajan **resultados agregados** que se meta-analizan. Da **privacidad + escala + reproducibilidad**. Con protocolo pre-registrado, diagnósticos compartidos y código abierto, supera a los estudios "a medida" (propensos a p-hacking). La generación **a gran escala** (p. ej. **LEGEND**) reporta TODOS los resultados → combate cherry-picking y sesgo de publicación. Ver estudios-en-red-ohdsi.
 
 ---
 

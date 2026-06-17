@@ -18,7 +18,7 @@ Al terminar podrás: (1) interpretar el peso de una regresión lineal (ceteris p
 
 ## Regresión lineal
 
-ŷ = β₀ + β₁x₁ + … + βₚxₚ + ε. **Interpretación del peso:** si xⱼ aumenta en **una unidad** y todo lo demás se mantiene fijo, la predicción cambia en **βⱼ**. Feature **categórica**: el peso es el cambio respecto a la **categoría de referencia**. La importancia de una feature suele medirse con el **t-statistic** (|β̂ⱼ / SE(β̂ⱼ)|). **R²** mide la varianza explicada; usa el **R² ajustado** (penaliza nº de features). Requiere supuestos (linealidad, normalidad, homocedasticidad, independencia, sin multicolinealidad fuerte — si dos features se correlacionan, los pesos se vuelven inestables). Visualízalo con **weight plots** y **effect plots** (efecto = peso × valor de la feature). Ver también [[interpretar-coeficientes-regresion]].
+ŷ = β₀ + β₁x₁ + … + βₚxₚ + ε. **Interpretación del peso:** si xⱼ aumenta en **una unidad** y todo lo demás se mantiene fijo, la predicción cambia en **βⱼ**. Feature **categórica**: el peso es el cambio respecto a la **categoría de referencia**. La importancia de una feature suele medirse con el **t-statistic** (|β̂ⱼ / SE(β̂ⱼ)|). **R²** mide la varianza explicada; usa el **R² ajustado** (penaliza nº de features). Requiere supuestos (linealidad, normalidad, homocedasticidad, independencia, sin multicolinealidad fuerte — si dos features se correlacionan, los pesos se vuelven inestables). Visualízalo con **weight plots** y **effect plots** (efecto = peso × valor de la feature). Ver también interpretar-coeficientes-regresion.
 
 ## Regresión logística
 

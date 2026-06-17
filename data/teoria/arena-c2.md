@@ -1,6 +1,6 @@
 # Conductual II: fracaso, errores, ambigüedad y feedback (STAR)
 
-> Estas preguntas evalúan **autoconciencia, honestidad y aprendizaje**, no la ausencia de errores. Usa [[narrativa-star]] y centra la respuesta en el **aprendizaje aplicado**.
+> Estas preguntas evalúan **autoconciencia, honestidad y aprendizaje**, no la ausencia de errores. Usa narrativa-star y centra la respuesta en el **aprendizaje aplicado**.
 
 ## De qué trata esta lección (y qué sabrás hacer al final)
 
@@ -12,7 +12,7 @@ Al terminar podrás: (1) elegir un fracaso **real** y con consecuencias, asumir 
 
 ## Fracaso y errores
 
-Elige un caso **real** y con consecuencias (ni trivial ni imprudente). **Asume la responsabilidad** sin culpar, narra brevemente qué salió mal y **por qué**, y dedica el grueso al **aprendizaje** y al **cambio concreto** que aplicaste después (cómo evitas que se repita). Señales fuertes: ownership, causa raíz, reflexión y evidencia de que la lección 'pegó'. Ver [[responder-fracaso-star]].
+Elige un caso **real** y con consecuencias (ni trivial ni imprudente). **Asume la responsabilidad** sin culpar, narra brevemente qué salió mal y **por qué**, y dedica el grueso al **aprendizaje** y al **cambio concreto** que aplicaste después (cómo evitas que se repita). Señales fuertes: ownership, causa raíz, reflexión y evidencia de que la lección 'pegó'. Ver responder-fracaso-star.
 
 > El cap. 13 del libro ("When your data science project fails") normaliza el fracaso: lo valioso es la lección y el cambio de proceso (validar supuestos, añadir tests/monitoreo, comunicar antes con el negocio).
 

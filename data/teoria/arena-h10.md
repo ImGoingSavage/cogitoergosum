@@ -11,7 +11,7 @@ Al terminar podrás: (1) saber por qué los eventos recurrentes exigen varianza 
 El **mismo** evento ocurre **varias veces** por sujeto (recaídas, hospitalizaciones, infecciones). Los eventos intra-sujeto están **correlacionados** → los métodos que asumen independencia subestiman los SE. Enfoques (todos con **varianza robusta** por sujeto):
 - **Andersen-Gill (proceso de conteo):** intervalos (start, stop] por sujeto, todos los eventos como un proceso; el sujeto vuelve al riesgo tras cada evento. Para eventos intercambiables.
 - **PWP (condicional):** **estratifica por orden** del evento; no se está en riesgo del k-ésimo hasta tener el (k−1). Riesgo dependiente del historial.
-- **WLW (marginal):** cada orden de evento como proceso paralelo separado. Ver [[eventos-recurrentes-supervivencia]].
+- **WLW (marginal):** cada orden de evento como proceso paralelo separado. Ver eventos-recurrentes-supervivencia.
 
 Elección: AG (proceso único) · PWP (depende del orden) · WLW (marginal por evento).
 
@@ -24,7 +24,7 @@ Tratar el competidor como **censura** asume que el sujeto **podría** tener el e
 
 ### Dos hazards
 - **Específico de causa:** tasa entre los aún libres de evento (Cox **censurando** competidores) → **etiología**.
-- **Subdistribución / Fine-Gray:** mantiene a los que tuvieron el competidor en el risk set (peso decreciente) y permite **regresar sobre la CIF** → **predicción / riesgo absoluto**. Ver [[riesgos-competitivos-cif]].
+- **Subdistribución / Fine-Gray:** mantiene a los que tuvieron el competidor en el risk set (peso decreciente) y permite **regresar sobre la CIF** → **predicción / riesgo absoluto**. Ver riesgos-competitivos-cif.
 
 Regla: reporta **ambos** (una covariable puede subir la CIF de una causa bajando la mortalidad competidora). Comparar grupos: **prueba de Gray** (no log-rank sobre 1−KM); efecto ajustado: subdistribution HR de Fine-Gray. La **CPC** = CIF_c / (1 − CIF de otras causas).
 

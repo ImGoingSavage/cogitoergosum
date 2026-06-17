@@ -18,13 +18,13 @@ Grafo dirigido acíclico: nodos = variables, flechas = causas directas. Codifica
 | **Bifurcación (fork)** | A←B→C | confundidor | sí (espuria) | se **bloquea** |
 | **Collider** | A→B←C | efecto común | **no** | se **abre** (espuria) |
 
-Regla: condicionar un **mediador o confundidor cierra** el flujo; condicionar un **collider lo abre**. Ver [[diagramas-causales-junciones]]. Por eso se ajusta el **confundidor** (cierra el camino trasero) pero **nunca** un collider ni un mediador (introducirían sesgo).
+Regla: condicionar un **mediador o confundidor cierra** el flujo; condicionar un **collider lo abre**. Ver diagramas-causales-junciones. Por eso se ajusta el **confundidor** (cierra el camino trasero) pero **nunca** un collider ni un mediador (introducirían sesgo).
 
 ## Paradojas
 
-- **Simpson:** la asociación se **invierte** al estratificar. La estadística no dice qué tabla creer: solo el **rol causal** de la variable decide — ajusta si es **confundidor** (mira subgrupos), no si es **mediador/collider** (mira el agregado). Es la prueba palpable de "mind over data". Ver [[paradoja-simpson-causal]].
+- **Simpson:** la asociación se **invierte** al estratificar. La estadística no dice qué tabla creer: solo el **rol causal** de la variable decide — ajusta si es **confundidor** (mira subgrupos), no si es **mediador/collider** (mira el agregado). Es la prueba palpable de "mind over data". Ver paradoja-simpson-causal.
 - **Berkson:** muestras **seleccionadas** por un efecto común muestran correlaciones espurias (p. ej. enfermedades correlacionadas entre hospitalizados).
-- **Monty Hall:** la puerta que abre el presentador es un **collider** (efecto de dónde está el premio y de tu elección); condicionarla actualiza las probabilidades → conviene **cambiar** (2/3). Ver [[sesgo-collider-berkson]].
+- **Monty Hall:** la puerta que abre el presentador es un **collider** (efecto de dónde está el premio y de tu elección); condicionarla actualiza las probabilidades → conviene **cambiar** (2/3). Ver sesgo-collider-berkson.
 
 ---
 

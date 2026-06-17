@@ -13,21 +13,21 @@ Al terminar podrás: (1) definir una cohorte por sus tres componentes (entry/inc
 2. **Reglas de inclusión** (filtros: ≥365 días de observación previa, edad…).
 3. **Criterios de salida** (fin de exposición/observación).
 
-Se construyen con **concept sets** (conceptos estándar + descendientes). Enfoques: **basado en reglas** (determinista, ATLAS) vs **probabilístico** (un modelo da una probabilidad; PheValuator). Un **fenotipo** es la definición computable de una condición; **valídalo** (sensibilidad/especificidad/**PPV**) o introduces misclasificación. Ver [[definir-cohorte-fenotipo]].
+Se construyen con **concept sets** (conceptos estándar + descendientes). Enfoques: **basado en reglas** (determinista, ATLAS) vs **probabilístico** (un modelo da una probabilidad; PheValuator). Un **fenotipo** es la definición computable de una condición; **valídalo** (sensibilidad/especificidad/**PPV**) o introduces misclasificación. Ver definir-cohorte-fenotipo.
 
 ## Caracterización (descriptivo)
 
-Responde "¿qué hay en los datos?": nivel **base de datos** (demografía, conteos, tendencias — ACHILLES), nivel **cohorte** (comorbilidades, fármacos), **treatment pathways** (secuencias de tratamiento) e **incidencia/prevalencia**. Describe, no infiere. Ver [[caracterizacion-ohdsi]].
+Responde "¿qué hay en los datos?": nivel **base de datos** (demografía, conteos, tendencias — ACHILLES), nivel **cohorte** (comorbilidades, fármacos), **treatment pathways** (secuencias de tratamiento) e **incidencia/prevalencia**. Describe, no infiere. Ver caracterizacion-ohdsi.
 
 ## Estimación a nivel de población (causa)
 
 Efectos causales de una exposición. Dos familias:
 - **Cohort method** (comparativa): new-user + comparador, ajustando confundidores con **propensity scores a gran escala** (miles de covariables + LASSO); evalúa **balance**.
-- **Autocontrolados** (cada persona su propio control): **SCCS**, **case-crossover**, self-controlled cohort → eliminan confundidores **fijos** (pero sensibles a los que cambian en el tiempo). Ver [[estimacion-nivel-poblacion-ohdsi]].
+- **Autocontrolados** (cada persona su propio control): **SCCS**, **case-crossover**, self-controlled cohort → eliminan confundidores **fijos** (pero sensibles a los que cambian en el tiempo). Ver estimacion-nivel-poblacion-ohdsi.
 
 ## Predicción a nivel de paciente (PLP)
 
-**Pronóstico** individual (no causa). Marco estandarizado: **cohorte objetivo** (target) + **cohorte de outcome** + **time-at-risk**. Se extraen miles de features, se ajusta el modelo y se evalúa con **discriminación (AUC)** + **calibración**, con validación interna y **externa**. Una variable predictiva ≠ causa. Ver [[prediccion-nivel-paciente-plp]].
+**Pronóstico** individual (no causa). Marco estandarizado: **cohorte objetivo** (target) + **cohorte de outcome** + **time-at-risk**. Se extraen miles de features, se ajusta el modelo y se evalúa con **discriminación (AUC)** + **calibración**, con validación interna y **externa**. Una variable predictiva ≠ causa. Ver prediccion-nivel-paciente-plp.
 
 ---
 

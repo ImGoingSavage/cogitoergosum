@@ -1,6 +1,6 @@
 # The Mixtape III: variables instrumentales y regresión discontinua
 
-> Diseños que rompen la dependencia del **CIA** ([[supuesto-seleccion-en-observables-cia]]) con variación **como-si exógena**.
+> Diseños que rompen la dependencia del **CIA** (supuesto-seleccion-en-observables-cia) con variación **como-si exógena**.
 
 ## De qué trata esta lección (y qué sabrás hacer al final)
 
@@ -10,18 +10,18 @@ Al terminar podrás: (1) ejecutar las dos etapas de 2SLS y verificar sus tres co
 
 ## Variables instrumentales (2SLS)
 
-Para un tratamiento **endógeno** (confundidor no medido o causalidad inversa), un **instrumento Z** aporta variación exógena. Ver [[variable-instrumental]].
+Para un tratamiento **endógeno** (confundidor no medido o causalidad inversa), un **instrumento Z** aporta variación exógena. Ver variable-instrumental.
 
 **2SLS:** (1ª etapa) D ~ Z → D̂ (parte de D movida solo por Z); (2ª etapa) Y ~ D̂. Tres condiciones:
 - **Relevancia** (Z→D, testeable en la 1ª etapa).
 - **Exclusión** (Z afecta Y solo vía D).
 - **Independencia** (Z como-si aleatorio respecto a confundidores).
 
-Bajo **monotonicidad** (sin defiers) estima el **LATE** (efecto en los **compliers**, no ATE). **Instrumentos débiles** (relevancia baja) amplifican sesgo y varianza → exige **F>10** en la 1ª etapa. La **forma reducida** (Y~Z) es diagnóstico: IV ≈ (Y~Z)/(D~Z). Ver [[instrumentos-debiles-2sls]].
+Bajo **monotonicidad** (sin defiers) estima el **LATE** (efecto en los **compliers**, no ATE). **Instrumentos débiles** (relevancia baja) amplifican sesgo y varianza → exige **F>10** en la 1ª etapa. La **forma reducida** (Y~Z) es diagnóstico: IV ≈ (Y~Z)/(D~Z). Ver instrumentos-debiles-2sls.
 
 ## Regresión discontinua (RDD)
 
-El tratamiento se asigna por un **umbral** (cutoff) en una **running variable**. Las unidades justo arriba/abajo son comparables (**aleatorización local**) → el **salto** en E[Y] en el cutoff es el efecto. Ver [[regresion-discontinua-rdd]].
+El tratamiento se asigna por un **umbral** (cutoff) en una **running variable**. Las unidades justo arriba/abajo son comparables (**aleatorización local**) → el **salto** en E[Y] en el cutoff es el efecto. Ver regresion-discontinua-rdd.
 
 - **Sharp:** cruzar el umbral **determina** el tratamiento (0→1); efecto = salto en Y.
 - **Fuzzy:** cambia la **probabilidad** de tratamiento → se estima por **IV** (cutoff como instrumento); LATE en el umbral.

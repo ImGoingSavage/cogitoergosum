@@ -6,7 +6,7 @@
 
 Una pregunta conductual no se "resuelve" con una respuesta correcta: se **estructura**. El entrevistador no busca la historia perfecta, sino evidencia de cómo piensas, colaboras y aprendes — y eso solo se ve si cuentas una experiencia **real** con claridad. Esta lección construye, desde cero, el andamiaje **STAR** y lo aplica a las tres situaciones más frecuentes: conflicto, colaboración y comunicación.
 
-Al terminar podrás: (1) armar cualquier respuesta con STAR dedicando el grueso (60-70%) a **tu** Acción y al Resultado medible; (2) responder una de conflicto sin culpar — con empatía, datos y la relación preservada; (3) comunicar a audiencias no técnicas y dar/recibir feedback de forma accionable; y (4) reconocer las señales de una respuesta **madura** frente a las banderas rojas. Es la base de [[arena-c2]] (fracaso y aprendizaje) y se apoya en [[narrativa-star]].
+Al terminar podrás: (1) armar cualquier respuesta con STAR dedicando el grueso (60-70%) a **tu** Acción y al Resultado medible; (2) responder una de conflicto sin culpar — con empatía, datos y la relación preservada; (3) comunicar a audiencias no técnicas y dar/recibir feedback de forma accionable; y (4) reconocer las señales de una respuesta **madura** frente a las banderas rojas. Es la base de [[arena-c2]] (fracaso y aprendizaje) y se apoya en narrativa-star.
 
 ---
 
@@ -19,11 +19,11 @@ Al terminar podrás: (1) armar cualquier respuesta con STAR dedicando el grueso 
 | **A**cción | Qué hiciste **TÚ** (primera persona, decisiones, pasos) |
 | **R**esultado | Desenlace **medible** + qué aprendiste |
 
-El **60-70%** de la respuesta debe ser **Acción + Resultado**. Sé específico (un caso real concreto), conciso (1-2 min), honesto. Ver [[narrativa-star]].
+El **60-70%** de la respuesta debe ser **Acción + Resultado**. Sé específico (un caso real concreto), conciso (1-2 min), honesto. Ver narrativa-star.
 
 ## Conflicto y desacuerdo
 
-Foco en **madurez**: describe el desacuerdo de forma **objetiva y empática** (sin culpar), busca **entender** la otra postura, resuelve con **datos/objetivos comunes** y cierra con un resultado que **preserva la relación**. Con un manager: argumenta con evidencia y luego **'disagree and commit'**. Ver [[responder-conflicto-star]].
+Foco en **madurez**: describe el desacuerdo de forma **objetiva y empática** (sin culpar), busca **entender** la otra postura, resuelve con **datos/objetivos comunes** y cierra con un resultado que **preserva la relación**. Con un manager: argumenta con evidencia y luego **'disagree and commit'**. Ver responder-conflicto-star.
 
 ## Comunicación e influencia
 

@@ -10,7 +10,7 @@ Al terminar podrás: (1) cerrar un camino trasero con el criterio backdoor y rec
 
 ## Confundimiento y criterio de la puerta trasera
 
-**Confundimiento** = A e Y comparten una **causa común**, abriendo un **camino trasero** A ← C → Y que transmite asociación no causal. Ver [[confundimiento-backdoor]].
+**Confundimiento** = A e Y comparten una **causa común**, abriendo un **camino trasero** A ← C → Y que transmite asociación no causal. Ver confundimiento-backdoor.
 
 **Criterio backdoor:** un conjunto L identifica el efecto si (i) **bloquea** todos los caminos traseros y (ii) **no** contiene descendientes de A. Cumplirlo = intercambiabilidad condicional dado L.
 
@@ -21,14 +21,14 @@ Un camino está **bloqueado** si: condicionas un **no-collider** (cadena A→B�
 
 Surge al **condicionar** (restringir, estratificar, seleccionar) un **efecto común** (collider) de A (o causa de A) e Y (o causa de Y) → abre asociación espuria. Se distingue del confundimiento: causa común **anterior** (confundimiento) vs efecto común **posterior** condicionado (selección).
 
-**Censura informativa:** permanecer no censurado (C=0) es efecto de A y predictor de Y; analizar solo a los no censurados condiciona un collider → corrige con **IP weighting de censura (IPCW)**. Ver [[sesgo-de-seleccion-censura]].
+**Censura informativa:** permanecer no censurado (C=0) es efecto de A y predictor de Y; analizar solo a los no censurados condiciona un collider → corrige con **IP weighting de censura (IPCW)**. Ver sesgo-de-seleccion-censura.
 
 ## Sesgo de medición
 
 De medir con error A, Y o L:
 - **No diferencial** (error independiente del valor de la otra variable): suele **atenuar** hacia el nulo.
 - **Diferencial** (error depende, p. ej. recall bias): sesga en **cualquier** dirección.
-- **Confundidor mal medido** → **confundimiento residual** (ajuste incompleto). Ver [[sesgo-de-medicion-misclasificacion]].
+- **Confundidor mal medido** → **confundimiento residual** (ajuste incompleto). Ver sesgo-de-medicion-misclasificacion.
 
 Se modela con **diagramas no causales** (variable real → variable medida ← nodo de error).
 

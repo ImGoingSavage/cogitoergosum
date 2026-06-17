@@ -19,7 +19,7 @@ Extensiones lineales **en los parámetros** vía **funciones base**:
 
 - **Árbol:** partición binaria recursiva; predice media (regresión) o clase mayoritaria (clasif.). Divide minimizando RSS o impureza (**Gini/entropía**). Interpretable pero de **alta varianza**.
 - **Bagging:** muchos árboles sobre muestras **bootstrap**, promediados → reduce **varianza**. Problema: con un predictor fuerte los árboles quedan **correlacionados**.
-- **Random Forest:** en cada split solo **m predictores al azar** (≈√p clasif., p/3 regresión) → **decorrelaciona** los árboles → más reducción de varianza. Con m=p es bagging. Ver [[elegir-ensemble]].
+- **Random Forest:** en cada split solo **m predictores al azar** (≈√p clasif., p/3 regresión) → **decorrelaciona** los árboles → más reducción de varianza. Con m=p es bagging. Ver elegir-ensemble.
 - **OOB error:** cada dato se predice con los ~⅓ de árboles que no lo vieron → estimación de test **gratis**.
 - **Importancia de variables:** reducción total de RSS/impureza atribuida a cada feature.
 - **Boosting:** árboles **secuenciales** ajustados a los **residuos**; aprende lento. Params: **B** (puede sobreajustar → CV), **d** (profundidad, a veces stumps d=1), **λ** (shrinkage/learning rate pequeño).
@@ -34,7 +34,7 @@ Extensiones lineales **en los parámetros** vía **funciones base**:
 
 - **PCA:** direcciones ortogonales de **máxima varianza** (componentes); **PVE**/scree para elegir cuántas; estandarizar si las escalas difieren.
 - **K-means:** particiona en **K fijo** minimizando la varianza intra-cluster; depende de la inicialización (corre varias veces); clusters esféricos.
-- **Jerárquico:** **no fija K**; **dendrograma** aglomerativo que se corta a la altura deseada; depende del **linkage** (complete/average > single) y la distancia. Ver [[clustering-kmeans-jerarquico]].
+- **Jerárquico:** **no fija K**; **dendrograma** aglomerativo que se corta a la altura deseada; depende del **linkage** (complete/average > single) y la distancia. Ver clustering-kmeans-jerarquico.
 
 ---
 

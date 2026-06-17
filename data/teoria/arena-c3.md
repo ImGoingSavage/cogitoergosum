@@ -1,6 +1,6 @@
 # Conductual III: liderazgo, iniciativa, impacto y priorización (STAR)
 
-> Estas preguntas buscan **agencia e impacto**. Usa [[narrativa-star]] y, en el Resultado, **cuantifica el impacto de negocio**. Ver [[responder-liderazgo-impacto-star]].
+> Estas preguntas buscan **agencia e impacto**. Usa narrativa-star y, en el Resultado, **cuantifica el impacto de negocio**. Ver responder-liderazgo-impacto-star.
 
 ## De qué trata esta lección (y qué sabrás hacer al final)
 
