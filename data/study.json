@@ -23960,6 +23960,22 @@
      "solucion": "Es esfuerzo de control gastado sobre un no-activo: mucho control donde el impacto de un fallo es nulo, mientras activos reales pueden quedar desprotegidos. La seguridad es economía: el control debe ser proporcional al riesgo del activo que protege.",
      "explicacion": "Defensa proporcional: invertir donde el riesgo lo justifica.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cms1-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: un equipo publica un notebook con métricas agregadas, una muestra de 200 filas y una clave temporal de lectura. Nombra activo, amenaza, vulnerabilidad, impacto y control prioritario.",
+     "solucion": "Activos: datos de personas, credencial y reputación del equipo. Amenazas: acceso oportunista al repo, uso interno indebido o scraping. Vulnerabilidades: muestra con datos reales y secreto publicado. Impacto: fuga de confidencialidad y posible acceso indirecto a más datos. Control prioritario: retirar y rotar la clave, eliminar la muestra real, revisar logs y reemplazarla por datos sintéticos o anonimizados.",
+     "explicacion": "La respuesta fuerte separa vocabulario de riesgo y no salta directo a “poner una contraseña”.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: piensa en un proyecto propio. ¿Cuál es el activo más valioso y qué control estás aplicando por costumbre, no por riesgo real?",
+     "solucion": "Una buena reflexión distingue activos por impacto. Tal vez el activo real no es el modelo sino los datos, las credenciales o la confianza del usuario. El control por costumbre debe revisarse contra amenaza e impacto: si no reduce un riesgo concreto, es ruido operativo.",
+     "explicacion": "La metacognición de seguridad empieza preguntando qué estás protegiendo, no qué herramienta instalar.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24030,6 +24046,22 @@
      "enunciado": "Da un ejemplo de cómo un default deja de ser fail-safe sin que nadie lo decida, y por qué importa.",
      "solucion": "Abrir un puerto 'temporalmente' para una demo y dejarlo abierto: el sistema pasó de cerrado-por-defecto a abierto sin una decisión consciente. Importa porque las aberturas temporales se vuelven permanentes y amplían la superficie de ataque silenciosamente.",
      "explicacion": "Los defaults inseguros se acumulan por descuido.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cms2-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: diez analistas usan una cuenta compartida con permiso total porque “así no se bloquea el trabajo”. Propón una alternativa defensiva y nombra el riesgo residual.",
+     "solucion": "Alternativa: cuentas individuales, permisos por rol, acceso temporal, solo lectura salvo necesidad explícita, registro por usuario y revisión periódica. Reduce abuso y error accidental. Riesgo residual: alguien con permiso legítimo aún puede consultar de más o exportar datos; se gestiona con auditoría, alertas y minimización.",
+     "explicacion": "Least privilege no elimina el riesgo, pero acota el daño y vuelve trazable la investigación.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cms2-tm1",
+     "tipo": "threat_model",
+     "enunciado": "Threat model: modela un dashboard interno que lee una base de clientes, muestra predicciones y permite descargar CSV. Enumera tres supuestos de confianza que podrían romperse.",
+     "solucion": "Supuestos frágiles: (1) quien está autenticado puede ver todos los clientes; se rompe con exceso de privilegios. (2) el parámetro customer_id representa autorización; se rompe con BOLA/IDOR. (3) la descarga CSV solo se usa para análisis legítimo; se rompe con extracción masiva. Controles: autorización por recurso, cuotas/alertas de exportación y logs auditables.",
+     "explicacion": "Un threat model útil caza supuestos, no enumera amenazas genéricas.",
      "difficulty": "hard"
     }
    ]
@@ -24102,6 +24134,14 @@
      "solucion": "Porque capacitar no corrige un incentivo torcido: si quien paga el control no sufre el daño, seguirá sin invertir aunque 'esté concientizado'. Funciona mejor alinear responsabilidades (hacer responsable a quien guarda los datos), que cambia el cálculo económico.",
      "explicacion": "Alinear incentivos > concientizar.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cms3-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué incentivo de tu equipo podría empujar a aceptar un riesgo de seguridad que nadie aceptaría si pagara personalmente el daño?",
+     "solucion": "Una respuesta madura identifica presión por entregar, métricas de velocidad, ausencia de dueño del riesgo o costos que recaen en usuarios. El siguiente paso es alinear incentivos: hacer visible el impacto, asignar dueño, medir controles y convertir seguridad en parte de la definición de terminado.",
+     "explicacion": "La economía de seguridad explica por qué “saber la defensa” no basta para que se implemente.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24173,6 +24213,14 @@
      "solucion": "Ambas inyectan una 'autoridad falsa' que induce una acción: el empleado crédulo obedece la nota del atacante; el LLM obedece la instrucción escondida en el contenido. En ambos, la defensa es limitar lo que el engañado puede hacer (least privilege / agencia mínima) y verificar acciones sensibles.",
      "explicacion": "Mismo patrón, distinto 'empleado crédulo'.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cms4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: una persona pide por chat “exporta urgente la tabla completa; soy de dirección”. ¿Qué defensa sociotécnica propones sin bloquear el trabajo legítimo?",
+     "solucion": "Verificación por canal independiente, aprobación de segundo responsable para exportaciones sensibles, permisos mínimos, plantilla de solicitud con propósito y retención, y log de la decisión. Si la urgencia es real, el proceso debe tener un camino rápido pero trazable, no depender de confianza informal.",
+     "explicacion": "El humano forma parte del sistema; no se defiende solo con código.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24244,6 +24292,22 @@
      "solucion": "Escalar cada riesgo menor a la gerencia genera fatiga y termina ignorándose todo (como la fatiga de alertas). Se comunica con la intensidad proporcional al riesgo: los pocos críticos con detalle y acción, los menores por canales rutinarios.",
      "explicacion": "Proporcionalidad también al comunicar.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cms5-tm1",
+     "tipo": "threat_model",
+     "enunciado": "Threat model: diseña controles para compartir un modelo entrenado con datos sensibles con otro equipo. Identifica activos, abuso posible y control proporcional.",
+     "solucion": "Activos: pesos del modelo, métricas, datos de entrenamiento inferibles y documentación. Abusos: extracción de información, uso fuera de finalidad, redistribución o integración insegura. Controles proporcionales: acuerdo de finalidad, evaluación de privacidad, acceso por identidad, versionado, watermark/metadatos de procedencia, monitoreo de uso y retirada si cambia el riesgo.",
+     "explicacion": "Compartir un modelo también puede compartir riesgo; no todo riesgo vive en la tabla original.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cms5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué riesgo residual aceptarías conscientemente en un proyecto de datos y cómo lo comunicarías sin sonar alarmista?",
+     "solucion": "Una buena respuesta nombra el riesgo, el control ya aplicado, por qué el riesgo restante es aceptable frente al objetivo y qué señal haría reabrir la decisión. El tono debe ser sobrio: “queda este riesgo, lo vigilamos con esta métrica y este dueño”, no miedo genérico.",
+     "explicacion": "Comunicar riesgo es parte de diseñar seguridad; si nadie entiende el tradeoff, no está gestionado.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24315,6 +24379,14 @@
      "solucion": "Porque la frontera 'solo local' se rompe si otro proceso del mismo host está comprometido, o si un SSRF hace que el servidor mismo le envíe peticiones desde dentro. 'Interno/local' no equivale a 'inaccesible para un atacante'.",
      "explicacion": "La red interna también tiene adversarios.",
      "difficulty": "hard"
+    },
+    {
+     "id": "csys1-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa este script de análisis y di qué falla desde permisos y aislamiento:\n```python\nimport os\n\n# Corre como administrador para evitar errores de permisos\nos.system(\"python pipeline.py --input /data/clientes.csv\")\n# El resultado se guarda en una carpeta compartida con escritura para todos\n```",
+     "solucion": "El fallo no es el comando exacto sino el modelo de permisos: correr como administrador convierte cualquier bug del pipeline en daño total y una carpeta compartida con escritura amplia permite alteración de resultados. Corre con usuario dedicado de mínimos privilegios, directorios separados por lectura/escritura, permisos explícitos y logs de cambios.",
+     "explicacion": "Least privilege aplica también a notebooks y scripts internos.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24386,6 +24458,22 @@
      "solucion": "No: el cifrado garantiza confidencialidad (C), no integridad (I); un atacante puede no leerlo y aun así corromperlo. Para C e I a la vez se usan modos de cifrado autenticado (p. ej. AES-GCM), que combinan cifrado y verificación de integridad.",
      "explicacion": "C ≠ I; usar cifrado autenticado.",
      "difficulty": "hard"
+    },
+    {
+     "id": "csys2-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: un proceso de ETL necesita leer un bucket y escribir una tabla, pero tiene permisos de administrador “por si acaso”. ¿Qué recorte harías primero?",
+     "solucion": "Definiría una identidad de servicio con permisos mínimos: lectura solo del bucket/prefijo necesario, escritura solo en la tabla destino, sin borrar, sin administrar usuarios y con rotación de credenciales. Primero recorta acciones destructivas y alcance de recursos; luego monitorea uso anómalo.",
+     "explicacion": "El permiso que no se necesita se convierte en radio de explosión.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csys2-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué permiso de tu entorno personal o de trabajo existe solo porque era cómodo al configurar?",
+     "solucion": "La respuesta debe terminar en una acción verificable: quitar admin local, separar llaves por proyecto, limitar tokens, revisar carpetas compartidas o caducar accesos temporales. La comodidad inicial suele quedarse como deuda de seguridad.",
+     "explicacion": "Pensar en permisos como deuda técnica ayuda a revisarlos periódicamente.",
+     "difficulty": "easy"
     }
    ]
   },
@@ -24457,6 +24545,14 @@
      "solucion": "Porque un atacante puede evitar contraseña y MFA si el reset se hace por un canal comprometido (un correo tomado) o con preguntas de seguridad adivinables. La autenticación es tan fuerte como su camino de recuperación; este debe protegerse al mismo nivel.",
      "explicacion": "El reset puede sortear todo lo demás.",
      "difficulty": "hard"
+    },
+    {
+     "id": "csys3-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: una API interna pasa de HTTPS a HTTP “solo dentro de la VPN” para simplificar certificados. Evalúa el riesgo.",
+     "solucion": "La VPN no elimina todos los atacantes ni errores internos. HTTP expone tokens, cookies o datos a intermediarios de la red y dificulta detectar manipulación. Mantendría TLS, automatizaría certificados y limitaría además por red/identidad. La defensa correcta es capas, no reemplazar cifrado por perímetro.",
+     "explicacion": "“Interno” no significa confiable; la red también es frontera de confianza.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24528,6 +24624,14 @@
      "solucion": "Porque el aislamiento se evalúa también en lo que comparten: un volumen o red común permite que el compromiso de uno se propague al otro, anulando la separación. Hay que revisar lo compartido, no solo lo separado.",
      "explicacion": "Lo compartido es una vía de propagación.",
      "difficulty": "hard"
+    },
+    {
+     "id": "csys4-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa este cliente de API y explica el problema de transporte/secretos:\n```python\nimport requests\n\nTOKEN = \"copiado-del-chat\"\nr = requests.get(\"https://api.ejemplo.local/datos\",\n                 headers={\"Authorization\": \"Bearer \" + TOKEN},\n                 verify=False)\nprint(r.status_code)\n```",
+     "solucion": "Hay dos fallos: secreto hardcodeado/copiado del chat y verificación TLS desactivada. El token debe vivir en un gestor de secretos o variable de entorno con permisos mínimos y rotación; TLS debe verificarse con una CA confiable o certificado interno administrado, no apagarse.",
+     "explicacion": "Apagar verificación para “hacer que funcione” elimina una defensa crítica y normaliza secretos fuera de control.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24599,6 +24703,22 @@
      "solucion": "Porque TLS protege el dato en tránsito, no en los extremos: en un host comprometido el dato se lee antes de cifrarse o después de descifrarse. La seguridad de la red complementa, no sustituye, la seguridad de los endpoints (aislamiento, [[cyber-sys4]]).",
      "explicacion": "Tránsito ≠ extremos.",
      "difficulty": "hard"
+    },
+    {
+     "id": "csys5-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: una app guarda tokens de sesión largos en texto plano dentro de logs para depurar fallos de login. ¿Qué harías?",
+     "solucion": "Dejar de registrar tokens completos, rotar cualquier token expuesto, reducir vida útil, registrar solo metadatos o hash parcial irreversible para correlación, y revisar quién accedió a logs. Los logs son otro almacén sensible y deben tratarse como datos protegidos.",
+     "explicacion": "Autenticación segura también exige higiene de observabilidad.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "csys5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué dato de autenticación te sentirías tentado a loguear para depurar y cómo obtendrías la misma señal sin exponerlo?",
+     "solucion": "Modelo de respuesta: identificar el dato sensible (token, cookie, email completo, código MFA), sustituirlo por identificador no reversible o metadatos, y definir una ventana temporal de depuración con acceso restringido. La señal útil rara vez requiere el secreto completo.",
+     "explicacion": "La buena depuración conserva señales, no secretos.",
+     "difficulty": "easy"
     }
    ]
   },
@@ -24670,6 +24790,30 @@
      "solucion": "No: si usas consultas crudas (raw) concatenando strings, vuelves a ser vulnerable. La herramienta segura usada de forma insegura reintroduce el bug; hay que parametrizar incluso dentro del ORM.",
      "explicacion": "La herramienta no sustituye la práctica correcta.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cwe1-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa este endpoint y di qué falla:\n```python\ndef buscar(nombre):\n    sql = \"SELECT id, nombre FROM usuarios WHERE nombre = '\" + nombre + \"'\"\n    return db.query(sql)\n```",
+     "solucion": "Construye SQL concatenando entrada del usuario: dato tratado como instrucción. La corrección es consulta parametrizada/prepared statement, no filtrar caracteres. Además conviene registrar la consulta como plantilla y no el valor sensible completo.",
+     "explicacion": "SQLi y XSS comparten el patrón dato→instrucción; aquí se corrige separando canales.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe1-cr2",
+     "tipo": "code_review",
+     "enunciado": "Revisa este render de dashboard:\n```js\nfunction saludar(nombreUsuario) {\n  document.querySelector(\"#hola\").innerHTML = \"Hola, \" + nombreUsuario;\n}\n```",
+     "solucion": "Usa innerHTML con dato de usuario, abriendo XSS si el nombre contiene HTML/event handlers. La corrección conservadora es textContent o binding seguro del framework; si necesitas HTML, sanitización robusta por allow-list y codificación por contexto.",
+     "explicacion": "La salida se protege codificando por contexto; no basta validar la entrada.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cwe1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿en qué parte de una app de datos podrías estar convirtiendo datos en instrucciones sin darte cuenta?",
+     "solucion": "Ejemplos: SQL armado por strings, prompts que mezclan instrucciones y documentos, innerHTML con campos libres, comandos de sistema con rutas del usuario o dashboards que interpretan Markdown no confiable. La respuesta fuerte identifica frontera y mitigación específica.",
+     "explicacion": "Buscar dato→instrucción es una heurística transferible entre web, datos y LLMs.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24741,6 +24885,14 @@
      "solucion": "Porque un SSRF puede alcanzarlo desde fuera usando al propio servidor como puente, y la red interna deja de ser una frontera confiable. Un servicio interno sin auth se convierte en un blanco accesible indirectamente.",
      "explicacion": "La confianza en 'lo interno' es frágil.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cwe2-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: el frontend oculta el botón “exportar todo” a usuarios normales, pero el endpoint existe y solo recibe user_id como parámetro. ¿Qué control falta?",
+     "solucion": "Falta autorización en el servidor derivada de la sesión/token, no del parámetro enviado por el cliente. El endpoint debe verificar rol y pertenencia del recurso en cada petición. Ocultar botones es UX, no control de seguridad.",
+     "explicacion": "La frontera real de confianza está en el servidor.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -24810,6 +24962,14 @@
      "enunciado": "¿Por qué GraphQL y los endpoints de búsqueda complejos amplían la superficie de riesgo de una API?",
      "solucion": "Porque una sola consulta puede pedir muchos objetos anidados, multiplicando los puntos donde puede faltar autorización (por campo/objeto) y permitiendo consultas muy costosas (DoS). Requieren control de acceso por campo y límites de complejidad, no solo por endpoint.",
      "explicacion": "Más expresividad = más superficie.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cwe3-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa este patrón de API y nombra la vulnerabilidad:\n```js\napp.get(\"/api/orders/:id\", async (req, res) => {\n  const order = await db.orders.findById(req.params.id);\n  res.json(order);\n});\n```",
+     "solucion": "Es BOLA/IDOR: se busca el objeto por id, pero no se comprueba que pertenezca al usuario autenticado o que el usuario tenga permiso. La consulta debe incluir el dueño/tenant derivado del token o una verificación explícita de autorización por objeto.",
+     "explicacion": "Cada endpoint con id de recurso necesita autorización por recurso, no solo autenticación.",
      "difficulty": "hard"
     }
    ],
@@ -24882,6 +25042,14 @@
      "solucion": "Porque da una falsa sensación de protección: figura una CSP (con unsafe-inline o comodines) que permite justo lo que debía bloquear, relajando la vigilancia mientras no protege. Una defensa mal configurada engaña al equipo sobre su postura real.",
      "explicacion": "Falsa seguridad.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cwe4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: una API permite actualizar perfiles con cualquier campo del JSON recibido. Un usuario normal envía role=admin. ¿Qué defensa aplica?",
+     "solucion": "Mass assignment: el servidor acepta campos no permitidos. Defensa: allow-list estricta de campos editables por rol, ignorar/rechazar campos inesperados, pruebas de autorización y logs de intentos. La validación debe ocurrir del lado servidor.",
+     "explicacion": "La forma del JSON también es una frontera de confianza.",
+     "difficulty": "medium"
     }
    ],
    "orden": 814
@@ -24953,6 +25121,14 @@
      "solucion": "Porque según el formato (p. ej. pickle), cargar el modelo ejecuta código incrustado por quien lo publicó (deserialización insegura), y al ser un componente de terceros sin procedencia verificada es también supply chain de modelos. 'Es solo un modelo' es un supuesto peligroso; se prefieren formatos sin ejecución (safetensors) y verificar integridad/origen.",
      "explicacion": "Cargar un modelo puede ser ejecutar código.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cwe5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué endpoint de una app que conoces sería más peligroso si alguien automatizara miles de peticiones legítimas?",
+     "solucion": "Una respuesta útil distingue abuso de funcionalidad de intrusión clásica: extracción masiva, fuerza bruta de identificadores, scraping o agotamiento de recursos. Propón rate limits, paginación, cuotas por usuario/tenant y alertas por patrón anómalo.",
+     "explicacion": "No todo ataque explota un bug; a veces escala una acción permitida.",
+     "difficulty": "medium"
     }
    ],
    "orden": 815
@@ -25025,6 +25201,22 @@
      "solucion": "Una estadística sobre un grupo muy pequeño revela al individuo: p. ej. 'el promedio salarial del único empleado de 60 años del área X' expone su salario. La agregación protege solo si los grupos son suficientemente grandes.",
      "explicacion": "Grupos pequeños rompen la protección por agregación.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdp1-dpr1",
+     "tipo": "data_privacy_review",
+     "enunciado": "Revisión de privacidad: dataset con email, fecha de nacimiento, CP, diagnóstico autodeclarado, timestamps de uso y score del modelo. Clasifica datos personales/sensibles y primer control.",
+     "solucion": "Personales: email, fecha de nacimiento, CP, timestamps si individualizan, score asociado a persona. Sensibles: diagnóstico autodeclarado y cualquier inferencia de salud. Primer control: minimización/finalidad; quitar o generalizar lo no necesario, separar identificadores, definir acceso y retención antes de entrenar.",
+     "explicacion": "Privacidad empieza por columnas y finalidad, no por “anonimizar al final”.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué columna conservarías “por si luego sirve” y qué daño crea esa frase?",
+     "solucion": "“Por si sirve” rompe minimización y alarga el radio de daño: más datos, más acceso, más retención, más riesgo de reidentificación. La alternativa es justificar finalidad, medir utilidad y documentar eliminación o agregación.",
+     "explicacion": "La minimización es una decisión de producto y ciencia, no solo legal.",
+     "difficulty": "easy"
     }
    ]
   },
@@ -25096,6 +25288,14 @@
      "solucion": "Porque un individuo con un valor único o rarísimo (una enfermedad muy poco común, un patrón de compra único) suele ser reidentificable aunque el resto del dataset comparta combinaciones con k-1 personas. Requieren supresión o agregación más agresiva.",
      "explicacion": "Lo raro es señalable.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdp2-dpr1",
+     "tipo": "data_privacy_review",
+     "enunciado": "Revisión de privacidad: una tabla “anonimizada” elimina nombres, pero conserva edad exacta, CP de 5 dígitos, fecha de ingreso y eventos raros. Evalúa el riesgo.",
+     "solucion": "Alto riesgo de reidentificación por cuasi-identificadores. Quitar nombres no basta. Controles: generalizar edad/CP/fechas, suprimir categorías raras, evaluar k-anonimato u otra métrica adecuada, limitar acceso y revisar utilidad tras generalizar.",
+     "explicacion": "Anonimización no es borrar una columna; es reducir unicidad bajo un modelo de atacante.",
+     "difficulty": "hard"
     }
    ]
   },
@@ -25165,6 +25365,14 @@
      "enunciado": "¿Por qué forzar 'consentimiento' a veces es teatro, y qué lo reemplaza?",
      "solucion": "Porque a veces el tratamiento se justifica por otra base (un contrato, una obligación legal) y disfrazar eso de consentimiento da una elección falsa (no es libre si no puedes negarte sin perder el servicio esencial). Lo correcto es nombrar la base real del tratamiento y reservar el consentimiento para usos genuinamente opcionales.",
      "explicacion": "Consentimiento no es la única base válida.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cdp3-dpr1",
+     "tipo": "data_privacy_review",
+     "enunciado": "Revisión de privacidad: un equipo propone publicar embeddings de usuarios porque “no son texto original”. ¿Qué preguntas harías antes de aprobar?",
+     "solucion": "Preguntaría finalidad, población, posibilidad de inversión o membership inference, si los embeddings preservan atributos sensibles, acceso previsto, retención y pruebas de reidentificación. Control posible: agregación, ruido, acceso restringido, evaluación de privacidad y documentación de límites.",
+     "explicacion": "Representaciones derivadas también pueden filtrar información personal.",
      "difficulty": "hard"
     }
    ],
@@ -25237,6 +25445,14 @@
      "solucion": "Porque registran quién hizo qué con qué datos, así que son datos personales con su propio riesgo de exposición y su propia necesidad de retención limitada. Hay que protegerlos y no conservarlos eternamente: auditar sin convertir el log en un nuevo problema de privacidad.",
      "explicacion": "El registro también es dato personal.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdp4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: el equipo quiere conservar logs crudos de uso “para auditoría” indefinidamente. Propón una política defensiva.",
+     "solucion": "Definir finalidad concreta, campos mínimos, retención con caducidad, acceso por rol, agregación cuando baste, revisión de datos sensibles y borrado verificable. Auditoría no exige conservar todo para siempre; exige conservar lo necesario con integridad y control.",
+     "explicacion": "Retención infinita convierte datos útiles en pasivo acumulado.",
+     "difficulty": "medium"
     }
    ],
    "orden": 819
@@ -25308,6 +25524,22 @@
      "solucion": "Porque protege contra inferencia sobre individuos, pero un ε mal elegido (demasiado grande) da garantía nominal sin protección real, y DP no resuelve el sesgo ni el uso indebido del modelo. Sigue haciendo falta gobernanza (acceso, auditoría, retención, finalidad): la técnica complementa, no reemplaza, la gestión.",
      "explicacion": "Técnica + gobernanza.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdp5-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: un stakeholder pide una tabla individual “solo para explorar”. ¿Cómo respondes preservando utilidad y privacidad?",
+     "solucion": "Primero pedir pregunta y finalidad. Si basta, entregar agregado, muestra sintética o vista con columnas minimizadas. Si requiere individual, aplicar aprobación, acceso temporal, logging y prohibición de redistribución. La respuesta no es “no” automático: es utilidad con control proporcional.",
+     "explicacion": "Privacidad bien diseñada preserva análisis útil con menor exposición.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdp5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿cómo explicarías a alguien no técnico la diferencia entre seguridad de datos y privacidad?",
+     "solucion": "Seguridad pregunta “¿quién puede acceder o alterar?”; privacidad pregunta “¿qué se debe recolectar, usar, inferir, conservar y compartir sobre personas?”. Puedes tener una base muy segura que aun así use datos de forma invasiva o fuera de finalidad.",
+     "explicacion": "Proteger personas exige más que proteger tablas.",
+     "difficulty": "easy"
     }
    ],
    "orden": 820
@@ -25380,6 +25612,22 @@
      "solucion": "Permite enumeración de cuentas: un atacante descubre qué emails/usuarios existen probando el login y leyendo cuál de los dos mensajes recibe. Conviene un mensaje genérico ('credenciales inválidas') que no revele si la cuenta existe.",
      "explicacion": "Incluso errores 'amables' pueden filtrar.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdev1-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa este fragmento de un pipeline y lista tres fallos defensivos:\n```python\nAPI_KEY = \"pegada-en-el-notebook\"\n\ndef llamar_api(payload):\n    print(\"payload completo\", payload)\n    return requests.post(URL, json=payload, headers={\"X-Key\": API_KEY})\n```",
+     "solucion": "Fallos: secreto hardcodeado, payload completo en logs y ausencia de controles de error/timeout visibles. Corrección: secreto en gestor/variable con rotación, logs con metadatos no contenido sensible, timeouts/reintentos controlados y permisos mínimos de la key.",
+     "explicacion": "Los pipelines de DS filtran secretos y datos por comodidad de depuración.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cdev1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué práctica “temporal” de desarrollo seguro tiende a volverse permanente en tus proyectos?",
+     "solucion": "Ejemplos: secret en notebook, permisos amplios, verify=False, endpoint de prueba expuesto, logs verbosos o dependencia sin pin. La respuesta útil incluye una regla de cierre: ticket, fecha de expiración, dueño y verificación.",
+     "explicacion": "Lo temporal sin dueño es permanente.",
+     "difficulty": "easy"
     }
    ]
   },
@@ -25451,6 +25699,14 @@
      "solucion": "SAST cubre tu código pero no las dependencias (necesitas SCA): puedes pasar todas las revisiones y aun así desplegar una librería con un CVE. El CI/CD es crítico porque tiene acceso a secretos y a producción, así que debe correr con permisos mínimos, versiones fijadas y verificadas, y ejecución aislada.",
      "explicacion": "Asegurar lo propio no asegura lo importado.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdev2-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa este parser de configuración:\n```python\nimport yaml\n\ndef cargar_config(texto):\n    return yaml.load(texto, Loader=yaml.Loader)\n```",
+     "solucion": "Carga YAML con un loader permisivo sobre texto no confiable: riesgo de deserialización insegura. Usa safe_load o un parser con esquema explícito, valida tipos/campos permitidos y trata configuración externa como input no confiable.",
+     "explicacion": "Deserializar es cruzar una frontera de confianza: no conviertas texto externo en objetos poderosos sin restricciones.",
+     "difficulty": "hard"
     }
    ]
   },
@@ -25521,6 +25777,14 @@
      "solucion": "No: el principio no dice 'no tengas lógica', dice 'haz la lógica de SEGURIDAD tan simple y auditable como puedas', aislándola de la complejidad del negocio. Una ruta de autorización clara y central es auditable aunque el resto del sistema sea complejo.",
      "explicacion": "Simplicidad en la seguridad, no en todo.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdev3-cr1",
+     "tipo": "code_review",
+     "enunciado": "Revisa esta práctica de dependencias:\n```txt\nrequirements.txt\nrequests\npandas\npaquete-interno>=0.1\n\n# El CI instala siempre la última versión disponible\n```",
+     "solucion": "Riesgo de supply chain y reproducibilidad: versiones flotantes, paquete interno ambiguo y sin SCA/SBOM. Usa lockfile o pins revisados, repositorio privado confiable para internos, escaneo de vulnerabilidades, revisión de licencias y actualización controlada.",
+     "explicacion": "Dependencias son código que ejecutas; tratarlas como “infra invisible” crea riesgo.",
+     "difficulty": "medium"
     }
    ],
    "orden": 823
@@ -25592,6 +25856,14 @@
      "solucion": "Porque generan fatiga (como la fatiga de alertas): el equipo empieza a ignorar todos los hallazgos, incluidos los verdaderos. La verificación se calibra —priorizar hallazgos de alto impacto, afinar reglas— en vez de inundar; un SAST que se ignora no protege.",
      "explicacion": "Calibrar para no morir de ruido.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdev4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: el pipeline de CI/CD puede leer todos los secretos de producción aunque solo corre pruebas. ¿Qué cambio priorizas?",
+     "solucion": "Separar entornos y secretos: pruebas con secretos de prueba, producción solo en jobs de despliegue protegidos, aprobación si aplica, permisos mínimos por job y rotación de secretos expuestos. También revisar logs del CI porque suelen conservar salidas.",
+     "explicacion": "El CI/CD es una identidad poderosa; sus permisos deben ser tan estrechos como los de una app.",
+     "difficulty": "medium"
     }
    ],
    "orden": 824
@@ -25663,6 +25935,22 @@
      "solucion": "Porque desincentiva la divulgación responsable: quien encuentra el fallo deja de reportarlo (o lo lleva al mercado negro), y la organización se entera tarde o por un ataque. Una vía de reporte clara y sin represalias hace que los fallos lleguen a quien puede arreglarlos.",
      "explicacion": "No mates al mensajero.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cdev5-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: aparece una vulnerabilidad crítica en una librería usada por tu API, pero el parche rompe tests. ¿Cómo respondes sin improvisar?",
+     "solucion": "Triage: confirmar exposición real, versiones afectadas y compensating controls; aislar la superficie, probar actualización en rama, aplicar mitigación temporal si existe, comunicar riesgo y ETA, desplegar con pruebas mínimas relevantes y monitorear. Rápido no significa sin verificación.",
+     "explicacion": "La respuesta madura combina velocidad, evidencia y rollback.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cdev5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué señal te diría que tu proceso de parcheo es lento por diseño, no por mala suerte?",
+     "solucion": "Señales: no hay dueño de dependencias, no hay inventario/SBOM, tests frágiles, deploy manual, miedo a rollback, ambientes no reproducibles. Mejorar parcheo exige arquitectura de cambio seguro, no solo pedir “más urgencia”.",
+     "explicacion": "Parchear rápido es una capacidad construida antes del incidente.",
+     "difficulty": "medium"
     }
    ],
    "orden": 825
@@ -25735,6 +26023,22 @@
      "solucion": "Porque usa accesos legítimos, así que no dispara alertas de 'acceso no autorizado'. Se aborda por comportamiento anómalo: volumen inusual, horarios atípicos, acceso a recursos que normalmente no toca — es decir, líneas base por entidad en vez de reglas de permiso.",
      "explicacion": "Detección por anomalía, no por permiso.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cblue1-la1",
+     "tipo": "log_analysis",
+     "enunciado": "Analiza este log ficticio y di táctica probable, impacto y siguiente acción defensiva:\n```txt\n2026-06-16T09:12:03Z login failed user=ana ip=203.0.113.10\n2026-06-16T09:12:05Z login failed user=ana ip=203.0.113.10\n2026-06-16T09:12:08Z login success user=ana ip=203.0.113.10\n2026-06-16T09:13:22Z export_csv user=ana rows=480000\n```",
+     "solucion": "Táctica probable: intento de acceso seguido de uso anómalo de cuenta válida; podría ser credential stuffing o cuenta comprometida. Impacto: extracción masiva de datos. Acción: contactar/verificar con Ana, revocar sesión si no reconoce, revisar MFA, bloquear o limitar exportación, preservar logs y buscar actividad lateral. Falta contexto: ubicación habitual, agente, MFA y baseline de exportaciones.",
+     "explicacion": "Un buen análisis no salta a atribución; formula hipótesis, impacto y dato faltante.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cblue1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué alerta de tu sistema actual sería ruido porque no está ligada a un impacto observable?",
+     "solucion": "Una respuesta fuerte conecta alerta con síntoma de usuario, activo o riesgo. Si solo dice “CPU alta” sin impacto, quizá debe convertirse en indicador de investigación, no página urgente. Alertar por síntoma reduce fatiga.",
+     "explicacion": "Blue team efectivo prioriza señales accionables.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -25806,6 +26110,14 @@
      "solucion": "Porque cada evento individual queda por debajo del umbral; el daño solo es visible acumulado en el tiempo. Implica que toda detección tiene puntos ciegos que el adversario buscará, y que se necesitan detecciones de patrones acumulados, no solo por evento.",
      "explicacion": "Ninguna detección es completa.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cblue2-la1",
+     "tipo": "log_analysis",
+     "enunciado": "Analiza este log de aplicación:\n```txt\n09:00 user=svc-reports action=list_tables status=ok\n09:01 user=svc-reports action=read table=patients rows=1000 status=ok\n09:02 user=svc-reports action=read table=patients rows=1000 status=ok\n09:03 user=svc-reports action=read table=patients rows=1000 status=ok\n09:04 user=svc-reports action=download table=patients rows=250000 status=ok\n```",
+     "solucion": "Patrón: uso de cuenta de servicio para enumerar/extraer datos por lotes. Impacto: posible exfiltración o abuso de permiso. Acción: revisar propósito de la cuenta, owner, ventana esperada, limitar permisos, cuotas y alertas por volumen. Falta comparar contra baseline y job programado legítimo.",
+     "explicacion": "Los logs de negocio (rows, tabla, acción) suelen ser más útiles que solo IP/status.",
+     "difficulty": "hard"
     }
    ]
   },
@@ -25875,6 +26187,14 @@
      "enunciado": "¿Qué riesgo tiene basarse solo en inteligencia de amenazas conocidas?",
      "solucion": "Que se sesga hacia lo reportado/famoso y deja puntos ciegos en técnicas nuevas o no documentadas. Por eso la inteligencia se complementa con detección de anomalías de comportamiento para lo que no se anticipó: lo conocido se prioriza, lo desconocido se vigila por desviación.",
      "explicacion": "La inteligencia no ve lo no reportado.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cblue3-la1",
+     "tipo": "log_analysis",
+     "enunciado": "Analiza este evento de endpoint ficticio:\n```txt\nhost=ds-laptop user=edgar process=python parent=notebook\nfile_read=/Users/edgar/.ssh/id_rsa\nnet_connect=unknown-storage.example:443\nbytes_out=7340032\n```",
+     "solucion": "Hipótesis: notebook o dependencia accedió a una llave SSH y envió datos a un destino inusual. Impacto: posible fuga de credencial. Acción: aislar host si procede, rotar la llave, revisar notebook/dependencias recientes, preservar evidencia y buscar el mismo patrón en otros equipos. Dato faltante: reputación del dominio, hash del proceso y cambio reciente.",
+     "explicacion": "El análisis defensivo une proceso, archivo sensible y salida de red; no necesita atribución para actuar.",
      "difficulty": "hard"
     }
    ],
@@ -25947,6 +26267,14 @@
      "solucion": "Porque consume recursos y erosiona la confianza en las alertas (fatiga), llevando a ignorar futuras alertas reales. Por eso el triaje y la severidad son la primera fase activa: la respuesta debe ser proporcional al riesgo real, ni exagerada ni ausente.",
      "explicacion": "Respuesta proporcional a la severidad.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cblue4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: recibes 120 alertas nocturnas de severidad media. ¿Cómo decides qué investigar primero?",
+     "solucion": "Prioriza por activo crítico, impacto potencial, novedad respecto al baseline, cadena de eventos y evidencia de acción exitosa. Agrupa duplicados, baja ruido conocido y escala lo que combine cuenta privilegiada + datos sensibles + volumen o movimiento inusual.",
+     "explicacion": "Triage no es atender por orden de llegada; es ordenar por riesgo observable.",
+     "difficulty": "medium"
     }
    ],
    "orden": 829
@@ -26018,6 +26346,22 @@
      "solucion": "Porque la emulación cubre lo que anticipas (técnicas conocidas); un adversario con una técnica nueva no emulada puede pasar. Se complementa con detección de anomalías de comportamiento e inteligencia actualizada para lo desconocido: el ciclo cierra los huecos conocidos, las anomalías vigilan lo demás.",
      "explicacion": "Lo conocido se valida; lo nuevo se vigila.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cblue5-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: tras un incidente menor, dirección pide “culpable y garantía de que no vuelve”. Redacta el enfoque correcto.",
+     "solucion": "Enfoque: postmortem sin culpa, línea de tiempo, condiciones sistémicas, controles que fallaron, acciones con dueño/fecha y señales de verificación. No se promete riesgo cero; se promete reducir probabilidad/impacto y medir si la acción funcionó.",
+     "explicacion": "La cultura sin culpa no evita responsabilidad; la vuelve accionable sobre el sistema.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cblue5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué información necesitarías guardar hoy para poder investigar bien un incidente mañana sin violar privacidad?",
+     "solucion": "Respuesta modelo: logs mínimos pero suficientes: identidad pseudonimizada cuando baste, acción, recurso, timestamp, volumen, resultado, correlación de sesión; retención limitada, acceso restringido y exclusión de payload sensible. Investigar bien no exige guardar todo.",
+     "explicacion": "Observabilidad defensiva y privacidad se diseñan juntas.",
+     "difficulty": "medium"
     }
    ],
    "orden": 830
@@ -26090,6 +26434,22 @@
      "solucion": "Porque un backdoor no baja la exactitud general (solo actúa ante el disparador) y un envenenamiento dirigido puede afectar un subgrupo sin mover la métrica global. Controles: validar y rastrear la procedencia de fuentes, limitar el peso de contribuciones no confiables, testear con hold-out curado y detectar deriva en etiquetas.",
      "explicacion": "La métrica global no ve el sabotaje dirigido.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cmls1-mp1",
+     "tipo": "ml_pipeline_review",
+     "enunciado": "Revisión de pipeline ML: etiquetas de entrenamiento vienen de feedback abierto de usuarios y pasan directo al dataset semanal. ¿Qué riesgo ves y qué control pondrías?",
+     "solucion": "Riesgo de data poisoning y sesgo inducido por actores o grupos coordinados. Controles: validación de fuente, filtros de anomalías, muestreo revisado, separación entre datos crudos y curados, monitoreo de distribución/labels y rollback de dataset/modelo.",
+     "explicacion": "En ML, la frontera de confianza entra por los datos de entrenamiento.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cmls1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué parte de tu pipeline de ML trata datos externos como si ya fueran verdad?",
+     "solucion": "Una respuesta útil identifica una transición sin validación: scraping, labels humanas, joins, features de terceros, feedback loops. La acción es crear una zona cruda, una curada y pruebas de calidad antes de entrenar.",
+     "explicacion": "El dato no confiable debe cambiar de estado mediante controles explícitos.",
+     "difficulty": "medium"
     }
    ]
   },
@@ -26161,6 +26521,14 @@
      "solucion": "Porque el adversario tiene acceso total a los pesos: los controles de 'limitar consultas/rate limiting' no aplican. Debes asumir extraction e inversion como posibles y diseñar para ese supuesto (p. ej. minimizar lo que el modelo memoriza, no exponer secretos en él).",
      "explicacion": "Acceso a pesos invalida controles de servidor.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cmls2-mp1",
+     "tipo": "ml_pipeline_review",
+     "enunciado": "Revisión de pipeline ML: una feature usa “días hasta cancelación” calculada con datos posteriores al evento que quieres predecir. ¿Qué falla?",
+     "solucion": "Data leakage temporal: el entrenamiento ve información del futuro que no estará en serving. El modelo parecerá excelente y fallará en producción. Control: definir tiempo cero, cortar features por timestamp disponible, pruebas de leakage y validación temporal.",
+     "explicacion": "La seguridad y confiabilidad de ML también dependen de fronteras temporales.",
+     "difficulty": "hard"
     }
    ]
   },
@@ -26230,6 +26598,14 @@
      "enunciado": "¿Por qué ser robusto a un tipo de perturbación no garantiza robustez general?",
      "solucion": "Porque defender contra una familia de ataques (p. ej. ruido pequeño en píxeles) puede dejar otra abierta (rotaciones, parches, cambios semánticos). La evaluación adversaria debe cubrir las amenazas realistas del despliegue, no una sola; la robustez es relativa al conjunto de ataques considerado.",
      "explicacion": "Robustez es relativa al ataque.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cmls3-mp1",
+     "tipo": "ml_pipeline_review",
+     "enunciado": "Revisión de pipeline ML: el artefacto del modelo se publica con vocabulario, estadísticas de normalización y ejemplos de entrenamiento para reproducibilidad. Evalúa el riesgo.",
+     "solucion": "Riesgo de fuga de datos o inferencia sobre entrenamiento, según sensibilidad de ejemplos/estadísticas. Reproducibilidad no exige publicar datos sensibles crudos. Controles: separar artefacto de documentación, revisar metadatos, usar ejemplos sintéticos, acceso controlado y evaluación de membership/model inversion si aplica.",
+     "explicacion": "Los artefactos derivados pueden contener más información de la esperada.",
      "difficulty": "hard"
     }
    ],
@@ -26302,6 +26678,14 @@
      "solucion": "Porque el adversario tiene los pesos: puede hacer extraction e inversion offline, sin que valgan auth ni rate limiting (no hay consultas que limitar). Debes asumirlo y minimizar lo que el modelo memoriza, no confiar en límites de servidor que en ese contexto no existen.",
      "explicacion": "Acceso a pesos invalida límites de consulta.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cmls4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: tras desplegar un clasificador, sube la tasa de falsos negativos en un segmento pequeño pero crítico. ¿Cómo lo investigas defensivamente?",
+     "solucion": "Comparar distribución entrenamiento/serving por segmento, revisar calidad de labels, drift, cambios de fuente, umbral, cobertura de features y posible manipulación. Acción: alerta por segmento, rollback/umbral temporal si impacto es alto, y corrección de datos/modelo con evaluación enfocada.",
+     "explicacion": "Promedios globales esconden fallos de seguridad y equidad en segmentos.",
+     "difficulty": "hard"
     }
    ],
    "orden": 834
@@ -26373,6 +26757,22 @@
      "solucion": "Porque sin gobernanza (Govern del AI RMF) las defensas individuales se erosionan al cambiar el sistema, nadie sabe el estado real del riesgo, y no hay reevaluación. Un sistema de IA seguro es un proceso mapeado, medido, gestionado y documentado (model card, riesgo residual) que se mantiene, no una colección de parches.",
      "explicacion": "Proceso gobernado, no parches.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cmls5-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: quieres usar un modelo preentrenado de origen poco claro para acelerar un producto. ¿Qué revisión mínima haces?",
+     "solucion": "Revisar procedencia, licencia, hashes/versiones, comportamiento en casos sensibles, riesgos de backdoor, datos de entrenamiento declarados, dependencias, formato de carga y aislamiento al evaluarlo. Si el origen no es confiable, no se ejecuta directamente en entorno con secretos/datos reales.",
+     "explicacion": "Un modelo externo es dependencia ejecutable y estadística al mismo tiempo.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cmls5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué señal te haría frenar un despliegue de ML aunque las métricas agregadas se vean bien?",
+     "solucion": "Señales: segmento crítico degradado, drift no explicado, fuente de datos cambiada, leakage sospechado, monitoreo insuficiente, artefacto no reproducible, riesgo de privacidad o falta de rollback. Métrica agregada alta no compensa una frontera de riesgo rota.",
+     "explicacion": "La madurez de ML se mide por saber cuándo no desplegar.",
+     "difficulty": "medium"
     }
    ],
    "orden": 835
@@ -26445,6 +26845,22 @@
      "solucion": "Porque como no se puede impedir de forma fiable que una inyección 'funcione', lo que sí controlas es el daño: un modelo sin herramientas potentes solo puede producir texto equivocado, no exfiltrar ni actuar. Limitar capacidades acota el impacto aunque la inyección tenga éxito.",
      "explicacion": "Least privilege aplicado al LLM.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cllm1-ls1",
+     "tipo": "llm_security_review",
+     "enunciado": "Revisión LLM: un chatbot de soporte recibe instrucciones del usuario y también puede leer notas internas. ¿Qué riesgo introduce mezclar ambos textos en el mismo prompt?",
+     "solucion": "Prompt injection directa: texto no confiable del usuario compite con instrucciones del sistema y puede intentar cambiar tarea, extraer notas o saltar políticas. Controles: separación de roles, no poner secretos en contexto, validación de salida, permisos por herramienta y pruebas con casos adversariales.",
+     "explicacion": "En LLMs, “dato tratado como instrucción” reaparece con lenguaje natural.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cllm1-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué dato nunca pondrías en el contexto de un LLM aunque el prompt diga “no lo reveles”?",
+     "solucion": "Una buena respuesta entiende que instrucciones no son controles fuertes. No pondría secretos, llaves, datos personales innecesarios ni información de otro usuario. El control correcto es minimización y autorización antes de construir contexto.",
+     "explicacion": "El contexto es superficie de exposición, no caja fuerte.",
+     "difficulty": "easy"
     }
    ]
   },
@@ -26516,6 +26932,14 @@
      "solucion": "El contenido no confiable (y la instrucción inyectada) puede saltar de un agente al siguiente a través de sus mensajes, propagando el ataque por la cadena. Implica que la frontera de confianza debe revisarse en cada salto entre agentes, no solo en la entrada del usuario.",
      "explicacion": "Cada salto es una nueva frontera.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cllm2-ls1",
+     "tipo": "llm_security_review",
+     "enunciado": "Revisión LLM/RAG: el sistema recupera documentos externos y los pega antes de pedir una respuesta. ¿Qué puede salir mal y cómo lo reduces?",
+     "solucion": "Prompt injection indirecta: un documento recuperado puede contener instrucciones maliciosas o engañosas para el modelo. Reducir: tratar documentos como datos citables, delimitar contexto, no dar herramientas sensibles por defecto, verificar fuentes, filtrar/etiquetar contenido no confiable y evaluar ataques de RAG.",
+     "explicacion": "RAG no vuelve confiable el texto recuperado; solo lo acerca al modelo.",
+     "difficulty": "hard"
     }
    ]
   },
@@ -26585,6 +27009,14 @@
      "enunciado": "¿Cómo puede un LLM filtrar información aunque 'no la diga literalmente'?",
      "solucion": "Por inferencia: confirma o niega, da pistas o responde de forma que permite deducir el dato sin enunciarlo. Por eso minimizar el contexto (no poner lo que no debe salir) importa incluso cuando el modelo no lo dice palabra por palabra; controlar la salida no es solo bloquear la cadena exacta.",
      "explicacion": "Fuga indirecta por inferencia.",
+     "difficulty": "hard"
+    },
+    {
+     "id": "cllm3-ls1",
+     "tipo": "llm_security_review",
+     "enunciado": "Revisión de agente: un LLM puede consultar la base, enviar correos y crear tickets con la misma credencial amplia. ¿Qué rediseño propones?",
+     "solucion": "Separar herramientas por permiso y finalidad, pedir confirmación humana para acciones externas, usar credenciales de mínimo privilegio, validar argumentos, registrar decisiones y bloquear acceso a datos fuera del usuario/tenant. Las acciones irreversibles o de comunicación necesitan control adicional.",
+     "explicacion": "La agencia amplifica errores: cada herramienta debe tener frontera propia.",
      "difficulty": "hard"
     }
    ],
@@ -26657,6 +27089,14 @@
      "solucion": "Porque introduce pocos documentos o ejemplos envenenados a lo largo del tiempo, quedando bajo los umbrales que detectan cambios bruscos. Requiere monitorear la deriva del comportamiento del modelo (no solo cambios puntuales), igual que la exfiltración 'lenta y baja' evade los umbrales de volumen.",
      "explicacion": "Bajo el radar de cambios bruscos.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cllm4-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: el equipo dice “nuestro LLM es seguro porque el system prompt lo prohíbe”. ¿Qué evidencia pedirías?",
+     "solucion": "Pediría evals de seguridad con casos de prompt injection, fuga de datos, abuso de herramientas, regresiones por versión, monitoreo de salidas y política de permisos. El prompt es una capa; la evidencia son pruebas repetibles y controles fuera del modelo.",
+     "explicacion": "Seguridad de LLM sin evals es una declaración, no una garantía.",
+     "difficulty": "medium"
     }
    ],
    "orden": 839
@@ -26728,6 +27168,22 @@
      "solucion": "Porque un sistema LLM seguro combina defensa en profundidad (ms2), agencia mínima = least privilege (ms2/web2), salida no confiable = validación (dev1/web1), red teaming = emulación adversaria (blue5), monitoreo y respuesta (blue2/blue4) y gobernanza/riesgo residual (mls5/ms5). Es un sistema que lee datos no confiables y actúa, así que hereda todos los riesgos de la ruta a la vez.",
      "explicacion": "Integra toda la fase.",
      "difficulty": "hard"
+    },
+    {
+     "id": "cllm5-s1",
+     "tipo": "scenario",
+     "enunciado": "Escenario: se guardan conversaciones completas con usuarios para “mejorar el agente”. ¿Qué revisión de seguridad y privacidad haces?",
+     "solucion": "Revisar finalidad, consentimiento/base legal si aplica, minimización, redacción de secretos/PII, retención, acceso interno, uso para entrenamiento, separación por tenant y derecho de borrado/exportación. Si no se necesita texto completo, guardar metadatos o muestras minimizadas.",
+     "explicacion": "Los logs de LLM mezclan datos, instrucciones, secretos accidentales y comportamiento del usuario.",
+     "difficulty": "medium"
+    },
+    {
+     "id": "cllm5-r1",
+     "tipo": "reflexion",
+     "enunciado": "Reflexión: ¿qué métrica te daría falsa confianza sobre seguridad de un agente LLM?",
+     "solucion": "Una métrica de satisfacción o exactitud promedio puede ocultar fugas raras, abuso de herramientas o fallos por tenant. Seguridad necesita métricas y evals específicas: intentos bloqueados, fuga simulada, permisos indebidos, acciones requeridas de confirmación y regresiones.",
+     "explicacion": "La seguridad de LLM se mide por escenarios de fallo, no solo por calidad promedio.",
+     "difficulty": "medium"
     }
    ],
    "orden": 840
