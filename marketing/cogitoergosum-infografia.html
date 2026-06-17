@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CogitoErgoSum · Entrenador cognitivo para Ciencia de Datos y STEM</title>
+<style>
+  /* ============================================================
+     CogitoErgoSum — Infografía premium (gancho para data scientists)
+     Autocontenida, sin dependencias. Identidad de la app:
+     piedra/madera cálida · serif EB Garamond · índigo · oro de lámpara.
+     Pensada para verse en pantalla y exportarse a PDF (Imprimir → PDF).
+     ============================================================ */
+
+  @font-face {
+    font-family: "EB Garamond";
+    src: url("../assets/fonts/EBGaramond-Regular.woff2") format("woff2");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+
+  :root {
+    --bg: #131110;
+    --bg-elevado: #1b1815;
+    --bg-sutil: #232019;
+    --borde: #322d26;
+    --borde-claro: #423b32;
+    --texto: #ece7dd;
+    --texto-suave: #b8b0a3;
+    --texto-tenue: #8a8174;
+    --acento: #8d96f7;
+    --acento-2: #a99df0;
+    --acento-suave: rgba(141, 150, 247, 0.14);
+    --lampara: #d9a84e;
+    --lampara-suave: rgba(217, 168, 78, 0.12);
+    --lampara-borde: rgba(217, 168, 78, 0.38);
+    --exito: #7fc98f;
+    --radio: 14px;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    --serif: "EB Garamond", "Iowan Old Style", "Palatino", Georgia, serif;
+    --mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--sans);
+    background:
+      radial-gradient(1200px 700px at 82% -10%, rgba(141,150,247,0.10), transparent 60%),
+      radial-gradient(900px 600px at 8% 108%, rgba(217,168,78,0.08), transparent 55%),
+      var(--bg);
+    color: var(--texto);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .doc { max-width: 1080px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  /* ---- Patrón geométrico de fondo (astrolabio + retícula de puntos) ---- */
+  .fondo {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.5;
+  }
+  .fondo .puntos {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(236,231,221,0.07) 1px, transparent 1.4px);
+    background-size: 34px 34px;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+            mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  }
+  .fondo svg { position: absolute; top: -120px; right: -160px; width: 620px; height: 620px; opacity: 0.5; }
+
+  /* ----------------------------- Tipografía ----------------------------- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--acento); font-weight: 600;
+  }
+  .eyebrow.oro { color: var(--lampara); }
+  h1 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; }
+  h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.005em; }
+  h3 { font-family: var(--sans); font-weight: 600; }
+  a { color: var(--acento-2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ------------------------------- HERO -------------------------------- */
+  .hero { padding: 96px 0 64px; position: relative; }
+  .hero .marca {
+    display: inline-flex; align-items: center; gap: 12px; margin-bottom: 34px;
+  }
+  .sello {
+    width: 40px; height: 40px; flex: none;
+    border: 1px solid var(--lampara-borde); border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--lampara-suave);
+  }
+  .sello svg { width: 22px; height: 22px; }
+  .marca b { font-family: var(--serif); font-size: 19px; font-weight: 400; letter-spacing: 0.02em; }
+
+  .hero h1 {
+    font-size: clamp(46px, 8.5vw, 88px); line-height: 0.98;
+    margin: 18px 0 22px;
+  }
+  .hero h1 .lat { display: block; color: var(--texto); }
+  .hero h1 .es {
+    display: block; font-family: var(--sans); font-weight: 600;
+    font-size: clamp(15px, 2.4vw, 22px); letter-spacing: 0.02em;
+    color: var(--texto-suave); margin-top: 20px; max-width: 24ch;
+    line-height: 1.4;
+  }
+  .grad { background: linear-gradient(100deg, var(--acento), var(--lampara)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .hero .pitch {
+    font-family: var(--serif); font-size: clamp(19px, 2.6vw, 24px);
+    color: var(--texto-suave); max-width: 56ch; line-height: 1.5; margin-top: 8px;
+  }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; align-items: center; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px; border-radius: 999px;
+    background: var(--acento); color: #14121a; font-weight: 600; font-size: 15px;
+    border: 1px solid transparent;
+  }
+  .cta.fantasma { background: transparent; color: var(--texto); border-color: var(--borde-claro); }
+  .cta-row .nota { font-size: 13px; color: var(--texto-tenue); }
+
+  /* ------------------------------ Bandas ------------------------------- */
+  section.banda { padding: 56px 0; border-top: 1px solid var(--borde); }
+  .titulo-banda { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
+  .titulo-banda h2 { font-size: clamp(26px, 4vw, 38px); }
+  .titulo-banda p { color: var(--texto-suave); max-width: 48ch; font-size: 15px; }
+
+  /* --------------------------- Cifras (stats) -------------------------- */
+  .cifras {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden;
+    background: var(--bg-elevado);
+  }
+  .cifras .c { padding: 26px 20px; border-right: 1px solid var(--borde); }
+  .cifras .c:last-child { border-right: none; }
+  .cifras strong {
+    display: block; font-family: var(--serif); font-weight: 400;
+    font-size: clamp(30px, 5vw, 46px); line-height: 1; color: var(--acento-2);
+  }
+  .cifras .c.oro strong { color: var(--lampara); }
+  .cifras span { display: block; margin-top: 10px; font-size: 12.5px; color: var(--texto-tenue); line-height: 1.4; }
+
+  /* --------------------------- Tres pilares ---------------------------- */
+  .pilares { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .pilar {
+    background: var(--bg-elevado); border: 1px solid var(--borde);
+    border-radius: var(--radio); padding: 26px; position: relative; overflow: hidden;
+  }
+  .pilar .ico { width: 44px; height: 44px; margin-bottom: 18px; }
+  .pilar .ico svg { width: 44px; height: 44px; }
+  .pilar h3 { font-size: 19px; margin-bottom: 10px; color: var(--texto); }
+  .pilar p { font-size: 14.5px; color: var(--texto-suave); line-height: 1.6; }
+  .pilar .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento); display: block; margin-bottom: 14px; }
+  .pilar.oro { border-color: var(--lampara-borde); }
+  .pilar.oro .tag { color: var(--lampara); }
+  .pilar::after {
+    content: ""; position: absolute; right: -40px; top: -40px; width: 120px; height: 120px;
+    background: radial-gradient(circle, var(--acento-suave), transparent 70%);
+  }
+  .pilar.oro::after { background: radial-gradient(circle, var(--lampara-suave), transparent 70%); }
+
+  /* ----------------------- Grafo conexo (pieza central) ----------------- */
+  .grafo-wrap {
+    background:
+      radial-gradient(700px 360px at 50% 40%, rgba(141,150,247,0.10), transparent 70%),
+      var(--bg-elevado);
+    border: 1px solid var(--borde); border-radius: var(--radio);
+    padding: 18px; overflow: hidden;
+  }
+  .grafo-wrap svg { width: 100%; height: auto; display: block; }
+  .leyenda { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; padding: 0 8px 6px; }
+  .leyenda span { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--texto-suave); }
+  .leyenda i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+
+  /* ------------------------------ Papers ------------------------------- */
+  .papers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .paper {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--bg-elevado); border: 1px solid var(--borde);
+    border-radius: 12px; padding: 16px 18px;
+  }
+  .paper .yr { font-family: var(--mono); font-size: 12px; color: var(--lampara); flex: none; padding-top: 2px; min-width: 38px; }
+  .paper b { font-weight: 600; font-size: 14.5px; color: var(--texto); display: block; }
+  .paper small { color: var(--texto-tenue); font-size: 12.5px; }
+  .paper a { font-size: 12.5px; }
+
+  /* ------------------------------- Fases ------------------------------- */
+  .fases { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .fase {
+    background: var(--bg-elevado); border: 1px solid var(--borde);
+    border-radius: 12px; padding: 16px 14px; position: relative;
+  }
+  .fase .n { font-family: var(--mono); font-size: 11px; color: var(--acento); letter-spacing: 0.1em; }
+  .fase h4 { font-size: 13.5px; font-weight: 600; margin: 8px 0 4px; color: var(--texto); line-height: 1.25; }
+  .fase p { font-size: 12px; color: var(--texto-tenue); line-height: 1.4; }
+
+  /* ----------------------------- Pedagogía ----------------------------- */
+  .ciencia { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ciencia .chip {
+    border: 1px solid var(--borde-claro); border-radius: 999px;
+    padding: 9px 16px; font-size: 13px; color: var(--texto-suave);
+    background: var(--bg-sutil);
+  }
+  .ciencia .chip b { color: var(--texto); font-weight: 600; }
+
+  /* --------------------------- Diferenciador --------------------------- */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .vs > div { border-radius: var(--radio); padding: 24px; border: 1px solid var(--borde); }
+  .vs .otros { background: var(--bg-sutil); }
+  .vs .nos { background: var(--bg-elevado); border-color: var(--acento); position: relative; }
+  .vs h3 { font-size: 16px; margin-bottom: 14px; }
+  .vs .otros h3 { color: var(--texto-tenue); }
+  .vs ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .vs li { font-size: 14px; padding-left: 26px; position: relative; color: var(--texto-suave); line-height: 1.5; }
+  .vs .otros li::before { content: "—"; position: absolute; left: 0; color: var(--texto-tenue); }
+  .vs .nos li::before { content: "✦"; position: absolute; left: 0; color: var(--lampara); }
+  .vs .nos li { color: var(--texto); }
+
+  /* ------------------------------ Cierre ------------------------------- */
+  .cierre { padding: 70px 0 40px; text-align: center; border-top: 1px solid var(--borde); }
+  .cierre .lema { font-family: var(--serif); font-size: clamp(24px, 4vw, 36px); line-height: 1.25; max-width: 22ch; margin: 0 auto 26px; }
+  .cierre .url { font-family: var(--mono); font-size: 14px; color: var(--acento-2); }
+  .pie { margin-top: 26px; font-size: 12px; color: var(--texto-tenue); }
+  .pie span { color: var(--texto-suave); }
+
+  /* ------------------------------ Responsive --------------------------- */
+  @media (max-width: 860px) {
+    .pilares, .papers, .vs { grid-template-columns: 1fr; }
+    .cifras { grid-template-columns: repeat(2, 1fr); }
+    .cifras .c:nth-child(2) { border-right: none; }
+    .cifras .c { border-bottom: 1px solid var(--borde); }
+    .fases { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .cifras { grid-template-columns: 1fr; }
+    .fases { grid-template-columns: 1fr; }
+    .doc { padding: 0 18px; }
+  }
+
+  /* ------------------------- Exportar a PDF (Imprimir) ----------------- */
+  @media print {
+    @page { size: A4; margin: 12mm; }
+    body { background: var(--bg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .fondo { opacity: 0.35; }
+    .cta-row { display: none; }
+    section.banda, .hero { padding: 26px 0; }
+    .pilar, .paper, .fase, .grafo-wrap, .cifras, .vs > div { break-inside: avoid; }
+    section.banda { break-inside: avoid-page; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Patrón geométrico de fondo: retícula de puntos + astrolabio abstracto -->
+<div class="fondo" aria-hidden="true">
+  <div class="puntos"></div>
+  <svg viewBox="0 0 400 400" fill="none" stroke="#8d96f7" stroke-width="0.6">
+    <circle cx="200" cy="200" r="190" stroke-opacity="0.5"/>
+    <circle cx="200" cy="200" r="150" stroke-opacity="0.4"/>
+    <circle cx="200" cy="200" r="108" stroke-opacity="0.3" stroke="#d9a84e"/>
+    <circle cx="200" cy="200" r="64" stroke-opacity="0.4"/>
+    <line x1="10" y1="200" x2="390" y2="200" stroke-opacity="0.25"/>
+    <line x1="200" y1="10" x2="200" y2="390" stroke-opacity="0.25"/>
+    <line x1="66" y1="66" x2="334" y2="334" stroke-opacity="0.18"/>
+    <line x1="334" y1="66" x2="66" y2="334" stroke-opacity="0.18"/>
+    <circle cx="200" cy="92" r="3" fill="#d9a84e" stroke="none"/>
+    <circle cx="308" cy="200" r="3" fill="#8d96f7" stroke="none"/>
+    <circle cx="200" cy="308" r="2.4" fill="#8d96f7" stroke="none"/>
+    <circle cx="92" cy="200" r="2.4" fill="#8d96f7" stroke="none"/>
+  </svg>
+</div>
+
+<div class="doc">
+
+  <!-- ============================== HERO ============================== -->
+  <header class="hero">
+    <div class="marca">
+      <span class="sello" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#d9a84e" stroke-width="1.4">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3v18M3 12h18" stroke-opacity="0.5"/>
+          <circle cx="12" cy="12" r="3.4" fill="#d9a84e" stroke="none"/>
+        </svg>
+      </span>
+      <b>CogitoErgoSum</b>
+    </div>
+
+    <p class="eyebrow">Entrenador cognitivo · Ciencia de Datos &amp; STEM</p>
+    <h1>
+      <span class="lat">Cogito,<br><span class="grad">ergo&nbsp;sum.</span></span>
+      <span class="es">No acumulas contenido: construyes criterio que se transfiere.</span>
+    </h1>
+    <p class="pitch">
+      Del <b style="color:var(--texto)">paper</b> al criterio, y del criterio a la
+      <b style="color:var(--texto)">transferencia</b>. Una app de práctica deliberada que
+      te entrena a pensar como un científico de datos, no a memorizar recetas.
+    </p>
+
+    <div class="cta-row">
+      <a class="cta" href="https://imgoingsavage.github.io/cogitoergosum/">Abrir la app →</a>
+      <a class="cta fantasma" href="https://imgoingsavage.github.io/cogitoergosum/">Ver el grafo de conocimiento</a>
+      <span class="nota">100% web · offline-first · sin cuentas para empezar</span>
+    </div>
+  </header>
+
+  <!-- ============================= CIFRAS ============================= -->
+  <section class="banda" aria-label="Cifras">
+    <div class="cifras">
+      <div class="c"><strong>235</strong><span>lecciones interconectadas</span></div>
+      <div class="c oro"><strong>1</strong><span>grafo conexo · 235/235 · 0 nodos aislados</span></div>
+      <div class="c"><strong>10</strong><span>fases, de Pólya a IA agéntica</span></div>
+      <div class="c"><strong>50+</strong><span>papers y marcos del estado del arte, con enlace vivo</span></div>
+      <div class="c"><strong>0</strong><span>dependencias · corre sin red</span></div>
+    </div>
+  </section>
+
+  <!-- =========================== TRES PILARES ========================= -->
+  <section class="banda">
+    <div class="titulo-banda">
+      <h2>Por qué te va a enganchar</h2>
+      <p>Tres cosas que ninguna plataforma de ejercicios te da juntas.</p>
+    </div>
+    <div class="pilares">
+      <article class="pilar">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="#8d96f7" stroke-width="1.6"><path d="M22 6c-7 0-12 5-12 11 0 4 2 6 4 8 1 1 1 2 1 4h14c0-2 0-3 1-4 2-2 4-4 4-8 0-6-5-11-12-11Z"/><path d="M17 33h10M19 37h6" stroke-opacity="0.7"/></svg></div>
+        <span class="tag">Pensamiento crítico</span>
+        <h3>Forcejeo productivo, no respuestas servidas</h3>
+        <p>Temporizador de reflexión, desconstrucción obligatoria antes de revelar, pistas socráticas de cinco niveles y un mentor que pregunta en vez de responder. Pólya, <em>desirable difficulties</em> y práctica deliberada hechas producto.</p>
+      </article>
+
+      <article class="pilar">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="#8d96f7" stroke-width="1.6"><path d="M12 8h20v28H12z"/><path d="M16 14h12M16 19h12M16 24h8" stroke-opacity="0.7"/><circle cx="31" cy="31" r="6" fill="#131110"/><path d="M31 28v6M28 31h6"/></svg></div>
+        <span class="tag">Estado del arte</span>
+        <h3>Anclado a los papers que definieron el campo</h3>
+        <p>Transformers, RAG, evaluación de LLMs, agentes, causalidad y seguridad de IA — explicados desde la fuente, con reconstrucción <em>from scratch</em> en código y enlaces vivos a los papers originales (Vaswani, Bahdanau, NIST, MITRE…).</p>
+      </article>
+
+      <article class="pilar oro">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="#d9a84e" stroke-width="1.6"><circle cx="11" cy="13" r="4"/><circle cx="33" cy="11" r="4"/><circle cx="22" cy="32" r="4"/><circle cx="34" cy="31" r="3"/><path d="M14.5 14.5 30 12M13 16l8 13M25 31l6-1M31 13l2 15" stroke-opacity="0.6"/></svg></div>
+        <span class="tag">Transferencia</span>
+        <h3>Todo el saber es un grafo conexo</h3>
+        <p>El mismo invariante reaparece en probabilidad, en causalidad y en seguridad de LLMs. Enlaces vivos y verificados saltan del concepto a cada lugar donde se usa, <em>incluso entre fases distintas</em>. Aprendes esquemas, no islas.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ======================== GRAFO (PIEZA CENTRAL) =================== -->
+  <section class="banda">
+    <div class="titulo-banda">
+      <h2>Un compendio que se comporta como un cerebro</h2>
+      <p>235 nodos, un solo componente conexo, cero lecciones aisladas. Así viaja una idea entre dominios.</p>
+    </div>
+    <div class="grafo-wrap">
+      <svg viewBox="0 0 600 330" role="img" aria-label="Grafo conexo de conceptos entre fases">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- aristas normales -->
+        <g stroke="#4a4438" stroke-width="1">
+          <line x1="90" y1="80" x2="190" y2="60"/>
+          <line x1="90" y1="80" x2="120" y2="170"/>
+          <line x1="190" y1="60" x2="300" y2="95"/>
+          <line x1="190" y1="60" x2="120" y2="170"/>
+          <line x1="120" y1="170" x2="230" y2="200"/>
+          <line x1="300" y1="95" x2="410" y2="70"/>
+          <line x1="300" y1="95" x2="230" y2="200"/>
+          <line x1="410" y1="70" x2="510" y2="120"/>
+          <line x1="230" y1="200" x2="340" y2="240"/>
+          <line x1="340" y1="240" x2="460" y2="210"/>
+          <line x1="460" y1="210" x2="510" y2="120"/>
+          <line x1="340" y1="240" x2="300" y2="95"/>
+          <line x1="120" y1="170" x2="200" y2="280"/>
+          <line x1="200" y1="280" x2="340" y2="240"/>
+        </g>
+        <!-- aristas de TRANSFERENCIA (oro, resaltadas): prob -> eval LLM -> threat model -->
+        <g stroke="#d9a84e" stroke-width="2.2" filter="url(#glow)" stroke-linecap="round">
+          <path d="M120 170 C 230 150, 360 130, 410 70" fill="none"/>
+          <path d="M410 70 C 470 110, 480 170, 460 210" fill="none"/>
+        </g>
+        <!-- nodos: color por dominio -->
+        <g font-family="-apple-system, Inter, sans-serif" font-size="11" fill="#ece7dd">
+          <g><circle cx="90" cy="80" r="7" fill="#8d96f7"/><text x="90" y="62" text-anchor="middle" fill="#b8b0a3">Pólya</text></g>
+          <g><circle cx="190" cy="60" r="7" fill="#8d96f7"/><text x="190" y="42" text-anchor="middle" fill="#b8b0a3">Invariantes</text></g>
+          <g><circle cx="120" cy="170" r="9" fill="#a99df0"/><text x="92" y="190" text-anchor="middle" fill="#ece7dd">Probabilidad</text></g>
+          <g><circle cx="300" cy="95" r="7" fill="#7fc98f"/><text x="300" y="78" text-anchor="middle" fill="#b8b0a3">Causalidad</text></g>
+          <g><circle cx="410" cy="70" r="9" fill="#d9a84e"/><text x="410" y="52" text-anchor="middle" fill="#ece7dd">Eval. de LLMs</text></g>
+          <g><circle cx="510" cy="120" r="7" fill="#d9a84e"/><text x="510" y="103" text-anchor="middle" fill="#b8b0a3">Agentes</text></g>
+          <g><circle cx="230" cy="200" r="7" fill="#a99df0"/><text x="230" y="222" text-anchor="middle" fill="#b8b0a3">Inferencia</text></g>
+          <g><circle cx="340" cy="240" r="7" fill="#7fc98f"/><text x="340" y="262" text-anchor="middle" fill="#b8b0a3">Estimación</text></g>
+          <g><circle cx="460" cy="210" r="9" fill="#e08f8f"/><text x="460" y="232" text-anchor="middle" fill="#ece7dd">Seg. de LLMs</text></g>
+          <g><circle cx="200" cy="280" r="7" fill="#8d96f7"/><text x="200" y="302" text-anchor="middle" fill="#b8b0a3">Optimización</text></g>
+        </g>
+      </svg>
+      <div class="leyenda">
+        <span><i style="background:#8d96f7"></i> Fundamentos &amp; matemática</span>
+        <span><i style="background:#a99df0"></i> Probabilidad &amp; estadística</span>
+        <span><i style="background:#7fc98f"></i> Causalidad &amp; Health AI</span>
+        <span><i style="background:#e08f8f"></i> Ciberseguridad</span>
+        <span><i style="background:#d9a84e"></i> IA generativa</span>
+        <span><i style="background:#d9a84e;box-shadow:0 0 6px #d9a84e"></i> arista de transferencia</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== ESTADO DEL ARTE ====================== -->
+  <section class="banda">
+    <div class="titulo-banda">
+      <h2>Del paper, no del resumen</h2>
+      <p>Una muestra de las fuentes vivas que se convierten en lecciones, código y retos.</p>
+    </div>
+    <div class="papers">
+      <div class="paper"><span class="yr">2017</span><div><b>Attention Is All You Need</b><br><small>Vaswani et al. — el Transformer.</small><br><a href="https://arxiv.org/abs/1706.03762">arxiv.org/abs/1706.03762</a></div></div>
+      <div class="paper"><span class="yr">2015</span><div><b>Neural Machine Translation by Jointly Learning to Align</b><br><small>Bahdanau et al. — la atención.</small><br><a href="https://arxiv.org/abs/1409.0473">arxiv.org/abs/1409.0473</a></div></div>
+      <div class="paper"><span class="yr">2021</span><div><b>An Image is Worth 16×16 Words (ViT)</b><br><small>Dosovitskiy et al. — Transformers en visión.</small><br><a href="https://arxiv.org/abs/2010.11929">arxiv.org/abs/2010.11929</a></div></div>
+      <div class="paper"><span class="yr">2023</span><div><b>NIST AI Risk Management Framework</b><br><small>Gobernanza de IA: Govern · Map · Measure · Manage.</small><br><a href="https://www.nist.gov/itl/ai-risk-management-framework">nist.gov/itl/ai-risk-management-framework</a></div></div>
+      <div class="paper"><span class="yr">—</span><div><b>MITRE ATLAS</b><br><small>El ATT&amp;CK de la IA: amenazas adversarias de ML.</small><br><a href="https://atlas.mitre.org">atlas.mitre.org</a></div></div>
+      <div class="paper"><span class="yr">—</span><div><b>Causal Inference &amp; the foundations of DS</b><br><small>Pearl · Hernán &amp; Robins · Blitzstein &amp; Hwang · ISLR.</small><br><a href="https://imgoingsavage.github.io/cogitoergosum/">en la ruta de Estudio</a></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== FASES ============================ -->
+  <section class="banda">
+    <div class="titulo-banda">
+      <h2>Diez fases, un mismo músculo</h2>
+      <p>De los fundamentos del razonamiento al frente de la IA — siempre entrenando transferencia.</p>
+    </div>
+    <div class="fases">
+      <div class="fase"><span class="n">FASE 0–1</span><h4>Razonar como Pólya</h4><p>Comprender, planear, ejecutar, reflexionar; argumento e inducción.</p></div>
+      <div class="fase"><span class="n">FASE 2–4</span><h4>Competencia matemática</h4><p>Combinatoria, recurrencias, invariantes, álgebra y desigualdades.</p></div>
+      <div class="fase"><span class="n">FASE 5–6</span><h4>Estructura &amp; geometría</h4><p>Números, simetría, transformaciones y cambio de representación.</p></div>
+      <div class="fase"><span class="n">FASE 7</span><h4>Arena de Ciencia de Datos</h4><p>Probabilidad, inferencia, ML, sistemas, causalidad, Health AI.</p></div>
+      <div class="fase"><span class="n">FASE 8–9</span><h4>Ciberseguridad &amp; GenAI</h4><p>Seguridad de ML/LLMs, Transformers, RAG, agentes, IA responsable.</p></div>
+    </div>
+  </section>
+
+  <!-- =========================== PEDAGOGÍA =========================== -->
+  <section class="banda">
+    <div class="titulo-banda">
+      <h2>Construida sobre ciencia del aprendizaje</h2>
+      <p>Cada decisión de diseño tiene evidencia detrás.</p>
+    </div>
+    <div class="ciencia">
+      <span class="chip"><b>Retrieval practice</b> — recuperar antes de releer</span>
+      <span class="chip"><b>Desirable difficulties</b> — la fricción que sí enseña</span>
+      <span class="chip"><b>Spaced repetition</b> — lo fallado vuelve</span>
+      <span class="chip"><b>Interleaving</b> — mezcla que fuerza decisión</span>
+      <span class="chip"><b>Generation effect</b> — escribir antes de ver</span>
+      <span class="chip"><b>Deliberate practice</b> — zona del 30–50%</span>
+      <span class="chip"><b>Metacognición</b> — moraleja y disparador</span>
+      <span class="chip"><b>Flow</b> — ni trivial ni imposible</span>
+    </div>
+  </section>
+
+  <!-- ========================= DIFERENCIADOR ========================= -->
+  <section class="banda">
+    <div class="titulo-banda">
+      <h2>No es otra plataforma de ejercicios</h2>
+    </div>
+    <div class="vs">
+      <div class="otros">
+        <h3>LeetCode · Brilliant · cursos lineales</h3>
+        <ul>
+          <li>Premian volumen y velocidad de consumo</li>
+          <li>Te etiquetan el tema antes de pensar</li>
+          <li>Contenido en silos, sin puentes entre temas</li>
+          <li>La respuesta está a un clic</li>
+        </ul>
+      </div>
+      <div class="nos">
+        <h3>CogitoErgoSum</h3>
+        <ul>
+          <li>Premia criterio, forcejeo y transferencia</li>
+          <li>Descubres tú qué herramienta mental aplica</li>
+          <li>Grafo conexo: cada idea enlaza a sus usos</li>
+          <li>La solución se gana tras un intento honesto</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== CIERRE =========================== -->
+  <footer class="cierre">
+    <p class="eyebrow oro">Tu próximo nivel de pensamiento</p>
+    <p class="lema">Deja de coleccionar respuestas.<br>Empieza a construir criterio.</p>
+    <p class="url">imgoingsavage.github.io/cogitoergosum</p>
+    <p class="pie">
+      <span>CogitoErgoSum</span> — HTML/CSS/JavaScript vanilla · sin backend · offline-first ·
+      pensado para iPad y escritorio. Hecho para científicos de datos que quieren pensar mejor, no solo resolver más.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
