@@ -270,7 +270,10 @@
 
   /* --------------------------- Exportar a PDF ---------------------------- */
   @media print {
-    @page { size: A4; margin: 11mm; }
+    /* margin:0 → el navegador NO dibuja su encabezado/pie con la ruta del
+       archivo (file:///…). El aire interior lo da el padding de .doc. */
+    @page { size: A4; margin: 0; }
+    .doc { padding: 16mm 18mm; }
     body { background: var(--bg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     *, *::before, *::after { animation: none !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
