@@ -79,6 +79,25 @@ Moraleja de la arista: *para cazar alucinaciones, haz repetir (consistencia) y c
 - **Misión externa (lab vivo):** lee el paper [SelfCheckGPT (Manakul et al., 2023)](https://arxiv.org/abs/2305.15852) (idea central) y el [survey de alucinaciones (Ji et al., 2023)](https://arxiv.org/abs/2202.03629). **Criterio de cierre:** explicar por qué la inconsistencia entre muestras señala alucinación.
 - **Mini-entregable:** un checklist de detección de alucinaciones (consistencia + anclaje + exigir citas) para un sistema de alto riesgo.
 
+## Reconstrucción mínima en código
+
+Faithfulness: cada afirmacion de la respuesta debe poder apuntarse a una fuente.
+
+```python
+contexto = "la garantia dura 12 meses y cubre defectos de fabrica"
+respuesta = ["la garantia dura 12 meses",    # soportada
+             "cubre danos por agua"]          # NO soportada -> alucinacion
+
+def soportada(claim, ctx):       # <- en real: un verificador NLI o LLM
+    return all(tok in ctx for tok in claim.split() if len(tok) > 4)
+
+for c in respuesta:
+    print(soportada(c, contexto), "->", c)
+# unsupported claim rate > 0 -> hay alucinacion.
+```
+
+**Qué observar:** Una afirmacion que no se puede apuntar a una fuente no esta verificada; si falta evidencia, el sistema debe abstenerse.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

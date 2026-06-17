@@ -77,6 +77,24 @@ Moraleja de la arista: *un modelo preciso no es aceptable por sí solo; la IA re
 - **Misión externa (lab vivo):** lee el caso [Machine Bias (ProPublica/COMPAS)](https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing) y hojea [SHAP](https://github.com/shap/shap). **Criterio de cierre:** explicar por qué quitar la variable protegida no elimina el sesgo.
 - **Mini-entregable:** una "ficha de IA responsable" para un modelo: dimensiones (equidad, transparencia, privacidad, rendición de cuentas), qué auditarías en cada una, y la definición de equidad elegida con su justificación.
 
+## Reconstrucción mínima en código
+
+Precision != aceptabilidad: una accuracy global alta puede esconder dano en un subgrupo.
+
+```python
+datos = [("A", True), ("A", True), ("A", False),
+         ("B", False), ("B", False), ("B", True)]
+
+def acc(grupo=None):
+    sub = [ok for g, ok in datos if grupo in (None, g)]
+    return sum(sub) / len(sub)
+
+print(f"global: {acc():.0%}")                              # se ve bien
+print(f"grupo A: {acc('A'):.0%} | grupo B: {acc('B'):.0%}")  # brecha de equidad
+```
+
+**Qué observar:** El promedio oculta brechas: mide el desempeno por segmento antes de desplegar, sobre todo si la salida afecta oportunidades o derechos.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

@@ -80,6 +80,24 @@ Moraleja de la arista: *el modelo es la parte fácil; producción es operación 
 - **Misión externa (lab vivo):** lee sobre evaluación/observabilidad de LLMs en producción (p. ej. [LangSmith](https://docs.smith.langchain.com/) o la guía de [OpenAI sobre producción](https://platform.openai.com/docs/guides/production-best-practices)). **Criterio de cierre:** explicar por qué fijar la versión del modelo y re-evaluar es crítico.
 - **Mini-entregable:** un checklist de "GenAI a producción": costo, latencia, fiabilidad, observabilidad, versiones/deriva, evaluación continua y seguridad.
 
+## Reconstrucción mínima en código
+
+Produccion: detectar regresiones silenciosas cuando cambia el modelo, el prompt o el corpus.
+
+```python
+import statistics as st
+
+base = [0.82, 0.80, 0.83, 0.81]            # eval score historico (baseline)
+hoy  = [0.74, 0.73, 0.75]                   # tras cambiar de proveedor/modelo
+
+def hay_drift(base, actual, tol=0.03):
+    return (st.mean(base) - st.mean(actual)) > tol
+
+print("drift:", hay_drift(base, hoy))       # True -> regresion silenciosa
+```
+
+**Qué observar:** Si modelo, prompt o corpus cambian, re-evalua antes de confiar. Vigila costo por tarea, p95 de latencia, error rate y eval continuo.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

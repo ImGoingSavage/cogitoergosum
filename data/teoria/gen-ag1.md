@@ -87,6 +87,28 @@ Moraleja de la arista: *un agente es un bucle de decisión con propósito (estad
 - **Misión externa (lab vivo):** lee el Capítulo 1 ("The Reinforcement Learning Problem") de [Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) (gratuito). **Criterio de cierre:** explicar el bucle agente-entorno y la diferencia entre recompensa inmediata y retorno.
 - **Mini-entregable:** una tabla que mapee una tarea tuya a los cinco elementos (entorno, estado, acción, recompensa, política), señalando el riesgo de reward hacking.
 
+## Reconstrucción mínima en código
+
+El bucle agente-entorno desde cero: estado, accion, recompensa y retorno descontado.
+
+```python
+def recompensa(s):
+    return 1.0 if s == "meta" else -0.04        # costo por paso
+
+def episodio(politica, gamma=0.9, pasos=10):
+    s, G = "A", 0.0
+    for t in range(pasos):
+        s = politica(s)                          # accion -> el entorno transiciona
+        G += (gamma ** t) * recompensa(s)        # retorno descontado
+        if s == "meta":
+            break
+    return G
+
+print(round(episodio(lambda s: "meta"), 2))      # politica avara llega a la meta
+```
+
+**Qué observar:** Si hay estado, accion y feedback, razona como bucle agente-entorno, no como un prompt largo cualquiera.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

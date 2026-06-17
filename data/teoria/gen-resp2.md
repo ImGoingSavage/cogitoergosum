@@ -90,6 +90,24 @@ Moraleja de la arista: *los frameworks operacionalizan la IA responsable —AI R
 - **Misión externa (lab vivo):** explora el [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [MITRE ATLAS](https://atlas.mitre.org) y el [MIT AI Risk Repository](https://airisk.mit.edu/). **Criterio de cierre:** mapear un riesgo concreto de un sistema a una función del AI RMF y a una técnica de ATLAS.
 - **Mini-entregable:** un plan de gobernanza de un sistema de IA usando el AI RMF (Govern/Map/Measure/Manage), citando dónde usarías ATLAS y la MIT Taxonomy.
 
+## Reconstrucción mínima en código
+
+Un risk register operativo: cada riesgo con dueno, control, metrica y umbral (Govern/Map/Measure/Manage).
+
+```python
+riesgos = [
+  {"riesgo": "alucinacion en respuesta medica", "dueno": "Dra. Lopez",
+   "control": "verificacion humana + abstencion", "metrica": "unsupported<1%"},
+  {"riesgo": "fuga de PII por RAG", "dueno": None,            # <- riesgo HUERFANO
+   "control": "control de acceso por documento", "metrica": "fugas=0"},
+]
+for r in riesgos:
+    estado = "gestionado" if r["dueno"] else "SIN DUENO (solo escrito)"
+    print(f"- {r['riesgo']}: {estado}")
+```
+
+**Qué observar:** Un riesgo sin dueno ni evidencia solo esta escrito, no gestionado. Govern/Map/Measure/Manage convierte la intencion en responsabilidad.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

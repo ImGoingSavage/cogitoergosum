@@ -79,6 +79,26 @@ Moraleja de la arista: *el RAG adaptativo es un agente cuya herramienta es recup
 - **Misión externa (lab vivo):** repasa [Self-RAG (Asai et al., 2023)](https://arxiv.org/abs/2310.11511) y la idea de [RAG agéntico en LlamaIndex](https://docs.llamaindex.ai/en/stable/use_cases/agents/). **Criterio de cierre:** explicar cuándo el agente debe decidir NO recuperar.
 - **Mini-entregable:** un flujo de RAG adaptativo para una pregunta multi-fuente, marcando los puntos de decisión (recuperar/no, reformular, enrutar, iterar, parar).
 
+## Reconstrucción mínima en código
+
+RAG adaptativo: el agente decide SI recuperar, en vez de recuperar siempre.
+
+```python
+def necesita_buscar(pregunta):              # decision: recuperar o no
+    trivial = {"hola", "gracias", "ok"}
+    return not any(p in trivial for p in pregunta.lower().split())
+
+def responder(pregunta):
+    if necesita_buscar(pregunta):
+        return f"con contexto recuperado: {pregunta}"   # solo cuando aporta
+    return f"directo, sin ruido: {pregunta}"
+
+print(responder("hola"))                                # NO recupera
+print(responder("cual es la politica de reembolso?"))   # SI recupera
+```
+
+**Qué observar:** always-retrieve mete ruido y costo; recuperar condicional sube la precision del contexto y baja el gasto.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

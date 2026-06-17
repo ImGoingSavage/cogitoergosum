@@ -81,6 +81,28 @@ Moraleja de la arista: *un agente LLM es ReAct —pensar, actuar con herramienta
 - **Misión externa (lab vivo):** lee [ReAct (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) (figura del bucle) y hojea la doc de [agentes de LangChain](https://python.langchain.com/docs/concepts/agents/). **Criterio de cierre:** explicar por qué intercalar razonamiento y acción supera a solo razonar o solo actuar.
 - **Mini-entregable:** el diseño de un agente para una tarea tuya: qué herramientas (mínimas) le das, qué memoria usa, y dónde pondrías autocrítica y límites.
 
+## Reconstrucción mínima en código
+
+El ciclo ReAct (pensar -> actuar -> observar) con una herramienta estrecha y tipada.
+
+```python
+def calculadora(expr):
+    return eval(expr)                    # toy; NUNCA eval() sobre entrada no confiable
+TOOLS = {"calc": calculadora}
+
+def agente(tarea, max_pasos=3):
+    for _ in range(max_pasos):
+        # <- tu LLM decide: pensamiento -> (herramienta, args) -> observacion
+        accion, args = "calc", "2+2"     # stub de la decision del modelo
+        if accion in TOOLS:
+            return f"resultado: {TOOLS[accion](args)}"   # detente al resolver
+    return "sin respuesta"
+
+print(agente("cuanto es 2+2?"))
+```
+
+**Qué observar:** Agencia minima: pocas herramientas, permisos estrechos y limite de pasos. (El eval() ilustra por que la entrada no confiable es peligrosa: ver [[cyber-llm2]].)
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

@@ -81,6 +81,24 @@ Moraleja de la arista: *un RAG falla en la recuperación o en la generación; mi
 - **Misión externa (lab vivo):** recorre la doc de [RAGAS](https://docs.ragas.io/) (métricas faithfulness, context precision/recall) y el [RAG Triad de TruLens](https://www.trulens.org/getting_started/core_concepts/rag_triad/). **Criterio de cierre:** explicar qué mide cada vértice del triángulo.
 - **Mini-entregable (mini-proyecto del cluster):** un **plan de evaluación de RAG**: cómo construirías un set de evaluación, qué métricas medirías (recuperación y generación), y qué técnica de RAG avanzado probarías y cómo verificarías que ayudó.
 
+## Reconstrucción mínima en código
+
+Evaluar RAG por componente: separa el error del recuperador del error del generador.
+
+```python
+casos = [
+  {"fuente_esperada": "doc1", "recuperado": "doc1", "respuesta_fiel": True},
+  {"fuente_esperada": "doc2", "recuperado": "doc9", "respuesta_fiel": True},  # falla retrieval
+  {"fuente_esperada": "doc3", "recuperado": "doc3", "respuesta_fiel": False}, # falla generador
+]
+context_recall = sum(c["recuperado"] == c["fuente_esperada"] for c in casos) / len(casos)
+faithfulness   = sum(c["respuesta_fiel"] for c in casos) / len(casos)
+print(f"context recall: {context_recall:.0%} | faithfulness: {faithfulness:.0%}")
+# Mejorar el prompt no arregla un fallo de retrieval: diagnostica por separado.
+```
+
+**Qué observar:** Si solo miras la respuesta final no sabes que componente fallo. Separa retrieval, generacion y fidelidad en una matriz.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

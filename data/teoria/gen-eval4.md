@@ -87,6 +87,24 @@ Moraleja de la arista: *el prompt es código; optimízalo como ingeniería —un
 - **Misión externa (lab vivo):** lee la [Prompt Engineering Guide](https://www.promptingguide.ai/) (few-shot, CoT) y el paper de [Chain-of-Thought (Wei et al., 2022)](https://arxiv.org/abs/2201.11903). **Criterio de cierre:** explicar una tarea donde CoT ayuda y otra donde estorba.
 - **Mini-entregable (mini-proyecto del cluster):** un **protocolo de optimización de prompts dirigida por evaluación**: la métrica, cómo construirías el set (con held-out), qué técnicas probarías y la regla para conservar/descartar un cambio.
 
+## Reconstrucción mínima en código
+
+Optimizar prompts sin held-out es enganarte: separa el set donde iteras del set donde confirmas.
+
+```python
+import random
+random.seed(0)
+def evaluar(prompt, ejemplos):
+    return sum(random.random() < 0.6 for _ in ejemplos) / len(ejemplos)
+
+train, heldout = list(range(50)), list(range(50, 100))
+mejor = max(["p_v1", "p_v2", "p_v3"], key=lambda p: evaluar(p, train))  # eliges en train
+print("train:", round(evaluar(mejor, train), 2),
+      "| held-out:", round(evaluar(mejor, heldout), 2))                 # confirmas en datos NUEVOS
+```
+
+**Qué observar:** Si subes en train pero no en held-out, sobreajustaste el benchmark, no mejoraste. Exige held-out antes de creer la mejora.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

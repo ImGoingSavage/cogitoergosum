@@ -87,6 +87,28 @@ Moraleja de la arista: *embeber es poner el significado en un mapa; chunkear es 
 - **Misión externa (lab vivo):** explora el [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) y la guía de [text splitters de LangChain](https://python.langchain.com/docs/concepts/text_splitters/). **Criterio de cierre:** elegir un modelo de embeddings para un caso (idioma, costo) y justificar el chunking.
 - **Mini-entregable:** una "ficha de indexación" para un corpus tuyo: modelo de embeddings elegido (y por qué), estrategia de chunking, overlap y metadatos por chunk.
 
+## Reconstrucción mínima en código
+
+El chunking no es cosmetico: define que puede recuperarse. Compara tamano y solape.
+
+```python
+texto = ("La politica de reembolso cubre 30 dias. "
+         "Para productos digitales el plazo es 14 dias. "
+         "Las suscripciones se cancelan en cualquier momento.")
+
+def chunk(t, size, overlap=0):
+    palabras = t.split()
+    paso = size - overlap
+    return [" ".join(palabras[i:i+size]) for i in range(0, len(palabras), paso)]
+
+print(len(chunk(texto, 6)))             # chunks chicos: granular pero fragmenta
+print(len(chunk(texto, 6, overlap=2)))  # con solape: evita partir el answer span
+# Tradeoff: chunk grande -> el dato queda enterrado;
+#           chunk chico sin solape -> parte la respuesta en dos.
+```
+
+**Qué observar:** Un chunk grande entierra la respuesta; uno chico sin solape la parte en dos. Mide recall@k por estrategia de chunking.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

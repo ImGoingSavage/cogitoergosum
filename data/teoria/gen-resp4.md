@@ -80,6 +80,23 @@ Moraleja de la arista: *ante un problema real, elige la pieza más simple que lo
 - **Misión externa (lab vivo):** elige un caso del MIT-AI.md (p. ej. asistente de seguros o asesor de inversión) y revisa una guía real de implementación (RAG, evaluación) de [LangChain](https://python.langchain.com/docs/tutorials/rag/) o [LlamaIndex](https://docs.llamaindex.ai/). **Criterio de cierre:** justificar la pieza elegida y cómo la evaluarías.
 - **Mini-entregable (mini-proyecto del cluster):** un **diseño de solución GenAI de extremo a extremo** para un problema de negocio (elige un vertical): la pieza (con justificación), la arquitectura (chunking/recuperación/agente según aplique), el **plan de evaluación**, las medidas de **IA responsable** (equidad/transparencia/privacidad) y de **seguridad**, y la operación en producción. Evalúalo con la rúbrica de 5 criterios del cluster.
 
+## Reconstrucción mínima en código
+
+Elegir arquitectura por necesidad, no por moda: la pieza mas simple que resuelve.
+
+```python
+def elegir(conocimiento_externo, debe_actuar, multi_dominio):
+    if debe_actuar and multi_dominio: return "multi-agente (justifica el costo)"
+    if debe_actuar:                   return "agente con herramientas"
+    if conocimiento_externo:          return "RAG"
+    return "clasificador o prompt simple"     # lo minimo viable
+
+print(elegir(False, False, False))            # no por moda: lo mas simple
+print(elegir(True, True, True))
+```
+
+**Qué observar:** Si una solucion simple logra la metrica, la complejidad extra (RAG, agente, multi-agente) debe justificarse con evidencia.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

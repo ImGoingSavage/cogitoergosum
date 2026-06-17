@@ -93,6 +93,25 @@ Moraleja de la arista: *diseña agentes como delegas: la mínima autonomía que 
 - **Misión externa (lab vivo):** lee [Building Effective Agents (Anthropic)](https://www.anthropic.com/research/building-effective-agents) y hojea [AgentBench](https://arxiv.org/abs/2308.03688). **Criterio de cierre:** explicar cuándo NO usar un agente.
 - **Mini-entregable (mini-proyecto del cluster):** el **diseño de un agente orientado a una tarea** de negocio: decisión agente/workflow justificada, herramientas mínimas con permisos, puntos de humano-en-el-lazo, límites duros, manejo de errores y un **plan de evaluación** (task success + tool accuracy + casos adversarios). Evalúalo con la rúbrica de 5 criterios del cluster.
 
+## Reconstrucción mínima en código
+
+Seguridad de agentes: una compuerta que exige aprobacion humana para acciones irreversibles.
+
+```python
+IRREVERSIBLE = {"transferir", "borrar", "enviar_correo"}
+
+def ejecutar(accion, args, aprobado_por_humano=False):
+    if accion in IRREVERSIBLE and not aprobado_por_humano:
+        return f"BLOQUEADO: '{accion}' requiere aprobacion humana"   # HITL
+    return f"ejecutada: {accion}({args})"
+
+print(ejecutar("leer", "doc1"))                       # reversible: ok
+print(ejecutar("transferir", "1000USD"))              # BLOQUEADO
+print(ejecutar("transferir", "1000USD", aprobado_por_humano=True))
+```
+
+**Qué observar:** Lo que no se puede deshacer pasa por un humano y queda auditado; la seguridad no es solo un system prompt mas estricto.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

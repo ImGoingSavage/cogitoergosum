@@ -89,6 +89,25 @@ Moraleja de la arista: *aprender a decidir es valorar las opciones (Q-learning) 
 - **Misión externa (lab vivo):** lee la intro de [PPO (Schulman et al., 2017)](https://arxiv.org/abs/1707.06347) y el resumen de [InstructGPT/RLHF (Ouyang et al., 2022)](https://arxiv.org/abs/2203.02155). **Criterio de cierre:** explicar en una frase cómo RLHF usa policy gradient para alinear un LLM.
 - **Mini-entregable:** una comparación de una carilla Q-learning vs policy gradient (qué aprende, fortalezas, debilidades, cuándo usar cada uno) y dónde encaja RLHF.
 
+## Reconstrucción mínima en código
+
+Q-learning tabular: el update de diferencia temporal que aprende el valor de cada accion.
+
+```python
+Q = {}                                   # (estado, accion) -> valor
+def q(s, a): return Q.get((s, a), 0.0)
+
+def update(s, a, r, s2, acciones, alpha=0.5, gamma=0.9):
+    mejor_futuro = max(q(s2, a2) for a2 in acciones)
+    Q[(s, a)] = q(s, a) + alpha * (r + gamma * mejor_futuro - q(s, a))   # TD update
+
+for _ in range(50):
+    update("A", "ir", r=1.0, s2="meta", acciones=["ir", "quedarse"])
+print(round(q("A", "ir"), 2))            # converge al valor esperado
+```
+
+**Qué observar:** Si la recompensa es un proxy, el agente la maximiza aunque viole tu intencion (reward hacking): score != objetivo.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

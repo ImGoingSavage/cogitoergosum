@@ -83,6 +83,32 @@ Moraleja de la arista: *un sistema multi-agente es un sistema distribuido de LLM
 - **Misión externa (lab vivo):** hojea cómo orquestan [LangGraph](https://langchain-ai.github.io/langgraph/) o [AutoGen](https://microsoft.github.io/autogen/) (grafos de agentes, estado, control de flujo). **Criterio de cierre:** explicar cómo evitarían un bucle infinito entre agentes.
 - **Mini-entregable:** un diagrama de orquestación de un sistema multi-agente con el router, las rutas de error (reintento/fallback/escalada) y los límites duros marcados.
 
+## Reconstrucción mínima en código
+
+Orquestacion: un router que elige especialista, con fallback y reintento controlado.
+
+```python
+ESPECIALISTAS = {"factura": "agente_billing", "bug": "agente_soporte"}
+
+def router(mensaje):
+    for clave, agente in ESPECIALISTAS.items():
+        if clave in mensaje.lower():
+            return agente
+    return "agente_general"                 # fallback: nunca quedar sin ruta
+
+def manejar(mensaje, intentos=2):
+    for _ in range(intentos):
+        try:
+            return f"{router(mensaje)} resolvio"   # <- llamada real con timeout
+        except Exception:
+            continue                               # degradacion controlada
+    return "escalado a humano"
+
+print(router("tengo un bug en el pago"))
+```
+
+**Qué observar:** Sin un router explicito no sabes quien decide el siguiente paso; el fallback evita bucles y rutas muertas.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

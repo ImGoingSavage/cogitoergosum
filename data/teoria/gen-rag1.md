@@ -88,6 +88,34 @@ Moraleja de la arista: *RAG es examen a libro abierto: no memorices hechos, apre
 - **Misión externa (lab vivo):** lee la introducción del paper [RAG (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) y la guía [What is RAG? (AWS)](https://aws.amazon.com/what-is/retrieval-augmented-generation/). **Criterio de cierre:** explicar el flujo indexar→recuperar→aumentar→generar sin mirar.
 - **Mini-entregable:** un diagrama del flujo RAG (las 8 etapas, indexación + consulta) con una frase por etapa.
 
+## Reconstrucción mínima en código
+
+El flujo RAG completo en una funcion: pregunta -> embeddings -> top-k -> contexto -> prompt aumentado.
+
+```python
+import numpy as np
+
+# embed(): en produccion es un modelo (sentence-transformers, OpenAI...).
+# Stub deterministico por bolsa de palabras para que corra solo.
+VOCAB = "soporte cierra devolucion dias envio gratis".split()
+def embed(t):
+    return np.array([t.lower().count(w) for w in VOCAB], float)
+
+corpus = ["El soporte cierra a las 6pm.",
+          "La devolucion es a 30 dias.",
+          "El envio es gratis desde $50."]
+E = np.array([embed(d) for d in corpus])
+
+def recuperar(pregunta, k=1):
+    q = embed(pregunta)
+    sims = E @ q / (np.linalg.norm(E, axis=1) * np.linalg.norm(q) + 1e-9)
+    return [corpus[i] for i in sims.argsort()[::-1][:k]]   # top-k
+
+print(recuperar("a que hora cierra el soporte?"))   # contexto a inyectar
+```
+
+**Qué observar:** Si el fragmento correcto no entra en el top-k, el generador no puede salvarlo. Mide context recall antes de tocar el prompt.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

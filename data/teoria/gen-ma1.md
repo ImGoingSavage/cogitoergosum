@@ -78,6 +78,25 @@ Moraleja de la arista: *divide en agentes especializados cuando la tarea es gran
 - **Misión externa (lab vivo):** lee [How we built our multi-agent research system (Anthropic)](https://www.anthropic.com/engineering/multi-agent-research-system) y hojea [AutoGen (Microsoft)](https://microsoft.github.io/autogen/). **Criterio de cierre:** explicar cuándo multi-agente vale la pena y cuándo no.
 - **Mini-entregable:** un diagrama de un sistema multi-agente para una tarea, con roles, patrón de colaboración y dónde podría propagarse un error.
 
+## Reconstrucción mínima en código
+
+Multi-agente vs agente unico: roles separados con el mismo presupuesto, comparando calidad neta.
+
+```python
+def agente_unico(tarea):
+    return f"1 agente, prompt amplio -> {tarea}"
+
+def equipo(tarea):                          # roles separados
+    plan  = f"coordinador planifica '{tarea}'"
+    datos = "investigador recopila"
+    return f"sintetizador integra ({plan} + {datos})"
+
+costo = {"unico": 1, "equipo": 3}           # el equipo cuesta ~3x llamadas
+print(equipo("informe de mercado"))
+```
+
+**Qué observar:** Si la calidad neta (tras costo y latencia) no supera al agente unico, no justifiques multi-agente.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

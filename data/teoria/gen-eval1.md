@@ -82,6 +82,25 @@ Moraleja de la arista: *contar palabras compartidas no es medir significado; tod
 - **Misión externa (lab vivo):** lee el paper de [ROUGE (Lin, 2004)](https://aclanthology.org/W04-1013/) (intro) y la entrada de [BLEU](https://aclanthology.org/P02-1040/). **Criterio de cierre:** explicar la diferencia recall (ROUGE) vs precisión (BLEU) y un límite de cada una.
 - **Mini-entregable:** una tabla "métrica → qué mide → cuándo sirve → cuándo engaña" para ROUGE y BLEU.
 
+## Reconstrucción mínima en código
+
+Por que ROUGE/BLEU enganan: miden solapamiento de palabras, no significado.
+
+```python
+def rouge1(cand, ref):                       # solapamiento de unigramas
+    c, r = cand.lower().split(), ref.lower().split()
+    return sum(w in r for w in c) / len(c)
+
+ref   = "el gato se sento en la alfombra"
+par   = "sobre la alfombra se acomodo el felino"   # parafrasis CORRECTA
+copia = "el gato se sento en la mesa"              # cambia el SIGNIFICADO
+
+print(round(rouge1(par,   ref), 2))   # BAJO aunque es correcta  -> falso negativo
+print(round(rouge1(copia, ref), 2))   # ALTO aunque es incorrecta -> falso positivo
+```
+
+**Qué observar:** Una parafrasis correcta puntua bajo (falso negativo) y un cambio de sentido puntua alto (falso positivo): n-gramas != significado.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

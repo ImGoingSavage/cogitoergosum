@@ -78,6 +78,28 @@ Moraleja de la arista: *recupera amplio y barato, re-rankea estrecho y caro, pas
 - **Misión externa (lab vivo):** revisa la doc de [pgvector](https://github.com/pgvector/pgvector) o [FAISS](https://github.com/facebookresearch/faiss) y la idea de [HNSW](https://arxiv.org/abs/1603.09320). **Criterio de cierre:** explicar por qué la búsqueda es "aproximada" y qué se gana.
 - **Mini-entregable:** un diagrama del pipeline recuperar→re-rankear→aumentar→generar, marcando dónde entra la híbrida y el efecto de $k$.
 
+## Reconstrucción mínima en código
+
+Recuperacion robusta: combina busqueda semantica con coincidencia lexica y re-ranking.
+
+```python
+docs = {"d1": "como reseteo mi contrasena",
+        "d2": "error E500 al pagar en el checkout",
+        "d3": "fallo generico del servidor"}
+
+def lexico(q, t):                       # coincidencia exacta (ancla IDs como 'E500')
+    return len(set(q.split()) & set(t.split()))
+
+def hibrida(q, alpha=0.5):              # combina semantico (stub) + lexico
+    semantico = {d: 0.5 for d in docs}  # <- aqui iria tu busqueda vectorial/ANN
+    score = {d: alpha*semantico[d] + (1-alpha)*lexico(q, docs[d]) for d in docs}
+    return sorted(score, key=score.get, reverse=True)
+
+print(hibrida("error E500 al pagar"))   # el lexico rescata el ID exacto 'E500'
+```
+
+**Qué observar:** La busqueda vectorial confunde documentos vecinos; lo lexico ancla IDs/codigos exactos. El re-ranking sube precision@k sin destruir recall.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

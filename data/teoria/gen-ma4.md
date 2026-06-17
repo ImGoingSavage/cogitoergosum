@@ -80,6 +80,23 @@ Moraleja de la arista: *evalúa un sistema de agentes como a un equipo: el resul
 - **Misión externa (lab vivo):** hojea [AgentBench](https://arxiv.org/abs/2308.03688) y [GAIA (Mialon et al., 2023)](https://arxiv.org/abs/2311.12983). **Criterio de cierre:** explicar por qué medir solo el resultado final no basta.
 - **Mini-entregable (mini-proyecto del cluster):** un **plan de evaluación de un sistema multi-agente**: métrica de éxito de tarea, métricas por componente (incluida tool accuracy), eficiencia (costo/pasos), casos adversarios (red team) y cómo evitarías overfitting (held-out). Evalúalo con la rúbrica de 5 criterios del cluster.
 
+## Reconstrucción mínima en código
+
+Evaluar un sistema de agentes por componente, no solo por el resultado final.
+
+```python
+casos = [{"routing": True,  "tool": True,  "safety": True},
+         {"routing": True,  "tool": False, "safety": True},   # fallo localizado
+         {"routing": False, "tool": True,  "safety": True}]
+
+for comp in ["routing", "tool", "safety"]:
+    acc = sum(c[comp] for c in casos) / len(casos)
+    print(f"{comp}: {acc:.0%}")
+# task success final = 67% no dice QUE arreglar; la matriz por componente si.
+```
+
+**Qué observar:** Si no localizas el eslabon fallido, tu evaluacion no es accionable. Mide routing, tool accuracy, synthesis y seguridad por separado.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 

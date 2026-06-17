@@ -74,6 +74,23 @@ Moraleja de la arista: *BERTScore mide significado; el LLM-juez mide casi todo p
 - **Misión externa (lab vivo):** lee el paper [Judging LLM-as-a-Judge (Zheng et al., 2023)](https://arxiv.org/abs/2306.05685) (sección de sesgos) y explora [Chatbot Arena](https://lmarena.ai/). **Criterio de cierre:** nombrar 3 sesgos del juez y su mitigación.
 - **Mini-entregable:** una guía de "cómo usar LLM-as-a-judge sin engañarte": modo (pairwise), rúbrica, control de orden, calibración humana, anclaje de factualidad.
 
+## Reconstrucción mínima en código
+
+Un LLM-as-judge sin calibrar tiene sesgos medibles. Aqui, el sesgo de posicion.
+
+```python
+def juez(resp_a, resp_b):        # <- aqui va tu LLM con una rubrica
+    # stub mal calibrado: siempre premia la PRIMERA opcion
+    return "A"
+
+# test de sesgo: invierte el orden; si el veredicto cambia, hay bug
+v1 = juez("respuesta X", "respuesta Y")
+v2 = juez("respuesta Y", "respuesta X")
+print(v1, v2)        # 'A' 'A' -> gana siempre la 1a: sesgo de posicion
+```
+
+**Qué observar:** Si inviertes el orden y el veredicto cambia, el juez no esta calibrado: usa rubrica explicita, ejemplos ancla y promedia ordenes.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 
