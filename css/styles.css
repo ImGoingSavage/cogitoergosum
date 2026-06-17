@@ -1068,6 +1068,7 @@ button.enlace {
 .ruta-ciencia-datos { background: rgba(244,114,182,0.18); color: #f9a8d4; }
 .ruta-conductual    { background: rgba(234,179,8,0.18);   color: #fde047; }
 .ruta-cyber         { background: rgba(239,68,68,0.16);   color: #fca5a5; }
+.ruta-genai         { background: rgba(20,184,166,0.16);  color: #5eead4; }
 
 .pistas-container { margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
 .pista-nivel { font-weight: 700; color: var(--alerta); }
@@ -1654,6 +1655,23 @@ button.secundario.peligro:hover:not(:disabled) {
   padding: 0 5px;
   font-style: normal;
   white-space: nowrap;
+}
+
+/* Hipervínculo externo vivo (papers, repos, sitios) en lecciones y referencias.
+   Abre en pestaña nueva (rel noopener); subrayado punteado para distinguirlo
+   del texto y de los chips de concepto/unidad. */
+.leccion .enlace-externo,
+.quiz-solucion .enlace-externo,
+.cluster-referencias .enlace-externo {
+  color: var(--acento);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+.leccion .enlace-externo:hover,
+.leccion .enlace-externo:focus-visible {
+  text-decoration-style: solid;
 }
 
 /* Enlace a otra unidad (arena-xxx): navegable. Hereda el chip pero con afordancia

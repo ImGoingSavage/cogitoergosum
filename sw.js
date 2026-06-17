@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v156';
+const VERSION = 'cogitoergosum-v157';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -87,6 +87,8 @@ const SHELL = [
   // Fase 8 (Ciberseguridad): taxonomía de los 8 clusters. Las unidades viven en
   // study.json (ya precacheado); _unidades.json es solo fuente de build, no se sirve.
   'data/ciberseguridad/_taxonomia.json',
+  // Fase 9 (IA Generativa): taxonomía de los clusters genai. Unidades en study.json.
+  'data/genai/_taxonomia.json',
   // Lecciones de teoría del Modo Estudio (una por unidad): texto plano
   // pequeño — precachearlas garantiza estudiar sin red desde el iPad.
   'data/teoria/polya-cuatro-pasos.md',
@@ -302,6 +304,11 @@ const SHELL = [
   'data/teoria/cyber-mit3.md',
   'data/teoria/cyber-mit4.md',
   'data/teoria/cyber-mit5.md',
+  // Fase 9 · IA Generativa — cluster Transformers
+  'data/teoria/gen-tf1.md',
+  'data/teoria/gen-tf2.md',
+  'data/teoria/gen-tf3.md',
+  'data/teoria/gen-tf4.md',
   'assets/fonts/EBGaramond-Regular.woff2',
   'assets/fonts/EBGaramond-SemiBold.woff2',
   'assets/fonts/EBGaramond-Italic.woff2',

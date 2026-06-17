@@ -115,6 +115,7 @@ const simClusterCache = {}; // clusterId → objeto del guion (null si no cargó
 const TAXONOMIAS = [
   { bloque: 'fase-7', url: 'data/entrevista/_taxonomia.json' },
   { bloque: 'fase-8', url: 'data/ciberseguridad/_taxonomia.json' },
+  { bloque: 'fase-9', url: 'data/genai/_taxonomia.json' },
 ];
 
 /* ============================ Arranque ================================ */
@@ -459,6 +460,7 @@ const ETIQUETA_TRACK = {
   ds: 'ciencia de datos',
   conductual: 'conductual',
   cyber: 'ciberseguridad',
+  genai: 'ia generativa',
 };
 
 // Mapea el track de un cluster a la clase .ruta-* del chip (mismo color que la
@@ -478,6 +480,7 @@ const ETIQUETA_RUTA = {
   'ciencia-datos': 'ciencia de datos',
   conductual: 'conductual',
   cyber: 'ciberseguridad',
+  genai: 'ia generativa',
 };
 
 function crearUnidadItem(u, b) {

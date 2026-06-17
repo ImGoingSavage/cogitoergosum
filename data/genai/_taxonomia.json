@@ -1,0 +1,88 @@
+{
+  "_comment": "Taxonomía de la Fase 9 — IA Generativa, Responsable y Agéntica (MIT-AI.md). Dominio técnico al estado del arte: transformers/atención, RAG, evaluación de GenAI, agentes (RL+LLM), multi-agente, IA responsable y de producción. Track 'genai'. Cada cluster trae examen final por dificultad y referencias APA con enlaces vivos. Sin simulación de entrevista. Se construye por oleadas: clusters adicionales se agregan conforme se redactan sus lecciones.",
+  "clusters": [
+    {
+      "id": "genai-transformers",
+      "titulo": "Transformers y mecanismos de atención",
+      "track": "genai",
+      "descripcion": "El motor de toda la IA generativa moderna: por qué la atención reemplazó a la recurrencia, cómo funciona la self-attention (Query/Key/Value), multi-head, masking, positional encoding, la arquitectura Transformer completa y su extensión a visión (Vision Transformers). Base técnica para entender LLMs, RAG y agentes. Recurso troncal: MIT-AI.md (Semana 9) + el paper 'Attention Is All You Need'.",
+      "secuencia": "De la secuencia a la atención: límites de RNN/LSTM y la idea de atención → self-attention con Query/Key/Value y atención escalada → multi-head y masking (causal vs padding) → positional encoding y la arquitectura Transformer completa, extendida a Vision Transformers.",
+      "referencias": [
+        "Vaswani, A., et al. (2017). Attention is all you need. NeurIPS. [arXiv:1706.03762](https://arxiv.org/abs/1706.03762)",
+        "Bahdanau, D., Cho, K., & Bengio, Y. (2015). Neural machine translation by jointly learning to align and translate. ICLR. [arXiv:1409.0473](https://arxiv.org/abs/1409.0473)",
+        "Alammar, J. (2018). The Illustrated Transformer. [jalammar.github.io](https://jalammar.github.io/illustrated-transformer/)",
+        "Dosovitskiy, A., et al. (2021). An image is worth 16x16 words: Transformers for image recognition at scale (ViT). ICLR. [arXiv:2010.11929](https://arxiv.org/abs/2010.11929)"
+      ],
+      "miniProyecto": {
+        "titulo": "Diagrama anotado de un bloque Transformer",
+        "descripcion": "Dibuja (a mano o en una herramienta) un bloque Transformer completo y anótalo: entrada + positional encoding → multi-head self-attention (con Q/K/V y el escalado por √d_k) → conexión residual + LayerNorm → feed-forward → residual + LayerNorm. Explica con tus palabras qué hace cada pieza y por qué, y marca dónde entra el masking causal en un decoder.",
+        "entregable": "Un diagrama anotado (imagen o texto estructurado) que explique cada componente de un bloque Transformer y el flujo de datos.",
+        "rubrica": [
+          "Identifica correctamente los componentes (atención, residual, LayerNorm, FFN, PE)",
+          "Explica el porqué de cada pieza, no solo el qué",
+          "Ubica bien el masking causal y la diferencia encoder/decoder",
+          "Conecta Q/K/V con la intuición de 'buscar y mezclar' información",
+          "Comunicación clara, sin copiar el paper textualmente"
+        ]
+      },
+      "unidades": [
+        "gen-tf1",
+        "gen-tf2",
+        "gen-tf3",
+        "gen-tf4"
+      ],
+      "competencias": [
+        "Explicar por qué la atención superó a la recurrencia para secuencias largas.",
+        "Derivar y razonar la self-attention con Query/Key/Value y el escalado por √d_k.",
+        "Distinguir multi-head, masking causal vs padding y el papel del positional encoding.",
+        "Conectar la arquitectura Transformer con LLMs, RAG, agentes y visión (ViT)."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Transformers y mecanismos de atención",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra tu punto de partida.",
+        "preguntas": [
+          {
+            "id": "genai-transformers-diag-secuencia",
+            "prompt": "Para traducir una frase larga, ¿qué problema tiene comprimir toda la frase de entrada en un solo vector (como hacían los primeros seq2seq)?",
+            "criterio": "Reconoce el cuello de botella de información y la pérdida en dependencias largas."
+          },
+          {
+            "id": "genai-transformers-diag-atencion",
+            "prompt": "Si pudieras, al generar cada palabra de salida, 'mirar' partes específicas de la entrada, ¿qué ganarías?",
+            "criterio": "Intuye la atención como acceso selectivo y ponderado a la entrada."
+          },
+          {
+            "id": "genai-transformers-diag-orden",
+            "prompt": "Si una capa procesa todas las palabras en paralelo (sin orden), ¿qué información se pierde y cómo la recuperarías?",
+            "criterio": "Detecta la necesidad de codificar la posición (positional encoding)."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "The Annotated Transformer (Harvard NLP)",
+          "url": "https://nlp.seas.harvard.edu/annotated-transformer/",
+          "objetivo": "leer el Transformer implementado línea a línea en PyTorch junto al paper",
+          "criterio_cierre": "explicar con tus palabras qué hace el bloque de scaled dot-product attention",
+          "safety_note": "Material educativo; ejecuta código solo en tu entorno."
+        },
+        {
+          "nombre": "The Illustrated Transformer (Jay Alammar)",
+          "url": "https://jalammar.github.io/illustrated-transformer/",
+          "objetivo": "visualizar self-attention, multi-head y el flujo encoder-decoder",
+          "criterio_cierre": "dibujar de memoria el camino de Q/K/V hasta la salida de atención",
+          "safety_note": "Material educativo."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No es un resumen: deriva la atención desde el problema que resuelve, con intuición, matemática mínima explicada símbolo a símbolo, y enlaces vivos al estado del arte (papers originales).",
+        "evidencia_de_dominio": [
+          "Puede explicar por qué se divide por √d_k y qué pasaría sin ese escalado.",
+          "Distingue self-attention de cross-attention y masking causal de padding.",
+          "Conecta el Transformer con LLMs, RAG, agentes y ViT.",
+          "Lee el paper original y la implementación anotada sin perderse."
+        ]
+      }
+    }
+  ]
+}
