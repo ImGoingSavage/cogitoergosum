@@ -95,6 +95,31 @@ Moraleja de la arista: *la atención es un lookup blando: buscar con una query, 
 - **Misión externa (lab vivo):** lee [The Annotated Transformer (Harvard NLP)](https://nlp.seas.harvard.edu/annotated-transformer/) en la sección *Attention*. **Criterio de cierre:** mapear cada parte del código (`scores`, `p_attn`, `torch.matmul`) a la fórmula de esta lección.
 - **Mini-entregable:** explica la fórmula $\text{softmax}(QK^\top/\sqrt{d_k})V$ a alguien que no sabe ML, usando la analogía de la biblioteca, nombrando Q, K, V y el porqué del escalado.
 
+## Reconstrucción mínima en código
+
+La fórmula $\text{softmax}(QK^\top/\sqrt{d_k})V$ desde cero, sin `nn.MultiheadAttention` que la esconda. Mapea cada línea a la lección: `scores` = afinidad token-token, `/√d_k` = escalado, `weights` = a quién atiende cada token.
+
+```python
+import torch, torch.nn.functional as F
+
+def scaled_dot_product_attention(Q, K, V, mask=None):
+    d_k = Q.size(-1)
+    scores = Q @ K.transpose(-2, -1) / d_k ** 0.5   # (T, T)
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+    weights = F.softmax(scores, dim=-1)             # cada fila suma 1
+    return weights @ V, weights                     # mezcla de valores + pesos
+
+T, d = 4, 8
+x = torch.randn(T, d)
+Wq, Wk, Wv = (torch.randn(d, d) for _ in range(3))
+Q, K, V = x @ Wq, x @ Wk, x @ Wv                    # proyecciones aprendidas
+out, w = scaled_dot_product_attention(Q, K, V)
+print(w.sum(-1))                                    # tensor de unos: softmax sano
+```
+
+**Qué observar:** quita el `/ d_k ** 0.5` y vuelve a correr con `d` grande. Verás los pesos `w` colapsar (casi todo en un token): los logits crecen con la dimensión y saturan el softmax. Por eso el escalado **no es cosmético**. Este bloque es el ladrillo que [[gen-tf3]] repite en multi-head.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 
@@ -111,7 +136,7 @@ Moraleja de la arista: *la atención es un lookup blando: buscar con una query, 
 **Laboratorio alternativo:** [PyTorch Transformer tutorial](https://docs.pytorch.org/tutorials/beginner/transformer_tutorial.html).
 **Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
 
-**Entregable:** módulo PyTorch mínimo con pruebas de shapes, máscara y gradientes. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** módulo PyTorch mínimo con pruebas de shapes, máscara y gradientes. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

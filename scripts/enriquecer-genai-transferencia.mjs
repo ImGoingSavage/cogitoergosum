@@ -722,35 +722,14 @@ function enrichUnit(unit) {
 }
 
 function expandBank(unit, bp, cluster) {
+  // CALIDAD > CUOTA. No se generan preguntas de plantilla: rellenar un esqueleto
+  // fijo con los campos del blueprint produce formularios repetidos (mismo molde
+  // x24 unidades), el anti-patron que el usuario rechazo en Fase 8. El banco
+  // conserva SOLO las preguntas escritas a mano, normalizadas con metadata
+  // auditable (type/prompt/feedback/concept/source_reference/recognition_signal).
+  // Para crecer el banco: escribir preguntas reales, no clonar plantillas.
   const preserved = (unit.banco ?? []).filter((q) => q?.metadata?.generated_by !== MARKER);
-  const normalized = preserved.map((q, index) => normalizeQuestion(q, unit, bp, cluster, index));
-
-  const generated = [];
-  const counts = countByKind(normalized);
-  for (const difficulty of ['easy', 'medium', 'hard']) {
-    let count = counts.concept[difficulty] ?? 0;
-    let idx = 1;
-    while (count < 10) {
-      generated.push(makeConceptQuestion(unit, bp, cluster, difficulty, idx));
-      count += 1;
-      idx += 1;
-    }
-  }
-  let scenarioCount = counts.scenario;
-  let scenarioIdx = 1;
-  while (scenarioCount < 5) {
-    generated.push(makeScenarioQuestion(unit, bp, cluster, scenarioIdx));
-    scenarioCount += 1;
-    scenarioIdx += 1;
-  }
-  let reflectionCount = counts.reflexion;
-  let reflectionIdx = 1;
-  while (reflectionCount < 5) {
-    generated.push(makeReflectionQuestion(unit, bp, cluster, reflectionIdx));
-    reflectionCount += 1;
-    reflectionIdx += 1;
-  }
-  return [...normalized, ...generated];
+  return preserved.map((q, index) => normalizeQuestion(q, unit, bp, cluster, index));
 }
 
 function normalizeQuestion(q, unit, bp, cluster, index) {
@@ -1477,6 +1456,59 @@ function polishText(value) {
     [/\butil\b/g, 'útil'],
     [/\bUtil\b/g, 'Útil'],
     [/\bmas\b/g, 'más'],
+    [/\bsenal\b/g, 'señal'],
+    [/\bSenal\b/g, 'Señal'],
+    [/\bsenales\b/g, 'señales'],
+    [/\bSenales\b/g, 'Señales'],
+    [/\bsinteticas\b/g, 'sintéticas'],
+    [/\bSinteticas\b/g, 'Sintéticas'],
+    [/\bsintetico\b/g, 'sintético'],
+    [/\bsinteticos\b/g, 'sintéticos'],
+    [/\bpequeno\b/g, 'pequeño'],
+    [/\bPequeno\b/g, 'Pequeño'],
+    [/\bpequena\b/g, 'pequeña'],
+    [/\bPequena\b/g, 'Pequeña'],
+    [/\bexplicacion\b/g, 'explicación'],
+    [/\bExplicacion\b/g, 'Explicación'],
+    [/\bdiagnostico\b/g, 'diagnóstico'],
+    [/\bDiagnostico\b/g, 'Diagnóstico'],
+    [/\bcomputo\b/g, 'cómputo'],
+    [/\bComputo\b/g, 'Cómputo'],
+    [/\bintuicion\b/g, 'intuición'],
+    [/\bIntuicion\b/g, 'Intuición'],
+    [/\bAdemas\b/g, 'Además'],
+    [/\bademas\b/g, 'además'],
+    [/\bhabito\b/g, 'hábito'],
+    [/\bhabitos\b/g, 'hábitos'],
+    [/\bHabito\b/g, 'Hábito'],
+    [/\bautoengano\b/g, 'autoengaño'],
+    [/\bdescomposicion\b/g, 'descomposición'],
+    [/\bDescomposicion\b/g, 'Descomposición'],
+    [/\btelemetria\b/g, 'telemetría'],
+    [/\bTelemetria\b/g, 'Telemetría'],
+    [/\bmetodologico\b/g, 'metodológico'],
+    [/\bMetodologico\b/g, 'Metodológico'],
+    [/\bpaginas\b/g, 'páginas'],
+    [/\bPaginas\b/g, 'Páginas'],
+    [/\bfacil\b/g, 'fácil'],
+    [/\bFacil\b/g, 'Fácil'],
+    [/\bfaciles\b/g, 'fáciles'],
+    [/\bFaciles\b/g, 'Fáciles'],
+    [/\bdificil\b/g, 'difícil'],
+    [/\bDificil\b/g, 'Difícil'],
+    [/\bdificiles\b/g, 'difíciles'],
+    [/\bDificiles\b/g, 'Difíciles'],
+    [/\bcompanero\b/g, 'compañero'],
+    [/\bCompanero\b/g, 'Compañero'],
+    [/\bcompania\b/g, 'compañía'],
+    [/\bestandar\b/g, 'estándar'],
+    [/\bEstandar\b/g, 'Estándar'],
+    [/\bsintetizador\b/g, 'sintetizador'],
+    [/\bdebiles\b/g, 'débiles'],
+    [/\bDebiles\b/g, 'Débiles'],
+    [/\bnumeros\b/g, 'números'],
+    [/\bNumeros\b/g, 'Números'],
+    [/\baisla\b/g, 'aísla'],
     [/¿Que/g, '¿Qué'],
     [/¿que/g, '¿qué'],
     [/¿Cual/g, '¿Cuál'],

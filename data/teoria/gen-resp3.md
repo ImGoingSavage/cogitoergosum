@@ -86,7 +86,7 @@ Moraleja de la arista: *el modelo es la parte fácil; producción es operación 
 **Objetivo graduado:** convertir la idea central (GenAI en producción: costo, latencia, observabilidad y deriva) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
 
 1. **Implementación o diseño:** diseñar monitoreo de costo, latencia, errores, drift y evaluación continua.
-2. **Baseline obligatorio:** demo notebook sin telemetria ni versionado.
+2. **Baseline obligatorio:** demo notebook sin telemetría ni versionado.
 3. **Versión mejorada:** servicio con SLOs, logs, evaluación continua y versión pinning.
 4. **Evaluación:** costo por tarea, p95 latencia, error rate, drift y eval score continuo.
 5. **Fallo que debes explicar:** un cambio de proveedor degrada respuestas sin que el equipo lo note.
@@ -96,7 +96,7 @@ Moraleja de la arista: *el modelo es la parte fácil; producción es operación 
 **Laboratorio alternativo:** [promptfoo](https://www.promptfoo.dev/docs/intro/).
 **Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
 
-**Entregable:** runbook de producción con SLOs, métricas y rollback. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** runbook de producción con SLOs, métricas y rollback. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

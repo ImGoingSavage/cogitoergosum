@@ -104,7 +104,7 @@ Moraleja de la arista: *RAG es examen a libro abierto: no memorices hechos, apre
 **Laboratorio alternativo:** [LlamaIndex documentation](https://docs.llamaindex.ai/).
 **Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
 
-**Entregable:** RAG mínimo con corpus pequeno, citas y casos donde el modelo debe decir no se. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** RAG mínimo con corpus pequeño, citas y casos donde el modelo debe decir no se. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

@@ -109,7 +109,7 @@ Moraleja de la arista: *diseña agentes como delegas: la mínima autonomía que 
 **Laboratorio alternativo:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
 **Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
 
-**Entregable:** matriz herramienta-permiso-riesgo y pruebas adversarias. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** matriz herramienta-permiso-riesgo y pruebas adversarias. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

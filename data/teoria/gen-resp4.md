@@ -96,7 +96,7 @@ Moraleja de la arista: *ante un problema real, elige la pieza más simple que lo
 **Laboratorio alternativo:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
 **Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
 
-**Entregable:** proyecto final: arquitectura, evaluación, riesgo, costos y plan de producción. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** proyecto final: arquitectura, evaluación, riesgo, costos y plan de producción. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

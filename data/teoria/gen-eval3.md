@@ -95,7 +95,7 @@ Moraleja de la arista: *para cazar alucinaciones, haz repetir (consistencia) y c
 **Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
 **Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
 
-**Entregable:** set de hallucination eval con claims, fuentes y verdictos. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** set de hallucination eval con claims, fuentes y verdictos. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

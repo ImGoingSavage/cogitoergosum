@@ -103,7 +103,7 @@ Moraleja de la arista: *el prompt es código; optimízalo como ingeniería —un
 **Laboratorio alternativo:** [Prompt Engineering Guide](https://www.promptingguide.ai/).
 **Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
 
-**Entregable:** reporte de experimentos con baseline, candidatos, métricas y decisión. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** reporte de experimentos con baseline, candidatos, métricas y decisión. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

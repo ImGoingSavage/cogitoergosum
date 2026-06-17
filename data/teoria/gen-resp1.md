@@ -93,7 +93,7 @@ Moraleja de la arista: *un modelo preciso no es aceptable por sí solo; la IA re
 **Laboratorio alternativo:** [MIT AI Risk Repository](https://airisk.mit.edu/).
 **Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
 
-**Entregable:** matriz de impacto con mitigaciones y decisión de uso/no uso. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** matriz de impacto con mitigaciones y decisión de uso/no uso. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

@@ -99,7 +99,7 @@ Moraleja de la arista: *un sistema multi-agente es un sistema distribuido de LLM
 **Laboratorio alternativo:** [Microsoft AutoGen](https://microsoft.github.io/autogen/).
 **Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
 
-**Entregable:** grafo de estado con casos de exito, fallo y recuperación. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** grafo de estado con casos de exito, fallo y recuperación. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

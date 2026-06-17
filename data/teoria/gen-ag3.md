@@ -97,7 +97,7 @@ Moraleja de la arista: *un agente LLM es ReAct —pensar, actuar con herramienta
 **Laboratorio alternativo:** [LangGraph tutorials](https://langchain-ai.github.io/langgraph/tutorials/).
 **Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
 
-**Entregable:** trazas de agente con llamadas a herramientas, errores y correcciones. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** trazas de agente con llamadas a herramientas, errores y correcciones. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

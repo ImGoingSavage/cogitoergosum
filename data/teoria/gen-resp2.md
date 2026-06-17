@@ -106,7 +106,7 @@ Moraleja de la arista: *los frameworks operacionalizan la IA responsable —AI R
 **Laboratorio alternativo:** [MIT AI Risk Repository](https://airisk.mit.edu/).
 **Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
 
-**Entregable:** risk register con controles, evidencias y cadencia de revisión. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** risk register con controles, evidencias y cadencia de revisión. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

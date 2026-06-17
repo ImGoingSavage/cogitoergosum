@@ -84,14 +84,36 @@ Moraleja de la arista: *la atención es recuperación selectiva y diferenciable:
 - **Misión externa (lab vivo):** lee [The Illustrated Transformer (Jay Alammar)](https://jalammar.github.io/illustrated-transformer/) hasta la sección de self-attention. **Criterio de cierre:** poder explicar, sin la página, qué representa cada peso $\alpha_{ij}$.
 - **Mini-entregable:** un párrafo que compare RNN/LSTM vs atención en tres ejes: cuello de botella, dependencias largas y paralelismo.
 
+## Reconstrucción mínima en código
+
+La fórmula $c_i = \sum_j \alpha_{ij} h_j$ cabe en seis líneas. Atención = **recuperación diferenciable**: en vez de comprimir todo en un vector fijo, el decoder *consulta* todos los estados del encoder y se queda con una mezcla ponderada.
+
+```python
+import torch, torch.nn.functional as F
+
+# h: un estado del encoder por cada token de entrada   (n_tokens, d)
+# s: estado actual del decoder = la "consulta"          (d,)
+h = torch.randn(5, 8)            # 5 palabras, dimensión 8
+s = torch.randn(8)
+
+scores = h @ s                   # afinidad consulta-clave: (5,)
+alpha  = F.softmax(scores, 0)    # pesos que SUMAN 1: a qué mirar
+c      = alpha @ h               # contexto: suma ponderada de TODOS los estados
+
+print(alpha)                     # nada se comprime: se SELECCIONA
+print(c.shape)                   # (8,) — un resumen distinto en cada paso
+```
+
+**Qué observar:** sin atención, el decoder solo vería un `h` fijo (el último estado) y la calidad caería con la longitud. Aquí `c` cambia en cada paso porque `alpha` se recalcula: ese es el salto conceptual hacia [[gen-tf2]].
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 
 **Objetivo graduado:** convertir la idea central (cuello de botella seq2seq y atención como recuperación diferenciable) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
 
-1. **Implementación o diseño:** comparar un encoder fijo con una capa de atención sobre frases sinteticas.
+1. **Implementación o diseño:** comparar un encoder fijo con una capa de atención sobre frases sintéticas.
 2. **Baseline obligatorio:** LSTM encoder-decoder sin atención.
-3. **Versión mejorada:** decoder con atención Bahdanau o Transformer pequeno.
+3. **Versión mejorada:** decoder con atención Bahdanau o Transformer pequeño.
 4. **Evaluación:** accuracy/BLEU por longitud y error analysis de dependencias largas.
 5. **Fallo que debes explicar:** la calidad cae justo al aumentar la longitud de la frase.
 6. **Transferencia:** RAG: conservar fuentes y recuperar fragmentos en vez de resumir todo.
@@ -100,7 +122,7 @@ Moraleja de la arista: *la atención es recuperación selectiva y diferenciable:
 **Laboratorio alternativo:** [Stanford CS224N: NLP with Deep Learning](https://web.stanford.edu/class/cs224n/).
 **Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
 
-**Entregable:** notebook con curva por longitud, heatmap de atención y explicacion Q/A. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** notebook con curva por longitud, heatmap de atención y explicación Q/A. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

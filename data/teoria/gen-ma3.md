@@ -95,7 +95,7 @@ Moraleja de la arista: *el RAG adaptativo es un agente cuya herramienta es recup
 **Laboratorio alternativo:** [LangGraph tutorials](https://langchain-ai.github.io/langgraph/tutorials/).
 **Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
 
-**Entregable:** policy de retrieval con trazas, fuentes y evaluación por consulta. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** policy de retrieval con trazas, fuentes y evaluación por consulta. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

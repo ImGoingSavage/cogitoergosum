@@ -103,7 +103,7 @@ Moraleja de la arista: *embeber es poner el significado en un mapa; chunkear es 
 **Laboratorio alternativo:** [RAGAS](https://docs.ragas.io/).
 **Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
 
-**Entregable:** tabla de retrieval con chunks, queries, top-k y diagnostico. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** tabla de retrieval con chunks, queries, top-k y diagnóstico. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

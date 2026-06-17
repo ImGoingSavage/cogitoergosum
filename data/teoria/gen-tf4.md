@@ -74,6 +74,35 @@ Moraleja de la arista: *el Transformer aprende relaciones entre tokens; conviér
 - **Misión externa (lab vivo):** hojea el paper [ViT (Dosovitskiy et al., 2021)](https://arxiv.org/abs/2010.11929), Figura 1 (el pipeline de parches). **Criterio de cierre:** explicar los 4 pasos que convierten una imagen en tokens para el Transformer.
 - **Mini-entregable:** un esquema que muestre, en paralelo, cómo texto e imagen se convierten ambos en "tokens + positional encoding" para el mismo tipo de Transformer.
 
+## Reconstrucción mínima en código
+
+Dos piezas: el positional encoding sinusoidal que se **suma** al embedding, y la conversión de una imagen en "tokens" que demuestra que ViT es el mismo Transformer en otro dominio.
+
+```python
+import torch, math
+
+def positional_encoding(T, d):
+    pos = torch.arange(T).unsqueeze(1)                 # (T, 1)
+    i   = torch.arange(0, d, 2)                        # dimensiones pares
+    div = torch.exp(-math.log(10000.0) * i / d)
+    pe = torch.zeros(T, d)
+    pe[:, 0::2] = torch.sin(pos * div)                 # seno en pares
+    pe[:, 1::2] = torch.cos(pos * div)                 # coseno en impares
+    return pe                                          # se SUMA al embedding
+
+# La atención es invariante a permutaciones: sin PE, "Juan ama a María"
+# y "María ama a Juan" producen lo mismo. La posición rompe esa simetría.
+
+# ViT: una imagen es una secuencia de parches, cada uno con su posición.
+img = torch.randn(3, 32, 32)                           # C, H, W
+P = 8                                                  # parche 8x8 -> 16 parches
+patches = img.unfold(1, P, P).unfold(2, P, P)          # (3, 4, 4, 8, 8)
+tokens  = patches.reshape(3, 16, P * P).permute(1, 0, 2).reshape(16, 3 * P * P)
+print(tokens.shape)                                    # (16, 192): 16 "palabras" visuales
+```
+
+**Qué observar:** las filas de `positional_encoding` son únicas por posición pero suaves entre vecinas, así el modelo puede *interpolar* a longitudes nuevas. Y el bloque de ViT no cambia la arquitectura: cambiar texto por parches es **transferencia estructural**, el cierre del recorrido que abrió [[gen-tf1]].
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 
@@ -90,7 +119,7 @@ Moraleja de la arista: *el Transformer aprende relaciones entre tokens; conviér
 **Laboratorio alternativo:** [Stanford CS224N: NLP with Deep Learning](https://web.stanford.edu/class/cs224n/).
 **Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
 
-**Entregable:** experimento con permutaciones, positional embeddings y reporte de errores. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** experimento con permutaciones, positional embeddings y reporte de errores. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

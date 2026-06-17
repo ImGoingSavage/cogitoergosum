@@ -83,7 +83,7 @@ Moraleja de la arista: *recupera amplio y barato, re-rankea estrecho y caro, pas
 
 **Objetivo graduado:** convertir la idea central (recuperación robusta: ANN, hibrida y re-ranking) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
 
-1. **Implementación o diseño:** comparar vector-only, BM25/hibrida y re-ranking sobre consultas dificiles.
+1. **Implementación o diseño:** comparar vector-only, BM25/hibrida y re-ranking sobre consultas difíciles.
 2. **Baseline obligatorio:** top-k vectorial directo.
 3. **Versión mejorada:** recuperación hibrida con re-ranking y k calibrado.
 4. **Evaluación:** MRR, recall@k, precisión@k, latencia y costo por consulta.
@@ -94,7 +94,7 @@ Moraleja de la arista: *recupera amplio y barato, re-rankea estrecho y caro, pas
 **Laboratorio alternativo:** [RAGAS](https://docs.ragas.io/).
 **Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
 
-**Entregable:** benchmark de retrieval con tabla por consulta y decisión de k. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** benchmark de retrieval con tabla por consulta y decisión de k. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

@@ -81,7 +81,7 @@ Moraleja de la arista: *divide en agentes especializados cuando la tarea es gran
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 
-**Objetivo graduado:** convertir la idea central (descomposicion multi-agente y patrones de colaboración) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+**Objetivo graduado:** convertir la idea central (descomposición multi-agente y patrones de colaboración) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
 
 1. **Implementación o diseño:** comparar agente unico contra roles separados con el mismo presupuesto.
 2. **Baseline obligatorio:** un solo agente con prompt amplio.
@@ -94,7 +94,7 @@ Moraleja de la arista: *divide en agentes especializados cuando la tarea es gran
 **Laboratorio alternativo:** [Microsoft AutoGen](https://microsoft.github.io/autogen/).
 **Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
 
-**Entregable:** experimento con roles, trazas y comparación contra baseline simple. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** experimento con roles, trazas y comparación contra baseline simple. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

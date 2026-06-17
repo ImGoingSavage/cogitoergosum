@@ -86,6 +86,45 @@ Moraleja de la arista: *atención = mover información; FFN = transformarla; res
 - **Misión externa (lab vivo):** explora [BertViz](https://github.com/jessevig/bertviz) (visualizador de cabezas de atención) o las figuras de [Clark et al., 2019](https://arxiv.org/abs/1906.04341). **Criterio de cierre:** describir una relación lingüística que una cabeza concreta parece capturar.
 - **Mini-entregable (mini-proyecto del cluster):** un **diagrama anotado de un bloque Transformer** (atención → residual+norm → FFN → residual+norm, con dónde entra el masking), explicando cada pieza con tus palabras. Evalúalo con la rúbrica de 5 criterios del cluster.
 
+## Reconstrucción mínima en código
+
+Un bloque GPT real, estilo nanoGPT: multi-head causal + MLP con residuales. Apilar `N` de estos **es** un GPT. La máscara triangular es la que garantiza que el token `t` solo use `1..t` (sin fuga del futuro).
+
+```python
+import torch, torch.nn as nn
+
+class CausalSelfAttention(nn.Module):
+    def __init__(self, d_model, n_heads):
+        super().__init__()
+        self.n_heads, self.d_head = n_heads, d_model // n_heads
+        self.qkv  = nn.Linear(d_model, 3 * d_model)
+        self.proj = nn.Linear(d_model, d_model)
+    def forward(self, x):                                  # x: (B, T, d_model)
+        B, T, C = x.shape
+        q, k, v = self.qkv(x).chunk(3, dim=-1)
+        # parte en cabezas: (B, n_heads, T, d_head)
+        q, k, v = [t.view(B, T, self.n_heads, self.d_head).transpose(1, 2) for t in (q, k, v)]
+        att  = q @ k.transpose(-2, -1) / self.d_head ** 0.5
+        mask = torch.tril(torch.ones(T, T))               # nadie mira al futuro
+        att  = att.masked_fill(mask == 0, float('-inf')).softmax(-1)
+        y = (att @ v).transpose(1, 2).reshape(B, T, C)     # vuelve a juntar cabezas
+        return self.proj(y)
+
+class Block(nn.Module):                                    # el ladrillo de GPT
+    def __init__(self, d_model, n_heads):
+        super().__init__()
+        self.ln1, self.ln2 = nn.LayerNorm(d_model), nn.LayerNorm(d_model)
+        self.attn = CausalSelfAttention(d_model, n_heads)
+        self.mlp  = nn.Sequential(nn.Linear(d_model, 4*d_model), nn.GELU(),
+                                  nn.Linear(4*d_model, d_model))
+    def forward(self, x):
+        x = x + self.attn(self.ln1(x))                     # residual: aprende un ajuste
+        x = x + self.mlp(self.ln2(x))
+        return x
+```
+
+**Qué observar:** corre `Block(8, 2)(torch.randn(1, 4, 8))` y revisa la matriz de atención: la fila 0 solo tiene peso en la columna 0. Si vieras peso a la derecha de la diagonal, la máscara causal estaría rota y el modelo haría *leakage* del futuro durante el entrenamiento. [[gen-tf4]] añade la pieza que falta: la posición.
+
 <!-- GENAI_TRANSFER_ASSIGNMENT_START -->
 ## Asignación práctica de transferencia
 
@@ -102,7 +141,7 @@ Moraleja de la arista: *atención = mover información; FFN = transformarla; res
 **Laboratorio alternativo:** [Karpathy Neural Networks: Zero to Hero](https://karpathy.ai/zero-to-hero.html).
 **Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
 
-**Entregable:** bloque decoder entrenable con tests de causalidad y ablation de heads. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** bloque decoder entrenable con tests de causalidad y ablation de heads. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

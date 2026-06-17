@@ -90,7 +90,7 @@ Moraleja de la arista: *BERTScore mide significado; el LLM-juez mide casi todo p
 **Laboratorio alternativo:** [LMArena](https://lmarena.ai/).
 **Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
 
-**Entregable:** harness de juez con rúbrica, ejemplos oro y pruebas de sesgo. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** harness de juez con rúbrica, ejemplos oro y pruebas de sesgo. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

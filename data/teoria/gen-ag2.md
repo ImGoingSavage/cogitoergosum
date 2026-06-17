@@ -105,7 +105,7 @@ Moraleja de la arista: *aprender a decidir es valorar las opciones (Q-learning) 
 **Laboratorio alternativo:** [DeepLearning.AI Generative AI for Everyone](https://www.deeplearning.ai/courses/generative-ai-for-everyone/).
 **Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
 
-**Entregable:** notebook con Q-table, policy rollout y análisis de reward hacking. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** notebook con Q-table, policy rollout y análisis de reward hacking. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

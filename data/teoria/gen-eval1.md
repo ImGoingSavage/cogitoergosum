@@ -98,7 +98,7 @@ Moraleja de la arista: *contar palabras compartidas no es medir significado; tod
 **Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
 **Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
 
-**Entregable:** reporte con pares de salidas, métricas y juicio humano razonado. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** reporte con pares de salidas, métricas y juicio humano razonado. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

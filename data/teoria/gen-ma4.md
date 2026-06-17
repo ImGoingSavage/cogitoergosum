@@ -96,7 +96,7 @@ Moraleja de la arista: *evalúa un sistema de agentes como a un equipo: el resul
 **Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
 **Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
 
-**Entregable:** matriz de evaluación end-to-end y por componente con red team. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** matriz de evaluación end-to-end y por componente con red team. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

@@ -103,7 +103,7 @@ Moraleja de la arista: *un agente es un bucle de decisión con propósito (estad
 **Laboratorio alternativo:** [Anthropic: Building Effective Agents](https://www.anthropic.com/research/building-effective-agents).
 **Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
 
-**Entregable:** simulador pequeno con trazas y función de recompensa explicada. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** simulador pequeño con trazas y función de recompensa explicada. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 

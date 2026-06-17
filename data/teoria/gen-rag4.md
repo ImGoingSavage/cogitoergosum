@@ -97,7 +97,7 @@ Moraleja de la arista: *un RAG falla en la recuperación o en la generación; mi
 **Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
 **Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
 
-**Entregable:** dashboard pequeno con context recall, faithfulness y ejemplos fallidos. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+**Entregable:** dashboard pequeño con context recall, faithfulness y ejemplos fallidos. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y qué harías distinto si lo llevaras a producción.
 
 **Rúbrica de excelencia:**
 
