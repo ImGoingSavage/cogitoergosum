@@ -251,6 +251,91 @@
           "Optimiza prompts por evidencia, no por intuición, evitando overfitting."
         ]
       }
+    },
+    {
+      "id": "genai-agentes",
+      "titulo": "Agentes y aprendizaje por refuerzo",
+      "track": "genai",
+      "descripcion": "Del LLM reactivo al agente autónomo: el marco agente-entorno (estado/acción/recompensa/política), fundamentos de RL (Q-learning, policy gradient, y su papel en RLHF), agentes LLM (ReAct, herramientas, memoria, planificación, autocrítica) y el diseño de workflows de agentes orientados a tareas, seguros y evaluables. Recurso troncal: MIT-AI.md (Semana 12) + Sutton & Barto.",
+      "secuencia": "Del marco a la práctica: el bucle agente-entorno y su vocabulario → cómo se aprende a decidir (Q-learning vs policy gradient, RLHF) → agentes LLM (ReAct, herramientas, memoria, planificación, autocrítica) → diseño de workflows de agentes (agente vs workflow, agencia mínima, evaluación).",
+      "referencias": [
+        "Sutton, R. S., & Barto, A. G. (2018). Reinforcement learning: An introduction (2nd ed.). [Libro](http://incompleteideas.net/book/the-book-2nd.html)",
+        "Mnih, V., et al. (2015). Human-level control through deep RL (DQN). Nature. [nature.com](https://www.nature.com/articles/nature14236)",
+        "Schulman, J., et al. (2017). Proximal policy optimization (PPO). [arXiv:1707.06347](https://arxiv.org/abs/1707.06347)",
+        "Ouyang, L., et al. (2022). InstructGPT / RLHF. NeurIPS. [arXiv:2203.02155](https://arxiv.org/abs/2203.02155)",
+        "Yao, S., et al. (2022). ReAct. ICLR. [arXiv:2210.03629](https://arxiv.org/abs/2210.03629)",
+        "Anthropic. (2024). Building effective agents. [anthropic.com](https://www.anthropic.com/research/building-effective-agents)"
+      ],
+      "miniProyecto": {
+        "titulo": "Diseño de un agente orientado a una tarea (seguro y evaluable)",
+        "descripcion": "Diseña un agente para una tarea de negocio concreta: decide agente vs workflow determinista (justificado), define herramientas mínimas con sus permisos, marca los puntos de humano-en-el-lazo para acciones irreversibles, pon límites duros (pasos/presupuesto), describe el manejo de errores, y especifica un plan de evaluación (task success + tool accuracy + casos adversarios).",
+        "entregable": "Documento de diseño del agente + plan de evaluación con casos adversarios.",
+        "rubrica": [
+          "Decisión agente/workflow justificada por la naturaleza de la tarea",
+          "Herramientas y permisos mínimos (agencia mínima)",
+          "Humano en el lazo para acciones irreversibles + límites duros",
+          "Manejo de errores e incertidumbre (verificar observaciones, decir 'no sé')",
+          "Plan de evaluación con métricas y casos adversarios"
+        ]
+      },
+      "unidades": [
+        "gen-ag1",
+        "gen-ag2",
+        "gen-ag3",
+        "gen-ag4"
+      ],
+      "competencias": [
+        "Modelar una tarea como bucle agente-entorno (estado/acción/recompensa/política).",
+        "Explicar Q-learning y policy gradient y su papel en RLHF.",
+        "Construir agentes LLM con ReAct, herramientas, memoria y autocrítica.",
+        "Diseñar workflows de agentes seguros (agencia mínima, humano en el lazo) y evaluarlos."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Agentes y aprendizaje por refuerzo",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra tu punto de partida.",
+        "preguntas": [
+          {
+            "id": "genai-agentes-diag-bucle",
+            "prompt": "¿Qué le falta a un LLM que solo responde texto para poder 'reservar una sala' por sí mismo?",
+            "criterio": "Intuye el bucle percibir-actuar-observar y el uso de herramientas."
+          },
+          {
+            "id": "genai-agentes-diag-recompensa",
+            "prompt": "Si premias a un agente por 'cerrar tickets rápido', ¿qué podría hacer que técnicamente cumpla pero no sea lo que querías?",
+            "criterio": "Intuye reward hacking: optimizar el proxy, no el objetivo real."
+          },
+          {
+            "id": "genai-agentes-diag-riesgo",
+            "prompt": "Un agente puede ejecutar acciones reales (pagar, borrar). ¿Qué control pondrías antes de darle esa capacidad?",
+            "criterio": "Intuye agencia mínima y humano en el lazo para lo irreversible."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "Sutton & Barto — RL: An Introduction (libro gratuito)",
+          "url": "http://incompleteideas.net/book/the-book-2nd.html",
+          "objetivo": "leer el Cap. 1 (el problema del RL) y el bucle agente-entorno",
+          "criterio_cierre": "explicar estado/acción/recompensa/política y el retorno descontado",
+          "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "Building Effective Agents (Anthropic)",
+          "url": "https://www.anthropic.com/research/building-effective-agents",
+          "objetivo": "criterios para decidir agente vs workflow y patrones de diseño",
+          "criterio_cierre": "explicar cuándo NO usar un agente",
+          "safety_note": "Material educativo."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "Une el RL clásico (Sutton & Barto) con los agentes LLM modernos (ReAct) y con RLHF, exigiendo diseño seguro (agencia mínima) y evaluación con adversarios, con enlaces vivos a los papers fundacionales.",
+        "evidencia_de_dominio": [
+          "Modela tareas como MDP y reconoce el reward hacking.",
+          "Explica cómo RLHF alinea a los LLMs con policy gradient.",
+          "Diseña agentes con agencia mínima y humano en el lazo.",
+          "Decide agente vs workflow y evalúa con task success y adversarios."
+        ]
+      }
     }
   ]
 }
