@@ -83,6 +83,90 @@
           "Lee el paper original y la implementación anotada sin perderse."
         ]
       }
+    },
+    {
+      "id": "genai-rag",
+      "titulo": "RAG: anclar LLMs en datos propios",
+      "track": "genai",
+      "descripcion": "Conectar un LLM a conocimiento externo para respuestas fiables, actuales y atribuibles: por qué RAG (vs fine-tuning), embeddings y chunking, recuperación (ANN, híbrida, re-ranking) y evaluación de RAG (triángulo recuperación/fidelidad/relevancia) más RAG avanzado/adaptativo. Recurso troncal: MIT-AI.md (Semana 9) + el paper de RAG (Lewis et al., 2020).",
+      "secuencia": "Del problema a la producción: por qué RAG y RAG vs fine-tuning → embeddings y chunking (cómo se representa y trocea el conocimiento) → recuperación y pipeline (ANN, búsqueda híbrida, re-ranking, k) → RAG avanzado y su evaluación (triángulo RAG, RAGAS, adaptativo).",
+      "referencias": [
+        "Lewis, P., et al. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. NeurIPS. [arXiv:2005.11401](https://arxiv.org/abs/2005.11401)",
+        "Gao, Y., et al. (2023). Retrieval-augmented generation for LLMs: A survey. [arXiv:2312.10997](https://arxiv.org/abs/2312.10997)",
+        "Reimers, N., & Gurevych, I. (2019). Sentence-BERT. EMNLP. [arXiv:1908.10084](https://arxiv.org/abs/1908.10084)",
+        "Es, S., et al. (2023). RAGAS: Automated evaluation of RAG. [arXiv:2309.15217](https://arxiv.org/abs/2309.15217)",
+        "Asai, A., et al. (2023). Self-RAG. [arXiv:2310.11511](https://arxiv.org/abs/2310.11511)"
+      ],
+      "miniProyecto": {
+        "titulo": "Diseño y plan de evaluación de un RAG",
+        "descripcion": "Diseña un RAG para un caso concreto (p. ej. asistente sobre la documentación de un producto): elige modelo de embeddings y estrategia de chunking, decide recuperación (semántica/híbrida/re-ranking) y k, define el prompt aumentado con atribución, y especifica cómo lo EVALUARÍAS con el triángulo RAG (recuperación vs generación) y un set de datos.",
+        "entregable": "Documento de diseño del RAG + plan de evaluación (métricas de recuperación y generación, cómo construir el set).",
+        "rubrica": [
+          "Decisiones justificadas de embeddings y chunking (con el tradeoff)",
+          "Pipeline de recuperación coherente (híbrida/re-ranking/k) para el caso",
+          "Prompt con instrucción de fidelidad y atribución",
+          "Plan de evaluación que separa recuperación de generación, con datos",
+          "Conciencia de la superficie de ataque (contenido recuperado no confiable)"
+        ]
+      },
+      "unidades": [
+        "gen-rag1",
+        "gen-rag2",
+        "gen-rag3",
+        "gen-rag4"
+      ],
+      "competencias": [
+        "Decidir entre RAG y fine-tuning según se trate de conocimiento o comportamiento.",
+        "Representar y trocear conocimiento (embeddings, similitud coseno, chunking) con criterio.",
+        "Construir una recuperación robusta (ANN, híbrida, re-ranking) y elegir k.",
+        "Evaluar un RAG separando recuperación de generación (triángulo RAG) con datos."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de RAG: anclar LLMs en datos propios",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra tu punto de partida.",
+        "preguntas": [
+          {
+            "id": "genai-rag-diag-porque",
+            "prompt": "Un LLM no conoce tus documentos privados ni datos posteriores a su entrenamiento, y cuando no sabe, inventa. ¿Cómo le darías acceso a esa información sin reentrenarlo?",
+            "criterio": "Intuye recuperar contexto externo y dárselo en el prompt (RAG)."
+          },
+          {
+            "id": "genai-rag-diag-buscar",
+            "prompt": "Para 'encontrar el párrafo relevante' entre miles de documentos a partir de una pregunta, ¿cómo representarías textos para poder compararlos por significado?",
+            "criterio": "Intuye representar el significado como vectores comparables (embeddings)."
+          },
+          {
+            "id": "genai-rag-diag-fallo",
+            "prompt": "Si tu sistema responde mal, ¿cómo sabrías si el problema fue que recuperó el documento equivocado o que el modelo respondió mal con el documento correcto?",
+            "criterio": "Reconoce que hay que separar recuperación de generación al evaluar."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "RAGAS — evaluación de RAG",
+          "url": "https://docs.ragas.io/",
+          "objetivo": "conocer métricas faithfulness, context precision/recall y cómo automatizarlas",
+          "criterio_cierre": "explicar qué mide cada vértice del triángulo RAG",
+          "safety_note": "Material educativo; ejecuta código solo en tu entorno."
+        },
+        {
+          "nombre": "pgvector — búsqueda vectorial en Postgres",
+          "url": "https://github.com/pgvector/pgvector",
+          "objetivo": "entender índices vectoriales (ANN/HNSW) y similitud en una BD real",
+          "criterio_cierre": "explicar por qué la búsqueda es aproximada y qué se gana",
+          "safety_note": "Material educativo."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No enseña RAG como 'meter texto al prompt': deriva cada decisión (embeddings, chunking, híbrida, re-ranking, k) desde su tradeoff y exige evaluarlo separando recuperación de generación, con enlaces vivos a papers y herramientas.",
+        "evidencia_de_dominio": [
+          "Distingue RAG de fine-tuning y elige por el problema.",
+          "Diagnostica un fallo de RAG como recuperación vs generación.",
+          "Justifica chunking, búsqueda híbrida y re-ranking con su tradeoff.",
+          "Reconoce el contenido recuperado como entrada no confiable (seguridad)."
+        ]
+      }
     }
   ]
 }

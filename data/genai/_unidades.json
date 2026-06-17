@@ -11,7 +11,10 @@
       "dosis": 30,
       "objetivo": "Explicar el cuello de botella de los seq2seq clásicos; entender la atención como acceso ponderado a la entrada; y por qué el Transformer ganó paralelismo y caminos cortos al quitar la recurrencia.",
       "heuristicas": [],
-      "metadata": { "ruta": "genai", "nivel": 2 },
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 2
+      },
       "ideas_clave": [
         "Los seq2seq clásicos comprimían toda la entrada en un vector fijo (cuello de botella)",
         "La atención conserva todos los estados y mezcla por relevancia: c_i = Σ α_ij h_j",
@@ -19,14 +22,102 @@
         "El precio de atender de todos a todos es un costo O(n²)"
       ],
       "banco": [
-        { "id": "gtf1-q1", "tipo": "concepto", "enunciado": "¿Cuál era el 'cuello de botella' de los modelos seq2seq clásicos (encoder-decoder con RNN)?", "solucion": "Comprimir toda la frase de entrada en un único vector de tamaño fijo: para secuencias largas se pierde información, como resumir una novela en un tuit.", "explicacion": "Un vector fijo no representa fielmente secuencias largas.", "difficulty": "easy", "answer": "Comprimir toda la entrada en un solo vector de tamaño fijo, que pierde información en frases largas.", "options": ["Comprimir toda la entrada en un solo vector de tamaño fijo, que pierde información en frases largas.", "Usar demasiada memoria GPU por procesar en paralelo.", "No poder representar palabras fuera del vocabulario.", "Carecer de una función de pérdida adecuada para traducción."], "common_mistake": "Creer que el problema era de vocabulario o de hardware, no de representación." },
-        { "id": "gtf1-q2", "tipo": "concepto", "enunciado": "En la atención, ¿qué representa el vector de contexto c_i = Σ_j α_ij h_j?", "solucion": "Una mezcla ponderada de TODOS los estados de la entrada, donde α_ij dice cuánta atención pone la salida i en la entrada j.", "explicacion": "Acceso directo y ponderado a toda la entrada en cada paso.", "difficulty": "medium", "answer": "Una suma ponderada de todos los estados de entrada, ponderada por cuánto importa cada uno.", "options": ["Una suma ponderada de todos los estados de entrada, ponderada por cuánto importa cada uno.", "El último estado oculto del encoder, que resume la frase.", "El promedio simple de todas las palabras de entrada.", "La palabra de entrada más parecida a la de salida."], "common_mistake": "Confundir la mezcla ponderada con elegir una sola palabra o promediar uniformemente." },
-        { "id": "gtf1-q3", "tipo": "concepto", "enunciado": "¿Qué dos superpoderes ganó el Transformer al ELIMINAR la recurrencia?", "solucion": "Paralelización total (procesar todas las posiciones a la vez, clave para entrenar a escala) y caminos cortos entre palabras lejanas (cualquier token atiende a cualquier otro en un paso).", "explicacion": "Sin recurrencia: paralelismo + dependencias largas sin degradación.", "difficulty": "medium", "answer": "Paralelización total del cómputo y caminos cortos entre palabras lejanas.", "options": ["Paralelización total del cómputo y caminos cortos entre palabras lejanas.", "Menor uso de memoria y costo lineal en la longitud.", "Capacidad de procesar imágenes y audio sin cambios.", "Eliminar la necesidad de datos de entrenamiento etiquetados."], "common_mistake": "Creer que quitar la recurrencia abarató la memoria (de hecho introdujo el costo O(n²))." },
-        { "id": "gtf1-q4", "tipo": "concepto", "enunciado": "La atención resolvió el cuello de botella de información, pero ¿qué nuevo cuello de botella abrió?", "solucion": "Un costo computacional y de memoria O(n²): cada token atiende a todos, así que el cómputo crece con el cuadrado de la longitud de la secuencia.", "explicacion": "Atender de todos a todos es cuadrático; motor de FlashAttention, atención dispersa, etc.", "difficulty": "hard", "answer": "Un costo de cómputo y memoria O(n²) en la longitud de la secuencia.", "options": ["Un costo de cómputo y memoria O(n²) en la longitud de la secuencia.", "La pérdida total del orden de las palabras, irreparable.", "La imposibilidad de entrenar en GPU.", "Un aumento del problema de gradientes que se desvanecen."], "common_mistake": "Pensar que el costo es lineal o que el gradiente que se desvanece sigue siendo el problema central." },
-        { "id": "gtf1-s1", "tipo": "scenario", "enunciado": "Escenario: tu equipo entrena un traductor con una LSTM encoder-decoder clásica. Funciona en frases cortas pero el BLEU se desploma en frases largas. ¿Cuál es el diagnóstico y la solución conceptual?", "solucion": "Diagnóstico: el cuello de botella del vector fijo — toda la frase larga debe caber en un solo vector y se pierde información. Solución: añadir un mecanismo de atención (Bahdanau) para que el decoder consulte todos los estados de la entrada ponderadamente en cada paso, o migrar a una arquitectura Transformer.", "explicacion": "El síntoma 'se cae con la longitud' apunta al vector fijo.", "difficulty": "medium" },
-        { "id": "gtf1-s2", "tipo": "scenario", "enunciado": "Escenario: necesitas entrenar un modelo de lenguaje muy grande con miles de millones de tokens y quieres aprovechar al máximo las GPUs. ¿Por qué una RNN es una mala elección y qué propiedad del Transformer ayuda?", "solucion": "La RNN es inherentemente secuencial (el estado h_t necesita h_{t-1}), así que no paraleliza dentro de una secuencia: desperdicia la GPU. El Transformer procesa todas las posiciones en paralelo, lo que permite entrenar a gran escala y es lo que hizo posibles los LLMs.", "explicacion": "Paralelismo > secuencialidad para entrenar a escala.", "difficulty": "medium" },
-        { "id": "gtf1-r1", "tipo": "reflexion", "enunciado": "La atención se describió como 'recuperación selectiva: aprender a qué mirar'. ¿Dónde más, en datos o en tu vida, conviene 'no comprimir todo en un resumen sino conservar las fuentes y mirarlas según relevancia'?", "solucion": "Reflexión abierta. Una buena respuesta transfiere la idea (p. ej. RAG en vez de meter todo al prompt, un índice de BD en vez de escanear, ir a la sección de un libro en vez de releerlo) y explica el paralelo con c_i = Σ α_ij h_j.", "explicacion": "Transferencia del patrón 'lookup selectivo'.", "difficulty": "medium" },
-        { "id": "gtf1-r2", "tipo": "reflexion", "enunciado": "Si la atención de todos a todos cuesta O(n²), ¿qué tensión de diseño aparece al querer 'ventanas de contexto' cada vez más grandes, y qué sacrificarías o investigarías para lograrlo?", "solucion": "Reflexión abierta. Una buena respuesta reconoce el tradeoff costo↔contexto y menciona direcciones reales (atención dispersa/lineal, FlashAttention, recuperación/RAG en vez de meter todo al contexto) y sus sacrificios (aproximación, complejidad).", "explicacion": "Conecta el límite O(n²) con la frontera de investigación.", "difficulty": "hard" }
+        {
+          "id": "gtf1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál era el 'cuello de botella' de los modelos seq2seq clásicos (encoder-decoder con RNN)?",
+          "solucion": "Comprimir toda la frase de entrada en un único vector de tamaño fijo: para secuencias largas se pierde información, como resumir una novela en un tuit.",
+          "explicacion": "Un vector fijo no representa fielmente secuencias largas.",
+          "difficulty": "easy",
+          "answer": "Comprimir toda la entrada en un solo vector de tamaño fijo, que pierde información en frases largas.",
+          "options": [
+            "Comprimir toda la entrada en un solo vector de tamaño fijo, que pierde información en frases largas.",
+            "Usar demasiada memoria GPU por procesar en paralelo.",
+            "No poder representar palabras fuera del vocabulario.",
+            "Carecer de una función de pérdida adecuada para traducción."
+          ],
+          "common_mistake": "Creer que el problema era de vocabulario o de hardware, no de representación."
+        },
+        {
+          "id": "gtf1-q2",
+          "tipo": "concepto",
+          "enunciado": "En la atención, ¿qué representa el vector de contexto c_i = Σ_j α_ij h_j?",
+          "solucion": "Una mezcla ponderada de TODOS los estados de la entrada, donde α_ij dice cuánta atención pone la salida i en la entrada j.",
+          "explicacion": "Acceso directo y ponderado a toda la entrada en cada paso.",
+          "difficulty": "medium",
+          "answer": "Una suma ponderada de todos los estados de entrada, ponderada por cuánto importa cada uno.",
+          "options": [
+            "Una suma ponderada de todos los estados de entrada, ponderada por cuánto importa cada uno.",
+            "El último estado oculto del encoder, que resume la frase.",
+            "El promedio simple de todas las palabras de entrada.",
+            "La palabra de entrada más parecida a la de salida."
+          ],
+          "common_mistake": "Confundir la mezcla ponderada con elegir una sola palabra o promediar uniformemente."
+        },
+        {
+          "id": "gtf1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué dos superpoderes ganó el Transformer al ELIMINAR la recurrencia?",
+          "solucion": "Paralelización total (procesar todas las posiciones a la vez, clave para entrenar a escala) y caminos cortos entre palabras lejanas (cualquier token atiende a cualquier otro en un paso).",
+          "explicacion": "Sin recurrencia: paralelismo + dependencias largas sin degradación.",
+          "difficulty": "medium",
+          "answer": "Paralelización total del cómputo y caminos cortos entre palabras lejanas.",
+          "options": [
+            "Paralelización total del cómputo y caminos cortos entre palabras lejanas.",
+            "Menor uso de memoria y costo lineal en la longitud.",
+            "Capacidad de procesar imágenes y audio sin cambios.",
+            "Eliminar la necesidad de datos de entrenamiento etiquetados."
+          ],
+          "common_mistake": "Creer que quitar la recurrencia abarató la memoria (de hecho introdujo el costo O(n²))."
+        },
+        {
+          "id": "gtf1-q4",
+          "tipo": "concepto",
+          "enunciado": "La atención resolvió el cuello de botella de información, pero ¿qué nuevo cuello de botella abrió?",
+          "solucion": "Un costo computacional y de memoria O(n²): cada token atiende a todos, así que el cómputo crece con el cuadrado de la longitud de la secuencia.",
+          "explicacion": "Atender de todos a todos es cuadrático; motor de FlashAttention, atención dispersa, etc.",
+          "difficulty": "hard",
+          "answer": "Un costo de cómputo y memoria O(n²) en la longitud de la secuencia.",
+          "options": [
+            "Un costo de cómputo y memoria O(n²) en la longitud de la secuencia.",
+            "La pérdida total del orden de las palabras, irreparable.",
+            "La imposibilidad de entrenar en GPU.",
+            "Un aumento del problema de gradientes que se desvanecen."
+          ],
+          "common_mistake": "Pensar que el costo es lineal o que el gradiente que se desvanece sigue siendo el problema central."
+        },
+        {
+          "id": "gtf1-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu equipo entrena un traductor con una LSTM encoder-decoder clásica. Funciona en frases cortas pero el BLEU se desploma en frases largas. ¿Cuál es el diagnóstico y la solución conceptual?",
+          "solucion": "Diagnóstico: el cuello de botella del vector fijo — toda la frase larga debe caber en un solo vector y se pierde información. Solución: añadir un mecanismo de atención (Bahdanau) para que el decoder consulte todos los estados de la entrada ponderadamente en cada paso, o migrar a una arquitectura Transformer.",
+          "explicacion": "El síntoma 'se cae con la longitud' apunta al vector fijo.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf1-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: necesitas entrenar un modelo de lenguaje muy grande con miles de millones de tokens y quieres aprovechar al máximo las GPUs. ¿Por qué una RNN es una mala elección y qué propiedad del Transformer ayuda?",
+          "solucion": "La RNN es inherentemente secuencial (el estado h_t necesita h_{t-1}), así que no paraleliza dentro de una secuencia: desperdicia la GPU. El Transformer procesa todas las posiciones en paralelo, lo que permite entrenar a gran escala y es lo que hizo posibles los LLMs.",
+          "explicacion": "Paralelismo > secuencialidad para entrenar a escala.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf1-r1",
+          "tipo": "reflexion",
+          "enunciado": "La atención se describió como 'recuperación selectiva: aprender a qué mirar'. ¿Dónde más, en datos o en tu vida, conviene 'no comprimir todo en un resumen sino conservar las fuentes y mirarlas según relevancia'?",
+          "solucion": "Reflexión abierta. Una buena respuesta transfiere la idea (p. ej. RAG en vez de meter todo al prompt, un índice de BD en vez de escanear, ir a la sección de un libro en vez de releerlo) y explica el paralelo con c_i = Σ α_ij h_j.",
+          "explicacion": "Transferencia del patrón 'lookup selectivo'.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf1-r2",
+          "tipo": "reflexion",
+          "enunciado": "Si la atención de todos a todos cuesta O(n²), ¿qué tensión de diseño aparece al querer 'ventanas de contexto' cada vez más grandes, y qué sacrificarías o investigarías para lograrlo?",
+          "solucion": "Reflexión abierta. Una buena respuesta reconoce el tradeoff costo↔contexto y menciona direcciones reales (atención dispersa/lineal, FlashAttention, recuperación/RAG en vez de meter todo al contexto) y sus sacrificios (aproximación, complejidad).",
+          "explicacion": "Conecta el límite O(n²) con la frontera de investigación.",
+          "difficulty": "hard"
+        }
       ]
     },
     {
@@ -39,7 +130,10 @@
       "dosis": 35,
       "objetivo": "Explicar Query/Key/Value; leer la fórmula softmax(QKᵀ/√d_k)V símbolo a símbolo; justificar el escalado por √d_k; y distinguir self-attention de cross-attention.",
       "heuristicas": [],
-      "metadata": { "ruta": "genai", "nivel": 3 },
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
       "ideas_clave": [
         "De cada token salen tres proyecciones aprendidas: Query (busca), Key (ofrece), Value (aporta)",
         "Attention = softmax(QKᵀ/√d_k)V: puntuar, normalizar, mezclar",
@@ -47,14 +141,102 @@
         "Self-attention: Q,K,V de la misma secuencia; cross-attention: Q de una, K,V de otra"
       ],
       "banco": [
-        { "id": "gtf2-q1", "tipo": "concepto", "enunciado": "En self-attention, ¿qué papel juega el vector Query (Q) de un token?", "solucion": "Representa 'lo que ese token está buscando' en los demás; se compara (producto punto) contra las Keys para puntuar relevancia.", "explicacion": "Q = la pregunta; K = la etiqueta; V = el contenido.", "difficulty": "easy", "answer": "Lo que el token busca en los demás; se compara contra las Keys para puntuar relevancia.", "options": ["Lo que el token busca en los demás; se compara contra las Keys para puntuar relevancia.", "El contenido que el token aporta si resulta relevante.", "La posición del token dentro de la secuencia.", "El embedding original del token sin transformar."], "common_mistake": "Confundir Query (lo que busca) con Value (lo que aporta)." },
-        { "id": "gtf2-q2", "tipo": "concepto", "enunciado": "En softmax(QKᵀ/√d_k)V, ¿qué hace concretamente el término QKᵀ?", "solucion": "Calcula los puntajes de relevancia: el producto punto entre cada Query y cada Key mide cuánto se alinean, produciendo una matriz n×n de afinidades.", "explicacion": "Producto punto alto = vectores alineados = 'me importa'.", "difficulty": "medium", "answer": "Los puntajes de relevancia entre cada par de tokens (producto punto Query·Key).", "options": ["Los puntajes de relevancia entre cada par de tokens (producto punto Query·Key).", "La mezcla final ponderada del contenido de los tokens.", "La normalización de los pesos para que sumen 1.", "La codificación de la posición de cada token."], "common_mistake": "Atribuir a QKᵀ la mezcla (eso lo hace ·V) o la normalización (eso lo hace softmax)." },
-        { "id": "gtf2-q3", "tipo": "concepto", "enunciado": "¿Por qué se divide por √d_k antes del softmax?", "solucion": "Con d_k grande, los productos punto crecen en magnitud; valores muy grandes saturan el softmax (casi todo el peso en uno, gradientes minúsculos) y frenan el aprendizaje. El escalado mantiene la varianza ~1 y evita esa saturación.", "explicacion": "Sin escalado el softmax se vuelve un 'máximo duro' y el modelo no aprende bien.", "difficulty": "hard", "answer": "Para evitar que productos punto grandes saturen el softmax y maten los gradientes.", "options": ["Para evitar que productos punto grandes saturen el softmax y maten los gradientes.", "Para que los pesos de atención sumen exactamente 1.", "Para normalizar la longitud de los vectores Key.", "Para reducir el costo computacional de la atención."], "common_mistake": "Pensar que el escalado es lo que hace sumar 1 (eso es el softmax) o que ahorra cómputo." },
-        { "id": "gtf2-q4", "tipo": "concepto", "enunciado": "¿Cuál es la diferencia entre self-attention y cross-attention?", "solucion": "En self-attention Q, K y V salen de la misma secuencia (cada palabra atiende a las de su propia frase). En cross-attention las Q salen de una secuencia y las K, V de otra (p. ej. el decoder consulta al encoder, o un modelo consulta documentos recuperados).", "explicacion": "Self = dentro; cross = entre dos secuencias.", "difficulty": "medium", "answer": "En self-attention Q,K,V vienen de la misma secuencia; en cross-attention Q viene de una y K,V de otra.", "options": ["En self-attention Q,K,V vienen de la misma secuencia; en cross-attention Q viene de una y K,V de otra.", "Self-attention usa softmax y cross-attention no.", "Self-attention es para texto y cross-attention para imágenes.", "Cross-attention no usa Values, solo Keys."], "common_mistake": "Creer que la diferencia está en el algoritmo, no en el origen de Q vs K,V." },
-        { "id": "gtf2-s1", "tipo": "scenario", "enunciado": "Escenario: implementas atención desde cero y, al entrenar, observas que el modelo casi no aprende: los pesos de atención son casi 1 en un token y ~0 en el resto desde el inicio. ¿Qué error probable cometiste?", "solucion": "Probablemente omitiste el escalado por √d_k. Con d_k grande, los productos punto son grandes, el softmax se satura (un peso ~1, el resto ~0) y los gradientes se vuelven minúsculos, frenando el aprendizaje. Añade la división por √d_k antes del softmax.", "explicacion": "Síntoma clásico de softmax saturado por falta de escalado.", "difficulty": "hard" },
-        { "id": "gtf2-s2", "tipo": "scenario", "enunciado": "Escenario: quieres que un modelo de traducción, al generar cada palabra en español, consulte la frase original en alemán. ¿Qué tipo de atención usas y cómo se reparten Q, K y V?", "solucion": "Cross-attention: las Queries salen de lo que el decoder lleva generado (el lado español) y las Keys y Values salen de los estados del encoder (la frase alemana). Así cada palabra que generas 'pregunta' a la entrada original qué es relevante.", "explicacion": "Cross-attention es el puente encoder→decoder.", "difficulty": "medium" },
-        { "id": "gtf2-r1", "tipo": "reflexion", "enunciado": "Se describió la atención como un 'diccionario diferenciable' (lookup blando). ¿Qué te aporta esa analogía para entender una base de datos vectorial / RAG, y dónde se rompe la analogía?", "solucion": "Reflexión abierta. Buena respuesta: la Query busca entre Keys y recupera Values por similitud, como una consulta contra embeddings; se rompe en que la atención es 'suave' (cada clave encaja un poco, todo diferenciable) mientras un dict clásico es exacto (existe o no), y en la escala (RAG sobre millones, sin softmax global).", "explicacion": "Transfiere QKV a recuperación semántica.", "difficulty": "hard" },
-        { "id": "gtf2-r2", "tipo": "reflexion", "enunciado": "¿Por qué crees que separar cada token en TRES vectores (Q, K, V) en vez de uno solo da más poder expresivo? Argumenta con un ejemplo propio.", "solucion": "Reflexión abierta. Buena respuesta: 'lo que busco' no es 'lo que ofrezco' ni 'lo que aporto'; separarlos deja que el modelo aprenda relaciones asimétricas (un token puede ser muy buscado pero aportar poco, etc.), imposible con un solo vector.", "explicacion": "La asimetría Q≠K≠V es la fuente de expresividad.", "difficulty": "medium" }
+        {
+          "id": "gtf2-q1",
+          "tipo": "concepto",
+          "enunciado": "En self-attention, ¿qué papel juega el vector Query (Q) de un token?",
+          "solucion": "Representa 'lo que ese token está buscando' en los demás; se compara (producto punto) contra las Keys para puntuar relevancia.",
+          "explicacion": "Q = la pregunta; K = la etiqueta; V = el contenido.",
+          "difficulty": "easy",
+          "answer": "Lo que el token busca en los demás; se compara contra las Keys para puntuar relevancia.",
+          "options": [
+            "Lo que el token busca en los demás; se compara contra las Keys para puntuar relevancia.",
+            "El contenido que el token aporta si resulta relevante.",
+            "La posición del token dentro de la secuencia.",
+            "El embedding original del token sin transformar."
+          ],
+          "common_mistake": "Confundir Query (lo que busca) con Value (lo que aporta)."
+        },
+        {
+          "id": "gtf2-q2",
+          "tipo": "concepto",
+          "enunciado": "En softmax(QKᵀ/√d_k)V, ¿qué hace concretamente el término QKᵀ?",
+          "solucion": "Calcula los puntajes de relevancia: el producto punto entre cada Query y cada Key mide cuánto se alinean, produciendo una matriz n×n de afinidades.",
+          "explicacion": "Producto punto alto = vectores alineados = 'me importa'.",
+          "difficulty": "medium",
+          "answer": "Los puntajes de relevancia entre cada par de tokens (producto punto Query·Key).",
+          "options": [
+            "Los puntajes de relevancia entre cada par de tokens (producto punto Query·Key).",
+            "La mezcla final ponderada del contenido de los tokens.",
+            "La normalización de los pesos para que sumen 1.",
+            "La codificación de la posición de cada token."
+          ],
+          "common_mistake": "Atribuir a QKᵀ la mezcla (eso lo hace ·V) o la normalización (eso lo hace softmax)."
+        },
+        {
+          "id": "gtf2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué se divide por √d_k antes del softmax?",
+          "solucion": "Con d_k grande, los productos punto crecen en magnitud; valores muy grandes saturan el softmax (casi todo el peso en uno, gradientes minúsculos) y frenan el aprendizaje. El escalado mantiene la varianza ~1 y evita esa saturación.",
+          "explicacion": "Sin escalado el softmax se vuelve un 'máximo duro' y el modelo no aprende bien.",
+          "difficulty": "hard",
+          "answer": "Para evitar que productos punto grandes saturen el softmax y maten los gradientes.",
+          "options": [
+            "Para evitar que productos punto grandes saturen el softmax y maten los gradientes.",
+            "Para que los pesos de atención sumen exactamente 1.",
+            "Para normalizar la longitud de los vectores Key.",
+            "Para reducir el costo computacional de la atención."
+          ],
+          "common_mistake": "Pensar que el escalado es lo que hace sumar 1 (eso es el softmax) o que ahorra cómputo."
+        },
+        {
+          "id": "gtf2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la diferencia entre self-attention y cross-attention?",
+          "solucion": "En self-attention Q, K y V salen de la misma secuencia (cada palabra atiende a las de su propia frase). En cross-attention las Q salen de una secuencia y las K, V de otra (p. ej. el decoder consulta al encoder, o un modelo consulta documentos recuperados).",
+          "explicacion": "Self = dentro; cross = entre dos secuencias.",
+          "difficulty": "medium",
+          "answer": "En self-attention Q,K,V vienen de la misma secuencia; en cross-attention Q viene de una y K,V de otra.",
+          "options": [
+            "En self-attention Q,K,V vienen de la misma secuencia; en cross-attention Q viene de una y K,V de otra.",
+            "Self-attention usa softmax y cross-attention no.",
+            "Self-attention es para texto y cross-attention para imágenes.",
+            "Cross-attention no usa Values, solo Keys."
+          ],
+          "common_mistake": "Creer que la diferencia está en el algoritmo, no en el origen de Q vs K,V."
+        },
+        {
+          "id": "gtf2-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: implementas atención desde cero y, al entrenar, observas que el modelo casi no aprende: los pesos de atención son casi 1 en un token y ~0 en el resto desde el inicio. ¿Qué error probable cometiste?",
+          "solucion": "Probablemente omitiste el escalado por √d_k. Con d_k grande, los productos punto son grandes, el softmax se satura (un peso ~1, el resto ~0) y los gradientes se vuelven minúsculos, frenando el aprendizaje. Añade la división por √d_k antes del softmax.",
+          "explicacion": "Síntoma clásico de softmax saturado por falta de escalado.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gtf2-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: quieres que un modelo de traducción, al generar cada palabra en español, consulte la frase original en alemán. ¿Qué tipo de atención usas y cómo se reparten Q, K y V?",
+          "solucion": "Cross-attention: las Queries salen de lo que el decoder lleva generado (el lado español) y las Keys y Values salen de los estados del encoder (la frase alemana). Así cada palabra que generas 'pregunta' a la entrada original qué es relevante.",
+          "explicacion": "Cross-attention es el puente encoder→decoder.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf2-r1",
+          "tipo": "reflexion",
+          "enunciado": "Se describió la atención como un 'diccionario diferenciable' (lookup blando). ¿Qué te aporta esa analogía para entender una base de datos vectorial / RAG, y dónde se rompe la analogía?",
+          "solucion": "Reflexión abierta. Buena respuesta: la Query busca entre Keys y recupera Values por similitud, como una consulta contra embeddings; se rompe en que la atención es 'suave' (cada clave encaja un poco, todo diferenciable) mientras un dict clásico es exacto (existe o no), y en la escala (RAG sobre millones, sin softmax global).",
+          "explicacion": "Transfiere QKV a recuperación semántica.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gtf2-r2",
+          "tipo": "reflexion",
+          "enunciado": "¿Por qué crees que separar cada token en TRES vectores (Q, K, V) en vez de uno solo da más poder expresivo? Argumenta con un ejemplo propio.",
+          "solucion": "Reflexión abierta. Buena respuesta: 'lo que busco' no es 'lo que ofrezco' ni 'lo que aporto'; separarlos deja que el modelo aprenda relaciones asimétricas (un token puede ser muy buscado pero aportar poco, etc.), imposible con un solo vector.",
+          "explicacion": "La asimetría Q≠K≠V es la fuente de expresividad.",
+          "difficulty": "medium"
+        }
       ]
     },
     {
@@ -67,7 +249,10 @@
       "dosis": 35,
       "objetivo": "Explicar por qué multi-head supera a una sola cabeza; distinguir masking causal de padding; nombrar los componentes del bloque Transformer; y diferenciar encoder-only, decoder-only y encoder-decoder.",
       "heuristicas": [],
-      "metadata": { "ruta": "genai", "nivel": 3 },
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
       "ideas_clave": [
         "Multi-head: varias atenciones en paralelo, cada una aprende un tipo de relación",
         "Masking causal (no ver el futuro) define a los modelos generativos (GPT); padding ignora relleno",
@@ -75,14 +260,102 @@
         "Familias: encoder-only (BERT, entender), decoder-only (GPT, generar), encoder-decoder (T5)"
       ],
       "banco": [
-        { "id": "gtf3-q1", "tipo": "concepto", "enunciado": "¿Por qué se usa multi-head attention en vez de una sola cabeza grande?", "solucion": "Cada cabeza tiene sus propias matrices Q/K/V y aprende a fijarse en un tipo distinto de relación (gramatical, correferencia, etc.); varias cabezas capturan múltiples relaciones a la vez sin estorbarse, a un costo similar.", "explicacion": "La ganancia es la diversidad de relaciones, no más cómputo.", "difficulty": "medium", "answer": "Para que cada cabeza aprenda un tipo distinto de relación y capturar varias a la vez.", "options": ["Para que cada cabeza aprenda un tipo distinto de relación y capturar varias a la vez.", "Para reducir el costo O(n²) de la atención.", "Para añadir la información de posición que falta.", "Para poder procesar secuencias más largas."], "common_mistake": "Creer que multi-head es 'más de lo mismo' o que abarata el cómputo." },
-        { "id": "gtf3-q2", "tipo": "concepto", "enunciado": "¿Qué hace el masking causal y a qué familia de modelos define?", "solucion": "Pone los puntajes de las posiciones futuras en -∞ antes del softmax, para que al predecir el token t el modelo no vea t+1, t+2… Define a los modelos autoregresivos/generativos (decoder-only, como GPT).", "explicacion": "Sin máscara causal el modelo 'haría trampa' viendo el futuro.", "difficulty": "medium", "answer": "Impide que cada token vea los futuros; define a los modelos generativos (decoder-only como GPT).", "options": ["Impide que cada token vea los futuros; define a los modelos generativos (decoder-only como GPT).", "Ignora los tokens de relleno (padding) en lotes de distinta longitud.", "Normaliza las activaciones entre capas.", "Codifica la posición de cada token."], "common_mistake": "Confundir masking causal (futuro) con padding mask (relleno)." },
-        { "id": "gtf3-q3", "tipo": "concepto", "enunciado": "En el bloque Transformer, ¿qué función cumple la conexión residual (x + f(x))?", "solucion": "Permite que el gradiente fluya por un atajo, haciendo entrenable apilar muchas capas (evita la degradación de redes profundas); cada capa aprende un ajuste sobre la entrada en vez de reconstruirla.", "explicacion": "Residual = 'no empieces de cero', aprende un diff.", "difficulty": "hard", "answer": "Permite apilar muchas capas dejando fluir el gradiente; cada capa aprende un ajuste sobre la entrada.", "options": ["Permite apilar muchas capas dejando fluir el gradiente; cada capa aprende un ajuste sobre la entrada.", "Normaliza las activaciones para que tengan media 0 y varianza 1.", "Mezcla la información entre posiciones distintas.", "Añade la codificación posicional a cada token."], "common_mistake": "Atribuir a la residual lo que hace LayerNorm (normalizar) o la atención (mezclar)." },
-        { "id": "gtf3-q4", "tipo": "concepto", "enunciado": "¿Cuál arquitectura es la adecuada para un modelo que debe GENERAR texto fluido palabra por palabra?", "solucion": "Decoder-only con masking causal (como GPT/Claude/Llama): cada token atiende solo a los anteriores, que es la situación real al generar. Encoder-only (BERT) ve todo el contexto y sirve para entender, no para generar autoregresivamente.", "explicacion": "La arquitectura sigue a la tarea: generar = decoder-only.", "difficulty": "medium", "answer": "Decoder-only con masking causal (tipo GPT).", "options": ["Decoder-only con masking causal (tipo GPT).", "Encoder-only bidireccional (tipo BERT).", "Una CNN profunda.", "Una RNN bidireccional."], "common_mistake": "Pensar que BERT (encoder-only) genera texto; está hecho para entender." },
-        { "id": "gtf3-s1", "tipo": "scenario", "enunciado": "Escenario: entrenas un modelo de lenguaje y por error dejas que, al predecir la palabra t, el modelo vea la palabra t durante el entrenamiento. Funciona perfecto en entrenamiento pero es inservible en producción. ¿Qué pasó?", "solucion": "Olvidaste el masking causal: el modelo aprendió a 'copiar' la palabra que debía predecir en vez de inferirla. En producción el futuro no existe, así que el modelo, que nunca aprendió a predecir solo con el pasado, falla. Hay que enmascarar las posiciones futuras (-∞ antes del softmax).", "explicacion": "Fuga de información del futuro = leakage temporal.", "difficulty": "hard" },
-        { "id": "gtf3-s2", "tipo": "scenario", "enunciado": "Escenario: necesitas un modelo solo para CLASIFICAR si reseñas son positivas o negativas (no generar texto). ¿Qué familia de arquitectura eliges y por qué?", "solucion": "Encoder-only (tipo BERT): ve todo el contexto bidireccionalmente, lo que es ideal para entender/clasificar; no necesitas generación autoregresiva ni masking causal. Es más eficiente para la tarea que un decoder generativo.", "explicacion": "Entender → encoder-only; la arquitectura sigue a la tarea.", "difficulty": "medium" },
-        { "id": "gtf3-r1", "tipo": "reflexion", "enunciado": "Se dijo que 'la atención mueve información entre posiciones y la FFN la transforma'. ¿Por qué crees que alternar ambas, repetida muchas veces, produce modelos tan capaces? Especula con fundamento.", "solucion": "Reflexión abierta. Buena respuesta: la atención reúne contexto relevante de toda la secuencia y la FFN procesa/eleva esa mezcla en cada posición; repetir la alternancia construye representaciones cada vez más abstractas (capas bajas = sintaxis, altas = semántica), como una jerarquía de procesamiento.", "explicacion": "Mover + transformar, en capas, = jerarquía de abstracción.", "difficulty": "hard" },
-        { "id": "gtf3-r2", "tipo": "reflexion", "enunciado": "El masking causal (no usar el futuro para predecir el presente) es idéntico a una regla de oro de las series de tiempo. ¿Cuál, y qué desastre evita en ambos casos?", "solucion": "Reflexión abierta. Buena respuesta: es la prohibición del data leakage temporal (no usar datos del futuro en backtesting/validación); evita modelos que parecen perfectos en evaluación y fracasan en producción, exactamente como un LLM que 'vio' la palabra a predecir.", "explicacion": "Misma estructura: no mirar el futuro al predecir.", "difficulty": "medium" }
+        {
+          "id": "gtf3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué se usa multi-head attention en vez de una sola cabeza grande?",
+          "solucion": "Cada cabeza tiene sus propias matrices Q/K/V y aprende a fijarse en un tipo distinto de relación (gramatical, correferencia, etc.); varias cabezas capturan múltiples relaciones a la vez sin estorbarse, a un costo similar.",
+          "explicacion": "La ganancia es la diversidad de relaciones, no más cómputo.",
+          "difficulty": "medium",
+          "answer": "Para que cada cabeza aprenda un tipo distinto de relación y capturar varias a la vez.",
+          "options": [
+            "Para que cada cabeza aprenda un tipo distinto de relación y capturar varias a la vez.",
+            "Para reducir el costo O(n²) de la atención.",
+            "Para añadir la información de posición que falta.",
+            "Para poder procesar secuencias más largas."
+          ],
+          "common_mistake": "Creer que multi-head es 'más de lo mismo' o que abarata el cómputo."
+        },
+        {
+          "id": "gtf3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué hace el masking causal y a qué familia de modelos define?",
+          "solucion": "Pone los puntajes de las posiciones futuras en -∞ antes del softmax, para que al predecir el token t el modelo no vea t+1, t+2… Define a los modelos autoregresivos/generativos (decoder-only, como GPT).",
+          "explicacion": "Sin máscara causal el modelo 'haría trampa' viendo el futuro.",
+          "difficulty": "medium",
+          "answer": "Impide que cada token vea los futuros; define a los modelos generativos (decoder-only como GPT).",
+          "options": [
+            "Impide que cada token vea los futuros; define a los modelos generativos (decoder-only como GPT).",
+            "Ignora los tokens de relleno (padding) en lotes de distinta longitud.",
+            "Normaliza las activaciones entre capas.",
+            "Codifica la posición de cada token."
+          ],
+          "common_mistake": "Confundir masking causal (futuro) con padding mask (relleno)."
+        },
+        {
+          "id": "gtf3-q3",
+          "tipo": "concepto",
+          "enunciado": "En el bloque Transformer, ¿qué función cumple la conexión residual (x + f(x))?",
+          "solucion": "Permite que el gradiente fluya por un atajo, haciendo entrenable apilar muchas capas (evita la degradación de redes profundas); cada capa aprende un ajuste sobre la entrada en vez de reconstruirla.",
+          "explicacion": "Residual = 'no empieces de cero', aprende un diff.",
+          "difficulty": "hard",
+          "answer": "Permite apilar muchas capas dejando fluir el gradiente; cada capa aprende un ajuste sobre la entrada.",
+          "options": [
+            "Permite apilar muchas capas dejando fluir el gradiente; cada capa aprende un ajuste sobre la entrada.",
+            "Normaliza las activaciones para que tengan media 0 y varianza 1.",
+            "Mezcla la información entre posiciones distintas.",
+            "Añade la codificación posicional a cada token."
+          ],
+          "common_mistake": "Atribuir a la residual lo que hace LayerNorm (normalizar) o la atención (mezclar)."
+        },
+        {
+          "id": "gtf3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál arquitectura es la adecuada para un modelo que debe GENERAR texto fluido palabra por palabra?",
+          "solucion": "Decoder-only con masking causal (como GPT/Claude/Llama): cada token atiende solo a los anteriores, que es la situación real al generar. Encoder-only (BERT) ve todo el contexto y sirve para entender, no para generar autoregresivamente.",
+          "explicacion": "La arquitectura sigue a la tarea: generar = decoder-only.",
+          "difficulty": "medium",
+          "answer": "Decoder-only con masking causal (tipo GPT).",
+          "options": [
+            "Decoder-only con masking causal (tipo GPT).",
+            "Encoder-only bidireccional (tipo BERT).",
+            "Una CNN profunda.",
+            "Una RNN bidireccional."
+          ],
+          "common_mistake": "Pensar que BERT (encoder-only) genera texto; está hecho para entender."
+        },
+        {
+          "id": "gtf3-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: entrenas un modelo de lenguaje y por error dejas que, al predecir la palabra t, el modelo vea la palabra t durante el entrenamiento. Funciona perfecto en entrenamiento pero es inservible en producción. ¿Qué pasó?",
+          "solucion": "Olvidaste el masking causal: el modelo aprendió a 'copiar' la palabra que debía predecir en vez de inferirla. En producción el futuro no existe, así que el modelo, que nunca aprendió a predecir solo con el pasado, falla. Hay que enmascarar las posiciones futuras (-∞ antes del softmax).",
+          "explicacion": "Fuga de información del futuro = leakage temporal.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gtf3-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: necesitas un modelo solo para CLASIFICAR si reseñas son positivas o negativas (no generar texto). ¿Qué familia de arquitectura eliges y por qué?",
+          "solucion": "Encoder-only (tipo BERT): ve todo el contexto bidireccionalmente, lo que es ideal para entender/clasificar; no necesitas generación autoregresiva ni masking causal. Es más eficiente para la tarea que un decoder generativo.",
+          "explicacion": "Entender → encoder-only; la arquitectura sigue a la tarea.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf3-r1",
+          "tipo": "reflexion",
+          "enunciado": "Se dijo que 'la atención mueve información entre posiciones y la FFN la transforma'. ¿Por qué crees que alternar ambas, repetida muchas veces, produce modelos tan capaces? Especula con fundamento.",
+          "solucion": "Reflexión abierta. Buena respuesta: la atención reúne contexto relevante de toda la secuencia y la FFN procesa/eleva esa mezcla en cada posición; repetir la alternancia construye representaciones cada vez más abstractas (capas bajas = sintaxis, altas = semántica), como una jerarquía de procesamiento.",
+          "explicacion": "Mover + transformar, en capas, = jerarquía de abstracción.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gtf3-r2",
+          "tipo": "reflexion",
+          "enunciado": "El masking causal (no usar el futuro para predecir el presente) es idéntico a una regla de oro de las series de tiempo. ¿Cuál, y qué desastre evita en ambos casos?",
+          "solucion": "Reflexión abierta. Buena respuesta: es la prohibición del data leakage temporal (no usar datos del futuro en backtesting/validación); evita modelos que parecen perfectos en evaluación y fracasan en producción, exactamente como un LLM que 'vio' la palabra a predecir.",
+          "explicacion": "Misma estructura: no mirar el futuro al predecir.",
+          "difficulty": "medium"
+        }
       ]
     },
     {
@@ -95,7 +368,10 @@
       "dosis": 30,
       "objetivo": "Explicar por qué la self-attention es ciega al orden; entender el positional encoding (sinusoidal/aprendido/relativo); cómo un ViT convierte una imagen en tokens; y la generalidad multimodal del Transformer.",
       "heuristicas": [],
-      "metadata": { "ruta": "genai", "nivel": 3 },
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
       "ideas_clave": [
         "La self-attention es invariante a permutaciones: ciega al orden",
         "El positional encoding suma a cada token una firma de su posición (sinusoidal, aprendido, RoPE/ALiBi)",
@@ -103,15 +379,579 @@
         "El Transformer aprende relaciones entre tokens de cualquier modalidad (multimodalidad)"
       ],
       "banco": [
-        { "id": "gtf4-q1", "tipo": "concepto", "enunciado": "¿Por qué la self-attention, por sí sola, es 'ciega al orden' de las palabras?", "solucion": "Calcula relaciones entre tokens por su contenido (Q·K), no por su posición; es invariante a permutaciones: si reordenas la entrada, las relaciones calculadas son las mismas. Sin info de orden, 'Juan ama a María' y 'María ama a Juan' serían idénticas.", "explicacion": "Permutation-invariant: el orden se perdió al paralelizar.", "difficulty": "medium", "answer": "Porque calcula relaciones por contenido, no por posición (es invariante a permutaciones).", "options": ["Porque calcula relaciones por contenido, no por posición (es invariante a permutaciones).", "Porque el softmax borra la información de orden.", "Porque procesa las palabras de derecha a izquierda.", "Porque comprime la secuencia en un solo vector."], "common_mistake": "Creer que el softmax o la compresión causan la ceguera al orden." },
-        { "id": "gtf4-q2", "tipo": "concepto", "enunciado": "¿Qué hace el positional encoding y cómo se incorpora?", "solucion": "Añade a cada embedding de token un vector que codifica su posición (una 'firma' única y suave), de modo que el modelo pueda recuperar el orden y las distancias relativas. Se SUMA al embedding antes de la primera capa.", "explicacion": "No reordena: añade una firma de posición que el modelo aprende a leer.", "difficulty": "medium", "answer": "Suma a cada token una firma que codifica su posición, para recuperar el orden.", "options": ["Suma a cada token una firma que codifica su posición, para recuperar el orden.", "Reordena físicamente los tokens según su posición real.", "Multiplica cada token por su índice de posición.", "Elimina los tokens que están fuera de orden."], "common_mistake": "Creer que el PE 'reordena' en vez de añadir información de posición." },
-        { "id": "gtf4-q3", "tipo": "concepto", "enunciado": "¿Cómo convierte un Vision Transformer (ViT) una imagen en algo que un Transformer pueda procesar?", "solucion": "Corta la imagen en parches (p. ej. 16×16 px), aplana y proyecta cada parche a un vector (un 'token'), les suma positional encoding 2D, y los pasa por un Transformer encoder estándar (con un token [CLS] para clasificar).", "explicacion": "Parches = palabras; una imagen es '16x16 words'.", "difficulty": "medium", "answer": "Corta la imagen en parches, trata cada parche como un token (con PE) y los pasa por un Transformer.", "options": ["Corta la imagen en parches, trata cada parche como un token (con PE) y los pasa por un Transformer.", "Aplica convoluciones y luego una capa de atención al final.", "Convierte la imagen en una descripción de texto y la procesa.", "Usa cada píxel individual como un token de entrada."], "common_mistake": "Pensar que ViT usa convoluciones o píxeles sueltos (usa parches como tokens)." },
-        { "id": "gtf4-q4", "tipo": "concepto", "enunciado": "¿Por qué un ViT entrenado desde cero suele perder ante una CNN en datasets PEQUEÑOS?", "solucion": "La CNN tiene sesgos inductivos útiles (localidad, invariancia a traslación) que ayudan cuando faltan datos; el ViT carece de ellos y debe aprender todo de los datos, así que necesita grandes volúmenes (o pre-entrenamiento) para brillar.", "explicacion": "La generalidad del Transformer cuesta datos.", "difficulty": "hard", "answer": "Porque el ViT carece de los sesgos inductivos de la CNN y necesita muchos datos para compensarlo.", "options": ["Porque el ViT carece de los sesgos inductivos de la CNN y necesita muchos datos para compensarlo.", "Porque el ViT no puede procesar color.", "Porque la atención no funciona en 2D.", "Porque el ViT siempre tiene menos parámetros."], "common_mistake": "Creer que el ViT es peor en general; solo lo es sin datos/pre-entrenamiento suficientes." },
-        { "id": "gtf4-s1", "tipo": "scenario", "enunciado": "Escenario: construyes un clasificador con un Transformer y, por un bug, no sumas positional encoding. El modelo entrena pero confunde frases con las mismas palabras en distinto orden. ¿Por qué y cómo lo arreglas?", "solucion": "Sin PE la self-attention es invariante a permutaciones: 'el perro mordió al cartero' y 'el cartero mordió al perro' producen las mismas representaciones. Arreglo: sumar positional encoding (sinusoidal, aprendido o RoPE/ALiBi) a los embeddings antes de la primera capa.", "explicacion": "Síntoma directo de PE ausente.", "difficulty": "medium" },
-        { "id": "gtf4-s2", "tipo": "scenario", "enunciado": "Escenario: tu LLM funciona bien hasta 4k tokens de contexto pero se degrada abruptamente más allá. Sospechas del positional encoding. ¿Qué está pasando y qué explorarías?", "solucion": "Probablemente usa un PE fijo/aprendido para longitud máxima ~4k y no 'vio' posiciones más allá, así que extrapola mal. Explorar PE relativos que extrapolan mejor a contextos largos: RoPE (rotary) o ALiBi, que codifican posiciones relativas en vez de absolutas.", "explicacion": "Límite de extrapolación de longitud del PE.", "difficulty": "hard" },
-        { "id": "gtf4-r1", "tipo": "reflexion", "enunciado": "El ViT mostró que 'todo lo que puedas trocear en tokens + posiciones' sirve para un Transformer. ¿Qué tipo de dato de tu dominio trocearías en tokens, y qué serían sus 'posiciones'?", "solucion": "Reflexión abierta. Buena respuesta: elige un dato (audio en ventanas, código en tokens, eventos clínicos, series de tiempo, grafos) y define qué unidad es un token y qué codifica su posición (tiempo, lugar en la secuencia, coordenada).", "explicacion": "Transfiere 'tokens + posición' a un dominio propio.", "difficulty": "medium" },
-        { "id": "gtf4-r2", "tipo": "reflexion", "enunciado": "Añadir positional encoding a un token es análogo a poner un timestamp a un evento. ¿Qué se vuelve posible con esa marca que era imposible sin ella, en datos secuenciales/temporales?", "solucion": "Reflexión abierta. Buena respuesta: con la marca de posición/tiempo un conjunto desordenado se vuelve una secuencia ordenada; permite razonar orden, distancia y ventanas temporales (de exposición clínica, de eventos), imposible con una 'bolsa' sin posición.", "explicacion": "Posición/timestamp = de conjunto a secuencia.", "difficulty": "medium" }
+        {
+          "id": "gtf4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la self-attention, por sí sola, es 'ciega al orden' de las palabras?",
+          "solucion": "Calcula relaciones entre tokens por su contenido (Q·K), no por su posición; es invariante a permutaciones: si reordenas la entrada, las relaciones calculadas son las mismas. Sin info de orden, 'Juan ama a María' y 'María ama a Juan' serían idénticas.",
+          "explicacion": "Permutation-invariant: el orden se perdió al paralelizar.",
+          "difficulty": "medium",
+          "answer": "Porque calcula relaciones por contenido, no por posición (es invariante a permutaciones).",
+          "options": [
+            "Porque calcula relaciones por contenido, no por posición (es invariante a permutaciones).",
+            "Porque el softmax borra la información de orden.",
+            "Porque procesa las palabras de derecha a izquierda.",
+            "Porque comprime la secuencia en un solo vector."
+          ],
+          "common_mistake": "Creer que el softmax o la compresión causan la ceguera al orden."
+        },
+        {
+          "id": "gtf4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué hace el positional encoding y cómo se incorpora?",
+          "solucion": "Añade a cada embedding de token un vector que codifica su posición (una 'firma' única y suave), de modo que el modelo pueda recuperar el orden y las distancias relativas. Se SUMA al embedding antes de la primera capa.",
+          "explicacion": "No reordena: añade una firma de posición que el modelo aprende a leer.",
+          "difficulty": "medium",
+          "answer": "Suma a cada token una firma que codifica su posición, para recuperar el orden.",
+          "options": [
+            "Suma a cada token una firma que codifica su posición, para recuperar el orden.",
+            "Reordena físicamente los tokens según su posición real.",
+            "Multiplica cada token por su índice de posición.",
+            "Elimina los tokens que están fuera de orden."
+          ],
+          "common_mistake": "Creer que el PE 'reordena' en vez de añadir información de posición."
+        },
+        {
+          "id": "gtf4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo convierte un Vision Transformer (ViT) una imagen en algo que un Transformer pueda procesar?",
+          "solucion": "Corta la imagen en parches (p. ej. 16×16 px), aplana y proyecta cada parche a un vector (un 'token'), les suma positional encoding 2D, y los pasa por un Transformer encoder estándar (con un token [CLS] para clasificar).",
+          "explicacion": "Parches = palabras; una imagen es '16x16 words'.",
+          "difficulty": "medium",
+          "answer": "Corta la imagen en parches, trata cada parche como un token (con PE) y los pasa por un Transformer.",
+          "options": [
+            "Corta la imagen en parches, trata cada parche como un token (con PE) y los pasa por un Transformer.",
+            "Aplica convoluciones y luego una capa de atención al final.",
+            "Convierte la imagen en una descripción de texto y la procesa.",
+            "Usa cada píxel individual como un token de entrada."
+          ],
+          "common_mistake": "Pensar que ViT usa convoluciones o píxeles sueltos (usa parches como tokens)."
+        },
+        {
+          "id": "gtf4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un ViT entrenado desde cero suele perder ante una CNN en datasets PEQUEÑOS?",
+          "solucion": "La CNN tiene sesgos inductivos útiles (localidad, invariancia a traslación) que ayudan cuando faltan datos; el ViT carece de ellos y debe aprender todo de los datos, así que necesita grandes volúmenes (o pre-entrenamiento) para brillar.",
+          "explicacion": "La generalidad del Transformer cuesta datos.",
+          "difficulty": "hard",
+          "answer": "Porque el ViT carece de los sesgos inductivos de la CNN y necesita muchos datos para compensarlo.",
+          "options": [
+            "Porque el ViT carece de los sesgos inductivos de la CNN y necesita muchos datos para compensarlo.",
+            "Porque el ViT no puede procesar color.",
+            "Porque la atención no funciona en 2D.",
+            "Porque el ViT siempre tiene menos parámetros."
+          ],
+          "common_mistake": "Creer que el ViT es peor en general; solo lo es sin datos/pre-entrenamiento suficientes."
+        },
+        {
+          "id": "gtf4-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: construyes un clasificador con un Transformer y, por un bug, no sumas positional encoding. El modelo entrena pero confunde frases con las mismas palabras en distinto orden. ¿Por qué y cómo lo arreglas?",
+          "solucion": "Sin PE la self-attention es invariante a permutaciones: 'el perro mordió al cartero' y 'el cartero mordió al perro' producen las mismas representaciones. Arreglo: sumar positional encoding (sinusoidal, aprendido o RoPE/ALiBi) a los embeddings antes de la primera capa.",
+          "explicacion": "Síntoma directo de PE ausente.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf4-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu LLM funciona bien hasta 4k tokens de contexto pero se degrada abruptamente más allá. Sospechas del positional encoding. ¿Qué está pasando y qué explorarías?",
+          "solucion": "Probablemente usa un PE fijo/aprendido para longitud máxima ~4k y no 'vio' posiciones más allá, así que extrapola mal. Explorar PE relativos que extrapolan mejor a contextos largos: RoPE (rotary) o ALiBi, que codifican posiciones relativas en vez de absolutas.",
+          "explicacion": "Límite de extrapolación de longitud del PE.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gtf4-r1",
+          "tipo": "reflexion",
+          "enunciado": "El ViT mostró que 'todo lo que puedas trocear en tokens + posiciones' sirve para un Transformer. ¿Qué tipo de dato de tu dominio trocearías en tokens, y qué serían sus 'posiciones'?",
+          "solucion": "Reflexión abierta. Buena respuesta: elige un dato (audio en ventanas, código en tokens, eventos clínicos, series de tiempo, grafos) y define qué unidad es un token y qué codifica su posición (tiempo, lugar en la secuencia, coordenada).",
+          "explicacion": "Transfiere 'tokens + posición' a un dominio propio.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gtf4-r2",
+          "tipo": "reflexion",
+          "enunciado": "Añadir positional encoding a un token es análogo a poner un timestamp a un evento. ¿Qué se vuelve posible con esa marca que era imposible sin ella, en datos secuenciales/temporales?",
+          "solucion": "Reflexión abierta. Buena respuesta: con la marca de posición/tiempo un conjunto desordenado se vuelve una secuencia ordenada; permite razonar orden, distancia y ventanas temporales (de exposición clínica, de eventos), imposible con una 'bolsa' sin posición.",
+          "explicacion": "Posición/timestamp = de conjunto a secuencia.",
+          "difficulty": "medium"
+        }
       ]
+    },
+    {
+      "id": "gen-rag1",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Por qué RAG: anclar el LLM en conocimiento externo",
+      "libro": "Retrieval-Augmented Generation (Lewis et al., 2020) + MIT-AI.md (Semana 9)",
+      "lectura": "data/teoria/gen-rag1.md",
+      "dosis": 30,
+      "objetivo": "Explicar qué problemas del LLM resuelve RAG; describir el flujo indexar→recuperar→aumentar→generar; distinguir RAG de fine-tuning; y reconocer la superficie de ataque del RAG.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "RAG ataca corte de conocimiento, datos privados, alucinación y falta de atribución",
+        "Flujo: indexar (cargar/trocear/embeber/indexar) + por consulta (recuperar/aumentar/generar)",
+        "RAG para conocimiento; fine-tuning para comportamiento",
+        "RAG es tan bueno como su recuperación; lo recuperado es entrada no confiable"
+      ],
+      "banco": [
+        {
+          "id": "grag1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál de estos problemas NO se resuelve principalmente con RAG?",
+          "solucion": "Cambiar el ESTILO o formato de salida del modelo es trabajo de fine-tuning (comportamiento), no de RAG (conocimiento).",
+          "explicacion": "RAG inyecta conocimiento, no cambia el comportamiento del modelo.",
+          "difficulty": "easy",
+          "answer": "Hacer que el modelo responda siempre en un tono y formato fijos.",
+          "options": [
+            "Hacer que el modelo responda siempre en un tono y formato fijos.",
+            "Que el modelo conozca documentos privados sin reentrenarlo.",
+            "Reducir alucinaciones anclando la respuesta en evidencia.",
+            "Poder citar la fuente de cada afirmación."
+          ],
+          "common_mistake": "Creer que RAG sirve para fijar estilo/formato (eso es fine-tuning)."
+        },
+        {
+          "id": "grag1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es el orden correcto del flujo RAG en tiempo de CONSULTA?",
+          "solucion": "Embeber la pregunta → recuperar los k fragmentos más similares → aumentar el prompt con ellos → generar la respuesta.",
+          "explicacion": "La indexación (trocear/embeber/indexar) ocurre antes, offline.",
+          "difficulty": "medium",
+          "answer": "Embeber la pregunta → recuperar fragmentos → aumentar el prompt → generar.",
+          "options": [
+            "Embeber la pregunta → recuperar fragmentos → aumentar el prompt → generar.",
+            "Generar una respuesta → buscar si es correcta → corregir.",
+            "Reentrenar el modelo → recuperar → responder.",
+            "Trocear la pregunta → indexarla → responder."
+          ],
+          "common_mistake": "Mezclar la fase de indexación (offline) con la de consulta."
+        },
+        {
+          "id": "grag1-q3",
+          "tipo": "concepto",
+          "enunciado": "Necesitas que un asistente responda sobre la documentación interna de tu empresa, actualizada cada semana, y que cite la fuente. ¿RAG o fine-tuning?",
+          "solucion": "RAG: inyecta conocimiento en tiempo de consulta, se actualiza al instante (cambias el documento y listo) y permite atribución. Fine-tuning para inyectar hechos cambiantes es caro y no se actualiza bien.",
+          "explicacion": "Conocimiento que cambia + atribución = RAG.",
+          "difficulty": "medium",
+          "answer": "RAG, porque inyecta conocimiento actualizable y permite citar la fuente.",
+          "options": [
+            "RAG, porque inyecta conocimiento actualizable y permite citar la fuente.",
+            "Fine-tuning, porque así el modelo 'memoriza' la documentación.",
+            "Ninguno: basta un prompt más largo.",
+            "Fine-tuning semanal del modelo completo."
+          ],
+          "common_mistake": "Usar fine-tuning para hechos que cambian (caro, no se actualiza, sin atribución)."
+        },
+        {
+          "id": "grag1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué se dice que 'RAG es tan bueno como su recuperación' y qué riesgo de seguridad introduce?",
+          "solucion": "Si el recuperador trae el fragmento equivocado o ninguno, el LLM responde con contexto irrelevante o vuelve a alucinar: la calidad de la respuesta está limitada por la recuperación. Riesgo: todo lo recuperado es entrada no confiable; un documento envenenado en la base genera indirect prompt injection / RAG poisoning.",
+          "explicacion": "Garbage in, garbage out + superficie de ataque.",
+          "difficulty": "hard",
+          "answer": "Porque con mala recuperación la respuesta falla; y lo recuperado es entrada no confiable (RAG poisoning).",
+          "options": [
+            "Porque con mala recuperación la respuesta falla; y lo recuperado es entrada no confiable (RAG poisoning).",
+            "Porque RAG siempre elimina las alucinaciones por completo.",
+            "Porque el modelo deja de importar si hay recuperación.",
+            "Porque RAG no necesita evaluación si el modelo es bueno."
+          ],
+          "common_mistake": "Creer que RAG elimina del todo la alucinación o que lo recuperado es confiable."
+        },
+        {
+          "id": "grag1-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un banco quiere un asistente que responda sobre sus políticas de cumplimiento (que cambian con la regulación) y que sea auditable. Un equipo propone fine-tunear un LLM con las políticas. ¿Qué riesgos ves y qué propones?",
+          "solucion": "Riesgos del fine-tuning aquí: las políticas cambian (habría que reentrenar cada vez, caro), el modelo puede mezclar/olvidar hechos, y no hay atribución auditable. Propongo RAG sobre los documentos de política: se actualiza cambiando el documento, responde citando la fuente exacta (auditable), y se evalúa la fidelidad. Fine-tuning, si acaso, solo para el tono/formato.",
+          "explicacion": "Conocimiento cambiante + auditoría = RAG.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag1-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: te piden añadir RAG a un asistente que solo resume textos que el usuario pega y escribe correos. ¿Aporta RAG aquí?",
+          "solucion": "Poco o nada: esas tareas son de razonamiento/generación sobre el texto dado, no dependen de conocimiento externo que el modelo no tenga. No hay nada que 'recuperar'. RAG brilla cuando la respuesta depende de hechos/documentos que el modelo no memorizó; añadirlo aquí solo agrega complejidad y latencia.",
+          "explicacion": "Sin conocimiento externo necesario, RAG no aporta.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag1-r1",
+          "tipo": "reflexion",
+          "enunciado": "RAG se describió como un 'examen a libro abierto'. ¿Qué cambia en cómo evaluarías a un sistema (o a una persona) cuando el objetivo deja de ser 'recordar' y pasa a ser 'encontrar y usar bien la fuente'?",
+          "solucion": "Reflexión abierta. Buena respuesta: evalúas la capacidad de localizar la evidencia correcta y de razonar fielmente sobre ella (no la memoria), separando 'encontró la página' de 'la usó bien', justo el triángulo RAG.",
+          "explicacion": "Recordar vs recuperar-y-usar.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag1-r2",
+          "tipo": "reflexion",
+          "enunciado": "Todo lo que el RAG recupera entra al modelo como contexto 'confiable'. ¿Qué implicaciones de seguridad y gobernanza tiene esto para una base de conocimiento donde varias personas pueden escribir?",
+          "solucion": "Reflexión abierta. Buena respuesta: una base escribible es un canal de RAG poisoning / inyección indirecta; hay que controlar quién escribe, tratar lo recuperado como no confiable, y aplicar control de acceso por documento para no filtrar a quien no debe (conecta con cyber-llm2).",
+          "explicacion": "Base escribible = superficie de ataque.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 905
+    },
+    {
+      "id": "gen-rag2",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Embeddings y chunking: representar y trocear el conocimiento",
+      "libro": "MIT-AI.md (Semana 9) + Sentence-BERT (Reimers & Gurevych, 2019)",
+      "lectura": "data/teoria/gen-rag2.md",
+      "dosis": 30,
+      "objetivo": "Explicar qué es un embedding y la similitud coseno; razonar el tradeoff del tamaño de chunk; nombrar estrategias de chunking; y elegir un modelo de embeddings con criterio.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Un embedding es las coordenadas del significado; cerca = parecido (similitud coseno)",
+        "Tradeoff de chunk: grande dilule el vector; pequeño pierde contexto",
+        "Cortar por estructura, con solapamiento y metadatos > cortar por tokens a ciegas",
+        "Pregunta y documentos deben embeberse con el MISMO modelo"
+      ],
+      "banco": [
+        {
+          "id": "grag2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué representa la similitud coseno entre dos embeddings de texto?",
+          "solucion": "El coseno del ángulo entre sus vectores: cuán alineada está la DIRECCIÓN de su significado (1 muy similar, 0 no relacionado). Se usa el ángulo, no la distancia, porque importa la dirección del significado, no la magnitud.",
+          "explicacion": "Cerca en dirección = significado parecido.",
+          "difficulty": "easy",
+          "answer": "Cuán alineada está la dirección de su significado (ángulo entre vectores).",
+          "options": [
+            "Cuán alineada está la dirección de su significado (ángulo entre vectores).",
+            "Cuántas palabras exactas comparten los dos textos.",
+            "La longitud (magnitud) de los vectores.",
+            "El número de dimensiones del embedding."
+          ],
+          "common_mistake": "Confundir similitud semántica con coincidencia de palabras exactas."
+        },
+        {
+          "id": "grag2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es el riesgo de hacer chunks demasiado GRANDES?",
+          "solucion": "El embedding de un chunk grande 'promedia' muchos temas y se diluye: pierde foco y recupera mal, porque un solo vector no puede representar bien diez ideas distintas.",
+          "explicacion": "Un vector por chunk: muchos temas = puré sin foco.",
+          "difficulty": "medium",
+          "answer": "El vector mezcla muchos temas y se diluye, recuperando peor.",
+          "options": [
+            "El vector mezcla muchos temas y se diluye, recuperando peor.",
+            "Se pierde el contexto que da sentido a cada dato.",
+            "Se generan demasiados fragmentos y el índice es caro.",
+            "El modelo de embeddings deja de funcionar."
+          ],
+          "common_mistake": "Pensar que el problema de los chunks grandes es de costo (eso es de los pequeños: muchos fragmentos)."
+        },
+        {
+          "id": "grag2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué pregunta y documentos deben embeberse con el MISMO modelo de embeddings?",
+          "solucion": "Porque cada modelo produce su propio espacio vectorial; si usas modelos distintos, los vectores no son comparables (están en mapas diferentes) y la búsqueda por similitud no tiene sentido.",
+          "explicacion": "Mismo modelo = mismo mapa = coordenadas comparables.",
+          "difficulty": "medium",
+          "answer": "Porque cada modelo crea su propio espacio; con modelos distintos los vectores no son comparables.",
+          "options": [
+            "Porque cada modelo crea su propio espacio; con modelos distintos los vectores no son comparables.",
+            "Porque usar dos modelos duplica el costo de cómputo.",
+            "Porque solo un modelo soporta similitud coseno.",
+            "Porque los documentos son más largos que las preguntas."
+          ],
+          "common_mistake": "Asumir que cualquier embedding es comparable con cualquier otro."
+        },
+        {
+          "id": "grag2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la mejor práctica general para trocear un documento estructurado (con secciones)?",
+          "solucion": "Cortar respetando la estructura (encabezados/párrafos/secciones), con un solapamiento (overlap) entre chunks y añadiendo metadatos (título/sección), para que cada fragmento sea una unidad semántica coherente que conserva su contexto.",
+          "explicacion": "La estructura manda más que el conteo de tokens.",
+          "difficulty": "hard",
+          "answer": "Cortar por estructura (secciones/párrafos), con solapamiento y metadatos de contexto.",
+          "options": [
+            "Cortar por estructura (secciones/párrafos), con solapamiento y metadatos de contexto.",
+            "Cortar cada N caracteres exactos sin importar el contenido.",
+            "Usar el documento completo como un solo chunk.",
+            "Cortar en cada frase individual sin solapamiento."
+          ],
+          "common_mistake": "Cortar por tokens a ciegas, partiendo ideas a la mitad."
+        },
+        {
+          "id": "grag2-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu RAG recupera el chunk 'Reembolsos: 60 días' pero la respuesta omite que eso aplica solo a clientes enterprise (que estaba en la frase anterior, en otro chunk). ¿Qué pasó y cómo lo arreglas?",
+          "solucion": "Los chunks quedaron demasiado pequeños y cortaron el contexto ('enterprise' quedó separado de '60 días'). Arreglo: aumentar el tamaño del chunk a una unidad semántica coherente (el párrafo completo), añadir solapamiento y/o incluir el título de sección como metadato del chunk, para que el fragmento no pierda su contexto.",
+          "explicacion": "Chunks demasiado chicos rompen el contexto.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag2-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: el RAG funciona bien con preguntas en inglés pero recupera basura en español, aunque los documentos están en español. ¿Qué sospechas primero?",
+          "solucion": "El modelo de embeddings probablemente no es multilingüe (o es débil en español): las preguntas y documentos en español no se mapean bien en su espacio. Sospecha del modelo de embeddings; cámbialo por uno multilingüe fuerte (consulta el MTEB leaderboard para el idioma) y verifica que query y documentos usen el mismo modelo.",
+          "explicacion": "Embeddings no multilingües degradan otro idioma.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag2-r1",
+          "tipo": "reflexion",
+          "enunciado": "Un embedding pone el significado de un texto como un punto en un mapa. ¿Qué otras cosas de tu dominio te gustaría poder 'poner en un mapa donde cerca = parecido', y para qué te serviría?",
+          "solucion": "Reflexión abierta. Buena respuesta: identifica datos (productos, usuarios, casos clínicos, código) cuya similitud semántica habilita búsqueda, recomendación o agrupamiento, y nota que embeddings ricos también pueden filtrar su origen (privacidad).",
+          "explicacion": "Transfiere el mapa semántico a un dominio propio.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag2-r2",
+          "tipo": "reflexion",
+          "enunciado": "Decidir el tamaño de chunk es como decidir la granularidad de una tabla (¿fila por transacción o por sesión?). ¿Por qué esa decisión de granularidad determina qué preguntas son fáciles de responder después?",
+          "solucion": "Reflexión abierta. Buena respuesta: la unidad elegida define qué queda junto y qué separado, y por tanto qué se recupera/consulta bien; granularidad equivocada hace que ciertas preguntas sean imposibles de responder con precisión.",
+          "explicacion": "Granularidad = qué consultas son fáciles.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 906
+    },
+    {
+      "id": "gen-rag3",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Recuperación y construcción del pipeline RAG",
+      "libro": "MIT-AI.md (Semana 9) + HNSW, BM25, Lost in the middle",
+      "lectura": "data/teoria/gen-rag3.md",
+      "dosis": 30,
+      "objetivo": "Explicar la búsqueda de vecinos cercanos (ANN); razonar cuándo falla la búsqueda semántica y por qué la híbrida; entender el re-ranking; y elegir k construyendo el flujo recuperar→aumentar→generar.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "ANN (HNSW): vecinos cercanos aproximados, rápido a escala",
+        "Búsqueda híbrida (semántica + BM25) captura significado y términos exactos",
+        "Re-ranking (cross-encoder) reordena los top candidatos por relevancia real",
+        "Pasar pocos fragmentos buenos; subir k puede empeorar (lost in the middle)"
+      ],
+      "banco": [
+        {
+          "id": "grag3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué las bases vectoriales usan búsqueda de vecinos cercanos APROXIMADA (ANN) en vez de exacta?",
+          "solucion": "Comparar contra todos los vectores (exacta) es O(n) por consulta, inviable con millones; ANN (índices como HNSW) halla los vecinos casi siempre correctos en tiempo casi logarítmico, cambiando un poco de exactitud por velocidad enorme.",
+          "explicacion": "Tradeoff exactitud↔velocidad a escala.",
+          "difficulty": "medium",
+          "answer": "Porque comparar contra todos es demasiado lento a escala; ANN cambia algo de exactitud por gran velocidad.",
+          "options": [
+            "Porque comparar contra todos es demasiado lento a escala; ANN cambia algo de exactitud por gran velocidad.",
+            "Porque la búsqueda exacta da resultados peores.",
+            "Porque la similitud coseno no se puede calcular exacto.",
+            "Porque los embeddings cambian en cada consulta."
+          ],
+          "common_mistake": "Creer que ANN es más preciso (es más rápido a costa de algo de exactitud)."
+        },
+        {
+          "id": "grag3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿En qué caso falla típicamente la búsqueda SOLO semántica y qué la complementa?",
+          "solucion": "Falla con términos exactos raros (códigos como ERR-4021, SKUs, siglas, nombres propios) que el embedding 'promedia' y pierde. La complementa la búsqueda híbrida, que suma búsqueda léxica (BM25) para capturar coincidencias literales además del significado.",
+          "explicacion": "Híbrida = significado + literalidad.",
+          "difficulty": "medium",
+          "answer": "Con términos exactos raros (códigos, siglas); la complementa la búsqueda híbrida (semántica + BM25).",
+          "options": [
+            "Con términos exactos raros (códigos, siglas); la complementa la búsqueda híbrida (semántica + BM25).",
+            "Con preguntas largas; la complementa un chunk más grande.",
+            "Con documentos en el mismo idioma; la complementa el re-ranking.",
+            "Nunca falla si el modelo de embeddings es bueno."
+          ],
+          "common_mistake": "Creer que la semántica sola basta para códigos/identificadores exactos."
+        },
+        {
+          "id": "grag3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué hace un re-ranker (cross-encoder) y por qué solo se aplica a los top candidatos?",
+          "solucion": "Lee la pregunta y cada candidato JUNTOS (ve su interacción) y puntúa su relevancia real, mucho más preciso que comparar embeddings por separado (bi-encoder). Es caro, así que se usa solo sobre los ~decenas de candidatos ya recuperados, no sobre millones.",
+          "explicacion": "Preciso pero caro → solo sobre finalistas.",
+          "difficulty": "hard",
+          "answer": "Lee pregunta+candidato juntos para puntuar relevancia con precisión; es caro, por eso solo sobre los top.",
+          "options": [
+            "Lee pregunta+candidato juntos para puntuar relevancia con precisión; es caro, por eso solo sobre los top.",
+            "Genera embeddings nuevos para toda la base en cada consulta.",
+            "Traduce los documentos al idioma de la pregunta.",
+            "Elimina los documentos duplicados del índice."
+          ],
+          "common_mistake": "Confundir el cross-encoder (lee juntos) con el bi-encoder de embeddings (por separado)."
+        },
+        {
+          "id": "grag3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué subir k (pasar más fragmentos al LLM) puede EMPEORAR la respuesta?",
+          "solucion": "Más fragmentos añaden ruido y costo, y por el efecto 'lost in the middle' los LLMs atienden peor a lo que queda en medio de un contexto largo: el fragmento clave puede quedar enterrado e ignorado. Mejor pocos fragmentos buenos (tras re-ranking) que muchos mediocres.",
+          "explicacion": "Más contexto ≠ mejor contexto.",
+          "difficulty": "hard",
+          "answer": "Añade ruido y, por 'lost in the middle', el modelo puede ignorar el fragmento clave enterrado.",
+          "options": [
+            "Añade ruido y, por 'lost in the middle', el modelo puede ignorar el fragmento clave enterrado.",
+            "Siempre mejora: más contexto es más información útil.",
+            "Reduce la latencia al dar más opciones.",
+            "Obliga al modelo a citar más fuentes, lo cual es bueno."
+          ],
+          "common_mistake": "Asumir que más contexto siempre ayuda."
+        },
+        {
+          "id": "grag3-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: en una base de soporte con muchos códigos de error, tu RAG semántico no encuentra el párrafo del código 'ERR-4021' aunque existe. ¿Qué cambias en la recuperación?",
+          "solucion": "Pasar a búsqueda híbrida: añadir búsqueda léxica (BM25) que encuentre la coincidencia exacta de 'ERR-4021', fusionada con la semántica que aporta el contexto de pagos. Y un re-ranker para ordenar bien los candidatos. La semántica sola diluye los identificadores exactos.",
+          "explicacion": "Identificadores exactos → híbrida.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag3-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: para 'no perder nada', un compañero sube k de 4 a 40 fragmentos. La latencia y el costo suben y, sorprendentemente, la calidad baja. Explícale qué pasó.",
+          "solucion": "Pasar 40 fragmentos mete mucho ruido y dispara costo/latencia; además, por 'lost in the middle', el LLM atiende peor a lo que queda enterrado en un contexto largo, así que el fragmento clave puede quedar ignorado. La solución no es más contexto sino mejor recuperación: re-rankear y pasar pocos (3-8) fragmentos realmente buenos.",
+          "explicacion": "Recupera mejor, no más.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag3-r1",
+          "tipo": "reflexion",
+          "enunciado": "El patrón 'recuperar amplio y barato → re-rankear estrecho y caro → pasar pocos y buenos' aparece también fuera de RAG. ¿Dónde lo reconoces (en revisión, contratación, diagnóstico…) y por qué es eficiente?",
+          "solucion": "Reflexión abierta. Buena respuesta: filtro amplio barato (recall) + verificación cara precisa (precisión) sobre finalistas; eficiente porque no malgastas el método caro en todo, solo en los candidatos prometedores.",
+          "explicacion": "Filtrar-luego-verificar es general.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag3-r2",
+          "tipo": "reflexion",
+          "enunciado": "La búsqueda híbrida combina dos métodos con puntos ciegos distintos (significado vs literalidad). ¿Qué otros pares de métodos 'complementarios por sus puntos ciegos' conoces y por qué combinarlos gana?",
+          "solucion": "Reflexión abierta. Buena respuesta: ejemplos como SAST+SCA en seguridad, o varias señales de detección; combinar métodos cuyos errores no se solapan cubre más casos que cualquiera solo (defensa en profundidad).",
+          "explicacion": "Puntos ciegos complementarios = mejor cobertura.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 907
+    },
+    {
+      "id": "gen-rag4",
+      "bloque": "fase-9",
+      "titulo": "GenAI · RAG avanzado y cómo evaluarlo",
+      "libro": "MIT-AI.md (Semanas 9 y 13) + RAGAS, Self-RAG",
+      "lectura": "data/teoria/gen-rag4.md",
+      "dosis": 30,
+      "objetivo": "Descomponer la calidad de un RAG en recuperación vs generación; nombrar métricas y herramientas (triángulo RAG, RAGAS); entender RAG adaptativo y query rewriting; y diseñar un loop de evaluación con datos.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Un RAG falla en recuperación o en generación; mide cada culpa por separado",
+        "Triángulo RAG: context relevance, faithfulness/groundedness, answer relevance",
+        "Evalúa con datos (ground truth y/o LLM-as-a-judge con sus sesgos)",
+        "RAG avanzado (adaptativo, query rewriting) debe justificarse midiendo"
+      ],
+      "banco": [
+        {
+          "id": "grag4-q1",
+          "tipo": "concepto",
+          "enunciado": "Un RAG puede fallar en dos lugares distintos. ¿Cuáles, y por qué importa separarlos?",
+          "solucion": "En la recuperación (trajo el contexto equivocado o ninguno) o en la generación (respondió mal con buen contexto). Importa porque la solución es distinta —arreglar el retriever vs arreglar el prompt/modelo— y si solo miras la respuesta final no sabes cuál atacar.",
+          "explicacion": "Abrió la página equivocada vs leyó mal la correcta.",
+          "difficulty": "easy",
+          "answer": "En recuperación o en generación; separarlas dice qué arreglar (retriever vs prompt/modelo).",
+          "options": [
+            "En recuperación o en generación; separarlas dice qué arreglar (retriever vs prompt/modelo).",
+            "En el embedding o en la base de datos; da igual cuál.",
+            "Solo en el modelo; la recuperación nunca falla.",
+            "En el idioma o en el formato de salida."
+          ],
+          "common_mistake": "Evaluar solo la respuesta final sin separar las dos culpas."
+        },
+        {
+          "id": "grag4-q2",
+          "tipo": "concepto",
+          "enunciado": "En el triángulo RAG, ¿qué mide la 'faithfulness' (fidelidad/groundedness)?",
+          "solucion": "Si la respuesta se sostiene en el contexto recuperado, sin inventar (anti-alucinación): que cada afirmación de la respuesta se deduzca de los fragmentos dados.",
+          "explicacion": "Fidelidad = no alucinar más allá del contexto.",
+          "difficulty": "medium",
+          "answer": "Si la respuesta se sostiene en el contexto recuperado, sin inventar.",
+          "options": [
+            "Si la respuesta se sostiene en el contexto recuperado, sin inventar.",
+            "Si los fragmentos recuperados son relevantes a la pregunta.",
+            "Si la respuesta contesta lo que se preguntó.",
+            "Si la latencia de la respuesta es baja."
+          ],
+          "common_mistake": "Confundir faithfulness (vs el contexto) con answer relevancy (vs la pregunta)."
+        },
+        {
+          "id": "grag4-q3",
+          "tipo": "concepto",
+          "enunciado": "Tu RAG tiene faithfulness ALTA pero answer relevancy BAJA. ¿Qué significa?",
+          "solucion": "Responde fielmente al contexto recuperado, pero no contesta lo que se preguntó: probablemente recuperó contexto fiel pero irrelevante, o respondió sobre otra cosa. El problema está del lado de relevancia (recuperación/encuadre), no de invención.",
+          "explicacion": "Fiel al contexto ≠ responde la pregunta.",
+          "difficulty": "hard",
+          "answer": "Responde fielmente al contexto, pero ese contexto/respuesta no contesta lo que se preguntó.",
+          "options": [
+            "Responde fielmente al contexto, pero ese contexto/respuesta no contesta lo que se preguntó.",
+            "Inventa datos que no están en el contexto.",
+            "El sistema es perfecto: ambas métricas altas.",
+            "La recuperación es perfecta pero el modelo alucina."
+          ],
+          "common_mistake": "Pensar que faithfulness alta implica buena respuesta (puede ser fiel pero irrelevante)."
+        },
+        {
+          "id": "grag4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es el RAG adaptativo (p. ej. Self-RAG)?",
+          "solucion": "Un RAG que DECIDE si recuperar y cuánto según la pregunta (no recupera para 'hola'; sí para una pregunta factual compleja) y que puede criticar si lo recuperado sostiene su respuesta, iterando. Self-RAG entrena al modelo para decidir cuándo recuperar y autocriticarse.",
+          "explicacion": "Recuperar bajo demanda + autocrítica.",
+          "difficulty": "medium",
+          "answer": "Un RAG que decide cuándo recuperar (y cuánto) según la pregunta, y critica si la evidencia sostiene la respuesta.",
+          "options": [
+            "Un RAG que decide cuándo recuperar (y cuánto) según la pregunta, y critica si la evidencia sostiene la respuesta.",
+            "Un RAG que recupera siempre el máximo de fragmentos posible.",
+            "Un RAG que reentrena el modelo en cada consulta.",
+            "Un RAG que solo usa búsqueda léxica."
+          ],
+          "common_mistake": "Creer que 'adaptativo' es recuperar más; es recuperar inteligentemente (a veces nada)."
+        },
+        {
+          "id": "grag4-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu RAG responde mal '¿cuántos días de reembolso enterprise?'. ¿Cómo diagnosticas, en orden, antes de tocar nada?",
+          "solucion": "Primero mide context recall: ¿se recuperó el chunk con 'enterprise: 60 días'? Si NO → problema de recuperación (mejora chunking/híbrida/re-ranking). Si SÍ pero la respuesta dijo otra cosa → problema de generación/fidelidad (refuerza 'responde solo con el contexto' o cambia de modelo). Diagnostica la culpa antes de 'mejorar el prompt' a ciegas.",
+          "explicacion": "Triángulo RAG = diagnóstico antes de actuar.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "grag4-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un compañero quiere añadir query rewriting + re-ranking + RAG multi-paso 'porque suena mejor'. ¿Qué le pides antes de aprobarlo?",
+          "solucion": "Un set de evaluación y métricas: cada capa de complejidad debe demostrar que mejora (faithfulness, answer relevancy, context recall/precision) sin regresiones. A veces el RAG simple bien chunked gana; la complejidad sin medición esconde regresiones y costo. Mide el básico, luego añade y compara.",
+          "explicacion": "La evaluación autoriza la complejidad.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag4-r1",
+          "tipo": "reflexion",
+          "enunciado": "Se insiste en 'evalúa con datos, no con vibras'. ¿Por qué es tan tentador mejorar un RAG (o cualquier sistema) por intuición, y qué te cuesta esa tentación?",
+          "solucion": "Reflexión abierta. Buena respuesta: las demos sesgan (probamos casos que funcionan), y sin métricas cada cambio parece mejora; el costo es optimizar a ciegas, introducir regresiones invisibles y no saber qué de verdad funcionó.",
+          "explicacion": "Sin datos, las mejoras son anécdotas.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grag4-r2",
+          "tipo": "reflexion",
+          "enunciado": "El LLM-as-a-judge escala la evaluación pero hereda sesgos (p. ej. premiar respuestas largas y seguras). ¿Cómo equilibrarías escala y confiabilidad al evaluar tu RAG?",
+          "solucion": "Reflexión abierta. Buena respuesta: usar LLM-judge para escala pero calibrarlo contra una muestra de juicio humano y/o ground truth, vigilar sus sesgos (verbosidad, autoconfianza) y no tratar su veredicto como verdad absoluta.",
+          "explicacion": "Escala con LLM-judge, ancla con humano/ground truth.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 908
     }
   ]
 }
