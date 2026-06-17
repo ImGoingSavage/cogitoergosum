@@ -1904,6 +1904,482 @@
         }
       ],
       "orden": 916
+    },
+    {
+      "id": "gen-ma1",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Sistemas multi-agente: por qué y cuándo varios agentes",
+      "libro": "MIT-AI.md (Semana 13) + Building multi-agent systems (Anthropic)",
+      "lectura": "data/teoria/gen-ma1.md",
+      "dosis": 30,
+      "objetivo": "Explicar por qué dividir en agentes especializados ayuda; nombrar patrones de colaboración; razonar cuándo NO usar multi-agente; y reconocer los riesgos nuevos.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Dividir en agentes especializados da contexto acotado, especialización y paralelismo",
+        "Patrones: orquestador-trabajadores, pipeline, debate/crítica, votación",
+        "Multi-agente cuesta coordinación y mucho más cómputo; úsalo solo si la tarea lo justifica",
+        "Riesgo nuevo: errores/inyecciones se propagan entre agentes"
+      ],
+      "banco": [
+        {
+          "id": "gma1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué dividir una tarea grande en agentes especializados ayuda?",
+          "solucion": "Cada agente trabaja con contexto acotado (evita saturar la ventana), se especializa en un rol estrecho (razona mejor, más fácil de evaluar) y permite modularidad y paralelismo. Es separación de responsabilidades aplicada a agentes.",
+          "explicacion": "Contexto limpio + especialización + paralelismo.",
+          "difficulty": "easy",
+          "answer": "Da contexto acotado, especialización y paralelismo, con módulos fáciles de evaluar.",
+          "options": [
+            "Da contexto acotado, especialización y paralelismo, con módulos fáciles de evaluar.",
+            "Reduce siempre el costo de cómputo.",
+            "Elimina la necesidad de evaluar el sistema.",
+            "Hace innecesario el routing entre agentes."
+          ],
+          "common_mistake": "Creer que multi-agente abarata el cómputo (suele multiplicarlo)."
+        },
+        {
+          "id": "gma1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es el patrón de colaboración más común en sistemas multi-agente?",
+          "solucion": "Orquestador-trabajadores: un agente coordinador descompone la tarea, delega sub-tareas a trabajadores especializados (a menudo en paralelo) y junta los resultados. Es como un equipo con un líder de proyecto.",
+          "explicacion": "Coordinador reparte y junta; trabajadores ejecutan.",
+          "difficulty": "medium",
+          "answer": "Orquestador–trabajadores: un coordinador delega sub-tareas a especialistas y junta resultados.",
+          "options": [
+            "Orquestador–trabajadores: un coordinador delega sub-tareas a especialistas y junta resultados.",
+            "Todos los agentes hacen lo mismo en paralelo.",
+            "Un solo agente con muchas herramientas.",
+            "Agentes elegidos al azar para cada paso."
+          ],
+          "common_mistake": "Confundir multi-agente con un agente de muchas herramientas."
+        },
+        {
+          "id": "gma1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el patrón de DEBATE entre agentes detecta errores que la autocrítica de un solo agente no?",
+          "solucion": "Porque varios agentes con roles/vistas distintas son críticos independientes: no comparten el mismo punto ciego. La autocrítica de un solo agente puede no ver su propio error (lo comparte el actor y el crítico); el debate aporta diversidad real, como un panel de revisores.",
+          "explicacion": "Críticos independientes no comparten el punto ciego.",
+          "difficulty": "hard",
+          "answer": "Porque son críticos independientes que no comparten el punto ciego del generador.",
+          "options": [
+            "Porque son críticos independientes que no comparten el punto ciego del generador.",
+            "Porque más agentes siempre dan mejor respuesta.",
+            "Porque el debate es más barato que un agente.",
+            "Porque elimina la necesidad de evaluación."
+          ],
+          "common_mistake": "Creer que varios 'agentes' que son el mismo modelo dan diversidad real."
+        },
+        {
+          "id": "gma1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué riesgo NUEVO introduce un sistema multi-agente frente a un solo agente?",
+          "solucion": "La propagación: un error o una prompt injection en un agente puede saltar a los demás a través de sus mensajes (contenido no confiable que viaja entre agentes). Más agentes = más fronteras de confianza que vigilar, además del costo de coordinación y de cómputo.",
+          "explicacion": "Errores/inyecciones se propagan; más fronteras.",
+          "difficulty": "medium",
+          "answer": "Errores e inyecciones pueden propagarse entre agentes a través de sus mensajes.",
+          "options": [
+            "Errores e inyecciones pueden propagarse entre agentes a través de sus mensajes.",
+            "Que un solo agente no puede usar herramientas.",
+            "Que se pierde la capacidad de paralelizar.",
+            "Que ya no se puede evaluar el sistema."
+          ],
+          "common_mistake": "Asumir que más agentes solo añade beneficios, no nuevas fronteras de confianza."
+        },
+        {
+          "id": "gma1-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un solo agente debe investigar un mercado, evaluar fuentes, sintetizar, redactar y revisar, y su contexto se satura y mezcla. ¿Cómo lo rediseñas con multi-agente?",
+          "solucion": "Orquestador-trabajadores: un coordinador divide en sub-preguntas; varios investigadores las atacan en paralelo (cada uno con contexto limpio); un sintetizador junta; un revisor verifica fuentes y coherencia; el coordinador entrega. Más rápido (paralelo) y cada pieza mejor, a costa de coordinación y cómputo.",
+          "explicacion": "Especialización + paralelismo para tarea grande divisible.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma1-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un compañero propone un sistema multi-agente para 'traducir un texto que pega el usuario'. ¿Qué le dices?",
+          "solucion": "Es sobreingeniería: una tarea de un solo paso no necesita varios agentes; añade coordinación, costo (varias veces el cómputo) e impredecibilidad sin beneficio. Un LLM reactivo (o un agente simple) basta. Multi-agente solo se justifica en tareas grandes y divisibles.",
+          "explicacion": "Tarea simple → no multi-agente.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma1-r1",
+          "tipo": "reflexion",
+          "enunciado": "Multi-agente es división del trabajo: especializar y coordinar, como un equipo o microservicios. ¿Qué tradeoff de 'experto único vs equipo' reconoces de tu experiencia y cómo decides cuándo conviene dividir?",
+          "solucion": "Reflexión abierta. Buena respuesta: dividir ayuda cuando la tarea es grande y separable (paralelismo, especialización) pero añade coordinación/comunicación; conviene cuando el beneficio supera ese costo, no por defecto.",
+          "explicacion": "Mismo tradeoff que monolito vs microservicios.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma1-r2",
+          "tipo": "reflexion",
+          "enunciado": "El debate entre agentes independientes es como un panel de revisores. ¿Por qué la independencia de los críticos es clave, y cómo la garantizarías (en agentes o en personas)?",
+          "solucion": "Reflexión abierta. Buena respuesta: críticos que comparten el mismo punto ciego validan el mismo error; la independencia (distinto rol/modelo/perspectiva, anclaje externo) es lo que hace que la revisión detecte lo que el generador no vio.",
+          "explicacion": "Independencia evita compartir el punto ciego.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 917
+    },
+    {
+      "id": "gen-ma2",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Orquestación: routing dinámico y manejo de errores",
+      "libro": "MIT-AI.md (Semana 13) + LangGraph, AutoGen",
+      "lectura": "data/teoria/gen-ma2.md",
+      "dosis": 30,
+      "objetivo": "Explicar el routing dinámico; diseñar manejo de errores entre agentes; razonar el control de bucles/costo/deriva; y reconocer la orquestación como superficie de fallo.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Routing: decidir qué agente/herramienta según la entrada (reglas, clasificador, jerárquico)",
+        "Manejo de errores: reintento con backoff, fallback, escalada a humano, validación entre etapas",
+        "Acotar bucles (límite de pasos), costo (presupuesto) y deriva (re-anclar la meta)",
+        "Un sistema multi-agente es un sistema distribuido de LLMs"
+      ],
+      "banco": [
+        {
+          "id": "gma2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Qué decide el 'routing' en un sistema multi-agente?",
+          "solucion": "A qué agente o herramienta enviar cada sub-tarea o entrada, según su tipo. Puede ser por reglas (intención → agente), por clasificador/LLM, o jerárquico (un orquestador descompone y asigna). Enrutar bien evita usar un agente caro para algo trivial.",
+          "explicacion": "A quién le toca cada sub-tarea.",
+          "difficulty": "easy",
+          "answer": "A qué agente o herramienta enviar cada sub-tarea según su tipo.",
+          "options": [
+            "A qué agente o herramienta enviar cada sub-tarea según su tipo.",
+            "Cuántos tokens usar en cada respuesta.",
+            "El orden de las palabras en el prompt.",
+            "Qué modelo de embeddings usar."
+          ],
+          "common_mistake": "Confundir routing (a quién) con manejo de errores (qué pasa al fallar)."
+        },
+        {
+          "id": "gma2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es una buena cadena de manejo de errores cuando una herramienta/agente falla?",
+          "solucion": "Reintento con backoff (ante fallo transitorio, reintentar con espera creciente) → fallback (una alternativa si el preferido falla) → escalada a humano (si la incertidumbre es alta o la acción es sensible). Más validación entre etapas para no propagar errores.",
+          "explicacion": "Reintento → fallback → escalada.",
+          "difficulty": "medium",
+          "answer": "Reintento con backoff, luego fallback, y escalada a humano si no se resuelve.",
+          "options": [
+            "Reintento con backoff, luego fallback, y escalada a humano si no se resuelve.",
+            "Asumir éxito y continuar al siguiente paso.",
+            "Reiniciar todo el sistema desde cero.",
+            "Ignorar el fallo y dar una respuesta genérica."
+          ],
+          "common_mistake": "Asumir que las herramientas nunca fallan (no diseñar para el fallo)."
+        },
+        {
+          "id": "gma2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué modos de fallo propios de los sistemas multi-agente debe acotar la orquestación?",
+          "solucion": "Bucles infinitos (agente A↔B sin progresar → límite de pasos/profundidad y detección de no-progreso), explosión de costo (N agentes y reintentos multiplican el gasto → presupuesto global y por agente) y deriva del objetivo (en cadenas largas se aleja de la meta → re-anclar el objetivo periódicamente).",
+          "explicacion": "Bucles, costo, deriva.",
+          "difficulty": "hard",
+          "answer": "Bucles infinitos (límite de pasos), explosión de costo (presupuesto) y deriva del objetivo (re-anclar).",
+          "options": [
+            "Bucles infinitos (límite de pasos), explosión de costo (presupuesto) y deriva del objetivo (re-anclar).",
+            "Solo la latencia de cada agente.",
+            "Que los agentes usen distintos idiomas.",
+            "Que el modelo de embeddings cambie."
+          ],
+          "common_mistake": "No poner límites de pasos/costo (bucles y denial of wallet)."
+        },
+        {
+          "id": "gma2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué se dice que un sistema multi-agente ES un sistema distribuido?",
+          "solucion": "Porque sus nodos (agentes LLM) se comunican por mensajes y necesitan los mismos patrones de los sistemas distribuidos: routing, reintentos con backoff, fallback, timeouts, límites y validación de fronteras. La orquestación es su capa de coordinación y su mayor superficie de fallo.",
+          "explicacion": "Nodos que se coordinan = sistema distribuido.",
+          "difficulty": "medium",
+          "answer": "Porque sus agentes son nodos que se comunican y requieren routing, reintentos, timeouts y límites.",
+          "options": [
+            "Porque sus agentes son nodos que se comunican y requieren routing, reintentos, timeouts y límites.",
+            "Porque corre en varias máquinas físicas siempre.",
+            "Porque usa una base de datos distribuida.",
+            "Porque cada agente tiene su propio modelo de embeddings."
+          ],
+          "common_mistake": "Tratar la orquestación como trivial y no como ingeniería distribuida."
+        },
+        {
+          "id": "gma2-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: en tu sistema de soporte, el agente técnico llama a la API de estado del sistema, esta falla, y el agente INVENTA que 'todo está operativo'. ¿Qué controles faltaron?",
+          "solucion": "Manejo de errores e incertidumbre: el agente debió reportar que la herramienta falló (no inventar) y la orquestación debió detectar el fallo (reintento → fallback a la base de incidencias → escalada). Un fallo silenciado es peor que uno reportado; la incertidumbre se propaga, no se entierra.",
+          "explicacion": "Detectar el fallo de la herramienta y no aceptar afirmaciones no ancladas.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma2-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: dos agentes empiezan a llamarse mutuamente sin terminar la tarea y el costo se dispara. ¿Cómo lo previenes por diseño?",
+          "solucion": "Límites duros de orquestación: máximo de pasos/profundidad de llamadas, detección de no-progreso (si no avanza, parar), presupuesto global y por agente (tokens/dinero) y timeout. Estos controles acotan bucles infinitos y la explosión de costo (denial of wallet).",
+          "explicacion": "Límites de pasos/costo + detección de no-progreso.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma2-r1",
+          "tipo": "reflexion",
+          "enunciado": "Orquestar agentes usa los mismos patrones que los sistemas distribuidos (reintentos, fallback, timeouts, límites). ¿Qué te dice eso sobre lo que hace 'producción-ready' a un sistema de IA, más allá del modelo?",
+          "solucion": "Reflexión abierta. Buena respuesta: la robustez en producción viene de la ingeniería de coordinación y manejo de fallos (no solo de un buen modelo); el camino feliz no basta, hay que diseñar para el error.",
+          "explicacion": "Robustez = ingeniería de fallos, no solo modelo.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma2-r2",
+          "tipo": "reflexion",
+          "enunciado": "La validación entre etapas (verificar lo que pasa de un agente a otro) es revisar la frontera de confianza en cada salto. ¿Por qué un sistema multi-agente necesita MÁS vigilancia de fronteras que uno simple?",
+          "solucion": "Reflexión abierta. Buena respuesta: cada salto entre agentes es una nueva frontera por donde puede colarse un error o una inyección; más agentes = más fronteras = más puntos a validar, no menos.",
+          "explicacion": "Cada salto = una frontera de confianza nueva.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 918
+    },
+    {
+      "id": "gen-ma3",
+      "bloque": "fase-9",
+      "titulo": "GenAI · RAG adaptativo en sistemas agénticos",
+      "libro": "MIT-AI.md (Semana 13) + Self-RAG, Adaptive-RAG",
+      "lectura": "data/teoria/gen-ma3.md",
+      "dosis": 25,
+      "objetivo": "Explicar por qué el RAG fijo se queda corto; describir el RAG adaptativo/agéntico; reconocer sus patrones; y razonar su tradeoff.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "El RAG fijo (siempre-una-vez-lo-mismo) falla en muchos casos",
+        "RAG adaptativo: el agente decide si/qué/cuánto recuperar, reformula, enruta, itera",
+        "Es el bucle ReAct aplicado a recuperar; en multi-agente, un recuperador especializado",
+        "Adaptativo no es insistir hasta inventar: sabe cuándo parar y admitir el límite"
+      ],
+      "banco": [
+        {
+          "id": "gma3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué el RAG fijo (recuperar siempre una vez lo mismo) se queda corto?",
+          "solucion": "Porque muchas preguntas no encajan: unas no necesitan recuperar (añade ruido/costo), otras necesitan varias búsquedas, otras requieren reformular la consulta o elegir entre varias fuentes. El RAG fijo ignora todo eso; el adaptativo lo decide caso a caso.",
+          "explicacion": "Una talla no sirve para todas las preguntas.",
+          "difficulty": "easy",
+          "answer": "Porque hay preguntas que no necesitan recuperar, otras varias búsquedas, otras reformular o elegir fuente.",
+          "options": [
+            "Porque hay preguntas que no necesitan recuperar, otras varias búsquedas, otras reformular o elegir fuente.",
+            "Porque el RAG fijo no usa embeddings.",
+            "Porque siempre alucina.",
+            "Porque no se puede evaluar."
+          ],
+          "common_mistake": "Creer que un único patrón de recuperación sirve para toda pregunta."
+        },
+        {
+          "id": "gma3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué decide un RAG adaptativo / agéntico?",
+          "solucion": "Trata la recuperación como una herramienta que un agente invoca con criterio: decide SI recuperar, QUÉ fuente consultar (routing), CÓMO reformular la consulta, CUÁNTAS veces iterar, y CUÁNDO parar (incluido admitir que no está en el corpus). Es el bucle ReAct aplicado a buscar.",
+          "explicacion": "Recuperar con criterio, no por reflejo.",
+          "difficulty": "medium",
+          "answer": "Si recuperar, qué fuente, cómo reformular, cuántas veces iterar y cuándo parar.",
+          "options": [
+            "Si recuperar, qué fuente, cómo reformular, cuántas veces iterar y cuándo parar.",
+            "Solo cuántos fragmentos (k) traer.",
+            "Qué modelo de embeddings usar en cada consulta.",
+            "El tamaño de los chunks en tiempo real."
+          ],
+          "common_mistake": "Reducir el RAG adaptativo a 'recuperar más'."
+        },
+        {
+          "id": "gma3-q3",
+          "tipo": "concepto",
+          "enunciado": "Un RAG adaptativo, tras dos búsquedas, NO encuentra la información en el corpus. ¿Qué debe hacer?",
+          "solucion": "Reconocer la ausencia de evidencia y decir 'no está en mis fuentes', en vez de inventar. Adaptativo no significa insistir hasta alucinar; significa saber cuándo parar y admitir el límite (anti-alucinación).",
+          "explicacion": "Saber parar y admitir el límite.",
+          "difficulty": "hard",
+          "answer": "Admitir que no está en sus fuentes, en vez de inventar una respuesta.",
+          "options": [
+            "Admitir que no está en sus fuentes, en vez de inventar una respuesta.",
+            "Seguir buscando indefinidamente hasta encontrar algo.",
+            "Responder con su conocimiento interno sin avisar.",
+            "Inventar una respuesta plausible para no quedar en blanco."
+          ],
+          "common_mistake": "Confundir 'adaptativo' con 'insistir hasta inventar'."
+        },
+        {
+          "id": "gma3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué relación tiene el RAG adaptativo con el bucle ReAct de un agente?",
+          "solucion": "Es el mismo bucle: percibir qué información falta (Thought), actuar buscando (Action: recuperar), observar si lo recuperado basta (Observation), y repetir o parar. La recuperación es solo una herramienta más del agente, decidida con criterio.",
+          "explicacion": "ReAct con 'buscar' como acción.",
+          "difficulty": "medium",
+          "answer": "Es el bucle ReAct con la recuperación como acción: percibir vacío, buscar, evaluar, repetir.",
+          "options": [
+            "Es el bucle ReAct con la recuperación como acción: percibir vacío, buscar, evaluar, repetir.",
+            "No tiene relación; son cosas distintas.",
+            "Reemplaza al agente por completo.",
+            "Solo funciona sin agentes."
+          ],
+          "common_mistake": "Ver RAG y agentes como mundos separados (el adaptativo los une)."
+        },
+        {
+          "id": "gma3-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: 'compara nuestra política de reembolsos de 2024 con la actual y di si cumple la regulación europea'. ¿Cómo lo resuelve un RAG adaptativo vs uno fijo?",
+          "solucion": "Fijo: una búsqueda con la pregunta cruda → fragmentos mezclados, respuesta incompleta. Adaptativo: descompone y enruta a tres fuentes (política 2024, política actual, regulación europea), recupera cada una, evalúa si tiene todo, reformula y vuelve a buscar si la regulación recuperada es vaga, y sintetiza con citas; si no encuentra la regulación, lo admite.",
+          "explicacion": "Multi-paso + routing + iterar + saber parar.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma3-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: para un FAQ sobre un único documento con preguntas simples, alguien propone un RAG agéntico con iteración y routing. ¿Conviene?",
+          "solucion": "No: para un FAQ simple sobre un solo documento, el RAG fijo (una búsqueda, k fragmentos) es más simple, barato y predecible. La adaptatividad se justifica con preguntas complejas/multi-fuente; aquí solo añade latencia, costo y más superficie de inyección. Lo simple primero.",
+          "explicacion": "Adaptativo se justifica con complejidad, no siempre.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma3-r1",
+          "tipo": "reflexion",
+          "enunciado": "El RAG adaptativo 'decide si recuperar' es como el cuadrante humano-vs-IA o la agencia mínima: no uses la herramienta pesada si no hace falta. ¿Dónde aplicas (o deberías) ese principio de 'esfuerzo mínimo necesario' en tu trabajo?",
+          "solucion": "Reflexión abierta. Buena respuesta: ejemplos de no invocar el proceso/herramienta cara cuando uno barato basta, equilibrando potencia y costo, conectando con economía del esfuerzo.",
+          "explicacion": "Esfuerzo mínimo necesario.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma3-r2",
+          "tipo": "reflexion",
+          "enunciado": "Un RAG adaptativo que itera enruta a varias fuentes externas, cada una entrada no confiable. ¿Cómo equilibrarías su potencia con el riesgo de inyección y el costo?",
+          "solucion": "Reflexión abierta. Buena respuesta: tratar cada fuente recuperada como no confiable (control de acceso, validar), límites de iteración/costo, y justificar la adaptatividad midiendo que mejora frente al RAG simple.",
+          "explicacion": "Potencia con límites y desconfianza de lo recuperado.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 919
+    },
+    {
+      "id": "gen-ma4",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Evaluar y medir sistemas de agentes",
+      "libro": "MIT-AI.md (Semana 13) + AgentBench, GAIA",
+      "lectura": "data/teoria/gen-ma4.md",
+      "dosis": 30,
+      "objetivo": "Medir el resultado de extremo a extremo (task success); medir por componente (tool accuracy, routing); evaluar eficiencia y robustez/seguridad; y construir un loop de evaluación.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Métrica reina: éxito de tarea de extremo a extremo (task success) sobre un set con held-out",
+        "Medir por componente (tool accuracy, routing, por agente) para localizar el eslabón que falla",
+        "Eficiencia (pasos, costo, latencia) y robustez (red teaming de inyecciones)",
+        "La métrica justifica la complejidad: si multi-agente no supera al simple, no lo uses"
+      ],
+      "banco": [
+        {
+          "id": "gma4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la métrica reina de un sistema de agentes y por qué no basta sola?",
+          "solucion": "El éxito de tarea de extremo a extremo (task success): ¿completó el objetivo? No basta sola porque no dice QUÉ eslabón falló cuando no lo logra; hay que medir también por componente para poder arreglar.",
+          "explicacion": "Task success localiza el qué, no el dónde.",
+          "difficulty": "easy",
+          "answer": "El éxito de tarea de extremo a extremo; no basta porque no dice qué componente falló.",
+          "options": [
+            "El éxito de tarea de extremo a extremo; no basta porque no dice qué componente falló.",
+            "El número de agentes; basta por sí sola.",
+            "La latencia; es la única que importa.",
+            "ROUGE sobre la respuesta final."
+          ],
+          "common_mistake": "Medir solo el resultado final sin separar culpas por componente."
+        },
+        {
+          "id": "gma4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué significa medir 'por componente' en un sistema de agentes y por qué importa?",
+          "solucion": "Medir cada eslabón: tool accuracy (¿eligió la herramienta y argumentos correctos?), routing accuracy (¿enrutó bien?), calidad por agente (¿el investigador trajo buenas fuentes? ¿el sintetizador fue fiel?). Importa porque convierte 'el sistema falló' en 'el agente X falla en el 30% al elegir herramienta' — accionable.",
+          "explicacion": "Localiza el eslabón que falla (como el triángulo RAG).",
+          "difficulty": "medium",
+          "answer": "Medir cada eslabón (tool accuracy, routing, por agente) para localizar el que falla.",
+          "options": [
+            "Medir cada eslabón (tool accuracy, routing, por agente) para localizar el que falla.",
+            "Contar cuántos componentes tiene el sistema.",
+            "Medir solo la respuesta final con más detalle.",
+            "Evaluar la latencia de cada componente."
+          ],
+          "common_mistake": "Creer que el resultado final basta para depurar."
+        },
+        {
+          "id": "gma4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo se evalúa la robustez/seguridad de un sistema de agentes?",
+          "solucion": "Con red teaming: casos diseñados para romperlo (un dato de tarea que es una inyección que se propaga entre agentes, una API caída, una consulta ambigua) y verificar que el sistema resiste o degrada con gracia. Un sistema que solo pasa los casos felices no está evaluado en seguridad.",
+          "explicacion": "Red teaming: probar a romperlo a propósito.",
+          "difficulty": "hard",
+          "answer": "Con red teaming: casos adversarios (inyecciones que se propagan, fallos de herramientas).",
+          "options": [
+            "Con red teaming: casos adversarios (inyecciones que se propagan, fallos de herramientas).",
+            "Midiendo solo el task success en casos normales.",
+            "Contando las herramientas de cada agente.",
+            "Con ROUGE sobre las salidas."
+          ],
+          "common_mistake": "Asumir que alto task success implica seguridad (son dimensiones distintas)."
+        },
+        {
+          "id": "gma4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo decide la evaluación si vale la pena usar un sistema multi-agente?",
+          "solucion": "Comparando contra alternativas más simples: si un agente único (o un workflow) logra una métrica similar o mejor a mucho menor costo, la evaluación dice que NO uses multi-agente. La métrica, no la moda, justifica cada capa de complejidad.",
+          "explicacion": "La métrica autoriza la complejidad.",
+          "difficulty": "medium",
+          "answer": "Comparando con un agente/workflow simple: si no lo supera (por costo/calidad), no se usa.",
+          "options": [
+            "Comparando con un agente/workflow simple: si no lo supera (por costo/calidad), no se usa.",
+            "Multi-agente siempre es mejor, no hace falta comparar.",
+            "Según cuántas herramientas tenga.",
+            "Según lo que impresione en la demo."
+          ],
+          "common_mistake": "Usar multi-agente por moda sin compararlo con lo simple."
+        },
+        {
+          "id": "gma4-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu asistente multi-agente entrega informes correctos el 70% de las veces. ¿Cómo localizas qué arreglar antes de tocar nada?",
+          "solucion": "Mide por componente: routing (¿el coordinador dividió bien?), tool accuracy (¿los investigadores eligieron bien las herramientas?), faithfulness del sintetizador (¿inventa?), y robustez (¿qué pasa con una fuente envenenada?). Eso te dice el eslabón a arreglar; sin medir por componente, subir el 70% sería tocar a ciegas.",
+          "explicacion": "Separar culpas por componente.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma4-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tras 100 iteraciones sobre los mismos casos, tu sistema sube a 95% de task success. ¿Confías para producción?",
+          "solucion": "No: es overfitting al set de evaluación (lo memorizaste iterando). Necesitas un set held-out con casos nuevos (y adversarios) que no usaste para optimizar, igual que train/test en ML. La métrica sobre el set optimizado no refleja producción.",
+          "explicacion": "Overfitting al set; usa held-out.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gma4-r1",
+          "tipo": "reflexion",
+          "enunciado": "Evaluar un sistema de agentes es evaluar 'un equipo, no una persona'. ¿Qué cambia en cómo evaluarías el trabajo de un equipo humano cuando separas resultado de proceso por miembro, y qué te aporta?",
+          "solucion": "Reflexión abierta. Buena respuesta: separar el resultado del equipo de la contribución de cada miembro permite mejorar el eslabón débil, no solo celebrar/lamentar el resultado; aporta accionabilidad y justicia en el diagnóstico.",
+          "explicacion": "Resultado + proceso por componente.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gma4-r2",
+          "tipo": "reflexion",
+          "enunciado": "A lo largo del bloque, 'la métrica justifica la complejidad' apareció en RAG, prompts, agentes y multi-agente. ¿Por qué crees que esta disciplina es tan central en GenAI, y qué pasa cuando se ignora?",
+          "solucion": "Reflexión abierta. Buena respuesta: GenAI tienta con técnicas sofisticadas (RAG avanzado, multi-agente) que parecen mejores; sin medir, se acumula complejidad que cuesta fiabilidad, dinero y seguridad sin mejorar el resultado; la evaluación es lo que distingue ingeniería de moda.",
+          "explicacion": "Sin medición, la complejidad crece sin valor.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 920
     }
   ]
 }

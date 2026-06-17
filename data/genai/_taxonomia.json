@@ -336,6 +336,91 @@
           "Decide agente vs workflow y evalúa con task success y adversarios."
         ]
       }
+    },
+    {
+      "id": "genai-multiagente",
+      "titulo": "Sistemas multi-agente",
+      "track": "genai",
+      "descripcion": "De un agente a un equipo de agentes que colaboran: por qué y cuándo varios agentes (especialización, contexto limpio, paralelismo), orquestación (routing dinámico, manejo de errores), RAG adaptativo en sistemas agénticos, y cómo evaluar un sistema multi-agente (task success + por componente + robustez). Recurso troncal: MIT-AI.md (Semana 13).",
+      "secuencia": "Del equipo a la medición: por qué/cuándo varios agentes y patrones de colaboración → orquestación (routing, manejo de errores, límites) → RAG adaptativo/agéntico → evaluación de sistemas de agentes (extremo a extremo y por componente, red teaming).",
+      "referencias": [
+        "Anthropic. (2024). How we built our multi-agent research system. [anthropic.com](https://www.anthropic.com/engineering/multi-agent-research-system)",
+        "Wu, Q., et al. (2023). AutoGen. [arXiv:2308.08155](https://arxiv.org/abs/2308.08155)",
+        "Du, Y., et al. (2023). Multiagent debate. [arXiv:2305.14325](https://arxiv.org/abs/2305.14325)",
+        "Asai, A., et al. (2023). Self-RAG. [arXiv:2310.11511](https://arxiv.org/abs/2310.11511)",
+        "Liu, X., et al. (2023). AgentBench. [arXiv:2308.03688](https://arxiv.org/abs/2308.03688)",
+        "Mialon, G., et al. (2023). GAIA. [arXiv:2311.12983](https://arxiv.org/abs/2311.12983)"
+      ],
+      "miniProyecto": {
+        "titulo": "Diseño y evaluación de un sistema multi-agente",
+        "descripcion": "Diseña un sistema multi-agente para una tarea compleja real (p. ej. asistente de investigación o de soporte multi-dominio): justifica multi-agente vs un agente, define roles y patrón de colaboración, la orquestación (routing + manejo de errores + límites), dónde usar RAG adaptativo, y un plan de evaluación (task success + métricas por componente como tool accuracy + casos adversarios/red team).",
+        "entregable": "Documento de diseño del sistema multi-agente + plan de evaluación con red teaming.",
+        "rubrica": [
+          "Justifica multi-agente vs agente/workflow por la tarea",
+          "Roles claros (sin solapes) y patrón de colaboración adecuado",
+          "Orquestación con routing, manejo de errores y límites duros",
+          "Plan de evaluación por componente (tool accuracy) + extremo a extremo",
+          "Considera propagación de errores/inyecciones y red teaming"
+        ]
+      },
+      "unidades": [
+        "gen-ma1",
+        "gen-ma2",
+        "gen-ma3",
+        "gen-ma4"
+      ],
+      "competencias": [
+        "Decidir cuándo varios agentes superan a uno y con qué patrón colaboran.",
+        "Orquestar agentes (routing dinámico, manejo de errores, límites).",
+        "Aplicar RAG adaptativo/agéntico (decidir si/qué/cuánto recuperar).",
+        "Evaluar un sistema multi-agente de extremo a extremo y por componente, con red teaming."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Sistemas multi-agente",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra tu punto de partida.",
+        "preguntas": [
+          {
+            "id": "genai-multiagente-diag-porque",
+            "prompt": "Un solo agente con un objetivo enorme y muchas herramientas se enreda. ¿Qué ganarías dividiéndolo en varios agentes especializados?",
+            "criterio": "Intuye contexto acotado, especialización, paralelismo (a costa de coordinación)."
+          },
+          {
+            "id": "genai-multiagente-diag-routing",
+            "prompt": "Llegan consultas de tipos muy distintos. ¿Cómo decidirías qué agente atiende cada una?",
+            "criterio": "Intuye routing (por reglas o clasificador)."
+          },
+          {
+            "id": "genai-multiagente-diag-fallo",
+            "prompt": "En un equipo de agentes, ¿qué riesgo nuevo aparece que no existía con un solo agente?",
+            "criterio": "Intuye propagación de errores/inyecciones y costo de coordinación."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "Multi-agent research system (Anthropic)",
+          "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+          "objetivo": "ver un sistema multi-agente real (orquestador-trabajadores) y sus tradeoffs",
+          "criterio_cierre": "explicar cuándo multi-agente vale la pena y su costo",
+          "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "AutoGen / LangGraph",
+          "url": "https://microsoft.github.io/autogen/",
+          "objetivo": "frameworks de orquestación de agentes (conversación, grafos de estado)",
+          "criterio_cierre": "explicar cómo evitarían un bucle infinito entre agentes",
+          "safety_note": "Material educativo; ejecuta código solo en tu entorno."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "Trata el sistema multi-agente como un sistema distribuido de LLMs: exige decidir cuándo usarlo, orquestarlo con manejo de errores, y evaluarlo por componente y con red teaming, con enlaces vivos a sistemas y benchmarks reales.",
+        "evidencia_de_dominio": [
+          "Decide multi-agente vs agente/workflow por la tarea, no por moda.",
+          "Orquesta con routing, reintentos, límites y validación entre etapas.",
+          "Aplica RAG adaptativo con criterio de parada.",
+          "Evalúa por componente y red-teamea la propagación de inyecciones."
+        ]
+      }
     }
   ]
 }
