@@ -80,6 +80,33 @@ Moraleja de la arista: *el modelo es la parte fácil; producción es operación 
 - **Misión externa (lab vivo):** lee sobre evaluación/observabilidad de LLMs en producción (p. ej. [LangSmith](https://docs.smith.langchain.com/) o la guía de [OpenAI sobre producción](https://platform.openai.com/docs/guides/production-best-practices)). **Criterio de cierre:** explicar por qué fijar la versión del modelo y re-evaluar es crítico.
 - **Mini-entregable:** un checklist de "GenAI a producción": costo, latencia, fiabilidad, observabilidad, versiones/deriva, evaluación continua y seguridad.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (GenAI en producción: costo, latencia, observabilidad y deriva) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** diseñar monitoreo de costo, latencia, errores, drift y evaluación continua.
+2. **Baseline obligatorio:** demo notebook sin telemetria ni versionado.
+3. **Versión mejorada:** servicio con SLOs, logs, evaluación continua y versión pinning.
+4. **Evaluación:** costo por tarea, p95 latencia, error rate, drift y eval score continuo.
+5. **Fallo que debes explicar:** un cambio de proveedor degrada respuestas sin que el equipo lo note.
+6. **Transferencia:** operar cualquier producto ML/LLM que cambia con datos y proveedores.
+
+**Laboratorio externo principal:** [OpenAI Evals](https://github.com/openai/evals).
+**Laboratorio alternativo:** [promptfoo](https://www.promptfoo.dev/docs/intro/).
+**Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
+
+**Entregable:** runbook de producción con SLOs, métricas y rollback. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** llevar GenAI a **producción** es operación, no la receta: gestiona **costo** (caché, límites, modelos más chicos, routing), **latencia** (streaming, paralelizar), **fiabilidad** (reintentos, fallbacks, validar salida) y el **no determinismo**. Exige **observabilidad** (registrar entradas/salidas, costo, latencia, calidad — el blue team aplicado a tu sistema) y manejo de **deriva y versiones**: fija la versión del modelo y **re-evalúa ante cada cambio** (incluido el del proveedor), con **evaluación continua** (CI de calidad). La seguridad converge: aplicar la Fase 8 a la vez. El modelo es lo fácil; **la operación lo hace confiable**.

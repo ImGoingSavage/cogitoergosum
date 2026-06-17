@@ -81,6 +81,33 @@ Moraleja de la arista: *un agente LLM es ReAct —pensar, actuar con herramienta
 - **Misión externa (lab vivo):** lee [ReAct (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) (figura del bucle) y hojea la doc de [agentes de LangChain](https://python.langchain.com/docs/concepts/agents/). **Criterio de cierre:** explicar por qué intercalar razonamiento y acción supera a solo razonar o solo actuar.
 - **Mini-entregable:** el diseño de un agente para una tarea tuya: qué herramientas (mínimas) le das, qué memoria usa, y dónde pondrías autocrítica y límites.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (agentes LLM con ReAct, herramientas, memoria y autocrítica) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** implementar ciclo pensar-actuar-observar con herramientas limitadas.
+2. **Baseline obligatorio:** LLM de una sola respuesta sin herramientas.
+3. **Versión mejorada:** workflow ReAct con herramientas tipadas y límites duros.
+4. **Evaluación:** task success, tool accuracy, pasos promedio y costo.
+5. **Fallo que debes explicar:** el agente llama herramientas irrelevantes o actua con argumentos inseguros.
+6. **Transferencia:** asistentes operativos que consultan APIs pero requieren permisos estrechos.
+
+**Laboratorio externo principal:** [Anthropic: Building Effective Agents](https://www.anthropic.com/research/building-effective-agents).
+**Laboratorio alternativo:** [LangGraph tutorials](https://langchain-ai.github.io/langgraph/tutorials/).
+**Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
+
+**Entregable:** trazas de agente con llamadas a herramientas, errores y correcciones. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** un LLM se vuelve **agente** con cuatro capacidades unidas por **ReAct**: **razonar** (Thought), **actuar** con **herramientas** (Action / function calling), **observar** el resultado, y repetir — anclando el razonamiento en hechos reales. Añade **memoria** (la de largo plazo **es RAG**), **planificación** (descomposición, Tree of Thoughts) y **autocrítica** (Reflexion, con los sesgos de un crítico que puede compartir el error). El LLM hace de **política** sin RL. Cada herramienta amplía poder **y** riesgo: dale **agencia mínima**, verifica observaciones, y pon límites; si los pasos son fijos, un pipeline determinista gana.

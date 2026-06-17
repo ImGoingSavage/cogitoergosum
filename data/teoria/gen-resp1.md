@@ -77,6 +77,33 @@ Moraleja de la arista: *un modelo preciso no es aceptable por sí solo; la IA re
 - **Misión externa (lab vivo):** lee el caso [Machine Bias (ProPublica/COMPAS)](https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing) y hojea [SHAP](https://github.com/shap/shap). **Criterio de cierre:** explicar por qué quitar la variable protegida no elimina el sesgo.
 - **Mini-entregable:** una "ficha de IA responsable" para un modelo: dimensiones (equidad, transparencia, privacidad, rendición de cuentas), qué auditarías en cada una, y la definición de equidad elegida con su justificación.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (IA responsable: precisión no equivale a aceptabilidad) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** mapear stakeholders, danos, sesgos y decisiones humanas antes del despliegue.
+2. **Baseline obligatorio:** lanzar por alta accuracy promedio.
+3. **Versión mejorada:** decisión con grupos, danos, transparencia y humano responsable.
+4. **Evaluación:** performance por segmento, harm review y trazabilidad de decisiones.
+5. **Fallo que debes explicar:** un modelo preciso causa dano por sesgo o uso inapropiado.
+6. **Transferencia:** admisiones, crédito, salud o RRHH donde el error tiene asimetría.
+
+**Laboratorio externo principal:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
+**Laboratorio alternativo:** [MIT AI Risk Repository](https://airisk.mit.edu/).
+**Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
+
+**Entregable:** matriz de impacto con mitigaciones y decisión de uso/no uso. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** **precisión ≠ aceptabilidad**: un modelo de 95% puede discriminar, ser inexplicable o no rendir cuentas. La **IA responsable** exige equidad, transparencia/interpretabilidad, privacidad, robustez y rendición de cuentas. El **sesgo** entra por datos, etiquetas, features (proxies) y objetivo; **quitar el atributo protegido no lo elimina** (los proxies lo reconstruyen). Y "**equidad**" tiene definiciones matemáticas **incompatibles** entre sí: hay que **elegir y justificar** cuál importa — una decisión sociotécnica, no solo técnica. Las explicaciones post-hoc (SHAP/LIME) **aproximan**, no son la verdad del modelo.

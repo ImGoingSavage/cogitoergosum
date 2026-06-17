@@ -95,6 +95,33 @@ Moraleja de la arista: *la atención es un lookup blando: buscar con una query, 
 - **Misión externa (lab vivo):** lee [The Annotated Transformer (Harvard NLP)](https://nlp.seas.harvard.edu/annotated-transformer/) en la sección *Attention*. **Criterio de cierre:** mapear cada parte del código (`scores`, `p_attn`, `torch.matmul`) a la fórmula de esta lección.
 - **Mini-entregable:** explica la fórmula $\text{softmax}(QK^\top/\sqrt{d_k})V$ a alguien que no sabe ML, usando la analogía de la biblioteca, nombrando Q, K, V y el porqué del escalado.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (self-attention Q/K/V y atención escalada) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** implementar Q, K, V, máscara y softmax(QK^T/sqrt(d_k))V desde tensores.
+2. **Baseline obligatorio:** producto punto sin escalado ni máscara.
+3. **Versión mejorada:** scaled dot-product attention vectorizada.
+4. **Evaluación:** tests unitarios de tensores, ablation sin escalado y estabilidad de gradientes.
+5. **Fallo que debes explicar:** el softmax se satura y casi todo el peso cae en un token.
+6. **Transferencia:** cross-attention para que un decoder consulte documentos recuperados.
+
+**Laboratorio externo principal:** [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/).
+**Laboratorio alternativo:** [PyTorch Transformer tutorial](https://docs.pytorch.org/tutorials/beginner/transformer_tutorial.html).
+**Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
+
+**Entregable:** módulo PyTorch mínimo con pruebas de shapes, máscara y gradientes. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** la **self-attention** deriva de cada token tres vectores —**Query** (lo que busca), **Key** (lo que ofrece) y **Value** (lo que aporta)— mediante matrices aprendidas. La fórmula $\text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$ se lee así: $QK^\top$ puntúa la relevancia de todos contra todos, $/\sqrt{d_k}$ evita que el softmax se sature, el **softmax** convierte puntajes en pesos que suman 1, y multiplicar por $V$ produce una **mezcla ponderada del contenido**. Es un **lookup blando** (diccionario diferenciable). **Self-attention** mezcla dentro de una secuencia; **cross-attention** consulta otra (la base de traducción y de RAG).

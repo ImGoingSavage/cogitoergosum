@@ -81,6 +81,33 @@ Moraleja de la arista: *un RAG falla en la recuperación o en la generación; mi
 - **Misión externa (lab vivo):** recorre la doc de [RAGAS](https://docs.ragas.io/) (métricas faithfulness, context precision/recall) y el [RAG Triad de TruLens](https://www.trulens.org/getting_started/core_concepts/rag_triad/). **Criterio de cierre:** explicar qué mide cada vértice del triángulo.
 - **Mini-entregable (mini-proyecto del cluster):** un **plan de evaluación de RAG**: cómo construirías un set de evaluación, qué métricas medirías (recuperación y generación), y qué técnica de RAG avanzado probarías y cómo verificarías que ayudó.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (evaluación RAG separando recuperación, generación y fidelidad) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** crear un set con preguntas, fuentes esperadas, respuestas y casos adversarios.
+2. **Baseline obligatorio:** evaluar solo la respuesta final.
+3. **Versión mejorada:** evaluación por componente con RAGAS o rúbrica propia.
+4. **Evaluación:** context recall, faithfulness, answer relevancy y tasa de abstencion.
+5. **Fallo que debes explicar:** mejoras de prompt esconden que el contexto correcto nunca se recupero.
+6. **Transferencia:** auditoría de asistentes corporativos con documentos privados.
+
+**Laboratorio externo principal:** [RAGAS](https://docs.ragas.io/).
+**Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
+**Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
+
+**Entregable:** dashboard pequeno con context recall, faithfulness y ejemplos fallidos. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** un RAG falla en **recuperación** (no trajo la evidencia) o en **generación** (respondió mal con buena evidencia); el **triángulo RAG** —context relevance, **faithfulness/groundedness**, answer relevance— mide cada culpa por separado para saber **qué** arreglar. Evalúa **con datos** (ground truth y/o **LLM-as-a-judge** vía [RAGAS](https://docs.ragas.io/), con sus sesgos), no con vibras. El **RAG avanzado** (query rewriting, **adaptativo**/Self-RAG, multi-paso/agéntico, HyDE) lo hace más listo, pero **cada capa de complejidad debe justificarse midiendo**. Diagnostica antes de complicar.

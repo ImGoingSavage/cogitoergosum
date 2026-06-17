@@ -80,6 +80,33 @@ Moraleja de la arista: *evalúa un sistema de agentes como a un equipo: el resul
 - **Misión externa (lab vivo):** hojea [AgentBench](https://arxiv.org/abs/2308.03688) y [GAIA (Mialon et al., 2023)](https://arxiv.org/abs/2311.12983). **Criterio de cierre:** explicar por qué medir solo el resultado final no basta.
 - **Mini-entregable (mini-proyecto del cluster):** un **plan de evaluación de un sistema multi-agente**: métrica de éxito de tarea, métricas por componente (incluida tool accuracy), eficiencia (costo/pasos), casos adversarios (red team) y cómo evitarías overfitting (held-out). Evalúalo con la rúbrica de 5 criterios del cluster.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (evaluación de sistemas de agentes por resultado y por componente) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** crear task suite, métricas por componente y red team de inyecciones.
+2. **Baseline obligatorio:** solo medir task success final.
+3. **Versión mejorada:** evaluación jerarquica con trazas, ablations y held-out.
+4. **Evaluación:** task success, tool accuracy, routing, costo, latencia y unsafe pass rate.
+5. **Fallo que debes explicar:** un 70% de exito no dice que pieza arreglar.
+6. **Transferencia:** operación de agentes en producción con observabilidad real.
+
+**Laboratorio externo principal:** [Anthropic multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+**Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
+**Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
+
+**Entregable:** matriz de evaluación end-to-end y por componente con red team. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** evaluar un sistema de agentes es evaluar **un equipo**: la métrica reina es el **éxito de tarea de extremo a extremo** (task success sobre un set con held-out), pero hay que medir **por componente** —**tool accuracy**, routing, calidad de cada agente y de los pasos— para localizar **qué eslabón** falla (como el triángulo RAG). Añade **eficiencia** (pasos, costo, latencia — N agentes multiplican el gasto) y **robustez/seguridad** vía **red teaming** (inyecciones que se propagan, fallos de herramientas). Evalúa **con datos, no demos**, evita overfitting con held-out, y deja que la **métrica justifique la complejidad**: si multi-agente no supera a un agente simple, no lo uses.

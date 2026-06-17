@@ -83,6 +83,33 @@ Moraleja de la arista: *un sistema multi-agente es un sistema distribuido de LLM
 - **Misión externa (lab vivo):** hojea cómo orquestan [LangGraph](https://langchain-ai.github.io/langgraph/) o [AutoGen](https://microsoft.github.io/autogen/) (grafos de agentes, estado, control de flujo). **Criterio de cierre:** explicar cómo evitarían un bucle infinito entre agentes.
 - **Mini-entregable:** un diagrama de orquestación de un sistema multi-agente con el router, las rutas de error (reintento/fallback/escalada) y los límites duros marcados.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (orquestacion, routing dinámico y manejo de errores) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** implementar un router que elija especialista, limite pasos y maneje tool errors.
+2. **Baseline obligatorio:** conversacion libre entre agentes sin límites.
+3. **Versión mejorada:** orquestacion por grafo con contratos, timeouts y fallback.
+4. **Evaluación:** routing accuracy, loops evitados, latencia y fallback success.
+5. **Fallo que debes explicar:** los agentes entran en bucle o pasan errores sin verificar.
+6. **Transferencia:** sistemas de soporte con dominios, escalamiento y SLAs.
+
+**Laboratorio externo principal:** [LangGraph tutorials](https://langchain-ai.github.io/langgraph/tutorials/).
+**Laboratorio alternativo:** [Microsoft AutoGen](https://microsoft.github.io/autogen/).
+**Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
+
+**Entregable:** grafo de estado con casos de exito, fallo y recuperación. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** la **orquestación** hace funcionar a un sistema multi-agente respondiendo **a quién** (routing: por reglas, clasificador o jerárquico — enrutar bien evita usar el agente caro para lo trivial) y **qué pasa al fallar** (reintento con backoff, fallback, **escalada a humano**, validación entre etapas y manejo de la incertidumbre). Debe acotar modos de fallo propios: **bucles** (límite de pasos), **costo** (presupuesto) y **deriva** (re-anclar la meta). Un sistema multi-agente **es un sistema distribuido de LLMs**: la orquestación es su mayor superficie de fallo y de ataque (errores e inyecciones se propagan entre agentes).

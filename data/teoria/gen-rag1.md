@@ -88,6 +88,33 @@ Moraleja de la arista: *RAG es examen a libro abierto: no memorices hechos, apre
 - **Misión externa (lab vivo):** lee la introducción del paper [RAG (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) y la guía [What is RAG? (AWS)](https://aws.amazon.com/what-is/retrieval-augmented-generation/). **Criterio de cierre:** explicar el flujo indexar→recuperar→aumentar→generar sin mirar.
 - **Mini-entregable:** un diagrama del flujo RAG (las 8 etapas, indexación + consulta) con una frase por etapa.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (RAG como recuperación externa en vez de memorizar conocimiento) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** implementar el flujo pregunta -> embeddings -> top-k -> prompt aumentado -> respuesta.
+2. **Baseline obligatorio:** LLM sin contexto recuperado.
+3. **Versión mejorada:** RAG con recuperación semántica y atribucion.
+4. **Evaluación:** context recall, abstencion correcta y faithfulness contra fuentes.
+5. **Fallo que debes explicar:** el modelo inventa cuando el dato no estaba en su entrenamiento.
+6. **Transferencia:** búsqueda de soporte: responder solo con documentos verificables.
+
+**Laboratorio externo principal:** [LangChain RAG tutorial](https://python.langchain.com/docs/tutorials/rag/).
+**Laboratorio alternativo:** [LlamaIndex documentation](https://docs.llamaindex.ai/).
+**Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
+
+**Entregable:** RAG mínimo con corpus pequeno, citas y casos donde el modelo debe decir no se. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** **RAG** ancla al LLM en conocimiento externo para atacar cuatro males —**corte de conocimiento, datos privados, alucinación y falta de atribución**—. Su flujo: **indexar** (cargar→trocear→embeber→indexar) y, por consulta, **recuperar→aumentar→generar**. No cambia los pesos del modelo, cambia **lo que ve antes de responder** (es ingeniería de contexto). Regla: **RAG para conocimiento, fine-tuning para comportamiento.** RAG es **atención a escala de corpus** / un examen a libro abierto, y es **tan bueno como su recuperación** — y todo lo recuperado es **entrada no confiable** (superficie de ataque, [[cyber-llm2]]).

@@ -15,14 +15,29 @@
       ],
       "miniProyecto": {
         "titulo": "Diagrama anotado de un bloque Transformer",
-        "descripcion": "Dibuja (a mano o en una herramienta) un bloque Transformer completo y anótalo: entrada + positional encoding → multi-head self-attention (con Q/K/V y el escalado por √d_k) → conexión residual + LayerNorm → feed-forward → residual + LayerNorm. Explica con tus palabras qué hace cada pieza y por qué, y marca dónde entra el masking causal en un decoder.",
-        "entregable": "Un diagrama anotado (imagen o texto estructurado) que explique cada componente de un bloque Transformer y el flujo de datos.",
+        "descripcion": "Dibuja (a mano o en una herramienta) un bloque Transformer completo y anótalo: entrada + positional encoding → multi-head self-attention (con Q/K/V y el escalado por √d_k) → conexión residual + LayerNorm → feed-forward → residual + LayerNorm. Explica con tus palabras qué hace cada pieza y por qué, y marca dónde entra el masking causal en un decoder. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica.",
+        "entregable": "Un diagrama anotado (imagen o texto estructurado) que explique cada componente de un bloque Transformer y el flujo de datos. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia.",
         "rubrica": [
           "Identifica correctamente los componentes (atención, residual, LayerNorm, FFN, PE)",
           "Explica el porqué de cada pieza, no solo el qué",
           "Ubica bien el masking causal y la diferencia encoder/decoder",
           "Conecta Q/K/V con la intuición de 'buscar y mezclar' información",
-          "Comunicación clara, sin copiar el paper textualmente"
+          "Comunicación clara, sin copiar el paper textualmente",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio."
         ]
       },
       "unidades": [
@@ -72,6 +87,34 @@
           "objetivo": "visualizar self-attention, multi-head y el flujo encoder-decoder",
           "criterio_cierre": "dibujar de memoria el camino de Q/K/V hasta la salida de atención",
           "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "Stanford CS224N: NLP with Deep Learning",
+          "url": "https://web.stanford.edu/class/cs224n/",
+          "objetivo": "desarrollar implementacion PyTorch desde tensores hasta un mini GPT usando Stanford CS224N: NLP with Deep Learning como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generacion y evaluacion",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "Karpathy Neural Networks: Zero to Hero",
+          "url": "https://karpathy.ai/zero-to-hero.html",
+          "objetivo": "desarrollar implementacion PyTorch desde tensores hasta un mini GPT usando Karpathy Neural Networks: Zero to Hero como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generacion y evaluacion",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "nanoGPT",
+          "url": "https://github.com/karpathy/nanoGPT",
+          "objetivo": "desarrollar implementacion PyTorch desde tensores hasta un mini GPT usando nanoGPT como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generacion y evaluacion",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "PyTorch Transformer tutorial",
+          "url": "https://docs.pytorch.org/tutorials/beginner/transformer_tutorial.html",
+          "objetivo": "desarrollar implementacion PyTorch desde tensores hasta un mini GPT usando PyTorch Transformer tutorial como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generacion y evaluacion",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
         }
       ],
       "estandar_mit_plus": {
@@ -82,7 +125,40 @@
           "Conecta el Transformer con LLMs, RAG, agentes y ViT.",
           "Lee el paper original y la implementación anotada sin perderse."
         ]
-      }
+      },
+      "estandar_transferencia": {
+        "revision": "enriquecer-genai-transferencia-v1",
+        "fecha": "2026-06-17",
+        "prioridad": "implementación PyTorch desde tensores hasta un mini GPT",
+        "estilo_asignacion": "asignaciones estilo CS224N/Karpathy: shapes, pruebas unitarias, ablations y reporte de errores",
+        "proyecto_cluster": "proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación",
+        "contrato_calidad": [
+          "Cada unidad debe cerrar con evidencia ejecutable o verificable, no solo lectura.",
+          "Toda mejora debe compararse contra una línea base y un set held-out cuando aplique.",
+          "Los errores se diagnostican por componente para que el alumno sepa que corregir.",
+          "Los entregables deben ser portafolio: notebook, harness, reporte, rúbrica o diseño auditable."
+        ]
+      },
+      "asignacionesTransferencia": [
+        {
+          "titulo": "Assignment 1 · Transformers: baseline y mecanismo",
+          "objetivo": "Construir la versión más simple que haga visible implementación PyTorch desde tensores hasta un mini GPT.",
+          "entregable": "notebook o reporte reproducible con baseline, prueba mínima y análisis de fallo.",
+          "criterio": "La entrega debe explicar que supuesto rompe el baseline y que evidencia lo demuestra."
+        },
+        {
+          "titulo": "Assignment 2 · Transformers: implementación o evaluación fuerte",
+          "objetivo": "Elevar la solucion con asignaciones estilo CS224N/Karpathy: shapes, pruebas unitarias, ablations y reporte de errores.",
+          "entregable": "artefacto de portafolio con métricas, ablation y casos borde.",
+          "criterio": "La mejora debe superar al baseline en una métrica alineada y no solo en una demo."
+        },
+        {
+          "titulo": "Proyecto de cluster · Transformers",
+          "objetivo": "proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación",
+          "entregable": "informe técnico breve con decisiones, tradeoffs, riesgos y proxima iteración.",
+          "criterio": "Debe ser transferible: otro equipo podria repetirlo y adaptar la estructura a un dominio nuevo."
+        }
+      ]
     },
     {
       "id": "genai-rag",
@@ -99,14 +175,29 @@
       ],
       "miniProyecto": {
         "titulo": "Diseño y plan de evaluación de un RAG",
-        "descripcion": "Diseña un RAG para un caso concreto (p. ej. asistente sobre la documentación de un producto): elige modelo de embeddings y estrategia de chunking, decide recuperación (semántica/híbrida/re-ranking) y k, define el prompt aumentado con atribución, y especifica cómo lo EVALUARÍAS con el triángulo RAG (recuperación vs generación) y un set de datos.",
-        "entregable": "Documento de diseño del RAG + plan de evaluación (métricas de recuperación y generación, cómo construir el set).",
+        "descripcion": "Diseña un RAG para un caso concreto (p. ej. asistente sobre la documentación de un producto): elige modelo de embeddings y estrategia de chunking, decide recuperación (semántica/híbrida/re-ranking) y k, define el prompt aumentado con atribución, y especifica cómo lo EVALUARÍAS con el triángulo RAG (recuperación vs generación) y un set de datos. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica.",
+        "entregable": "Documento de diseño del RAG + plan de evaluación (métricas de recuperación y generación, cómo construir el set). + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia.",
         "rubrica": [
           "Decisiones justificadas de embeddings y chunking (con el tradeoff)",
           "Pipeline de recuperación coherente (híbrida/re-ranking/k) para el caso",
           "Prompt con instrucción de fidelidad y atribución",
           "Plan de evaluación que separa recuperación de generación, con datos",
-          "Conciencia de la superficie de ataque (contenido recuperado no confiable)"
+          "Conciencia de la superficie de ataque (contenido recuperado no confiable)",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio."
         ]
       },
       "unidades": [
@@ -156,6 +247,20 @@
           "objetivo": "entender índices vectoriales (ANN/HNSW) y similitud en una BD real",
           "criterio_cierre": "explicar por qué la búsqueda es aproximada y qué se gana",
           "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "LangChain RAG tutorial",
+          "url": "https://python.langchain.com/docs/tutorials/rag/",
+          "objetivo": "desarrollar construccion de un sistema RAG evaluable, con corpus propio y diagnostico por componente usando LangChain RAG tutorial como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con asistente RAG con recuperacion, atribucion, pruebas de faithfulness y casos adversarios",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "LlamaIndex documentation",
+          "url": "https://docs.llamaindex.ai/",
+          "objetivo": "desarrollar construccion de un sistema RAG evaluable, con corpus propio y diagnostico por componente usando LlamaIndex documentation como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con asistente RAG con recuperacion, atribucion, pruebas de faithfulness y casos adversarios",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
         }
       ],
       "estandar_mit_plus": {
@@ -166,7 +271,40 @@
           "Justifica chunking, búsqueda híbrida y re-ranking con su tradeoff.",
           "Reconoce el contenido recuperado como entrada no confiable (seguridad)."
         ]
-      }
+      },
+      "estandar_transferencia": {
+        "revision": "enriquecer-genai-transferencia-v1",
+        "fecha": "2026-06-17",
+        "prioridad": "construccion de un sistema RAG evaluable, con corpus propio y diagnostico por componente",
+        "estilo_asignacion": "asignaciones de ingenieria: corpus, chunking, retriever, generador, métricas y error analysis",
+        "proyecto_cluster": "asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios",
+        "contrato_calidad": [
+          "Cada unidad debe cerrar con evidencia ejecutable o verificable, no solo lectura.",
+          "Toda mejora debe compararse contra una línea base y un set held-out cuando aplique.",
+          "Los errores se diagnostican por componente para que el alumno sepa que corregir.",
+          "Los entregables deben ser portafolio: notebook, harness, reporte, rúbrica o diseño auditable."
+        ]
+      },
+      "asignacionesTransferencia": [
+        {
+          "titulo": "Assignment 1 · RAG: baseline y mecanismo",
+          "objetivo": "Construir la versión más simple que haga visible construccion de un sistema RAG evaluable, con corpus propio y diagnostico por componente.",
+          "entregable": "notebook o reporte reproducible con baseline, prueba mínima y análisis de fallo.",
+          "criterio": "La entrega debe explicar que supuesto rompe el baseline y que evidencia lo demuestra."
+        },
+        {
+          "titulo": "Assignment 2 · RAG: implementación o evaluación fuerte",
+          "objetivo": "Elevar la solucion con asignaciones de ingenieria: corpus, chunking, retriever, generador, métricas y error analysis.",
+          "entregable": "artefacto de portafolio con métricas, ablation y casos borde.",
+          "criterio": "La mejora debe superar al baseline en una métrica alineada y no solo en una demo."
+        },
+        {
+          "titulo": "Proyecto de cluster · RAG",
+          "objetivo": "asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios",
+          "entregable": "informe técnico breve con decisiones, tradeoffs, riesgos y proxima iteración.",
+          "criterio": "Debe ser transferible: otro equipo podria repetirlo y adaptar la estructura a un dominio nuevo."
+        }
+      ]
     },
     {
       "id": "genai-eval",
@@ -183,14 +321,29 @@
       ],
       "miniProyecto": {
         "titulo": "Banco de evaluación + optimización de un prompt",
-        "descripcion": "Para una tarea GenAI concreta (resumen, extracción o Q&A sobre tu corpus), construye un pequeño set de evaluación (con held-out), elige métricas (semántica y/o LLM-as-judge, + detección de alucinaciones), mide una línea base, prueba 3 cambios de prompt y conserva solo los que suben la métrica sin regresiones. Documenta sesgos del juez que mitigaste.",
-        "entregable": "Set de evaluación + reporte de optimización (línea base, cambios probados, decisión por métrica, held-out).",
+        "descripcion": "Para una tarea GenAI concreta (resumen, extracción o Q&A sobre tu corpus), construye un pequeño set de evaluación (con held-out), elige métricas (semántica y/o LLM-as-judge, + detección de alucinaciones), mide una línea base, prueba 3 cambios de prompt y conserva solo los que suben la métrica sin regresiones. Documenta sesgos del juez que mitigaste. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica.",
+        "entregable": "Set de evaluación + reporte de optimización (línea base, cambios probados, decisión por métrica, held-out). + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia.",
         "rubrica": [
           "Métrica adecuada a la tarea (no solo ROUGE) y set representativo con held-out",
           "Mide línea base y cambia una cosa a la vez",
           "Detecta/controla alucinaciones (consistencia o anclaje)",
           "Mitiga sesgos del LLM-as-judge (orden, verbosidad, rúbrica)",
-          "Decide conservar/descartar por evidencia, no por intuición"
+          "Decide conservar/descartar por evidencia, no por intuición",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio."
         ]
       },
       "unidades": [
@@ -240,6 +393,27 @@
           "objetivo": "técnicas de prompting (few-shot, chain-of-thought) con ejemplos",
           "criterio_cierre": "identificar una tarea donde CoT ayuda y otra donde estorba",
           "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "Stanford CS224N: NLP with Deep Learning",
+          "url": "https://web.stanford.edu/class/cs224n/",
+          "objetivo": "desarrollar benchmarking de LLMs, rubricas, jueces, held-out y control de alucinacion usando Stanford CS224N: NLP with Deep Learning como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con harness de evaluacion con linea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "OpenAI Evals",
+          "url": "https://github.com/openai/evals",
+          "objetivo": "desarrollar benchmarking de LLMs, rubricas, jueces, held-out y control de alucinacion usando OpenAI Evals como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con harness de evaluacion con linea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "promptfoo",
+          "url": "https://www.promptfoo.dev/docs/intro/",
+          "objetivo": "desarrollar benchmarking de LLMs, rubricas, jueces, held-out y control de alucinacion usando promptfoo como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con harness de evaluacion con linea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
         }
       ],
       "estandar_mit_plus": {
@@ -250,7 +424,40 @@
           "Detecta alucinaciones por consistencia y anclaje.",
           "Optimiza prompts por evidencia, no por intuición, evitando overfitting."
         ]
-      }
+      },
+      "estandar_transferencia": {
+        "revision": "enriquecer-genai-transferencia-v1",
+        "fecha": "2026-06-17",
+        "prioridad": "benchmarking de LLMs, rúbricas, jueces, held-out y control de alucinación",
+        "estilo_asignacion": "asignaciones tipo Andrew Ng/Stanford: set, métrica, baseline, iteración controlada y decisión por evidencia",
+        "proyecto_cluster": "harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones",
+        "contrato_calidad": [
+          "Cada unidad debe cerrar con evidencia ejecutable o verificable, no solo lectura.",
+          "Toda mejora debe compararse contra una línea base y un set held-out cuando aplique.",
+          "Los errores se diagnostican por componente para que el alumno sepa que corregir.",
+          "Los entregables deben ser portafolio: notebook, harness, reporte, rúbrica o diseño auditable."
+        ]
+      },
+      "asignacionesTransferencia": [
+        {
+          "titulo": "Assignment 1 · Evaluación: baseline y mecanismo",
+          "objetivo": "Construir la versión más simple que haga visible benchmarking de LLMs, rúbricas, jueces, held-out y control de alucinación.",
+          "entregable": "notebook o reporte reproducible con baseline, prueba mínima y análisis de fallo.",
+          "criterio": "La entrega debe explicar que supuesto rompe el baseline y que evidencia lo demuestra."
+        },
+        {
+          "titulo": "Assignment 2 · Evaluación: implementación o evaluación fuerte",
+          "objetivo": "Elevar la solucion con asignaciones tipo Andrew Ng/Stanford: set, métrica, baseline, iteración controlada y decisión por evidencia.",
+          "entregable": "artefacto de portafolio con métricas, ablation y casos borde.",
+          "criterio": "La mejora debe superar al baseline en una métrica alineada y no solo en una demo."
+        },
+        {
+          "titulo": "Proyecto de cluster · Evaluación",
+          "objetivo": "harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones",
+          "entregable": "informe técnico breve con decisiones, tradeoffs, riesgos y proxima iteración.",
+          "criterio": "Debe ser transferible: otro equipo podria repetirlo y adaptar la estructura a un dominio nuevo."
+        }
+      ]
     },
     {
       "id": "genai-agentes",
@@ -268,14 +475,29 @@
       ],
       "miniProyecto": {
         "titulo": "Diseño de un agente orientado a una tarea (seguro y evaluable)",
-        "descripcion": "Diseña un agente para una tarea de negocio concreta: decide agente vs workflow determinista (justificado), define herramientas mínimas con sus permisos, marca los puntos de humano-en-el-lazo para acciones irreversibles, pon límites duros (pasos/presupuesto), describe el manejo de errores, y especifica un plan de evaluación (task success + tool accuracy + casos adversarios).",
-        "entregable": "Documento de diseño del agente + plan de evaluación con casos adversarios.",
+        "descripcion": "Diseña un agente para una tarea de negocio concreta: decide agente vs workflow determinista (justificado), define herramientas mínimas con sus permisos, marca los puntos de humano-en-el-lazo para acciones irreversibles, pon límites duros (pasos/presupuesto), describe el manejo de errores, y especifica un plan de evaluación (task success + tool accuracy + casos adversarios). Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica.",
+        "entregable": "Documento de diseño del agente + plan de evaluación con casos adversarios. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia.",
         "rubrica": [
           "Decisión agente/workflow justificada por la naturaleza de la tarea",
           "Herramientas y permisos mínimos (agencia mínima)",
           "Humano en el lazo para acciones irreversibles + límites duros",
           "Manejo de errores e incertidumbre (verificar observaciones, decir 'no sé')",
-          "Plan de evaluación con métricas y casos adversarios"
+          "Plan de evaluación con métricas y casos adversarios",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio."
         ]
       },
       "unidades": [
@@ -325,6 +547,13 @@
           "objetivo": "criterios para decidir agente vs workflow y patrones de diseño",
           "criterio_cierre": "explicar cuándo NO usar un agente",
           "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "LangGraph tutorials",
+          "url": "https://langchain-ai.github.io/langgraph/tutorials/",
+          "objetivo": "desarrollar del bucle RL a workflows con herramientas, agencia minima y humano en el lazo usando LangGraph tutorials como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con agente con herramientas estrechas, limites duros, evaluacion por task success y fallos controlados",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
         }
       ],
       "estandar_mit_plus": {
@@ -335,7 +564,40 @@
           "Diseña agentes con agencia mínima y humano en el lazo.",
           "Decide agente vs workflow y evalúa con task success y adversarios."
         ]
-      }
+      },
+      "estandar_transferencia": {
+        "revision": "enriquecer-genai-transferencia-v1",
+        "fecha": "2026-06-17",
+        "prioridad": "del bucle RL a workflows con herramientas, agencia mínima y humano en el lazo",
+        "estilo_asignacion": "asignaciones de diseño operativo: política, herramientas, observaciones, límites y métricas",
+        "proyecto_cluster": "agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados",
+        "contrato_calidad": [
+          "Cada unidad debe cerrar con evidencia ejecutable o verificable, no solo lectura.",
+          "Toda mejora debe compararse contra una línea base y un set held-out cuando aplique.",
+          "Los errores se diagnostican por componente para que el alumno sepa que corregir.",
+          "Los entregables deben ser portafolio: notebook, harness, reporte, rúbrica o diseño auditable."
+        ]
+      },
+      "asignacionesTransferencia": [
+        {
+          "titulo": "Assignment 1 · Agentes: baseline y mecanismo",
+          "objetivo": "Construir la versión más simple que haga visible del bucle RL a workflows con herramientas, agencia mínima y humano en el lazo.",
+          "entregable": "notebook o reporte reproducible con baseline, prueba mínima y análisis de fallo.",
+          "criterio": "La entrega debe explicar que supuesto rompe el baseline y que evidencia lo demuestra."
+        },
+        {
+          "titulo": "Assignment 2 · Agentes: implementación o evaluación fuerte",
+          "objetivo": "Elevar la solucion con asignaciones de diseño operativo: política, herramientas, observaciones, límites y métricas.",
+          "entregable": "artefacto de portafolio con métricas, ablation y casos borde.",
+          "criterio": "La mejora debe superar al baseline en una métrica alineada y no solo en una demo."
+        },
+        {
+          "titulo": "Proyecto de cluster · Agentes",
+          "objetivo": "agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados",
+          "entregable": "informe técnico breve con decisiones, tradeoffs, riesgos y proxima iteración.",
+          "criterio": "Debe ser transferible: otro equipo podria repetirlo y adaptar la estructura a un dominio nuevo."
+        }
+      ]
     },
     {
       "id": "genai-multiagente",
@@ -353,14 +615,29 @@
       ],
       "miniProyecto": {
         "titulo": "Diseño y evaluación de un sistema multi-agente",
-        "descripcion": "Diseña un sistema multi-agente para una tarea compleja real (p. ej. asistente de investigación o de soporte multi-dominio): justifica multi-agente vs un agente, define roles y patrón de colaboración, la orquestación (routing + manejo de errores + límites), dónde usar RAG adaptativo, y un plan de evaluación (task success + métricas por componente como tool accuracy + casos adversarios/red team).",
-        "entregable": "Documento de diseño del sistema multi-agente + plan de evaluación con red teaming.",
+        "descripcion": "Diseña un sistema multi-agente para una tarea compleja real (p. ej. asistente de investigación o de soporte multi-dominio): justifica multi-agente vs un agente, define roles y patrón de colaboración, la orquestación (routing + manejo de errores + límites), dónde usar RAG adaptativo, y un plan de evaluación (task success + métricas por componente como tool accuracy + casos adversarios/red team). Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica.",
+        "entregable": "Documento de diseño del sistema multi-agente + plan de evaluación con red teaming. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia.",
         "rubrica": [
           "Justifica multi-agente vs agente/workflow por la tarea",
           "Roles claros (sin solapes) y patrón de colaboración adecuado",
           "Orquestación con routing, manejo de errores y límites duros",
           "Plan de evaluación por componente (tool accuracy) + extremo a extremo",
-          "Considera propagación de errores/inyecciones y red teaming"
+          "Considera propagación de errores/inyecciones y red teaming",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio."
         ]
       },
       "unidades": [
@@ -410,6 +687,20 @@
           "objetivo": "frameworks de orquestación de agentes (conversación, grafos de estado)",
           "criterio_cierre": "explicar cómo evitarían un bucle infinito entre agentes",
           "safety_note": "Material educativo; ejecuta código solo en tu entorno."
+        },
+        {
+          "nombre": "LangGraph tutorials",
+          "url": "https://langchain-ai.github.io/langgraph/tutorials/",
+          "objetivo": "desarrollar orquestacion, routing, RAG adaptativo y evaluacion por componente usando LangGraph tutorials como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparacion contra agente unico",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "RAGAS",
+          "url": "https://docs.ragas.io/",
+          "objetivo": "desarrollar orquestacion, routing, RAG adaptativo y evaluacion por componente usando RAGAS como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparacion contra agente unico",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
         }
       ],
       "estandar_mit_plus": {
@@ -420,7 +711,40 @@
           "Aplica RAG adaptativo con criterio de parada.",
           "Evalúa por componente y red-teamea la propagación de inyecciones."
         ]
-      }
+      },
+      "estandar_transferencia": {
+        "revision": "enriquecer-genai-transferencia-v1",
+        "fecha": "2026-06-17",
+        "prioridad": "orquestacion, routing, RAG adaptativo y evaluación por componente",
+        "estilo_asignacion": "asignaciones de arquitectura: descomposicion, routing, límites, telemetria y ablation contra baseline",
+        "proyecto_cluster": "sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico",
+        "contrato_calidad": [
+          "Cada unidad debe cerrar con evidencia ejecutable o verificable, no solo lectura.",
+          "Toda mejora debe compararse contra una línea base y un set held-out cuando aplique.",
+          "Los errores se diagnostican por componente para que el alumno sepa que corregir.",
+          "Los entregables deben ser portafolio: notebook, harness, reporte, rúbrica o diseño auditable."
+        ]
+      },
+      "asignacionesTransferencia": [
+        {
+          "titulo": "Assignment 1 · Multi-agente: baseline y mecanismo",
+          "objetivo": "Construir la versión más simple que haga visible orquestacion, routing, RAG adaptativo y evaluación por componente.",
+          "entregable": "notebook o reporte reproducible con baseline, prueba mínima y análisis de fallo.",
+          "criterio": "La entrega debe explicar que supuesto rompe el baseline y que evidencia lo demuestra."
+        },
+        {
+          "titulo": "Assignment 2 · Multi-agente: implementación o evaluación fuerte",
+          "objetivo": "Elevar la solucion con asignaciones de arquitectura: descomposicion, routing, límites, telemetria y ablation contra baseline.",
+          "entregable": "artefacto de portafolio con métricas, ablation y casos borde.",
+          "criterio": "La mejora debe superar al baseline en una métrica alineada y no solo en una demo."
+        },
+        {
+          "titulo": "Proyecto de cluster · Multi-agente",
+          "objetivo": "sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico",
+          "entregable": "informe técnico breve con decisiones, tradeoffs, riesgos y proxima iteración.",
+          "criterio": "Debe ser transferible: otro equipo podria repetirlo y adaptar la estructura a un dominio nuevo."
+        }
+      ]
     },
     {
       "id": "genai-responsable",
@@ -438,14 +762,29 @@
       ],
       "miniProyecto": {
         "titulo": "Solución GenAI de extremo a extremo (responsable y en producción)",
-        "descripcion": "Diseña una solución GenAI completa para un problema de negocio (elige un vertical: seguros, finanzas, supply chain, legal…): elige la pieza más simple que lo resuelva (clasificación/RAG/agente/multi-agente) justificándolo, especifica la arquitectura, el plan de evaluación, las medidas de IA responsable (equidad/transparencia/privacidad/rendición de cuentas), la seguridad y la operación en producción (costo, latencia, observabilidad, deriva, evaluación continua).",
-        "entregable": "Documento de diseño de extremo a extremo: pieza justificada, arquitectura, evaluación, IA responsable, seguridad y operación.",
+        "descripcion": "Diseña una solución GenAI completa para un problema de negocio (elige un vertical: seguros, finanzas, supply chain, legal…): elige la pieza más simple que lo resuelva (clasificación/RAG/agente/multi-agente) justificándolo, especifica la arquitectura, el plan de evaluación, las medidas de IA responsable (equidad/transparencia/privacidad/rendición de cuentas), la seguridad y la operación en producción (costo, latencia, observabilidad, deriva, evaluación continua). Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica. Ademas, incorpora una línea base, un criterio de cierre, una comparación contra alternativa simple y una seccion de error analysis que explique donde NO conviene usar la técnica.",
+        "entregable": "Documento de diseño de extremo a extremo: pieza justificada, arquitectura, evaluación, IA responsable, seguridad y operación. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia. + evidencia de evaluación, ablation y transferencia.",
         "rubrica": [
           "Elige la pieza más simple que resuelve, justificada por la tarea/métrica",
           "Plan de evaluación adecuado (separando culpas; held-out)",
           "Medidas de IA responsable (equidad/transparencia/privacidad/rendición de cuentas)",
           "Seguridad aplicada (entradas no confiables, agencia mínima, atribución)",
-          "Operación en producción (costo, latencia, observabilidad, deriva, evaluación continua)"
+          "Operación en producción (costo, latencia, observabilidad, deriva, evaluación continua)",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio.",
+          "Incluye baseline y compara contra una alternativa más simple.",
+          "Usa métrica alineada con el fallo dominante, con held-out o casos adversarios.",
+          "Explica transferencia: que estructura se conserva al cambiar de dominio."
         ]
       },
       "unidades": [
@@ -495,6 +834,20 @@
           "objetivo": "catálogo exhaustivo de riesgos de IA como checklist anti-puntos-ciegos",
           "criterio_cierre": "identificar una categoría de riesgo que habrías olvidado",
           "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "DeepLearning.AI Generative AI for Everyone",
+          "url": "https://www.deeplearning.ai/courses/generative-ai-for-everyone/",
+          "objetivo": "desarrollar llevar GenAI a produccion con riesgos, costos, observabilidad y responsabilidad medible usando DeepLearning.AI Generative AI for Everyone como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con diseno extremo a extremo para un vertical con evaluacion, seguridad, gobierno y operacion",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
+        },
+        {
+          "nombre": "OpenAI Evals",
+          "url": "https://github.com/openai/evals",
+          "objetivo": "desarrollar llevar GenAI a produccion con riesgos, costos, observabilidad y responsabilidad medible usando OpenAI Evals como laboratorio externo",
+          "criterio_cierre": "entregar evidencia local: baseline, metrica, error analysis y conexion con diseno extremo a extremo para un vertical con evaluacion, seguridad, gobierno y operacion",
+          "safety_note": "Material educativo; ejecuta codigo solo en tu entorno y evita subir datos o secretos reales."
         }
       ],
       "estandar_mit_plus": {
@@ -505,7 +858,40 @@
           "Lleva GenAI a producción con observabilidad y evaluación continua.",
           "Elige la pieza correcta por caso e integra toda la fase con seguridad y responsabilidad."
         ]
-      }
+      },
+      "estandar_transferencia": {
+        "revision": "enriquecer-genai-transferencia-v1",
+        "fecha": "2026-06-17",
+        "prioridad": "llevar GenAI a producción con riesgos, costos, observabilidad y responsabilidad medible",
+        "estilo_asignacion": "asignaciones ejecutivas y tecnicas: caso, matriz de riesgo, métrica, arquitectura y plan de despliegue",
+        "proyecto_cluster": "diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación",
+        "contrato_calidad": [
+          "Cada unidad debe cerrar con evidencia ejecutable o verificable, no solo lectura.",
+          "Toda mejora debe compararse contra una línea base y un set held-out cuando aplique.",
+          "Los errores se diagnostican por componente para que el alumno sepa que corregir.",
+          "Los entregables deben ser portafolio: notebook, harness, reporte, rúbrica o diseño auditable."
+        ]
+      },
+      "asignacionesTransferencia": [
+        {
+          "titulo": "Assignment 1 · IA responsable: baseline y mecanismo",
+          "objetivo": "Construir la versión más simple que haga visible llevar GenAI a producción con riesgos, costos, observabilidad y responsabilidad medible.",
+          "entregable": "notebook o reporte reproducible con baseline, prueba mínima y análisis de fallo.",
+          "criterio": "La entrega debe explicar que supuesto rompe el baseline y que evidencia lo demuestra."
+        },
+        {
+          "titulo": "Assignment 2 · IA responsable: implementación o evaluación fuerte",
+          "objetivo": "Elevar la solucion con asignaciones ejecutivas y tecnicas: caso, matriz de riesgo, métrica, arquitectura y plan de despliegue.",
+          "entregable": "artefacto de portafolio con métricas, ablation y casos borde.",
+          "criterio": "La mejora debe superar al baseline en una métrica alineada y no solo en una demo."
+        },
+        {
+          "titulo": "Proyecto de cluster · IA responsable",
+          "objetivo": "diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación",
+          "entregable": "informe técnico breve con decisiones, tradeoffs, riesgos y proxima iteración.",
+          "criterio": "Debe ser transferible: otro equipo podria repetirlo y adaptar la estructura a un dominio nuevo."
+        }
+      ]
     }
   ]
 }

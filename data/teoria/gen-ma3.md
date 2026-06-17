@@ -79,6 +79,33 @@ Moraleja de la arista: *el RAG adaptativo es un agente cuya herramienta es recup
 - **Misión externa (lab vivo):** repasa [Self-RAG (Asai et al., 2023)](https://arxiv.org/abs/2310.11511) y la idea de [RAG agéntico en LlamaIndex](https://docs.llamaindex.ai/en/stable/use_cases/agents/). **Criterio de cierre:** explicar cuándo el agente debe decidir NO recuperar.
 - **Mini-entregable:** un flujo de RAG adaptativo para una pregunta multi-fuente, marcando los puntos de decisión (recuperar/no, reformular, enrutar, iterar, parar).
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (RAG adaptativo y agentes que deciden que recuperar) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar always-retrieve contra retrieval condicional y reintentos guiados.
+2. **Baseline obligatorio:** siempre recuperar k documentos.
+3. **Versión mejorada:** RAG adaptativo con decisión de query, k y re-ranking.
+4. **Evaluación:** decisión accuracy de retrieval, faithfulness, costo y context precisión.
+5. **Fallo que debes explicar:** el agente recupera ruido y lo convierte en argumento final.
+6. **Transferencia:** asistentes expertos que alternan memoria interna, búsqueda y herramientas.
+
+**Laboratorio externo principal:** [RAGAS](https://docs.ragas.io/).
+**Laboratorio alternativo:** [LangGraph tutorials](https://langchain-ai.github.io/langgraph/tutorials/).
+**Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
+
+**Entregable:** policy de retrieval con trazas, fuentes y evaluación por consulta. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** el **RAG fijo** (recuperar siempre-una-vez-lo-mismo) falla cuando no hace falta buscar, hacen falta varias búsquedas, la consulta debe reformularse o hay varias fuentes. El **RAG adaptativo/agéntico** pone la recuperación bajo un agente que **decide si recuperar, qué fuente, cómo reformular, cuándo iterar y cuándo parar** (incluido admitir que no está en el corpus, anti-alucinación). Es el **bucle ReAct aplicado a recuperar**; en sistemas multi-agente vive como un recuperador especializado y memoria consultada con criterio. Su potencia cuesta latencia, dinero y más superficie de inyección: justifícalo midiendo.

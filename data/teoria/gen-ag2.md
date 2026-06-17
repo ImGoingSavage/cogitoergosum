@@ -89,6 +89,33 @@ Moraleja de la arista: *aprender a decidir es valorar las opciones (Q-learning) 
 - **Misión externa (lab vivo):** lee la intro de [PPO (Schulman et al., 2017)](https://arxiv.org/abs/1707.06347) y el resumen de [InstructGPT/RLHF (Ouyang et al., 2022)](https://arxiv.org/abs/2203.02155). **Criterio de cierre:** explicar en una frase cómo RLHF usa policy gradient para alinear un LLM.
 - **Mini-entregable:** una comparación de una carilla Q-learning vs policy gradient (qué aprende, fortalezas, debilidades, cuándo usar cada uno) y dónde encaja RLHF.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (Q-learning, policy gradient y RLHF como optimización de comportamiento) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar actualizacion Q con una política optimizada por recompensa.
+2. **Baseline obligatorio:** política aleatoria o heuristica fija.
+3. **Versión mejorada:** Q-learning o policy gradient con evaluación held-out.
+4. **Evaluación:** retorno, win rate por preferencia y ejemplos de reward hacking.
+5. **Fallo que debes explicar:** el agente maximiza el proxy pero viola la intencion.
+6. **Transferencia:** alinear respuestas de LLM sin olvidar que la recompensa es proxy.
+
+**Laboratorio externo principal:** [Sutton & Barto: Reinforcement Learning](http://incompleteideas.net/book/the-book-2nd.html).
+**Laboratorio alternativo:** [DeepLearning.AI Generative AI for Everyone](https://www.deeplearning.ai/courses/generative-ai-for-everyone/).
+**Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
+
+**Entregable:** notebook con Q-table, policy rollout y análisis de reward hacking. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** el agente busca la política que maximiza el **retorno descontado** (con $\gamma$ ponderando el futuro) en un **MDP**. Dos familias para aprenderla: **Q-learning** (value-based: aprende $Q(s,a)$ y deriva la política; escala con **DQN**) y **policy gradient** (policy-based: ajusta $\pi_\theta$ directamente — maneja acciones continuas, pero con alta varianza → actor-critic, **PPO**). El puente clave: **RLHF** alinea a los LLMs entrenando un modelo de recompensa de preferencias humanas y optimizando la política con **PPO**. La recompensa sigue siendo un **proxy** del objetivo: aprendida o no, mal puesta, el agente la **hackea**.

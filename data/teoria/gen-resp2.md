@@ -90,6 +90,33 @@ Moraleja de la arista: *los frameworks operacionalizan la IA responsable —AI R
 - **Misión externa (lab vivo):** explora el [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [MITRE ATLAS](https://atlas.mitre.org) y el [MIT AI Risk Repository](https://airisk.mit.edu/). **Criterio de cierre:** mapear un riesgo concreto de un sistema a una función del AI RMF y a una técnica de ATLAS.
 - **Mini-entregable:** un plan de gobernanza de un sistema de IA usando el AI RMF (Govern/Map/Measure/Manage), citando dónde usarías ATLAS y la MIT Taxonomy.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (frameworks de riesgo: Govern, Map, Measure y Manage) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** usar AI RMF y MIT AI Risk Repository para crear controles verificables.
+2. **Baseline obligatorio:** checklist informal sin duenos ni evidencias.
+3. **Versión mejorada:** gobierno operativo con medicion continua y responsables.
+4. **Evaluación:** riesgos con dueno, controles probados y incidentes detectados.
+5. **Fallo que debes explicar:** riesgos conocidos quedan sin dueno hasta que aparecen en producción.
+6. **Transferencia:** comités de producto, seguridad y cumplimiento con lenguaje compartido.
+
+**Laboratorio externo principal:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
+**Laboratorio alternativo:** [MIT AI Risk Repository](https://airisk.mit.edu/).
+**Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
+
+**Entregable:** risk register con controles, evidencias y cadencia de revisión. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** los **frameworks** operacionalizan la IA responsable en procesos repetibles. El **NIST AI RMF** (Govern/Map/Measure/Manage) gobierna el riesgo de extremo a extremo (el CSF para IA); **AI Secure-by-Design** integra seguridad/ética en todo el ciclo a nivel ejecutivo; **MITRE ATLAS** cataloga los **ataques** contra IA (el ATT&CK de la IA); y la **MIT AI Risk Taxonomy** es un **catálogo exhaustivo** de riesgos para no tener puntos ciegos. No compiten: AI RMF da el proceso, Secure-by-Design la postura, ATLAS las amenazas, la Taxonomy la exhaustividad. Pero **un framework no aplicado es un PDF**: el valor está en roles, métricas, evidencia y un dueño.

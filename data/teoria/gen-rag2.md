@@ -87,6 +87,33 @@ Moraleja de la arista: *embeber es poner el significado en un mapa; chunkear es 
 - **Misión externa (lab vivo):** explora el [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) y la guía de [text splitters de LangChain](https://python.langchain.com/docs/concepts/text_splitters/). **Criterio de cierre:** elegir un modelo de embeddings para un caso (idioma, costo) y justificar el chunking.
 - **Mini-entregable:** una "ficha de indexación" para un corpus tuyo: modelo de embeddings elegido (y por qué), estrategia de chunking, overlap y metadatos por chunk.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (embeddings, similitud y chunking como diseño de recuperación) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar chunking fijo, semantico y con solape usando el mismo set de preguntas.
+2. **Baseline obligatorio:** chunks grandes sin solape.
+3. **Versión mejorada:** chunking calibrado por estructura y embeddings adecuados.
+4. **Evaluación:** recall@k, precisión@k y cobertura del answer span.
+5. **Fallo que debes explicar:** el answer span queda partido o enterrado en chunks demasiado grandes.
+6. **Transferencia:** bases de conocimiento legales o médicas donde la cita exacta importa.
+
+**Laboratorio externo principal:** [pgvector](https://github.com/pgvector/pgvector).
+**Laboratorio alternativo:** [RAGAS](https://docs.ragas.io/).
+**Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
+
+**Entregable:** tabla de retrieval con chunks, queries, top-k y diagnostico. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** un **embedding** pone el significado de un texto como **coordenadas** en un mapa donde *cerca = parecido*; la relevancia se mide con **similitud coseno** (el QK de la atención, a escala de corpus). El **chunking** parte los documentos en **unidades semánticas coherentes**: ni tan grandes que el vector se diluya, ni tan chicas que pierdan contexto —prefiere cortar por **estructura**, con **solapamiento** y metadatos (título/resumen)—. Regla inviolable: **pregunta y documentos se embeben con el mismo modelo** (mismo espacio). La recuperación es un **proxy** de relevancia (cuidado con negación, tablas y código), no garantía de verdad.

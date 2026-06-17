@@ -93,6 +93,33 @@ Moraleja de la arista: *diseña agentes como delegas: la mínima autonomía que 
 - **Misión externa (lab vivo):** lee [Building Effective Agents (Anthropic)](https://www.anthropic.com/research/building-effective-agents) y hojea [AgentBench](https://arxiv.org/abs/2308.03688). **Criterio de cierre:** explicar cuándo NO usar un agente.
 - **Mini-entregable (mini-proyecto del cluster):** el **diseño de un agente orientado a una tarea** de negocio: decisión agente/workflow justificada, herramientas mínimas con permisos, puntos de humano-en-el-lazo, límites duros, manejo de errores y un **plan de evaluación** (task success + tool accuracy + casos adversarios). Evalúalo con la rúbrica de 5 criterios del cluster.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (seguridad de agentes: agencia mínima, HITL y límites de ejecución) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** diseñar permisos, aprobaciones humanas y límites antes de conectar acciones reales.
+2. **Baseline obligatorio:** agente autonomo con acceso amplio.
+3. **Versión mejorada:** workflow con agencia mínima, validación y humano en el lazo.
+4. **Evaluación:** blocked unsafe actions, task success seguro y auditabilidad.
+5. **Fallo que debes explicar:** prompt injection o razonamiento erroneo dispara una acción irreversible.
+6. **Transferencia:** compras, correos, finanzas o soporte con acciones de consecuencia.
+
+**Laboratorio externo principal:** [Anthropic: Building Effective Agents](https://www.anthropic.com/research/building-effective-agents).
+**Laboratorio alternativo:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
+**Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
+
+**Entregable:** matriz herramienta-permiso-riesgo y pruebas adversarias. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** diseñar un agente útil **y** seguro es ingeniería de delegación. Primero decide **agente vs workflow** (si los pasos son fijos, workflow determinista; agente solo cuando hay que decidir dinámicamente). Acota la autonomía con **agencia mínima**, permisos estrechos, **humano en el lazo** para lo irreversible, **límites duros** (pasos, presupuesto, timeout) y aislamiento. Maneja errores observando y verificando (lo devuelto es no confiable), y sabiendo decir "no sé". Y **evalúa** con set de tareas + adversarios (**task success, tool accuracy**), no con demos. El dato de la tarea puede ser vector de inyección.

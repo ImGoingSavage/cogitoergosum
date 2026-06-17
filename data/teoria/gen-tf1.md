@@ -84,6 +84,33 @@ Moraleja de la arista: *la atención es recuperación selectiva y diferenciable:
 - **Misión externa (lab vivo):** lee [The Illustrated Transformer (Jay Alammar)](https://jalammar.github.io/illustrated-transformer/) hasta la sección de self-attention. **Criterio de cierre:** poder explicar, sin la página, qué representa cada peso $\alpha_{ij}$.
 - **Mini-entregable:** un párrafo que compare RNN/LSTM vs atención en tres ejes: cuello de botella, dependencias largas y paralelismo.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (cuello de botella seq2seq y atención como recuperación diferenciable) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar un encoder fijo con una capa de atención sobre frases sinteticas.
+2. **Baseline obligatorio:** LSTM encoder-decoder sin atención.
+3. **Versión mejorada:** decoder con atención Bahdanau o Transformer pequeno.
+4. **Evaluación:** accuracy/BLEU por longitud y error analysis de dependencias largas.
+5. **Fallo que debes explicar:** la calidad cae justo al aumentar la longitud de la frase.
+6. **Transferencia:** RAG: conservar fuentes y recuperar fragmentos en vez de resumir todo.
+
+**Laboratorio externo principal:** [Karpathy Neural Networks: Zero to Hero](https://karpathy.ai/zero-to-hero.html).
+**Laboratorio alternativo:** [Stanford CS224N: NLP with Deep Learning](https://web.stanford.edu/class/cs224n/).
+**Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
+
+**Entregable:** notebook con curva por longitud, heatmap de atención y explicacion Q/A. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** los modelos secuenciales clásicos (RNN/LSTM) sufrían un **cuello de botella**: comprimir toda la entrada en un vector fijo, con cómputo secuencial y señales que se desvanecían. La **atención** ([Bahdanau, 2015](https://arxiv.org/abs/1409.0473)) lo rompió: en vez de comprimir, conserva todos los estados y, en cada paso, calcula una **mezcla ponderada** $c_i=\sum_j \alpha_{ij}h_j$ que decide **a qué mirar**. [Attention Is All You Need (2017)](https://arxiv.org/abs/1706.03762) quitó la recurrencia por completo, ganando **paralelismo** y **caminos cortos** entre palabras lejanas — el Transformer—. El precio: un costo **$O(n^2)$** que define la investigación posterior. Al perder el orden por procesar en paralelo, habrá que reinyectarlo (positional encoding).

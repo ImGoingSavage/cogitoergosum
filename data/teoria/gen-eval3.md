@@ -79,6 +79,33 @@ Moraleja de la arista: *para cazar alucinaciones, haz repetir (consistencia) y c
 - **Misión externa (lab vivo):** lee el paper [SelfCheckGPT (Manakul et al., 2023)](https://arxiv.org/abs/2305.15852) (idea central) y el [survey de alucinaciones (Ji et al., 2023)](https://arxiv.org/abs/2202.03629). **Criterio de cierre:** explicar por qué la inconsistencia entre muestras señala alucinación.
 - **Mini-entregable:** un checklist de detección de alucinaciones (consistencia + anclaje + exigir citas) para un sistema de alto riesgo.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (alucinación, faithfulness y consistencia contra fuentes) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** implementar checks de afirmaciones contra contexto y consistencia multi-muestra.
+2. **Baseline obligatorio:** aceptar respuestas plausibles sin verificar soporte.
+3. **Versión mejorada:** verificacion por claims y abstencion cuando falta evidencia.
+4. **Evaluación:** unsupported claim rate, faithfulness y tasa de abstencion correcta.
+5. **Fallo que debes explicar:** una respuesta segura agrega datos no presentes en la fuente.
+6. **Transferencia:** dominios sensibles donde cada afirmación necesita trazabilidad.
+
+**Laboratorio externo principal:** [RAGAS](https://docs.ragas.io/).
+**Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
+**Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
+
+**Entregable:** set de hallucination eval con claims, fuentes y verdictos. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** una **alucinación** es contenido generado no respaldado —**intrínseca** (contradice la fuente) o **extrínseca** (inventa lo no verificable)— y ocurre porque el LLM optimiza **plausibilidad, no verdad**. Se detecta con dos estrategias combinadas: **consistencia** (varias muestras divergen si inventa — self-consistency, SelfCheckGPT, sin necesitar fuente) y **anclaje** (verificar cada afirmación contra la fuente — faithfulness, exigir citas y comprobarlas). **No** confíes en la confianza/elocuencia del modelo (mal calibrado: seguro ≠ verdadero), y recuerda que la consistencia sugiere pero no garantiza, y que "inventar" solo es fallo cuando la tarea exige factualidad.

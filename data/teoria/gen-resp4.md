@@ -80,6 +80,33 @@ Moraleja de la arista: *ante un problema real, elige la pieza más simple que lo
 - **Misión externa (lab vivo):** elige un caso del MIT-AI.md (p. ej. asistente de seguros o asesor de inversión) y revisa una guía real de implementación (RAG, evaluación) de [LangChain](https://python.langchain.com/docs/tutorials/rag/) o [LlamaIndex](https://docs.llamaindex.ai/). **Criterio de cierre:** justificar la pieza elegida y cómo la evaluarías.
 - **Mini-entregable (mini-proyecto del cluster):** un **diseño de solución GenAI de extremo a extremo** para un problema de negocio (elige un vertical): la pieza (con justificación), la arquitectura (chunking/recuperación/agente según aplique), el **plan de evaluación**, las medidas de **IA responsable** (equidad/transparencia/privacidad) y de **seguridad**, y la operación en producción. Evalúalo con la rúbrica de 5 criterios del cluster.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (seleccion de arquitectura GenAI por vertical y métrica) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** elegir la pieza más simple que resuelva y justificarla con evaluación.
+2. **Baseline obligatorio:** usar la arquitectura más sofisticada por moda.
+3. **Versión mejorada:** solucion mínima viable, evaluable y responsable.
+4. **Evaluación:** métrica de negocio, calidad, seguridad, costo y riesgo residual.
+5. **Fallo que debes explicar:** multi-agente impresiona en demo pero pierde en costo, riesgo o fiabilidad.
+6. **Transferencia:** seguros, finanzas, legal, supply chain o educacion.
+
+**Laboratorio externo principal:** [DeepLearning.AI Generative AI for Everyone](https://www.deeplearning.ai/courses/generative-ai-for-everyone/).
+**Laboratorio alternativo:** [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
+**Ruta de cluster:** diseño extremo a extremo para un vertical con evaluación, seguridad, gobierno y operación.
+
+**Entregable:** proyecto final: arquitectura, evaluación, riesgo, costos y plan de producción. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** los casos por vertical son el **examen final**: dado un problema de negocio, **elige la pieza más simple que lo resuelva** —clasificar/extraer < **RAG** (conocimiento propio) < **agente** (acción) < **multi-agente** (complejidad divisible)— guiado por la métrica, no por la moda. Mapea cada caso (seguros→RAG, supply chain→agente, legal→multi-agente/RAG agéntico…), **evalúa siempre**, y en **dominios sensibles** (salud, finanzas, legal) haz de la **fidelidad, la atribución y la responsabilidad** el producto, con humano en el lazo. A veces la mejor arquitectura es **humano + IA de apoyo**, o no usar IA para esa decisión.

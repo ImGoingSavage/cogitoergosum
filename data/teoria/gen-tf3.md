@@ -86,6 +86,33 @@ Moraleja de la arista: *atención = mover información; FFN = transformarla; res
 - **Misión externa (lab vivo):** explora [BertViz](https://github.com/jessevig/bertviz) (visualizador de cabezas de atención) o las figuras de [Clark et al., 2019](https://arxiv.org/abs/1906.04341). **Criterio de cierre:** describir una relación lingüística que una cabeza concreta parece capturar.
 - **Mini-entregable (mini-proyecto del cluster):** un **diagrama anotado de un bloque Transformer** (atención → residual+norm → FFN → residual+norm, con dónde entra el masking), explicando cada pieza con tus palabras. Evalúalo con la rúbrica de 5 criterios del cluster.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (multi-head attention, masking causal y bloques decoder) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** construir multi-head attention con máscara causal, residual, LayerNorm y MLP.
+2. **Baseline obligatorio:** una sola cabeza sin máscara causal.
+3. **Versión mejorada:** multi-head causal attention con residual y LayerNorm.
+4. **Evaluación:** perplexity de validación, prueba de fuga causal y diversidad entre heads.
+5. **Fallo que debes explicar:** el modelo hace leakage mirando tokens futuros durante entrenamiento.
+6. **Transferencia:** agentes: separar subproblemas como heads especializadas, pero medir redundancia.
+
+**Laboratorio externo principal:** [nanoGPT](https://github.com/karpathy/nanoGPT).
+**Laboratorio alternativo:** [Karpathy Neural Networks: Zero to Hero](https://karpathy.ai/zero-to-hero.html).
+**Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
+
+**Entregable:** bloque decoder entrenable con tests de causalidad y ablation de heads. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** **multi-head** corre varias atenciones en paralelo, cada una con sus matrices, para capturar **relaciones distintas a la vez** (y se concatenan con $W^O$). El **masking** pone $-\infty$ antes del softmax: **causal** (un decoder no ve el futuro → modelos generativos como GPT) o **padding** (ignorar relleno). El **bloque Transformer** apila *atención → residual+LayerNorm → FFN → residual+LayerNorm*; la atención **mueve** información entre posiciones y la FFN la **transforma**, y los residuales+norm permiten apilar decenas de capas. De ahí las familias **encoder-only** (BERT, entender), **decoder-only** (GPT/Claude, generar) y **encoder-decoder** (T5).

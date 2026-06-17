@@ -82,6 +82,33 @@ Moraleja de la arista: *contar palabras compartidas no es medir significado; tod
 - **Misión externa (lab vivo):** lee el paper de [ROUGE (Lin, 2004)](https://aclanthology.org/W04-1013/) (intro) y la entrada de [BLEU](https://aclanthology.org/P02-1040/). **Criterio de cierre:** explicar la diferencia recall (ROUGE) vs precisión (BLEU) y un límite de cada una.
 - **Mini-entregable:** una tabla "métrica → qué mide → cuándo sirve → cuándo engaña" para ROUGE y BLEU.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (límites de BLEU/ROUGE y necesidad de métricas semánticas) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar ROUGE/BLEU contra BERTScore o juez rubricado en ejemplos controlados.
+2. **Baseline obligatorio:** ROUGE/BLEU como única métrica.
+3. **Versión mejorada:** métrica semántica más revisión de factualidad.
+4. **Evaluación:** correlacion con juicio humano, errores por parafrasis y factualidad.
+5. **Fallo que debes explicar:** sube la superposicion de palabras pero baja la calidad real.
+6. **Transferencia:** evaluar respuestas de un asistente sin una única respuesta dorada.
+
+**Laboratorio externo principal:** [Stanford CS224N: NLP with Deep Learning](https://web.stanford.edu/class/cs224n/).
+**Laboratorio alternativo:** [OpenAI Evals](https://github.com/openai/evals).
+**Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
+
+**Entregable:** reporte con pares de salidas, métricas y juicio humano razonado. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** evaluar texto generado es difícil porque **no hay una respuesta correcta** (multiplicidad), "bueno" es **multidimensional** (fidelidad ≠ fluidez), y depende de la tarea. **ROUGE** (recall de n-gramas, resumen) y **BLEU** (precisión de n-gramas, traducción) miden **superposición léxica con una referencia**: baratas y estándar, pero **ciegas al significado** (premian paráfrasis peligrosas, castigan correctas) y dependen de **referencias** que a menudo no existen. De ahí el giro a métricas **semánticas** y **sin referencia** ([[gen-eval2]]). Toda métrica es un **proxy**: optimizarla a ciegas degrada la tarea.

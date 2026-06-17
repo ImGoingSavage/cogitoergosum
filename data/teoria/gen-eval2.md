@@ -74,6 +74,33 @@ Moraleja de la arista: *BERTScore mide significado; el LLM-juez mide casi todo p
 - **Misión externa (lab vivo):** lee el paper [Judging LLM-as-a-Judge (Zheng et al., 2023)](https://arxiv.org/abs/2306.05685) (sección de sesgos) y explora [Chatbot Arena](https://lmarena.ai/). **Criterio de cierre:** nombrar 3 sesgos del juez y su mitigación.
 - **Mini-entregable:** una guía de "cómo usar LLM-as-a-judge sin engañarte": modo (pairwise), rúbrica, control de orden, calibración humana, anclaje de factualidad.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (BERTScore, LLM-as-a-judge y calibración de rúbricas) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** diseñar una rúbrica, calibrarla con ejemplos ancla y medir sesgos del juez.
+2. **Baseline obligatorio:** juez sin rúbrica ni ejemplos ancla.
+3. **Versión mejorada:** LLM-as-judge calibrado y comparado con métrica semántica.
+4. **Evaluación:** agreement con humano, bias tests y estabilidad entre seeds/modelos.
+5. **Fallo que debes explicar:** el juez premia respuestas largas o primeras por sesgo de posición.
+6. **Transferencia:** evaluación de prompts y modelos candidatos con criterios repetibles.
+
+**Laboratorio externo principal:** [promptfoo](https://www.promptfoo.dev/docs/intro/).
+**Laboratorio alternativo:** [LMArena](https://lmarena.ai/).
+**Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
+
+**Entregable:** harness de juez con rúbrica, ejemplos oro y pruebas de sesgo. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** **BERTScore** mide **significado** (similitud coseno de embeddings entre salida y referencia), arreglando la ceguera léxica de ROUGE/BLEU, pero sigue necesitando referencia y no juzga factualidad. **LLM-as-a-judge** evalúa **sin referencia y a escala**, captando matices y justificando, por eso domina (chatbots, RAG, agentes); mejor en modo **pairwise** que pointwise. Pero el juez tiene **sesgos** (posición, verbosidad, self-enhancement, autoconfianza): mitígalos con rúbricas, barajar el orden, paneles y **calibración contra humanos**. Y la **factualidad** se ancla fuera del modelo, porque juez y generador pueden compartir el mismo error.

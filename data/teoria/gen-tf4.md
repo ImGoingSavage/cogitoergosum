@@ -74,6 +74,33 @@ Moraleja de la arista: *el Transformer aprende relaciones entre tokens; conviér
 - **Misión externa (lab vivo):** hojea el paper [ViT (Dosovitskiy et al., 2021)](https://arxiv.org/abs/2010.11929), Figura 1 (el pipeline de parches). **Criterio de cierre:** explicar los 4 pasos que convierten una imagen en tokens para el Transformer.
 - **Mini-entregable:** un esquema que muestre, en paralelo, cómo texto e imagen se convierten ambos en "tokens + positional encoding" para el mismo tipo de Transformer.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (positional encoding, embeddings y extensión Transformer a visión) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** anadir embeddings posicionales y comparar texto causal contra patches de imagen.
+2. **Baseline obligatorio:** tokens sin codificacion de posición.
+3. **Versión mejorada:** positional embeddings aprendidos o sinusoidales.
+4. **Evaluación:** accuracy en pares permutados y comparación con/sin positional encoding.
+5. **Fallo que debes explicar:** el modelo no distingue secuencias con los mismos tokens en otro orden.
+6. **Transferencia:** visión: tratar imágenes como secuencias de patches con posición.
+
+**Laboratorio externo principal:** [Stanford CS25: Transformers United](https://web.stanford.edu/class/cs25/).
+**Laboratorio alternativo:** [Stanford CS224N: NLP with Deep Learning](https://web.stanford.edu/class/cs224n/).
+**Ruta de cluster:** proyecto final tipo GPT-2: tokenizador simple, decoder causal, entrenamiento, generación y evaluación.
+
+**Entregable:** experimento con permutaciones, positional embeddings y reporte de errores. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** la self-attention es **invariante a permutaciones** (ciega al orden), lo que para el lenguaje y las imágenes es fatal. El **positional encoding** lo arregla **sumando** a cada token una firma de su posición —**sinusoidal** (generaliza a longitudes nuevas), **aprendido** (BERT) o **relativo moderno** (RoPE, ALiBi, clave para contextos largos)—. Los **Vision Transformers** muestran la generalidad del modelo: cortan la imagen en **parches que se tratan como palabras** (+ PE 2D) y, **a escala de datos**, igualan a las CNN. Lección de fondo: el Transformer aprende **relaciones entre tokens**; dale tokens de cualquier modalidad + sus posiciones y se vuelve universal (multimodalidad).

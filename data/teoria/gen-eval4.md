@@ -87,6 +87,33 @@ Moraleja de la arista: *el prompt es código; optimízalo como ingeniería —un
 - **Misión externa (lab vivo):** lee la [Prompt Engineering Guide](https://www.promptingguide.ai/) (few-shot, CoT) y el paper de [Chain-of-Thought (Wei et al., 2022)](https://arxiv.org/abs/2201.11903). **Criterio de cierre:** explicar una tarea donde CoT ayuda y otra donde estorba.
 - **Mini-entregable (mini-proyecto del cluster):** un **protocolo de optimización de prompts dirigida por evaluación**: la métrica, cómo construirías el set (con held-out), qué técnicas probarías y la regla para conservar/descartar un cambio.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (optimización de prompts dirigida por evaluación y held-out) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** probar candidatos de prompt cambiando una variable a la vez y midiendo held-out.
+2. **Baseline obligatorio:** prompt elegido por gusto o demo.
+3. **Versión mejorada:** prompt seleccionado por métrica en validación y confirmado en held-out.
+4. **Evaluación:** delta contra baseline, intervalo de confianza y regresiones por segmento.
+5. **Fallo que debes explicar:** 99% en el set iterado pero caída en casos nuevos.
+6. **Transferencia:** A/B interno de asistentes, clasificadores o extractores con prompts.
+
+**Laboratorio externo principal:** [DeepLearning.AI Generative AI for Everyone](https://www.deeplearning.ai/courses/generative-ai-for-everyone/).
+**Laboratorio alternativo:** [Prompt Engineering Guide](https://www.promptingguide.ai/).
+**Ruta de cluster:** harness de evaluación con línea base, prompts candidatos, LLM-as-judge calibrado y reporte de regresiones.
+
+**Entregable:** reporte de experimentos con baseline, candidatos, métricas y decisión. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** el prompt es el **programa** del LLM y se optimiza como **ingeniería, no por intuición**. Técnicas que rinden —**instrucción/rol/formato, few-shot, chain-of-thought (+ self-consistency), descomposición, grounding**— ayudan **según la tarea**, así que hay que **medir**: define métrica y set ([[gen-eval2]]/[[gen-eval3]]), fija línea base, **cambia una cosa, mide, conserva solo si sube**, y valida en **held-out** para no sobreajustar. La optimización **automática** (APE, DSPy) lleva esto a "compilar prompts dirigidos por datos". Cuidado: una técnica famosa (CoT) puede **empeorar** tareas simples, y el prompt es superficie de **inyección** y no es lugar para secretos.

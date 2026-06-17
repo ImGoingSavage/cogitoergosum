@@ -78,6 +78,33 @@ Moraleja de la arista: *recupera amplio y barato, re-rankea estrecho y caro, pas
 - **Misión externa (lab vivo):** revisa la doc de [pgvector](https://github.com/pgvector/pgvector) o [FAISS](https://github.com/facebookresearch/faiss) y la idea de [HNSW](https://arxiv.org/abs/1603.09320). **Criterio de cierre:** explicar por qué la búsqueda es "aproximada" y qué se gana.
 - **Mini-entregable:** un diagrama del pipeline recuperar→re-rankear→aumentar→generar, marcando dónde entra la híbrida y el efecto de $k$.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (recuperación robusta: ANN, hibrida y re-ranking) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar vector-only, BM25/hibrida y re-ranking sobre consultas dificiles.
+2. **Baseline obligatorio:** top-k vectorial directo.
+3. **Versión mejorada:** recuperación hibrida con re-ranking y k calibrado.
+4. **Evaluación:** MRR, recall@k, precisión@k, latencia y costo por consulta.
+5. **Fallo que debes explicar:** top-k trae textos parecidos pero no el fragmento que responde.
+6. **Transferencia:** soporte técnico: sinonimos, IDs exactos y documentos similares.
+
+**Laboratorio externo principal:** [LlamaIndex documentation](https://docs.llamaindex.ai/).
+**Laboratorio alternativo:** [RAGAS](https://docs.ragas.io/).
+**Ruta de cluster:** asistente RAG con recuperación, atribucion, pruebas de faithfulness y casos adversarios.
+
+**Entregable:** benchmark de retrieval con tabla por consulta y decisión de k. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** recuperar bien es más que coseno: a escala se usa **ANN** (HNSW) —aproximado pero rapidísimo—; la **búsqueda híbrida** combina semántica (embeddings) con léxica (**BM25**) para capturar significado **y** términos exactos; el **re-ranking** (cross-encoder, que lee pregunta+doc juntos) reordena los candidatos por relevancia real. Pasa **pocos fragmentos buenos** tras re-ranking (cuidado con *lost in the middle*: más contexto ≠ mejor) con la instrucción "responde **solo** con el contexto y cita". Patrón: **recuperar amplio y barato → re-rankear estrecho y caro → generar con evidencia**.

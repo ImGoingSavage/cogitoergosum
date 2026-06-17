@@ -87,6 +87,33 @@ Moraleja de la arista: *un agente es un bucle de decisión con propósito (estad
 - **Misión externa (lab vivo):** lee el Capítulo 1 ("The Reinforcement Learning Problem") de [Sutton & Barto](http://incompleteideas.net/book/the-book-2nd.html) (gratuito). **Criterio de cierre:** explicar el bucle agente-entorno y la diferencia entre recompensa inmediata y retorno.
 - **Mini-entregable:** una tabla que mapee una tarea tuya a los cinco elementos (entorno, estado, acción, recompensa, política), señalando el riesgo de reward hacking.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (bucle agente-entorno: estado, acción, recompensa y política) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** modelar estados, acciones, recompensas y política antes de usar un LLM.
+2. **Baseline obligatorio:** script reactivo sin estado ni recompensa definida.
+3. **Versión mejorada:** agente con política evaluada por retorno.
+4. **Evaluación:** retorno promedio, tasa de exito y casos donde la recompensa falla.
+5. **Fallo que debes explicar:** la recompensa proxy incentiva conductas no deseadas.
+6. **Transferencia:** workflows LLM: observar, decidir, actuar y volver a observar.
+
+**Laboratorio externo principal:** [Sutton & Barto: Reinforcement Learning](http://incompleteideas.net/book/the-book-2nd.html).
+**Laboratorio alternativo:** [Anthropic: Building Effective Agents](https://www.anthropic.com/research/building-effective-agents).
+**Ruta de cluster:** agente con herramientas estrechas, límites duros, evaluación por task success y fallos controlados.
+
+**Entregable:** simulador pequeno con trazas y función de recompensa explicada. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** un **agente** se distingue de un LLM **reactivo** por el **bucle agente-entorno**: percibe un **estado**, elige una **acción** según su **política** $\pi(a\mid s)$, recibe un nuevo estado y una **recompensa**, y repite hacia un **objetivo**. No maximiza la recompensa inmediata sino el **retorno acumulado**, lo que crea las tensiones de **asignación de crédito** y **exploración/explotación**. Los **agentes LLM** instancian este marco pero suelen **usar** un LLM como política (vía prompting/herramientas) en vez de aprenderla por ensayo y error. Cuidado: la **recompensa es la especificación del objetivo** — mal puesta, el agente optimiza lo equivocado (reward hacking).

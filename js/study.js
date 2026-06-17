@@ -368,14 +368,21 @@ export function renderizar() {
       : 'Presentar examen del bloque';
   }
 
-  // Paneles: retomar lo que estaba en curso
+  // Paneles: retomar lo que estaba en curso, PERO solo si pertenece al bloque
+  // visible (si no, al cambiar de bloque aparecería el quiz/examen de otro
+  // bloque debajo de los clusters — bug 2026-06-17).
   $('estudio-unidad').hidden = true;
   $('estudio-examen').hidden = true;
   const panelCluster = $('estudio-examen-cluster');
   if (panelCluster) panelCluster.hidden = true;
-  if (e.examenClusterEnCurso) renderExamenCluster();
+  const clusterEnCursoEnBloque =
+    e.examenClusterEnCurso &&
+    taxonomia.find((c) => c.id === e.examenClusterEnCurso.clusterId)?.bloque === b.id;
+  const quizEnCursoEnBloque =
+    e.quizEnCurso && unidad(e.quizEnCurso.unidadId)?.bloque === b.id;
+  if (clusterEnCursoEnBloque) renderExamenCluster();
   else if (e.examenEnCurso?.bloqueId === b.id) renderExamen();
-  else if (e.quizEnCurso) abrirUnidad(e.quizEnCurso.unidadId);
+  else if (quizEnCursoEnBloque) abrirUnidad(e.quizEnCurso.unidadId);
 
   actualizarHeaderRachas();
 }

@@ -78,6 +78,33 @@ Moraleja de la arista: *divide en agentes especializados cuando la tarea es gran
 - **Misión externa (lab vivo):** lee [How we built our multi-agent research system (Anthropic)](https://www.anthropic.com/engineering/multi-agent-research-system) y hojea [AutoGen (Microsoft)](https://microsoft.github.io/autogen/). **Criterio de cierre:** explicar cuándo multi-agente vale la pena y cuándo no.
 - **Mini-entregable:** un diagrama de un sistema multi-agente para una tarea, con roles, patrón de colaboración y dónde podría propagarse un error.
 
+<!-- GENAI_TRANSFER_ASSIGNMENT_START -->
+## Asignación práctica de transferencia
+
+**Objetivo graduado:** convertir la idea central (descomposicion multi-agente y patrones de colaboración) en una evidencia que pueda revisarse como assignment de Stanford/DeepLearning.AI/Karpathy: implementación o diseño, baseline, métrica, error analysis y transferencia.
+
+1. **Implementación o diseño:** comparar agente unico contra roles separados con el mismo presupuesto.
+2. **Baseline obligatorio:** un solo agente con prompt amplio.
+3. **Versión mejorada:** orquestador con especialistas y contrato de salida.
+4. **Evaluación:** task success, costo, latencia y errores por rol.
+5. **Fallo que debes explicar:** más agentes aumentan costo sin mejorar task success.
+6. **Transferencia:** equipos humanos: especializar solo cuando la coordinación se paga.
+
+**Laboratorio externo principal:** [Anthropic multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+**Laboratorio alternativo:** [Microsoft AutoGen](https://microsoft.github.io/autogen/).
+**Ruta de cluster:** sistema multi-agente con roles, grafo de estado, presupuesto, red team y comparación contra agente unico.
+
+**Entregable:** experimento con roles, trazas y comparación contra baseline simple. Debe incluir una conclusión breve: qué aprendiste, qué falló, qué mediste y que harías distinto si lo llevaras a producción.
+
+**Rúbrica de excelencia:**
+
+- Corrección técnica: la implementación o el diseño corresponde a la lección, no a una demo genérica.
+- Evidencia: incluye baseline, métrica, casos borde y al menos una comparación o ablation.
+- Transferencia: explica qué estructura profunda se conserva al moverlo a otro dominio.
+- Error analysis: nombra el supuesto roto, el síntoma observable y la siguiente acción.
+- Comunicación: cualquier revisor puede reproducir la decisión sin confiar en autoridad externa.
+<!-- GENAI_TRANSFER_ASSIGNMENT_END -->
+
 ---
 
 > **Síntesis:** un **sistema multi-agente** divide una tarea grande en **agentes especializados** que colaboran, ganando **contexto acotado**, especialización, modularidad y **paralelismo**. Patrones: **orquestador–trabajadores** (el más común), **pipeline**, **debate/crítica** (perspectivas independientes que detectan más errores) y votación. Pero introduce **costo de coordinación**, mucho más cómputo, e **nuevas fronteras de confianza**: un error o una **inyección** puede propagarse entre agentes ([[cyber-llm2]]). Úsalo solo cuando la tarea es grande y divisible; si es simple o de pasos fijos, un agente o un workflow gana.
