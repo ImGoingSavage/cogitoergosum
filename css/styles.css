@@ -1107,6 +1107,35 @@ button.enlace {
 
 .quiz-explicacion { color: var(--texto-suave); font-size: 14px; margin-top: 8px; }
 
+/* Opción múltiple interactiva (quiz y examen de cluster) */
+.quiz-opciones { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.quiz-opcion {
+  text-align: left;
+  padding: 12px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--bg-elevado);
+  color: var(--texto);
+  font-size: 15px;
+  line-height: 1.45;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.quiz-opcion:hover:not(:disabled) { border-color: var(--acento); }
+.quiz-opcion:disabled { cursor: default; opacity: 0.85; }
+.quiz-opcion.correcta {
+  border-color: var(--exito);
+  background: rgba(34, 197, 94, 0.12);
+  opacity: 1;
+}
+.quiz-opcion.incorrecta {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  opacity: 1;
+}
+.quiz-veredicto-ok { color: var(--exito); font-weight: 600; margin: 0 0 6px; }
+.quiz-veredicto-mal { color: #fca5a5; font-weight: 600; margin: 0 0 6px; }
+
 #unidad-quiz textarea, #examen-contenido textarea { margin-top: 4px; }
 
 #unidad-quiz button, #examen-contenido button { margin-top: 12px; }

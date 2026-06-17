@@ -1092,6 +1092,71 @@ function abrirUnidad(unidadId, anchorLi) {
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+/** Una pregunta es de opción múltiple si trae ≥2 opciones. */
+function esOpcionMultiple(q) {
+  return Array.isArray(q.options) && q.options.length >= 2;
+}
+
+/**
+ * Pinta una pregunta de opción múltiple INTERACTIVA: opciones barajadas como
+ * botones; al elegir, autocalifica contra q.answer (la opción correcta),
+ * resalta correcta/incorrecta y revela la explicación. Llama alResolver(
+ * evaluacion, respuesta) una sola vez con 'bien'|'mal' para que el llamador
+ * registre el resultado y pinte el botón "siguiente".
+ */
+function pintarOpcionMultiple(cont, q, alResolver) {
+  // La correcta es q.answer; si no calza con ninguna opción, cae a options[0].
+  let correcta = q.answer ?? q.options[0];
+  if (!q.options.includes(correcta)) correcta = q.options[0];
+  const opciones = barajar(q.options);
+
+  const lista = document.createElement('div');
+  lista.className = 'quiz-opciones';
+  cont.appendChild(lista);
+
+  let resuelta = false;
+  opciones.forEach((opt) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quiz-opcion';
+    btn.innerHTML = renderInline(opt); // texto plano escapado + markdown ligero
+    lista.appendChild(btn);
+    btn.addEventListener('click', () => {
+      if (resuelta) return;
+      resuelta = true;
+      const acierto = opt === correcta;
+      // Bloquear y marcar todas
+      lista.querySelectorAll('.quiz-opcion').forEach((b) => {
+        b.disabled = true;
+        if (b.innerHTML === renderInline(correcta)) b.classList.add('correcta');
+      });
+      if (!acierto) btn.classList.add('incorrecta');
+
+      // Revelar explicación (por qué) y, si aporta, la solución completa
+      const sol = document.createElement('div');
+      sol.className = 'quiz-solucion';
+      const veredicto = document.createElement('p');
+      veredicto.className = acierto ? 'quiz-veredicto-ok' : 'quiz-veredicto-mal';
+      veredicto.textContent = acierto ? '✓ Correcto' : '✗ Incorrecto';
+      sol.appendChild(veredicto);
+      if (q.explicacion) {
+        const ex = document.createElement('div');
+        ex.className = 'quiz-explicacion';
+        ex.innerHTML = renderCampoPregunta(q.explicacion);
+        sol.appendChild(ex);
+      }
+      if (q.solucion && q.solucion !== q.explicacion) {
+        const det = document.createElement('div');
+        det.innerHTML = renderCampoPregunta(q.solucion);
+        sol.appendChild(det);
+      }
+      cont.appendChild(sol);
+
+      alResolver(acierto ? 'bien' : 'mal', opt);
+    });
+  });
+}
+
 /** Pinta la pregunta actual del quiz (retrieval: responder antes de ver). */
 function renderPreguntaQuiz() {
   const e = load('estudio');
@@ -1119,6 +1184,32 @@ function renderPreguntaQuiz() {
   enunciado.className = 'quiz-enunciado';
   enunciado.innerHTML = renderCampoPregunta(q.enunciado); // markdown + KaTeX
   cont.appendChild(enunciado);
+
+  // Opción múltiple interactiva (preguntas con options); las abiertas siguen
+  // con escritura + autoevaluación más abajo.
+  if (esOpcionMultiple(q)) {
+    pintarOpcionMultiple(cont, q, (evaluacion, respuesta) => {
+      const btnSig = document.createElement('button');
+      btnSig.className = 'primario';
+      btnSig.textContent = qc.indice + 1 < ids.length ? 'Siguiente pregunta' : 'Cerrar evaluación';
+      cont.appendChild(btnSig);
+      btnSig.addEventListener('click', () => {
+        update('estudio', (st2) => {
+          st2.quizEnCurso.resultados.push({
+            preguntaId: q.id,
+            tipo: q.tipo,
+            respuesta,
+            evaluacion,
+          });
+          st2.quizEnCurso.indice += 1;
+          st2.quizEnCurso.respuestaParcial = '';
+          return st2;
+        });
+        renderPreguntaQuiz();
+      });
+    });
+    return;
+  }
 
   const ta = document.createElement('textarea');
   ta.className = 'textarea-corta';
@@ -1872,6 +1963,27 @@ function renderExamenCluster(notaInicial) {
   enunciado.className = 'quiz-enunciado';
   enunciado.innerHTML = renderCampoPregunta(q.enunciado);
   cont.appendChild(enunciado);
+
+  // Opción múltiple interactiva en el examen de cluster (mismo patrón que el quiz).
+  if (esOpcionMultiple(q)) {
+    pintarOpcionMultiple(cont, q, (evaluacion, respuesta) => {
+      const ec3 = load('estudio').examenClusterEnCurso;
+      const btnSig = document.createElement('button');
+      btnSig.className = 'primario';
+      btnSig.textContent =
+        ec3 && ec3.indice + 1 < ec3.preguntasIds.length ? 'Siguiente pregunta' : 'Cerrar examen';
+      cont.appendChild(btnSig);
+      btnSig.addEventListener('click', () => {
+        update('estudio', (st) => {
+          st.examenClusterEnCurso.resultados.push({ preguntaId: q.id, respuesta, evaluacion });
+          st.examenClusterEnCurso.indice += 1;
+          return st;
+        });
+        renderExamenCluster();
+      });
+    });
+    return;
+  }
 
   const ta = document.createElement('textarea');
   ta.className = 'textarea-corta';
