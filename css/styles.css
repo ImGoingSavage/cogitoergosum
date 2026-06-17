@@ -1788,6 +1788,11 @@ button.secundario.peligro:hover:not(:disabled) {
   padding: 4px 16px 16px;
   border-top: 1px dashed var(--borde);
 }
+.cluster-integrador {
+  border-color: var(--lampara-borde);
+  background: var(--lampara-suave);
+}
+.cluster-integrador .cluster-cuerpo { border-top: none; padding-top: 14px; }
 .cluster-desc { color: var(--texto-suave); font-size: 0.9rem; line-height: 1.5; margin: 12px 0 6px; }
 .cluster-secuencia {
   color: var(--texto);

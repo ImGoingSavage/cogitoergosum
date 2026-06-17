@@ -25,6 +25,8 @@ const $ = (id) => document.getElementById(id);
 
 const MIN_RESPUESTA_QUIZ = 40; // forcejeo mínimo antes de ver la respuesta
 const DEFAULT_CLUSTER_EXAM_SIZE = 25; // preguntas del examen final de cluster
+const DEFAULT_INTEGRADOR_EXAM_SIZE = 30; // interleaving de toda la ruta Fase 8
+const INTEGRADOR_FASE8_ID = '__integrador-fase-8';
 
 const NOMBRES_TIPO = {
   quiz: 'Pregunta de recuperación',
@@ -67,6 +69,29 @@ function getClusterQuestionPool(clusterId) {
     .map(unidad)
     .filter((u) => u && u.bloque === c.bloque)
     .flatMap((u) => u.banco ?? []);
+}
+
+/** Todas las preguntas de banco de un bloque completo (examen integrador). */
+function getBloqueQuestionPool(bloqueId) {
+  return (datos?.unidades ?? [])
+    .filter((u) => u.bloque === bloqueId)
+    .flatMap((u) => u.banco ?? []);
+}
+
+function getExamQuestionPool(idLogico) {
+  return idLogico === INTEGRADOR_FASE8_ID
+    ? getBloqueQuestionPool('fase-8')
+    : getClusterQuestionPool(idLogico);
+}
+
+function tamanoExamen(idLogico) {
+  return idLogico === INTEGRADOR_FASE8_ID
+    ? DEFAULT_INTEGRADOR_EXAM_SIZE
+    : DEFAULT_CLUSTER_EXAM_SIZE;
+}
+
+function tituloPanelExamen(idLogico, titulo) {
+  return idLogico === INTEGRADOR_FASE8_ID ? titulo : `Examen: ${titulo}`;
 }
 
 /** Clusters de un bloque dado (taxonomía combinada fase-7 entrevista + fase-8 ciber). */
@@ -318,7 +343,9 @@ export function renderizar() {
   const tieneExamenBloque = (b.examen?.items?.length ?? 0) > 0;
   if (!tieneExamenBloque) {
     $('estudio-examen-estado').textContent =
-      'Este bloque se evalúa con el examen final de cada cluster (ábrelos en cada categoría).';
+      b.id === 'fase-8'
+        ? 'Este bloque se evalúa con exámenes por cluster y con el examen integrador de toda la ruta.'
+        : 'Este bloque se evalúa con el examen final de cada cluster (ábrelos en cada categoría).';
     $('btn-examen-iniciar').hidden = true;
   } else {
     $('estudio-examen-estado').textContent = aprobado
@@ -469,6 +496,7 @@ const clustersExpandidos = new Set();
 // grupo "Otras unidades" para no perderla nunca.
 function renderClusters(container, b) {
   const colocadas = new Set();
+  if (b.id === 'fase-8') container.appendChild(crearExamenIntegradorItem());
   taxonomiaDe(b.id).forEach((c) => {
     const unidades = (c.unidades ?? []).map(unidad).filter((u) => u && u.bloque === b.id);
     unidades.forEach((u) => colocadas.add(u.id));
@@ -489,6 +517,35 @@ function renderClusters(container, b) {
       )
     );
   }
+}
+
+function crearExamenIntegradorItem() {
+  const li = document.createElement('li');
+  li.className = 'cluster-acordeon cluster-integrador';
+
+  const cuerpo = document.createElement('div');
+  cuerpo.className = 'cluster-cuerpo';
+
+  const titulo = document.createElement('p');
+  titulo.className = 'cluster-mp-titulo';
+  titulo.textContent = '📚 Examen integrador de la ruta';
+
+  const desc = document.createElement('p');
+  desc.className = 'cluster-desc';
+  desc.textContent =
+    'Interleaving de los 8 clusters de ciberseguridad. Toma preguntas de toda la Fase 8 con selector de dificultad.';
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'primario cluster-exam-launch examen-integrador-launch';
+  btn.textContent = 'Presentar examen integrador';
+  btn.addEventListener('click', () =>
+    prepararExamenCluster(INTEGRADOR_FASE8_ID, 'Examen integrador de Fase 8')
+  );
+
+  cuerpo.append(titulo, desc, btn);
+  li.appendChild(cuerpo);
+  return li;
 }
 
 // Un acordeón = cabecera (chevron + título + chip de track + progreso) y cuerpo
@@ -1574,7 +1631,7 @@ function finalizarExamen() {
   cont.appendChild(btn);
 }
 
-/* =================== Examen final de cluster (Fase 7) ================ */
+/* ========== Examen final de cluster / integrador de ruta ============ */
 
 /**
  * Muestra el panel del examen con el selector de dificultad antes de iniciarlo.
@@ -1585,7 +1642,7 @@ function prepararExamenCluster(clusterId, clusterTitulo) {
   $('estudio-examen').hidden = true;
   const panel = $('estudio-examen-cluster');
   panel.hidden = false;
-  $('examen-cluster-titulo').textContent = `Examen: ${clusterTitulo}`;
+  $('examen-cluster-titulo').textContent = tituloPanelExamen(clusterId, clusterTitulo);
 
   const cont = $('examen-cluster-contenido');
   cont.innerHTML = '';
@@ -1625,8 +1682,8 @@ function prepararExamenCluster(clusterId, clusterTitulo) {
         b.classList.toggle('activo', b.dataset.valor === valor)
       );
       const pool = valor === 'mixto'
-        ? getClusterQuestionPool(clusterId)
-        : getClusterQuestionPool(clusterId).filter((q) => q.difficulty === valor);
+        ? getExamQuestionPool(clusterId)
+        : getExamQuestionPool(clusterId).filter((q) => q.difficulty === valor);
       if (pool.length === 0) {
         btnIniciar.hidden = true;
         msgVacio.hidden = false;
@@ -1644,14 +1701,15 @@ function prepararExamenCluster(clusterId, clusterTitulo) {
 
   btnIniciar.addEventListener('click', () => {
     const pool = difSeleccionada === 'mixto'
-      ? getClusterQuestionPool(clusterId)
-      : getClusterQuestionPool(clusterId).filter((q) => q.difficulty === difSeleccionada);
+      ? getExamQuestionPool(clusterId)
+      : getExamQuestionPool(clusterId).filter((q) => q.difficulty === difSeleccionada);
     if (!pool.length) return;
 
     const barajado = barajar(pool.map((q) => q.id));
-    const seleccionadas = barajado.slice(0, DEFAULT_CLUSTER_EXAM_SIZE);
-    const nota = seleccionadas.length < DEFAULT_CLUSTER_EXAM_SIZE
-      ? `Solo hay ${seleccionadas.length} pregunta(s) de este nivel en el cluster.`
+    const tamano = tamanoExamen(clusterId);
+    const seleccionadas = barajado.slice(0, tamano);
+    const nota = seleccionadas.length < tamano
+      ? `Solo hay ${seleccionadas.length} pregunta(s) de este nivel en este examen.`
       : null;
 
     update('estudio', (st) => {
@@ -1681,14 +1739,16 @@ function renderExamenCluster(notaInicial) {
   panel.hidden = false;
   $('estudio-unidad').hidden = true;
   $('estudio-examen').hidden = true;
-  if (ec.clusterTitulo) $('examen-cluster-titulo').textContent = `Examen: ${ec.clusterTitulo}`;
+  if (ec.clusterTitulo) {
+    $('examen-cluster-titulo').textContent = tituloPanelExamen(ec.clusterId, ec.clusterTitulo);
+  }
 
   if (ec.indice >= ec.preguntasIds.length) {
     finalizarExamenCluster();
     return;
   }
 
-  const pool = getClusterQuestionPool(ec.clusterId);
+  const pool = getExamQuestionPool(ec.clusterId);
   const qid = ec.preguntasIds[ec.indice];
   const q = pool.find((b) => b.id === qid);
   if (!q) {
