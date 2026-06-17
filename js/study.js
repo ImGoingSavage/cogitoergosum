@@ -31,7 +31,21 @@ const NOMBRES_TIPO = {
   acertijo: 'Acertijo',
   'encuentra-error': 'Encuentra el error',
   disparador: 'Quiz de disparador',
+  concepto: 'Concepto',
+  scenario: 'Escenario',
+  code_review: 'Revisión de código',
+  log_analysis: 'Análisis de logs',
+  ml_pipeline_review: 'Revisión de pipeline ML',
+  llm_security_review: 'Revisión de seguridad LLM',
+  threat_model: 'Threat model',
+  data_privacy_review: 'Revisión de privacidad',
+  reflexion: 'Reflexión',
 };
+
+function renderCampoPregunta(txt) {
+  const s = txt ?? '';
+  return /\n|```/.test(s) ? renderMarkdown(s) : renderInline(s);
+}
 
 let datos = null; // contenido de data/study.json (null si no cargó)
 
@@ -949,9 +963,9 @@ function renderPreguntaQuiz() {
   head.textContent = `${prefijo} · ${qc.indice + 1} de ${ids.length}`;
   cont.appendChild(head);
 
-  const enunciado = document.createElement('p');
+  const enunciado = document.createElement('div');
   enunciado.className = 'quiz-enunciado';
-  enunciado.innerHTML = renderInline(q.enunciado); // markdown + KaTeX
+  enunciado.innerHTML = renderCampoPregunta(q.enunciado); // markdown + KaTeX
   cont.appendChild(enunciado);
 
   const ta = document.createElement('textarea');
@@ -996,13 +1010,13 @@ function renderPreguntaQuiz() {
 
     const sol = document.createElement('div');
     sol.className = 'quiz-solucion';
-    const st = document.createElement('p');
-    st.innerHTML = renderInline(q.solucion); // markdown + KaTeX
+    const st = document.createElement('div');
+    st.innerHTML = renderCampoPregunta(q.solucion); // markdown + KaTeX
     sol.appendChild(st);
     if (q.explicacion) {
-      const ex = document.createElement('p');
+      const ex = document.createElement('div');
       ex.className = 'quiz-explicacion';
-      ex.innerHTML = renderInline(q.explicacion);
+      ex.innerHTML = renderCampoPregunta(q.explicacion);
       sol.appendChild(ex);
     }
     cont.appendChild(sol);
@@ -1699,9 +1713,9 @@ function renderExamenCluster(notaInicial) {
   head.textContent = `Pregunta · ${ec.indice + 1} de ${ec.preguntasIds.length}`;
   cont.appendChild(head);
 
-  const enunciado = document.createElement('p');
+  const enunciado = document.createElement('div');
   enunciado.className = 'quiz-enunciado';
-  enunciado.innerHTML = renderInline(q.enunciado);
+  enunciado.innerHTML = renderCampoPregunta(q.enunciado);
   cont.appendChild(enunciado);
 
   const ta = document.createElement('textarea');
@@ -1734,13 +1748,13 @@ function renderExamenCluster(notaInicial) {
 
     const sol = document.createElement('div');
     sol.className = 'quiz-solucion';
-    const sp = document.createElement('p');
-    sp.innerHTML = renderInline(q.solucion);
+    const sp = document.createElement('div');
+    sp.innerHTML = renderCampoPregunta(q.solucion);
     sol.appendChild(sp);
     if (q.explicacion) {
-      const ex = document.createElement('p');
+      const ex = document.createElement('div');
       ex.className = 'quiz-explicacion';
-      ex.innerHTML = renderInline(q.explicacion);
+      ex.innerHTML = renderCampoPregunta(q.explicacion);
       sol.appendChild(ex);
     }
     cont.appendChild(sol);
