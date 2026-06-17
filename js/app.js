@@ -73,6 +73,7 @@ const ETIQUETA_TIMER_DEFAULT = 'La solución se desbloquea al agotarse';
 const ETIQUETA_TIMER_INCUBACION =
   'Timer cumplido. Si no lo has resuelto: levántate y aléjate un momento — muchas ideas llegan en la pausa.';
 const ETIQUETA_TIMER_PAUSA = 'En pausa — tu forcejeo te espera.';
+const ETIQUETA_TIMER_INICIAR = 'Presiona ▶ para iniciar tu forcejeo cuando estés listo.';
 
 let problemas = [];
 const $ = (id) => document.getElementById(id);
@@ -311,7 +312,7 @@ function crearAsignacion() {
     fecha: Storage.hoy(),
     esRevision,
     revisionDe,
-    timerInicio: Date.now(),
+    timerInicio: null, // §2.6: el reloj NO arranca solo; comienza al pulsar ▶
     timerCumplido: false,
     // §2.6: duración fija al iniciar (preferencia del usuario, 20-120 min);
     // solo puede extenderse en caliente, jamás recortarse.
@@ -350,7 +351,7 @@ function abrirProblemaCompartido(problemId, pjId) {
     fecha: Storage.hoy(),
     esRevision: false,
     revisionDe: null,
-    timerInicio: Date.now(),
+    timerInicio: null, // §2.6: el reloj NO arranca solo; comienza al pulsar ▶
     timerCumplido: false,
     duracionMin: Timer.normalizarDuracion(Storage.load('preferencias')?.duracionTimer),
     pausadoEn: null,
@@ -505,22 +506,21 @@ function renderizarSesion() {
     return;
   }
 
-  // Temporizador (tiempo EFECTIVO: las pausas lo congelan, nunca lo adelantan)
-  Timer.asegurarInicio();
+  // Temporizador (tiempo EFECTIVO: las pausas lo congelan, nunca lo adelantan).
+  // §2.6: el reloj NO arranca al abrir la vista; solo cuando el usuario pulsa ▶
+  // (Timer.comenzar). Hasta entonces muestra la duración completa, en 0% de barra.
   actualizarTimerControles();
   Timer.iniciar(
     (ms, fraccion, pausado) => {
-      // Si el forcejeo ya terminó (natural o manualmente), fijar display en 00:00
-      if (Timer.cumplido()) {
-        $('timer-display').textContent = '00:00';
-        $('timer-progreso').style.width = '100%';
-        return;
-      }
+      // El display SIEMPRE refleja el tiempo restante real. Tras +10 min, aunque
+      // el desbloqueo ya estuviera ganado (cumplido), el reloj vuelve a contar.
       $('timer-display').textContent = Timer.formato(ms);
-      $('timer-progreso').style.width = `${(fraccion * 100).toFixed(2)}%`;
+      const f = Math.max(0, Math.min(1, fraccion));
+      $('timer-progreso').style.width = `${(f * 100).toFixed(2)}%`;
       actualizarCheckpoint();
       actualizarEstadoBloqueo();
-      if (pausado) $('timer-etiqueta').textContent = ETIQUETA_TIMER_PAUSA;
+      if (!Timer.iniciado()) $('timer-etiqueta').textContent = ETIQUETA_TIMER_INICIAR;
+      else if (pausado) $('timer-etiqueta').textContent = ETIQUETA_TIMER_PAUSA;
     },
     () => {
       $('timer-progreso').style.width = '100%';
@@ -560,8 +560,21 @@ function configurarTimerUI() {
   });
 
   $('btn-timer-pausa').addEventListener('click', () => {
-    if (Timer.enPausa()) Timer.reanudar();
-    else Timer.pausar();
+    if (!Timer.iniciado()) {
+      // Iniciar el forcejeo: fija la duración elegida AHORA (la del selector) y
+      // arranca el reloj. El reloj jamás corre antes de este clic.
+      Storage.update('asignacion', (a) => {
+        if (a && !a.timerInicio) {
+          a.duracionMin = Timer.normalizarDuracion(Storage.load('preferencias')?.duracionTimer);
+        }
+        return a;
+      });
+      Timer.comenzar();
+    } else if (Timer.enPausa()) {
+      Timer.reanudar();
+    } else {
+      Timer.pausar();
+    }
     actualizarTimerControles();
     actualizarCheckpoint();
     if (Timer.enPausa()) $('timer-etiqueta').textContent = ETIQUETA_TIMER_PAUSA;
@@ -578,18 +591,22 @@ function configurarTimerUI() {
 function actualizarTimerControles() {
   const a = Storage.load('asignacion');
   const activo = Boolean(a && !a.revelado && !a.completado);
+  const iniciado = Timer.iniciado();
   $('btn-timer-pausa').hidden = !activo;
-  $('btn-timer-extender').hidden = !activo;
-  // "Listo" solo aparece mientras el forcejeo está en curso (no cumplido aún)
-  $('btn-timer-terminar').hidden = !activo || Timer.cumplido();
+  // Extender y "Listo" solo tienen sentido con el forcejeo YA iniciado.
+  $('btn-timer-extender').hidden = !activo || !iniciado;
+  $('btn-timer-terminar').hidden = !activo || !iniciado || Timer.cumplido();
   $('timer-sugerencia').textContent = '';
   if (!activo) return;
 
   const pausado = Timer.enPausa();
-  $('btn-timer-pausa').textContent = pausado ? '▶' : '⏸';
-  $('btn-timer-pausa').title = pausado
-    ? 'Reanudar el forcejeo'
-    : 'Pausar el cronómetro (pausar nunca adelanta el desbloqueo: solo lo pospone)';
+  // Sin iniciar → botón de arranque (▶). Pausado → reanudar (▶). Corriendo → pausar (⏸).
+  $('btn-timer-pausa').textContent = (!iniciado || pausado) ? '▶' : '⏸';
+  $('btn-timer-pausa').title = !iniciado
+    ? 'Iniciar tu forcejeo'
+    : pausado
+      ? 'Reanudar el forcejeo'
+      : 'Pausar el cronómetro (pausar nunca adelanta el desbloqueo: solo lo pospone)';
 
   const dur = Timer.duracionMin();
   const btnExt = $('btn-timer-extender');

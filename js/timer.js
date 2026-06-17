@@ -56,6 +56,27 @@ export function asegurarInicio() {
   });
 }
 
+/** ¿El usuario ya inició el forcejeo? (timerInicio presente). */
+export function iniciado() {
+  return Boolean(load('asignacion')?.timerInicio);
+}
+
+/**
+ * Arranca el cronómetro al pulsar iniciar — NO antes (§2.6). Idempotente: no
+ * reinicia un forcejeo ya en curso ni resucita uno completado.
+ */
+export function comenzar() {
+  return update('asignacion', (a) => {
+    if (a && !a.timerInicio && !a.completado) {
+      a.timerInicio = Date.now();
+      a.msPausadoTotal = a.msPausadoTotal ?? 0;
+      a.pausas = a.pausas ?? 0;
+      a.pausadoEn = null;
+    }
+    return a;
+  });
+}
+
 /** Milisegundos de forcejeo EFECTIVO (descuenta pausas; congelado en pausa). */
 export function msTranscurridos() {
   const a = load('asignacion');

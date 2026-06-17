@@ -1160,13 +1160,13 @@
       "titulo": "El último dígito gigante",
       "estrategia": "patrones",
       "dificultad": 2,
-      "enunciado": "Sin calculadora, encuentra el último dígito de $7^100$.",
+      "enunciado": "Sin calculadora, encuentra el último dígito de $7^{100}$.",
       "hints": [
-        "Calcular $7^100$ es absurdo. ¿Qué parte del número te interesa realmente?",
+        "Calcular $7^{100}$ es absurdo. ¿Qué parte del número te interesa realmente?",
         "Solo el último dígito importa, y el último dígito de un producto depende solo de los últimos dígitos de los factores.",
         "Calcula los últimos dígitos de $7^1, 7^2, 7^3, 7^4, 7^5$... y observa.",
         "La secuencia es 7, 9, 3, 1, 7, 9, 3, 1...: ciclo de longitud 4.",
-        "Como 100 es múltiplo de 4, el último dígito de $7^100$ coincide con el de $7^4$."
+        "Como 100 es múltiplo de 4, el último dígito de $7^{100}$ coincide con el de $7^4$."
       ],
       "solucion": "El último dígito es 1. Los últimos dígitos de las potencias de 7 forman el ciclo 7, 9, 3, 1 de longitud 4. Como $100 \\equiv 0$ (mod 4), $7^{100}$ cae en la cuarta posición del ciclo: 1.",
       "explicacion": "La aritmética modular descarta toda la información irrelevante del número gigante. Detectar ciclos en procesos iterativos y reducir el índice módulo la longitud del ciclo es una técnica universal.",
@@ -2136,7 +2136,7 @@
         "¿Cuánto dinero exige el sistema tras 5, 8, 10 derrotas seguidas? Escribe la progresión completa, incluyendo lo ya perdido.",
         "Tras n derrotas debes apostar $10\\times 2^n$ y ya perdiste $10(2^n-1)$. Diez derrotas seguidas exigen apostar \\$10,240 con \\$10,230 ya perdidos. ¿Qué dos límites del mundo real chocan con esto?",
         "Capital finito y límite de apuesta de la mesa. Calcula la probabilidad de 10 rojos fallidos seguidos: ¿es tan despreciable como parece a lo largo de cientos de visitas?",
-        "$(19/37)^10 \\approx 0.0013$ por racha... pero jugando cientos de rachas, la ruina llega casi seguro. Compara: ganancias frecuentes de \\$10 contra una pérdida rara de ~\\$10,000. Calcula la esperanza por giro."
+        "$(19/37)^{10} \\approx 0.0013$ por racha... pero jugando cientos de rachas, la ruina llega casi seguro. Compara: ganancias frecuentes de \\$10 contra una pérdida rara de ~\\$10,000. Calcula la esperanza por giro."
       ],
       "solucion": "El sistema requiere capital infinito y mesa sin límite de apuesta; ninguna de las dos existe. Tras n pérdidas la apuesta crece exponencialmente $(10\\cdot 2^n)$, de modo que una racha de ~10 derrotas — improbable en una noche $(\\approx 0.1%)$, casi inevitable en cientos de sesiones — destruye el capital de golpe y supera el límite de la mesa. Matemáticamente: cada giro de ruleta europea tiene esperanza negativa ($-1/37 \\approx -2.7%$ de lo apostado) y ningún esquema de tamaños de apuesta puede sumar esperanzas negativas para dar positivo. La martingala solo redistribuye el riesgo: muchas ganancias pequeñas a cambio de una catástrofe rara.",
       "explicacion": "El fallo no está en la lógica de una ronda sino en el agregado: la linealidad de la esperanza garantiza que combinar apuestas desfavorables nunca produce ventaja. Distinguir 'probabilidad de perder en una sesión' de 'esperanza a largo plazo' es la vacuna contra sistemas de apuestas, y contra estrategias financieras con la misma estructura de riesgo.",
@@ -5458,7 +5458,7 @@
         "$18 = 10010_2$. Para anular el XOR, modifica el montón cuyo bit líder coincide: $17 \\oplus 18 = 3$, así que reduce el montón de 17 a 3, dejando $(3, 11, 8)$ con XOR 0. El primer jugador gana."
       ],
       "solucion": "El primer jugador gana. La teoría de Nim dice que una posición es perdedora (para quien mueve) sii la suma de Nim (XOR binario) de los montones es 0. Aquí $17 \\oplus 11 \\oplus 8 = 18 \\ne 0$, así que es ganadora. La jugada correcta lleva el XOR a 0: como $17 \\oplus (11 \\oplus 8) = 17 \\oplus 3$ = … en concreto $17 \\oplus 18 = 3$, el primer jugador reduce el montón de 17 a 3, dejando $(3, 11, 8)$ con suma de Nim 0.",
-      "explicacion": "El teorema de Bouton: invertir el juego revela que XOR $= 0$ son las P-posiciones, porque desde XOR$=0$ toda jugada lo vuelve $\\ne 0$, y desde $\\ne 0$ siempre puedes restaurarlo a 0. Verificado con Python: $17^11^8 = 18$, y existe jugada que lo anula (reducir $17\\to 3$).",
+      "explicacion": "El teorema de Bouton: invertir el juego revela que XOR $= 0$ son las P-posiciones, porque desde XOR$=0$ toda jugada lo vuelve $\\ne 0$, y desde $\\ne 0$ siempre puedes restaurarlo a 0. Verificado con Python: $17^{11}^8 = 18$, y existe jugada que lo anula (reducir $17\\to 3$).",
       "tiempo_estimado": 28,
       "conceptos": [
         "suma de Nim",
@@ -6031,9 +6031,9 @@
         "Ningún sumando debe ser 1 (quitarlo y sumarlo a otro aumenta el producto). Y ningún sumando debe ser $\\ge 5$: partir $5 = 2+3$ da $6 > 5$.",
         "Así que las partes óptimas son 2 y 3. Además, tres doses ($2+2+2=6$, producto 8) son peores que dos treses ($3+3=6$, producto 9). Evita usar más de dos doses.",
         "Conclusión: usa tantos 3 como puedas, con a lo más un par de 2 al final. Divide 1976 entre 3 y mira el residuo.",
-        "$1976 = 3\\cdot 658 + 2$, residuo 2: usa 658 treses y un 2. El producto máximo es $2 \\cdot 3^658$."
+        "$1976 = 3\\cdot 658 + 2$, residuo 2: usa 658 treses y un 2. El producto máximo es $2 \\cdot 3^{658}$."
       ],
-      "solucion": "El máximo es $2 \\cdot 3^658$. Razonamiento: en una descomposición óptima no hay 1 (absorberlo en otro sumando aumenta el producto) ni partes $\\ge 5$ (porque $2\\cdot 3 = 6 > 5$ y en general partir mejora). Solo quedan 2 y 3, y como $3+3$ (producto 9) supera a $2+2+2$ (producto 8), conviene a lo más dos doses. Como $1976 = 3\\cdot 658 + 2$, la descomposición óptima es 658 treses y un 2, con producto $2\\cdot 3^658$.",
+      "solucion": "El máximo es $2 \\cdot 3^{658}$. Razonamiento: en una descomposición óptima no hay 1 (absorberlo en otro sumando aumenta el producto) ni partes $\\ge 5$ (porque $2\\cdot 3 = 6 > 5$ y en general partir mejora). Solo quedan 2 y 3, y como $3+3$ (producto 9) supera a $2+2+2$ (producto 8), conviene a lo más dos doses. Como $1976 = 3\\cdot 658 + 2$, la descomposición óptima es 658 treses y un 2, con producto $2\\cdot 3^{658}$.",
       "explicacion": "Optimización «algorítmica»/golosa con argumento de intercambio: cada regla local (sin unos, sin partes $\\ge 5$, a lo más dos doses) mejora el producto, y juntas fijan la estructura. Verificado con Python: programación dinámica del producto máximo coincide con la fórmula (N mód 3) para todo N hasta $30; 1976 \\equiv 2$ (mód 3).",
       "tiempo_estimado": 26,
       "conceptos": [
@@ -22989,7 +22989,7 @@
         "Suma $= 1/4 + 1/2 + 3/4$.",
         "$= 1/4 + 2/4 + 3/4 = 6/4 = 3/2$."
       ],
-      "solucion": "sen$^230^\\circ +$ sen$^245^\\circ +$ sen$^260^\\circ = 1/4 + 1/2 + 3/4 = 3/2$. Verificado con Python.",
+      "solucion": "sen$^{230}^\\circ +$ sen$^{245}^\\circ +$ sen$^{260}^\\circ = 1/4 + 1/2 + 3/4 = 3/2$. Verificado con Python.",
       "explicacion": "Los valores notables del seno $(1/2, \\sqrt{2}/2, \\sqrt{3}/2)$ forman un patrón ordenado; sus cuadrados $(1/4, 2/4, 3/4)$ lo hacen evidente y la suma es exacta.",
       "tiempo_estimado": 10,
       "conceptos": [

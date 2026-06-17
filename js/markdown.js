@@ -109,8 +109,19 @@ const SIMBOLOS_TEX = {
  * un libro al lado. El texto entra ya escapado, así que < > & son entidades
  * y se dejan intactas (se muestran correctamente).
  */
+/**
+ * Normaliza super/subíndices multi-dígito SIN llaves a la forma con llaves
+ * ('7^100' → '7^{100}', 'x_12' → 'x_{12}'), para que '^' y '_' no apliquen solo
+ * al primer token (tanto en KaTeX como en el fallback Unicode). NO toca '^{...}'
+ * ya correctos ni casos mixtos como '7^2a' (= 7² · a), cuya semántica de un solo
+ * token es la deseada.
+ */
+function normalizarSubSup(s) {
+  return String(s).replace(/\^(\d{2,})/g, '^{$1}').replace(/_(\d{2,})/g, '_{$1}');
+}
+
 function texAUnicode(tex) {
-  let r = tex;
+  let r = normalizarSubSup(tex);
   // Estructuras con argumentos {…} primero
   r = r.replace(/\\(?:text|mathrm|mathbf|mathbb|mathcal|operatorname|textbf|textit)\s*\{([^{}]*)\}/g, '$1');
   r = r.replace(/\\(?:hat|bar|overline|vec|tilde|widehat)\s*\{([^{}]*)\}/g, '$1');
@@ -162,7 +173,7 @@ function katexHTML(fuente, display) {
     try {
       // strict:false → KaTeX renderiza texto acentuado en \text{} (español) sin
       // ensuciar la consola con avisos; throwOnError:false → errores en rojo.
-      return k.renderToString(fuente, { displayMode: display, throwOnError: false, strict: false });
+      return k.renderToString(normalizarSubSup(fuente), { displayMode: display, throwOnError: false, strict: false });
     } catch {
       return null;
     }
