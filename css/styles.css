@@ -1018,6 +1018,14 @@ button.enlace {
 
 .unidad-item { margin-bottom: 8px; }
 
+/* Panel de unidad abierto INLINE dentro de un cluster (se inserta tras el <li>
+   de la unidad clickeada, ver abrirUnidad). Se anida visualmente bajo la unidad
+   para que el despliegue se lea continuo y no como una tarjeta suelta al fondo. */
+.estudio-unidades #estudio-unidad {
+  margin: 4px 0 14px;
+  border-left: 3px solid var(--acento);
+}
+
 .unidad-boton {
   width: 100%;
   display: flex;

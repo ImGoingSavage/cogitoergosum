@@ -325,6 +325,14 @@ export function renderizar() {
   // referencias; fase-7 además trae simulación de entrevista). Las demás fases
   // conservan la lista plana directa.
   const ul = $('estudio-unidades');
+  // Si el panel de unidad quedó abierto INLINE dentro de un cluster (ver
+  // abrirUnidad), devolverlo a su sitio —tras la tarjeta del roadmap— ANTES de
+  // limpiar la lista: si no, el innerHTML='' lo destruiría. Es idempotente.
+  const panelUnidadHome = $('estudio-unidad');
+  const tarjetaRoadmap = ul.closest('article');
+  if (panelUnidadHome && tarjetaRoadmap) {
+    tarjetaRoadmap.insertAdjacentElement('afterend', panelUnidadHome);
+  }
   ul.innerHTML = '';
   if (taxonomiaDe(b.id).length > 0) {
     ul.classList.add('estudio-clusters');
@@ -489,7 +497,8 @@ function crearUnidadItem(u, b) {
   btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
   btn.querySelector('.unidad-nombre').textContent = u.titulo;
   btn.querySelector('.unidad-libro').textContent = u.libro;
-  btn.addEventListener('click', () => abrirUnidad(u.id));
+  // Pasamos el <li> para abrir la unidad INLINE, justo debajo, sin saltar al fondo.
+  btn.addEventListener('click', () => abrirUnidad(u.id, li));
   li.appendChild(btn);
   return li;
 }
@@ -940,10 +949,22 @@ function navegarACluster(id) {
 
 /* ===================== Render: unidad y su quiz ======================= */
 
-function abrirUnidad(unidadId) {
+function abrirUnidad(unidadId, anchorLi) {
   const u = unidad(unidadId);
   if (!u) return;
   const panel = $('estudio-unidad');
+  // Apertura INLINE: si viene el <li> de la unidad clickeada, mover el panel
+  // justo debajo para que el detalle se despliegue ahí mismo (no al final de la
+  // página). El panel es un nodo único; moverlo no rompe sus referencias por id.
+  // renderizar() lo devuelve a su sitio antes de cada re-render.
+  if (anchorLi) {
+    anchorLi.insertAdjacentElement('afterend', panel);
+  } else {
+    // Sin ancla (wiki-link, restaurar quiz): asegúralo en su sitio (tras la
+    // tarjeta del roadmap), nunca pegado bajo una unidad abierta antes.
+    const tarjeta = $('estudio-unidades').closest('article');
+    if (tarjeta) tarjeta.insertAdjacentElement('afterend', panel);
+  }
   panel.hidden = false;
   panel.dataset.unidad = u.id;
 
@@ -1066,7 +1087,9 @@ function abrirUnidad(unidadId) {
       renderPreguntaQuiz();
     };
   }
-  panel.scrollIntoView({ behavior: 'smooth' });
+  // 'nearest': revela el panel sin tirón; al estar ya debajo de la unidad, casi
+  // no necesita desplazarse.
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 /** Pinta la pregunta actual del quiz (retrieval: responder antes de ver). */
