@@ -26,6 +26,52 @@ function escapar(texto) {
     .replaceAll('"', '&quot;');
 }
 
+function quitarComentariosHtml(md) {
+  const lineas = String(md ?? '').split('\n');
+  const limpias = [];
+  let enCodigo = false;
+  let enComentario = false;
+
+  for (let linea of lineas) {
+    if (!enComentario && linea.trim().startsWith('```')) {
+      enCodigo = !enCodigo;
+      limpias.push(linea);
+      continue;
+    }
+    if (enCodigo) {
+      limpias.push(linea);
+      continue;
+    }
+
+    let s = linea;
+    while (true) {
+      if (enComentario) {
+        const fin = s.indexOf('-->');
+        if (fin === -1) {
+          s = '';
+          break;
+        }
+        s = s.slice(fin + 3);
+        enComentario = false;
+        continue;
+      }
+
+      const inicio = s.indexOf('<!--');
+      if (inicio === -1) break;
+      const fin = s.indexOf('-->', inicio + 4);
+      if (fin === -1) {
+        s = s.slice(0, inicio);
+        enComentario = true;
+        break;
+      }
+      s = s.slice(0, inicio) + s.slice(fin + 3);
+    }
+    limpias.push(s);
+  }
+
+  return limpias.join('\n');
+}
+
 /* Símbolos LaTeX → Unicode usados por las lecciones (quant/estadística). */
 const SIMBOLOS_TEX = {
   '\\cdot': '·', '\\times': '×', '\\div': '÷', '\\ast': '∗', '\\star': '⋆',
@@ -215,7 +261,7 @@ export function renderInline(texto) {
  * @returns {string}
  */
 export function renderMarkdown(md) {
-  const lineas = escapar(md ?? '').split('\n');
+  const lineas = escapar(quitarComentariosHtml(md)).split('\n');
   const html = [];
   let lista = null;       // 'ul' | 'ol' | null
   let enCita = false;

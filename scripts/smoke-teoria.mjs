@@ -16,7 +16,7 @@ const dir = path.join(here, '..', 'data', 'teoria');
 // Escanea TODOS los .md (arena-*, zeitz-*, engel-*, aime-*, polya-*)
 const files = fs.readdirSync(dir).filter((f) => f.endsWith('.md'));
 
-let bad = 0, rawmath = 0, rawlink = 0, undefs = 0, rawFence = 0;
+let bad = 0, rawmath = 0, rawlink = 0, undefs = 0, rawFence = 0, rawComment = 0;
 for (const f of files) {
   const md = fs.readFileSync(path.join(dir, f), 'utf8');
   let html;
@@ -29,14 +29,19 @@ for (const f of files) {
   if (n > 0) { console.log(`UNDEF(${n}) in`, f); undefs += n; }
   const fences = (html.match(/```/g) ?? []).length;
   if (fences > 0) { console.log(`RAW FENCE(${fences}) in`, f); rawFence += fences; }
+  const comments = (html.match(/(?:&lt;!--|--&gt;|<!--|-->)/g) ?? []).length;
+  if (comments > 0) { console.log(`RAW COMMENT(${comments}) in`, f); rawComment += comments; }
 }
 console.log(`\nfiles=${files.length} threw=${bad} rawDisplayMath=${rawmath} rawLinks=${rawlink} undefined=${undefs} rawFence=${rawFence}`);
-if (undefs > 0 || rawFence > 0) {
+if (undefs > 0 || rawFence > 0 || rawComment > 0) {
   if (undefs > 0) {
     console.error(`\nERROR: ${undefs} ocurrencia(s) de "undefined" en el HTML renderizado. Corrige js/markdown.js.`);
   }
   if (rawFence > 0) {
     console.error(`\nERROR: ${rawFence} fence(s) sin renderizar en el HTML. Corrige el render de bloques de código.`);
+  }
+  if (rawComment > 0) {
+    console.error(`\nERROR: ${rawComment} marcador(es) de comentario HTML visibles en el render. Corrige js/markdown.js.`);
   }
   process.exitCode = 1;
 }
