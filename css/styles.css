@@ -1559,6 +1559,32 @@ button.secundario.peligro:hover:not(:disabled) {
   padding: 1px 6px;
 }
 
+.leccion pre,
+.quiz-enunciado pre,
+.quiz-solucion pre {
+  background: var(--bg-elevado);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.leccion pre code,
+.quiz-enunciado pre code,
+.quiz-solucion pre code {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre;
+  color: var(--texto);
+}
+
 /* Matemáticas: traductor ligero LaTeX→Unicode (markdown.js). No es KaTeX;
    prioriza legibilidad sin librerías. Inline va en cursiva serif; el bloque
    se centra y respira. */
