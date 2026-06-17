@@ -49,8 +49,9 @@ Un equipo de datos debate si invertir una semana en cifrar y controlar el acceso
 - **Ignorar las externalidades:** evaluar solo el daño propio y no el que tu sistema puede causar a otros.
 - **Confundir "no nos ha pasado" con "es seguro":** ausencia de incidente ≠ ausencia de riesgo.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un fabricante no asegura un dispositivo porque el daño recae en el usuario (externalidad); la pregunta '¿quién paga el control y quién sufre el daño?' explica el descuido.
 - **Contraejemplo:** una regulación que hace **responsable** a quien guarda los datos por las fugas alinea el incentivo: de pronto cifrar "esa semana cara" se vuelve obviamente rentable. El cambio fue económico, no técnico.
 - **Caso borde:** a veces el incentivo está alineado y aun así hay inseguridad por **descuido genuino** o falta de capacidad; la economía explica mucho, no todo. No todo fallo es un incentivo torcido.
 

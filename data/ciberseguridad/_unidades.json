@@ -53,14 +53,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "Nombra las tres garantías de la tríada CIA y un ejemplo de cómo se rompe cada una.",
-          "answer": "Confidencialidad (solo quien debe ve el dato; se rompe con una fuga del dataset), Integridad (el dato no se altera sin autorización",
+          "answer": "Confidencialidad (la rompe una fuga del dataset), Integridad (la rompe envenenar etiquetas) y Disponibilidad (la rompe saturar la API).",
           "feedback": "CIA es un checklist de imaginación por activo.",
           "concept": "Vocabulario: activo · amenaza · vulnerabilidad · impacto · control",
           "source_reference": "Security Engineering, 3rd ed. (Ross Anderson); data/teoria/cyber-ms1.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Vocabulario: activo · amenaza · vulnerabilidad · impacto · control con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Vocabulario: activo · amenaza · vulnerabilidad · impacto · control en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Confidencialidad (solo quien debe ve el dato; se rompe con una fuga del dataset), Integridad (el dato no se altera sin autorización",
+            "Confidencialidad (la rompe una fuga del dataset), Integridad (la rompe envenenar etiquetas) y Disponibilidad (la rompe saturar la API).",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica.",
             "Aplicar un control genérico sin revisar el activo afectado."
@@ -7917,14 +7917,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Un servicio usa SHA-256 sin salt, sin límite de intentos y cookies sin HttpOnly ni expiración. Enumera los fallos y su corrección.",
-          "answer": "(1) Hash rápido sin salt → fuerza bruta/tablas; usar bcrypt/Argon2 con salt. (2) Sin rate limit → fuerza bruta en línea",
+          "answer": "Hash sin salt → bcrypt/Argon2 con salt; sin rate limit → límite/bloqueo; cookie sin HttpOnly → HttpOnly/Secure/SameSite; sin expiración → caducar y revocar.",
           "feedback": "Auditoría de login.",
           "concept": "La recuperación de cuenta suele ser el eslabón débil",
           "source_reference": "Computer Security — CS 161 (UC Berkeley); data/teoria/cyber-sys3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar La recuperación de cuenta suele ser el eslabón débil con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece La recuperación de cuenta suele ser el eslabón débil en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "(1) Hash rápido sin salt → fuerza bruta/tablas; usar bcrypt/Argon2 con salt. (2) Sin rate limit → fuerza bruta en línea",
+            "Hash sin salt → bcrypt/Argon2 con salt; sin rate limit → límite/bloqueo; cookie sin HttpOnly → HttpOnly/Secure/SameSite; sin expiración → caducar y revocar.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -9028,14 +9028,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Menciona tres configuraciones que rompen el aislamiento de un contenedor.",
-          "answer": "Correrlo como root o con --privileged (un escape llega al host); montar el socket de Docker o directorios sensibles del host",
+          "answer": "Correrlo como root o --privileged, montar el socket de Docker o rutas sensibles del host, e incrustar secretos en la imagen (quedan en sus capas).",
           "feedback": "La config puede anular el aislamiento.",
           "concept": "A mayor desconfianza del código, más fuerte el aislamiento",
           "source_reference": "Computer Security — CS 161 (UC Berkeley); data/teoria/cyber-sys4.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar A mayor desconfianza del código, más fuerte el aislamiento con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece A mayor desconfianza del código, más fuerte el aislamiento en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Correrlo como root o con --privileged (un escape llega al host); montar el socket de Docker o directorios sensibles del host",
+            "Correrlo como root o --privileged, montar el socket de Docker o rutas sensibles del host, e incrustar secretos en la imagen (quedan en sus capas).",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -15699,14 +15699,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "¿Cuándo una subida de archivos se vuelve un ataque y cómo se mitiga?",
-          "answer": "Cuando el archivo se ejecuta (extensión servible), se sirve y dispara XSS (SVG/HTML), escapa de su carpeta (path traversal por el nombre) o agota recursos (archivos.",
+          "answer": "Cuando se ejecuta, dispara XSS (SVG/HTML), escapa por path traversal o agota recursos; se mitiga validando el tipo real, renombrando y guardando fuera de la raíz.",
           "feedback": "El archivo es entrada no confiable.",
           "concept": "Recibir archivos/objetos serializados/config son fronteras de confianza",
           "source_reference": "Web Security Academy (PortSwigger); data/teoria/cyber-web5.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Recibir archivos/objetos serializados/config son fronteras de confianza con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Recibir archivos/objetos serializados/config son fronteras de confianza en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Cuando el archivo se ejecuta (extensión servible), se sirve y dispara XSS (SVG/HTML), escapa de su carpeta (path traversal por el nombre) o agota recursos (archivos.",
+            "Cuando se ejecuta, dispara XSS (SVG/HTML), escapa por path traversal o agota recursos; se mitiga validando el tipo real, renombrando y guardando fuera de la raíz.",
             "Deserializar para \"validar\" el archivo.",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica."
@@ -18027,14 +18027,14 @@
           "difficulty": "hard",
           "type": "quiz",
           "prompt": "¿Qué cuatro elementos definen la gobernanza de un dataset y por qué la técnica sin proceso no basta?",
-          "answer": "Acceso (quién, con qué permiso mínimo), auditoría (registro de quién accedió y para qué), retención (cuándo se borra) y procedencia/finalidad (de dónde vino, con qué.",
+          "answer": "Acceso (permiso mínimo), auditoría (quién accedió y para qué), retención (cuándo se borra) y procedencia/finalidad (de dónde vino y para qué se permite).",
           "feedback": "Técnica + gobernanza.",
           "concept": "Por qué la reidentificación funciona",
           "source_reference": "NIST Privacy Framework 1.1 (IPD); data/teoria/cyber-dp2.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Por qué la reidentificación funciona con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Por qué la reidentificación funciona en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Acceso (quién, con qué permiso mínimo), auditoría (registro de quién accedió y para qué), retención (cuándo se borra) y procedencia/finalidad (de dónde vino, con qué.",
+            "Acceso (permiso mínimo), auditoría (quién accedió y para qué), retención (cuándo se borra) y procedencia/finalidad (de dónde vino y para qué se permite).",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual.",
             "Confundir seudonimizacion con anonimato."
@@ -19116,14 +19116,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Nombra tres derechos del titular y un requisito técnico que impone cada uno.",
-          "answer": "Acceder (poder localizar y exportar todos los datos de un individuo), rectificar (poder corregir donde estén), suprimir/borrar (saber dónde vive cada dato —incluidos.",
+          "answer": "Acceder (localizar y exportar sus datos), rectificar (corregir donde estén) y suprimir (saber dónde vive cada dato —backups, logs, derivados, modelos— para borrarlo).",
           "feedback": "Derechos = requisitos de arquitectura.",
           "concept": "Derechos (acceder, rectificar, borrar, oponerse) imponen requisitos técnicos",
           "source_reference": "NIST Privacy Framework 1.1 (IPD); data/teoria/cyber-dp3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Derechos (acceder, rectificar, borrar, oponerse) imponen requisitos técnicos con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Derechos (acceder, rectificar, borrar, oponerse) imponen requisitos técnicos en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Acceder (poder localizar y exportar todos los datos de un individuo), rectificar (poder corregir donde estén), suprimir/borrar (saber dónde vive cada dato —incluidos.",
+            "Acceder (localizar y exportar sus datos), rectificar (corregir donde estén) y suprimir (saber dónde vive cada dato —backups, logs, derivados, modelos— para borrarlo).",
             "Mover el control al cliente o a documentación sin verificación técnica.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real."
@@ -19138,14 +19138,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Una app usa una casilla pre-marcada que autoriza 'mejorar el servicio y compartir con socios'. ¿Qué falla?",
-          "answer": "La casilla pre-marcada no es consentimiento libre (es un dark pattern); agrupar 'mejorar + compartir con socios' no es específico",
+          "answer": "La casilla pre-marcada no es consentimiento libre (dark pattern); agrupar 'mejorar + compartir con socios' no es específico y excede la finalidad esperada.",
           "feedback": "Dark pattern + finalidad violada.",
           "concept": "Dark patterns: casillas pre-marcadas, 'acepta todo o vete', propósitos vagos",
           "source_reference": "NIST Privacy Framework 1.1 (IPD); data/teoria/cyber-dp3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Dark patterns: casillas pre-marcadas, 'acepta todo o vete', propósitos vagos con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Dark patterns: casillas pre-marcadas, 'acepta todo o vete', propósitos vagos en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "La casilla pre-marcada no es consentimiento libre (es un dark pattern); agrupar 'mejorar + compartir con socios' no es específico",
+            "La casilla pre-marcada no es consentimiento libre (dark pattern); agrupar 'mejorar + compartir con socios' no es específico y excede la finalidad esperada.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -19182,14 +19182,14 @@
           "difficulty": "hard",
           "type": "quiz",
           "prompt": "¿Por qué forzar 'consentimiento' a veces es teatro, y qué lo reemplaza?",
-          "answer": "Porque a veces el tratamiento se justifica por otra base (un contrato, una obligación legal) y disfrazar eso de consentimiento da una elección falsa (no es libre si no.",
+          "answer": "Porque a veces la base real es otra (contrato, obligación legal) y disfrazarla de consentimiento da una elección falsa; hay que nombrar la base real.",
           "feedback": "Consentimiento no es la única base válida.",
           "concept": "Consentimiento y sus límites",
           "source_reference": "NIST Privacy Framework 1.1 (IPD); data/teoria/cyber-dp3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Consentimiento y sus límites con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Consentimiento y sus límites en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Porque a veces el tratamiento se justifica por otra base (un contrato, una obligación legal) y disfrazar eso de consentimiento da una elección falsa (no es libre si no.",
+            "Porque a veces la base real es otra (contrato, obligación legal) y disfrazarla de consentimiento da una elección falsa; hay que nombrar la base real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual.",
             "Usar dark patterns.",
             "Esconder finalidades en texto legal largo."
@@ -21316,14 +21316,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "¿De qué tres formas un modelo puede filtrar la privacidad de las personas de su entrenamiento?",
-          "answer": "Memorización (recuerda y puede emitir ejemplos raros, p. ej. datos personales), membership inference (un atacante determina si una persona específica estuvo en el.",
+          "answer": "Memorización (emite ejemplos raros como PII), membership inference (si alguien estuvo en el set) y model inversion (reconstruir rasgos o el original).",
           "feedback": "La fuga vive en el modelo, no solo en la tabla.",
           "concept": "Un modelo entrenado con datos sensibles es un activo de privacidad (memoriza y filtra)",
           "source_reference": "NIST Privacy Framework 1.1 (IPD); data/teoria/cyber-dp5.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Un modelo entrenado con datos sensibles es un activo de privacidad (memoriza y filtra) con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Un modelo entrenado con datos sensibles es un activo de privacidad (memoriza y filtra) en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Memorización (recuerda y puede emitir ejemplos raros, p. ej. datos personales), membership inference (un atacante determina si una persona específica estuvo en el.",
+            "Memorización (emite ejemplos raros como PII), membership inference (si alguien estuvo en el set) y model inversion (reconstruir rasgos o el original).",
             "Anadir privacidad al final del pipeline.",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica."
@@ -21382,14 +21382,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Vas a entrenar y exponer un modelo de deserción escolar con datos de estudiantes. Lista medidas de privacy by design.",
-          "answer": "Minimización (excluir salud/etnia sin justificación, región amplia en vez de dirección); evaluar membership inference y limitar memorización (regularización",
+          "answer": "Minimizar campos sensibles; limitar memorización (regularización/DP); evaluar membership inference; exponer categoría de riesgo (no probabilidades) con auth y rate limiting.",
           "feedback": "Privacidad desde el diseño del pipeline.",
           "concept": "'El dataset es privado' no basta: hay que evaluar qué filtra el modelo",
           "source_reference": "NIST Privacy Framework 1.1 (IPD); data/teoria/cyber-dp5.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar 'El dataset es privado' no basta: hay que evaluar qué filtra el modelo con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece 'El dataset es privado' no basta: hay que evaluar qué filtra el modelo en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Minimización (excluir salud/etnia sin justificación, región amplia en vez de dirección); evaluar membership inference y limitar memorización (regularización",
+            "Minimizar campos sensibles; limitar memorización (regularización/DP); evaluar membership inference; exponer categoría de riesgo (no probabilidades) con auth y rate limiting.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -24768,14 +24768,14 @@
           "difficulty": "hard",
           "type": "quiz",
           "prompt": "¿Por qué casi toda vulnerabilidad 'viola un principio' y cómo ayuda eso?",
-          "answer": "Porque los principios codifican las propiedades que mantienen seguro un sistema; un bug aparece cuando una decisión rompe uno (p. ej. permiso amplio = viola privilegio.",
+          "answer": "Los principios codifican lo que mantiene seguro al sistema; un bug rompe uno (permiso amplio = viola privilegio mínimo) y nombrar cuál se violó indica el arreglo.",
           "feedback": "Diagnóstico por principio → remedio.",
           "concept": "La seguridad como requisito",
           "source_reference": "Secure Software Development Fundamentals (OpenSSF / Wheeler); data/teoria/cyber-dev3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar La seguridad como requisito con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece La seguridad como requisito en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Porque los principios codifican las propiedades que mantienen seguro un sistema; un bug aparece cuando una decisión rompe uno (p. ej. permiso amplio = viola privilegio.",
+            "Los principios codifican lo que mantiene seguro al sistema; un bug rompe uno (permiso amplio = viola privilegio mínimo) y nombrar cuál se violó indica el arreglo.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual.",
             "Parchear sintomas sin principio."
@@ -25901,14 +25901,14 @@
           "difficulty": "hard",
           "type": "quiz",
           "prompt": "¿Por qué no basta confiar en una sola herramienta de verificación?",
-          "answer": "Porque cada una tiene un punto ciego distinto: SAST no ve dependencias (eso es SCA) ni lógica de negocio; SCA no ve tu código",
+          "answer": "Cada una tiene un punto ciego: SAST no ve dependencias ni lógica de negocio; SCA no ve tu código; DAST solo lo alcanzable; combinarlas es defense in depth.",
           "feedback": "Puntos ciegos complementarios.",
           "concept": "Las familias de verificación",
           "source_reference": "Secure Software Development Fundamentals (OpenSSF / Wheeler); data/teoria/cyber-dev4.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Las familias de verificación con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Las familias de verificación en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Porque cada una tiene un punto ciego distinto: SAST no ve dependencias (eso es SCA) ni lógica de negocio; SCA no ve tu código",
+            "Cada una tiene un punto ciego: SAST no ve dependencias ni lógica de negocio; SCA no ve tu código; DAST solo lo alcanzable; combinarlas es defense in depth.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual.",
             "Confiar solo en SAST."
@@ -26967,14 +26967,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "¿Qué elementos tiene un proceso de divulgación y parcheo de vulnerabilidades?",
-          "answer": "Una vía clara para recibir reportes (política de divulgación / security.txt) sin castigar al mensajero; priorización por explotabilidad e impacto",
+          "answer": "Vía clara para recibir reportes (security.txt) sin castigar al mensajero; priorización por explotabilidad/impacto; parcheo rápido de lo crítico; y avisar a los afectados.",
           "feedback": "Recibir, priorizar, parchear, comunicar.",
           "concept": "Las vulnerabilidades aparecen tras liberar: hace falta divulgación + parcheo rápido",
           "source_reference": "Secure Software Development Fundamentals (OpenSSF / Wheeler); data/teoria/cyber-dev5.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Las vulnerabilidades aparecen tras liberar: hace falta divulgación + parcheo rápido con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Las vulnerabilidades aparecen tras liberar: hace falta divulgación + parcheo rápido en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Una vía clara para recibir reportes (política de divulgación / security.txt) sin castigar al mensajero; priorización por explotabilidad e impacto",
+            "Vía clara para recibir reportes (security.txt) sin castigar al mensajero; priorización por explotabilidad/impacto; parcheo rápido de lo crítico; y avisar a los afectados.",
             "Mover el control al cliente o a documentación sin verificación técnica.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real."
@@ -26989,14 +26989,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Un pipeline usa credencial de admin, instala 'la última' versión, mete la API key en el YAML y corre el contenedor como root. Endurécelo.",
-          "answer": "Token de despliegue de alcance mínimo (no admin); fijar versiones con hashes + SCA en el pipeline",
+          "answer": "Token de despliegue mínimo (no admin), versiones fijadas con hashes + SCA, key movida al store del CI y rotada, y contenedor no-root sin secretos en la imagen.",
           "feedback": "Endurecimiento punto por punto.",
           "concept": "Parchear rápido y verificado, no rápido y a ciegas",
           "source_reference": "Secure Software Development Fundamentals (OpenSSF / Wheeler); data/teoria/cyber-dev5.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Parchear rápido y verificado, no rápido y a ciegas con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Parchear rápido y verificado, no rápido y a ciegas en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Token de despliegue de alcance mínimo (no admin); fijar versiones con hashes + SCA en el pipeline",
+            "Token de despliegue mínimo (no admin), versiones fijadas con hashes + SCA, key movida al store del CI y rotada, y contenedor no-root sin secretos en la imagen.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -28029,14 +28029,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "En MITRE ATT&CK, ¿qué diferencia hay entre una táctica y una técnica?",
-          "answer": "La táctica es el objetivo del adversario (p. ej. Acceso inicial, Persistencia, Exfiltración); la técnica es la forma concreta de lograr ese objetivo (p. ej. volcado de.",
+          "answer": "La táctica es el objetivo (Acceso inicial, Persistencia, Exfiltración); la técnica es la forma concreta de lograrlo (volcado de credenciales). Táctica=qué, técnica=cómo.",
           "feedback": "Columnas (tácticas) y celdas (técnicas).",
           "concept": "La prevención falla: el blue team detecta lo que entra",
           "source_reference": "Getting Started with MITRE ATT&CK; data/teoria/cyber-blue1.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar La prevención falla: el blue team detecta lo que entra con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece La prevención falla: el blue team detecta lo que entra en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "La táctica es el objetivo del adversario (p. ej. Acceso inicial, Persistencia, Exfiltración); la técnica es la forma concreta de lograr ese objetivo (p. ej. volcado de.",
+            "La táctica es el objetivo (Acceso inicial, Persistencia, Exfiltración); la técnica es la forma concreta de lograrlo (volcado de credenciales). Táctica=qué, técnica=cómo.",
             "No registrar lo que se quiere detectar.",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica."
@@ -29222,14 +29222,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "¿Por qué un umbral por entidad (línea base) supera a un umbral global fijo?",
-          "answer": "Porque lo normal para una cuenta puede ser anómalo para otra (un job de respaldo descarga mucho legítimamente; un analista no). Un umbral global genera ruido o ceguera",
+          "answer": "Porque lo normal para una cuenta es anómalo para otra (un respaldo descarga mucho; un analista no); la base por entidad detecta desviaciones relativas a cada una.",
           "feedback": "Contexto reduce FP sin perder al atacante.",
           "concept": "Mejora continua: cerrar brechas de cobertura con líneas base por entidad",
           "source_reference": "Getting Started with MITRE ATT&CK; data/teoria/cyber-blue2.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Mejora continua: cerrar brechas de cobertura con líneas base por entidad con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Mejora continua: cerrar brechas de cobertura con líneas base por entidad en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Porque lo normal para una cuenta puede ser anómalo para otra (un job de respaldo descarga mucho legítimamente; un analista no). Un umbral global genera ruido o ceguera",
+            "Porque lo normal para una cuenta es anómalo para otra (un respaldo descarga mucho; un analista no); la base por entidad detecta desviaciones relativas a cada una.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -30333,14 +30333,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "¿Por qué detectar TTPs supera a bloquear hashes e IPs?",
-          "answer": "Porque un hash o una IP se cambian gratis (recompilar, mudar de servidor) y los feeds caducan en días; en cambio detectar el comportamiento (cómo entra, se mueve,.",
+          "answer": "Un hash o IP se cambian gratis y los feeds caducan; detectar el comportamiento (cómo entra, se mueve, exfiltra) obliga al atacante a reinventar su método, que es caro.",
           "feedback": "Comportamiento es durable; IoC, frágil.",
           "concept": "Detectar por comportamiento (ATT&CK) supera a bloquear IoC de bajo nivel",
           "source_reference": "Getting Started with MITRE ATT&CK; data/teoria/cyber-blue3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Detectar por comportamiento (ATT&CK) supera a bloquear IoC de bajo nivel con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Detectar por comportamiento (ATT&CK) supera a bloquear IoC de bajo nivel en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Porque un hash o una IP se cambian gratis (recompilar, mudar de servidor) y los feeds caducan en días; en cambio detectar el comportamiento (cómo entra, se mueve,.",
+            "Un hash o IP se cambian gratis y los feeds caducan; detectar el comportamiento (cómo entra, se mueve, exfiltra) obliga al atacante a reinventar su método, que es caro.",
             "Mover el control al cliente o a documentación sin verificación técnica.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real."
@@ -31489,14 +31489,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Una cuenta descargó 4.2 GB del bucket de pacientes a las 3 a.m. desde geo inusual. Describe la respuesta.",
-          "answer": "Triaje (¿viajó/VPN?",
+          "answer": "Triaje (¿viajó/VPN?), contención (reauth, revocar tokens, restringir el bucket sin borrar evidencia), erradicación (cerrar la vía) y recuperación con MFA.",
           "feedback": "Triaje→contener→erradicar→recuperar→aprender.",
           "concept": "La preparación previa decide el resultado; post-mortem sin culpas",
           "source_reference": "Getting Started with MITRE ATT&CK; data/teoria/cyber-blue4.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar La preparación previa decide el resultado; post-mortem sin culpas con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece La preparación previa decide el resultado; post-mortem sin culpas en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Triaje (¿viajó/VPN?",
+            "Triaje (¿viajó/VPN?), contención (reauth, revocar tokens, restringir el bucket sin borrar evidencia), erradicación (cerrar la vía) y recuperación con MFA.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -33707,14 +33707,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Un detector de fraude se reentrena con transacciones etiquetadas por reportes de usuarios. ¿Cómo lo envenena un atacante sin tocar el código?",
-          "answer": "Crea muchas cuentas y reporta sistemáticamente sus transacciones fraudulentas como 'legítimas'; con el tiempo el modelo aprende que su patrón es benigno (data poisoning.",
+          "answer": "Crea cuentas y reporta sus transacciones fraudulentas como 'legítimas'; el modelo aprende que su patrón es benigno (data poisoning por el canal de etiquetado).",
           "feedback": "El canal de etiquetas no confiable es vector.",
           "concept": "Un modelo entrenado con datos sensibles es un activo de privacidad (memorización)",
           "source_reference": "MITRE SAFE-AI / MITRE ATLAS; data/teoria/cyber-mls1.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Un modelo entrenado con datos sensibles es un activo de privacidad (memorización) con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Un modelo entrenado con datos sensibles es un activo de privacidad (memorización) en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Crea muchas cuentas y reporta sistemáticamente sus transacciones fraudulentas como 'legítimas'; con el tiempo el modelo aprende que su patrón es benigno (data poisoning.",
+            "Crea cuentas y reporta sus transacciones fraudulentas como 'legítimas'; el modelo aprende que su patrón es benigno (data poisoning por el canal de etiquetado).",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -37034,14 +37034,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "¿Cómo se roba (extrae) un modelo y qué lo facilita?",
-          "answer": "Con suficientes pares entrada→salida, el atacante entrena un modelo sustituto que imita al tuyo, robando tu inversión en datos y cómputo (y habilitando evasión.",
+          "answer": "Con suficientes pares entrada→salida entrena un modelo sustituto que imita al tuyo; lo facilita una salida con mucha info (probabilidades exactas vs solo la etiqueta).",
           "feedback": "Clonar por consulta.",
           "concept": "Extraction: clonar el modelo consultándolo (y habilita evasión transferible)",
           "source_reference": "MITRE SAFE-AI / MITRE ATLAS; data/teoria/cyber-mls4.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Extraction: clonar el modelo consultándolo (y habilita evasión transferible) con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Extraction: clonar el modelo consultándolo (y habilita evasión transferible) en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Con suficientes pares entrada→salida, el atacante entrena un modelo sustituto que imita al tuyo, robando tu inversión en datos y cómputo (y habilitando evasión.",
+            "Con suficientes pares entrada→salida entrena un modelo sustituto que imita al tuyo; lo facilita una salida con mucha info (probabilidades exactas vs solo la etiqueta).",
             "Confundir inversion con extraction.",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica."
@@ -40424,14 +40424,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "¿Por qué la salida de un LLM debe tratarse como entrada no confiable (LLM05)?",
-          "answer": "Porque si tu código toma esa salida y la ejecuta como SQL, la inserta con innerHTML o la pasa a un shell, reintroduces las inyecciones clásicas (SQLi, XSS, inyección de.",
+          "answer": "Porque si tu código la ejecuta como SQL, la inserta con innerHTML o la pasa a un shell, reintroduces SQLi, XSS o inyección de comandos: es entrada no confiable.",
           "feedback": "Manejo inseguro de salidas reabre viejos bugs.",
           "concept": "La salida del LLM es entrada no confiable para el siguiente componente (LLM05)",
           "source_reference": "OWASP Top 10 for LLM Applications 2025; data/teoria/cyber-llm2.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar La salida del LLM es entrada no confiable para el siguiente componente (LLM05) con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece La salida del LLM es entrada no confiable para el siguiente componente (LLM05) en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Porque si tu código toma esa salida y la ejecuta como SQL, la inserta con innerHTML o la pasa a un shell, reintroduces las inyecciones clásicas (SQLi, XSS, inyección de.",
+            "Porque si tu código la ejecuta como SQL, la inserta con innerHTML o la pasa a un shell, reintroduces SQLi, XSS o inyección de comandos: es entrada no confiable.",
             "Mover el control al cliente o a documentación sin verificación técnica.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real."
@@ -41512,14 +41512,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "¿Por qué vías puede un LLM divulgar información sensible (LLM02)?",
-          "answer": "Del entrenamiento (memorización → reproduce PII/secretos vistos), del contexto/RAG (recupera y muestra documentos que el usuario no debería ver, por falta de control de.",
+          "answer": "Del entrenamiento (memoriza PII/secretos), del contexto/RAG (muestra documentos sin control de acceso) y de lo que le pasas (secretos en el prompt salen o quedan en logs).",
           "feedback": "Entrenamiento, RAG y contexto.",
           "concept": "LLM02: el modelo filtra datos del entrenamiento, del RAG o del contexto que le pasas",
           "source_reference": "OWASP Top 10 for LLM Applications 2025; data/teoria/cyber-llm3.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar LLM02: el modelo filtra datos del entrenamiento, del RAG o del contexto que le pasas con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece LLM02: el modelo filtra datos del entrenamiento, del RAG o del contexto que le pasas en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Del entrenamiento (memorización → reproduce PII/secretos vistos), del contexto/RAG (recupera y muestra documentos que el usuario no debería ver, por falta de control de.",
+            "Del entrenamiento (memoriza PII/secretos), del contexto/RAG (muestra documentos sin control de acceso) y de lo que le pasas (secretos en el prompt salen o quedan en logs).",
             "Guardar prompts completos indefinidamente.",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica."
@@ -42667,14 +42667,14 @@
           "difficulty": "easy",
           "type": "quiz",
           "prompt": "¿Por qué vías ocurre el poisoning de un LLM (LLM04)?",
-          "answer": "Fine-tune poisoning (datos de ajuste manipulados → sesgos/backdoors), RAG poisoning (un atacante coloca un documento envenenado o con inyección indirecta en una base.",
+          "answer": "Fine-tune poisoning (datos de ajuste manipulados → backdoors), RAG poisoning (documento envenenado en una base editable) y feedback poisoning (reentrenar sin curar).",
           "feedback": "Ajuste, RAG y feedback.",
           "concept": "LLM04: poisoning de fine-tuning, de la base del RAG (fuentes editables) y del feedback",
           "source_reference": "OWASP Top 10 for LLM Applications 2025; data/teoria/cyber-llm4.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar LLM04: poisoning de fine-tuning, de la base del RAG (fuentes editables) y del feedback con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece LLM04: poisoning de fine-tuning, de la base del RAG (fuentes editables) y del feedback en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Fine-tune poisoning (datos de ajuste manipulados → sesgos/backdoors), RAG poisoning (un atacante coloca un documento envenenado o con inyección indirecta en una base.",
+            "Fine-tune poisoning (datos de ajuste manipulados → backdoors), RAG poisoning (documento envenenado en una base editable) y feedback poisoning (reentrenar sin curar).",
             "Aceptar el riesgo sin dueño, evidencia ni fecha de revisión.",
             "Mover el control al cliente o a documentación sin verificación técnica.",
             "Aplicar un control genérico sin revisar el activo afectado."
@@ -43822,14 +43822,14 @@
           "difficulty": "medium",
           "type": "quiz",
           "prompt": "Vas a desplegar un asistente RAG con herramientas (correo, tickets). Describe su gobernanza integrada.",
-          "answer": "Capas: RAG con control de acceso por usuario y contenido no confiable; sin secretos en el prompt",
+          "answer": "RAG con control de acceso y contenido no confiable; sin secretos en el prompt; agencia mínima (confirmación humana); salida validada; rate limiting, monitoreo y red teaming.",
           "feedback": "Capas + red teaming + monitoreo.",
           "concept": "Construir IA segura es aplicar toda la ciberseguridad a la vez",
           "source_reference": "OWASP Top 10 for LLM Applications 2025; data/teoria/cyber-llm5.md",
           "common_mistake": "Responder con una herramienta o definición aislada sin conectar Construir IA segura es aplicar toda la ciberseguridad a la vez con riesgo, impacto y evidencia.",
           "recognition_signal": "Señal: aparece Construir IA segura es aplicar toda la ciberseguridad a la vez en una decisión con datos, permisos, confianza, automatización o exposición externa.",
           "options": [
-            "Capas: RAG con control de acceso por usuario y contenido no confiable; sin secretos en el prompt",
+            "RAG con control de acceso y contenido no confiable; sin secretos en el prompt; agencia mínima (confirmación humana); salida validada; rate limiting, monitoreo y red teaming.",
             "Aplicar un control genérico sin revisar el activo afectado.",
             "Confiar en que, por ser interno, el fallo no tiene impacto real.",
             "Bloquear todo sin medir impacto, utilidad ni riesgo residual."
@@ -44859,7 +44859,21 @@
           "enunciado": "¿Qué significa que 'toda capacidad defensiva de IA tiene un espejo ofensivo'?",
           "solucion": "Que cada uso que potencia tu defensa (detección a escala, respuesta rápida, generación de contenido) tiene un equivalente que potencia al atacante (evasión adaptativa, ataques automatizados, deepfakes a escala). Asumir solo el lado bueno es el error de liderazgo más común.",
           "explicacion": "La IA amplifica ataque y defensa a la vez.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Qué significa que 'toda capacidad defensiva de IA tiene un espejo ofensivo'?",
+          "feedback": "La IA amplifica ataque y defensa a la vez.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Que cada uso que potencia tu defensa (deteccion a escala, respuesta rapida) tiene un equivalente que potencia al atacante (evasion adaptativa, deepfakes a escala).",
+          "options": [
+            "Que cada uso que potencia tu defensa (deteccion a escala, respuesta rapida) tiene un equivalente que potencia al atacante (evasion adaptativa, deepfakes a escala).",
+            "Que la IA defensiva siempre supera a la ofensiva porque el defensor controla los datos.",
+            "Que conviene desplegar IA solo en defensa y prohibirla en operaciones ofensivas.",
+            "Que los espejos ofensivos son teoricos y aun no existen en ataques reales."
+          ]
         },
         {
           "id": "cmit1-q2",
@@ -44867,7 +44881,21 @@
           "enunciado": "¿Dónde agrega valor la IA en ciberseguridad y dónde introduce riesgo?",
           "solucion": "Agrega valor en tareas de patrón a escala (clasificar, correlacionar, priorizar alertas) donde el volumen supera a los humanos y el costo de un error individual es bajo y reversible. Introduce riesgo en el juicio de alta consecuencia (bloquear producción, aprobar una transferencia), donde alucina, es engañable y no rinde cuentas.",
           "explicacion": "Patrón a escala vs juicio con consecuencias.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Dónde agrega valor la IA en ciberseguridad y dónde introduce riesgo?",
+          "feedback": "Patrón a escala vs juicio con consecuencias.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Agrega valor en patron a escala (clasificar, correlacionar, priorizar alertas), donde el error es barato y reversible; introduce riesgo en el juicio de alta consecuencia.",
+          "options": [
+            "Agrega valor en patron a escala (clasificar, correlacionar, priorizar alertas), donde el error es barato y reversible; introduce riesgo en el juicio de alta consecuencia.",
+            "Agrega valor decidiendo acciones irreversibles rapido; el riesgo esta en las tareas lentas de bajo impacto.",
+            "Agrega valor solo si reemplaza por completo al analista; el riesgo es el costo de licencias.",
+            "Su valor y su riesgo son iguales en toda tarea, asi que conviene automatizar todo por igual."
+          ]
         },
         {
           "id": "cmit1-q3",
@@ -44875,7 +44903,21 @@
           "enunciado": "Diferencia el rol de un modelo supervisado, uno no supervisado y uno generativo en ciberseguridad.",
           "solucion": "Supervisado: aprende de ejemplos etiquetados → clasificar (malicioso/benigno); no detecta lo que nunca vio. No supervisado: halla estructura sin etiquetas → detección de anomalías (lo que no se parece a lo normal). Generativo: produce contenido nuevo → asistentes defensivos, pero también la materia prima del ataque (deepfakes, phishing).",
           "explicacion": "Cada familia tiene su rol y sus límites.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "Diferencia el rol de un modelo supervisado, uno no supervisado y uno generativo en ciberseguridad.",
+          "feedback": "Cada familia tiene su rol y sus límites.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Supervisado: clasifica desde ejemplos etiquetados (malicioso/benigno). No supervisado: detecta anomalias sin etiquetas. Generativo: produce contenido nuevo (asistente o arma).",
+          "options": [
+            "Supervisado: clasifica desde ejemplos etiquetados (malicioso/benigno). No supervisado: detecta anomalias sin etiquetas. Generativo: produce contenido nuevo (asistente o arma).",
+            "Supervisado detecta lo nunca visto; no supervisado clasifica con etiquetas; generativo solo resume texto.",
+            "Los tres hacen lo mismo (clasificar alertas); cambian solo en velocidad de entrenamiento.",
+            "Generativo es el unico util en defensa; supervisado y no supervisado solo sirven para atacar."
+          ]
         },
         {
           "id": "cmit1-q4",
@@ -44883,7 +44925,21 @@
           "enunciado": "¿Qué decide el cuadrante humano-vs-IA y con qué dos ejes?",
           "solucion": "Decide qué tareas delegar a la IA y cuáles reservar al humano, cruzando volumen × consecuencia del error: alto volumen y consecuencia baja → la IA decide (triar alertas); alta consecuencia → la IA propone y el humano aprueba, o decide el humano (atribuir, comunicar a la junta, aprobar pagos).",
           "explicacion": "Volumen × consecuencia.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Qué decide el cuadrante humano-vs-IA y con qué dos ejes?",
+          "feedback": "Volumen × consecuencia.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Que delegar a la IA vs reservar al humano, cruzando volumen x consecuencia del error: alto volumen y baja consecuencia -> IA decide; alta consecuencia -> humano aprueba o decide.",
+          "options": [
+            "Que delegar a la IA vs reservar al humano, cruzando volumen x consecuencia del error: alto volumen y baja consecuencia -> IA decide; alta consecuencia -> humano aprueba o decide.",
+            "El costo del modelo x su exactitud: si es caro y preciso, automatiza todo.",
+            "La antiguedad del analista x su carga: delega a la IA las tareas de los novatos.",
+            "Velocidad x popularidad de la herramienta: usa la IA donde sea mas rapida sin importar la consecuencia."
+          ]
         },
         {
           "id": "cmit1-q5",
@@ -44891,7 +44947,21 @@
           "enunciado": "¿Por qué automatizar una decisión irreversible de alta consecuencia es peligroso, incluso si la IA es más rápida?",
           "solucion": "Porque la IA es engañable (adversarial inputs, datos envenenados) y no rinde cuentas; una decisión rápida y equivocada hace daño rápido e irreversible. Además, la automatización misma se vuelve superficie de ataque: un adversario puede manipular las señales para que la IA ejecute la acción dañina (p. ej. cerrar tu sistema). Por eso lo irreversible exige humano en el lazo.",
           "explicacion": "Velocidad sin juicio amplifica el error.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "quiz",
+          "prompt": "¿Por qué automatizar una decisión irreversible de alta consecuencia es peligroso, incluso si la IA es más rápida?",
+          "feedback": "Velocidad sin juicio amplifica el error.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Porque la IA es enganable y no rinde cuentas: un error rapido se vuelve dano irreversible, y la automatizacion misma es superficie de ataque (manipulan su entrada).",
+          "options": [
+            "Porque la IA es enganable y no rinde cuentas: un error rapido se vuelve dano irreversible, y la automatizacion misma es superficie de ataque (manipulan su entrada).",
+            "Porque la IA es lenta en decisiones criticas y el humano siempre es mas rapido.",
+            "Porque automatizar es ilegal en acciones de alta consecuencia en casi toda jurisdiccion.",
+            "No es peligroso: si la IA es mas rapida y precisa que el humano, conviene automatizar lo irreversible."
+          ]
         },
         {
           "id": "cmit1-q6",
@@ -44899,7 +44969,21 @@
           "enunciado": "Aprobar una transferencia urgente que pide el CEO por videollamada, ¿en qué cuadrante cae y qué implica?",
           "solucion": "Consecuencia altísima (dinero, irreversible) → exige humano + verificación, jamás automatizado ni decidido a ciegas. Implica verificación fuera de banda y doble aprobación, justo el control que faltó en los casos reales de fraude con deepfake.",
           "explicacion": "Alta consecuencia → humano y verificación.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "quiz",
+          "prompt": "Aprobar una transferencia urgente que pide el CEO por videollamada, ¿en qué cuadrante cae y qué implica?",
+          "feedback": "Alta consecuencia → humano y verificación.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Consecuencia altisima e irreversible (dinero): exige humano + verificacion fuera de banda y doble aprobacion, jamas a ciegas. Es el control que falto en los fraudes con deepfake.",
+          "options": [
+            "Consecuencia altisima e irreversible (dinero): exige humano + verificacion fuera de banda y doble aprobacion, jamas a ciegas. Es el control que falto en los fraudes con deepfake.",
+            "Bajo volumen y baja consecuencia -> la IA puede aprobarla sola para no frenar al CEO.",
+            "Alta consecuencia pero reversible -> basta con que la IA registre la decision en un log.",
+            "Como lo pide el CEO por video, el canal ya es verificacion suficiente y se puede ejecutar."
+          ]
         },
         {
           "id": "cmit1-s1",
@@ -44907,7 +44991,15 @@
           "enunciado": "Escenario: un proveedor te ofrece una IA que 'bloquea automáticamente cualquier endpoint que considere comprometido, sin intervención humana, para responder en milisegundos'. Como líder de seguridad, ¿lo apruebas tal cual? Razona con el cuadrante.",
           "solucion": "No tal cual. Bloquear producción es alta consecuencia: una IA engañable podría ser inducida (señales envenenadas) a bloquear sistemas críticos = DoS autoinfligido. Apruébalo en modo 'IA propone, humano aprueba' para lo crítico, o con bloqueo automático solo en casos de bajo impacto y reversibles; con límites, monitoreo y un kill-switch humano.",
           "explicacion": "La autonomía total en alta consecuencia es superficie de ataque.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: un proveedor te ofrece una IA que 'bloquea automáticamente cualquier endpoint que considere comprometido, sin intervención humana, para responder en milisegundos'. Como líder de seguridad, ¿lo apruebas tal cual? Razona con el cuadrante.",
+          "feedback": "La autonomía total en alta consecuencia es superficie de ataque.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "No tal cual. Bloquear producción es alta consecuencia: una IA engañable podría ser inducida (señales envenenadas) a bloquear sistemas críticos = DoS autoinfligido. Apruébalo en modo 'IA propone, humano aprueba' para lo crítico, o con bloqueo automático solo en casos de bajo impacto y reversibles; con límites, monitoreo y un kill-switch humano."
         },
         {
           "id": "cmit1-s2",
@@ -44915,7 +45007,15 @@
           "enunciado": "Escenario: tu SOC recibe 12,000 alertas/día y el equipo está saturado. Propón cómo repartir el trabajo entre IA y humanos usando el cuadrante.",
           "solucion": "IA decide/triage en alto volumen + bajo costo de error (filtrar ruido, agrupar, priorizar). IA propone y el humano aprueba para acciones de alto impacto (aislar un host, deshabilitar una cuenta). Humano decide en lo de baja frecuencia y alta consecuencia (atribución, comunicación a dirección, decisiones legales). Así la IA amplía la percepción y el humano conserva el juicio.",
           "explicacion": "Reparto por volumen y consecuencia.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: tu SOC recibe 12,000 alertas/día y el equipo está saturado. Propón cómo repartir el trabajo entre IA y humanos usando el cuadrante.",
+          "feedback": "Reparto por volumen y consecuencia.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "IA decide/triage en alto volumen + bajo costo de error (filtrar ruido, agrupar, priorizar). IA propone y el humano aprueba para acciones de alto impacto (aislar un host, deshabilitar una cuenta). Humano decide en lo de baja frecuencia y alta consecuencia (atribución, comunicación a dirección, decisiones legales). Así la IA amplía la percepción y el humano conserva el juicio."
         },
         {
           "id": "cmit1-r1",
@@ -44923,7 +45023,15 @@
           "enunciado": "Piensa en una tarea de seguridad o datos que haces hoy: ¿dónde la IA ampliaría tu percepción sin quitarte el juicio, y qué reservarías siempre a una persona?",
           "solucion": "Reflexión abierta. Una buena respuesta ubica la tarea en el cuadrante volumen×consecuencia, delega a la IA lo de patrón a escala y bajo costo de error, y reserva al humano lo irreversible o de alta consecuencia, explicando por qué.",
           "explicacion": "Aplica el cuadrante a tu propio trabajo.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "Piensa en una tarea de seguridad o datos que haces hoy: ¿dónde la IA ampliaría tu percepción sin quitarte el juicio, y qué reservarías siempre a una persona?",
+          "feedback": "Aplica el cuadrante a tu propio trabajo.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Reflexión abierta. Una buena respuesta ubica la tarea en el cuadrante volumen×consecuencia, delega a la IA lo de patrón a escala y bajo costo de error, y reserva al humano lo irreversible o de alta consecuencia, explicando por qué."
         },
         {
           "id": "cmit1-r2",
@@ -44931,10 +45039,132 @@
           "enunciado": "¿Qué 'espejo ofensivo' temes más de una capacidad de IA que ya usas o usarías para defender, y cómo lo vigilarías?",
           "solucion": "Reflexión abierta. Una buena respuesta nombra una capacidad defensiva concreta, su equivalente ofensivo, y un control/monitoreo proporcional para detectarlo o limitar su daño.",
           "explicacion": "Internaliza la simetría ataque/defensa.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "reflection",
+          "prompt": "¿Qué 'espejo ofensivo' temes más de una capacidad de IA que ya usas o usarías para defender, y cómo lo vigilarías?",
+          "feedback": "Internaliza la simetría ataque/defensa.",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "answer": "Reflexión abierta. Una buena respuesta nombra una capacidad defensiva concreta, su equivalente ofensivo, y un control/monitoreo proporcional para detectarlo o limitar su daño."
+        },
+        {
+          "id": "cmit1-q7",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Por que la automatizacion sin supervision es, ella misma, una superficie de ataque?",
+          "prompt": "Por que la automatizacion sin supervision es, ella misma, una superficie de ataque?",
+          "solucion": "Porque un adversario puede manipular las senales de entrada para que la IA ejecute la accion danina por si sola (p. ej. envenenar datos para que bloquee un sistema critico).",
+          "answer": "Porque un adversario puede manipular las senales de entrada para que la IA ejecute la accion danina por si sola (p. ej. envenenar datos para que bloquee un sistema critico).",
+          "explicacion": "La automatizacion concentra poder de accion: quien manipula su entrada, manipula su accion.",
+          "feedback": "La automatizacion concentra poder de accion: quien manipula su entrada, manipula su accion.",
+          "difficulty": "medium",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "options": [
+            "Porque un adversario puede manipular las senales de entrada para que la IA ejecute la accion danina por si sola (p. ej. envenenar datos para que bloquee un sistema critico).",
+            "Porque consume recursos que podrian usarse en defensa humana.",
+            "Porque las licencias de IA autonoma son blanco frecuente de robo.",
+            "Porque la IA sin supervision se apaga sola ante cualquier ataque."
+          ]
+        },
+        {
+          "id": "cmit1-q8",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "En el cuadrante humano-vs-IA, que tarea es ideal para delegar a la IA?",
+          "prompt": "En el cuadrante humano-vs-IA, que tarea es ideal para delegar a la IA?",
+          "solucion": "Alto volumen y consecuencia baja y reversible, como triar y correlacionar miles de alertas.",
+          "answer": "Alto volumen y consecuencia baja y reversible, como triar y correlacionar miles de alertas.",
+          "explicacion": "La IA brilla donde el volumen supera al humano y un error individual es barato y reversible.",
+          "feedback": "La IA brilla donde el volumen supera al humano y un error individual es barato y reversible.",
+          "difficulty": "easy",
+          "concept": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+          "source_reference": "data/teoria/cyber-mit1.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Asumir solo el lado bueno de la IA o automatizar decisiones irreversibles de alta consecuencia.",
+          "recognition_signal": "Aparece una decision donde cruzar volumen x consecuencia define si decide la IA o un humano.",
+          "options": [
+            "Alto volumen y consecuencia baja y reversible, como triar y correlacionar miles de alertas.",
+            "Aprobar transferencias grandes con rapidez para no frenar al negocio.",
+            "Comunicar un incidente grave a la junta directiva.",
+            "Atribuir un ataque a un actor estatal concreto."
+          ]
         }
       ],
-      "orden": 841
+      "orden": 841,
+      "level": "intermediate",
+      "difficulty": "medium",
+      "primary_resource": {
+        "title": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+        "type": "course"
+      },
+      "learning_objective": "Distinguir usos ofensivos y defensivos de la IA; ubicar dónde agrega valor y dónde introduce riesgo; diferenciar modelos generativos/supervisados/no supervisados; y aplicar el cuadrante de decisión humano-vs-IA.",
+      "lesson_contract": {
+        "central_idea": "La IA amplifica ataque y defensa por igual; delega por volumen x consecuencia y nunca automatices lo irreversible de alta consecuencia.",
+        "intuition_before_formalism": true,
+        "worked_example": true,
+        "recognition_signals": true,
+        "common_mistakes": true,
+        "counterexample_and_edge_case": true,
+        "transfer_to_data_ai_stem": true,
+        "retrieval_practice": true
+      },
+      "external_lab": {
+        "type": "external_lab",
+        "name": "MITRE ATLAS",
+        "url": "https://atlas.mitre.org",
+        "task": "explora MITRE ATLAS (https://atlas.mitre.org) y ubica una tactica ofensiva contra sistemas de ML y su mitigacion. Criterio de cierre: explicar el espejo ofensivo de una capacidad defensiva.",
+        "completion_criterion": "explicar el espejo ofensivo de una capacidad defensiva de IA.",
+        "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+        "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+      },
+      "portfolio_task": {
+        "type": "portfolio_task",
+        "prompt": "un cuadrante humano-vs-IA de 6 decisiones de tu organizacion, ubicando cada una por volumen x consecuencia y justificando quien decide.",
+        "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+        "rubric": [
+          "Patron de ataque/decision identificado con claridad",
+          "Control de proceso proporcional a la consecuencia",
+          "Roles y rendicion de cuentas explicitos",
+          "Senales de deteccion o verificacion",
+          "Comunicacion sobria para un equipo tecnico"
+        ]
+      },
+      "references_apa": [
+        "Massachusetts Institute of Technology. (n.d.). *AI and cybersecurity: Strategies for resilience and defense*. MIT Professional Education.",
+        "MITRE. (n.d.). *MITRE ATLAS*. https://atlas.mitre.org"
+      ],
+      "practice": [
+        {
+          "type": "external_lab",
+          "name": "MITRE ATLAS",
+          "url": "https://atlas.mitre.org",
+          "task": "explora MITRE ATLAS (https://atlas.mitre.org) y ubica una tactica ofensiva contra sistemas de ML y su mitigacion. Criterio de cierre: explicar el espejo ofensivo de una capacidad defensiva.",
+          "completion_criterion": "explicar el espejo ofensivo de una capacidad defensiva de IA.",
+          "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+          "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+        },
+        {
+          "type": "portfolio_task",
+          "prompt": "un cuadrante humano-vs-IA de 6 decisiones de tu organizacion, ubicando cada una por volumen x consecuencia y justificando quien decide.",
+          "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+          "rubric": [
+            "Patron de ataque/decision identificado con claridad",
+            "Control de proceso proporcional a la consecuencia",
+            "Roles y rendicion de cuentas explicitos",
+            "Senales de deteccion o verificacion",
+            "Comunicacion sobria para un equipo tecnico"
+          ]
+        },
+        {
+          "type": "retrieval_drill",
+          "prompt": "Antes de ver la solucion, escribe desde memoria la idea central de Ciber · Panorama estratégico: IA en ataque y defensa, y cuándo IA vs humanos, que evidencia la mostraria y que control reduce el riesgo.",
+          "completion_criterion": "Respuesta escrita con idea central, supuesto roto, control, evidencia y tradeoff."
+        }
+      ]
     },
     {
       "id": "cyber-mit2",
@@ -44962,7 +45192,21 @@
           "enunciado": "Nombra cuatro 'armas' del arsenal ofensivo de IA y qué hacen.",
           "solucion": "Deepfake de video (cara/gestos falsos en videollamada), voice cloning (clona una voz con segundos de audio), vishing hiperpersonalizado (llamadas/notas de voz a medida, a escala), dark-web AI / LLMs sin restricciones (para fraude/malware) y malware asistido por IA (genera/ofusca variantes). El hilo común: la IA abarata y escala lo que antes exigía talento y tiempo.",
           "explicacion": "Arsenal ofensivo de IA generativa.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "Nombra cuatro 'armas' del arsenal ofensivo de IA y qué hacen.",
+          "feedback": "Arsenal ofensivo de IA generativa.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Deepfake de video (cara/gestos falsos), voice cloning (clona voz con segundos de audio), vishing hiperpersonalizado a escala, y dark-web AI / malware asistido por IA.",
+          "options": [
+            "Deepfake de video (cara/gestos falsos), voice cloning (clona voz con segundos de audio), vishing hiperpersonalizado a escala, y dark-web AI / malware asistido por IA.",
+            "Cifrado roto, fuerza bruta de contrasenas, escaneo de puertos y exploits de dia cero.",
+            "Firewalls mal configurados, parches faltantes, puertos abiertos y CVEs sin corregir.",
+            "Phishing por SMS, typosquatting, watering holes y secuestro de DNS clasicos sin IA."
+          ]
         },
         {
           "id": "cmit2-q2",
@@ -44970,7 +45214,21 @@
           "enunciado": "¿Por qué el fraude potenciado por IA ataca a la confianza y no a la técnica?",
           "solucion": "Porque tus controles técnicos (TLS, MFA, cifrado) protegen canales, no percepciones. El fraude con IA no rompe el cifrado: convence a una persona autorizada de usar sus accesos legítimos mediante autoridad aparente + urgencia + un canal que parecía irrefutable (ver y oír). Es ingeniería social sobrealimentada.",
           "explicacion": "Rompe la confianza perceptual, no el canal.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Por qué el fraude potenciado por IA ataca a la confianza y no a la técnica?",
+          "feedback": "Rompe la confianza perceptual, no el canal.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Porque los controles tecnicos (TLS, MFA, cifrado) protegen canales, no percepciones; el fraude convence a una persona autorizada de usar sus accesos con autoridad + urgencia.",
+          "options": [
+            "Porque los controles tecnicos (TLS, MFA, cifrado) protegen canales, no percepciones; el fraude convence a una persona autorizada de usar sus accesos con autoridad + urgencia.",
+            "Porque la IA rompe el cifrado moderno y por eso evita los controles tecnicos.",
+            "Porque ataca servidores sin parchear, que es mas facil que enganar a una persona.",
+            "Porque los controles tecnicos ya no se usan, asi que solo queda atacar a las personas."
+          ]
         },
         {
           "id": "cmit2-q3",
@@ -44978,7 +45236,21 @@
           "enunciado": "¿Por qué 'capacitaremos a la gente para detectar deepfakes' es una mala estrategia de defensa?",
           "solucion": "Porque los deepfakes ya engañan a expertos y mejoran cada mes: depender de la detección perceptual humana es una carrera que el defensor pierde. La defensa correcta es de proceso (verificación fuera de banda, doble aprobación), que funciona sin importar cuán real se vea u oiga el contenido.",
           "explicacion": "No entrenes el ojo, blinda el proceso.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Por qué 'capacitaremos a la gente para detectar deepfakes' es una mala estrategia de defensa?",
+          "feedback": "No entrenes el ojo, blinda el proceso.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Porque los deepfakes ya enganan a expertos y mejoran cada mes: la deteccion perceptual humana es una carrera que el defensor pierde. Lo correcto es defensa de proceso.",
+          "options": [
+            "Porque los deepfakes ya enganan a expertos y mejoran cada mes: la deteccion perceptual humana es una carrera que el defensor pierde. Lo correcto es defensa de proceso.",
+            "Porque capacitar es caro; si fuera gratis, entrenar el ojo seria la mejor defensa.",
+            "Porque los empleados no quieren capacitarse; con incentivos, detectar deepfakes funcionaria.",
+            "Porque solo los expertos en IA pueden detectarlos; basta con contratar a uno."
+          ]
         },
         {
           "id": "cmit2-q4",
@@ -44986,7 +45258,21 @@
           "enunciado": "¿Qué es 'verificación fuera de banda' y por qué es la defensa central contra deepfakes/voice cloning?",
           "solucion": "Es confirmar una orden por un canal independiente y acordado de antemano (llamar a un número conocido, un código pactado), distinto del canal por el que llegó la petición. Es central porque rompe el supuesto que el atacante explota (que el canal de la orden es confiable): aunque el deepfake sea perfecto, no controla el segundo canal.",
           "explicacion": "Verificar por un canal que el atacante no controla.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Qué es 'verificación fuera de banda' y por qué es la defensa central contra deepfakes/voice cloning?",
+          "feedback": "Verificar por un canal que el atacante no controla.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Confirmar la orden por un canal independiente y pactado de antemano (un numero conocido), distinto del que la trajo: el deepfake no controla ese segundo canal.",
+          "options": [
+            "Confirmar la orden por un canal independiente y pactado de antemano (un numero conocido), distinto del que la trajo: el deepfake no controla ese segundo canal.",
+            "Analizar el video/audio con un detector de deepfakes antes de actuar sobre la orden.",
+            "Pedir a quien dio la orden que la repita por el mismo canal para confirmarla.",
+            "Cifrar el canal de la orden con TLS para que el atacante no pueda falsificarla."
+          ]
         },
         {
           "id": "cmit2-q5",
@@ -44994,7 +45280,21 @@
           "enunciado": "¿Por qué el realismo creciente de un deepfake debería AUMENTAR la sospecha en una transacción sensible, no bajarla?",
           "solucion": "Porque la víctima tiende a subir su confianza al ver/oír 'en vivo', y eso es exactamente lo que hoy se falsifica. En acciones de alta consecuencia, el patrón sospechoso (urgencia + autoridad + confidencialidad + presión para saltar el proceso) es independiente del realismo; cuanto más perfecto el canal, más conviene verificar fuera de banda.",
           "explicacion": "El realismo es la trampa, no la garantía.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "quiz",
+          "prompt": "¿Por qué el realismo creciente de un deepfake debería AUMENTAR la sospecha en una transacción sensible, no bajarla?",
+          "feedback": "El realismo es la trampa, no la garantía.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Porque ver/oir \"en vivo\" sube tu confianza y es justo lo que hoy se falsifica; el patron sospechoso (urgencia + autoridad + confidencialidad) es independiente del realismo.",
+          "options": [
+            "Porque ver/oir \"en vivo\" sube tu confianza y es justo lo que hoy se falsifica; el patron sospechoso (urgencia + autoridad + confidencialidad) es independiente del realismo.",
+            "No deberia: si el video se ve perfecto, es senal fuerte de que la orden es autentica.",
+            "Porque un deepfake perfecto consume mas computo y eso lo delata como fraude.",
+            "Porque el realismo solo importa en video, no en voz; en llamadas conviene confiar mas."
+          ]
         },
         {
           "id": "cmit2-s1",
@@ -45002,7 +45302,15 @@
           "enunciado": "Escenario: recibes un correo del 'CFO' pidiendo una transferencia urgente; sospechas, pero te suman a una videollamada donde el CFO y dos directivos confirman la orden hablando entre sí. ¿Qué haces?",
           "solucion": "No transferir. La videollamada subió tu confianza precisamente porque asumes que un video en vivo no se falsifica, y eso es lo falsificable hoy. Aplica el control de alta consecuencia: verificación fuera de banda (llamar al CFO a un número conocido), doble aprobación, y rechazar la presión de 'urgente y confidencial'. El realismo debe aumentar tu sospecha.",
           "explicacion": "Es el caso real del fraude de $25M; control de proceso.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: recibes un correo del 'CFO' pidiendo una transferencia urgente; sospechas, pero te suman a una videollamada donde el CFO y dos directivos confirman la orden hablando entre sí. ¿Qué haces?",
+          "feedback": "Es el caso real del fraude de $25M; control de proceso.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "No transferir. La videollamada subió tu confianza precisamente porque asumes que un video en vivo no se falsifica, y eso es lo falsificable hoy. Aplica el control de alta consecuencia: verificación fuera de banda (llamar al CFO a un número conocido), doble aprobación, y rechazar la presión de 'urgente y confidencial'. El realismo debe aumentar tu sospecha."
         },
         {
           "id": "cmit2-s2",
@@ -45010,7 +45318,15 @@
           "enunciado": "Escenario: el 'CEO' te deja una nota de voz —es su voz exacta— pidiéndote credenciales de administrador para un despliegue urgente, y que 'no lo comentes con nadie aún'. ¿Cómo respondes?",
           "solucion": "No entregar credenciales. La voz ya no prueba identidad (voice cloning desde audio público). El 'no lo comentes' busca anular la verificación cruzada: es bandera roja. Verifica fuera de banda por un canal conocido, exige doble aprobación para accesos sensibles, y recuerda que está bien dudar del CEO. Rima con los casos de LastPass/Wiz, donde dudar salvó el día.",
           "explicacion": "Voice cloning + vishing; la duda es la defensa.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: el 'CEO' te deja una nota de voz —es su voz exacta— pidiéndote credenciales de administrador para un despliegue urgente, y que 'no lo comentes con nadie aún'. ¿Cómo respondes?",
+          "feedback": "Voice cloning + vishing; la duda es la defensa.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "No entregar credenciales. La voz ya no prueba identidad (voice cloning desde audio público). El 'no lo comentes' busca anular la verificación cruzada: es bandera roja. Verifica fuera de banda por un canal conocido, exige doble aprobación para accesos sensibles, y recuerda que está bien dudar del CEO. Rima con los casos de LastPass/Wiz, donde dudar salvó el día."
         },
         {
           "id": "cmit2-s3",
@@ -45018,7 +45334,15 @@
           "enunciado": "Escenario: como líder, debes elegir UNA inversión contra el fraude con IA: (a) un detector de deepfakes de última generación, o (b) rediseñar el proceso de aprobación de transferencias con verificación fuera de banda y doble firma. ¿Cuál y por qué?",
           "solucion": "(b). El detector entra en una carrera armamentista que el defensor pierde (los deepfakes mejoran y evaden detectores), y solo cubre un canal. Rediseñar el proceso ataca la causa raíz —que una persona pueda actuar sobre una orden sin verificación independiente— y funciona contra cualquier modalidad (video, voz, correo), presente y futura.",
           "explicacion": "Proceso > detección perceptual.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "scenario",
+          "prompt": "Escenario: como líder, debes elegir UNA inversión contra el fraude con IA: (a) un detector de deepfakes de última generación, o (b) rediseñar el proceso de aprobación de transferencias con verificación fuera de banda y doble firma. ¿Cuál y por qué?",
+          "feedback": "Proceso > detección perceptual.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "(b). El detector entra en una carrera armamentista que el defensor pierde (los deepfakes mejoran y evaden detectores), y solo cubre un canal. Rediseñar el proceso ataca la causa raíz —que una persona pueda actuar sobre una orden sin verificación independiente— y funciona contra cualquier modalidad (video, voz, correo), presente y futura."
         },
         {
           "id": "cmit2-r1",
@@ -45026,7 +45350,15 @@
           "enunciado": "¿Qué proceso de tu entorno (real o ficticio) permite hoy que una sola persona actúe sobre una 'orden urgente' sin verificación independiente? ¿Cómo lo blindarías?",
           "solucion": "Reflexión abierta. Una buena respuesta identifica un proceso de alta consecuencia (pago, reseteo de credenciales, cambio de configuración crítica) y propone verificación fuera de banda + doble aprobación, sin depender de detectar la falsificación.",
           "explicacion": "Aplica el control de proceso a tu contexto.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "¿Qué proceso de tu entorno (real o ficticio) permite hoy que una sola persona actúe sobre una 'orden urgente' sin verificación independiente? ¿Cómo lo blindarías?",
+          "feedback": "Aplica el control de proceso a tu contexto.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Reflexión abierta. Una buena respuesta identifica un proceso de alta consecuencia (pago, reseteo de credenciales, cambio de configuración crítica) y propone verificación fuera de banda + doble aprobación, sin depender de detectar la falsificación."
         },
         {
           "id": "cmit2-r2",
@@ -45034,10 +45366,132 @@
           "enunciado": "Ahora que 'ver y oír' ya no prueba identidad, ¿qué hábitos personales cambiarías ante una petición urgente de una figura de autoridad?",
           "solucion": "Reflexión abierta. Una buena respuesta normaliza el verificar (incluso a superiores), trata la urgencia como señal de alerta y no como excepción, y adopta un canal de verificación acordado de antemano.",
           "explicacion": "Internaliza el escepticismo calibrado.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "Ahora que 'ver y oír' ya no prueba identidad, ¿qué hábitos personales cambiarías ante una petición urgente de una figura de autoridad?",
+          "feedback": "Internaliza el escepticismo calibrado.",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "answer": "Reflexión abierta. Una buena respuesta normaliza el verificar (incluso a superiores), trata la urgencia como señal de alerta y no como excepción, y adopta un canal de verificación acordado de antemano."
+        },
+        {
+          "id": "cmit2-q6",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Que hace del voice cloning una amenaza masiva y barata hoy?",
+          "prompt": "Que hace del voice cloning una amenaza masiva y barata hoy?",
+          "solucion": "Que bastan segundos de audio publico (p. ej. una charla en YouTube) para clonar una voz, y un script automatiza el vishing hiperpersonalizado a escala.",
+          "answer": "Que bastan segundos de audio publico (p. ej. una charla en YouTube) para clonar una voz, y un script automatiza el vishing hiperpersonalizado a escala.",
+          "explicacion": "Lo que abarata y escala el fraude es justo lo peligroso: poco insumo, mucho alcance.",
+          "feedback": "Lo que abarata y escala el fraude es justo lo peligroso: poco insumo, mucho alcance.",
+          "difficulty": "easy",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "options": [
+            "Que bastan segundos de audio publico (p. ej. una charla en YouTube) para clonar una voz, y un script automatiza el vishing hiperpersonalizado a escala.",
+            "Que requiere acceso fisico al telefono de la victima.",
+            "Que solo funciona si el atacante conoce a la victima en persona.",
+            "Que necesita romper el cifrado de la llamada telefonica."
+          ]
+        },
+        {
+          "id": "cmit2-q7",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Una orden \"urgente y confidencial\" que presiona para saltar el proceso, que deberia disparar?",
+          "prompt": "Una orden \"urgente y confidencial\" que presiona para saltar el proceso, que deberia disparar?",
+          "solucion": "Sospecha y verificacion fuera de banda: urgencia + confidencialidad + presion para saltar el proceso es el patron del fraude, independiente de cuan real parezca.",
+          "answer": "Sospecha y verificacion fuera de banda: urgencia + confidencialidad + presion para saltar el proceso es el patron del fraude, independiente de cuan real parezca.",
+          "explicacion": "La confidencialidad y la urgencia existen para anular tu verificacion: por eso la disparan.",
+          "feedback": "La confidencialidad y la urgencia existen para anular tu verificacion: por eso la disparan.",
+          "difficulty": "medium",
+          "concept": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+          "source_reference": "data/teoria/cyber-mit2.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Confiar en detectar la falsificacion o en que ver/oir prueba identidad.",
+          "recognition_signal": "Aparece una orden con autoridad + urgencia + canal \"irrefutable\" que presiona a actuar sin verificar.",
+          "options": [
+            "Sospecha y verificacion fuera de banda: urgencia + confidencialidad + presion para saltar el proceso es el patron del fraude, independiente de cuan real parezca.",
+            "Cumplimiento inmediato, porque la confidencialidad impide verificar con terceros.",
+            "Reenviar la orden al equipo para decidir en grupo por el mismo canal.",
+            "Confiar si la voz o el rostro coinciden con los del directivo."
+          ]
         }
       ],
-      "orden": 842
+      "orden": 842,
+      "level": "intermediate",
+      "difficulty": "medium",
+      "primary_resource": {
+        "title": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+        "type": "course"
+      },
+      "learning_objective": "Nombrar el arsenal ofensivo de IA; explicar por qué ataca a la confianza y no a la técnica; reconocer las señales del fraude con IA; y entender por qué la verificación fuera de banda es la defensa central.",
+      "lesson_contract": {
+        "central_idea": "El fraude con IA ataca la confianza perceptual, no la tecnica; la defensa es de proceso (verificacion fuera de banda).",
+        "intuition_before_formalism": true,
+        "worked_example": true,
+        "recognition_signals": true,
+        "common_mistakes": true,
+        "counterexample_and_edge_case": true,
+        "transfer_to_data_ai_stem": true,
+        "retrieval_practice": true
+      },
+      "external_lab": {
+        "type": "external_lab",
+        "name": "CISA — Contextualizing Deepfake Threats to Organizations",
+        "url": "https://www.cisa.gov/resources-tools/resources/contextualizing-deepfake-threats-organizations",
+        "task": "lee la guia de CISA/NSA/FBI sobre amenazas de deepfakes a organizaciones (https://www.cisa.gov/resources-tools/resources/contextualizing-deepfake-threats-organizations). Criterio de cierre: nombrar dos controles de proceso recomendados.",
+        "completion_criterion": "nombrar dos controles de proceso recomendados contra deepfakes.",
+        "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+        "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+      },
+      "portfolio_task": {
+        "type": "portfolio_task",
+        "prompt": "un protocolo de verificacion fuera de banda de una carilla para ordenes sensibles (pagos, credenciales), con canal independiente y doble aprobacion.",
+        "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+        "rubric": [
+          "Patron de ataque/decision identificado con claridad",
+          "Control de proceso proporcional a la consecuencia",
+          "Roles y rendicion de cuentas explicitos",
+          "Senales de deteccion o verificacion",
+          "Comunicacion sobria para un equipo tecnico"
+        ]
+      },
+      "references_apa": [
+        "Massachusetts Institute of Technology. (n.d.). *AI and cybersecurity: Strategies for resilience and defense*. MIT Professional Education.",
+        "Cybersecurity and Infrastructure Security Agency. (2023). *Contextualizing deepfake threats to organizations*. https://www.cisa.gov/resources-tools/resources/contextualizing-deepfake-threats-organizations"
+      ],
+      "practice": [
+        {
+          "type": "external_lab",
+          "name": "CISA — Contextualizing Deepfake Threats to Organizations",
+          "url": "https://www.cisa.gov/resources-tools/resources/contextualizing-deepfake-threats-organizations",
+          "task": "lee la guia de CISA/NSA/FBI sobre amenazas de deepfakes a organizaciones (https://www.cisa.gov/resources-tools/resources/contextualizing-deepfake-threats-organizations). Criterio de cierre: nombrar dos controles de proceso recomendados.",
+          "completion_criterion": "nombrar dos controles de proceso recomendados contra deepfakes.",
+          "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+          "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+        },
+        {
+          "type": "portfolio_task",
+          "prompt": "un protocolo de verificacion fuera de banda de una carilla para ordenes sensibles (pagos, credenciales), con canal independiente y doble aprobacion.",
+          "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+          "rubric": [
+            "Patron de ataque/decision identificado con claridad",
+            "Control de proceso proporcional a la consecuencia",
+            "Roles y rendicion de cuentas explicitos",
+            "Senales de deteccion o verificacion",
+            "Comunicacion sobria para un equipo tecnico"
+          ]
+        },
+        {
+          "type": "retrieval_drill",
+          "prompt": "Antes de ver la solucion, escribe desde memoria la idea central de Ciber · Cibercrimen potenciado por IA: deepfakes, clonación de voz y mercado clandestino, que evidencia la mostraria y que control reduce el riesgo.",
+          "completion_criterion": "Respuesta escrita con idea central, supuesto roto, control, evidencia y tradeoff."
+        }
+      ]
     },
     {
       "id": "cyber-mit3",
@@ -45065,7 +45519,21 @@
           "enunciado": "¿Por qué la IA necesita un gobierno propio y no basta el gobierno de IT tradicional?",
           "solucion": "Porque el gobierno de IT asume software determinista y auditable línea por línea, y la IA rompe esos supuestos: es probabilística (alucina), depende de datos cuya calidad/sesgo determinan su conducta, es opaca (cuesta explicar sus decisiones) y deriva con el tiempo. Necesita controles propios: validación de datos/modelos, monitoreo de deriva, evaluación de sesgo y reglas sobre qué decide.",
           "explicacion": "Rompe los supuestos del software determinista.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Por qué la IA necesita un gobierno propio y no basta el gobierno de IT tradicional?",
+          "feedback": "Rompe los supuestos del software determinista.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Porque el gobierno de IT asume software determinista y auditable; la IA es probabilistica (alucina), dependiente de datos, opaca y deriva, asi que exige controles propios.",
+          "options": [
+            "Porque el gobierno de IT asume software determinista y auditable; la IA es probabilistica (alucina), dependiente de datos, opaca y deriva, asi que exige controles propios.",
+            "Porque la IA es solo software mas rapido; el gobierno de IT basta con mas presupuesto.",
+            "Porque la IA no necesita gobierno: al ser automatica, se autorregula con el tiempo.",
+            "Porque la regulacion obliga a un departamento separado, no por una diferencia tecnica real."
+          ]
         },
         {
           "id": "cmit3-q2",
@@ -45073,7 +45541,21 @@
           "enunciado": "¿Qué significan las tres letras de GRC aplicadas a la IA?",
           "solucion": "Gobernanza: quién decide y responde (estructuras, roles, políticas de uso). Riesgo: qué puede salir mal y cuánto importa (identificar, medir y tratar riesgos de IA, como en el AI RMF). Cumplimiento: cumplir leyes y normas (privacidad, regulación de IA, auditoría). GRC convierte 'usemos IA con cuidado' en responsabilidades, métricas y evidencias.",
           "explicacion": "Gobernanza, riesgo, cumplimiento.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Qué significan las tres letras de GRC aplicadas a la IA?",
+          "feedback": "Gobernanza, riesgo, cumplimiento.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Gobernanza: quien decide y responde. Riesgo: que falla y cuanto importa (identificar, medir, tratar). Cumplimiento: que leyes y normas cumplir (privacidad, auditoria).",
+          "options": [
+            "Gobernanza: quien decide y responde. Riesgo: que falla y cuanto importa (identificar, medir, tratar). Cumplimiento: que leyes y normas cumplir (privacidad, auditoria).",
+            "Generacion, Recuperacion y Clasificacion: las tres tareas tecnicas de un modelo de IA.",
+            "Gestion, Respaldo y Cifrado: los tres controles de seguridad de cualquier sistema.",
+            "Gobernanza, Rendimiento y Costo: las tres metricas de un despliegue de IA en produccion."
+          ]
         },
         {
           "id": "cmit3-q3",
@@ -45081,7 +45563,21 @@
           "enunciado": "¿Qué es Secure-by-Design aplicado a la IA?",
           "solucion": "Integrar seguridad, gobernanza y ética a lo largo de TODO el ciclo de vida del sistema de IA (encuadre, datos, entrenamiento, despliegue, monitoreo, retiro), no como una revisión final. Implica decidir desde el diseño qué datos entran, qué decisiones delega el modelo, cómo se monitorea y quién aprueba producción, con alineación interfuncional (seguridad, legal, datos, negocio).",
           "explicacion": "La seguridad se diseña, no se parchea.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Qué es Secure-by-Design aplicado a la IA?",
+          "feedback": "La seguridad se diseña, no se parchea.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Integrar seguridad, gobernanza y etica en TODO el ciclo de vida de la IA (datos, entrenamiento, despliegue, monitoreo) e interfuncionalmente, no como revision final.",
+          "options": [
+            "Integrar seguridad, gobernanza y etica en TODO el ciclo de vida de la IA (datos, entrenamiento, despliegue, monitoreo) e interfuncionalmente, no como revision final.",
+            "Hacer una auditoria de seguridad exhaustiva justo antes de pasar el modelo a produccion.",
+            "Cifrar el modelo y sus datos para que nadie pueda robarlo ni manipularlo.",
+            "Disenar el modelo con la maxima exactitud posible y anadir seguridad si sobra tiempo."
+          ]
         },
         {
           "id": "cmit3-q4",
@@ -45089,7 +45585,21 @@
           "enunciado": "¿Cuál es la 'pregunta de gobernanza por excelencia' y por qué importa el dueño?",
           "solucion": "'Si este sistema de IA causa daño mañana, ¿quién responde y con qué evidencia demuestra que actuó con diligencia?'. Importa porque la gobernanza sin un dueño falla: sin un responsable que rinda cuentas (y comités que aprueben usos de alto riesgo, dueños por sistema con su model card), no hay rendición de cuentas ni diligencia demostrable.",
           "explicacion": "Rendición de cuentas con evidencia.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Cuál es la 'pregunta de gobernanza por excelencia' y por qué importa el dueño?",
+          "feedback": "Rendición de cuentas con evidencia.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "\"Si esto causa dano manana, quien responde y con que evidencia de diligencia?\". Sin un dueno que rinda cuentas (comites, model card) no hay diligencia demostrable.",
+          "options": [
+            "\"Si esto causa dano manana, quien responde y con que evidencia de diligencia?\". Sin un dueno que rinda cuentas (comites, model card) no hay diligencia demostrable.",
+            "\"Que modelo es mas exacto?\". Importa porque el dueno es quien elige el algoritmo.",
+            "\"Cuanto cuesta el sistema?\". Importa porque el dueno es quien aprueba el presupuesto.",
+            "\"Es legal usar IA aqui?\". El dueno solo importa para firmar el contrato con el proveedor."
+          ]
         },
         {
           "id": "cmit3-q5",
@@ -45097,7 +45607,21 @@
           "enunciado": "¿Por qué un documento de 'principios éticos de IA' que nadie aplica ni audita NO es gobernanza?",
           "solucion": "Porque gobernanza es roles + métricas + evidencia + auditoría, no una declaración. Un documento sin dueños, sin proceso de aprobación, sin monitoreo y sin auditoría es fachada: no cambia decisiones ni rinde cuentas. Es el mismo principio que en datos: tener política no es tener control.",
           "explicacion": "Política sin control es fachada.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "quiz",
+          "prompt": "¿Por qué un documento de 'principios éticos de IA' que nadie aplica ni audita NO es gobernanza?",
+          "feedback": "Política sin control es fachada.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Porque gobernanza es roles + metricas + evidencia + auditoria, no una declaracion; sin duenos, aprobacion, monitoreo ni auditoria, el documento es fachada y no cambia decisiones.",
+          "options": [
+            "Porque gobernanza es roles + metricas + evidencia + auditoria, no una declaracion; sin duenos, aprobacion, monitoreo ni auditoria, el documento es fachada y no cambia decisiones.",
+            "Si es gobernanza: declarar principios eticos por escrito ya obliga legalmente a cumplirlos.",
+            "No es gobernanza solo si el documento es corto; uno extenso y detallado si gobierna.",
+            "Es gobernanza siempre que lo firme un ejecutivo, aunque nadie lo aplique despues."
+          ]
         },
         {
           "id": "cmit3-s1",
@@ -45105,7 +45629,15 @@
           "enunciado": "Escenario: un banco lanza un scoring crediticio entrenado con datos históricos; meses después se descubre que discrimina por código postal y nadie sabe quién aprobó su uso. ¿Qué falló y qué lo habría evitado?",
           "solucion": "Falló la gobernanza, no la técnica: sin Secure-by-Design no se evaluó el sesgo ni la privacidad antes de lanzar; sin GRC no hubo comité que aprobara el caso de uso, ni registro, ni dueño que rinda cuentas. Lo habría evitado: evaluación de sesgo/privacidad (Map/Measure), aprobación interfuncional, model card con riesgo residual, monitoreo de deriva y un responsable. El problema fue de proceso y responsabilidad.",
           "explicacion": "Gobernanza > mejor modelo.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: un banco lanza un scoring crediticio entrenado con datos históricos; meses después se descubre que discrimina por código postal y nadie sabe quién aprobó su uso. ¿Qué falló y qué lo habría evitado?",
+          "feedback": "Gobernanza > mejor modelo.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Falló la gobernanza, no la técnica: sin Secure-by-Design no se evaluó el sesgo ni la privacidad antes de lanzar; sin GRC no hubo comité que aprobara el caso de uso, ni registro, ni dueño que rinda cuentas. Lo habría evitado: evaluación de sesgo/privacidad (Map/Measure), aprobación interfuncional, model card con riesgo residual, monitoreo de deriva y un responsable. El problema fue de proceso y responsabilidad."
         },
         {
           "id": "cmit3-s2",
@@ -45113,7 +45645,15 @@
           "enunciado": "Escenario: te nombran responsable de IA y te piden 'poner orden' en el uso de IA de la empresa. Da los primeros tres movimientos de gobernanza.",
           "solucion": "1) Inventariar y descubrir el uso de IA (incluida la Shadow AI) para tener visibilidad. 2) Definir un proceso de aprobación de casos de uso por nivel de riesgo, con dueños y comité interfuncional. 3) Establecer controles GRC mínimos (evaluación de datos/sesgo/privacidad, model cards con riesgo residual, monitoreo) y la rendición de cuentas. Secure-by-Design para lo nuevo.",
           "explicacion": "Visibilidad → proceso → controles.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "scenario",
+          "prompt": "Escenario: te nombran responsable de IA y te piden 'poner orden' en el uso de IA de la empresa. Da los primeros tres movimientos de gobernanza.",
+          "feedback": "Visibilidad → proceso → controles.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "1) Inventariar y descubrir el uso de IA (incluida la Shadow AI) para tener visibilidad. 2) Definir un proceso de aprobación de casos de uso por nivel de riesgo, con dueños y comité interfuncional. 3) Establecer controles GRC mínimos (evaluación de datos/sesgo/privacidad, model cards con riesgo residual, monitoreo) y la rendición de cuentas. Secure-by-Design para lo nuevo."
         },
         {
           "id": "cmit3-r1",
@@ -45121,7 +45661,15 @@
           "enunciado": "En una organización que conozcas, ¿quién respondería hoy si un sistema de IA causara daño, y qué evidencia tendría de haber actuado con diligencia?",
           "solucion": "Reflexión abierta. Una buena respuesta detecta si hay (o no) un dueño claro, proceso de aprobación, documentación (model card, riesgo residual) y auditoría; y propone cómo cerrar la brecha de rendición de cuentas.",
           "explicacion": "Aplica la pregunta de gobernanza.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "En una organización que conozcas, ¿quién respondería hoy si un sistema de IA causara daño, y qué evidencia tendría de haber actuado con diligencia?",
+          "feedback": "Aplica la pregunta de gobernanza.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Reflexión abierta. Una buena respuesta detecta si hay (o no) un dueño claro, proceso de aprobación, documentación (model card, riesgo residual) y auditoría; y propone cómo cerrar la brecha de rendición de cuentas."
         },
         {
           "id": "cmit3-r2",
@@ -45129,10 +45677,132 @@
           "enunciado": "¿Qué control de Secure-by-Design introducirías ANTES de entrenar tu próximo modelo, y por qué desde el inicio y no al final?",
           "solucion": "Reflexión abierta. Una buena respuesta elige un control temprano (minimización de datos, evaluación de sesgo, definir qué decide el modelo) y argumenta que parchear al final es caro e incompleto frente a diseñar la propiedad desde el inicio.",
           "explicacion": "Anticipar vence a remendar.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "¿Qué control de Secure-by-Design introducirías ANTES de entrenar tu próximo modelo, y por qué desde el inicio y no al final?",
+          "feedback": "Anticipar vence a remendar.",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "answer": "Reflexión abierta. Una buena respuesta elige un control temprano (minimización de datos, evaluación de sesgo, definir qué decide el modelo) y argumenta que parchear al final es caro e incompleto frente a diseñar la propiedad desde el inicio."
+        },
+        {
+          "id": "cmit3-q6",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Que es una model card y para que sirve en gobernanza?",
+          "prompt": "Que es una model card y para que sirve en gobernanza?",
+          "solucion": "Una ficha que documenta un modelo (datos, uso previsto, limites, metricas, dueno) para hacer trazable y auditable quien responde por el.",
+          "answer": "Una ficha que documenta un modelo (datos, uso previsto, limites, metricas, dueno) para hacer trazable y auditable quien responde por el.",
+          "explicacion": "La model card convierte un modelo opaco en algo con dueno, limites y evidencia.",
+          "feedback": "La model card convierte un modelo opaco en algo con dueno, limites y evidencia.",
+          "difficulty": "medium",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "options": [
+            "Una ficha que documenta un modelo (datos, uso previsto, limites, metricas, dueno) para hacer trazable y auditable quien responde por el.",
+            "Un certificado legal que exime de responsabilidad al proveedor del modelo.",
+            "Una tarjeta de acceso para desplegar el modelo en produccion.",
+            "Un informe que solo reporta el costo de entrenamiento del modelo."
+          ]
+        },
+        {
+          "id": "cmit3-q7",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Por que \"tener politica no es tener control\" en IA?",
+          "prompt": "Por que \"tener politica no es tener control\" en IA?",
+          "solucion": "Porque un control exige aplicacion, duenos, monitoreo y evidencia; una politica sin eso no cambia decisiones ni rinde cuentas.",
+          "answer": "Porque un control exige aplicacion, duenos, monitoreo y evidencia; una politica sin eso no cambia decisiones ni rinde cuentas.",
+          "explicacion": "Es el mismo principio que en datos: una declaracion sin operacion es fachada.",
+          "feedback": "Es el mismo principio que en datos: una declaracion sin operacion es fachada.",
+          "difficulty": "easy",
+          "concept": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+          "source_reference": "data/teoria/cyber-mit3.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Creer que principios escritos, sin duenos ni auditoria, son gobernanza.",
+          "recognition_signal": "Aparece una decision de IA sin dueno, metrica, evidencia ni base legal clara.",
+          "options": [
+            "Porque un control exige aplicacion, duenos, monitoreo y evidencia; una politica sin eso no cambia decisiones ni rinde cuentas.",
+            "Porque las politicas de IA no son legalmente validas.",
+            "Porque toda politica debe ser tecnica, nunca escrita.",
+            "Porque solo el area legal puede crear controles de IA."
+          ]
         }
       ],
-      "orden": 843
+      "orden": 843,
+      "level": "intermediate",
+      "difficulty": "medium",
+      "primary_resource": {
+        "title": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+        "type": "course"
+      },
+      "learning_objective": "Explicar por qué la IA necesita gobierno propio; ubicar GRC aplicado a IA; entender Secure-by-Design para IA; e identificar roles ejecutivos y rendición de cuentas.",
+      "lesson_contract": {
+        "central_idea": "La IA necesita gobierno propio (GRC + Secure-by-Design); principios sin roles, auditoria y duenos no son gobernanza.",
+        "intuition_before_formalism": true,
+        "worked_example": true,
+        "recognition_signals": true,
+        "common_mistakes": true,
+        "counterexample_and_edge_case": true,
+        "transfer_to_data_ai_stem": true,
+        "retrieval_practice": true
+      },
+      "external_lab": {
+        "type": "external_lab",
+        "name": "NIST AI Risk Management Framework",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "task": "explora el NIST AI RMF (https://www.nist.gov/itl/ai-risk-management-framework) y ubica las funciones Govern y Map. Criterio de cierre: explicar que aporta Govern frente a tener solo principios escritos.",
+        "completion_criterion": "explicar que aporta la funcion Govern frente a tener solo principios escritos.",
+        "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+        "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+      },
+      "portfolio_task": {
+        "type": "portfolio_task",
+        "prompt": "una mini model card + matriz GRC para un caso de IA: dueno, riesgos, controles, evidencia y base legal.",
+        "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+        "rubric": [
+          "Patron de ataque/decision identificado con claridad",
+          "Control de proceso proporcional a la consecuencia",
+          "Roles y rendicion de cuentas explicitos",
+          "Senales de deteccion o verificacion",
+          "Comunicacion sobria para un equipo tecnico"
+        ]
+      },
+      "references_apa": [
+        "Massachusetts Institute of Technology. (n.d.). *AI and cybersecurity: Strategies for resilience and defense*. MIT Professional Education.",
+        "National Institute of Standards and Technology. (2023). *Artificial intelligence risk management framework (AI RMF 1.0)*. https://www.nist.gov/itl/ai-risk-management-framework"
+      ],
+      "practice": [
+        {
+          "type": "external_lab",
+          "name": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "task": "explora el NIST AI RMF (https://www.nist.gov/itl/ai-risk-management-framework) y ubica las funciones Govern y Map. Criterio de cierre: explicar que aporta Govern frente a tener solo principios escritos.",
+          "completion_criterion": "explicar que aporta la funcion Govern frente a tener solo principios escritos.",
+          "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+          "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+        },
+        {
+          "type": "portfolio_task",
+          "prompt": "una mini model card + matriz GRC para un caso de IA: dueno, riesgos, controles, evidencia y base legal.",
+          "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+          "rubric": [
+            "Patron de ataque/decision identificado con claridad",
+            "Control de proceso proporcional a la consecuencia",
+            "Roles y rendicion de cuentas explicitos",
+            "Senales de deteccion o verificacion",
+            "Comunicacion sobria para un equipo tecnico"
+          ]
+        },
+        {
+          "type": "retrieval_drill",
+          "prompt": "Antes de ver la solucion, escribe desde memoria la idea central de Ciber · Gobernanza de IA: GRC, roles ejecutivos y Secure-by-Design, que evidencia la mostraria y que control reduce el riesgo.",
+          "completion_criterion": "Respuesta escrita con idea central, supuesto roto, control, evidencia y tradeoff."
+        }
+      ]
     },
     {
       "id": "cyber-mit4",
@@ -45160,7 +45830,21 @@
           "enunciado": "¿En qué se diferencia la Shadow AI de la Shadow IT?",
           "solucion": "Shadow IT es el uso de servicios/software de IT no autorizados; Shadow AI es el uso de herramientas de IA no sancionadas. La Shadow AI añade, sobre los riesgos de la Shadow IT (datos en apps no aprobadas), riesgos PROPIOS de la IA: salidas no verificadas, sesgo del modelo, datos de entrenamiento ajenos y decisiones opacas.",
           "explicacion": "Shadow AI = Shadow IT + riesgos propios de IA.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿En qué se diferencia la Shadow AI de la Shadow IT?",
+          "feedback": "Shadow AI = Shadow IT + riesgos propios de IA.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Shadow IT es usar software no autorizado; Shadow AI es usar IA no sancionada y anade riesgos propios: salidas no verificadas, sesgo, datos ajenos y opacidad.",
+          "options": [
+            "Shadow IT es usar software no autorizado; Shadow AI es usar IA no sancionada y anade riesgos propios: salidas no verificadas, sesgo, datos ajenos y opacidad.",
+            "Son lo mismo con otro nombre; \"Shadow AI\" es solo el termino de moda para Shadow IT.",
+            "Shadow AI es IA aprobada que falla; Shadow IT es hardware sin inventariar.",
+            "Shadow AI tiene menos riesgo que Shadow IT porque la IA filtra sus propios errores."
+          ]
         },
         {
           "id": "cmit4-q2",
@@ -45168,7 +45852,21 @@
           "enunciado": "Nombra dos riesgos propios de la Shadow AI.",
           "solucion": "Fuga de datos (pegar código/PII/secretos en una IA pública que escapa a tu control y puede quedar en sus datos); cumplimiento e IP (violar privacidad/regulación o perder propiedad intelectual); falta de trazabilidad (decisiones tomadas con IA sin registro ni auditoría); y superficie de ataque (herramientas no vetadas con prompt injection/malware).",
           "explicacion": "Más allá de la Shadow IT.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "Nombra dos riesgos propios de la Shadow AI.",
+          "feedback": "Más allá de la Shadow IT.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Fuga de datos (pegar codigo/PII/secretos en una IA publica), incumplimiento e IP, falta de trazabilidad y nueva superficie de ataque (apps no vetadas).",
+          "options": [
+            "Fuga de datos (pegar codigo/PII/secretos en una IA publica), incumplimiento e IP, falta de trazabilidad y nueva superficie de ataque (apps no vetadas).",
+            "Mayor costo de licencias y consumo de CPU por usar varios modelos a la vez.",
+            "Lentitud de la red y saturacion del firewall por el trafico hacia la IA.",
+            "Perdida de productividad porque la IA no sancionada es peor que la oficial."
+          ]
         },
         {
           "id": "cmit4-q3",
@@ -45176,7 +45874,21 @@
           "enunciado": "¿Qué pasos tiene el OODA loop y por qué prohibir la IA no suele ser la mejor defensa contra la Shadow AI?",
           "solucion": "OODA: Observar (qué herramientas se usan, dónde, cómo), Orientar (qué riesgo introduce cada una), Decidir (prohibir/permitir con condiciones/proveer alternativa), Actuar (implementar y repetir). Prohibir a secas empuja el uso a la clandestinidad (más Shadow AI, menos visible); mejor dar una alternativa sancionada buena + visibilidad + reglas de qué datos nunca se pegan.",
           "explicacion": "Descubrir y ofrecer alternativa > prohibir.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Qué pasos tiene el OODA loop y por qué prohibir la IA no suele ser la mejor defensa contra la Shadow AI?",
+          "feedback": "Descubrir y ofrecer alternativa > prohibir.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "OODA: Observar el uso, Orientar el riesgo, Decidir (permitir con condiciones o proveer alternativa) y Actuar. Prohibir a secas empuja el uso a la clandestinidad.",
+          "options": [
+            "OODA: Observar el uso, Orientar el riesgo, Decidir (permitir con condiciones o proveer alternativa) y Actuar. Prohibir a secas empuja el uso a la clandestinidad.",
+            "OODA: Optimizar, Ordenar, Desplegar, Auditar. Prohibir es la mejor defensa porque elimina el riesgo de raiz.",
+            "OODA: Observar, Ofuscar, Detectar, Atacar. Prohibir funciona si se sanciona a quien incumpla.",
+            "OODA es un modelo de cifrado; prohibir la IA es ineficaz solo por falta de presupuesto."
+          ]
         },
         {
           "id": "cmit4-q4",
@@ -45184,7 +45896,21 @@
           "enunciado": "¿Qué es la confianza humano-IA calibrada y cuáles son sus dos fallos simétricos?",
           "solucion": "Es confiar en la IA lo justo: donde es fiable (patrón a escala) y verificar donde es falible (juicio de alta consecuencia). Sus fallos: exceso de confianza (automation bias: aceptar la salida sin verificar) y desconfianza/abandono (ignorar la IA y perder su valor). La meta es confiar-y-verificar según la consecuencia, el cuadrante de IA-vs-humanos hecho cultura.",
           "explicacion": "Ni a ciegas ni descartarla.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "¿Qué es la confianza humano-IA calibrada y cuáles son sus dos fallos simétricos?",
+          "feedback": "Ni a ciegas ni descartarla.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Confiar en la IA lo justo: donde es fiable (patron a escala) y verificar donde es falible (alta consecuencia). Sus fallos: exceso (automation bias) y desconfianza/abandono.",
+          "options": [
+            "Confiar en la IA lo justo: donde es fiable (patron a escala) y verificar donde es falible (alta consecuencia). Sus fallos: exceso (automation bias) y desconfianza/abandono.",
+            "Confiar siempre en la IA porque es mas objetiva; sus fallos son la lentitud y el costo.",
+            "Desconfiar siempre de la IA; sus fallos son los falsos positivos y los falsos negativos.",
+            "Confiar segun la antiguedad del modelo; sus fallos son el sobreajuste y el subajuste."
+          ]
         },
         {
           "id": "cmit4-q5",
@@ -45192,7 +45918,21 @@
           "enunciado": "¿Por qué la Shadow AI es el 'punto ciego' de la gobernanza, y qué implica para gobernar?",
           "solucion": "Porque por definición escapa al radar: ocurre sin sanción ni visibilidad, así que ningún control de gobernanza la alcanza mientras no se descubra. Implica que gobernar la IA incluye DESCUBRIR el uso no autorizado (OODA), no solo regular el autorizado; no puedes gobernar lo que no ves.",
           "explicacion": "Gobernar incluye descubrir.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "quiz",
+          "prompt": "¿Por qué la Shadow AI es el 'punto ciego' de la gobernanza, y qué implica para gobernar?",
+          "feedback": "Gobernar incluye descubrir.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Porque escapa al radar y ningun control la alcanza hasta descubrirla; gobernar incluye DESCUBRIR el uso no autorizado (OODA), no solo regular el autorizado.",
+          "options": [
+            "Porque escapa al radar y ningun control la alcanza hasta descubrirla; gobernar incluye DESCUBRIR el uso no autorizado (OODA), no solo regular el autorizado.",
+            "Porque es la parte mas regulada; gobernar es aplicarle mas auditorias que al resto.",
+            "Porque solo la usan los ejecutivos; gobernar es restringir su acceso a la alta direccion.",
+            "Porque es tecnicamente imposible de detectar; gobernar es asumir que no se puede hacer nada."
+          ]
         },
         {
           "id": "cmit4-s1",
@@ -45200,7 +45940,15 @@
           "enunciado": "Escenario: descubres que medio equipo de datos pega fragmentos de la base de clientes en un chatbot público para acelerar el análisis. ¿Qué haces, más allá de prohibirlo?",
           "solucion": "Aplica OODA: Observar (quién, qué datos, frecuencia) → Orientar (riesgo alto: datos personales, posible incumplimiento, sin trazabilidad) → Decidir (proveer una IA empresarial sancionada que no entrene con tus datos + política de 'nunca pegar PII') → Actuar y monitorear. Prohibir sin alternativa empuja a la clandestinidad; además, capacitar para no aceptar salidas a ciegas (confianza calibrada).",
           "explicacion": "OODA + alternativa + reglas de datos.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: descubres que medio equipo de datos pega fragmentos de la base de clientes en un chatbot público para acelerar el análisis. ¿Qué haces, más allá de prohibirlo?",
+          "feedback": "OODA + alternativa + reglas de datos.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Aplica OODA: Observar (quién, qué datos, frecuencia) → Orientar (riesgo alto: datos personales, posible incumplimiento, sin trazabilidad) → Decidir (proveer una IA empresarial sancionada que no entrene con tus datos + política de 'nunca pegar PII') → Actuar y monitorear. Prohibir sin alternativa empuja a la clandestinidad; además, capacitar para no aceptar salidas a ciegas (confianza calibrada)."
         },
         {
           "id": "cmit4-s2",
@@ -45208,7 +45956,15 @@
           "enunciado": "Escenario: un analista cierra una cuenta de cliente porque 'la IA de riesgo la marcó como fraude', sin revisar. Resultó ser un falso positivo y un cliente importante se molestó. ¿Qué fallo de confianza ocurrió y cómo se corrige?",
           "solucion": "Exceso de confianza (automation bias): aceptó una decisión de alta consecuencia sin verificar. Se corrige con confianza calibrada: para acciones de alto impacto la IA propone y el humano verifica antes de actuar (cuadrante humano-vs-IA), con explicabilidad de por qué la IA marcó el caso y un paso de revisión obligatorio.",
           "explicacion": "Verificar lo de alta consecuencia.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "scenario",
+          "prompt": "Escenario: un analista cierra una cuenta de cliente porque 'la IA de riesgo la marcó como fraude', sin revisar. Resultó ser un falso positivo y un cliente importante se molestó. ¿Qué fallo de confianza ocurrió y cómo se corrige?",
+          "feedback": "Verificar lo de alta consecuencia.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Exceso de confianza (automation bias): aceptó una decisión de alta consecuencia sin verificar. Se corrige con confianza calibrada: para acciones de alto impacto la IA propone y el humano verifica antes de actuar (cuadrante humano-vs-IA), con explicabilidad de por qué la IA marcó el caso y un paso de revisión obligatorio."
         },
         {
           "id": "cmit4-r1",
@@ -45216,7 +45972,15 @@
           "enunciado": "¿Qué uso de Shadow AI sospechas que ya ocurre a tu alrededor, y qué alternativa sancionada lo reduciría sin empujarlo a esconderse?",
           "solucion": "Reflexión abierta. Una buena respuesta identifica un uso plausible (chatbots públicos, copilotos, traductores), su riesgo de datos, y una alternativa sancionada + reglas claras, en vez de una prohibición que lo invisibiliza.",
           "explicacion": "Aplica OODA a tu entorno.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "¿Qué uso de Shadow AI sospechas que ya ocurre a tu alrededor, y qué alternativa sancionada lo reduciría sin empujarlo a esconderse?",
+          "feedback": "Aplica OODA a tu entorno.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Reflexión abierta. Una buena respuesta identifica un uso plausible (chatbots públicos, copilotos, traductores), su riesgo de datos, y una alternativa sancionada + reglas claras, en vez de una prohibición que lo invisibiliza."
         },
         {
           "id": "cmit4-r2",
@@ -45224,10 +45988,132 @@
           "enunciado": "¿En qué tarea confías 'demasiado' en una IA hoy (aceptas su salida sin verificar) y cómo recalibrarías esa confianza?",
           "solucion": "Reflexión abierta. Una buena respuesta detecta un posible automation bias propio, evalúa la consecuencia de un error, y define cuándo verificar la salida antes de actuar.",
           "explicacion": "Detecta tu propio sesgo de automatización.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "reflection",
+          "prompt": "¿En qué tarea confías 'demasiado' en una IA hoy (aceptas su salida sin verificar) y cómo recalibrarías esa confianza?",
+          "feedback": "Detecta tu propio sesgo de automatización.",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "answer": "Reflexión abierta. Una buena respuesta detecta un posible automation bias propio, evalúa la consecuencia de un error, y define cuándo verificar la salida antes de actuar."
+        },
+        {
+          "id": "cmit4-q6",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Un empleado pega codigo propietario en una IA publica gratuita. Que riesgo de Shadow AI ejemplifica?",
+          "prompt": "Un empleado pega codigo propietario en una IA publica gratuita. Que riesgo de Shadow AI ejemplifica?",
+          "solucion": "Fuga de datos e IP: el codigo sale de tu control y puede quedar en los datos del proveedor, sin trazabilidad de la decision.",
+          "answer": "Fuga de datos e IP: el codigo sale de tu control y puede quedar en los datos del proveedor, sin trazabilidad de la decision.",
+          "explicacion": "Lo pegado en una IA publica escapa a tu control; ahi vive la fuga.",
+          "feedback": "Lo pegado en una IA publica escapa a tu control; ahi vive la fuga.",
+          "difficulty": "medium",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "options": [
+            "Fuga de datos e IP: el codigo sale de tu control y puede quedar en los datos del proveedor, sin trazabilidad de la decision.",
+            "Automation bias, por confiar de mas en la salida del modelo.",
+            "Sesgo del modelo, por datos de entrenamiento desbalanceados.",
+            "Denegacion de servicio, por saturar la API publica."
+          ]
+        },
+        {
+          "id": "cmit4-q7",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Por que prohibir toda IA suele empeorar la Shadow AI?",
+          "prompt": "Por que prohibir toda IA suele empeorar la Shadow AI?",
+          "solucion": "Porque empuja el uso a la clandestinidad (mas invisible, menos gobernable); mejor dar una alternativa sancionada buena, visibilidad y reglas de que datos nunca se pegan.",
+          "answer": "Porque empuja el uso a la clandestinidad (mas invisible, menos gobernable); mejor dar una alternativa sancionada buena, visibilidad y reglas de que datos nunca se pegan.",
+          "explicacion": "No puedes gobernar lo que empujas a la sombra: la prohibicion ciega, no elimina.",
+          "feedback": "No puedes gobernar lo que empujas a la sombra: la prohibicion ciega, no elimina.",
+          "difficulty": "medium",
+          "concept": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+          "source_reference": "data/teoria/cyber-mit4.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Prohibir la IA a secas o confiar sin verificar (automation bias).",
+          "recognition_signal": "Aparece uso de IA no sancionada o confianza no calibrada con la consecuencia.",
+          "options": [
+            "Porque empuja el uso a la clandestinidad (mas invisible, menos gobernable); mejor dar una alternativa sancionada buena, visibilidad y reglas de que datos nunca se pegan.",
+            "Porque prohibir es ilegal en la mayoria de las empresas.",
+            "Porque la IA prohibida se vuelve mas exacta al usarse a escondidas.",
+            "Porque sin IA los empleados rinden menos y renuncian."
+          ]
         }
       ],
-      "orden": 844
+      "orden": 844,
+      "level": "intermediate",
+      "difficulty": "medium",
+      "primary_resource": {
+        "title": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+        "type": "course"
+      },
+      "learning_objective": "Distinguir Shadow AI de Shadow IT; nombrar sus riesgos propios; usar el OODA loop para descubrirla y gestionarla; y razonar la confianza humano-IA calibrada.",
+      "lesson_contract": {
+        "central_idea": "La Shadow AI anade riesgos propios y es el punto ciego de la gobernanza; descubrela con OODA y confia calibrado.",
+        "intuition_before_formalism": true,
+        "worked_example": true,
+        "recognition_signals": true,
+        "common_mistakes": true,
+        "counterexample_and_edge_case": true,
+        "transfer_to_data_ai_stem": true,
+        "retrieval_practice": true
+      },
+      "external_lab": {
+        "type": "external_lab",
+        "name": "NIST AI RMF — Govern function",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "task": "revisa la funcion Govern del NIST AI RMF (https://www.nist.gov/itl/ai-risk-management-framework) y piensa como cubriria el uso de IA no sancionada. Criterio de cierre: proponer un control para descubrir Shadow AI.",
+        "completion_criterion": "proponer un control concreto para descubrir Shadow AI.",
+        "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+        "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+      },
+      "portfolio_task": {
+        "type": "portfolio_task",
+        "prompt": "un plan OODA de Shadow AI: como descubrir el uso, que alternativa sancionada ofrecer y que datos nunca se pegan.",
+        "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+        "rubric": [
+          "Patron de ataque/decision identificado con claridad",
+          "Control de proceso proporcional a la consecuencia",
+          "Roles y rendicion de cuentas explicitos",
+          "Senales de deteccion o verificacion",
+          "Comunicacion sobria para un equipo tecnico"
+        ]
+      },
+      "references_apa": [
+        "Massachusetts Institute of Technology. (n.d.). *AI and cybersecurity: Strategies for resilience and defense*. MIT Professional Education.",
+        "National Institute of Standards and Technology. (2023). *Artificial intelligence risk management framework (AI RMF 1.0)*. https://www.nist.gov/itl/ai-risk-management-framework"
+      ],
+      "practice": [
+        {
+          "type": "external_lab",
+          "name": "NIST AI RMF — Govern function",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "task": "revisa la funcion Govern del NIST AI RMF (https://www.nist.gov/itl/ai-risk-management-framework) y piensa como cubriria el uso de IA no sancionada. Criterio de cierre: proponer un control para descubrir Shadow AI.",
+          "completion_criterion": "proponer un control concreto para descubrir Shadow AI.",
+          "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+          "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+        },
+        {
+          "type": "portfolio_task",
+          "prompt": "un plan OODA de Shadow AI: como descubrir el uso, que alternativa sancionada ofrecer y que datos nunca se pegan.",
+          "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+          "rubric": [
+            "Patron de ataque/decision identificado con claridad",
+            "Control de proceso proporcional a la consecuencia",
+            "Roles y rendicion de cuentas explicitos",
+            "Senales de deteccion o verificacion",
+            "Comunicacion sobria para un equipo tecnico"
+          ]
+        },
+        {
+          "type": "retrieval_drill",
+          "prompt": "Antes de ver la solucion, escribe desde memoria la idea central de Ciber · Shadow AI y confianza humano-IA, que evidencia la mostraria y que control reduce el riesgo.",
+          "completion_criterion": "Respuesta escrita con idea central, supuesto roto, control, evidencia y tradeoff."
+        }
+      ]
     },
     {
       "id": "cyber-mit5",
@@ -45255,7 +46141,21 @@
           "enunciado": "¿Cuál es el 'esqueleto común' que comparten los cuatro casos de fraude con IA?",
           "solucion": "IA que falsifica una identidad de autoridad (cara/voz) + urgencia + un canal que parecía irrefutable → una persona (o un público) actúa antes de verificar. Cambian los detalles (video, voz, livestream), pero el patrón y la defensa son los mismos.",
           "explicacion": "Mismo patrón bajo superficies distintas.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Cuál es el 'esqueleto común' que comparten los cuatro casos de fraude con IA?",
+          "feedback": "Mismo patrón bajo superficies distintas.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "IA que falsifica una autoridad (cara/voz) + urgencia + un canal que parecia irrefutable -> la victima actua antes de verificar. Cambian los detalles, no el patron.",
+          "options": [
+            "IA que falsifica una autoridad (cara/voz) + urgencia + un canal que parecia irrefutable -> la victima actua antes de verificar. Cambian los detalles, no el patron.",
+            "Atacantes que rompen el cifrado de la videollamada para inyectar ordenes falsas.",
+            "Malware con IA que toma el control del equipo de la victima sin intervencion humana.",
+            "Robo de credenciales por fuerza bruta seguido de transferencias automaticas."
+          ]
         },
         {
           "id": "cmit5-q2",
@@ -45263,7 +46163,21 @@
           "enunciado": "¿Por qué la defensa común a los cuatro casos NO depende de detectar la falsificación?",
           "solucion": "Porque la detección perceptual es una carrera que el defensor pierde (los deepfakes/voces clonadas engañan a expertos y mejoran). La defensa es de proceso: verificación fuera de banda por un canal independiente, doble aprobación para alta consecuencia, y cultura de verificar incluso al CEO. Eso funciona sin importar cuán real sea la falsificación.",
           "explicacion": "No entrenes el ojo, blinda el proceso.",
-          "difficulty": "easy"
+          "difficulty": "easy",
+          "type": "quiz",
+          "prompt": "¿Por qué la defensa común a los cuatro casos NO depende de detectar la falsificación?",
+          "feedback": "No entrenes el ojo, blinda el proceso.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "Porque la deteccion perceptual es una carrera perdida; la defensa es de proceso: verificacion fuera de banda, doble aprobacion y cultura de verificar incluso al CEO.",
+          "options": [
+            "Porque la deteccion perceptual es una carrera perdida; la defensa es de proceso: verificacion fuera de banda, doble aprobacion y cultura de verificar incluso al CEO.",
+            "Porque ya existen detectores de deepfakes perfectos que hacen innecesaria la verificacion.",
+            "Porque la falsificacion se detecta sola si el empleado presta suficiente atencion al video.",
+            "Porque basta con cifrar el canal para que el deepfake no pueda transmitirse."
+          ]
         },
         {
           "id": "cmit5-q3",
@@ -45271,7 +46185,21 @@
           "enunciado": "Clasifica el tipo de ataque de cada caso: (a) videoconferencia de $25M, (b) llamadas del 'CEO' a LastPass/Wiz, (c) estafa cripto en livestream de YouTube.",
           "solucion": "(a) Deepfake de video en tiempo real + ingeniería social (BEC con IA): el video fue una falsa verificación. (b) Voice cloning + vishing: suplantación de autoridad por la voz conocida pidiendo credenciales. (c) Deepfake masivo + secuestro de canal/cuenta + fraude de inversión: ataque a la confianza del público a escala.",
           "explicacion": "Reconocer la categoría permite anticipar.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "Clasifica el tipo de ataque de cada caso: (a) videoconferencia de $25M, (b) llamadas del 'CEO' a LastPass/Wiz, (c) estafa cripto en livestream de YouTube.",
+          "feedback": "Reconocer la categoría permite anticipar.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "(a) Deepfake de video en vivo + BEC con IA; (b) voice cloning + vishing por la voz conocida; (c) deepfake masivo + secuestro de canal + fraude de inversion a escala.",
+          "options": [
+            "(a) Deepfake de video en vivo + BEC con IA; (b) voice cloning + vishing por la voz conocida; (c) deepfake masivo + secuestro de canal + fraude de inversion a escala.",
+            "(a) voice cloning; (b) deepfake de video; (c) phishing por correo: los tres son el mismo BEC clasico.",
+            "(a) ransomware; (b) inyeccion SQL; (c) DDoS: ataques tecnicos potenciados por IA.",
+            "(a) prompt injection; (b) data poisoning; (c) model extraction: los tres atacan al modelo, no a personas."
+          ]
         },
         {
           "id": "cmit5-q4",
@@ -45279,7 +46207,21 @@
           "enunciado": "En el caso de la energética (2019, €220k) y en los de LastPass/Wiz (2024), ¿qué control de proceso habría detenido el fraude sin 'detectar' la voz clonada?",
           "solucion": "Verificación fuera de banda (confirmar la orden por un canal independiente y conocido, p. ej. devolver la llamada a un número oficial) y doble aprobación / separación de funciones para acciones de alta consecuencia (transferencias, entrega de credenciales). En LastPass/Wiz, una cultura de 'está bien dudar' hizo que no cayeran.",
           "explicacion": "El mismo control de proceso repite en todos.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "quiz",
+          "prompt": "En el caso de la energética (2019, €220k) y en los de LastPass/Wiz (2024), ¿qué control de proceso habría detenido el fraude sin 'detectar' la voz clonada?",
+          "feedback": "El mismo control de proceso repite en todos.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "Verificacion fuera de banda (un canal independiente y conocido) y doble aprobacion para alta consecuencia. En LastPass/Wiz, una cultura de \"esta bien dudar\" evito el fraude.",
+          "options": [
+            "Verificacion fuera de banda (un canal independiente y conocido) y doble aprobacion para alta consecuencia. En LastPass/Wiz, una cultura de \"esta bien dudar\" evito el fraude.",
+            "Un detector de voz clonada en tiempo real que rechace la llamada automaticamente.",
+            "Exigir que el CEO repita la orden por el mismo telefono para confirmar su identidad.",
+            "Cifrar las llamadas internas con TLS para impedir la suplantacion de voz."
+          ]
         },
         {
           "id": "cmit5-cs1",
@@ -45287,7 +46229,15 @@
           "enunciado": "Caso espejo: eres analista en una fintech. Tu 'Director de Operaciones' te escribe por chat y luego envía una nota de voz —su voz exacta— pidiendo deshabilitar temporalmente el MFA de una cuenta de servicio 'para un despliegue urgente, no lo comentes con nadie aún'. Aplica el marco: (1) tipo de ataque, (2) señales, (3) control de proceso, (4) caso real con el que rima.",
           "solucion": "(1) Voice cloning + vishing (suplantación de autoridad por voz). (2) Señales: voz de autoridad + urgencia + 'no lo comentes' (anula verificación cruzada) + acción de alta consecuencia (bajar MFA). (3) Control: verificación fuera de banda por un canal conocido y negarte a bajar el MFA sin doble aprobación; tratar la urgencia como bandera, no como excepción. (4) Rima con LastPass/Wiz (2024), donde dudar del 'CEO' salvó el día.",
           "explicacion": "Transferencia del patrón a un incidente nuevo (método de caso).",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "case_study",
+          "prompt": "Caso espejo: eres analista en una fintech. Tu 'Director de Operaciones' te escribe por chat y luego envía una nota de voz —su voz exacta— pidiendo deshabilitar temporalmente el MFA de una cuenta de servicio 'para un despliegue urgente, no lo comentes con nadie aún'. Aplica el marco: (1) tipo de ataque, (2) señales, (3) control de proceso, (4) caso real con el que rima.",
+          "feedback": "Transferencia del patrón a un incidente nuevo (método de caso).",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "(1) Voice cloning + vishing (suplantación de autoridad por voz). (2) Señales: voz de autoridad + urgencia + 'no lo comentes' (anula verificación cruzada) + acción de alta consecuencia (bajar MFA). (3) Control: verificación fuera de banda por un canal conocido y negarte a bajar el MFA sin doble aprobación; tratar la urgencia como bandera, no como excepción. (4) Rima con LastPass/Wiz (2024), donde dudar del 'CEO' salvó el día."
         },
         {
           "id": "cmit5-cs2",
@@ -45295,7 +46245,15 @@
           "enunciado": "Caso espejo: tu equipo de marketing quiere lanzar una campaña con un video del CEO 'generado con IA' para ahorrar tiempo de grabación. Como responsable de seguridad, ¿qué riesgos señalas y qué salvaguardas pides, conectándolo con los casos estudiados?",
           "solucion": "Riesgos: normalizar internamente los deepfakes del CEO debilita el escepticismo (si la gente se acostumbra a 'videos del CEO con IA', baja la guardia ante uno fraudulento, como en el caso de $25M); además, el material publicado puede ser reutilizado por atacantes para entrenar deepfakes. Salvaguardas: marcar claramente el contenido sintético, no usar la imagen del CEO para instrucciones internas, reforzar el protocolo de verificación fuera de banda y educar que 'video del CEO' nunca autoriza acciones sensibles.",
           "explicacion": "La IA generativa propia también amplía la superficie de fraude.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "case_study",
+          "prompt": "Caso espejo: tu equipo de marketing quiere lanzar una campaña con un video del CEO 'generado con IA' para ahorrar tiempo de grabación. Como responsable de seguridad, ¿qué riesgos señalas y qué salvaguardas pides, conectándolo con los casos estudiados?",
+          "feedback": "La IA generativa propia también amplía la superficie de fraude.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "Riesgos: normalizar internamente los deepfakes del CEO debilita el escepticismo (si la gente se acostumbra a 'videos del CEO con IA', baja la guardia ante uno fraudulento, como en el caso de $25M); además, el material publicado puede ser reutilizado por atacantes para entrenar deepfakes. Salvaguardas: marcar claramente el contenido sintético, no usar la imagen del CEO para instrucciones internas, reforzar el protocolo de verificación fuera de banda y educar que 'video del CEO' nunca autoriza acciones sensibles."
         },
         {
           "id": "cmit5-cs3",
@@ -45303,7 +46261,15 @@
           "enunciado": "Caso espejo: un usuario ve un livestream 'en vivo' de una figura tecnológica famosa en un canal verificado que promete duplicar su cripto si escanea un QR. Aplica el marco: tipo de ataque, señal decisiva y qué control (del lado de la plataforma y del usuario) lo evita.",
           "solucion": "Tipo: deepfake masivo + secuestro de canal verificado + fraude de inversión. Señal decisiva: promesa de 'duplicar' activos + urgencia + QR a monedero (si suena demasiado bueno, es fraude), independientemente del realismo. Plataforma: MFA fuerte contra el secuestro del canal y detección de cambios anómalos (renombrado, contenido). Usuario: escepticismo base; nadie legítimo duplica tu cripto vía QR en un stream.",
           "explicacion": "Rima con la estafa cripto de junio 2024.",
-          "difficulty": "hard"
+          "difficulty": "hard",
+          "type": "case_study",
+          "prompt": "Caso espejo: un usuario ve un livestream 'en vivo' de una figura tecnológica famosa en un canal verificado que promete duplicar su cripto si escanea un QR. Aplica el marco: tipo de ataque, señal decisiva y qué control (del lado de la plataforma y del usuario) lo evita.",
+          "feedback": "Rima con la estafa cripto de junio 2024.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "Tipo: deepfake masivo + secuestro de canal verificado + fraude de inversión. Señal decisiva: promesa de 'duplicar' activos + urgencia + QR a monedero (si suena demasiado bueno, es fraude), independientemente del realismo. Plataforma: MFA fuerte contra el secuestro del canal y detección de cambios anómalos (renombrado, contenido). Usuario: escepticismo base; nadie legítimo duplica tu cripto vía QR en un stream."
         },
         {
           "id": "cmit5-r1",
@@ -45311,7 +46277,15 @@
           "enunciado": "De los cuatro casos, ¿cuál te parece más probable en tu contexto y qué control de proceso priorizarías para prevenirlo?",
           "solucion": "Reflexión abierta. Una buena respuesta elige un caso, justifica su probabilidad en su contexto, y prioriza un control de proceso concreto (verificación fuera de banda, doble aprobación, MFA fuerte) sobre la detección perceptual.",
           "explicacion": "Conecta el patrón con tu realidad.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "De los cuatro casos, ¿cuál te parece más probable en tu contexto y qué control de proceso priorizarías para prevenirlo?",
+          "feedback": "Conecta el patrón con tu realidad.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "Reflexión abierta. Una buena respuesta elige un caso, justifica su probabilidad en su contexto, y prioriza un control de proceso concreto (verificación fuera de banda, doble aprobación, MFA fuerte) sobre la detección perceptual."
         },
         {
           "id": "cmit5-r2",
@@ -45319,10 +46293,126 @@
           "enunciado": "¿Qué te resultó más contraintuitivo del método de caso del MIT: que la defensa sea de proceso y no técnica, o que el realismo creciente deba aumentar la sospecha? ¿Por qué?",
           "solucion": "Reflexión abierta. Una buena respuesta argumenta cualquiera de las dos con honestidad, mostrando que internalizó que la verificación perceptual es una carrera perdida y que el proceso es la defensa robusta.",
           "explicacion": "Metacognición sobre el aprendizaje del caso.",
-          "difficulty": "medium"
+          "difficulty": "medium",
+          "type": "reflection",
+          "prompt": "¿Qué te resultó más contraintuitivo del método de caso del MIT: que la defensa sea de proceso y no técnica, o que el realismo creciente deba aumentar la sospecha? ¿Por qué?",
+          "feedback": "Metacognición sobre el aprendizaje del caso.",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "answer": "Reflexión abierta. Una buena respuesta argumenta cualquiera de las dos con honestidad, mostrando que internalizó que la verificación perceptual es una carrera perdida y que el proceso es la defensa robusta."
+        },
+        {
+          "id": "cmit5-q5",
+          "tipo": "concepto",
+          "type": "quiz",
+          "enunciado": "Que error al estudiar casos arruina su valor pedagogico?",
+          "prompt": "Que error al estudiar casos arruina su valor pedagogico?",
+          "solucion": "Quedarse en la anecdota (memorizar \"el caso de los $25M\") sin extraer el patron transferible, o buscar una solucion tecnica cuando la defensa fue de proceso.",
+          "answer": "Quedarse en la anecdota (memorizar \"el caso de los $25M\") sin extraer el patron transferible, o buscar una solucion tecnica cuando la defensa fue de proceso.",
+          "explicacion": "El caso vale por el patron que transfiere, no por la anecdota que memorizas.",
+          "feedback": "El caso vale por el patron que transfiere, no por la anecdota que memorizas.",
+          "difficulty": "medium",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente.",
+          "options": [
+            "Quedarse en la anecdota (memorizar \"el caso de los $25M\") sin extraer el patron transferible, o buscar una solucion tecnica cuando la defensa fue de proceso.",
+            "Aplicar el marco de 6 puntos a un caso nuevo que no se vio antes.",
+            "Comparar dos casos para hallar su esqueleto comun.",
+            "Nombrar el control de proceso que habria detenido el fraude."
+          ]
+        },
+        {
+          "id": "cmit5-cs4",
+          "tipo": "case_study",
+          "type": "case_study",
+          "enunciado": "Caso espejo: recibes un correo del \"CFO\" y luego una videollamada donde aparece pidiendo una transferencia urgente y confidencial por una \"adquisicion secreta\". Aplica el marco: tipo, senales, control y a que caso real rima.",
+          "prompt": "Caso espejo: recibes un correo del \"CFO\" y luego una videollamada donde aparece pidiendo una transferencia urgente y confidencial por una \"adquisicion secreta\". Aplica el marco: tipo, senales, control y a que caso real rima.",
+          "solucion": "Tipo: deepfake de video en tiempo real + BEC con IA (el video es falsa verificacion). Senales: urgencia + confidencialidad + presion para saltar el proceso + alta consecuencia (dinero). Control: verificacion fuera de banda (llamar al CFO a un numero conocido) + doble aprobacion; no automatizar. Rima con la videoconferencia deepfake de $25M (Hong Kong, 2024).",
+          "answer": "Tipo: deepfake de video en tiempo real + BEC con IA (el video es falsa verificacion). Senales: urgencia + confidencialidad + presion para saltar el proceso + alta consecuencia (dinero). Control: verificacion fuera de banda (llamar al CFO a un numero conocido) + doble aprobacion; no automatizar. Rima con la videoconferencia deepfake de $25M (Hong Kong, 2024).",
+          "explicacion": "El marco convierte el panico en procedimiento: clasifica, lee senales, verifica fuera de banda.",
+          "feedback": "El marco convierte el panico en procedimiento: clasifica, lee senales, verifica fuera de banda.",
+          "difficulty": "hard",
+          "concept": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+          "source_reference": "data/teoria/cyber-mit5.md; AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+          "common_mistake": "Quedarse en la anecdota o buscar un detector tecnico en vez del control de proceso.",
+          "recognition_signal": "Aparece el esqueleto autoridad falsa + urgencia + canal irrefutable en un incidente."
         }
       ],
-      "orden": 845
+      "orden": 845,
+      "level": "intermediate",
+      "difficulty": "hard",
+      "primary_resource": {
+        "title": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)",
+        "type": "course"
+      },
+      "learning_objective": "Analizar un incidente con un marco de caso repetible; clasificar el tipo de ataque; nombrar el control de proceso que lo habría detenido; y transferir el patrón a un caso espejo.",
+      "lesson_contract": {
+        "central_idea": "Los fraudes con IA comparten un esqueleto (autoridad falsa + urgencia + canal irrefutable); blinda el proceso, no el ojo.",
+        "intuition_before_formalism": true,
+        "worked_example": true,
+        "recognition_signals": true,
+        "common_mistakes": true,
+        "counterexample_and_edge_case": true,
+        "transfer_to_data_ai_stem": true,
+        "retrieval_practice": true
+      },
+      "external_lab": {
+        "type": "external_lab",
+        "name": "MITRE ATLAS — Case Studies",
+        "url": "https://atlas.mitre.org/studies",
+        "task": "lee un caso real en MITRE ATLAS Case Studies (https://atlas.mitre.org/studies) y aplicale el marco de 6 puntos. Criterio de cierre: identificar el control de proceso que lo habria detenido. Solo analisis; nunca generes deepfakes de personas reales.",
+        "completion_criterion": "identificar el control de proceso que habria detenido el incidente.",
+        "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+        "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+      },
+      "portfolio_task": {
+        "type": "portfolio_task",
+        "prompt": "un playbook antifraude con IA: senales de alerta, verificacion fuera de banda, reglas de doble aprobacion por monto/accion y guion ante \"orden urgente del CEO\".",
+        "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+        "rubric": [
+          "Patron de ataque/decision identificado con claridad",
+          "Control de proceso proporcional a la consecuencia",
+          "Roles y rendicion de cuentas explicitos",
+          "Senales de deteccion o verificacion",
+          "Comunicacion sobria para un equipo tecnico"
+        ]
+      },
+      "references_apa": [
+        "Massachusetts Institute of Technology. (n.d.). *AI and cybersecurity: Strategies for resilience and defense* (Case Studies & Practical Applications). MIT Professional Education.",
+        "MITRE. (n.d.). *MITRE ATLAS case studies*. https://atlas.mitre.org/studies"
+      ],
+      "practice": [
+        {
+          "type": "external_lab",
+          "name": "MITRE ATLAS — Case Studies",
+          "url": "https://atlas.mitre.org/studies",
+          "task": "lee un caso real en MITRE ATLAS Case Studies (https://atlas.mitre.org/studies) y aplicale el marco de 6 puntos. Criterio de cierre: identificar el control de proceso que lo habria detenido. Solo analisis; nunca generes deepfakes de personas reales.",
+          "completion_criterion": "identificar el control de proceso que habria detenido el incidente.",
+          "safety_note": "Practica solo en laboratorios, retos o sistemas propios/autorizados. Nunca pruebes tecnicas contra sistemas ajenos.",
+          "source_reference": "AI and Cybersecurity: Strategies for Resilience and Defense (MIT Professional Education)"
+        },
+        {
+          "type": "portfolio_task",
+          "prompt": "un playbook antifraude con IA: senales de alerta, verificacion fuera de banda, reglas de doble aprobacion por monto/accion y guion ante \"orden urgente del CEO\".",
+          "artifact": "checklist, playbook, matriz, model card, diagrama o reporte breve verificable",
+          "rubric": [
+            "Patron de ataque/decision identificado con claridad",
+            "Control de proceso proporcional a la consecuencia",
+            "Roles y rendicion de cuentas explicitos",
+            "Senales de deteccion o verificacion",
+            "Comunicacion sobria para un equipo tecnico"
+          ]
+        },
+        {
+          "type": "retrieval_drill",
+          "prompt": "Antes de ver la solucion, escribe desde memoria la idea central de Ciber · Casos de estudio: anatomía del fraude con IA, que evidencia la mostraria y que control reduce el riesgo.",
+          "completion_criterion": "Respuesta escrita con idea central, supuesto roto, control, evidencia y tradeoff."
+        }
+      ]
     }
   ]
 }

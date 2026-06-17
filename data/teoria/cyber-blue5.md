@@ -55,8 +55,9 @@ Tu equipo cree estar "bien cubierto" porque tiene 200 reglas de detección. Apli
 - **Marcar cobertura sin verificar:** "hay una regla" ≠ "la regla detecta"; solo la emulación lo confirma.
 - **No cerrar el ciclo:** emular y no actuar sobre las brechas halladas.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** el red team emula una técnica de ATT&CK y el blue verifica si dispara una alerta; lo que no dispara es una brecha de cobertura que se prioriza y se cierra.
 - **Contraejemplo:** un equipo que emula trimestralmente las técnicas relevantes, mantiene una matriz de cobertura verificada y mide MTTD/MTTR: su "estamos cubiertos" está respaldado por evidencia y mejora cada ciclo.
 - **Caso borde:** la emulación cubre lo que **anticipas**; un adversario con una técnica nueva no emulada puede pasar. Por eso el ciclo se complementa con detección de anomalías de comportamiento ([[cyber-blue2]]) y con inteligencia actualizada ([[cyber-blue3]]) para lo desconocido.
 

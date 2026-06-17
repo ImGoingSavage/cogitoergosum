@@ -59,8 +59,9 @@ Fíjate que no dijimos "lo hackearon". Nombramos *qué* se pierde y *por qué*. 
 - **Proteger la tecnología, no el activo:** blindar el servidor mientras el dataset sensible viaja por correo.
 - **Pensar en "el hacker" genérico:** sin un adversario concreto (oportunista, interno, competidor) no puedes dimensionar nada.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** describes un sistema con el vocabulario: activo (el dataset), amenaza (un competidor), vulnerabilidad (secreto en repo público), impacto (fuga) y control (rotar y privatizar).
 - **Contraejemplo:** una contraseña de 40 caracteres en una cuenta cuyo dato no le importa a nadie y que no da acceso a nada: esfuerzo de seguridad mal asignado. Mucho control sobre un no-activo.
 - **Caso borde:** un dato **público** (un dataset abierto) parece sin riesgo de **C**, pero su **I** sí importa: si alguien lo altera y entrenas con la versión corrupta, el daño es real aunque la confidencialidad no aplique.
 

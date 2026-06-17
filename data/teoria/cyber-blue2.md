@@ -64,8 +64,9 @@ Tras el incidente de [[cyber-blue1]] (descarga de 4.2 GB del bucket de pacientes
 - **Detección "de una vez":** no revisar ni emular; las reglas se degradan al cambiar el sistema.
 - **Umbral global ignorando la línea base:** lo normal para una cuenta es anómalo para otra; sin baseline, todo es ruido o nada lo es.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** escribes una hipótesis de detección (conducta: muchos logins fallidos y luego uno exitoso; fuente: logs de auth; lógica: umbral por cuenta; salida: alerta) y la validas con emulación autorizada.
 - **Contraejemplo:** una regla con contexto (línea base por cuenta + horario + tipo de recurso) que caza la exfiltración real con pocos FP: detección **buena** es la que tu equipo *puede* atender.
 - **Caso borde:** un atacante que exfiltra **lento y bajo** (poco volumen, muchos días) evade los umbrales de volumen; requiere detección de patrones acumulados en el tiempo, no por evento. Toda detección tiene un punto ciego que el adversario buscará.
 

@@ -70,8 +70,9 @@ Hallazgos: **(1)** secreto hardcodeado → muévelo a variable de entorno y rót
 - **Loguear para depurar y olvidarlo:** los `print` de depuración filtran datos en producción.
 - **Validar en el cliente nada más:** la validación de seguridad es del servidor.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** validas un campo de entrada con allow-list en el servidor y mueves la API key del código a un secret store con permiso mínimo, ignorada en git y rotada si se filtra.
 - **Contraejemplo:** un `.env` correctamente ignorado… que alguien sube una vez "por error" y luego borra: sigue en la historia. El control (gitignore) existía, pero el secreto ya se filtró → rotación obligatoria.
 - **Caso borde:** un mensaje de error **útil** para el usuario que sin querer revela si un email existe ("usuario no encontrado" vs "contraseña incorrecta") filtra cuentas válidas: incluso errores "amables" pueden ser fugas (enumeración).
 

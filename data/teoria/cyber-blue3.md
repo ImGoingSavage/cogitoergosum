@@ -51,8 +51,9 @@ Tu equipo de datos recibe un "feed" con 5 000 IPs maliciosas y quiere bloquearla
 - **Intentar cubrir todo ATT&CK por igual:** sin priorizar por amenazas relevantes, diluyes el esfuerzo.
 - **Invertir donde el atacante adapta gratis:** bloquear hashes/IPs da sensación de acción con poco efecto.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** en vez de bloquear la IP del atacante (que cambia gratis), detectas su TTP de movimiento lateral catalogado en ATT&CK, obligándolo a reinventar su método, que es caro.
 - **Contraejemplo:** un equipo que, sabiendo que su sector sufre exfiltración de datos tras phishing, prioriza detección de phishing y de descargas anómalas (TTPs): pocos controles, alto dolor para el atacante.
 - **Caso borde:** la inteligencia puede **sesgarse** hacia las amenazas conocidas/famosas y dejar puntos ciegos en las no reportadas; complementa siempre con detección de anomalías de comportamiento ([[cyber-blue2]]) para lo que la inteligencia no anticipó.
 

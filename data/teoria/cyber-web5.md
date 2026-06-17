@@ -57,8 +57,9 @@ Un portal recibe "datasets" de usuarios: acepta cualquier archivo por su extensi
 - **`pickle` para intercambiar datos/modelos:** equivale a ejecutar código ajeno; usa formatos sin ejecución.
 - **Dejar defaults:** "ya lo configuramos seguro después" deja la puerta abierta hasta entonces.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** recibes un archivo (frontera de confianza): validas el tipo real, lo renombras, lo guardas fuera de la raíz servible y limitas el tamaño; nunca yaml.load inseguro.
 - **Contraejemplo:** subidas validadas por tipo real, renombradas, en object storage privado con límites, y datos cargados como Parquet/CSV validados (nunca pickle de terceros): los tres vectores quedan cerrados.
 - **Caso borde:** un **modelo** descargado de un repositorio público parece dato inerte, pero según el formato puede ejecutar código al cargarse: es a la vez deserialización insegura **y** supply chain ([[cyber-ml-security]]). "Es solo un modelo" es un supuesto peligroso.
 

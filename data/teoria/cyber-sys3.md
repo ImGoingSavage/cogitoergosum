@@ -60,8 +60,9 @@ Un servicio guarda contraseñas con SHA-256 simple, sin salt, sin límite de int
 - **Confiar en SMS como segundo factor fuerte:** mejor que nada, pero interceptable; preferir TOTP/llaves.
 - **Olvidar la revocación:** "cerrar sesión" que no invalida el token deja la puerta abierta.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** proteges el login con MFA (dos factores independientes) + hash lento y salado + rate limiting, y tratas el token de sesión como una identidad que, robada, te suplanta.
 - **Contraejemplo:** un login con Argon2 + salt, rate limiting, MFA por llave de seguridad y sesiones con expiración y revocación: robar la contraseña ya no basta y un token tiene vida corta. Defensa en profundidad sobre la identidad.
 - **Caso borde:** la **recuperación de cuenta** ("olvidé mi contraseña") suele ser el eslabón débil: si el reset se hace por un correo comprometido o preguntas adivinables, evita todo lo anterior. La autenticación es tan fuerte como su camino de recuperación.
 

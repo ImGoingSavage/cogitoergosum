@@ -58,8 +58,9 @@ Vas a desplegar un asistente RAG corporativo con herramientas (correo, tickets).
 - **Evaluar una vez:** cada cambio (modelo, prompt, herramienta) puede abrir una brecha; el red teaming es continuo.
 - **Dar agencia sin humano en el lazo:** convierte un fallo del modelo en daño irreversible.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** antes de lanzar un asistente con herramientas, apilas capas (entrada, contexto, capacidades, salida, acción) y haces red teaming continuo que gatea cada cambio.
 - **Contraejemplo:** un asistente con las seis capas, red-teameado antes de lanzar y re-evaluado en cada cambio, con humano en el lazo y monitoreo: las inyecciones que pasan no causan daño grave y se detectan. Gobernanza en acción.
 - **Caso borde:** los sistemas **multi-agente** ([[cyber-llm2]]) y los modelos que se actualizan solos amplían la superficie entre evaluaciones: una capacidad nueva o un agente añadido puede invalidar pruebas previas. La gobernanza debe **gatear los cambios** (evaluar antes de habilitar), no solo evaluar al inicio.
 

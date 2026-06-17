@@ -66,8 +66,9 @@ Un equipo guarda un dataset de pacientes en un bucket con acceso para todo el eq
 - **Auditar logins pero no accesos a datos:** el insider ya inició sesión; lo relevante es qué tocó.
 - **"Borrado" que ignora backups y derivados:** el dato sobrevive donde no miraste.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** das acceso por rol granular (solo ciertas columnas), registras de forma inalterable quién accedió a qué, y borras de verdad al vencer la retención (incluidos backups).
 - **Contraejemplo:** datos con acceso por rol temporal, logs de acceso inalterables con alerta de anomalías, y retención con borrado verificable: privacidad **operativa**, no solo declarada.
 - **Caso borde:** los **logs de auditoría** son ellos mismos datos personales (revelan quién hizo qué) y tienen su propio riesgo de privacidad y retención: hay que protegerlos y no conservarlos eternamente tampoco. Auditar sin convertir el log en un nuevo problema de privacidad es el equilibrio.
 

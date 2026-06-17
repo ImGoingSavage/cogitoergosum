@@ -50,8 +50,9 @@ Una API de reportes: `GET /report?user_id=1001` devuelve los datos de ese usuari
 - **Control de acceso en el cliente:** todo lo del navegador es manipulable; la decisión vive en el servidor.
 - **Reenviar URLs del usuario sin allow-list:** la puerta de entrada clásica a SSRF.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** verificas el permiso por recurso en el servidor para evitar IDOR; firmar el JWT prueba identidad pero no autoriza, así que re-verificas por objeto.
 - **Contraejemplo:** un JWT "seguro porque está firmado" cuyo payload lleva el rol `admin` en claro y el servidor confía en él sin re-verificar permisos por recurso: firmado ≠ autorizado.
 - **Caso borde:** un endpoint **interno** sin autenticación ("solo lo llamamos nosotros") se vuelve crítico si un SSRF lo alcanza desde fuera: la red interna deja de ser una frontera.
 

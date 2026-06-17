@@ -58,8 +58,9 @@ Detectas que el dataset de pacientes está en un bucket con acceso amplio y sin 
 - **Comunicar en jerga técnica:** el equipo no actúa sobre un CVSS; actúa sobre "qué se pierde".
 - **Listar todo sin priorizar:** ahoga la señal; tres riesgos accionables valen más que doscientos.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** ante un activo de bajo valor aplicas un control ligero y ante uno crítico defensa en profundidad, comunicando el riesgo por impacto y nombrando el residual aceptado.
 - **Contraejemplo:** un equipo que tras un casi-incidente documenta detección + plan de recuperación y comunica el riesgo en una página accionable: la próxima vez el daño se contiene. Resiliencia + comunicación en acción.
 - **Caso borde:** comunicar de más (cada riesgo menor escalado a gerencia) genera fatiga y se ignora todo, igual que la fatiga de alertas ([[cyber-blue2]]). La proporcionalidad también aplica a la comunicación.
 

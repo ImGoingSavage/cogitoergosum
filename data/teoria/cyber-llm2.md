@@ -66,8 +66,9 @@ Sistema: asistente que responde sobre documentos internos (RAG) y puede **enviar
 - **Confiar en la salida del LLM:** ejecutarla sin validar reintroduce inyecciones clásicas.
 - **Dar agencia "por si acaso":** cada herramienta y permiso extra amplía el daño de una sola inyección.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un agente con una herramienta de correo recibe una inyección en un documento del RAG y la convierte en acción real; agencia mínima + confirmación humana lo frena.
 - **Contraejemplo:** un agente con dos herramientas de solo lectura, RAG con control de acceso por usuario, salidas validadas y confirmación humana para todo lo externo: una inyección puede molestar, no causar daño grave. Agencia mínima en acción.
 - **Caso borde:** agentes **multi-agente** o encadenados —un agente llama a otro— propagan una inyección a través de la cadena; el contenido no confiable puede saltar de un agente al siguiente. La frontera de confianza debe revisarse en **cada** salto, no solo en la entrada del usuario.
 

@@ -63,8 +63,9 @@ Vas a desplegar un sistema de scoring de fraude que usa un modelo preentrenado d
 - **Tratar la seguridad de IA como defensas sueltas:** sin gobernanza, se erosionan y nadie sabe el estado.
 - **Documentar capacidades pero no riesgos:** una model card sin riesgo residual es marketing, no gobernanza.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** verificas la provenance e integridad de un modelo preentrenado, mapeas sus ataques con MITRE ATLAS y gobiernas el riesgo con NIST AI RMF y una model card de seguridad.
 - **Contraejemplo:** un sistema con procedencia verificada de datos y modelos, evaluación adversaria, controles proporcionales, model card y reevaluación periódica: el riesgo está gestionado de extremo a extremo y es comunicable.
 - **Caso borde:** verificar la integridad de un checkpoint (hash correcto) prueba que **no fue alterado tras publicarse**, pero **no** que el publicador no le puso un backdoor de origen; provenance incluye **confiar en la fuente**, no solo en el hash. Integridad ≠ confiabilidad del origen.
 

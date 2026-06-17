@@ -57,8 +57,9 @@ Montas un asistente que: usa un modelo base bajado de un repo público, se afina
 - **RAG sobre fuentes editables sin control de escritura:** canal directo de poisoning e inyección indirecta.
 - **Olvidar los límites de consumo:** el costo por petición convierte el abuso en daño financiero real.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un atacante coloca un documento envenenado en la base editable del RAG (poisoning), y sin límites de consumo dispara un 'denial of wallet' por el costo por petición.
 - **Contraejemplo:** modelo con procedencia verificada y formato sin ejecución, base de RAG con control de escritura y contenido tratado como no confiable, y API con rate limiting y cuotas: la supply chain, el poisoning y el consumo quedan acotados.
 - **Caso borde:** el **poisoning lento** —pocos documentos/feedback envenenados a lo largo del tiempo— evade los controles que miran cambios bruscos; requiere monitorear la deriva del comportamiento del modelo, no solo cambios puntuales (paralelo al "lento y bajo" de [[cyber-blue2]]).
 

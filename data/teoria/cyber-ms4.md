@@ -50,8 +50,9 @@ Un asistente recibe un correo "del CEO" pidiendo con urgencia el export de la ba
 - **Confiar implícitamente:** no nombrar en quién/qué se confía hasta que la confianza se rompe.
 - **Culpar a la víctima de phishing:** si un engaño individual hunde todo, el fallo es de diseño (faltó limitar el daño), no solo de la persona.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** modelas un caso de abuso (el reverso del caso de uso) donde una autoridad falsa induce una acción: el mismo patrón de la ingeniería social y la prompt injection.
 - **Contraejemplo:** una organización donde dudar y verificar es la norma cultural y las acciones sensibles exigen dos personas: una sola persona engañada no causa daño grave. La resiliencia social acotó el impacto.
 - **Caso borde:** demasiados controles humanos (verificaciones, aprobaciones) generan fricción y se evaden ([[cyber-ms2]]); el diseño sociotécnico equilibra seguridad y usabilidad, no maximiza una a costa de la otra.
 

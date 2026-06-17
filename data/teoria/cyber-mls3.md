@@ -59,8 +59,9 @@ Despliegas un clasificador de imágenes para moderar contenido. Tiene 98% de exa
 - **Confiar un control crítico a un solo modelo:** sin defensa en profundidad, la evasión es daño directo.
 - **Creer que black-box es seguro:** los adversarial examples transfieren entre modelos.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** una perturbación pequeña y dirigida en una imagen hace fallar al clasificador pese a su alta exactitud en test; adversarial training es la mejor defensa conocida, con tradeoff.
 - **Contraejemplo:** un modelo de moderación con adversarial training, salida de baja resolución, rate limiting y humano en el lazo para casos límite: la evasión se vuelve cara y su impacto, contenido.
 - **Caso borde:** la robustez a un **tipo** de perturbación (p. ej. ruido pequeño en píxeles) no garantiza robustez a otro (rotaciones, parches, cambios semánticos); defender contra una familia de ataques puede dejar otra abierta. La evaluación adversaria debe cubrir las amenazas realistas, no una sola.
 

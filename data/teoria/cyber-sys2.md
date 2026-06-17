@@ -53,8 +53,9 @@ No. Cualquiera que envíe un webhook falso puede hashear **su** cuerpo falso y m
 - **Cifrar lo que se debe hashear** (contraseñas) o **hashear lo que se debe cifrar** (un secreto que necesitas recuperar).
 - **Inventar o "mejorar" un algoritmo:** la cripto casera falla de formas invisibles; usa librerías auditadas y modos estándar.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** para probar el origen de un mensaje frente a un adversario usas un MAC o una firma —no un hash—, y guardas contraseñas con hash lento y salado.
 - **Contraejemplo:** "está cifrado, está seguro" — pero la llave está hardcodeada en el repo (ver [[cyber-secure-dev]]). El cifrado más fuerte es inútil si la llave es pública. **La seguridad se muda al manejo de llaves.**
 - **Caso borde:** cifrar un dato garantiza **C**, no **I**: un atacante puede no leerlo y aun así corromperlo. Para C *y* protección de manipulación se usan modos **autenticados** (AES-GCM), que combinan cifrado + integridad.
 

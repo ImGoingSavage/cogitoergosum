@@ -57,8 +57,9 @@ Entrenas un detector de fraude que se reentrena cada noche con transacciones **e
 - **Confiar en la exactitud agregada:** un backdoor no baja la exactitud general; pasa todas las pruebas normales.
 - **Asumir que los datos de entrenamiento son confiables:** sobre todo cuando vienen de la web o de usuarios.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un modelo añade superficie de ataque porque su conducta vive en datos y pesos; un backdoor insertado en entrenamiento pasa la validación normal y se activa con un gatillo.
 - **Contraejemplo:** un pipeline que **valida y rastrea la procedencia** de cada fuente de datos, limita el peso de contribuciones no confiables y testea con datos *hold-out* curados: reduce drásticamente el poisoning sin sacrificar utilidad.
 - **Caso borde:** un modelo entrenado solo con datos **propios y limpios** sigue teniendo superficie de **inferencia** (evasion, extraction): cerrar el entrenamiento no cierra el modelo desplegado.
 

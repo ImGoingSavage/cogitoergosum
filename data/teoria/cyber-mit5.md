@@ -71,6 +71,12 @@ Y comparten la **misma defensa**, que **no** depende de detectar la falsificaci�
 
 Moraleja: **no entrenes el ojo, blinda el proceso.** La verificación perceptual es una carrera que el defensor pierde; el proceso de verificación cruzada es una carrera que gana.
 
+## Prototipo, contraejemplo y caso borde
+
+- **Prototipo:** la videoconferencia deepfake de $25M (Hong Kong, 2024): IA falsifica al CFO + urgencia + canal "irrefutable" (video) → el empleado actúa antes de verificar. Es el caso de manual del esqueleto.
+- **Contraejemplo:** una orden urgente del CEO que **sí** es real y, al verificarla fuera de banda, se confirma: el patrón (autoridad + urgencia) aparenta fraude, pero la verificación lo descarta sin daño. La defensa de proceso no frena el negocio legítimo, solo le pone un control barato.
+- **Caso borde:** la estafa cripto por livestream: aquí la víctima es el **público a escala**, no un empleado; el control no es "doble aprobación" interna sino el escepticismo base ("nadie duplica tu cripto") + MFA del canal. Mismo esqueleto, defensa desplazada al usuario y a la plataforma.
+
 ## Errores típicos al estudiar casos
 
 - **Quedarse en la anécdota:** memorizar "el caso de los $25M" sin extraer el patrón transferible.

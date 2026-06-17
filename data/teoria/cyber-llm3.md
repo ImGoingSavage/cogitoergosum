@@ -51,8 +51,9 @@ Un asistente de soporte tiene como system prompt: *"Eres el bot de ACME. La clav
 - **Confiar en "nunca reveles X" como control:** es una petición, no una garantía (comportamiento probabilístico, [[cyber-llm1]]).
 - **Meter al contexto lo que no debe salir:** el modelo solo puede filtrar lo que alcanza.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un usuario extrae el system prompt preguntando por él; como lo tratas como público y no pusiste secretos ahí, no hay fuga.
 - **Contraejemplo:** un asistente sin secretos en el prompt, con RAG que filtra por permisos del usuario y saneamiento de salidas: aunque alguien extraiga el system prompt, no obtiene nada valioso, y no puede ver documentos ajenos. La seguridad vive en el sistema, no en el texto.
 - **Caso borde:** la fuga puede ser **indirecta y sutil**: el modelo no "dice" el dato pero lo **revela por inferencia** (confirma/niega, da pistas que permiten deducirlo). Minimizar el contexto importa incluso cuando el modelo "no lo dice literalmente".
 

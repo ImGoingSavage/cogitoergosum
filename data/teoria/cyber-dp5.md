@@ -64,8 +64,9 @@ Vas a entrenar y exponer un modelo que predice riesgo de deserción escolar con 
 - **Tratar embeddings como anónimos:** son invertibles ([[cyber-dp2]], [[cyber-mls2]]).
 - **Dejar la privacidad para el final:** remendar es caro e incompleto; se diseña desde el inicio.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** antes de exponer un modelo entrenado con datos sensibles, evalúas membership inference y limitas memorización (regularización/DP), porque el modelo mismo filtra.
 - **Contraejemplo:** un pipeline con minimización, entrenamiento con DP, salidas de baja resolución y procedencia rastreada: útil para predecir y resistente a membership inference e inversión. Privacidad **con** utilidad.
 - **Caso borde:** DP protege contra **inferencia sobre individuos**, pero un ε mal elegido (demasiado grande) da garantía nominal sin protección real; y DP no resuelve el sesgo ni el uso indebido del modelo. La técnica es necesaria pero no suficiente: sigue haciendo falta gobernanza ([[cyber-dp4]]).
 

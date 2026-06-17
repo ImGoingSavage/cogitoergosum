@@ -59,8 +59,9 @@ Diseñas el acceso a un dataset sensible para un equipo de 10 analistas.
 - **Ignorar el riesgo residual:** creer que un control lo elimina en vez de reducirlo; deja de monitorear y se sorprende.
 - **Diseñar contra el usuario:** controles tan rígidos que la gente los burla, empeorando la postura real.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** aplicas las 4 preguntas del threat modeling a una feature y cazas el supuesto de confianza roto, diseñando con privilegio mínimo y fail-safe defaults.
 - **Contraejemplo:** abrir un puerto "temporalmente" para una demo y dejarlo abierto. El default dejó de ser fail-safe sin que nadie lo decidiera.
 - **Caso borde:** least privilege llevado al absurdo puede paralizar el trabajo (permisos tan finos que nadie puede hacer nada). El principio se balancea con usabilidad: mínimo **necesario**, no mínimo absoluto.
 

@@ -64,8 +64,9 @@ Un investigador quiere compartir un dataset hospitalario "anonimizado": quitó n
 - **Olvidar al atacante externo:** evaluar privacidad solo "dentro" del dataset, sin pensar en lo que existe afuera.
 - **Gobernanza implícita:** "todos sabemos quién puede usarlo" — sin acceso, auditoría ni retención escritos, no hay gobernanza.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un dataset 'anónimo' sin nombres se reidentifica cruzando código postal + fecha de nacimiento + sexo; aplicas generalización/k-anonimato para evitarlo.
 - **Contraejemplo:** un dataset con DP bien aplicada que sigue siendo útil para estadística agregada y resiste reidentificación: privacidad fuerte **con** utilidad, el ideal.
 - **Caso borde:** **outliers** —el paciente con una enfermedad rarísima, el cliente con un patrón único de compra— son casi siempre reidentificables aunque el resto del dataset cumpla k-anonimato. Requieren tratamiento especial (supresión o agregación más agresiva).
 

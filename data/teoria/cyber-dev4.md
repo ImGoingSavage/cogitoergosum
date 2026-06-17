@@ -64,8 +64,9 @@ Tu repo de un servicio de datos pasa los tests funcionales. ¿Está seguro? Plan
 - **Tratar el SAST como verdad absoluta:** tiene falsos positivos (triarlos) y falsos negativos (no lo ve todo).
 - **Saltarse el code review humano:** la lógica de autorización casi siempre necesita ojos humanos.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** SAST revisa tu código, SCA tus dependencias, DAST la app corriendo y el code review humano caza la falla de autorización que ninguna herramienta ve.
 - **Contraejemplo:** un pipeline que corre SAST + SCA en cada PR, fuzzing periódico de los parsers y code review con checklist de seguridad: las cuatro clases de fallo tienen una red que las atrapa.
 - **Caso borde:** demasiados **falsos positivos** de SAST generan fatiga (como las alertas, [[cyber-blue2]]) y el equipo empieza a ignorar todo, incluidos los verdaderos. La verificación se calibra: priorizar hallazgos de alto impacto y afinar las reglas, no inundar.
 

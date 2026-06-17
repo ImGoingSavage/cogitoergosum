@@ -56,8 +56,9 @@ Léelo como defensor: el cliente pide el paciente 42; se autentica con un **Bear
 - **Confundir "interno" con "seguro":** la red interna también tiene atacantes (un equipo comprometido, un insider).
 - **Ignorar las dependencias:** tu código Python puede ser seguro y aun así heredar un fallo de memoria de una librería C.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** una entrada no confiable tratada como confiable en una frontera (un parámetro del usuario usado sin validar) abre la falla; validar y aislar contiene el daño.
 - **Contraejemplo:** "usamos tokens, estamos seguros" — pero sobre `http://`, el token viaja en claro y se roba. El control correcto contra el modelo equivocado.
 - **Caso borde:** un servicio solo accesible desde `localhost` parece a salvo de la red; deja de estarlo si otro proceso del mismo host está comprometido, o si un SSRF (ver [[cyber-web-api]]) lo alcanza desde dentro.
 

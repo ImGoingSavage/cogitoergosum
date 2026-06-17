@@ -60,8 +60,9 @@ Tu repo de un modelo en producción tiene `requirements.txt` con `requests`, `pa
 - **Actualizar a ciegas o nunca actualizar:** ambos extremos fallan; se razona por explotabilidad e impacto.
 - **Olvidar las transitivas:** el CVE casi siempre está en una dependencia que no instalaste tú directamente.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** generas un SBOM de tu app, SCA detecta una dependencia transitiva con CVE explotable y la actualizas fijando la versión por hash.
 - **Contraejemplo:** un equipo con SAST impecable sobre **su** código pero sin SCA: pasan todas las revisiones y aun así despliegan una dependencia con un CVE crítico. Asegurar lo propio no asegura lo importado.
 - **Caso borde:** una dependencia **sin CVE conocido** no es "segura", solo "sin fallos *publicados*"; un paquete abandonado es riesgo aunque su historial esté limpio.
 

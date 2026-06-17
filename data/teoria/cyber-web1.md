@@ -69,8 +69,9 @@ Un endpoint de búsqueda de pacientes: el front manda `?q=texto`, el back arma `
 - **Lista negra en vez de parametrizar/codificar:** bloquear `<script>` deja pasar `<img onerror>`, `onmouseover`, etc.
 - **"Es un campo interno":** entradas internas también pueden ser maliciosas (un usuario autenticado abusando).
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** una entrada cruza de dato a instrucción: parametrizas la consulta para frenar SQLi y codificas la salida para frenar XSS, validando en el servidor.
 - **Contraejemplo:** un ORM no te salva si usas `raw()` concatenando strings: la herramienta segura, usada inseguramente, vuelve a ser vulnerable.
 - **Caso borde:** **XSS almacenado** es peor que el reflejado: el payload vive en tu base de datos y se dispara para *cada* visitante; un dataset "de texto libre" que luego renderizas es un vector silencioso.
 

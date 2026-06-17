@@ -63,8 +63,9 @@ Resultado: un dataset más pequeño, más defendible y muchas veces igual de út
 - **Tratar la retención como gratis:** cada día que conservas un dato sensible es un día de exposición; la retención es pasivo, no activo.
 - **"Privacidad = cumplimiento legal":** la ley es el piso; el riesgo de privacidad existe aunque cumplas la letra.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** aunque el dato esté bien cifrado y protegido (seguridad), recolectar la geolocalización para una app de notas viola minimización y limitación de finalidad (privacidad).
 - **Contraejemplo:** una empresa con seguridad impecable que, legalmente y "de forma segura", combina datos de fuentes para perfilar a usuarios sin que lo esperen: cero brechas, gran daño de privacidad.
 - **Caso borde:** datos **agregados** parecen sin riesgo, pero una estadística sobre un grupo muy pequeño (p. ej. "el único empleado de 60 años en el área X") puede revelar a un individuo. La privacidad no termina en la fila individual.
 

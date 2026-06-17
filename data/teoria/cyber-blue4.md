@@ -63,8 +63,9 @@ Salta la alerta de [[cyber-blue2]]: una cuenta de analista descargó 4.2 GB del 
 - **Destruir evidencia al contener:** apagar/borrar antes de preservar imposibilita entender y erradicar.
 - **Saltarse las lecciones aprendidas:** sin post-mortem, la organización no mejora.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** ante una alerta de exfiltración, triajeas si es real, contienes aislando la máquina sin apagarla (preservas evidencia), erradicas la vía de entrada y recuperas con MFA.
 - **Contraejemplo:** un equipo con plan ensayado, contactos claros, respaldos verificados y un runbook por tipo de incidente: cuando salta la alerta, ejecutan con calma, contienen preservando evidencia y se recuperan rápido.
 - **Caso borde:** un **falso positivo** tratado como incidente grave consume recursos y erosiona la confianza en las alertas; por eso el triaje (severidad) es la primera fase activa. La respuesta debe ser proporcional ([[cyber-ms5]]) a la severidad real.
 

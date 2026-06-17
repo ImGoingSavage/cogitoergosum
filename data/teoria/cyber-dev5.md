@@ -62,8 +62,9 @@ Tu equipo despliega un modelo con un pipeline que usa una credencial de admin, i
 - **No tener proceso de respuesta:** descubrir el fallo y no saber cómo priorizar ni desplegar el parche.
 - **Castigar a quien reporta:** desincentiva la divulgación responsable y empuja los hallazgos al mercado negro.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** endureces el pipeline con token de despliegue mínimo, versiones fijadas por hash, key en el store del CI y contenedor no-root sin secretos en la imagen.
 - **Contraejemplo:** pipeline con permisos mínimos, dependencias fijadas y verificadas, secretos en el store, contenedores no-root y una política de divulgación con parcheo por severidad: la supply chain está endurecida de extremo a extremo y los fallos se cierran rápido.
 - **Caso borde:** un parche **apresurado** sin verificación ([[cyber-dev4]]) puede introducir un bug nuevo o romper producción; "rápido" no significa "sin pruebas". El equilibrio es un canal de despliegue confiable que permita parchear **rápido y seguro**, no rápido y a ciegas.
 

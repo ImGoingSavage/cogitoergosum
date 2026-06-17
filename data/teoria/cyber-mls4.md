@@ -56,8 +56,9 @@ Expones una API que da, por imagen médica, la probabilidad detallada de cada di
 - **Tratar embeddings como anónimos:** son invertibles.
 - **Exponer probabilidades finísimas por "transparencia":** entregan justo lo que facilita extraction/inversion.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** con muchos pares entrada→salida un atacante entrena un sustituto que imita tu modelo; como nace de la memorización, la defensa de fondo es reducirla (DP).
 - **Contraejemplo:** API con auth, rate limiting, salida de baja resolución, entrenamiento con DP y monitoreo: extraer o invertir cuesta tanto que deja de ser rentable. Riesgo gestionado.
 - **Caso borde:** un modelo **on-device** ([[cyber-mls2]]) entrega los pesos al usuario → extraction/inversion son inevitables offline; debes asumirlo y minimizar lo que el modelo memoriza, no confiar en límites de consulta que no existen.
 

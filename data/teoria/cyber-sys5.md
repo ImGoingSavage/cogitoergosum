@@ -55,8 +55,9 @@ Un analista trabaja desde un café y su script sube un dataset a `http://datos.i
 - **Saltarse avisos de certificado:** es desactivar justo la defensa contra MITM.
 - **Proteger el login con TLS pero no el resto:** si el token viaja luego en claro, se roba igual ([[cyber-sys3]]).
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un MITM envenena el DNS para redirigirte a un impostor; TLS (cifrado + MAC + certificado) frustra el espionaje, la alteración y el DNS envenenado.
 - **Contraejemplo:** TLS de extremo a extremo con verificación estricta de certificado y keys que nunca viajan en claro: el atacante del café solo ve ruido y el impostor de DNS es rechazado. La postal se volvió sobre lacrado.
 - **Caso borde:** TLS protege el **tránsito**, no los **extremos**: si tu laptop o el servidor están comprometidos ([[cyber-sys4]]), el dato se lee antes de cifrarse o después de descifrarse. TLS no sustituye la seguridad de los endpoints.
 

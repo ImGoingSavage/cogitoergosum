@@ -59,8 +59,9 @@ Una app educativa pide al registrarse aceptar una casilla pre-marcada que autori
 - **Confundir transparencia con un documento legal largo:** transparencia es que se **entienda**.
 - **No diseñar para el borrado/acceso:** descubrir al recibir la solicitud que no sabes dónde están los datos.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** pides opt-in separado por finalidad con lenguaje claro y revocable, y diseñas el pipeline para poder localizar, exportar y borrar los datos de un titular.
 - **Contraejemplo:** registro con opt-in separado por finalidad, lenguaje claro, y un sistema que sabe dónde vive cada dato y puede exportarlo/borrarlo: cumplir un derecho es una operación, no una crisis.
 - **Caso borde:** el **derecho al olvido vs un modelo entrenado**: borrar la fila no borra lo que el modelo memorizó ([[cyber-ml-security]], membership inference). Cumplir el borrado puede exigir reentrenar o aplicar técnicas de *machine unlearning*; es un problema abierto que debes anticipar, no ignorar.
 

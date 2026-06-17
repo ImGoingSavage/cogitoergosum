@@ -55,8 +55,9 @@ Diseñas un servicio que recibe un CSV de un usuario, lo procesa y guarda result
 - **Diseñar solo el camino feliz:** sin pensar qué pasa cuando una entrada es hostil o un componente cae.
 - **Permisos amplios "temporales":** que se vuelven permanentes y violan privilegio mínimo.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** antes de codificar, modelas amenazas por componente y diseñas con privilegio mínimo; cuando aparece un bug, identificas qué principio violó y eso indica el arreglo.
 - **Contraejemplo:** un servicio con requisitos de seguridad escritos, autorización por recurso en cada llamada, credenciales mínimas y fail-safe: las vulnerabilidades comunes simplemente no caben en el diseño.
 - **Caso borde:** la **economía de mecanismo** puede chocar con features legítimas que requieren complejidad (reglas de negocio reales). El principio no dice "no tengas lógica", dice "haz la lógica de **seguridad** tan simple y auditable como puedas", aislándola de la complejidad del negocio.
 

@@ -67,8 +67,9 @@ Vas a exponer una API que predice riesgo clínico, entrenada con datos de pacien
 - **Tratar embeddings como anónimos:** son reconstruibles/invertibles.
 - **Perseguir invulnerabilidad:** el objetivo es **riesgo residual aceptable** con controles proporcionales, no cero ataques.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** expones un modelo por API y un atacante lo clona con extraction; aplicas controles proporcionales (auth, rate limit, baja resolución de salida) y aceptas el riesgo residual.
 - **Contraejemplo:** una API de modelo con auth, rate limiting, salidas de baja resolución, entrenamiento con DP y monitoreo: sigue siendo atacable en teoría, pero el costo del ataque supera el beneficio → riesgo gestionado bien.
 - **Caso borde:** un modelo **on-device** (en el dispositivo del usuario) da al adversario acceso total a los pesos: los controles de "limitar consultas" no aplican; debes asumir extraction y diseñar para ese supuesto.
 

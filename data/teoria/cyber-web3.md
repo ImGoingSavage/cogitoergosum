@@ -59,8 +59,9 @@ Una API de una plataforma educativa: `GET /api/students/{id}/grades` y `PATCH /a
 - **Enlazar el objeto entero al input:** abre mass assignment; usa allow-list de campos.
 - **Asumir que "nadie conoce el endpoint":** la oscuridad no es control; los endpoints se descubren.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** en cada endpoint verificas permiso por objeto (contra BOLA), usas allow-list de campos (contra mass assignment) y aplicas rate limiting/paginación.
 - **Contraejemplo:** una API donde cada endpoint deriva el usuario del token, autoriza por objeto, usa allow-list de campos y aplica rate limiting: BOLA y mass assignment quedan cerrados por diseño.
 - **Caso borde:** **GraphQL** y endpoints de búsqueda complejos amplían la superficie: una sola consulta puede pedir muchos objetos anidados, multiplicando los puntos donde falta autorización y facilitando consultas costosas (DoS). Requieren control de acceso por campo y límites de complejidad.
 

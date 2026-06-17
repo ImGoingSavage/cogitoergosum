@@ -68,8 +68,9 @@ Lectura blue team: login OK pero desde una geo inusual a las 3 a.m. (posible **C
 - **Confundir alerta con incidente:** disparar respuesta (o ignorar) sin triaje.
 - **Coleccionar logs y no mirarlos:** logs sin hipótesis de detección son solo costo de almacenamiento.
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** un atacante usa volcado de credenciales (técnica) para lograr Credential Access (táctica); como el endpoint registra el acceso, la huella en el log dispara una alerta que el analista triaja.
 - **Contraejemplo:** un SIEM carísimo que ingiere todo… pero sin reglas mapeadas a ATT&CK: mucha telemetría, cero detección. Recolectar ≠ detectar.
 - **Caso borde:** un *insider* autorizado que abusa de su acceso legítimo no dispara las alertas de "acceso no autorizado"; se detecta por **comportamiento anómalo** (volumen, horario), no por permisos. La detección de insiders es intrínsecamente más sutil.
 

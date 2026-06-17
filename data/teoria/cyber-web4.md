@@ -62,8 +62,9 @@ Un dashboard de analítica: sirve por HTTP y HTTPS, cookies sin atributos, `Acce
 - **Reflejar cualquier origen para "que funcione":** equivale a desactivar la política de mismo-origen.
 - **Confiar solo en CSP contra XSS:** es segunda capa; primero codifica la salida ([[cyber-web1]]).
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** activas cabeceras seguras —cookies Secure/HttpOnly/SameSite y CSP como segunda capa contra XSS— sabiendo que los defaults del navegador son inseguros.
 - **Contraejemplo:** una app con HTTPS+HSTS, cookies endurecidas, CORS con allow-list y CSP estricta: aunque aparezca un XSS, el navegador limita su ejecución y su exfiltración. Las capas contienen el fallo.
 - **Caso borde:** una CSP demasiado laxa (con `unsafe-inline` o comodines) da **falsa** sensación de protección: figura una CSP, pero permite justo lo que debía bloquear. Configurar mal una defensa es casi peor que no tenerla, porque relaja la vigilancia.
 

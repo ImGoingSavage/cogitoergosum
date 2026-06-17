@@ -60,8 +60,9 @@ Un equipo ejecuta notebooks de analistas y código de terceros en un mismo servi
 - **Correr como root por comodidad:** anula least privilege y facilita el escape.
 - **Meter secretos en la imagen:** viven en las capas; usa inyección en tiempo de ejecución ([[cyber-secure-dev]]).
 
-## Contraejemplo y caso borde
+## Prototipo, contraejemplo y caso borde
 
+- **Prototipo:** ejecutas código poco confiable en un contenedor no-root, sin secretos en la imagen y con base actualizada, subiendo la fuerza del aislamiento según la desconfianza.
 - **Contraejemplo:** jobs en contenedores no-root, con datos montados al mínimo, sin secretos en la imagen y con red restringida: una dependencia maliciosa queda contenida y no alcanza llaves ni otros datos. Mamparas que funcionan.
 - **Caso borde:** dos contenedores "aislados" que comparten un **volumen** o una **red** sin restricción pueden comunicarse y propagar el compromiso; el aislamiento se evalúa también en lo que comparten, no solo en lo que separan.
 
