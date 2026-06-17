@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v158';
+const VERSION = 'cogitoergosum-v159';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -314,6 +314,11 @@ const SHELL = [
   'data/teoria/gen-rag2.md',
   'data/teoria/gen-rag3.md',
   'data/teoria/gen-rag4.md',
+  // Fase 9 · IA Generativa — cluster Evaluación
+  'data/teoria/gen-eval1.md',
+  'data/teoria/gen-eval2.md',
+  'data/teoria/gen-eval3.md',
+  'data/teoria/gen-eval4.md',
   'assets/fonts/EBGaramond-Regular.woff2',
   'assets/fonts/EBGaramond-SemiBold.woff2',
   'assets/fonts/EBGaramond-Italic.woff2',

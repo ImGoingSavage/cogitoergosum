@@ -167,6 +167,90 @@
           "Reconoce el contenido recuperado como entrada no confiable (seguridad)."
         ]
       }
+    },
+    {
+      "id": "genai-eval",
+      "titulo": "Evaluación de IA generativa",
+      "track": "genai",
+      "descripcion": "Medir con rigor lo que un LLM produce: por qué evaluar generación es difícil, métricas léxicas (ROUGE, BLEU) y semánticas (BERTScore), LLM-as-a-judge y sus sesgos, detección de alucinaciones (consistencia y anclaje), y optimización de prompts dirigida por evaluación. Sin esto, 'mejorar' un sistema GenAI es adivinar. Recurso troncal: MIT-AI.md (Semana 10).",
+      "secuencia": "De la métrica al método: por qué evaluar generación es difícil y métricas léxicas (ROUGE/BLEU) → métricas semánticas y LLM-as-a-judge con sus sesgos → detección de alucinaciones (consistencia + anclaje) → optimización de prompts dirigida por evaluación.",
+      "referencias": [
+        "Lin, C.-Y. (2004). ROUGE. ACL Workshop. [aclanthology W04-1013](https://aclanthology.org/W04-1013/)",
+        "Zhang, T., et al. (2020). BERTScore. ICLR. [arXiv:1904.09675](https://arxiv.org/abs/1904.09675)",
+        "Zheng, L., et al. (2023). Judging LLM-as-a-judge (MT-Bench/Arena). NeurIPS. [arXiv:2306.05685](https://arxiv.org/abs/2306.05685)",
+        "Manakul, P., et al. (2023). SelfCheckGPT. EMNLP. [arXiv:2305.15852](https://arxiv.org/abs/2305.15852)",
+        "Wei, J., et al. (2022). Chain-of-thought prompting. NeurIPS. [arXiv:2201.11903](https://arxiv.org/abs/2201.11903)"
+      ],
+      "miniProyecto": {
+        "titulo": "Banco de evaluación + optimización de un prompt",
+        "descripcion": "Para una tarea GenAI concreta (resumen, extracción o Q&A sobre tu corpus), construye un pequeño set de evaluación (con held-out), elige métricas (semántica y/o LLM-as-judge, + detección de alucinaciones), mide una línea base, prueba 3 cambios de prompt y conserva solo los que suben la métrica sin regresiones. Documenta sesgos del juez que mitigaste.",
+        "entregable": "Set de evaluación + reporte de optimización (línea base, cambios probados, decisión por métrica, held-out).",
+        "rubrica": [
+          "Métrica adecuada a la tarea (no solo ROUGE) y set representativo con held-out",
+          "Mide línea base y cambia una cosa a la vez",
+          "Detecta/controla alucinaciones (consistencia o anclaje)",
+          "Mitiga sesgos del LLM-as-judge (orden, verbosidad, rúbrica)",
+          "Decide conservar/descartar por evidencia, no por intuición"
+        ]
+      },
+      "unidades": [
+        "gen-eval1",
+        "gen-eval2",
+        "gen-eval3",
+        "gen-eval4"
+      ],
+      "competencias": [
+        "Explicar por qué evaluar generación es difícil y elegir métricas con criterio.",
+        "Usar BERTScore y LLM-as-a-judge conociendo sus límites y sesgos.",
+        "Detectar alucinaciones por consistencia y por anclaje a fuentes.",
+        "Optimizar prompts dirigido por evaluación, evitando overfitting al set."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Evaluación de IA generativa",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra tu punto de partida.",
+        "preguntas": [
+          {
+            "id": "genai-eval-diag-dificil",
+            "prompt": "Para clasificar, mides accuracy. Para 'qué tan buena es esta respuesta de chatbot', ¿por qué no sirve una métrica de coincidencia exacta?",
+            "criterio": "Reconoce que hay muchas respuestas válidas distintas (no hay clave única)."
+          },
+          {
+            "id": "genai-eval-diag-juez",
+            "prompt": "Si usas otro LLM para calificar respuestas, ¿qué podría salir mal con sus notas?",
+            "criterio": "Intuye sesgos del juez (verbosidad, posición, autoconfianza)."
+          },
+          {
+            "id": "genai-eval-diag-alucina",
+            "prompt": "El modelo responde con seguridad y fluidez. ¿Por qué eso NO garantiza que sea verdad, y cómo lo verificarías?",
+            "criterio": "Separa fluidez de factualidad; intuye consistencia o anclaje a fuentes."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "Chatbot Arena (LMArena)",
+          "url": "https://lmarena.ai/",
+          "objetivo": "ver evaluación por preferencia humana y comparación por pares (Elo)",
+          "criterio_cierre": "explicar por qué pairwise es más fiable que puntuar en abstracto",
+          "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "Prompt Engineering Guide",
+          "url": "https://www.promptingguide.ai/",
+          "objetivo": "técnicas de prompting (few-shot, chain-of-thought) con ejemplos",
+          "criterio_cierre": "identificar una tarea donde CoT ayuda y otra donde estorba",
+          "safety_note": "Material educativo."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No da una lista de métricas: enseña que toda métrica es un proxy, expone los sesgos del LLM-juez y exige optimizar prompts con un lazo de evaluación (set, línea base, held-out), con enlaces vivos a los papers.",
+        "evidencia_de_dominio": [
+          "Sabe cuándo ROUGE engaña y cuándo usar semántica o LLM-judge.",
+          "Mitiga sesgos del juez y ancla la factualidad fuera del modelo.",
+          "Detecta alucinaciones por consistencia y anclaje.",
+          "Optimiza prompts por evidencia, no por intuición, evitando overfitting."
+        ]
+      }
     }
   ]
 }

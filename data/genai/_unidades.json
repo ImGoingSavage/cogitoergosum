@@ -952,6 +952,482 @@
         }
       ],
       "orden": 908
+    },
+    {
+      "id": "gen-eval1",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Por qué evaluar texto generado es difícil: ROUGE, BLEU y sus límites",
+      "libro": "MIT-AI.md (Semana 10) + ROUGE (Lin 2004), BLEU (Papineni 2002)",
+      "lectura": "data/teoria/gen-eval1.md",
+      "dosis": 25,
+      "objetivo": "Explicar por qué evaluar generación es difícil; entender ROUGE y BLEU; nombrar sus límites; y distinguir métricas con referencia vs sin referencia.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 2
+      },
+      "ideas_clave": [
+        "Evaluar generación es difícil: muchas respuestas válidas, 'bueno' es multidimensional",
+        "ROUGE (recall de n-gramas, resumen) y BLEU (precisión, traducción) miden superposición léxica",
+        "Son ciegas al significado: premian paráfrasis erróneas, castigan correctas",
+        "Con referencia vs sin referencia; la industria va hacia sin referencia"
+      ],
+      "banco": [
+        {
+          "id": "gev1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué evaluar texto generado es más difícil que evaluar una clasificación?",
+          "solucion": "Porque no hay una sola respuesta correcta: muchas salidas distintas son válidas (paráfrasis), 'buena' mezcla dimensiones que pueden ir en contra (fidelidad vs fluidez) y depende de la tarea. No hay una clave única como en opción múltiple.",
+          "explicacion": "Multiplicidad + multidimensionalidad + dependencia de tarea.",
+          "difficulty": "easy",
+          "answer": "Porque no hay una única respuesta correcta y 'bueno' es multidimensional.",
+          "options": [
+            "Porque no hay una única respuesta correcta y 'bueno' es multidimensional.",
+            "Porque el texto es más largo que una etiqueta.",
+            "Porque los LLMs son no deterministas y eso impide medir.",
+            "Porque no existen datasets de texto."
+          ],
+          "common_mistake": "Atribuir la dificultad a la longitud o al no determinismo, no a la multiplicidad de respuestas válidas."
+        },
+        {
+          "id": "gev1-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué miden ROUGE y BLEU, y en qué se diferencian?",
+          "solucion": "Ambas miden la superposición de n-gramas con una referencia humana. ROUGE es recall-orientada (¿la salida cubre los n-gramas de la referencia?, típica de resumen); BLEU es precisión-orientada con penalización por brevedad (¿los n-gramas de la salida están en la referencia?, típica de traducción).",
+          "explicacion": "Misma familia (contar n-gramas), distinto énfasis: recall vs precisión.",
+          "difficulty": "medium",
+          "answer": "Superposición de n-gramas con una referencia: ROUGE recall (resumen), BLEU precisión (traducción).",
+          "options": [
+            "Superposición de n-gramas con una referencia: ROUGE recall (resumen), BLEU precisión (traducción).",
+            "El significado semántico de la respuesta vía embeddings.",
+            "Si los hechos de la respuesta son verdaderos.",
+            "La fluidez gramatical del texto generado."
+          ],
+          "common_mistake": "Creer que ROUGE/BLEU miden significado o factualidad."
+        },
+        {
+          "id": "gev1-q3",
+          "tipo": "concepto",
+          "enunciado": "Una respuesta correcta que parafrasea la referencia SIN compartir palabras obtiene ROUGE bajo, y una respuesta peligrosa que solo cambia 'día' por 'semana' obtiene ROUGE altísimo. ¿Qué demuestra esto?",
+          "solucion": "Que ROUGE cuenta superposición de palabras, no significado: premia coincidencia léxica aunque sea errónea y castiga paráfrasis correctas. Es ciega al significado; por eso se necesitan métricas semánticas (BERTScore) o un LLM-juez.",
+          "explicacion": "Cuenta palabras, no significado.",
+          "difficulty": "hard",
+          "answer": "Que ROUGE mide superposición léxica, no significado ni corrección.",
+          "options": [
+            "Que ROUGE mide superposición léxica, no significado ni corrección.",
+            "Que la referencia humana estaba mal escrita.",
+            "Que ROUGE solo funciona en inglés.",
+            "Que la salida era demasiado corta."
+          ],
+          "common_mistake": "Echarle la culpa a la referencia o al idioma en vez de a la naturaleza léxica de la métrica."
+        },
+        {
+          "id": "gev1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la industria se mueve hacia métricas SIN referencia para sistemas en producción?",
+          "solucion": "Porque las métricas con referencia (ROUGE, BLEU, BERTScore) necesitan una 'respuesta dorada' por consulta, que es cara de crear y a menudo no existe (¿cuál es la referencia de un chatbot abierto?). Las métricas sin referencia (LLM-as-judge, faithfulness contra el contexto) evalúan la salida en sí y escalan a producción.",
+          "explicacion": "En sistemas reales rara vez hay referencia por consulta.",
+          "difficulty": "medium",
+          "answer": "Porque en producción rara vez existe una respuesta de referencia por consulta.",
+          "options": [
+            "Porque en producción rara vez existe una respuesta de referencia por consulta.",
+            "Porque las métricas con referencia son más lentas de calcular.",
+            "Porque las referencias siempre están en otro idioma.",
+            "Porque sin referencia las métricas son más precisas."
+          ],
+          "common_mistake": "Creer que sin referencia es más preciso (es más escalable, a costa de subjetividad)."
+        },
+        {
+          "id": "gev1-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un equipo reporta que su modelo de resumen 'mejoró' porque subió el ROUGE de 0.40 a 0.55 tras un cambio. Al leer los resúmenes, son peores (copian frases literales de los documentos). ¿Qué pasó?",
+          "solucion": "Optimizaron la métrica, no la tarea (ley de Goodhart): copiar frases del documento sube la superposición de n-gramas (ROUGE) aunque produzca resúmenes peores, menos abstractivos. ROUGE es un proxy; subirlo a ciegas degradó la calidad real. Habría que evaluar con métricas semánticas y/o juicio humano.",
+          "explicacion": "Gaming del proxy: subir ROUGE ≠ mejor resumen.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev1-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: te piden evaluar un chatbot de soporte abierto y propones usar BLEU. ¿Qué problema hay y qué propondrías?",
+          "solucion": "BLEU necesita respuestas de referencia, que para un chatbot abierto casi no existen (mil respuestas válidas por consulta) y serían carísimas de crear. Mejor usar métricas sin referencia: LLM-as-a-judge con rúbrica (utilidad, fidelidad) y, si hay contexto recuperado, faithfulness; complementadas con muestreo humano.",
+          "explicacion": "Sin referencia para chat abierto → métricas reference-free.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev1-r1",
+          "tipo": "reflexion",
+          "enunciado": "ROUGE/BLEU son 'proxies': números fáciles que aproximan lo que importa pero pueden divergir. ¿Qué otros proxies engañosos has visto (en trabajo, métricas de equipo, KPIs) y qué pasó al optimizarlos a ciegas?",
+          "solucion": "Reflexión abierta. Buena respuesta: identifica un proxy (líneas de código, n.º de tickets, clics) y describe cómo optimizarlo divergió del objetivo real (ley de Goodhart), conectando con 'cuenta palabras, no significado'.",
+          "explicacion": "Ley de Goodhart: el proxy deja de medir cuando se vuelve objetivo.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev1-r2",
+          "tipo": "reflexion",
+          "enunciado": "Evaluar generación se parece a calificar un ensayo más que un examen de opción múltiple. ¿Qué implica eso para cómo diseñarías una rúbrica de evaluación de respuestas de IA en tu dominio?",
+          "solucion": "Reflexión abierta. Buena respuesta: una rúbrica multidimensional (fidelidad, relevancia, concisión, seguridad) con criterios explícitos, en vez de una sola coincidencia, asumiendo varias respuestas válidas.",
+          "explicacion": "Rúbrica multidimensional, no clave única.",
+          "difficulty": "medium"
+        }
+      ],
+      "orden": 909
+    },
+    {
+      "id": "gen-eval2",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Métricas semánticas y LLM-as-a-judge",
+      "libro": "MIT-AI.md (Semana 10) + BERTScore, MT-Bench, G-Eval",
+      "lectura": "data/teoria/gen-eval2.md",
+      "dosis": 30,
+      "objetivo": "Explicar BERTScore; entender LLM-as-a-judge y sus modos; nombrar sus sesgos y mitigaciones; y elegir la métrica según la tarea.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "BERTScore mide significado (similitud coseno de embeddings), no palabras exactas",
+        "LLM-as-a-judge evalúa sin referencia y a escala; domina hoy",
+        "Pairwise (¿cuál es mejor?) > pointwise (nota 1-5)",
+        "Sesgos del juez: posición, verbosidad, self-enhancement; calibrar contra humano"
+      ],
+      "banco": [
+        {
+          "id": "gev2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿En qué se diferencia BERTScore de ROUGE?",
+          "solucion": "ROUGE cuenta coincidencia exacta de n-gramas; BERTScore embebe los tokens y los empareja por similitud coseno, midiendo significado. Así 'cada 12 horas' y 'dos veces al día' puntúan alto aunque no compartan palabras.",
+          "explicacion": "Significado (embeddings) vs palabras exactas.",
+          "difficulty": "easy",
+          "answer": "BERTScore compara significado vía embeddings; ROUGE cuenta palabras exactas.",
+          "options": [
+            "BERTScore compara significado vía embeddings; ROUGE cuenta palabras exactas.",
+            "BERTScore no necesita referencia y ROUGE sí.",
+            "BERTScore mide factualidad y ROUGE fluidez.",
+            "Son idénticas, solo cambia el nombre."
+          ],
+          "common_mistake": "Creer que BERTScore es sin referencia (sigue necesitando una) o que mide factualidad."
+        },
+        {
+          "id": "gev2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la comparación por pares (pairwise) suele ser más fiable que la puntuación absoluta (pointwise) con un LLM-juez?",
+          "solucion": "Porque humanos y modelos calibran mejor 'cuál de dos es mejor' que 'del 1 al 5 en abstracto'; las escalas absolutas son ruidosas e inconsistentes. Por eso los rankings (Chatbot Arena) se basan en comparaciones por pares.",
+          "explicacion": "Comparar es más fácil y consistente que puntuar en abstracto.",
+          "difficulty": "medium",
+          "answer": "Porque comparar dos opciones es más consistente que asignar una nota absoluta.",
+          "options": [
+            "Porque comparar dos opciones es más consistente que asignar una nota absoluta.",
+            "Porque pairwise no tiene sesgos y pointwise sí.",
+            "Porque pairwise es más rápido de calcular.",
+            "Porque pointwise requiere referencias y pairwise no."
+          ],
+          "common_mistake": "Creer que pairwise elimina los sesgos (sigue habiendo sesgo de posición)."
+        },
+        {
+          "id": "gev2-q3",
+          "tipo": "concepto",
+          "enunciado": "Tu LLM-juez prefiere casi siempre la respuesta presentada PRIMERO. ¿Qué sesgo es y cómo lo mitigas?",
+          "solucion": "Sesgo de posición. Se mitiga presentando ambos órdenes (A vs B y B vs A) y promediando el veredicto, de modo que la preferencia por la posición se cancele.",
+          "explicacion": "Promediar órdenes neutraliza el sesgo de posición.",
+          "difficulty": "medium",
+          "answer": "Sesgo de posición; se mitiga promediando ambos órdenes de presentación.",
+          "options": [
+            "Sesgo de posición; se mitiga promediando ambos órdenes de presentación.",
+            "Sesgo de verbosidad; se mitiga acortando las respuestas.",
+            "Self-enhancement; se mitiga cambiando de modelo generador.",
+            "Sesgo de confianza; se mitiga subiendo la temperatura."
+          ],
+          "common_mistake": "Confundir el sesgo de posición con el de verbosidad o autoafinidad."
+        },
+        {
+          "id": "gev2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué la factualidad NO se puede dejar solo a otro LLM como juez?",
+          "solucion": "Porque si el conocimiento erróneo está tanto en el modelo evaluado como en el juez, el juez valida la alucinación (ambos 'creen' lo mismo falso). La factualidad necesita anclaje externo (fuentes verificables), no solo otro LLM opinando.",
+          "explicacion": "Juez y generador pueden compartir el mismo error.",
+          "difficulty": "hard",
+          "answer": "Porque juez y modelo pueden compartir el mismo error y el juez validaría la alucinación.",
+          "options": [
+            "Porque juez y modelo pueden compartir el mismo error y el juez validaría la alucinación.",
+            "Porque los LLM-jueces no entienden de hechos.",
+            "Porque evaluar factualidad es ilegal sin referencia.",
+            "Porque el juez siempre es más débil que el generador."
+          ],
+          "common_mistake": "Asumir que un LLM-juez es una fuente de verdad factual independiente."
+        },
+        {
+          "id": "gev2-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: comparas dos respuestas correctas a '¿cómo activo 2FA?'; A es concisa (3 líneas), B es correcta pero con 3 párrafos de relleno. El LLM-juez elige B. ¿Qué pasó y cómo lo corriges?",
+          "solucion": "Sesgo de verbosidad: el juez confundió 'más largo/detallado' con 'mejor'. Corrección: una rúbrica explícita que premie concisión y penalice relleno, y promediar el orden por si también hubo sesgo de posición. La nota debe seguir criterios, no la longitud.",
+          "explicacion": "Verbosidad → rúbrica que premie concisión.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev2-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: evalúas las respuestas de tu modelo usando como juez otro modelo de la misma familia y los resultados salen excelentes. ¿Qué riesgo corres antes de confiar en ese número?",
+          "solucion": "Self-enhancement: un juez tiende a preferir respuestas de su propia familia/estilo, inflando las notas. Antes de confiar, calibra contra una muestra de juicio humano y/o usa un juez de otra familia o una rúbrica anclada en criterios objetivos.",
+          "explicacion": "Juez de la misma familia infla; calibrar con humano.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev2-r1",
+          "tipo": "reflexion",
+          "enunciado": "El LLM-as-a-judge es como un panel de revisores: capaz pero sesgado. ¿Qué prácticas de la revisión humana (rúbricas, doble ciego, varios revisores) traducirías a tu pipeline de evaluación automática y por qué?",
+          "solucion": "Reflexión abierta. Buena respuesta: rúbricas explícitas, barajar el orden (análogo a doble ciego/anonimato), varios jueces o panel, y calibración contra humano; cada una mitiga un sesgo concreto.",
+          "explicacion": "Transfiere prácticas de revisión por pares al juez automático.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev2-r2",
+          "tipo": "reflexion",
+          "enunciado": "BERTScore puntúa alto un dato FALSO bien parafraseado (mide significado, no verdad). ¿Qué te enseña esto sobre apilar métricas en vez de buscar 'la métrica perfecta'?",
+          "solucion": "Reflexión abierta. Buena respuesta: ninguna métrica cubre todas las dimensiones (adecuación semántica ≠ factualidad ≠ relevancia); se necesita un conjunto de señales complementarias (semántica + factualidad/anclaje + relevancia), como defensa en profundidad.",
+          "explicacion": "Un conjunto de métricas > una métrica perfecta.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 910
+    },
+    {
+      "id": "gen-eval3",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Detección de alucinaciones: consistencia y anclaje",
+      "libro": "MIT-AI.md (Semana 10) + SelfCheckGPT, self-consistency",
+      "lectura": "data/teoria/gen-eval3.md",
+      "dosis": 30,
+      "objetivo": "Distinguir alucinación intrínseca vs extrínseca; usar chequeos de consistencia; usar anclaje a fuentes; y reconocer por qué la confianza del modelo es engañosa.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Alucinación: contenido no respaldado; intrínseca (contradice la fuente) vs extrínseca (inventa)",
+        "El LLM optimiza plausibilidad, no verdad; no tiene 'no sé' por defecto",
+        "Consistencia: muestras divergentes señalan invención (SelfCheckGPT, self-consistency)",
+        "Anclaje: verificar cada afirmación contra la fuente; la confianza del modelo NO es fiabilidad"
+      ],
+      "banco": [
+        {
+          "id": "gev3-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es la diferencia entre una alucinación intrínseca y una extrínseca?",
+          "solucion": "Intrínseca: contradice la fuente dada (en RAG, dice algo que el contexto no dice o contradice) — fácil de detectar comparando con el contexto. Extrínseca: afirma algo no verificable con la fuente (inventa un hecho/cita/número que no está en ningún lado) — más difícil, requiere conocimiento externo o detección de inconsistencia.",
+          "explicacion": "Contra la fuente vs no verificable.",
+          "difficulty": "easy",
+          "answer": "Intrínseca contradice la fuente dada; extrínseca inventa algo no verificable con ella.",
+          "options": [
+            "Intrínseca contradice la fuente dada; extrínseca inventa algo no verificable con ella.",
+            "Intrínseca es un error de gramática; extrínseca de contenido.",
+            "Intrínseca ocurre en entrenamiento; extrínseca en inferencia.",
+            "No hay diferencia real entre ambas."
+          ],
+          "common_mistake": "Confundir intrínseca/extrínseca con errores de forma vs fondo."
+        },
+        {
+          "id": "gev3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué muestrear varias respuestas y medir su consistencia ayuda a detectar alucinaciones?",
+          "solucion": "Si una afirmación es inventada, las distintas muestras tienden a divergir (el modelo 'rellena' distinto cada vez); si está fundada, las muestras concuerdan. La inconsistencia entre muestras es una señal de alucinación (SelfCheckGPT) y no necesita una fuente externa.",
+          "explicacion": "Inventado = divergente; fundado = consistente.",
+          "difficulty": "medium",
+          "answer": "Porque lo inventado diverge entre muestras y lo fundado concuerda.",
+          "options": [
+            "Porque lo inventado diverge entre muestras y lo fundado concuerda.",
+            "Porque más muestras siempre dan la respuesta correcta.",
+            "Porque el modelo se cansa y dice la verdad.",
+            "Porque la consistencia garantiza que es verdad."
+          ],
+          "common_mistake": "Creer que la consistencia garantiza verdad (puede ser consistentemente erróneo)."
+        },
+        {
+          "id": "gev3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué NO debes fiarte de la 'confianza' o el tono seguro del modelo para detectar alucinaciones?",
+          "solucion": "Porque los LLMs suelen estar mal calibrados: dicen falsedades con alta confianza aparente y la fluidez/tono seguro no correlacionan con la verdad. Por eso la detección se basa en consistencia (varias muestras) y anclaje (fuentes), no en pedirle que diga cuán seguro está.",
+          "explicacion": "Seguro ≠ verdadero; mala calibración.",
+          "difficulty": "hard",
+          "answer": "Porque los LLMs están mal calibrados: afirman falsedades con tono seguro.",
+          "options": [
+            "Porque los LLMs están mal calibrados: afirman falsedades con tono seguro.",
+            "Porque el modelo nunca expresa confianza.",
+            "Porque la confianza solo existe en clasificación.",
+            "Porque el tono seguro siempre indica verdad."
+          ],
+          "common_mistake": "Tomar la fluidez/seguridad como señal de fiabilidad (automation bias)."
+        },
+        {
+          "id": "gev3-q4",
+          "tipo": "concepto",
+          "enunciado": "En un RAG, ¿cómo se verifica el 'anclaje' (groundedness) de una respuesta?",
+          "solucion": "Descomponiendo la respuesta en afirmaciones y comprobando que cada una se deduzca del contexto recuperado (con un verificador NLI o un LLM-juez con instrucción precisa); en sistemas serios, exigir citas y verificar que la cita realmente diga lo afirmado. Una afirmación que no se sostiene en la fuente es alucinación intrínseca.",
+          "explicacion": "Cada afirmación debe deducirse del contexto.",
+          "difficulty": "medium",
+          "answer": "Verificando que cada afirmación de la respuesta se deduzca del contexto/fuente (y exigir citas).",
+          "options": [
+            "Verificando que cada afirmación de la respuesta se deduzca del contexto/fuente (y exigir citas).",
+            "Midiendo la fluidez de la respuesta.",
+            "Preguntándole al modelo si está seguro.",
+            "Contando los n-gramas compartidos con la pregunta."
+          ],
+          "common_mistake": "Confiar en la autoevaluación de confianza del modelo en vez de verificar contra la fuente."
+        },
+        {
+          "id": "gev3-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un asistente legal responde, con tono muy seguro y citando 'el artículo 47 establece 90 días', un texto detallado. ¿Cómo confirmas si es alucinación?",
+          "solucion": "Anclaje: verifica si el artículo 47 existe en tu corpus y dice eso (si tu RAG no lo recuperó o dice otra cosa → alucinación). Consistencia: pregunta varias veces; si el '90 días' baila a otros números → señal de invención. Control operativo: exigir que cite el pasaje y comprobar que el pasaje realmente lo diga. El tono seguro no cuenta como evidencia.",
+          "explicacion": "Anclaje + consistencia + verificar la cita.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gev3-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu equipo quiere usar la probabilidad/log-prob del token como 'detector de alucinación automático'. ¿Qué les adviertes?",
+          "solucion": "Que los LLMs están mal calibrados: alta probabilidad no implica verdad, y pueden alucinar con log-probs altas. Es una señal débil. Mejor combinar consistencia (varias muestras, SelfCheckGPT) y anclaje a fuentes verificables; la calibración es área activa pero no un detector fiable por sí sola.",
+          "explicacion": "La probabilidad del modelo no es fiabilidad.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev3-r1",
+          "tipo": "reflexion",
+          "enunciado": "Detectar alucinaciones combina 'hacer repetir' (consistencia) y 'contrastar con la evidencia' (anclaje), como un detective con un testigo elocuente. ¿Dónde más usas esa doble estrategia (triangular + verificar contra la fuente) para no dejarte engañar?",
+          "solucion": "Reflexión abierta. Buena respuesta: ejemplos de triangulación + verificación contra fuente (método científico, verificación fuera de banda de cyber-mit2, adversarial verify), notando que ambas juntas cazan más que cualquiera sola.",
+          "explicacion": "Triangular + anclar es general.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev3-r2",
+          "tipo": "reflexion",
+          "enunciado": "La 'confianza' fluida del modelo induce a aceptarlo sin verificar (automation bias). ¿Qué hábito personal adoptarías al recibir una respuesta de IA muy segura sobre algo de alta consecuencia?",
+          "solucion": "Reflexión abierta. Buena respuesta: tratar la consecuencia como disparador de verificación (anclar a fuente, pedir cita, contrastar), desacoplando fluidez de verdad, igual que verificar fuera de banda lo de alto impacto.",
+          "explicacion": "Alta consecuencia → verificar, no confiar en el tono.",
+          "difficulty": "medium"
+        }
+      ],
+      "orden": 911
+    },
+    {
+      "id": "gen-eval4",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Optimización de prompts dirigida por evaluación",
+      "libro": "MIT-AI.md (Semana 10) + Chain-of-Thought, APE, DSPy",
+      "lectura": "data/teoria/gen-eval4.md",
+      "dosis": 30,
+      "objetivo": "Aplicar técnicas de prompting que rinden; cerrar el lazo de evaluación (cambiar→medir→conservar); reconocer la optimización automática; y evitar gaming y overfitting.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Técnicas: instrucción/rol/formato, few-shot, chain-of-thought, descomposición, grounding",
+        "Optimiza con un lazo: define métrica+set, línea base, cambia una cosa, mide, conserva si sube",
+        "Optimización automática: APE, DSPy (prompt como parámetro a optimizar)",
+        "Cuidado con overfitting al set (usa held-out) y con la seguridad del prompt"
+      ],
+      "banco": [
+        {
+          "id": "gev4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuál es el método correcto para 'mejorar un prompt' de forma rigurosa?",
+          "solucion": "Un lazo dirigido por evaluación: define una métrica y un set representativo, mide una línea base, cambia UNA cosa, vuelve a medir y conserva el cambio solo si la métrica sube sin regresiones; repite. Sin set ni métrica, 'mejorar' es superstición.",
+          "explicacion": "Cambiar→medir→conservar, una cosa a la vez.",
+          "difficulty": "easy",
+          "answer": "Definir métrica y set, medir línea base, cambiar una cosa, medir y conservar solo si mejora.",
+          "options": [
+            "Definir métrica y set, medir línea base, cambiar una cosa, medir y conservar solo si mejora.",
+            "Cambiar varias cosas hasta que la respuesta parezca mejor.",
+            "Usar siempre chain-of-thought porque es la mejor técnica.",
+            "Pedirle al modelo que mejore su propio prompt y confiar."
+          ],
+          "common_mistake": "Optimizar por intuición ('parece mejor') sin medir."
+        },
+        {
+          "id": "gev4-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Cuándo ayuda chain-of-thought (CoT) y cuándo puede estorbar?",
+          "solucion": "Ayuda en tareas de razonamiento (matemática, lógica, multi-paso), donde generar pasos intermedios mejora la respuesta. Puede estorbar en tareas simples de clasificación/extracción, donde añade ruido, latencia y oportunidades de divagar. La evaluación, no la fama de la técnica, decide.",
+          "explicacion": "CoT brilla en razonamiento; molesta en tareas simples.",
+          "difficulty": "medium",
+          "answer": "Ayuda en razonamiento multi-paso; estorba en tareas simples (ruido/latencia).",
+          "options": [
+            "Ayuda en razonamiento multi-paso; estorba en tareas simples (ruido/latencia).",
+            "Siempre ayuda: nunca empeora una tarea.",
+            "Solo ayuda en traducción.",
+            "Solo sirve para reducir el costo del prompt."
+          ],
+          "common_mistake": "Asumir que CoT siempre mejora (puede empeorar tareas simples)."
+        },
+        {
+          "id": "gev4-q3",
+          "tipo": "concepto",
+          "enunciado": "Iteras 50 cambios de prompt sobre los mismos 50 ejemplos y llegas a 99% de exactitud. ¿Por qué no debes asumir 99% en producción?",
+          "solucion": "Por sobreajuste al set de evaluación: iterar tantísimo sobre los mismos ejemplos los memoriza y la métrica deja de reflejar el rendimiento general. Necesitas un set de prueba aparte (held-out) que no usaste para optimizar, igual que train/test en ML.",
+          "explicacion": "Overfitting al set; usa held-out.",
+          "difficulty": "hard",
+          "answer": "Porque sobreajustaste a esos ejemplos; necesitas un set held-out no usado para optimizar.",
+          "options": [
+            "Porque sobreajustaste a esos ejemplos; necesitas un set held-out no usado para optimizar.",
+            "Porque 99% siempre es un error de medición.",
+            "Porque los prompts no afectan al rendimiento real.",
+            "Porque producción usa otro modelo distinto."
+          ],
+          "common_mistake": "Confiar en la métrica del set sobre el que optimizaste (leakage)."
+        },
+        {
+          "id": "gev4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué idea comparten APE y DSPy para optimizar prompts?",
+          "solucion": "Que la mejora la decide la evaluación, no el gusto: APE genera candidatos de prompt con un LLM y los evalúa para quedarse con el mejor; DSPy trata el prompt como parámetros a optimizar dado un objetivo y datos ('programar, no promptear'). Ambos automatizan el lazo dirigido por métricas.",
+          "explicacion": "Buscar prompts guiados por evaluación, no a mano.",
+          "difficulty": "medium",
+          "answer": "Buscar/optimizar prompts automáticamente guiados por una métrica sobre datos.",
+          "options": [
+            "Buscar/optimizar prompts automáticamente guiados por una métrica sobre datos.",
+            "Eliminar la necesidad de evaluar el prompt.",
+            "Hacer prompts más largos para incluir más ejemplos.",
+            "Reentrenar el modelo en vez de cambiar el prompt."
+          ],
+          "common_mistake": "Creer que la optimización automática evita la evaluación (la automatiza, no la elimina)."
+        },
+        {
+          "id": "gev4-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu asistente extrae campos de facturas con 80% de exactitud. Un compañero quiere añadir chain-of-thought 'porque es lo mejor'. ¿Cómo decides si lo incorporas?",
+          "solucion": "Con un set de evaluación (facturas con extracción correcta + held-out): mides la línea base (80%), añades SOLO el CoT, vuelves a medir y conservas únicamente si sube sin regresiones. En extracción, CoT a menudo añade ruido y puede bajar la exactitud; la métrica decide, no la fama de la técnica.",
+          "explicacion": "La evaluación, no la fama, autoriza el cambio.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev4-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: para 'dar más contexto', tu equipo planea incrustar la API key y reglas internas en el system prompt del asistente. ¿Qué riesgos de seguridad señalas?",
+          "solucion": "El system prompt es extraíble (LLM07): la API key y las reglas pueden filtrarse vía prompt injection o consultas astutas; no es lugar para secretos (seguridad por oscuridad). Además, meter datos no confiables en el prompt abre prompt injection (LLM01). Gestiona secretos fuera del prompt y trata el contenido externo como no confiable.",
+          "explicacion": "El prompt no es lugar para secretos; es superficie de inyección.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "gev4-r1",
+          "tipo": "reflexion",
+          "enunciado": "El lazo 'cambiar→medir→conservar' es el mismo en optimización de prompts, en ML y en ingeniería de detección. ¿Por qué crees que 'evaluar con datos, no con vibras' cuesta tanto adoptar en la práctica, y cómo te lo impondrías?",
+          "solucion": "Reflexión abierta. Buena respuesta: las demos sesgan y construir el set cuesta esfuerzo, así que es tentador confiar en la intuición; imponértelo significa invertir primero en el set/métrica y no aceptar 'parece mejor' sin medición.",
+          "explicacion": "El método cuesta esfuerzo inicial; paga en evitar autoengaño.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "gev4-r2",
+          "tipo": "reflexion",
+          "enunciado": "Optimizar un prompt sobre el mismo set hasta 99% se parece al data leakage temporal (memorizar lo que deberías predecir). ¿Qué otros 'leakages' de evaluación has visto o podrías cometer, y cómo los evitarías?",
+          "solucion": "Reflexión abierta. Buena respuesta: ejemplos como ajustar hiperparámetros en el test, mirar el futuro en series de tiempo, o reutilizar el set de validación muchas veces; se evitan con held-out limpio y separación estricta de conjuntos.",
+          "explicacion": "Memorizar el set = leakage; held-out limpio lo evita.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 912
     }
   ]
 }
