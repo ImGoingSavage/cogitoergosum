@@ -13,7 +13,7 @@
  * Al cambiar cualquier archivo del shell, sube VERSION para invalidar caché.
  */
 
-const VERSION = 'cogitoergosum-v154';
+const VERSION = 'cogitoergosum-v155';
 
 // Los videos (fondo 1.5 MB, login 5 MB) NO entran al precache del shell: se
 // cachean bajo demanda en su propia caché, que sobrevive a los cambios de
@@ -296,6 +296,12 @@ const SHELL = [
   'data/teoria/cyber-llm3.md',
   'data/teoria/cyber-llm4.md',
   'data/teoria/cyber-llm5.md',
+  // Cluster 9 (estrategia MIT): IA ofensiva, gobernanza, Shadow AI y casos de estudio
+  'data/teoria/cyber-mit1.md',
+  'data/teoria/cyber-mit2.md',
+  'data/teoria/cyber-mit3.md',
+  'data/teoria/cyber-mit4.md',
+  'data/teoria/cyber-mit5.md',
   'assets/fonts/EBGaramond-Regular.woff2',
   'assets/fonts/EBGaramond-SemiBold.woff2',
   'assets/fonts/EBGaramond-Italic.woff2',

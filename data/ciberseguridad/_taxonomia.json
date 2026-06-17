@@ -733,6 +733,100 @@
           "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
         ]
       }
+    },
+    {
+      "id": "cyber-ai-estrategia",
+      "titulo": "IA ofensiva, gobernanza y resiliencia (estrategia MIT)",
+      "track": "cyber",
+      "descripcion": "El cluster ejecutivo basado en el programa del MIT 'AI and Cybersecurity: Strategies for Resilience and Defense'. Cubre lo que los clusters técnico-defensivos no: el espejo OFENSIVO de la IA (deepfakes, clonación de voz, vishing, dark-web AI, malware asistido), la GOBERNANZA de IA (GRC, roles ejecutivos, Secure-by-Design), la SHADOW AI y la confianza humano-IA, y cuatro CASOS DE ESTUDIO reales de fraude con IA analizados con método de caso.",
+      "secuencia": "De la estrategia al incidente: panorama IA ataque/defensa y cuándo IA vs humanos → arsenal ofensivo de IA (deepfakes, voice cloning) → gobernanza/GRC/Secure-by-Design → Shadow AI y confianza humano-IA → casos de estudio reales (anatomía del fraude con IA y evaluación por caso espejo).",
+      "referencias": [
+        "Massachusetts Institute of Technology. (n.d.). AI and cybersecurity: Strategies for resilience and defense. MIT Professional Education.",
+        "National Institute of Standards and Technology. (2023). Artificial intelligence risk management framework (AI RMF 1.0) (NIST AI 100-1). https://doi.org/10.6028/NIST.AI.100-1",
+        "MITRE. (n.d.). MITRE ATLAS. https://atlas.mitre.org"
+      ],
+      "miniProyecto": {
+        "titulo": "Playbook antifraude con IA",
+        "descripcion": "Crea un playbook de una a dos carillas para tu organización: señales de alerta del fraude potenciado por IA (deepfake, voice cloning, vishing), protocolo de verificación fuera de banda, reglas de doble aprobación por monto/acción, y guion de respuesta ante una 'orden urgente del CEO'. Aplícalo al caso espejo de la lección de casos.",
+        "entregable": "Playbook antifraude con IA (señales, verificación fuera de banda, doble aprobación, guion de respuesta).",
+        "rubrica": [
+          "Modelo de amenaza claro (qué ataque de IA, contra quién, qué busca)",
+          "Identificación correcta de señales y activos en riesgo",
+          "Controles de proceso proporcionales (verificación fuera de banda, doble aprobación)",
+          "Señales de detección/verificación y qué hacer ante una orden urgente",
+          "Comunicación clara y sobria para un equipo no experto"
+        ]
+      },
+      "unidades": [
+        "cyber-mit1",
+        "cyber-mit2",
+        "cyber-mit3",
+        "cyber-mit4",
+        "cyber-mit5"
+      ],
+      "competencias": [
+        "Razonar la doble cara de la IA (ataque y defensa) y decidir humano-vs-IA por consecuencia.",
+        "Reconocer el arsenal ofensivo de IA y por qué ataca la confianza, no la técnica.",
+        "Gobernar la IA con GRC, Secure-by-Design y rendición de cuentas más allá de IT.",
+        "Gestionar Shadow AI y calibrar la confianza humano-IA.",
+        "Analizar incidentes reales con método de caso y transferir el patrón a casos nuevos."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de IA ofensiva, gobernanza y resiliencia (estrategia MIT)",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra criterio estratégico y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-ai-estrategia-diag-doblecara",
+            "prompt": "Da un uso DEFENSIVO de la IA en ciberseguridad y su espejo OFENSIVO.",
+            "criterio": "Reconoce que toda capacidad defensiva tiene un equivalente ofensivo."
+          },
+          {
+            "id": "cyber-ai-estrategia-diag-deepfake",
+            "prompt": "Recibes una videollamada de tu CFO pidiendo una transferencia urgente y confidencial. ¿Por qué el realismo NO debería bajar tu sospecha?",
+            "criterio": "Identifica que ver/oír ya no prueba identidad; defensa de proceso, no perceptual."
+          },
+          {
+            "id": "cyber-ai-estrategia-diag-gobernanza",
+            "prompt": "¿Por qué la IA necesita gobierno propio y no basta el gobierno de IT?",
+            "criterio": "Probabilística, opaca, dependiente de datos, deriva; necesita controles propios."
+          },
+          {
+            "id": "cyber-ai-estrategia-diag-shadow",
+            "prompt": "Tu equipo pega datos de clientes en un chatbot público para ir más rápido. ¿Por qué prohibirlo a secas no es la mejor defensa?",
+            "criterio": "Prohibir empuja a la clandestinidad; mejor descubrir (OODA) + alternativa sancionada."
+          },
+          {
+            "id": "cyber-ai-estrategia-diag-control",
+            "prompt": "Nombra un control de proceso que detenga un fraude por voz clonada del CEO sin necesidad de 'detectar el deepfake'.",
+            "criterio": "Verificación fuera de banda y/o doble aprobación para acciones de alta consecuencia."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "objetivo": "ubicar Govern/Map/Measure/Manage y por qué la IA necesita gobierno propio",
+          "criterio_cierre": "mapear un riesgo de IA a una función del AI RMF",
+          "safety_note": "Sólo material informativo; nunca generes deepfakes de personas reales."
+        },
+        {
+          "nombre": "MITRE ATLAS",
+          "url": "https://atlas.mitre.org",
+          "objetivo": "revisar técnicas reales de ataque a sistemas de IA y casos",
+          "criterio_cierre": "relacionar una técnica de ATLAS con un control de proceso o técnico",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "Lleva la ruta del nivel técnico al estratégico/ejecutivo: IA ofensiva, gobernanza y casos de estudio reales con evaluación por transferencia (caso espejo), al estilo del método de caso del MIT.",
+        "evidencia_de_dominio": [
+          "Decide qué delega a la IA y qué reserva al juicio humano por consecuencia.",
+          "Reconoce el fraude potenciado por IA por su patrón, no por el realismo.",
+          "Diseña gobernanza de IA con roles, GRC y Secure-by-Design.",
+          "Transfiere el aprendizaje de un caso real a un incidente nuevo."
+        ]
+      }
     }
   ],
   "_quality_standard": {
