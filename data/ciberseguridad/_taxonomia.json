@@ -30,7 +30,62 @@
         "cyber-ms3",
         "cyber-ms4",
         "cyber-ms5"
-      ]
+      ],
+      "competencias": [
+        "Nombrar activos, amenazas, vulnerabilidades, impacto y controles sin caer en lenguaje teatral.",
+        "Construir threat models que localicen supuestos de confianza rotos.",
+        "Razonar seguridad como economía, incentivos, factor humano y riesgo residual.",
+        "Comunicar decisiones defensivas con tradeoffs entendibles para producto, datos e ingeniería."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Mentalidad de seguridad, riesgo y diseño defensivo",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-mindset-diag-activo",
+            "prompt": "En una app de ciencia de datos con notebooks, Supabase, API keys, datasets sensibles, modelos y dashboards, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-mindset-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-mindset-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-mindset-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-mindset-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "NIST Cybersecurity Framework",
+          "url": "https://www.nist.gov/cyberframework",
+          "objetivo": "mapear Identify/Protect/Detect/Respond/Recover a un sistema de datos propio",
+          "criterio_cierre": "explicar el mapa de funciones con un activo y un control por función",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-systems-crypto",
@@ -61,7 +116,69 @@
         "cyber-sys3",
         "cyber-sys4",
         "cyber-sys5"
-      ]
+      ],
+      "competencias": [
+        "Leer sistemas como composición de procesos, permisos, red, identidad y límites de confianza.",
+        "Distinguir hash, cifrado, MAC, firma, TLS y sesión por la propiedad que garantizan.",
+        "Detectar cuándo un control de red no protege endpoints, secretos o autorización.",
+        "Elegir aislamiento proporcional para notebooks, jobs, contenedores y servicios de inferencia."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Sistemas, redes, web y criptografía base",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-systems-crypto-diag-activo",
+            "prompt": "En un entorno de notebooks que usa procesos Linux, tokens, TLS, archivos temporales y servicios internos, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-systems-crypto-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-systems-crypto-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-systems-crypto-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-systems-crypto-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "OverTheWire Bandit",
+          "url": "https://overthewire.org/wargames/bandit/",
+          "objetivo": "practicar permisos, archivos y credenciales en un entorno autorizado",
+          "criterio_cierre": "llegar al nivel 5 explicando el supuesto de seguridad de cada paso",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "picoCTF Practice",
+          "url": "https://play.picoctf.org/practice",
+          "objetivo": "resolver retos introductorios de criptografía/redes/forensics",
+          "criterio_cierre": "explicar qué propiedad de seguridad se rompía y qué control la habría protegido",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-web-api",
@@ -92,7 +209,76 @@
         "cyber-web3",
         "cyber-web4",
         "cyber-web5"
-      ]
+      ],
+      "competencias": [
+        "Reconocer dato tratado como instrucción en SQLi, XSS, SSRF, deserialización y LLM output handling.",
+        "Auditar autenticación, autorización por recurso, sesión, JWT/OAuth y APIs desde el servidor.",
+        "Elegir mitigaciones robustas: parametrizar, codificar, allow-list, rate limit y control de acceso.",
+        "Traducir vulnerabilidades web a riesgos de dashboards, APIs de modelos y sistemas RAG."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Web, APIs y autenticación",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-web-api-diag-activo",
+            "prompt": "En una API educativa con login, roles, endpoints privados, carga de archivos y dashboards, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-web-api-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-web-api-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-web-api-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-web-api-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "PortSwigger Web Security Academy",
+          "url": "https://portswigger.net/web-security",
+          "objetivo": "estudiar el patrón defensivo de vulnerabilidades web y APIs",
+          "criterio_cierre": "resolver o revisar un laboratorio apprentice y escribir la mitigación robusta",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "PortSwigger All Labs",
+          "url": "https://portswigger.net/web-security/all-labs",
+          "objetivo": "seleccionar labs de SQLi, XSS, access control, CORS, SSRF o file upload",
+          "criterio_cierre": "documentar frontera de confianza, impacto y control por lab",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "OWASP Juice Shop",
+          "url": "https://owasp.org/www-project-juice-shop/",
+          "objetivo": "practicar auditoría defensiva en una app deliberadamente vulnerable",
+          "criterio_cierre": "producir un reporte de hallazgo, impacto y mitigación",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-data-privacy",
@@ -122,7 +308,62 @@
         "cyber-dp3",
         "cyber-dp4",
         "cyber-dp5"
-      ]
+      ],
+      "competencias": [
+        "Separar seguridad, privacidad, cumplimiento y daño a individuos.",
+        "Evaluar minimización, finalidad, reidentificación, retención, acceso y auditoría antes de entrenar.",
+        "Diseñar gobernanza de datasets y modelos con tradeoff utilidad-privacidad explícito.",
+        "Comunicar riesgos de privacidad sin prometer anonimización falsa."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Seguridad de datos y privacidad",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-data-privacy-diag-activo",
+            "prompt": "En un dataset biomédico, educativo o financiero que se usará para entrenar un modelo, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-data-privacy-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-data-privacy-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-data-privacy-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-data-privacy-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "NIST Privacy Framework",
+          "url": "https://www.nist.gov/privacy-framework",
+          "objetivo": "mapear Identify-P, Govern-P, Control-P y Communicate-P a un dataset",
+          "criterio_cierre": "justificar minimización, finalidad, acceso, retención y comunicación",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-secure-dev",
@@ -152,7 +393,62 @@
         "cyber-dev3",
         "cyber-dev4",
         "cyber-dev5"
-      ]
+      ],
+      "competencias": [
+        "Convertir seguridad en requisitos, diseño, revisión, pruebas y respuesta, no en parche final.",
+        "Controlar secretos, dependencias, SBOM/SCA, SAST, fuzzing, CI/CD y contenedores.",
+        "Priorizar vulnerabilidades por explotabilidad, exposición, impacto y capacidad de parcheo.",
+        "Asegurar pipelines ML y notebooks como software productivo, no como experimentos aislados."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Desarrollo seguro, secretos y supply chain",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-secure-dev-diag-activo",
+            "prompt": "En un pipeline ML con CI/CD, dependencias Python/NPM, contenedores, secretos y datos de entrenamiento, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-secure-dev-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-secure-dev-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-secure-dev-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-secure-dev-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "OpenSSF Training",
+          "url": "https://openssf.org/training/courses/",
+          "objetivo": "revisar desarrollo seguro, supply chain, secrets, SAST/SCA y respuesta a vulnerabilidades",
+          "criterio_cierre": "definir una política de secretos, dependencias y parcheo verificable",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-blue-team",
@@ -183,7 +479,83 @@
         "cyber-blue3",
         "cyber-blue4",
         "cyber-blue5"
-      ]
+      ],
+      "competencias": [
+        "Mapear comportamiento adversario a tácticas, técnicas, logs, hipótesis y reglas de detección.",
+        "Distinguir evento, alerta, incidente, indicador y evidencia faltante.",
+        "Diseñar detecciones calibradas con línea base, falsos positivos, cobertura y respuesta.",
+        "Cerrar el ciclo emular, medir, mejorar con práctica autorizada y post-mortems sin culpa."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Blue team, logs y detección",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-blue-team-diag-activo",
+            "prompt": "En un mini SOC que investiga accesos anómalos a notebooks, buckets, repositorios y dashboards, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-blue-team-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-blue-team-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-blue-team-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-blue-team-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "MITRE ATT&CK",
+          "url": "https://attack.mitre.org",
+          "objetivo": "mapear tácticas/técnicas a logs y detecciones",
+          "criterio_cierre": "explicar qué evidencia confirmaría o descartaría una técnica",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "CyberDefenders",
+          "url": "https://cyberdefenders.org/blueteam-ctf-challenges/",
+          "objetivo": "investigar escenarios blue team con logs y artefactos",
+          "criterio_cierre": "producir línea de tiempo, hipótesis y acción de contención",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "Blue Team Labs Online",
+          "url": "https://blueteamlabs.online/",
+          "objetivo": "practicar investigaciones de incident response, forensics y threat hunting",
+          "criterio_cierre": "documentar hallazgos y brechas de cobertura",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "KC7 Cyber",
+          "url": "https://kc7cyber.com/",
+          "objetivo": "resolver investigaciones guiadas con consultas y evidencia",
+          "criterio_cierre": "transformar consultas en hipótesis defensivas y detecciones candidatas",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-ml-security",
@@ -213,7 +585,62 @@
         "cyber-mls3",
         "cyber-mls4",
         "cyber-mls5"
-      ]
+      ],
+      "competencias": [
+        "Distinguir ataques a entrenamiento, inferencia, privacidad, modelos y supply chain.",
+        "Evaluar poisoning, backdoors, evasión, extraction, inversion, membership inference y provenance.",
+        "Diseñar controles para pipelines ML con monitoreo, limitación de salida y riesgo residual.",
+        "Usar MITRE ATLAS, SAFE-AI y AI RMF como mapas de amenaza, control y gobernanza."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Seguridad de ML y sistemas de IA",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-ml-security-diag-activo",
+            "prompt": "En un pipeline ML que entrena, versiona y expone modelos para inferencia, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-ml-security-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-ml-security-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-ml-security-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-ml-security-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "MITRE ATLAS",
+          "url": "https://atlas.mitre.org",
+          "objetivo": "mapear técnicas contra sistemas de IA a entrenamiento, inferencia y supply chain",
+          "criterio_cierre": "proponer control, señal de monitoreo y riesgo residual por técnica",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     },
     {
       "id": "cyber-llm-rag-agents",
@@ -243,7 +670,80 @@
         "cyber-llm3",
         "cyber-llm4",
         "cyber-llm5"
-      ]
+      ],
+      "competencias": [
+        "Tratar contenido externo, documentos RAG y salidas LLM como no confiables.",
+        "Aplicar LLM01-LLM10 a RAG, agentes, herramientas, memoria, embeddings y consumo.",
+        "Diseñar agencia mínima, control por documento, validación de salida y humano en el lazo.",
+        "Red-teamear de forma segura y continua antes de habilitar nuevas capacidades."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de Seguridad de LLMs, RAG y agentes",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: sirve para calibrar criterio, vocabulario y transferencia.",
+        "preguntas": [
+          {
+            "id": "cyber-llm-rag-agents-diag-activo",
+            "prompt": "En un asistente RAG con documentos privados, herramientas externas y acciones con impacto, nombra el activo más importante, quién podría abusarlo y qué impacto tendría.",
+            "criterio": "Activo concreto, adversario creíble e impacto sobre C/I/A, privacidad o disponibilidad."
+          },
+          {
+            "id": "cyber-llm-rag-agents-diag-supuesto",
+            "prompt": "Escribe un supuesto de confianza que, si fuera falso, rompería el sistema.",
+            "criterio": "Supuesto verificable, no una amenaza genérica."
+          },
+          {
+            "id": "cyber-llm-rag-agents-diag-control",
+            "prompt": "Propón un control proporcional y explica qué tradeoff introduce.",
+            "criterio": "Control con coste/fricción explícitos y relación con el riesgo."
+          },
+          {
+            "id": "cyber-llm-rag-agents-diag-evidencia",
+            "prompt": "¿Qué evidencia técnica o documental demostraría que el control funciona?",
+            "criterio": "Logs, pruebas, configuración, revisión, métrica, política o artefacto observable."
+          },
+          {
+            "id": "cyber-llm-rag-agents-diag-comunicacion",
+            "prompt": "Resume el riesgo en tres frases para un equipo técnico que debe decidir esta semana.",
+            "criterio": "Comunicación sobria: riesgo, acción recomendada, riesgo residual."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "OWASP GenAI Security Project",
+          "url": "https://genai.owasp.org/",
+          "objetivo": "revisar guías de seguridad GenAI, agentic apps y red teaming",
+          "criterio_cierre": "convertir riesgos en controles para un asistente realista",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        },
+        {
+          "nombre": "OWASP LLM Top 10",
+          "url": "https://genai.owasp.org/llm-top-10/",
+          "objetivo": "recorrer LLM01-LLM10 con foco en mitigaciones",
+          "criterio_cierre": "definir una prueba adversarial segura por riesgo relevante",
+          "safety_note": "Sólo laboratorios autorizados; no probar contra sistemas ajenos."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "No se limita a exposición teórica: exige diagnóstico, retrieval, laboratorio vivo, escenario defensivo y artefacto de portafolio.",
+        "evidencia_de_dominio": [
+          "Puede razonar qué puede salir mal antes de elegir herramienta.",
+          "Produce controles proporcionales con señales de verificación.",
+          "Conecta sistemas, datos, ML, LLMs, personas e incentivos.",
+          "Comunica riesgo residual y tradeoffs sin espectáculo ni alarmismo."
+        ]
+      }
     }
-  ]
+  ],
+  "_quality_standard": {
+    "nombre": "MIT+ defensivo para científicos de datos e IA",
+    "descripcion": "Syllabus de criterio profesional: no enseña hacking como espectáculo; entrena threat modeling, defensa proporcional, laboratorios vivos, trazabilidad, evaluación auténtica y transferencia a datos, ML, LLMs, RAG y agentes.",
+    "principios": [
+      "Intuición antes de formalismo.",
+      "Escenarios y artefactos antes que memorización.",
+      "Evidencia verificable de aprendizaje.",
+      "Ética: sólo entornos propios o autorizados.",
+      "Conexión explícita entre seguridad, privacidad, IA, producto y operación."
+    ]
+  }
 }

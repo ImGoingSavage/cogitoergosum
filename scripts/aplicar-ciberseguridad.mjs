@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Inyecta la Fase 8 (Ciberseguridad) en data/study.json:
 //   - añade/actualiza el bloque "fase-8" en study.bloques
-//   - añade/actualiza las 16 unidades de data/ciberseguridad/_unidades.json en study.unidades
+//   - añade/actualiza las 40 unidades de data/ciberseguridad/_unidades.json en study.unidades
 // Idempotente: correrlo dos veces deja data/study.json igual.
 // Respeta el formato del original: indentación de 1 espacio, sin newline final.
 

@@ -406,14 +406,26 @@ async function alternarLeccion(u) {
   cablearEnlacesLeccion(cont);
 }
 
-// Hace navegables los enlaces [[arena-xxx]] de una lección ya renderizada:
+// Hace navegables los enlaces [[arena-xxx]]/[[cyber-xxx]] de una lección ya renderizada:
 // pone el título real de la unidad (cuando el enlace no traía etiqueta propia),
-// marca los rotos y abre la unidad destino al hacer click.
+// marca los rotos y abre la unidad o cluster destino al hacer click.
 function cablearEnlacesLeccion(cont) {
   cont.querySelectorAll('.enlace-unidad').forEach((el) => {
     const id = el.dataset.unidad;
     const u = unidad(id);
+    const c = taxonomia.find((x) => x.id === id);
     if (!u) {
+      if (c) {
+        if (el.dataset.auto) el.textContent = c.titulo;
+        el.addEventListener('click', () => navegarACluster(id));
+        el.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter' || ev.key === ' ') {
+            ev.preventDefault();
+            navegarACluster(id);
+          }
+        });
+        return;
+      }
       el.classList.add('enlace-roto');
       el.removeAttribute('role');
       el.removeAttribute('tabindex');
@@ -599,6 +611,30 @@ function crearClusterAcordeon(c, unidades, b) {
     cuerpo.appendChild(sec);
   }
 
+  if (c.diagnosticoInicial?.preguntas?.length) {
+    const diag = document.createElement('div');
+    diag.className = 'cluster-diagnostico';
+    const tit = document.createElement('p');
+    tit.className = 'cluster-mp-titulo';
+    tit.textContent = `Diagnóstico inicial: ${c.diagnosticoInicial.titulo ?? 'calibra tu punto de partida'}`;
+    diag.appendChild(tit);
+    if (c.diagnosticoInicial.instrucciones) {
+      const inst = document.createElement('p');
+      inst.className = 'cluster-mp-desc';
+      inst.textContent = c.diagnosticoInicial.instrucciones;
+      diag.appendChild(inst);
+    }
+    const ulDiag = document.createElement('ul');
+    ulDiag.className = 'cluster-mp-rubrica';
+    c.diagnosticoInicial.preguntas.forEach((p) => {
+      const liDiag = document.createElement('li');
+      liDiag.textContent = typeof p === 'string' ? p : p.prompt;
+      ulDiag.appendChild(liDiag);
+    });
+    diag.appendChild(ulDiag);
+    cuerpo.appendChild(diag);
+  }
+
   const ul = document.createElement('ul');
   ul.className = 'estudio-unidades';
   unidades.forEach((u) => ul.appendChild(crearUnidadItem(u, b)));
@@ -675,6 +711,27 @@ function crearClusterAcordeon(c, unidades, b) {
     cuerpo.appendChild(wrap);
   }
 
+  if (c.id !== '__otras' && Array.isArray(c.laboratoriosVivos) && c.laboratoriosVivos.length) {
+    const labWrap = document.createElement('div');
+    labWrap.className = 'cluster-labs';
+    const labTit = document.createElement('p');
+    labTit.className = 'cluster-ref-titulo';
+    labTit.textContent = 'Laboratorios vivos';
+    labWrap.appendChild(labTit);
+    const ulLabs = document.createElement('ul');
+    ulLabs.className = 'cluster-ref-lista';
+    c.laboratoriosVivos.forEach((lab) => {
+      const liLab = document.createElement('li');
+      const texto = typeof lab === 'string'
+        ? lab
+        : `${lab.nombre}: ${lab.url}${lab.objetivo ? ` · ${lab.objetivo}` : ''}${lab.criterio_cierre ? ` · Cierre: ${lab.criterio_cierre}` : ''}`;
+      liLab.innerHTML = renderInline(texto);
+      ulLabs.appendChild(liLab);
+    });
+    labWrap.appendChild(ulLabs);
+    cuerpo.appendChild(labWrap);
+  }
+
   // Referencias bibliográficas: fuentes que sirvieron de base para el cluster.
   if (c.id !== '__otras' && Array.isArray(c.referencias) && c.referencias.length) {
     const refWrap = document.createElement('div');
@@ -687,7 +744,7 @@ function crearClusterAcordeon(c, unidades, b) {
     refList.className = 'cluster-ref-lista';
     c.referencias.forEach((ref) => {
       const li2 = document.createElement('li');
-      li2.textContent = ref;
+      li2.innerHTML = renderInline(ref);
       refList.appendChild(li2);
     });
     refWrap.appendChild(refList);
@@ -864,6 +921,21 @@ function navegarAUnidad(id) {
   }
   abrirUnidad(id);
   alternarLeccion(u); // el panel nace con la lección cerrada → esto la abre
+}
+
+// Navega a un cluster enlazado desde una lección (p. ej. [[cyber-ml-security]]).
+function navegarACluster(id) {
+  const c = taxonomia.find((x) => x.id === id);
+  if (!c) return;
+  const b = datos.bloques.find((x) => x.id === c.bloque);
+  if (b && b.id !== bloqueVisibleObj().id) bloqueVisible = b;
+  clustersExpandidos.add(id);
+  $('estudio-unidad').hidden = true;
+  $('estudio-examen').hidden = true;
+  renderizar();
+  setTimeout(() => {
+    document.getElementById(`cluster-cuerpo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 0);
 }
 
 /* ===================== Render: unidad y su quiz ======================= */
