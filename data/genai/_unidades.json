@@ -2380,6 +2380,482 @@
         }
       ],
       "orden": 920
+    },
+    {
+      "id": "gen-resp1",
+      "bloque": "fase-9",
+      "titulo": "GenAI · IA responsable: sesgo, equidad, transparencia y rendición de cuentas",
+      "libro": "MIT-AI.md (Responsible AI) + Kleinberg 2016, COMPAS",
+      "lectura": "data/teoria/gen-resp1.md",
+      "dosis": 30,
+      "objetivo": "Explicar por qué precisión ≠ aceptabilidad; distinguir sesgo y equidad (definiciones en conflicto); razonar transparencia/interpretabilidad; y ubicar la rendición de cuentas.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Precisión ≠ aceptabilidad: faltan equidad, transparencia, privacidad, rendición de cuentas",
+        "El sesgo entra por datos, etiquetas, features (proxies) y objetivo",
+        "Quitar el atributo protegido NO elimina el sesgo (proxies lo reconstruyen)",
+        "La equidad tiene definiciones matemáticas incompatibles: hay que elegir y justificar"
+      ],
+      "banco": [
+        {
+          "id": "grs1-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué un modelo con 95% de accuracy puede NO ser aceptable para desplegar?",
+          "solucion": "Porque la precisión no captura otras dimensiones que deciden la aceptabilidad: puede discriminar (equidad), ser inexplicable (transparencia), violar la privacidad o no rendir cuentas. Optimizar solo el desempeño ignora el daño a personas.",
+          "explicacion": "Precisión es una dimensión; aceptabilidad son varias.",
+          "difficulty": "easy",
+          "answer": "Porque la precisión no captura equidad, transparencia, privacidad ni rendición de cuentas.",
+          "options": [
+            "Porque la precisión no captura equidad, transparencia, privacidad ni rendición de cuentas.",
+            "Porque 95% siempre es un error de medición.",
+            "Porque necesita 99% para desplegarse.",
+            "Porque la accuracy no se puede calcular en producción."
+          ],
+          "common_mistake": "Tratar la accuracy como la única medida de calidad."
+        },
+        {
+          "id": "grs1-q2",
+          "tipo": "concepto",
+          "enunciado": "Para evitar que un modelo discrimine, un equipo quita la variable de etnia. ¿Por qué no basta?",
+          "solucion": "Porque el modelo reconstruye el atributo protegido vía proxies correlacionados (código postal, nombre, etc.): 'fairness through unawareness' falla. Hay que medir y mitigar el sesgo activamente, no esconder la variable.",
+          "explicacion": "Los proxies delatan lo que escondes (como en reidentificación).",
+          "difficulty": "medium",
+          "answer": "Porque los proxies (código postal, nombre…) reconstruyen el atributo protegido.",
+          "options": [
+            "Porque los proxies (código postal, nombre…) reconstruyen el atributo protegido.",
+            "Porque el modelo deja de funcionar sin esa variable.",
+            "Porque siempre baja la accuracy.",
+            "Porque la ley lo prohíbe."
+          ],
+          "common_mistake": "Creer que 'unawareness' (quitar la variable) elimina el sesgo."
+        },
+        {
+          "id": "grs1-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué no existe 'el modelo justo' universal?",
+          "solucion": "Porque la equidad tiene varias definiciones matemáticas (paridad demográfica, igualdad de oportunidades, calibración) que son mutuamente incompatibles salvo en casos triviales. Hay que ELEGIR qué noción importa para el contexto y justificarla; es una decisión sociotécnica.",
+          "explicacion": "Definiciones de equidad en conflicto (Kleinberg et al.).",
+          "difficulty": "hard",
+          "answer": "Porque las definiciones de equidad son matemáticamente incompatibles entre sí; hay que elegir una.",
+          "options": [
+            "Porque las definiciones de equidad son matemáticamente incompatibles entre sí; hay que elegir una.",
+            "Porque ningún modelo alcanza 100% de accuracy.",
+            "Porque los datos siempre tienen ruido.",
+            "Porque la equidad no se puede medir."
+          ],
+          "common_mistake": "Asumir que existe una única noción objetiva de 'justo'."
+        },
+        {
+          "id": "grs1-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué límite tienen las explicaciones post-hoc como SHAP o LIME?",
+          "solucion": "Son aproximaciones de por qué el modelo decidió algo, no necesariamente la razón real; pueden ser engañosas. Por eso, para decisiones de alto riesgo, algunos argumentan usar modelos intrínsecamente interpretables en vez de explicar cajas negras post-hoc.",
+          "explicacion": "Aproximan, no son la verdad del modelo.",
+          "difficulty": "medium",
+          "answer": "Aproximan la decisión del modelo, no son necesariamente su razón real.",
+          "options": [
+            "Aproximan la decisión del modelo, no son necesariamente su razón real.",
+            "Solo funcionan en modelos lineales.",
+            "Requieren el atributo protegido para funcionar.",
+            "Garantizan que el modelo es justo."
+          ],
+          "common_mistake": "Tomar una explicación post-hoc como la causa verdadera de la decisión."
+        },
+        {
+          "id": "grs1-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: un scoring crediticio con 92% accuracy aprueba al 70% de un grupo y al 45% de otro, y usa código postal. El equipo dice 'es preciso, va'. ¿Qué objetas?",
+          "solucion": "Que precisión no es aceptabilidad: replica un sesgo histórico (proxy de zona/etnia vía código postal), y hay que decidir qué definición de equidad aplicar y auditar las tasas por grupo. Además, ¿se explica al rechazado por qué? ¿quién responde? Hay que auditar el sesgo y mitigarlo, no esconder variables.",
+          "explicacion": "Auditar equidad por grupo + transparencia + rendición de cuentas.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs1-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: imponen paridad demográfica forzada a un modelo médico y la precisión para el grupo protegido empeora (se aprueban casos que fallarán, perjudicando a esas personas). ¿Qué muestra esto?",
+          "solucion": "Que cada definición de equidad tiene consecuencias y pueden chocar con la precisión y hasta dañar a quien se busca proteger: no hay almuerzo gratis. La elección de equidad debe evaluarse en el contexto y sus efectos, no asumirse como universalmente buena.",
+          "explicacion": "Las nociones de equidad tienen tradeoffs reales.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "grs1-r1",
+          "tipo": "reflexion",
+          "enunciado": "'Precisión ≠ aceptabilidad' se parece a 'subir ROUGE empeorando el resumen' y a 'reward hacking': optimizar una dimensión y olvidar las demás. ¿Por qué crees que este error es tan recurrente y cómo te protegerías?",
+          "solucion": "Reflexión abierta. Buena respuesta: una métrica única es cómoda y medible, pero el valor real es multidimensional; protegerse significa definir y vigilar varias dimensiones (equidad, seguridad, etc.), no solo la fácil de medir.",
+          "explicacion": "Optimizar una sola dimensión es el error transversal.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs1-r2",
+          "tipo": "reflexion",
+          "enunciado": "Elegir una definición de equidad es una decisión sociotécnica con consecuencias. ¿Quién crees que debería tomarla y qué información necesitaría para decidir bien?",
+          "solucion": "Reflexión abierta. Buena respuesta: no solo el equipo técnico; involucra a afectados, legal, dominio y liderazgo, con datos del contexto y de los tradeoffs entre definiciones, comunicados con claridad.",
+          "explicacion": "Decisión sociotécnica, no solo técnica.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 921
+    },
+    {
+      "id": "gen-resp2",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Frameworks para gobernar la IA: NIST AI RMF, Secure-by-Design, ATLAS",
+      "libro": "MIT-AI.md (Frameworks) + NIST AI RMF, MITRE ATLAS, MIT Risk Taxonomy",
+      "lectura": "data/teoria/gen-resp2.md",
+      "dosis": 25,
+      "objetivo": "Ubicar el NIST AI RMF; explicar AI Secure-by-Design; saber qué cataloga ATLAS y la MIT Risk Taxonomy; y elegir el framework según la pregunta.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "NIST AI RMF: Govern/Map/Measure/Manage (el CSF para IA)",
+        "AI Secure-by-Design: seguridad/ética en todo el ciclo, a nivel ejecutivo",
+        "MITRE ATLAS = el ATT&CK de la IA (ataques); MIT Risk Taxonomy = catálogo de riesgos",
+        "Un framework no aplicado es un PDF: el valor está en roles, métricas y evidencia"
+      ],
+      "banco": [
+        {
+          "id": "grs2-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cuáles son las cuatro funciones del NIST AI RMF?",
+          "solucion": "Govern (cultura, roles, rendición de cuentas), Map (identificar riesgos en contexto), Measure (evaluarlos/cuantificarlos) y Manage (priorizar y tratar). Es el equivalente del Cybersecurity Framework para gestionar riesgo de IA.",
+          "explicacion": "Govern/Map/Measure/Manage.",
+          "difficulty": "easy",
+          "answer": "Govern, Map, Measure y Manage.",
+          "options": [
+            "Govern, Map, Measure y Manage.",
+            "Identify, Protect, Detect, Respond.",
+            "Plan, Do, Check, Act.",
+            "Recolectar, Entrenar, Desplegar, Monitorear."
+          ],
+          "common_mistake": "Confundir las funciones del AI RMF con las del CSF de seguridad (Identify/Protect…)."
+        },
+        {
+          "id": "grs2-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cataloga MITRE ATLAS y cómo se relaciona con el AI RMF?",
+          "solucion": "ATLAS cataloga tácticas y técnicas reales de ataque contra sistemas de IA/ML (poisoning, evasión, extraction, inversión…) con casos: es 'el ATT&CK de la IA'. Se complementa con el AI RMF: ATLAS dice QUÉ ataques existen; el AI RMF, CÓMO gobernar el riesgo de extremo a extremo.",
+          "explicacion": "ATLAS = amenazas; AI RMF = proceso de gobernanza.",
+          "difficulty": "medium",
+          "answer": "Ataques reales contra IA (el ATT&CK de la IA); complementa al AI RMF (que da el proceso).",
+          "options": [
+            "Ataques reales contra IA (el ATT&CK de la IA); complementa al AI RMF (que da el proceso).",
+            "Las funciones de gobernanza de IA.",
+            "Un catálogo de modelos preentrenados.",
+            "Métricas de evaluación de LLMs."
+          ],
+          "common_mistake": "Confundir ATLAS (amenazas) con el AI RMF (proceso) o la Risk Taxonomy (catálogo de riesgos)."
+        },
+        {
+          "id": "grs2-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Para qué sirve la MIT AI Risk Taxonomy / Risk Repository?",
+          "solucion": "Es una recopilación estructurada de cientos de riesgos de IA documentados, clasificados por causa y dominio. Sirve como catálogo exhaustivo (checklist anti-puntos-ciegos) para no olvidar categorías de riesgo al hacer el Map del AI RMF.",
+          "explicacion": "Catálogo exhaustivo para no olvidar riesgos.",
+          "difficulty": "medium",
+          "answer": "Un catálogo exhaustivo de riesgos de IA, útil como checklist para no olvidar categorías.",
+          "options": [
+            "Un catálogo exhaustivo de riesgos de IA, útil como checklist para no olvidar categorías.",
+            "Un framework de gobernanza con cuatro funciones.",
+            "Un catálogo de ataques técnicos contra IA.",
+            "Una herramienta para evaluar RAG."
+          ],
+          "common_mistake": "Confundir la Risk Taxonomy (catálogo de riesgos) con ATLAS (catálogo de ataques)."
+        },
+        {
+          "id": "grs2-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué 'un framework no aplicado es un PDF'?",
+          "solucion": "Porque un framework es un mapa: su valor aparece solo al aplicarlo con roles, métricas, evidencia y un dueño. Leerlo o 'cumplirlo' en el papel sin gobernanza real es teatro (tener política ≠ tener control); puede incluso usarse como escudo de responsabilidad sin mejorar nada.",
+          "explicacion": "El valor está en aplicarlo, no en leerlo.",
+          "difficulty": "hard",
+          "answer": "Porque su valor está en aplicarlo con roles, métricas y evidencia, no en leerlo o 'cumplirlo' en el papel.",
+          "options": [
+            "Porque su valor está en aplicarlo con roles, métricas y evidencia, no en leerlo o 'cumplirlo' en el papel.",
+            "Porque los frameworks están desactualizados.",
+            "Porque solo aplican a empresas grandes.",
+            "Porque son demasiado largos para leer."
+          ],
+          "common_mistake": "Tratar adoptar un framework como una casilla, no como práctica con dueño."
+        },
+        {
+          "id": "grs2-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: vas a desplegar un asistente clínico (LLM+RAG). ¿Cómo usarías los cuatro frameworks juntos?",
+          "solucion": "AI RMF: Govern (dueño, comité); Map (identificar riesgos usando la MIT Risk Taxonomy como checklist —sesgo clínico, privacidad, alucinación— y ATLAS para amenazas técnicas —poisoning del corpus, inyección por RAG—); Measure (sesgo por subgrupo, faithfulness, red teaming); Manage (controles proporcionales, riesgo residual). Secure-by-Design: todo decidido desde el diseño con legal y clínicos. Se complementan: proceso + postura + amenazas + exhaustividad.",
+          "explicacion": "Cada framework responde una pregunta distinta.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs2-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: una empresa dice 'cumplimos el NIST AI RMF' pero sigue desplegando un modelo sesgado sin dueño ni auditoría. ¿Qué está pasando?",
+          "solucion": "Cumplimiento formal sin sustancia: usan el framework como escudo de responsabilidad, no como mejora real. Un framework sin roles, métricas, auditoría ni rendición de cuentas es teatro de gobernanza; el riesgo real persiste. El valor está en aplicarlo de verdad.",
+          "explicacion": "Framework como escudo ≠ gobernanza real.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs2-r1",
+          "tipo": "reflexion",
+          "enunciado": "El AI RMF es a la IA lo que el CSF a la seguridad: un marco de funciones para gestionar riesgo. ¿Por qué crees que tener un 'lenguaje y proceso comunes' importa tanto en organizaciones grandes?",
+          "solucion": "Reflexión abierta. Buena respuesta: un lenguaje común alinea a equipos distintos (técnico, legal, negocio), permite comparar/auditar y asigna responsabilidad; sin él, cada quien improvisa y nadie rinde cuentas.",
+          "explicacion": "Lenguaje común = alineación y rendición de cuentas.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs2-r2",
+          "tipo": "reflexion",
+          "enunciado": "Los frameworks reducen puntos ciegos pero no eliminan el trabajo. ¿Qué riesgo hay en confiar demasiado en 'tener un framework' y cómo lo evitarías?",
+          "solucion": "Reflexión abierta. Buena respuesta: el riesgo es el cumplimiento de fachada (casilla marcada, riesgo intacto); se evita exigiendo aplicación real con dueños, métricas, evidencia y auditoría, tratando el framework como mapa, no como destino.",
+          "explicacion": "El framework es el mapa, no el viaje.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 922
+    },
+    {
+      "id": "gen-resp3",
+      "bloque": "fase-9",
+      "titulo": "GenAI · GenAI en producción: del prototipo al sistema confiable",
+      "libro": "MIT-AI.md (despliegue/ciclo de vida) + Designing ML Systems",
+      "lectura": "data/teoria/gen-resp3.md",
+      "dosis": 30,
+      "objetivo": "Nombrar los retos de producción; razonar observabilidad y monitoreo; gestionar deriva, versiones y evaluación continua; y aplicar controles de seguridad/operación.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Producción añade costo, latencia, fiabilidad, no determinismo y seguridad",
+        "Observabilidad: registrar entradas/salidas, costo, latencia, calidad (el blue team de tu sistema)",
+        "Deriva y versiones: fija la versión del modelo y re-evalúa ante cada cambio",
+        "Evaluación continua (CI de calidad); el modelo es lo fácil, la operación lo hace confiable"
+      ],
+      "banco": [
+        {
+          "id": "grs3-q1",
+          "tipo": "concepto",
+          "enunciado": "Nombra cuatro retos de producción de GenAI que no se ven en un notebook.",
+          "solucion": "Costo (cada llamada cuesta; a escala define la viabilidad), latencia (los usuarios esperan rapidez), fiabilidad (APIs que fallan, salidas mal formadas) y no determinismo (mismo prompt, salidas distintas; complica testing). Más la seguridad.",
+          "explicacion": "Costo, latencia, fiabilidad, no determinismo.",
+          "difficulty": "easy",
+          "answer": "Costo, latencia, fiabilidad y no determinismo (más seguridad).",
+          "options": [
+            "Costo, latencia, fiabilidad y no determinismo (más seguridad).",
+            "Solo la precisión del modelo.",
+            "El tamaño del archivo del modelo.",
+            "El número de líneas de código."
+          ],
+          "common_mistake": "Pensar que pasar a producción es solo 'subir el notebook'."
+        },
+        {
+          "id": "grs3-q2",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la observabilidad en un sistema GenAI y por qué importa?",
+          "solucion": "Registrar y monitorear (cuidando privacidad) entradas/salidas, latencia, costo por petición, tasa de error, herramientas llamadas y señales de calidad (faithfulness). Importa porque sin trazas no puedes depurar por qué una respuesta fue mala ni detectar regresiones; es el blue team (logs y detección) aplicado a tu propio sistema.",
+          "explicacion": "Ver/medir/alertar sobre tu sistema.",
+          "difficulty": "medium",
+          "answer": "Registrar y monitorear entradas/salidas, costo, latencia y calidad para depurar y detectar regresiones.",
+          "options": [
+            "Registrar y monitorear entradas/salidas, costo, latencia y calidad para depurar y detectar regresiones.",
+            "Hacer el código más legible.",
+            "Aumentar la velocidad del modelo.",
+            "Reducir el tamaño del prompt."
+          ],
+          "common_mistake": "Lanzar sin trazas y descubrir los problemas por quejas de usuarios."
+        },
+        {
+          "id": "grs3-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Por qué hay que fijar la versión del modelo y re-evaluar ante cada cambio?",
+          "solucion": "Porque el proveedor puede actualizar (o deprecar) el LLM y tu sistema se comporta distinto sin que tú cambiaras nada; y porque hay deriva de datos/uso. Fijar la versión evita regresiones silenciosas, y re-evaluar (con tu set) ante cualquier cambio —prompt, modelo, corpus, herramienta— detecta degradaciones antes que los usuarios.",
+          "explicacion": "Cambios silenciosos del proveedor + deriva.",
+          "difficulty": "hard",
+          "answer": "Porque el proveedor puede cambiar el modelo sin aviso y hay deriva; re-evaluar detecta regresiones.",
+          "options": [
+            "Porque el proveedor puede cambiar el modelo sin aviso y hay deriva; re-evaluar detecta regresiones.",
+            "Porque las versiones nuevas siempre son peores.",
+            "Porque fijar la versión reduce el costo.",
+            "Porque la ley obliga a usar una versión fija."
+          ],
+          "common_mistake": "Asumir que el sistema es estable si tú no lo tocas (el proveedor sí lo toca)."
+        },
+        {
+          "id": "grs3-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Qué es la 'evaluación continua' de un sistema GenAI?",
+          "solucion": "Correr tu set de evaluación de forma regular (no solo al lanzar), idealmente automatizado ante cada cambio, como un 'CI de calidad'. Detecta regresiones por deriva o cambios de modelo antes de que los usuarios las sufran; sin ella, la calidad se degrada en silencio.",
+          "explicacion": "CI de calidad: medir siempre, no solo al lanzar.",
+          "difficulty": "medium",
+          "answer": "Correr el set de evaluación de forma regular/automatizada para detectar regresiones, no solo al lanzar.",
+          "options": [
+            "Correr el set de evaluación de forma regular/automatizada para detectar regresiones, no solo al lanzar.",
+            "Evaluar una vez antes de lanzar y nunca más.",
+            "Pedir feedback a los usuarios en producción.",
+            "Reentrenar el modelo cada día."
+          ],
+          "common_mistake": "Evaluar solo al lanzar y dejar que la calidad se degrade en silencio."
+        },
+        {
+          "id": "grs3-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu asistente RAG funcionaba perfecto; una semana después la factura se dispara, tarda 20s y alucina más. Diagnostica.",
+          "solucion": "Costo: sin caché ni límites → añade caché, límites por usuario, modelo más chico para consultas simples. Latencia: cadenas largas sin streaming → streaming, paralelizar, re-rankear menos candidatos. Más alucinación: ¿el proveedor actualizó el modelo o cambió el corpus (deriva)? → fija versión y re-evalúa. Y sin observabilidad no lo habrías sabido a tiempo.",
+          "explicacion": "Costo/latencia/deriva + observabilidad.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs3-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario: tu sistema depende de una versión de modelo que el proveedor va a deprecar en 30 días. ¿Qué haces?",
+          "solucion": "Tratarlo como supply chain: tener un plan de migración (probar la versión nueva u otro proveedor) y re-evaluar con tu set antes de cambiar, midiendo regresiones; idealmente abstraer el proveedor para poder cambiarlo. Sin plan B, dejas de funcionar cuando lo depreca.",
+          "explicacion": "Dependencia de modelo externo = supply chain con plan B.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "grs3-r1",
+          "tipo": "reflexion",
+          "enunciado": "'El modelo es la parte fácil; producción es operación.' ¿Qué te dice esto sobre dónde está realmente el trabajo (y el valor) en un sistema de IA real?",
+          "solucion": "Reflexión abierta. Buena respuesta: gran parte del esfuerzo está en operar (costo, latencia, fiabilidad, observabilidad, evaluación continua, seguridad), no en el modelo; el valor sostenible viene de la ingeniería de operación.",
+          "explicacion": "La operación, no el modelo, hace confiable el sistema.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs3-r2",
+          "tipo": "reflexion",
+          "enunciado": "La observabilidad de GenAI es el blue team aplicado a tu propio sistema (ver/medir/alertar). ¿Qué métricas pondrías a monitorear primero y qué alerta diseñarías?",
+          "solucion": "Reflexión abierta. Buena respuesta: monitorear costo, latencia, tasa de error y una señal de calidad (faithfulness/satisfacción), con una alerta ante un salto anómalo (de costo o de caída de calidad), justificando la elección.",
+          "explicacion": "Detección aplicada al propio sistema GenAI.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 923
+    },
+    {
+      "id": "gen-resp4",
+      "bloque": "fase-9",
+      "titulo": "GenAI · Casos por vertical: aplicar GenAI a problemas reales de negocio",
+      "libro": "MIT-AI.md (Practical Industry Use Cases)",
+      "lectura": "data/teoria/gen-resp4.md",
+      "dosis": 30,
+      "objetivo": "Mapear un problema de negocio a la técnica GenAI correcta; reconocer el patrón de cada vertical; y aplicar evaluación, responsabilidad y seguridad a cada caso.",
+      "heuristicas": [],
+      "metadata": {
+        "ruta": "genai",
+        "nivel": 3
+      },
+      "ideas_clave": [
+        "Elige la pieza más simple que resuelva: clasificar < RAG < agente < multi-agente",
+        "A más conocimiento propio → RAG; a más acción → agente; a más complejidad divisible → multi-agente",
+        "Siempre evalúa; en dominios sensibles, fidelidad/atribución/responsabilidad son el producto",
+        "A veces la mejor arquitectura es 'humano + IA de apoyo' o no usar IA"
+      ],
+      "banco": [
+        {
+          "id": "grs4-q1",
+          "tipo": "concepto",
+          "enunciado": "¿Cómo eliges entre clasificación, RAG, agente y multi-agente para un problema?",
+          "solucion": "Por la naturaleza del problema, eligiendo la pieza más simple que lo resuelva: clasificar/extraer (texto) → modelo + evaluación; depende de conocimiento propio → RAG; hace falta decidir pasos y actuar → agente (si los pasos no son fijos); tarea grande y divisible con sub-roles → multi-agente (si la métrica lo justifica).",
+          "explicacion": "La pieza más simple que resuelve; la métrica justifica la complejidad.",
+          "difficulty": "easy",
+          "answer": "La pieza más simple que resuelva: clasificar < RAG (conocimiento) < agente (acción) < multi-agente.",
+          "options": [
+            "La pieza más simple que resuelva: clasificar < RAG (conocimiento) < agente (acción) < multi-agente.",
+            "Siempre multi-agente, que es lo más capaz.",
+            "Siempre RAG, sirve para todo.",
+            "Lo que mejor se vea en la demo."
+          ],
+          "common_mistake": "Elegir la pieza de moda en vez de la adecuada al problema."
+        },
+        {
+          "id": "grs4-q2",
+          "tipo": "concepto",
+          "enunciado": "Para un asistente que responde dudas sobre pólizas de seguros con base en los documentos, ¿qué pieza usas y cuál es la clave?",
+          "solucion": "RAG: la respuesta depende del conocimiento propio (las pólizas). Clave: fidelidad y atribución (no alucinar términos de la póliza, citar la fuente), porque un dato falso sobre cobertura causa daño y debe ser verificable.",
+          "explicacion": "Conocimiento propio + auditable = RAG con fidelidad/atribución.",
+          "difficulty": "medium",
+          "answer": "RAG, con fidelidad y atribución (no alucinar términos y citar la póliza).",
+          "options": [
+            "RAG, con fidelidad y atribución (no alucinar términos y citar la póliza).",
+            "Un agente autónomo que modifique las pólizas.",
+            "Fine-tuning del modelo con las pólizas.",
+            "Clasificación de sentimiento."
+          ],
+          "common_mistake": "Usar fine-tuning para conocimiento que cambia y debe citarse (es RAG)."
+        },
+        {
+          "id": "grs4-q3",
+          "tipo": "concepto",
+          "enunciado": "¿Qué cambia al construir GenAI para un dominio SENSIBLE (finanzas, salud, legal)?",
+          "solucion": "Que la fidelidad (anti-alucinación), la atribución (citar para auditar) y la responsabilidad (equidad, rendición de cuentas, humano en el lazo para alto impacto) dejan de ser extras y se vuelven el producto: una alucinación con tono seguro causa daño real y responsabilidad legal. Defensa proporcional a la consecuencia.",
+          "explicacion": "Más consecuencia → fidelidad/atribución/responsabilidad como núcleo.",
+          "difficulty": "hard",
+          "answer": "La fidelidad, la atribución y la responsabilidad se vuelven el producto, con humano en el lazo.",
+          "options": [
+            "La fidelidad, la atribución y la responsabilidad se vuelven el producto, con humano en el lazo.",
+            "Nada: se construye igual que cualquier demo.",
+            "Solo cambia el color de la interfaz.",
+            "Se puede prescindir de evaluación si el modelo es bueno."
+          ],
+          "common_mistake": "Tratar la fidelidad/atribución como opcionales en dominios de alta consecuencia."
+        },
+        {
+          "id": "grs4-q4",
+          "tipo": "concepto",
+          "enunciado": "¿Cuándo la mejor arquitectura es 'humano + IA de apoyo' o incluso no usar IA?",
+          "solucion": "Cuando una decisión de alto impacto no puede delegarse a un sistema no explicable o no auditable (dominios regulados), la respuesta responsable es usar la IA solo de apoyo (con un humano decidiendo) o no usarla para esa decisión. La mejor arquitectura no siempre es 'IA autónoma'.",
+          "explicacion": "Alta consecuencia + no auditable → humano decide o no-IA.",
+          "difficulty": "medium",
+          "answer": "Cuando la decisión es de alto impacto y no explicable/auditable: la IA apoya y el humano decide (o no se usa IA).",
+          "options": [
+            "Cuando la decisión es de alto impacto y no explicable/auditable: la IA apoya y el humano decide (o no se usa IA).",
+            "Nunca: siempre conviene IA autónoma.",
+            "Solo cuando no hay presupuesto para IA.",
+            "Cuando el modelo tiene baja accuracy."
+          ],
+          "common_mistake": "Asumir que más autonomía de la IA siempre es mejor."
+        },
+        {
+          "id": "grs4-s1",
+          "tipo": "scenario",
+          "enunciado": "Escenario (supply chain, MIT): necesitas un sistema que monitoree stock, pronostique demanda, elija proveedores y genere órdenes de compra. ¿Qué pieza y qué salvaguardas?",
+          "solucion": "Un agente (forecasting + acciones): los pasos dependen del estado del inventario. Salvaguardas: agencia mínima (herramientas para consultar stock/proveedores), y humano en el lazo (o reglas por monto) para GENERAR la orden de compra, que es una acción con consecuencia económica; límites y monitoreo. No darle autonomía total sobre compras.",
+          "explicacion": "Agente con humano en el lazo para la acción irreversible.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs4-s2",
+          "tipo": "scenario",
+          "enunciado": "Escenario (finanzas): presionados, lanzan el asesor de inversión sin consistency checks ni atribución 'porque la demo respondía bien'. ¿Qué riesgo corren?",
+          "solucion": "Una alucinación financiera con tono seguro (la confianza no es fiabilidad) puede causar pérdidas reales y responsabilidad legal; sin atribución no es auditable. En un dominio de alta consecuencia la fiabilidad ES el producto: hacen falta consistency checks, anclaje, atribución y humano en el lazo para recomendaciones de alto impacto, evaluados antes de lanzar.",
+          "explicacion": "En finanzas, la fiabilidad es el producto, no un extra.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "grs4-r1",
+          "tipo": "reflexion",
+          "enunciado": "Los casos por vertical son el 'examen final': dado un problema, elegir e integrar la técnica correcta. ¿Qué problema real de tu entorno resolverías con GenAI, qué pieza usarías y cómo lo evaluarías?",
+          "solucion": "Reflexión abierta. Buena respuesta: elige un problema concreto, justifica la pieza más simple que lo resuelve (clasificar/RAG/agente/multi-agente), y define cómo lo evaluaría y qué riesgos responsables/de seguridad atendería.",
+          "explicacion": "Transferencia integradora de toda la fase.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "grs4-r2",
+          "tipo": "reflexion",
+          "enunciado": "A lo largo de la Fase 9, 'usa la pieza más simple que funcione y deja que la métrica justifique la complejidad' apareció en RAG, agentes, multi-agente y casos. ¿Por qué crees que esta es la lección más importante de construir con GenAI?",
+          "solucion": "Reflexión abierta. Buena respuesta: GenAI tienta con sofisticación (multi-agente, RAG avanzado) que parece mejor; sin medir, la complejidad innecesaria cuesta fiabilidad, dinero, seguridad y mantenimiento; la disciplina de simplicidad + evaluación distingue ingeniería de moda y es lo que hace sistemas que de verdad funcionan.",
+          "explicacion": "Simplicidad + evaluación = ingeniería, no moda.",
+          "difficulty": "hard"
+        }
+      ],
+      "orden": 924
     }
   ]
 }

@@ -421,6 +421,91 @@
           "Evalúa por componente y red-teamea la propagación de inyecciones."
         ]
       }
+    },
+    {
+      "id": "genai-responsable",
+      "titulo": "IA responsable y de producción",
+      "track": "genai",
+      "descripcion": "Cerrar la ruta con lo que decide si un sistema de IA debe existir y cómo se sostiene: IA responsable (sesgo, equidad, transparencia, rendición de cuentas), los frameworks que la operacionalizan (NIST AI RMF, Secure-by-Design, MITRE ATLAS, MIT AI Risk Taxonomy), GenAI en producción (costo, latencia, observabilidad, deriva, evaluación continua) y los casos por vertical que integran toda la fase. Recurso troncal: MIT-AI.md (Responsible AI, frameworks, casos).",
+      "secuencia": "De la ética al despliegue real: IA responsable (precisión ≠ aceptabilidad; sesgo y equidad; transparencia y rendición de cuentas) → frameworks que la operacionalizan (AI RMF, Secure-by-Design, ATLAS, MIT Risk Taxonomy) → GenAI en producción (costo, latencia, observabilidad, deriva, evaluación continua) → casos por vertical (elegir la pieza correcta e integrar todo).",
+      "referencias": [
+        "Kleinberg, J., et al. (2016). Inherent trade-offs in fair risk scores. [arXiv:1609.05807](https://arxiv.org/abs/1609.05807)",
+        "Angwin, J., et al. (2016). Machine bias (COMPAS). ProPublica. [propublica.org](https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing)",
+        "NIST. (2023). AI Risk Management Framework (AI RMF 1.0). [nist.gov](https://www.nist.gov/itl/ai-risk-management-framework)",
+        "MITRE. (n.d.). MITRE ATLAS. [atlas.mitre.org](https://atlas.mitre.org)",
+        "Slattery, P., et al. (2024). The AI Risk Repository (MIT). [airisk.mit.edu](https://airisk.mit.edu/)",
+        "Huyen, C. (2022). Designing Machine Learning Systems. O'Reilly."
+      ],
+      "miniProyecto": {
+        "titulo": "Solución GenAI de extremo a extremo (responsable y en producción)",
+        "descripcion": "Diseña una solución GenAI completa para un problema de negocio (elige un vertical: seguros, finanzas, supply chain, legal…): elige la pieza más simple que lo resuelva (clasificación/RAG/agente/multi-agente) justificándolo, especifica la arquitectura, el plan de evaluación, las medidas de IA responsable (equidad/transparencia/privacidad/rendición de cuentas), la seguridad y la operación en producción (costo, latencia, observabilidad, deriva, evaluación continua).",
+        "entregable": "Documento de diseño de extremo a extremo: pieza justificada, arquitectura, evaluación, IA responsable, seguridad y operación.",
+        "rubrica": [
+          "Elige la pieza más simple que resuelve, justificada por la tarea/métrica",
+          "Plan de evaluación adecuado (separando culpas; held-out)",
+          "Medidas de IA responsable (equidad/transparencia/privacidad/rendición de cuentas)",
+          "Seguridad aplicada (entradas no confiables, agencia mínima, atribución)",
+          "Operación en producción (costo, latencia, observabilidad, deriva, evaluación continua)"
+        ]
+      },
+      "unidades": [
+        "gen-resp1",
+        "gen-resp2",
+        "gen-resp3",
+        "gen-resp4"
+      ],
+      "competencias": [
+        "Distinguir precisión de aceptabilidad y razonar sesgo/equidad/transparencia/rendición de cuentas.",
+        "Operacionalizar la IA responsable con frameworks (AI RMF, Secure-by-Design, ATLAS, MIT Taxonomy).",
+        "Llevar GenAI a producción (costo, latencia, observabilidad, deriva, evaluación continua).",
+        "Mapear un problema de negocio a la pieza GenAI correcta e integrar toda la fase."
+      ],
+      "diagnosticoInicial": {
+        "titulo": "Antes de IA responsable y de producción",
+        "instrucciones": "Responde sin consultar la lección. No cuenta para calificación: calibra tu punto de partida.",
+        "preguntas": [
+          {
+            "id": "genai-responsable-diag-precision",
+            "prompt": "Un modelo tiene 95% de accuracy. ¿Por qué eso NO garantiza que deba desplegarse?",
+            "criterio": "Reconoce que precisión no captura equidad, privacidad, transparencia ni rendición de cuentas."
+          },
+          {
+            "id": "genai-responsable-diag-sesgo",
+            "prompt": "Para que un modelo no discrimine, alguien propone quitar la variable de etnia. ¿Funciona?",
+            "criterio": "Intuye que los proxies reconstruyen el sesgo (unawareness falla)."
+          },
+          {
+            "id": "genai-responsable-diag-produccion",
+            "prompt": "Tu asistente funciona en la demo. ¿Qué problemas nuevos aparecen al servir a miles de usuarios reales?",
+            "criterio": "Intuye costo, latencia, fiabilidad, deriva, seguridad, observabilidad."
+          }
+        ]
+      },
+      "laboratoriosVivos": [
+        {
+          "nombre": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "objetivo": "operacionalizar la IA responsable con Govern/Map/Measure/Manage",
+          "criterio_cierre": "mapear un riesgo de IA a una función del AI RMF",
+          "safety_note": "Material educativo."
+        },
+        {
+          "nombre": "MIT AI Risk Repository",
+          "url": "https://airisk.mit.edu/",
+          "objetivo": "catálogo exhaustivo de riesgos de IA como checklist anti-puntos-ciegos",
+          "criterio_cierre": "identificar una categoría de riesgo que habrías olvidado",
+          "safety_note": "Material educativo."
+        }
+      ],
+      "estandar_mit_plus": {
+        "diferenciador": "Cierra la ruta uniendo ética, frameworks, producción y casos reales: no enseña 'principios' sino cómo operacionalizarlos y desplegarlos, con enlaces vivos a marcos, casos (COMPAS) y herramientas.",
+        "evidencia_de_dominio": [
+          "Sabe que precisión ≠ aceptabilidad y que la equidad se elige y justifica.",
+          "Opera la IA responsable con AI RMF / Secure-by-Design / ATLAS / MIT Taxonomy.",
+          "Lleva GenAI a producción con observabilidad y evaluación continua.",
+          "Elige la pieza correcta por caso e integra toda la fase con seguridad y responsabilidad."
+        ]
+      }
     }
   ]
 }
