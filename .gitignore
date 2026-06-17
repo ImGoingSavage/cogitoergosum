@@ -28,3 +28,9 @@ Estado actual*
 # Videos de trabajo (no relevantes para la app)
 *.mov
 *.mp4.bak
+
+# Prompts de trabajo (ejecutores, maestros, handoffs entre agentes): material
+# interno, no parte de la app. Viven solo en esta máquina, fuera del repo
+# público. (mentor-backend/app/prompts.py es código del backend y SÍ se versiona.)
+/PROMPT-*.md
+/prompt.md
