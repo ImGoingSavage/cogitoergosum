@@ -306,6 +306,12 @@ export function renderizar() {
 
   const e = load('estudio');
   const b = bloqueVisibleObj();
+  const quizUnidadId = e.quizEnCurso?.unidadId;
+  const quizEnCursoEnBloque = quizUnidadId && unidad(quizUnidadId)?.bloque === b.id;
+  if (quizEnCursoEnBloque) {
+    const cl = clusterDeUnidad(quizUnidadId);
+    if (cl?.bloque === b.id) clustersExpandidos.add(cl.id);
+  }
   $('estudio-bloque-titulo').textContent = b.titulo;
   $('estudio-bloque-meta').textContent = b.meta ?? '';
   const sel = $('estudio-bloque-selector');
@@ -378,8 +384,6 @@ export function renderizar() {
   const clusterEnCursoEnBloque =
     e.examenClusterEnCurso &&
     taxonomia.find((c) => c.id === e.examenClusterEnCurso.clusterId)?.bloque === b.id;
-  const quizEnCursoEnBloque =
-    e.quizEnCurso && unidad(e.quizEnCurso.unidadId)?.bloque === b.id;
   if (clusterEnCursoEnBloque) renderExamenCluster();
   else if (e.examenEnCurso?.bloqueId === b.id) renderExamen();
   else if (quizEnCursoEnBloque) abrirUnidad(e.quizEnCurso.unidadId);
@@ -493,6 +497,7 @@ const ETIQUETA_RUTA = {
 function crearUnidadItem(u, b) {
   const li = document.createElement('li');
   li.className = 'unidad-item';
+  li.dataset.unidadId = u.id;
   const hecha = unidadCompletada(u.id);
   const abierta = unidadDisponible(b, u);
   const estado = hecha ? '✓' : abierta ? '▸' : '🔒';
@@ -519,6 +524,41 @@ function crearUnidadItem(u, b) {
 // re-renders de la sesión (p. ej. al cerrar una unidad) sin tocar el esquema de
 // almacenamiento. Vista limpia por defecto: todas colapsadas al cargar.
 const clustersExpandidos = new Set();
+
+function clusterDeUnidad(unidadId) {
+  return taxonomia.find((c) => (c.unidades ?? []).includes(unidadId));
+}
+
+function unidadItemVisible(unidadId) {
+  const root = $('estudio-unidades');
+  if (!root) return null;
+  return [...root.querySelectorAll('li[data-unidad-id]')]
+    .find((li) => li.dataset.unidadId === unidadId && !li.closest('[hidden]')) ?? null;
+}
+
+function moverPanelUnidadAlHome(panel = $('estudio-unidad')) {
+  const tarjeta = $('estudio-unidades')?.closest('article');
+  if (panel && tarjeta) tarjeta.insertAdjacentElement('afterend', panel);
+}
+
+function cerrarPanelUnidad({ moverHome = false } = {}) {
+  const panel = $('estudio-unidad');
+  if (!panel) return;
+  panel.hidden = true;
+  delete panel.dataset.unidad;
+  const leccion = $('unidad-leccion');
+  if (leccion) {
+    leccion.hidden = true;
+    leccion.innerHTML = '';
+  }
+  if (moverHome) moverPanelUnidadAlHome(panel);
+}
+
+function cerrarPanelUnidadSiPerteneceACluster(clusterId) {
+  const unidadId = $('estudio-unidad')?.dataset.unidad;
+  if (!unidadId) return;
+  if (clusterDeUnidad(unidadId)?.id === clusterId) cerrarPanelUnidad({ moverHome: true });
+}
 
 // Pinta las lecciones de un bloque agrupadas en las categorías de su taxonomía:
 // cada una es un acordeón (categoría → al desplegar muestra sus unidades en orden
@@ -775,8 +815,12 @@ function crearClusterAcordeon(c, unidades, b) {
     cuerpo.hidden = !ahora;
     cab.setAttribute('aria-expanded', String(ahora));
     li.classList.toggle('abierto', ahora);
-    if (ahora) clustersExpandidos.add(c.id);
-    else clustersExpandidos.delete(c.id);
+    if (ahora) {
+      clustersExpandidos.add(c.id);
+    } else {
+      clustersExpandidos.delete(c.id);
+      cerrarPanelUnidadSiPerteneceACluster(c.id);
+    }
   });
 
   li.classList.toggle('abierto', abierto);
@@ -930,14 +974,19 @@ function navegarAUnidad(id) {
   const u = unidad(id);
   if (!u) return;
   const b = datos.bloques.find((x) => x.id === u.bloque);
+  const cl = clusterDeUnidad(id);
+  let debeRenderizar = false;
   if (b && b.id !== bloqueVisibleObj().id) {
     bloqueVisible = b;
-    // Si la unidad destino vive en una categoría de la taxonomía, despliégala
-    // para que el lector aterrice viendo su contexto (no una lista colapsada).
-    const cl = taxonomia.find((c) => (c.unidades ?? []).includes(id));
-    if (cl) clustersExpandidos.add(cl.id);
-    renderizar();
+    debeRenderizar = true;
   }
+  // Si la unidad destino vive en una categoría de la taxonomía, despliégala
+  // para que el lector aterrice viendo su contexto (no una lista colapsada).
+  if (cl && b && cl.bloque === b.id && !clustersExpandidos.has(cl.id)) {
+    clustersExpandidos.add(cl.id);
+    debeRenderizar = true;
+  }
+  if (debeRenderizar) renderizar();
   abrirUnidad(id);
   alternarLeccion(u); // el panel nace con la lección cerrada → esto la abre
 }
@@ -949,7 +998,7 @@ function navegarACluster(id) {
   const b = datos.bloques.find((x) => x.id === c.bloque);
   if (b && b.id !== bloqueVisibleObj().id) bloqueVisible = b;
   clustersExpandidos.add(id);
-  $('estudio-unidad').hidden = true;
+  cerrarPanelUnidad({ moverHome: true });
   $('estudio-examen').hidden = true;
   renderizar();
   setTimeout(() => {
@@ -967,13 +1016,13 @@ function abrirUnidad(unidadId, anchorLi) {
   // justo debajo para que el detalle se despliegue ahí mismo (no al final de la
   // página). El panel es un nodo único; moverlo no rompe sus referencias por id.
   // renderizar() lo devuelve a su sitio antes de cada re-render.
-  if (anchorLi) {
-    anchorLi.insertAdjacentElement('afterend', panel);
+  const destinoInline = anchorLi ?? unidadItemVisible(unidadId);
+  if (destinoInline) {
+    destinoInline.insertAdjacentElement('afterend', panel);
   } else {
-    // Sin ancla (wiki-link, restaurar quiz): asegúralo en su sitio (tras la
-    // tarjeta del roadmap), nunca pegado bajo una unidad abierta antes.
-    const tarjeta = $('estudio-unidades').closest('article');
-    if (tarjeta) tarjeta.insertAdjacentElement('afterend', panel);
+    // Sin ancla visible disponible: déjalo ocultable en su home, nunca pegado
+    // bajo una unidad abierta antes.
+    moverPanelUnidadAlHome(panel);
   }
   panel.hidden = false;
   panel.dataset.unidad = u.id;
