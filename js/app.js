@@ -1431,11 +1431,19 @@ function renderizarDashboard() {
   const pe = Study.progresoResumen();
   const dash = $('dash-estudio');
   dash.innerHTML = '';
+  // Estado del examen como badge (texto + color, no solo color)
+  const examenEstado = pe
+    ? pe.examenAprobado
+      ? { texto: 'Aprobado', variante: 'exito' }
+      : pe.examenIntentos
+        ? { texto: `${pe.examenIntentos} intento(s), pendiente`, variante: 'progreso' }
+        : { texto: 'Pendiente', variante: 'neutro' }
+    : null;
   const filas = pe
     ? [
         ['Bloque actual', pe.bloque],
         ['Unidades completadas', `${pe.unidadesHechas} de ${pe.unidadesTotal}`],
-        ['Examen del bloque', pe.examenAprobado ? 'Aprobado' : pe.examenIntentos ? `${pe.examenIntentos} intento(s), pendiente` : 'Pendiente'],
+        ['Examen del bloque', examenEstado],
         ['Racha de estudio', `${pe.racha} día(s)`],
       ]
     : [['Modo Estudio', 'Sin contenido cargado (data/study.json).']];
@@ -1444,7 +1452,15 @@ function renderizarDashboard() {
     p.className = 'fila';
     const b = document.createElement('strong');
     b.textContent = `${k}: `;
-    p.append(b, v);
+    p.append(b);
+    if (v && typeof v === 'object' && v.texto) {
+      const badge = document.createElement('span');
+      badge.className = `badge badge--${v.variante}`;
+      badge.textContent = v.texto;
+      p.append(badge);
+    } else {
+      p.append(v);
+    }
     dash.appendChild(p);
   });
 

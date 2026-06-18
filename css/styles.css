@@ -2663,3 +2663,34 @@ nav button { min-height: var(--control-h); }
   .toast, .toast.saliendo { animation: none; }
   .skeleton::after { animation: none; }
 }
+
+/* ====== Consolidación responsive y de componentes (Fase 9 / 11) ======
+   Escala de breakpoints del proyecto (móvil-primero). Mantener los nuevos
+   media queries dentro de esta escala para no fragmentarla:
+     · ≤540px → teléfono (header apilado, nav a todo el ancho)
+     · ≤640px → navegación compacta (icono sobre rótulo)
+     · ≤900px → tablet (ajustes de rejilla)
+     · ≥541px → mejoras progresivas de escritorio                       */
+
+/* Anti scroll horizontal: palabras/tokens largos (URLs, IDs) rompen línea
+   en pantallas estrechas (verificado mentalmente a 320px). */
+body { overflow-wrap: break-word; }
+
+/* Badge de ESTADO reutilizable (Fase 5/9): comunica con texto + color, nunca
+   solo color, y con contraste suficiente sobre superficie oscura. */
+.badge--neutro   { color: var(--texto-suave); border-color: var(--borde); background: var(--bg-sutil); }
+.badge--progreso { color: var(--acento); border-color: var(--acento); background: var(--acento-suave); }
+.badge--exito    { color: var(--exito); border-color: rgba(127, 201, 143, 0.40); background: rgba(127, 201, 143, 0.12); }
+
+/* Estado de carga consistente en botones asíncronos: aria-busy="true"
+   añade un spinner y bloquea el doble clic, sin cambiar el layout. */
+button[aria-busy="true"] { cursor: progress; opacity: 0.85; pointer-events: none; }
+button[aria-busy="true"]::after {
+  content: ""; display: inline-block; width: 0.85em; height: 0.85em; margin-left: 0.5em;
+  vertical-align: -0.12em; border: 2px solid currentColor; border-right-color: transparent;
+  border-radius: 50%; animation: btn-girar 0.7s linear infinite;
+}
+@keyframes btn-girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  button[aria-busy="true"]::after { animation: none; }
+}
