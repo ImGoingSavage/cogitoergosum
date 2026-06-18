@@ -154,7 +154,7 @@
           <span id="problema-dificultad" class="dificultad" title="Dificultad"></span>
           <span id="badge-revision" class="badge" hidden>Revisión</span>
         </div>
-        <h1 id="problema-titulo">Cargando…</h1>
+        <h1 id="problema-titulo" class="skeleton">Cargando…</h1>
         <p id="problema-enunciado"></p>
       </article>
 
@@ -909,6 +909,10 @@
     </section>
 
   </main>
+
+  <!-- Avisos no bloqueantes (Fase 15): éxito, error recuperable, offline.
+       aria-live=polite → se anuncian sin interrumpir; cada toast es cerrable. -->
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
 
   <!-- Pizarra de trabajo estilo GoodNotes (pedido 2026-06-11): pluma con
        presión, resaltador, goma, lazo (mover/duplicar/borrar), 3 presets

@@ -2610,3 +2610,56 @@ nav button { min-height: var(--control-h); }
 @media (max-width: 540px) {
   .dash-cta { width: 100%; }
 }
+
+/* ============ Avisos del sistema (toasts) y carga (skeleton) ============
+   Fase 15: feedback no bloqueante de éxito/aviso/error y estado de carga.
+   No dependen solo del color: llevan texto y un icono de cierre. */
+.toast-region {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); z-index: 1500;
+  display: flex; flex-direction: column; gap: var(--space-2);
+  width: min(440px, calc(100vw - 24px)); pointer-events: none;
+}
+.toast {
+  pointer-events: auto; display: flex; align-items: center; gap: var(--space-3);
+  background: var(--bg-elevado); color: var(--texto);
+  border: 1px solid var(--borde); border-left: 3px solid var(--acento);
+  border-radius: var(--radius-md); padding: 12px 14px; box-shadow: var(--shadow-md);
+  animation: toast-entra 0.22s ease-out;
+}
+.toast--exito { border-left-color: var(--exito); }
+.toast--aviso { border-left-color: var(--alerta); }
+.toast--error { border-left-color: var(--peligro); }
+.toast-msg { flex: 1; font-size: 14px; line-height: 1.4; }
+.toast-accion {
+  flex: none; background: var(--acento-suave); color: var(--acento);
+  border: 1px solid var(--borde); border-radius: var(--radius-sm);
+  padding: 7px 13px; font: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; min-height: 34px;
+}
+.toast-accion:hover { color: var(--texto); border-color: var(--acento); }
+.toast-cerrar {
+  flex: none; background: none; border: none; color: var(--texto-tenue);
+  font-size: 14px; line-height: 1; cursor: pointer; padding: 6px; min-height: 32px; min-width: 32px;
+}
+.toast-cerrar:hover { color: var(--texto); }
+.toast.saliendo { animation: toast-sale 0.2s ease-in forwards; }
+@keyframes toast-entra { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes toast-sale { to { opacity: 0; transform: translateY(8px); } }
+
+/* Skeleton de carga reutilizable: barra con brillo que recorre */
+.skeleton {
+  position: relative; overflow: hidden; color: transparent !important;
+  background: var(--bg-sutil); border-radius: var(--radius-sm); min-height: 1em;
+}
+.skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  transform: translateX(-100%); animation: skeleton-brillo 1.3s infinite;
+}
+@keyframes skeleton-brillo { to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .toast, .toast.saliendo { animation: none; }
+  .skeleton::after { animation: none; }
+}

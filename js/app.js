@@ -80,6 +80,60 @@ const $ = (id) => document.getElementById(id);
 
 /* ============================== Arranque ============================== */
 
+/* ===================== Avisos del sistema (toasts) ==================== */
+
+/**
+ * Aviso no bloqueante (Fase 15). tipo: info|exito|aviso|error. `accion`
+ * opcional {texto, fn} añade un botón (p. ej. "Reintentar"). `duracion` 0 =
+ * persistente hasta cerrar. La región es aria-live=polite (se anuncia sin
+ * interrumpir); la animación respeta prefers-reduced-motion (CSS).
+ */
+function mostrarToast(mensaje, opciones = {}) {
+  const region = $('toast-region');
+  if (!region) return null;
+  const { tipo = 'info', accion = null, duracion = 5000 } = opciones;
+  const t = document.createElement('div');
+  t.className = `toast toast--${tipo}`;
+  const msg = document.createElement('span');
+  msg.className = 'toast-msg';
+  msg.textContent = mensaje;
+  t.appendChild(msg);
+  let timer = null;
+  const quitar = () => {
+    clearTimeout(timer);
+    t.classList.add('saliendo');
+    setTimeout(() => t.remove(), 220);
+  };
+  if (accion?.texto && typeof accion.fn === 'function') {
+    const b = document.createElement('button');
+    b.className = 'toast-accion';
+    b.textContent = accion.texto;
+    b.addEventListener('click', () => { accion.fn(); quitar(); });
+    t.appendChild(b);
+  }
+  const cerrar = document.createElement('button');
+  cerrar.className = 'toast-cerrar';
+  cerrar.setAttribute('aria-label', 'Cerrar aviso');
+  cerrar.textContent = '✕';
+  cerrar.addEventListener('click', quitar);
+  t.appendChild(cerrar);
+  region.appendChild(t);
+  if (duracion > 0) timer = setTimeout(quitar, duracion);
+  return t;
+}
+// Disponible para otros módulos (claustro, cuenta) sin acoplarlos a app.js.
+if (typeof window !== 'undefined') window.cpsToast = mostrarToast;
+
+/** Feedback claro de conexión (Fase 15): es offline-first, pero el usuario lo sabe. */
+function configurarEstadosRed() {
+  window.addEventListener('offline', () =>
+    mostrarToast('Estás sin conexión. Tu progreso se guarda en este dispositivo.', { tipo: 'aviso', duracion: 6000 })
+  );
+  window.addEventListener('online', () =>
+    mostrarToast('Conexión restaurada.', { tipo: 'exito' })
+  );
+}
+
 async function init() {
   Storage.migrarSiNecesario(); // migraciones de datos locales (no-op en v1)
   // Inyectar getters en los módulos antes de configurar la UI
@@ -95,8 +149,15 @@ async function init() {
     // Pool de selección: problemas curados + variantes generadas por IA
     problemas = (await res.json()).problemas.concat(Factory.problemasGenerados());
   } catch {
+    $('problema-titulo').classList.remove('skeleton');
+    $('problema-titulo').textContent = 'No pudimos cargar los problemas';
     $('problema-enunciado').textContent =
-      'No se pudo cargar la base de problemas. Sirve la aplicación por HTTP, por ejemplo: python3 -m http.server';
+      'Revisa tu conexión, o sirve la app por HTTP (por ejemplo: python3 -m http.server). Después, reintenta.';
+    mostrarToast('No pudimos cargar la base de problemas.', {
+      tipo: 'error',
+      duracion: 0,
+      accion: { texto: 'Reintentar', fn: () => window.location.reload() },
+    });
     return;
   }
 
@@ -104,6 +165,7 @@ async function init() {
   asegurarAsignacionDelDia();
   configurarNavegacion();
   configurarOnboarding();
+  configurarEstadosRed();
   configurarTimerUI();
   configurarMentorUI();
   configurarMentorLocalUI();
@@ -478,6 +540,7 @@ function renderizarSesion() {
   const p = problemaActual();
   if (!a || !p) return;
 
+  $('problema-titulo').classList.remove('skeleton'); // fin del estado de carga
   $('problema-titulo').textContent = p.titulo;
   $('problema-enunciado').innerHTML = renderInline(p.enunciado);
   $('problema-dificultad').innerHTML = '●'.repeat(p.dificultad) + '○'.repeat(5 - p.dificultad);
