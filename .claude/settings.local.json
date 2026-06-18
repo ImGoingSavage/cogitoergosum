@@ -174,7 +174,19 @@
       "Bash(curl -sI \"https://imgoingsavage.github.io/cogitoergosum/assets/katex/katex.min.js?cb=$\\(date +%s\\)\")",
       "Bash(curl -s \"https://imgoingsavage.github.io/cogitoergosum/data/teoria/arena-b1.md?cb=$\\(date +%s\\)\")",
       "Bash(ffprobe -v error -show_entries format=duration,size -of default=noprint_wrappers=1 preguntas.mov)",
-      "Bash(echo \"---exit $?---\")"
+      "Bash(echo \"---exit $?---\")",
+      "Bash(xargs -0 -I{} ls -la \"{}\")",
+      "Bash(cp '__TRACKED_VAR__/Screenshot 2026-06-11 at 8.33.00 p.m..png' /tmp/shot00.png)",
+      "Bash(cp '__TRACKED_VAR__/Screenshot 2026-06-11 at 8.33.10 p.m..png' /tmp/shot10.png)",
+      "Bash(cp '__TRACKED_VAR__/Screenshot 2026-06-11 at 8.33.23 p.m..png' /tmp/shot23.png)",
+      "Bash(sed -n '148,175p' /Users/EdgarDevice/Desktop/ProyectoX/js/mentorChat.js)",
+      "Bash(sed -n '1115,1135p' /Users/EdgarDevice/Desktop/ProyectoX/js/pizarra.js)",
+      "Bash(sed -n '800,812p' js/study.js)",
+      "Bash(sed -n '1040,1075p' js/study.js)",
+      "Bash(sed -n '905,914p' js/study.js)",
+      "Bash(sed -n '1285,1293p' js/study.js)",
+      "Bash(awk 'NR>=668 && /<\\\\/section>/{print NR\": \"$0; exit} NR>=668{}' index.html)",
+      "Bash(awk -F: '$1>668')"
     ]
   }
 }
