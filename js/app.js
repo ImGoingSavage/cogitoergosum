@@ -1298,6 +1298,45 @@ function imprimirCuaderno() {
   ventana.document.close();
 }
 
+/** Saludo según la hora local (browser): orienta sin tecnicismos. */
+function saludoHora() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Buenos días';
+  if (h < 20) return 'Buenas tardes';
+  return 'Buenas noches';
+}
+
+/**
+ * Centro de orientación del Dashboard (Fase 4): responde "¿qué seguía?" y ofrece
+ * UNA sola acción principal hacia la sesión, más la certeza de progreso guardado.
+ */
+function actualizarOrientacionDashboard(r) {
+  const a = Storage.load('asignacion');
+  const p = problemaActual();
+  $('dash-saludo').textContent = `${saludoHora()} · tu entrenamiento`;
+  let titulo, estado, cta;
+  if (r.total === 0 && !(a && a.completado)) {
+    titulo = 'Empieza aquí';
+    estado = 'Aún no has resuelto tu primer problema. No hay prisa: el objetivo es pensar bien, no terminar rápido.';
+    cta = 'Empezar mi primer problema →';
+  } else if (a && !a.completado) {
+    titulo = 'Continúa donde lo dejaste';
+    estado = p ? `Tienes una sesión abierta: «${p.titulo}».` : 'Tienes una sesión de entrenamiento abierta.';
+    cta = 'Continuar mi sesión →';
+  } else {
+    titulo = '¿Listo para hoy?';
+    estado = p
+      ? `Hoy te toca «${p.titulo}». Llevas ${r.racha} día(s) de racha y ${r.total} problema(s) resueltos.`
+      : `Llevas ${r.racha} día(s) de racha y ${r.total} problema(s) resueltos.`;
+    cta = 'Ir a la sesión de hoy →';
+  }
+  $('dash-orient-titulo').textContent = titulo;
+  $('dash-orient-estado').textContent = estado;
+  const btn = $('btn-dash-continuar');
+  btn.textContent = cta;
+  btn.onclick = () => { cambiarVista('sesion'); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+}
+
 function renderizarDashboard() {
   const r = Analytics.resumen();
   const perfil = Storage.load('perfil');
@@ -1311,6 +1350,12 @@ function renderizarDashboard() {
   $('stat-dificultad').textContent = `Nivel ${r.dificultadActual}`;
   $('stat-disparadores').textContent = r.disparadores === null ? '—' : `${r.disparadores}%`;
   $('stat-fichas').textContent = r.fichas;
+
+  // Orientación + estado vacío de las estadísticas (sin "muro de ceros")
+  const hayDatos = r.total > 0;
+  $('stats-grid').hidden = !hayDatos;
+  $('stats-vacio').hidden = hayDatos;
+  actualizarOrientacionDashboard(r);
 
   // El pensador (avatar por capas) + rating privado por heurística
   Avatar.render($('avatar-figura'));

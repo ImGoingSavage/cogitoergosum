@@ -519,9 +519,23 @@
     <!-- =========================== DASHBOARD ========================== -->
     <section id="vista-dashboard" hidden>
 
+      <!-- Centro de orientación (Fase 4): qué seguía, una sola acción principal
+           y la certeza de que el progreso está guardado. -->
+      <article class="tarjeta dash-orientacion">
+        <p class="dash-eyebrow" id="dash-saludo">Tu entrenamiento</p>
+        <h2 id="dash-orient-titulo" class="dash-orient-titulo">¿Continuamos?</h2>
+        <p id="dash-orient-estado" class="dash-orient-estado"></p>
+        <button id="btn-dash-continuar" class="primario dash-cta">Ir a la sesión de hoy →</button>
+        <p class="dash-orient-guardado">✓ Tu progreso se guarda automáticamente en este dispositivo.</p>
+      </article>
+
       <article class="tarjeta">
         <h2>Dashboard cognitivo</h2>
-        <div class="grid-stats">
+        <p id="stats-vacio" class="estado-vacio" hidden>
+          Completa tu primer problema para ver aquí tus estadísticas: aciertos,
+          tiempo, racha y nivel. Aún no hay nada que medir — y está bien.
+        </p>
+        <div id="stats-grid" class="grid-stats">
           <div class="stat"><div id="stat-resueltos" class="valor">0</div><div class="etiqueta">Problemas</div></div>
           <div class="stat"><div id="stat-exito" class="valor">0%</div><div class="etiqueta">Tasa de éxito</div></div>
           <div class="stat"><div id="stat-tiempo" class="valor">0 min</div><div class="etiqueta">Tiempo promedio</div></div>
