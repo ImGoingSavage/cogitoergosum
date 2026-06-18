@@ -1080,47 +1080,143 @@ button.enlace {
 
 .estudio-bloque-titulo { font-family: var(--serif); font-size: 22px; font-weight: 600; }
 
-.estudio-bloque-meta { font-size: 14px; color: var(--texto-suave); margin-bottom: 10px; }
-.estudio-bloque-nav { display: block; font-size: 14px; color: var(--texto-suave); margin-bottom: 14px; }
-.estudio-bloque-nav select { margin-left: 6px; background: var(--bg-sutil); color: var(--texto); border: 1px solid var(--borde); border-radius: 6px; padding: 3px 8px; font-size: 13px; }
+.estudio-bloque-meta { font-size: 14px; color: var(--texto-suave); margin-bottom: 12px; }
 
-.estudio-unidades { list-style: none; margin: 14px 0; }
+/* Progreso del bloque visible: barra fina + recuento. Orienta con calma, sin
+   gamificación agresiva (§0.1). En luz de lámpara cuando el bloque se completa. */
+.estudio-progreso { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; }
+.estudio-progreso-barra {
+  flex: 1; height: 8px; border-radius: var(--radius-pill);
+  background: var(--bg-sutil); border: 1px solid var(--borde); overflow: hidden;
+}
+.estudio-progreso-relleno {
+  height: 100%; width: 0; border-radius: inherit;
+  background: var(--acento); transition: width 400ms ease-out;
+}
+.estudio-progreso.completo .estudio-progreso-relleno { background: var(--lampara); }
+.estudio-progreso-texto { font-size: 13px; color: var(--texto-suave); white-space: nowrap; }
+.estudio-progreso.completo .estudio-progreso-texto { color: var(--lampara); }
 
-.unidad-item { margin-bottom: 8px; }
+/* Salto a otra fase del temario: control claro y tocable, no un select diminuto. */
+.estudio-bloque-nav {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--texto-suave); margin-bottom: 18px;
+}
+.estudio-bloque-nav-rotulo { letter-spacing: 0.01em; }
+.estudio-bloque-nav select {
+  flex: 1; min-width: 180px;
+  background: var(--bg-sutil); color: var(--texto);
+  border: 1px solid var(--borde); border-radius: var(--radius-md);
+  padding: 9px 12px; font-size: 14px; font-family: inherit; cursor: pointer;
+  transition: border-color var(--transicion);
+}
+.estudio-bloque-nav select:hover { border-color: var(--acento); }
 
-/* Panel de unidad abierto INLINE dentro de un cluster (se inserta tras el <li>
-   de la unidad clickeada, ver abrirUnidad). Se anida visualmente bajo la unidad
-   para que el despliegue se lea continuo y no como una tarjeta suelta al fondo. */
+.estudio-unidades { list-style: none; margin: 14px 0; display: flex; flex-direction: column; gap: 10px; }
+.unidad-item { margin: 0; }
+
+/* Panel de unidad abierto INLINE bajo la unidad clickeada (ver abrirUnidad).
+   Se anida visualmente bajo la unidad para que el despliegue se lea continuo. */
 .estudio-unidades #estudio-unidad {
-  margin: 4px 0 14px;
+  margin: 2px 0 14px;
   border-left: 3px solid var(--acento);
+  animation: unidad-aparece 240ms ease-out;
+}
+@keyframes unidad-aparece {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .estudio-unidades #estudio-unidad { animation: none; }
 }
 
+/* Tarjeta de unidad: claramente pulsable. Badge de estado + título + libro
+   (secundario, en su propia línea) + acción descriptiva + flecha. */
 .unidad-boton {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   text-align: left;
   background: var(--bg-sutil);
   border: 1px solid var(--borde);
-  border-radius: 8px;
-  padding: 12px 16px;
-  min-height: 44px;
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  min-height: 56px;
   color: var(--texto);
   font-family: inherit;
   font-size: 14px;
   cursor: pointer;
-  transition: border-color var(--transicion);
+  transition: border-color var(--transicion), background var(--transicion);
+}
+.unidad-boton:hover:not(:disabled) { border-color: var(--acento); background: var(--bg-elevado); }
+.unidad-boton:hover:not(:disabled) .unidad-flecha { transform: translateX(3px); color: var(--acento); }
+.unidad-boton:hover:not(:disabled) .unidad-accion { color: var(--acento); }
+.unidad-boton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Badge de estado: círculo con ✓ (hecha) / ▸ (abierta) / 🔒 (bloqueada). */
+.unidad-estado {
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg-elevado); border: 1px solid var(--borde);
+  font-size: 15px; line-height: 1; color: var(--texto-suave);
+}
+.unidad-item.hecha .unidad-estado { color: var(--exito); border-color: color-mix(in srgb, var(--exito) 45%, transparent); }
+.unidad-item.abierta .unidad-estado { color: var(--acento); border-color: color-mix(in srgb, var(--acento) 45%, transparent); }
+
+.unidad-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.unidad-nombre { font-weight: 600; line-height: 1.3; }
+.unidad-libro { font-size: 12px; color: var(--texto-tenue); line-height: 1.3; }
+
+/* Acción descriptiva ("Abrir" / "Repasar") + flecha que invita a entrar. */
+.unidad-accion {
+  flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--texto-suave);
+  transition: color var(--transicion);
+}
+.unidad-flecha {
+  flex-shrink: 0; font-size: 22px; line-height: 1; color: var(--texto-tenue);
+  transition: transform var(--transicion), color var(--transicion);
+}
+.unidad-item.bloqueada .unidad-accion,
+.unidad-item.bloqueada .unidad-flecha { display: none; }
+
+/* La PRÓXIMA unidad pendiente = el siguiente paso natural. Resaltada en luz de
+   lámpara con el rótulo "Empieza/Continúa aquí" (baja la carga de buscarla). */
+.unidad-item.proxima .unidad-boton {
+  border-color: color-mix(in srgb, var(--lampara) 55%, transparent);
+  background: color-mix(in srgb, var(--lampara) 8%, var(--bg-sutil));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--lampara) 22%, transparent);
+}
+.unidad-item.proxima .unidad-accion { color: var(--lampara); }
+.unidad-tag-proxima {
+  align-self: flex-start;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--lampara);
+  background: color-mix(in srgb, var(--lampara) 14%, transparent);
+  border-radius: var(--radius-sm); padding: 2px 7px; margin-bottom: 3px;
 }
 
-.unidad-boton:hover:not(:disabled) { border-color: var(--acento); }
-.unidad-boton:disabled { opacity: 0.45; cursor: not-allowed; }
-.unidad-item.hecha .unidad-estado { color: var(--exito); }
-.unidad-item.abierta .unidad-estado { color: var(--acento); }
+/* Cabecera del panel de unidad: título + "Volver al camino". */
+.unidad-cabecera {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 4px;
+}
+.unidad-cerrar {
+  background: transparent; border: 1px solid var(--borde); border-radius: var(--radius-md);
+  color: var(--texto-suave); font-family: inherit; font-size: 13px; font-weight: 600;
+  padding: 8px 14px; min-height: 40px; cursor: pointer;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+.unidad-cerrar:hover { border-color: var(--acento); color: var(--acento); }
 
-.unidad-nombre { font-weight: 600; }
-.unidad-libro { margin-left: auto; font-size: 12px; color: var(--texto-tenue); }
+/* Estudio en pantallas estrechas: el libro nunca empuja a 3 líneas y, en lo más
+   angosto, el texto de acción cede su lugar a la flecha (que ya comunica "entra"). */
+@media (max-width: 560px) {
+  .unidad-libro { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .unidad-accion { display: none; }
+  .unidad-boton { gap: 12px; padding: 13px 14px; }
+}
 
 .ruta-chip {
   font-size: 10px;

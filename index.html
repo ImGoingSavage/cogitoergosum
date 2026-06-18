@@ -355,19 +355,35 @@
     <section id="vista-estudio" hidden>
 
       <article class="tarjeta">
+        <p class="tarjeta-eyebrow">Modo estudio</p>
         <h2>Tu camino</h2>
         <p id="estudio-bloque-titulo" class="estudio-bloque-titulo">Cargando…</p>
         <p id="estudio-bloque-meta" class="estudio-bloque-meta"></p>
-        <label class="estudio-bloque-nav">Ver bloque:
+
+        <!-- Progreso del bloque visible: cuántas unidades llevas completas -->
+        <div id="estudio-progreso" class="estudio-progreso" hidden>
+          <div class="estudio-progreso-barra" role="progressbar" aria-labelledby="estudio-progreso-texto">
+            <div id="estudio-progreso-relleno" class="estudio-progreso-relleno"></div>
+          </div>
+          <span id="estudio-progreso-texto" class="estudio-progreso-texto"></span>
+        </div>
+
+        <label class="estudio-bloque-nav" for="estudio-bloque-selector">
+          <span class="estudio-bloque-nav-rotulo">Ir a otra fase del temario</span>
           <select id="estudio-bloque-selector"></select>
         </label>
+
         <ul id="estudio-unidades" class="estudio-unidades"></ul>
         <p id="estudio-examen-estado" class="nota-privacidad"></p>
         <button id="btn-examen-iniciar" class="primario" hidden>Presentar examen del bloque</button>
       </article>
 
       <article class="tarjeta" id="estudio-unidad" hidden>
-        <h2>Unidad</h2>
+        <div class="unidad-cabecera">
+          <h2>Unidad</h2>
+          <button id="btn-unidad-cerrar" class="unidad-cerrar" type="button"
+            aria-label="Cerrar esta unidad y volver al camino">← Volver al camino</button>
+        </div>
         <h3 id="unidad-titulo" class="piso-titulo"></h3>
         <div id="unidad-lectura" class="lista-estrategias"></div>
         <!-- Lección integrada (pedido 2026-06-11): teoría completa redactada
@@ -375,7 +391,7 @@
              El puntero al libro se conserva para quien quiera profundizar. -->
         <button id="btn-unidad-leccion" class="secundario" hidden>📖 Leer la lección aquí</button>
         <div id="unidad-leccion" class="leccion" hidden></div>
-        <button id="btn-quiz-iniciar" class="primario" hidden>Ya leí — evalúame</button>
+        <button id="btn-quiz-iniciar" class="primario" hidden>Ya leí — empezar el quiz</button>
         <div id="unidad-quiz" hidden></div>
         <div id="unidad-cierre" hidden></div>
       </article>

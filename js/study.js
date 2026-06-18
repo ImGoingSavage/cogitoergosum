@@ -314,6 +314,31 @@ export function renderizar() {
   }
   $('estudio-bloque-titulo').textContent = b.titulo;
   $('estudio-bloque-meta').textContent = b.meta ?? '';
+
+  // Progreso del bloque visible: barra + "N de M unidades completas". Orienta
+  // sin presionar (§0.3: la comparación es contra el propio avance, no rankings).
+  const unidadesBloque = unidadesDe(b);
+  const totalU = unidadesBloque.length;
+  const hechasU = unidadesBloque.filter((u) => unidadCompletada(u.id)).length;
+  const prog = $('estudio-progreso');
+  if (prog) {
+    prog.hidden = totalU === 0;
+    const pct = totalU ? Math.round((hechasU / totalU) * 100) : 0;
+    const relleno = $('estudio-progreso-relleno');
+    if (relleno) relleno.style.width = `${pct}%`;
+    const barra = prog.querySelector('.estudio-progreso-barra');
+    if (barra) {
+      barra.setAttribute('aria-valuenow', String(hechasU));
+      barra.setAttribute('aria-valuemin', '0');
+      barra.setAttribute('aria-valuemax', String(totalU));
+    }
+    prog.classList.toggle('completo', totalU > 0 && hechasU === totalU);
+    $('estudio-progreso-texto').textContent =
+      totalU > 0 && hechasU === totalU
+        ? `✓ Las ${totalU} unidades de este bloque están completas`
+        : `${hechasU} de ${totalU} unidades completas`;
+  }
+
   const sel = $('estudio-bloque-selector');
   if (sel) {
     sel.innerHTML = '';
@@ -346,7 +371,10 @@ export function renderizar() {
     renderClusters(ul, b);
   } else {
     ul.classList.remove('estudio-clusters');
-    unidadesDe(b).forEach((u) => ul.appendChild(crearUnidadItem(u, b)));
+    // "Por dónde sigo": la primera unidad sin completar se resalta como el
+    // próximo paso natural (reduce la carga de tener que buscarlo).
+    const proximaId = unidadesBloque.find((u) => !unidadCompletada(u.id))?.id ?? null;
+    unidadesBloque.forEach((u) => ul.appendChild(crearUnidadItem(u, b, u.id === proximaId)));
   }
 
   // Estado del examen del bloque. Los bloques con taxonomía pero sin banco de
@@ -494,7 +522,7 @@ const ETIQUETA_RUTA = {
   genai: 'ia generativa',
 };
 
-function crearUnidadItem(u, b) {
+function crearUnidadItem(u, b, esProxima = false) {
   const li = document.createElement('li');
   li.className = 'unidad-item';
   li.dataset.unidadId = u.id;
@@ -502,20 +530,41 @@ function crearUnidadItem(u, b) {
   const abierta = unidadDisponible(b, u);
   const estado = hecha ? '✓' : abierta ? '▸' : '🔒';
   li.classList.add(hecha ? 'hecha' : abierta ? 'abierta' : 'bloqueada');
+  if (esProxima && !hecha && abierta) li.classList.add('proxima');
 
   const btn = document.createElement('button');
   btn.className = 'unidad-boton';
   btn.disabled = !hecha && !abierta;
+  // Texto de acción que describe qué hace el botón al pulsarlo (baja la carga
+  // cognitiva: el usuario sabe a dónde va antes de tocar).
+  const accion = hecha ? 'Repasar' : 'Abrir';
+  btn.setAttribute('aria-label', `${accion} la unidad: ${u.titulo}`);
   const rutaLabel = u.metadata?.ruta
     ? `<span class="ruta-chip ruta-${u.metadata.ruta}">${ETIQUETA_RUTA[u.metadata.ruta] ?? u.metadata.ruta}</span>`
     : '';
-  btn.innerHTML = `<span class="unidad-estado">${estado}</span><span class="unidad-nombre"></span>${rutaLabel}<span class="unidad-libro"></span>`;
+  // Etiqueta de "siguiente paso" solo en la próxima unidad pendiente.
+  const tagProxima = li.classList.contains('proxima')
+    ? `<span class="unidad-tag-proxima">${hechaAlgunaDelBloque(b) ? 'Continúa aquí' : 'Empieza aquí'}</span>`
+    : '';
+  btn.innerHTML =
+    `<span class="unidad-estado" aria-hidden="true">${estado}</span>` +
+    `<span class="unidad-texto">${tagProxima}` +
+    `<span class="unidad-nombre"></span><span class="unidad-libro"></span></span>` +
+    `${rutaLabel}` +
+    `<span class="unidad-accion" aria-hidden="true">${hecha ? 'Repasar' : abierta ? 'Abrir' : 'Bloqueada'}</span>` +
+    `<span class="unidad-flecha" aria-hidden="true">›</span>`;
   btn.querySelector('.unidad-nombre').textContent = u.titulo;
   btn.querySelector('.unidad-libro').textContent = u.libro;
   // Pasamos el <li> para abrir la unidad INLINE, justo debajo, sin saltar al fondo.
   btn.addEventListener('click', () => abrirUnidad(u.id, li));
   li.appendChild(btn);
   return li;
+}
+
+/** ¿El usuario ya completó al menos una unidad de este bloque? Decide si el
+ *  rótulo de la próxima unidad dice "Empieza aquí" o "Continúa aquí". */
+function hechaAlgunaDelBloque(b) {
+  return unidadesDe(b).some((u) => unidadCompletada(u.id));
 }
 
 /* ============ Acordeones de la taxonomía (vista del bloque Arena) ========= */
@@ -1027,6 +1076,17 @@ function abrirUnidad(unidadId, anchorLi) {
   panel.hidden = false;
   panel.dataset.unidad = u.id;
 
+  // Botón "Volver al camino": cierra el panel y lo devuelve a su sitio. Se
+  // recablea en cada apertura (el panel es único y se mueve INLINE).
+  const btnCerrar = $('btn-unidad-cerrar');
+  if (btnCerrar) {
+    btnCerrar.onclick = () => {
+      const ancla = unidadItemVisible(u.id);
+      cerrarPanelUnidad({ moverHome: true });
+      (ancla ?? $('estudio-bloque-titulo'))?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+  }
+
   $('unidad-titulo').textContent = u.titulo;
   $('unidad-lectura').innerHTML = '';
   const filas = [
@@ -1081,7 +1141,7 @@ function abrirUnidad(unidadId, anchorLi) {
 
     const labelEl = document.createElement('span');
     labelEl.className = 'quiz-dif-label';
-    labelEl.textContent = 'Nivel:';
+    labelEl.textContent = 'Dificultad del quiz:';
     selectorDif.appendChild(labelEl);
 
     const msgVacioLeccion = document.createElement('p');
@@ -1904,7 +1964,7 @@ function prepararExamenCluster(clusterId, clusterTitulo) {
   wrapDif.className = 'quiz-dif-selector';
   const labelEl = document.createElement('span');
   labelEl.className = 'quiz-dif-label';
-  labelEl.textContent = 'Nivel:';
+  labelEl.textContent = 'Dificultad del examen:';
   wrapDif.appendChild(labelEl);
 
   const msgVacio = document.createElement('p');
