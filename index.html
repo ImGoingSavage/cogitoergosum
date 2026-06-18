@@ -21,6 +21,8 @@
   -->
 </head>
 <body>
+  <!-- Salto al contenido para teclado/lectores de pantalla (WCAG 2.4.1) -->
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <!-- Portada de inicio de sesión: aparece al abrir si no hay sesión y el
        usuario no ha elegido "continuar sin cuenta". La cuenta es SIEMPRE
        opcional (Constitución §0.7): este umbral invita, jamás bloquea.
@@ -131,7 +133,7 @@
     </div>
   </header>
 
-  <main class="contenedor">
+  <main id="contenido" class="contenedor" tabindex="-1">
 
     <!-- ============================ SESIÓN ============================ -->
     <section id="vista-sesion">
@@ -196,7 +198,7 @@
           placeholder="Piensa por escrito. Nadie te observa: anota hipótesis, dibuja con palabras, equivócate…"></textarea>
         <div class="textarea-pie">
           <span id="contador-caracteres">0 / 200 caracteres</span>
-          <span id="autosave-indicador"></span>
+          <span id="autosave-indicador" role="status" aria-live="polite"></span>
         </div>
         <!-- Desconstrucción en papel (IA, opcional): el mentor transcribe la
              foto (texto y expresiones matemáticas) y valida la redacción —
