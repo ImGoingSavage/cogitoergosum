@@ -2694,3 +2694,17 @@ button[aria-busy="true"]::after {
 @media (prefers-reduced-motion: reduce) {
   button[aria-busy="true"]::after { animation: none; }
 }
+
+/* ============ Claridad visible en Entrenamiento (vista de inicio) ============ */
+/* Rótulo de tarjeta: contexto inmediato ("¿dónde estoy?") sin recargar. */
+.tarjeta-eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--acento); margin-bottom: var(--space-2);
+}
+/* Botón de inicio del forcejeo: la acción principal, prominente y con texto
+   (antes era un ▶ diminuto fácil de ignorar). */
+.timer-boton.timer-boton--iniciar {
+  background: var(--acento); color: #16130f; border-color: var(--acento);
+  font-weight: 700; padding: 12px 20px; min-width: auto;
+}
+.timer-boton.timer-boton--iniciar:hover { filter: brightness(1.1); color: #16130f; }

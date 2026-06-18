@@ -664,9 +664,17 @@ function actualizarTimerControles() {
   if (!activo) return;
 
   const pausado = Timer.enPausa();
-  // Sin iniciar → botón de arranque (▶). Pausado → reanudar (▶). Corriendo → pausar (⏸).
-  $('btn-timer-pausa').textContent = (!iniciado || pausado) ? '▶' : '⏸';
-  $('btn-timer-pausa').title = !iniciado
+  // Sin iniciar → botón GRANDE con texto (acción principal, imposible de ignorar).
+  // Pausado → reanudar (▶). Corriendo → pausar (⏸).
+  const btnP = $('btn-timer-pausa');
+  if (!iniciado) {
+    btnP.textContent = '▶ Empezar a pensar';
+    btnP.classList.add('timer-boton--iniciar');
+  } else {
+    btnP.textContent = pausado ? '▶' : '⏸';
+    btnP.classList.remove('timer-boton--iniciar');
+  }
+  btnP.title = !iniciado
     ? 'Iniciar tu forcejeo'
     : pausado
       ? 'Reanudar el forcejeo'
