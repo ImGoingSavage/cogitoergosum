@@ -400,6 +400,14 @@ nav button.activo { color: var(--acento); background: var(--acento-suave); }
    teléfono): el patrón que toda app móvil usa. Siempre visible (sabes dónde
    estás por la pestaña activa) y a un toque de cualquier sección. */
 @media (max-width: 900px) {
+  /* El header NO debe crear containing-block en móvil: su backdrop-filter
+     atrapaba a la nav fija (su bottom:0 quedaba relativo al header corto, no
+     al viewport, y la barra terminaba arriba tapando el wordmark). Sólido en
+     móvil — ya era la dirección del bloque ≤540. */
+  header.app-header {
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    background: rgba(19, 17, 16, 0.92);
+  }
   .header-inner { flex-wrap: wrap; padding: 10px 14px; gap: 8px 12px; }
   .marca-bloque { flex: 1 1 auto; }
   .header-rachas { margin-left: auto; }
@@ -420,10 +428,10 @@ nav button.activo { color: var(--acento); background: var(--acento-suave); }
   .nav-btn span { font-size: 10.5px; }
   .nav-btn svg { width: 23px; height: 23px; }
   .nav-btn.activo { color: var(--acento); background: var(--acento-suave); box-shadow: none; }
-  /* Deja sitio para que la barra no tape el contenido, el botón flotante ni los toasts */
+  /* Deja sitio para que la barra no tape el contenido (los botones flotantes y
+     los toasts se elevan en un bloque al FINAL del archivo: sus reglas base
+     vienen después de aquí y, con igual especificidad, ganarían en cascada). */
   main.contenedor { padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)); }
-  .toast-region { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
-  #pizarra-flotante { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* Rachas siempre visibles: el logro sostenido vive en luz de lámpara */
@@ -1507,7 +1515,8 @@ button.secundario.peligro:hover:not(:disabled) {
 #mentor-panel .mentor-config input[type='text'] { flex: 1; min-width: 0; }
 
 @media (max-width: 540px) {
-  #mentor-flotante { right: 12px; bottom: 12px; }
+  /* bottom lo fija el bloque ≤900 (sobre la barra de navegación) */
+  #mentor-flotante { right: 12px; }
   #mentor-panel { width: calc(100vw - 24px); max-height: 62vh; }
 }
 
@@ -2269,7 +2278,8 @@ body.sin-scroll { overflow: hidden; }
 }
 
 @media (max-width: 540px) {
-  #pizarra-flotante { left: 12px; bottom: 12px; }
+  /* bottom lo fija el bloque ≤900 (sobre la barra de navegación) */
+  #pizarra-flotante { left: 12px; }
   .pizarra-barra { padding: 6px 8px; }
   .pizarra-titulo { display: none; }
   .piz-grosor-preset { width: 28px; height: 28px; }
@@ -2722,3 +2732,15 @@ button[aria-busy="true"]::after {
   font-weight: 700; padding: 12px 20px; min-width: auto;
 }
 .timer-boton.timer-boton--iniciar:hover { filter: brightness(1.1); color: #16130f; }
+
+/* ============================================================================
+   Elevación sobre la barra de navegación inferior (≤900px).
+   Va al FINAL a propósito: las reglas base de .toast-region (~2644),
+   #pizarra-flotante y #mentor-flotante aparecen antes en el archivo; con igual
+   especificidad, la última en orden de fuente gana. Aquí garantizamos que los
+   flotantes y los toasts queden SOBRE la barra fija, no detrás de ella. */
+@media (max-width: 900px) {
+  .toast-region,
+  #pizarra-flotante,
+  #mentor-flotante { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+}
