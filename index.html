@@ -57,6 +57,31 @@
     </div>
   </section>
 
+  <!-- Onboarding de primera vez: deja claro QUÉ es la app y el primer paso.
+       Se muestra una sola vez (flag local 'onboardingVisto'), nunca bloquea al
+       usuario recurrente (coherente con el minimalismo de la sesión diaria,
+       claude.md). Reabrible desde la Guía. -->
+  <section id="onboarding" class="onb" hidden role="dialog" aria-modal="true" aria-labelledby="onb-titulo">
+    <div class="onb-tarjeta">
+      <p class="onb-floron" aria-hidden="true">∴</p>
+      <p class="onb-eyebrow">Bienvenido</p>
+      <h1 id="onb-titulo">Esto es <span class="onb-marca">CogitoErgoSum</span></h1>
+      <p class="onb-lead">No vienes a memorizar respuestas: vienes a <strong>entrenar tu manera de pensar</strong>. Como un gimnasio, pero para tu mente.</p>
+      <ol class="onb-pasos">
+        <li><span class="onb-num">1</span><div><b>Lee el problema del día</b><span>Sin categorías ni pistas: solo tú y el reto.</span></div></li>
+        <li><span class="onb-num">2</span><div><b>Pulsa ▶ y forcejea</b><span>Piensa por escrito. La solución se desbloquea cuando se agota el tiempo.</span></div></li>
+        <li><span class="onb-num">3</span><div><b>Descubre y transfiere</b><span>Compara tu camino, anota tu moraleja y reúsala en otros problemas.</span></div></li>
+      </ol>
+      <div class="onb-mapa" aria-label="Las vistas de la app">
+        <p><b>Entrenamiento</b> — tu problema del día</p>
+        <p><b>Estudio</b> — lecciones, quizzes y exámenes por fases</p>
+        <p><b>Dashboard</b> — tu progreso, rachas y cuaderno</p>
+      </div>
+      <button id="btn-onb-empezar" class="onb-cta">Empezar mi primer problema →</button>
+      <button id="btn-onb-omitir" class="onb-omitir">Ya conozco la app</button>
+    </div>
+  </section>
+
   <!-- Fondo de la biblioteca (§5.4 punto 0): video en bucle a 0.5× detrás de
        todo el contenido. Sin autoplay deliberado: app.js lo reproduce solo si
        prefers-reduced-motion lo permite (sin JS o con movimiento reducido
@@ -77,12 +102,27 @@
       </div>
       <!-- Rachas siempre visibles: 🔥 entrenamiento · 📘 estudio (independientes) -->
       <div id="header-rachas" class="header-rachas" title="Tus rachas"></div>
-      <nav>
-        <button id="nav-sesion" class="activo">Entrenamiento</button>
-        <button id="nav-estudio">Estudio</button>
-        <button id="nav-claustro">Claustro</button>
-        <button id="nav-guia">Guía</button>
-        <button id="nav-dashboard">Dashboard</button>
+      <nav aria-label="Vistas principales">
+        <button id="nav-sesion" class="nav-btn activo" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.6"/></svg>
+          <span>Entrenamiento</span>
+        </button>
+        <button id="nav-estudio" class="nav-btn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.3-4.5-1.5-7-1v12c2.5-.5 5-.3 7 1 2-1.3 4.5-1.5 7-1V5c-2.5-.5-5-.3-7 1Z"/><path d="M12 6v13"/></svg>
+          <span>Estudio</span>
+        </button>
+        <button id="nav-claustro" class="nav-btn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M8.5 13l-1.5 8 5-3 5 3-1.5-8"/></svg>
+          <span>Claustro</span>
+        </button>
+        <button id="nav-guia" class="nav-btn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg>
+          <span>Guía</span>
+        </button>
+        <button id="nav-dashboard" class="nav-btn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V11M12 21V4M19 21v-6"/></svg>
+          <span>Dashboard</span>
+        </button>
       </nav>
       <!-- Cerrar sesión: existe solo con sesión activa; los datos locales
            siguen intactos (LocalStorage es la verdad, §3.4) -->
@@ -680,6 +720,7 @@
           <p><strong>10</strong><span>fases de estudio</span></p>
           <p><strong>2</strong><span>caminos de entrenamiento</span></p>
         </div>
+        <button id="btn-guia-onboarding" class="guia-onb-btn">▶ Ver la guía rápida de inicio</button>
       </article>
 
       <article class="tarjeta guia-panel">

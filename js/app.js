@@ -103,6 +103,7 @@ async function init() {
   actualizarRacha();
   asegurarAsignacionDelDia();
   configurarNavegacion();
+  configurarOnboarding();
   configurarTimerUI();
   configurarMentorUI();
   configurarMentorLocalUI();
@@ -1431,10 +1432,46 @@ function cambiarVista(vista) {
   vistaActual = vista;
   ['sesion', 'estudio', 'claustro', 'guia', 'dashboard'].forEach((v) => {
     $(`vista-${v}`).hidden = vista !== v;
-    $(`nav-${v}`).classList.toggle('activo', vista === v);
+    const btn = $(`nav-${v}`);
+    btn.classList.toggle('activo', vista === v);
+    btn.setAttribute('aria-current', vista === v ? 'page' : 'false');
   });
   MentorChat.actualizarMentorUI(); // el mentor flotante cambia de modo según la vista
   Pizarra.actualizarVisibilidad(vista); // la pizarra vive en sesión y estudio
+}
+
+/**
+ * Onboarding de primera vez: explica QUÉ es la app y el primer paso. Se muestra
+ * una sola vez por dispositivo (flag 'onboardingVisto') y solo cuando la portada
+ * de login ya no está visible (no se solapan). Reabrible desde la Guía.
+ */
+function configurarOnboarding() {
+  const ov = $('onboarding');
+  if (!ov) return;
+  const cerrar = () => { ov.hidden = true; Storage.save('onboardingVisto', true); };
+  const mostrar = () => { ov.hidden = false; ov.scrollTop = 0; };
+  $('btn-onb-empezar')?.addEventListener('click', () => {
+    cerrar();
+    cambiarVista('sesion');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  $('btn-onb-omitir')?.addEventListener('click', cerrar);
+  $('btn-guia-onboarding')?.addEventListener('click', mostrar);
+
+  if (Storage.load('onboardingVisto')) return; // ya lo vio en este dispositivo
+  const portada = $('pantalla-login');
+  if (!portada || portada.hidden) {
+    mostrar(); // sin portada (sesión activa o ya omitida): mostrar de inmediato
+  } else {
+    // Esperar a que el usuario pase la portada (entrar / crear cuenta / omitir).
+    const obs = new MutationObserver(() => {
+      if (portada.hidden) {
+        obs.disconnect();
+        if (!Storage.load('onboardingVisto')) mostrar();
+      }
+    });
+    obs.observe(portada, { attributes: true, attributeFilter: ['hidden'] });
+  }
 }
 
 /**
