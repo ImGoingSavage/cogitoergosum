@@ -1572,8 +1572,34 @@ function cambiarVista(vista) {
 function configurarOnboarding() {
   const ov = $('onboarding');
   if (!ov) return;
-  const cerrar = () => { ov.hidden = true; Storage.save('onboardingVisto', true); };
-  const mostrar = () => { ov.hidden = false; ov.scrollTop = 0; };
+  let focoPrevio = null;
+  // Foco gestionado (WCAG 2.2): el modal atrapa Tab, cierra con Escape y al
+  // cerrarse devuelve el foco a donde estaba.
+  const focables = () =>
+    [...ov.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+      .filter((el) => !el.disabled && el.offsetParent !== null);
+  const onKey = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); cerrar(); return; }
+    if (e.key !== 'Tab') return;
+    const f = focables();
+    if (!f.length) return;
+    const primero = f[0], ultimo = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === primero) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+  };
+  const cerrar = () => {
+    ov.hidden = true;
+    Storage.save('onboardingVisto', true);
+    document.removeEventListener('keydown', onKey, true);
+    if (focoPrevio && typeof focoPrevio.focus === 'function') focoPrevio.focus();
+  };
+  const mostrar = () => {
+    focoPrevio = document.activeElement;
+    ov.hidden = false;
+    ov.scrollTop = 0;
+    document.addEventListener('keydown', onKey, true);
+    ($('btn-onb-empezar') || focables()[0])?.focus(); // foco al CTA principal
+  };
   $('btn-onb-empezar')?.addEventListener('click', () => {
     cerrar();
     cambiarVista('sesion');
