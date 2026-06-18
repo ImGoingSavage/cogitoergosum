@@ -982,6 +982,7 @@ function nuevaPagina() {
 }
 
 let limpiarArmado = null;
+let iconoLimpiar = ''; // SVG original del botón limpiar (se restaura al desarmar)
 
 function limpiarPagina() {
   const btn = $('btn-piz-limpiar');
@@ -1008,7 +1009,7 @@ function desarmarLimpiar() {
   limpiarArmado = null;
   const btn = $('btn-piz-limpiar');
   btn.classList.remove('peligro-armado');
-  btn.textContent = '⌫';
+  btn.innerHTML = iconoLimpiar;
 }
 
 function borrarSeleccion() {
@@ -1127,6 +1128,10 @@ export function init() {
       if (previos[h]) ajustes[h] = { ...ajustes[h], ...previos[h] };
     });
   }
+
+  // El botón "limpiar" alterna a un texto de confirmación "¿limpiar?"; guardamos
+  // su icono SVG original para restaurarlo al desarmar (ver desarmarLimpiar).
+  iconoLimpiar = $('btn-piz-limpiar').innerHTML;
 
   $('pizarra-burbuja').addEventListener('click', abrir);
   $('btn-pizarra-cerrar').addEventListener('click', cerrar);

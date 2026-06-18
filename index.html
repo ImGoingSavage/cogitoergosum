@@ -939,7 +939,13 @@
        unidad/examen guarda SU pizarra en este dispositivo. El botón
        "Evaluar" (mentor) solo existe con cuenta de Claude activa. -->
   <div id="pizarra-flotante" hidden>
-    <button id="pizarra-burbuja" title="Abrir la pizarra" aria-label="Abrir la pizarra">✎</button>
+    <button id="pizarra-burbuja" title="Abrir la pizarra para dibujar y forcejear a mano" aria-label="Abrir la pizarra">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 19l1.2-4.2L15.5 5.5a1.7 1.7 0 0 1 2.4 0l.6.6a1.7 1.7 0 0 1 0 2.4L9.2 17.8 5 19z"/>
+        <path d="M14.5 6.5l3 3"/>
+      </svg>
+      <span class="pizarra-burbuja-rotulo">Pizarra</span>
+    </button>
   </div>
 
   <section id="pizarra-overlay" hidden aria-label="Pizarra de trabajo">
@@ -949,10 +955,32 @@
         <span id="pizarra-titulo" class="pizarra-titulo"></span>
       </div>
       <div class="pizarra-grupo pizarra-herramientas" role="toolbar" aria-label="Herramientas">
-        <button id="btn-piz-pluma" class="pizarra-boton" title="Pluma — dibuja y sostén para figura perfecta" aria-label="Pluma">✒</button>
-        <button id="btn-piz-goma" class="pizarra-boton" title="Goma — borra trazos completos · doble toque del dedo alterna pluma/goma" aria-label="Goma">◌</button>
-        <button id="btn-piz-marcador" class="pizarra-boton" title="Resaltador — tinta translúcida" aria-label="Resaltador">▰</button>
-        <button id="btn-piz-lazo" class="pizarra-boton" title="Lazo — rodea trazos para moverlos, duplicarlos o borrarlos" aria-label="Lazo">⬚</button>
+        <button id="btn-piz-pluma" class="pizarra-boton" title="Pluma — dibuja y sostén para figura perfecta" aria-label="Pluma">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 19l1.2-4.2L15.5 5.5a1.7 1.7 0 0 1 2.4 0l.6.6a1.7 1.7 0 0 1 0 2.4L9.2 17.8 5 19z"/>
+            <path d="M14.5 6.5l3 3"/><path d="M5 19l2.2-.6"/>
+          </svg>
+        </button>
+        <button id="btn-piz-goma" class="pizarra-boton" title="Goma — borra trazos completos · doble toque del dedo alterna pluma/goma" aria-label="Goma">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 20l-3.6-3.6a1.6 1.6 0 0 1 0-2.3l7.7-7.7a1.6 1.6 0 0 1 2.3 0l4.2 4.2a1.6 1.6 0 0 1 0 2.3L14.5 20z"/>
+            <path d="M8 20h11.5"/><path d="M10 8.5l5 5"/>
+          </svg>
+        </button>
+        <button id="btn-piz-marcador" class="pizarra-boton" title="Resaltador — tinta translúcida" aria-label="Resaltador">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 11l-6 6v3h9l3-3"/>
+            <path d="M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4z"/>
+            <path d="M14.5 20H21"/>
+          </svg>
+        </button>
+        <button id="btn-piz-lazo" class="pizarra-boton" title="Lazo — rodea trazos para moverlos, duplicarlos o borrarlos" aria-label="Lazo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <ellipse cx="12" cy="10" rx="8" ry="5.6" stroke-dasharray="2.8 2.6"/>
+            <path d="M6.6 14.9c-.7 1.2-.4 2.7.8 3.5"/>
+            <circle cx="8.5" cy="19" r="1.15" fill="currentColor" stroke="none"/>
+          </svg>
+        </button>
         <span id="piz-grosores" class="piz-grosores" role="group" aria-label="Grosor del trazo"></span>
         <div id="piz-colores" class="piz-colores"></div>
       </div>
@@ -961,9 +989,24 @@
           title="Enviar esta página al mentor socrático">🪶 Evaluar</button>
         <button id="btn-piz-sel-duplicar" class="pizarra-boton pizarra-sel-borrar" hidden>Duplicar</button>
         <button id="btn-piz-sel-borrar" class="pizarra-boton pizarra-sel-borrar" hidden>Borrar selección</button>
-        <button id="btn-piz-deshacer" class="pizarra-boton" title="Deshacer (toque de 2 dedos)" aria-label="Deshacer">↩</button>
-        <button id="btn-piz-rehacer" class="pizarra-boton" title="Rehacer (toque de 3 dedos)" aria-label="Rehacer">↪</button>
-        <button id="btn-piz-limpiar" class="pizarra-boton" title="Limpiar la página (doble toque)" aria-label="Limpiar la página">⌫</button>
+        <button id="btn-piz-deshacer" class="pizarra-boton" title="Deshacer (toque de 2 dedos)" aria-label="Deshacer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 8L4 12l4 4"/><path d="M4 12h9.5a5 5 0 0 1 5 5v.5"/>
+          </svg>
+        </button>
+        <button id="btn-piz-rehacer" class="pizarra-boton" title="Rehacer (toque de 3 dedos)" aria-label="Rehacer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 8l4 4-4 4"/><path d="M20 12h-9.5a5 5 0 0 0-5 5v.5"/>
+          </svg>
+        </button>
+        <button id="btn-piz-limpiar" class="pizarra-boton" title="Limpiar la página (doble toque)" aria-label="Limpiar la página">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19.5 4.5L12 12"/>
+            <path d="M8.5 9.5l6 6"/>
+            <path d="M8.5 9.5L4 15l5 5 5.5-4.5z"/>
+            <path d="M6.5 13.5l4 4"/><path d="M9 11.5l4 4"/>
+          </svg>
+        </button>
         <span class="pizarra-paginas">
           <button id="btn-piz-pag-prev" class="pizarra-boton" title="Página anterior" aria-label="Página anterior">‹</button>
           <span id="piz-pag-info">1/1</span>
