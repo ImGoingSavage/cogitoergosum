@@ -541,7 +541,8 @@ function renderizarSesion() {
   if (!a || !p) return;
 
   $('problema-titulo').classList.remove('skeleton'); // fin del estado de carga
-  $('problema-titulo').textContent = p.titulo;
+  // renderInline (no textContent) para que el título admita $…$ matemáticas con KaTeX.
+  $('problema-titulo').innerHTML = renderInline(p.titulo);
   $('problema-enunciado').innerHTML = renderInline(p.enunciado);
   $('problema-dificultad').innerHTML = '●'.repeat(p.dificultad) + '○'.repeat(5 - p.dificultad);
   $('badge-revision').hidden = !a.esRevision;
@@ -1148,7 +1149,7 @@ function abrirPisoMinimo() {
   pisoRecuerdo = elegirRecuerdoParaPiso();
   if (!pisoRecuerdo) return;
   const p = problemas.find((x) => x.id === pisoRecuerdo.problemId);
-  $('piso-titulo').textContent = p?.titulo ?? `Problema #${pisoRecuerdo.problemId}`;
+  $('piso-titulo').innerHTML = renderInline(p?.titulo ?? `Problema #${pisoRecuerdo.problemId}`);
   $('piso-enunciado').innerHTML = renderInline(p?.enunciado ?? '');
   $('piso-recuerdo').value = '';
   $('piso-contador').textContent = `0 / ${MIN_PISO} caracteres`;
