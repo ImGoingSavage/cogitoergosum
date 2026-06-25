@@ -25165,7 +25165,7 @@
     },
     {
       "id": 704,
-      "titulo": "La identidad de Euler: $\\pi^2/6 = \\sum 1/n^2$",
+      "titulo": "La identidad de Euler: $\\frac{\\pi^2}{6} = \\sum_{n=1}^{\\infty} \\frac{1}{n^2}$",
       "estrategia": "invariantes",
       "dificultad": 5,
       "enunciado": "Demuestra (usando el argumento informal de Euler) que $\\dfrac{\\pi^2}{6} = \\displaystyle\\sum_{n=1}^{\\infty} \\dfrac{1}{n^2} = 1 + \\frac{1}{4} + \\frac{1}{9} + \\frac{1}{16} + \\cdots$",
